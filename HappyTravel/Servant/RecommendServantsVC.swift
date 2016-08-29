@@ -8,9 +8,11 @@
 
 import Foundation
 
-class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, ServantIntroCellDelegate {
     
     var servantsTable:UITableView?
+    var servantsInfo:Array<UserInfo>? = []
+    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -26,7 +28,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     func initView() {
         servantsTable = UITableView(frame: CGRectZero, style: .Plain)
-        servantsTable?.backgroundColor = .redColor()
+        servantsTable?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         servantsTable?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         servantsTable?.delegate = self
         servantsTable?.dataSource = self
@@ -43,16 +45,21 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return servantsInfo!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ServantIntroCell", forIndexPath: indexPath) as! ServantIntroCell
-        cell.setInfo("http://pic1.nipic.com/20090323/2075774_041911081_2.jpg", headPhotoUrl: "http://pic.jia360.com/ueditor/jsp/upload/201607/29/83031469782330978.jpg")
+        cell.delegate = self
+        for (index, userInfo) in servantsInfo!.enumerate() {
+            if indexPath.row == index {
+                cell.setInfo(userInfo)
+            }
+        }
         return cell
         
     }
-        
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
     }
@@ -61,5 +68,11 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - ServantIntroCellDeleagte
+    func chatAction(servantInfo: UserInfo?) {
+        let chatVC = ChatVC()
+        chatVC.servantInfo = servantInfo
+        navigationController?.pushViewController(chatVC, animated: true)
+    }
     
 }

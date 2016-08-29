@@ -8,19 +8,33 @@
 
 import Foundation
 
-public class PersonalHeadCell : UITableViewCell {
+class PersonalHeadCell : UITableViewCell {
     
-    override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    static var PI:Double = 3.1415926535898
+    static var EARTH_R:Double = 6371.393000
+    
+    let tags = ["view": 1001,
+                "personalView": 1002,
+                "headImageView": 1003,
+                "starLevelView": 1004,
+                "officialAuth": 1005,
+                "zhimaAuth": 1006,
+                "authTips": 1007,
+                "limitLab": 1008,
+                "limitIcon": 1009,
+                "bottomControl": 1010]
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
         contentView.backgroundColor = UIColor.clearColor()
         
         let width = UIScreen.mainScreen().bounds.size.width
         
-        var view = contentView.viewWithTag(101)
+        var view = contentView.viewWithTag(tags["view"]!)
         if view == nil {
             view = UIView()
-            view!.tag = 101
+            view!.tag = tags["view"]!
             contentView.addSubview(view!)
             view?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(contentView)
@@ -30,10 +44,10 @@ public class PersonalHeadCell : UITableViewCell {
             })
         }
         
-        var personalView = view?.viewWithTag(1001) as? UIImageView
+        var personalView = view?.viewWithTag(tags["personalView"]!) as? UIImageView
         if personalView == nil {
             personalView = UIImageView()
-            personalView!.tag = 1001
+            personalView!.tag = tags["personalView"]!
             personalView!.backgroundColor = UIColor.redColor()
             personalView!.userInteractionEnabled = true
             view!.addSubview(personalView!)
@@ -45,10 +59,10 @@ public class PersonalHeadCell : UITableViewCell {
             }
         }
         
-        var headImageView = personalView?.viewWithTag(10001) as? UIImageView
+        var headImageView = personalView?.viewWithTag(tags["headImageView"]!) as? UIImageView
         if headImageView == nil {
             headImageView = UIImageView()
-            headImageView!.tag = 10001
+            headImageView!.tag = tags["headImageView"]!
             headImageView?.layer.cornerRadius = width / 7.0
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
@@ -64,10 +78,10 @@ public class PersonalHeadCell : UITableViewCell {
             }
         }
         
-        var starLevelView = personalView?.viewWithTag(10002)
+        var starLevelView = personalView?.viewWithTag(tags["starLevelView"]!)
         if starLevelView == nil {
             starLevelView = UIView()
-            starLevelView!.tag = 10002
+            starLevelView!.tag = tags["starLevelView"]!
             starLevelView?.backgroundColor = UIColor.clearColor()
             personalView!.addSubview(starLevelView!)
             starLevelView?.snp_makeConstraints(closure: { (make) in
@@ -95,10 +109,10 @@ public class PersonalHeadCell : UITableViewCell {
             }
         }
         
-        var officialAuth = personalView?.viewWithTag(10003) as? UIImageView
+        var officialAuth = personalView?.viewWithTag(tags["officialAuth"]!) as? UIImageView
         if officialAuth == nil {
             officialAuth = UIImageView()
-            officialAuth?.tag = 10003
+            officialAuth?.tag = tags["officialAuth"]!
             officialAuth?.backgroundColor = UIColor.clearColor()
             officialAuth?.contentMode = .ScaleAspectFit
             personalView?.addSubview(officialAuth!)
@@ -111,10 +125,10 @@ public class PersonalHeadCell : UITableViewCell {
         }
         officialAuth?.image = UIImage.init(named: "guide-auth")
         
-        var zhimaAuth = personalView?.viewWithTag(10004) as? UIImageView
+        var zhimaAuth = personalView?.viewWithTag(tags["zhimaAuth"]!) as? UIImageView
         if zhimaAuth == nil {
             zhimaAuth = UIImageView()
-            zhimaAuth?.tag = 10004
+            zhimaAuth?.tag = tags["zhimaAuth"]!
             zhimaAuth?.backgroundColor = UIColor.clearColor()
             zhimaAuth?.contentMode = .ScaleAspectFit
             personalView?.addSubview(zhimaAuth!)
@@ -127,10 +141,10 @@ public class PersonalHeadCell : UITableViewCell {
         }
         zhimaAuth?.image = UIImage.init(named: "guide-zhima-auth")
         
-        var authTips = personalView?.viewWithTag(10005) as? UILabel
+        var authTips = personalView?.viewWithTag(tags["authTips"]!) as? UILabel
         if authTips == nil {
             authTips = UILabel()
-            authTips?.tag = 10005
+            authTips?.tag = tags["authTips"]!
             authTips?.backgroundColor = UIColor.clearColor()
             authTips?.textAlignment = .Right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
@@ -144,10 +158,43 @@ public class PersonalHeadCell : UITableViewCell {
         }
         authTips?.text = "照片已认证"
         
-        var bottomControl = view?.viewWithTag(10010)
+        var limitLab = personalView?.viewWithTag(tags["limitLab"]!) as? UILabel
+        if limitLab == nil {
+            limitLab = UILabel()
+            limitLab?.tag = tags["limitLab"]!
+            limitLab?.backgroundColor = UIColor.clearColor()
+            limitLab?.textAlignment = .Right
+            limitLab?.textColor = .whiteColor()
+            limitLab?.font = UIFont.boldSystemFontOfSize(15)
+            personalView?.addSubview(limitLab!)
+            limitLab?.snp_makeConstraints(closure: { (make) in
+                make.right.equalTo(personalView!).offset(-20)
+                make.bottom.equalTo(personalView!).offset(-20)
+                make.height.equalTo(20)
+            })
+        }
+        limitLab?.text = "0 Km"
+        
+        var limitIcon = personalView?.viewWithTag(tags["limitIcon"]!) as? UIImageView
+        if limitIcon == nil {
+            limitIcon = UIImageView()
+            limitIcon?.tag = tags["limitIcon"]!
+            limitIcon?.backgroundColor = UIColor.clearColor()
+            limitIcon?.contentMode = .ScaleAspectFit
+            personalView?.addSubview(limitIcon!)
+            limitIcon?.snp_makeConstraints(closure: { (make) in
+                make.right.equalTo(limitLab!.snp_left).offset(-5)
+                make.bottom.equalTo(limitLab!)
+                make.width.equalTo(20)
+                make.height.equalTo(20)
+            })
+            limitIcon?.image = UIImage.init(named: "limit")
+        }
+        
+        var bottomControl = view?.viewWithTag(tags["bottomControl"]!)
         if bottomControl == nil {
             bottomControl = UIView()
-            bottomControl!.tag = 10010
+            bottomControl!.tag = tags["bottomControl"]!
             bottomControl!.backgroundColor = UIColor.clearColor()
             view?.addSubview(bottomControl!)
             bottomControl?.snp_makeConstraints(closure: { (make) in
@@ -160,21 +207,60 @@ public class PersonalHeadCell : UITableViewCell {
         
     }
     
-    func setInfo(bigPhotoUrl: NSString?, headPhotoUrl: NSString?) {
-        let view = contentView.viewWithTag(101)
-        let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
-        let photoUrl = (bigPhotoUrl != nil) ? NSURL(string: bigPhotoUrl as! String) : nil
-        imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+    func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
+        let view = contentView.viewWithTag(tags["view"]!)
+        
+        if let personalView: UIImageView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
+            let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl!)!)
+            personalView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                
+            }
             
-        }
-        let headUrl = (headPhotoUrl != nil) ? NSURL(string: headPhotoUrl as! String) : nil
-        let headView = imageView.viewWithTag(10001) as! UIImageView
-        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
+                let headUrl = NSURL(string: userInfo!.headUrl!)
+                headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                    
+                }
+            }
             
+            if let starLevelView = personalView.viewWithTag(tags["starLevelView"]!) {
+                let level = userInfo?.businessLv
+                for i in 0...4 {
+                    if let star = starLevelView.viewWithTag(starLevelView.tag * 10 + i) as? UIImageView {
+                        star.image = UIImage.init(named: (level! / Float(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
+                    }
+                }
+            }
+            
+            if let officialAuth = personalView.viewWithTag(tags["officialAuth"]!) as? UIImageView {
+                officialAuth.hidden = !((userInfo?.certification)!)
+            }
+            
+            if let limitLab = personalView.viewWithTag(tags["limitLab"]!) as? UILabel {
+                let myLongitude = UserInfo.currentUser.gpsLocation.longitude
+                let myLatitude = UserInfo.currentUser.gpsLocation.latitude
+                let servantLongitude = userInfo?.gpsLocation.longitude
+                let servantLatitude = userInfo?.gpsLocation.latitude
+                limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
+            }
         }
+        
+        
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    func Angle2Radian(angle: Double) ->Double {
+        return angle * PersonalHeadCell.PI / 180.0;
+    }
+    
+    func CalcDistance(lon1: Double, lat1: Double, lon2: Double, lat2: Double) ->Double {
+        let lat_a:Double = Angle2Radian(lat1)
+        let lon_a:Double = Angle2Radian(lon1)
+        let lat_b:Double = Angle2Radian(lat2)
+        let lon_b:Double = Angle2Radian(lon2)
+        return acos(sin(lat_a) * sin(lat_b) + cos(lat_a) * cos(lat_b) * cos(lon_a - lon_b)) * PersonalHeadCell.EARTH_R;
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -18,10 +18,18 @@ class UserInfo: NSObject {
         return Static.instance
     }
     
+    class var userList : NSMutableDictionary {
+        struct Static {
+            static let instance:NSMutableDictionary = [:]
+        }
+        return Static.instance
+    }
+    
     enum UserType {
         case CurrentUser
         case Servant
         case MeetLocation
+        case Other
     }
     
     var login:Bool = false
@@ -43,6 +51,21 @@ class UserInfo: NSObject {
     var gpsLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
     
     var userType:UserType = .Servant
+    
+    var businessLv:Float = 0
+    
+    var businessTags:Array<String>?
+    
+    var bigBGPhotoUrl:String?
+    
+    var certification:Bool?
+    
+    var photoUrlList:Array<String>?
+    
+    var serviceList:Array<Dictionary<String, AnyObject>>?
+    
+    var travalTags:Array<String>?
+    
     
     override init() {
         super.init()
@@ -66,7 +89,7 @@ class UserInfo: NSObject {
             case "level_":
                 level = value as? Float
                 break
-            case "nick_name_":
+            case "nickname_", "nick_name_":
                 nickname = value as? String
                 break
             case "phone_num_":
@@ -83,12 +106,33 @@ class UserInfo: NSObject {
                 break
             case "login_":
                 login = value as! Bool
+                break
+            case "business_lv_":
+                businessLv = value as! Float
+                break
+            case "business_tag_":
+                businessTags = (value as! String).componentsSeparatedByString(",")
+                break
+            case "heag_bg_url_":
+                bigBGPhotoUrl = value as? String
+                break
+            case "is_certification_":
+                certification = value as? Bool
+                break
+            case "photo_list_":
+                photoUrlList = (value as! String).componentsSeparatedByString(",")
+                break
+            case "service":
+                serviceList = value as? Array<Dictionary<String, AnyObject>>
+                break
+            case "traval_tag_":
+                travalTags = (value as! String).componentsSeparatedByString(",")
+                break
             default:
                 XCGLogger.debug("Exception:[\(key) : \(value)]")
                 break
             }
         }
     }
-    
     
 }

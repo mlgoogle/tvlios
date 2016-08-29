@@ -33,17 +33,37 @@ class LoginVC: UIViewController {
         }
         
         let loginBtn = UIButton()
+        loginBtn.tag = 1001
         loginBtn.backgroundColor = .clearColor()
-        loginBtn.setTitle("登录", forState: .Normal)
+        loginBtn.setTitle("消费者登录", forState: .Normal)
+        loginBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
         loginBtn.layer.borderColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1).CGColor
         loginBtn.layer.borderWidth = 1
         loginBtn.layer.cornerRadius = 5
         loginBtn.layer.masksToBounds = true
-        loginBtn.addTarget(self, action: #selector(LoginVC.login), forControlEvents: .TouchUpInside)
+        loginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(loginBtn)
         loginBtn.snp_makeConstraints { (make) in
             make.center.equalTo(view)
-            make.width.equalTo(60)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+        }
+        
+        let servantLoginBtn = UIButton()
+        servantLoginBtn.tag = 1002
+        servantLoginBtn.backgroundColor = .clearColor()
+        servantLoginBtn.setTitle("服务者登录", forState: .Normal)
+        servantLoginBtn.setTitleColor(UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1), forState: .Normal)
+        servantLoginBtn.layer.borderColor = UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1).CGColor
+        servantLoginBtn.layer.borderWidth = 1
+        servantLoginBtn.layer.cornerRadius = 5
+        servantLoginBtn.layer.masksToBounds = true
+        servantLoginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
+        view.addSubview(servantLoginBtn)
+        servantLoginBtn.snp_makeConstraints { (make) in
+            make.centerX.equalTo(view)
+            make.top.equalTo(loginBtn.snp_bottom).offset(20)
+            make.width.equalTo(100)
             make.height.equalTo(30)
         }
     }
@@ -52,8 +72,15 @@ class LoginVC: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
     }
     
-    func login() {
-        SocketManager.sendData(.Login, data: nil)
+    func login(sender: UIButton?) {
+        var dict:Dictionary<String, AnyObject>?
+        if sender?.tag == 1001 {
+            dict = ["phone_num_": "15157109258", "passwd_": "223456", "user_type_": 1]
+        } else {
+            dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]
+        }
+        
+        SocketManager.sendData(.Login, data: dict)
         dismissViewControllerAnimated(true, completion: nil)
     }
     

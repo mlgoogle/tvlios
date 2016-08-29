@@ -15,7 +15,9 @@ let incomingTag = 0, outgoingTag = 1
 let bubbleTag = 8
 
 class ChatBubbleCell: UITableViewCell {
+    
     let bubbleImageView: UIImageView
+    
     static let bubbleImage: (incoming: UIImage, incomingHighlighed: UIImage, outgoing: UIImage, outgoingHighlighed: UIImage) = {
         let maskOutgoing = UIImage(named: "msg-bubble")!
         let maskIncoming = UIImage(CGImage: maskOutgoing.CGImage!, scale: 2, orientation: .UpMirrored)

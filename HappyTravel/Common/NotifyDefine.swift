@@ -14,8 +14,23 @@ class NotifyDefine: NSObject {
     
     static let LoginSuccessed = "LoginSuccesse"
     
-    static let ReflushAddress = "ReflushAddress"
-    
     static let ServantInfo = "ServantInfo"
+    
+    static let ServantDetailInfo = "ServantDetailInfo"
+    
+    static let ServiceCitys = "ServiceCitys"
+    
+    static let RecommendServants = "RecommendServants"
+    
+    static let JumpToWalletVC = "JumpToWalletVC"
+    
+    static let JumpToDistanceOfTravelVC = "JumpToDistanceOfTravelVC"
+    
+    static let JumpToSettingsVC = "JumpToSettingsVC"
+    
+    
+    static let AskInvitationNotify = "AskInvitationNotify"
+    
+    static let ChatMessgaeNotiy = "ChatMessageNotify"
     
 }

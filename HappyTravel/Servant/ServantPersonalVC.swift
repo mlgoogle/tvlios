@@ -13,7 +13,7 @@ import XCGLogger
 
 public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
     
-    var personalData:[Array<Dictionary<String, AnyObject>>]?
+    var personalInfo:UserInfo?
     var personalTable:UITableView?
     var bottomBar:UIImageView?
     var serviceSpread = false
@@ -31,25 +31,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func initView() {
-        personalData = [[["base_info": ["head": "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2410621701,768567151&fm=58",
-                                      "big_photo": "http://fun.youth.cn/yl24xs/201606/W020160619438518389299.jpg",
-                                      "nickname": "人间巨炮",
-                                      "star": 4.5,
-                                      "auth": 1,
-                                      "sex": 0,
-                                      "distance": "11.5km"]]],
-                        [["tally": [["中华名族手艺人": 12], ["龙傲天": 13], ["秋名山老司机": 15], ["王司徒": 88], ["无耻之徒": 4]]]],
-                        [["service": [["time": "全天  8:00 - 24:00", "pay": "1200元"],
-                                      ["time": "半天  13:00 - 24:00", "pay": "800元"],
-                                      ["time": "夜晚  18:00 - 24:00", "pay": "600元"]]]],
-                        [["photos": ["http://fun.youth.cn/yl24xs/201606/W020160619438518389299.jpg",
-                                     "http://img3.fengniao.com/album/upload/83/16544/3308763.jpg",
-                                     "http://gb.cri.cn/mmsource/images/2012/06/18/71/7794585600077591943.jpg",
-                                     "http://image.tianjimedia.com/uploadImages/2015/155/33/O6AIE5211CZU_680x500.jpg",
-                                     "http://img.taopic.com/uploads/allimg/110819/1717-110Q921405795.jpg"]]]]
-
         view.backgroundColor = UIColor.init(red: 33/255.0, green: 59/255.0, blue: 76/255.0, alpha: 1)
-        title = "PAPI酱"
+        title = personalInfo?.nickname
         
         bottomBar = UIImageView()
         bottomBar?.userInteractionEnabled = true
@@ -116,6 +99,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         if sender?.tag == 1001 {
             XCGLogger.debug("Chats")
             let chatVC = ChatVC()
+            chatVC.servantInfo = personalInfo
             navigationController?.pushViewController(chatVC, animated: true)
         } else if sender?.tag == 1002 {
             invitation()
@@ -184,34 +168,32 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     // MARK -- UITableViewDelegate & UITableViewDataSource
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return (personalData?.count)!
+        return 4
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (personalData?[section].count)!
+        return 1
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("PersonalHeadCell", forIndexPath: indexPath) as! PersonalHeadCell
-            cell.setInfo("http://pic1.nipic.com/20090323/2075774_041911081_2.jpg", headPhotoUrl: "http://pic.jia360.com/ueditor/jsp/upload/201607/29/83031469782330978.jpg")
+            cell.setInfo(personalInfo, detailInfo: nil)
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
-            let data = personalData![1][0]["tally"] as! Array<Dictionary<String, Int>>
-            cell.setInfo(data)
+            let tallys = personalInfo!.businessTags! + personalInfo!.travalTags!
+            cell.setInfo(tallys)
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as! ServiceCell
             cell.delegate = self
-            let data = personalData![2][0]["service"] as! Array<Dictionary<String, String>>
-            cell.setInfo(data, setSpread: serviceSpread)
+            cell.setInfo(personalInfo?.serviceList, setSpread: serviceSpread)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("PhotosCell", forIndexPath: indexPath) as! PhotosCell
-            let data = personalData![3][0]["photos"] as! Array<String>
             cell.delegate = self
-            cell.setInfo(data, setSpread: serviceSpread)
+            cell.setInfo(personalInfo?.photoUrlList, setSpread: serviceSpread)
             return cell
         }
         

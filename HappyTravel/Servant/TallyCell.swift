@@ -10,27 +10,35 @@ import Foundation
 
 public class TallyCell : UITableViewCell {
     
+    let tags = ["bgView": 1001,
+                "noTallyLabel": 1002,
+                "bottomControl": 1003,
+                "tallyItemView": 1004]
+    
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
         contentView.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         
-        let bgView = UIView()
-        bgView.tag = 3001
-        bgView.backgroundColor = UIColor.clearColor()
-        bgView.userInteractionEnabled = true
-        contentView.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
-            make.left.equalTo(self.contentView)
-            make.top.equalTo(self.contentView)
-            make.right.equalTo(self.contentView)
-            make.bottom.equalTo(self.contentView)
+        var bgView = contentView.viewWithTag(tags["bgView"]!)
+        if bgView == nil {
+            bgView = UIView()
+            bgView!.tag = tags["bgView"]!
+            bgView!.backgroundColor = UIColor.clearColor()
+            bgView!.userInteractionEnabled = true
+            contentView.addSubview(bgView!)
+            bgView!.snp_makeConstraints { (make) in
+                make.left.equalTo(self.contentView)
+                make.top.equalTo(self.contentView)
+                make.right.equalTo(self.contentView)
+                make.bottom.equalTo(self.contentView)
+            }
         }
         
-        var noTallyLabel = contentView.viewWithTag(3001) as? UILabel
+        var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
         if noTallyLabel == nil {
             noTallyLabel = UILabel(frame: CGRectZero)
-            noTallyLabel!.tag = 30001
+            noTallyLabel!.tag = tags["noTallyLabel"]!
             noTallyLabel!.font = UIFont.systemFontOfSize(12)
             noTallyLabel!.userInteractionEnabled = false
             noTallyLabel!.numberOfLines = 0
@@ -40,10 +48,10 @@ public class TallyCell : UITableViewCell {
             noTallyLabel?.layer.borderWidth = 1
             noTallyLabel!.backgroundColor = UIColor.init(red: 67/255.0, green: 189/255.0, blue: 159/255.0, alpha: 0.8)
             noTallyLabel!.translatesAutoresizingMaskIntoConstraints = false
-            bgView.addSubview(noTallyLabel!)
+            bgView!.addSubview(noTallyLabel!)
             noTallyLabel!.snp_remakeConstraints { (make) in
-                make.top.equalTo(bgView)
-                make.left.equalTo(bgView)
+                make.top.equalTo(bgView!)
+                make.left.equalTo(bgView!)
                 make.height.equalTo(25)
                 make.width.equalTo(25)
             }
@@ -51,53 +59,30 @@ public class TallyCell : UITableViewCell {
         noTallyLabel?.hidden = false
         noTallyLabel!.text = "无"
         
-        var addTallyBtn = contentView.viewWithTag(2001) as? UIButton
-        if addTallyBtn == nil {
-            addTallyBtn = UIButton.init(type: UIButtonType.Custom)
-            addTallyBtn!.tag = 2001
-            addTallyBtn!.backgroundColor = UIColor.init(red: 215/255.0, green: 215/255.0, blue: 215/255.0, alpha: 1)
-            addTallyBtn!.layer.cornerRadius = 25 / 2.0
-            addTallyBtn?.layer.masksToBounds = true
-            addTallyBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            addTallyBtn?.layer.borderWidth = 1
-            addTallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: UIControlState.Normal)
-            addTallyBtn!.setTitle("+", forState: UIControlState.Normal)
-            addTallyBtn!.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview(addTallyBtn!)
-            addTallyBtn!.snp_makeConstraints { (make) in
-                make.left.equalTo(noTallyLabel!.snp_right).offset(10)
-                make.top.equalTo(noTallyLabel!)
-                make.bottom.equalTo(noTallyLabel!)
-                make.width.equalTo(25)
-            }
-        }
-        
-        var bottomControl = bgView.viewWithTag(10010)
+        var bottomControl = bgView!.viewWithTag(tags["bottomControl"]!)
         if bottomControl == nil {
             bottomControl = UIView()
-            bottomControl!.tag = 10010
+            bottomControl!.tag = tags["bottomControl"]!
             bottomControl!.backgroundColor = UIColor.clearColor()
-            bgView.addSubview(bottomControl!)
+            bgView!.addSubview(bottomControl!)
             bottomControl?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(addTallyBtn!.snp_bottom)
-                make.bottom.equalTo(bgView).offset(-10)
-                make.left.equalTo(bgView)
-                make.right.equalTo(bgView)
+                make.top.equalTo(noTallyLabel!.snp_bottom)
+                make.bottom.equalTo(bgView!).offset(-10)
+                make.left.equalTo(bgView!)
+                make.right.equalTo(bgView!)
             })
         }
         
     }
     
-    func setInfo(tags: Array<Dictionary<String, Int>>?) {
+    func setInfo(tags: Array<String>?) {
         if tags?.count != 0 {
-            let addTallyBtn = contentView.viewWithTag(2001) as! UIButton
             var lastTallyItemView:UIView?
-            var tallyStr = ""
             for (index, tag) in tags!.enumerate() {
-                var tallyItemView = contentView.viewWithTag(1001 + index)
+                var tallyItemView = contentView.viewWithTag(self.tags["tallyItemView"]! * 10 + index)
                 if tallyItemView == nil {
                     tallyItemView = UIView()
-                    tallyItemView!.tag = 1001 + index
+                    tallyItemView!.tag = self.tags["tallyItemView"]! * 10 + index
                     tallyItemView!.userInteractionEnabled = true
                     tallyItemView!.backgroundColor = UIColor.clearColor()
                     tallyItemView!.layer.cornerRadius = 25 / 2.0
@@ -106,7 +91,7 @@ public class TallyCell : UITableViewCell {
                     tallyItemView?.layer.borderWidth = 1
                     contentView.addSubview(tallyItemView!)
                     tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
-                    let previousView = contentView.viewWithTag(1001+index-1)
+                    let previousView = contentView.viewWithTag(tallyItemView!.tag - 1)
                     tallyItemView!.snp_makeConstraints { (make) in
                         if previousView == nil {
                             make.top.equalTo(self.contentView).offset(10)
@@ -129,10 +114,10 @@ public class TallyCell : UITableViewCell {
                     }
                 }
                 
-                var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 100 + 1) as? UILabel
+                var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 10 + 1) as? UILabel
                 if tallyLabel == nil {
                     tallyLabel = UILabel(frame: CGRectZero)
-                    tallyLabel!.tag = tallyItemView!.tag * 100 + 1
+                    tallyLabel!.tag = tallyItemView!.tag * 10 + 1
                     tallyLabel!.font = UIFont.systemFontOfSize(12)
                     tallyLabel!.userInteractionEnabled = false
                     tallyLabel!.backgroundColor = UIColor.clearColor()
@@ -147,21 +132,26 @@ public class TallyCell : UITableViewCell {
                         make.right.equalTo(tallyItemView!).offset(-10)
                     }
                 }
-                tallyLabel!.text = tag.keys.first
+                tallyLabel!.text = tag
                 
                 lastTallyItemView = tallyItemView
-                tallyStr += ((tallyLabel?.text)!)
+            }
+            if let bgView = contentView.viewWithTag(self.tags["bgView"]!) {
+                if let bottomControl = bgView.viewWithTag(self.tags["bottomControl"]!) {
+                    bottomControl.snp_remakeConstraints(closure: { (make) in
+                        make.top.equalTo(lastTallyItemView!.snp_bottom)
+                        make.bottom.equalTo(bgView).offset(-10)
+                        make.left.equalTo(bgView)
+                        make.right.equalTo(bgView)
+                    })
+                }
+                
+                if let noTallyLabel = bgView.viewWithTag(self.tags["noTallyLabel"]!) as? UILabel {
+                    noTallyLabel.hidden = true
+                }
                 
             }
-            addTallyBtn.snp_remakeConstraints { (make) in
-                make.left.equalTo(lastTallyItemView!.snp_right).offset(10)
-                make.top.equalTo(lastTallyItemView!)
-                make.bottom.equalTo(lastTallyItemView!)
-                make.width.equalTo(25)
-            }
-            let bgView = contentView.viewWithTag(3001)
-            let noTallyLabel = bgView!.viewWithTag(30001) as? UILabel
-            noTallyLabel?.hidden = true
+            
         }
     }
     

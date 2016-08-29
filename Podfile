@@ -13,6 +13,7 @@ target 'HappyTravel' do
   pod 'SideMenuController', '~> 0.1.5'
   pod 'SnapKit', '~> 0.21.1'
   pod 'AMap2DMap'
+  # pod 'AMapLocation'
   pod 'Kingfisher', '~> 2.4'
   
   use_frameworks! # Add this if you are targeting iOS 8+ or using Swift

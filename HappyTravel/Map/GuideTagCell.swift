@@ -10,6 +10,8 @@ import Foundation
 
 class GuideTagCell: MAAnnotationView {
     
+    var userInfo:UserInfo?
+    
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         initView()
@@ -78,6 +80,7 @@ class GuideTagCell: MAAnnotationView {
     }
     
     func setInfo(info: UserInfo?) {
+        userInfo = info
         let headView = viewWithTag(1001) as? UIImageView
         if headView != nil {
             headView!.kf_setImageWithURL(NSURL(string: (info?.headUrl)!))

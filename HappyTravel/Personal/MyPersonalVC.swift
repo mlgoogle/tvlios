@@ -58,7 +58,8 @@ public class MyPersonalVC : UIViewController {
         UserInfo.currentUser.setInfo(.CurrentUser, info: data)
         UserInfo.currentUser.login = true
         initPersonalView()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ReflushAddress, object: nil, userInfo: ["address" : UserInfo.currentUser.address!])
+        SocketManager.sendData(.GetServiceCity, data: nil)
+        SocketManager.sendData(.GetServantInfo, data: nil)
     }
     
     func initPersonalView() {
@@ -220,12 +221,18 @@ public class MyPersonalVC : UIViewController {
         switch sender!.tag {
         case 10001:
             XCGLogger.defaultInstance().debug("钱包")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
+            sideMenuController?.toggle()
         case 10002:
             XCGLogger.defaultInstance().debug("我的行程")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToDistanceOfTravelVC, object: nil, userInfo: nil)
+            sideMenuController?.toggle()
         case 10003:
             XCGLogger.defaultInstance().debug("客服")
         case 10004:
             XCGLogger.defaultInstance().debug("设置")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToSettingsVC, object: nil, userInfo: nil)
+            sideMenuController?.toggle()
         default:
             break
         }

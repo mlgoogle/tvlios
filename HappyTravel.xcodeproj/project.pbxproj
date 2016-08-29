@@ -20,6 +20,10 @@
 		2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFE1D5081CB00609C8E /* LaunchScreen.storyboard */; };
 		2FA75D0B1D5081CB00609C8E /* HappyTravelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D0A1D5081CB00609C8E /* HappyTravelTests.swift */; };
 		2FA75D161D5081CB00609C8E /* HappyTravelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */; };
+		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
+		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
+		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
+		2FBA71F71D6EA49400839E51 /* DistanceOfTravelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */; };
 		2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */; };
 		2FBB5E751D51D2FC007BE4E0 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBB5E741D51D2FC007BE4E0 /* Message.swift */; };
 		2FBB5E791D51DB0A007BE4E0 /* msg-bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FBB5E781D51DB0A007BE4E0 /* msg-bubble@2x.png */; };
@@ -39,6 +43,19 @@
 		2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B041D6A9C7600D48D6A /* TallyCell.swift */; };
 		2FC25B0D1D6A9DA500D48D6A /* RecommendServantsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B0C1D6A9DA500D48D6A /* RecommendServantsVC.swift */; };
 		2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B1F1D6AA41F00D48D6A /* ServantIntroCell.swift */; };
+		2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */; };
+		2FC25B291D6BFA2F00D48D6A /* cash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B231D6BFA2F00D48D6A /* cash@2x.png */; };
+		2FC25B2A1D6BFA2F00D48D6A /* cash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B241D6BFA2F00D48D6A /* cash@3x.png */; };
+		2FC25B2B1D6BFA2F00D48D6A /* invoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B251D6BFA2F00D48D6A /* invoice@2x.png */; };
+		2FC25B2C1D6BFA2F00D48D6A /* invoice@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B261D6BFA2F00D48D6A /* invoice@3x.png */; };
+		2FC25B2D1D6BFA2F00D48D6A /* invoice-history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B271D6BFA2F00D48D6A /* invoice-history@2x.png */; };
+		2FC25B2E1D6BFA2F00D48D6A /* invoice-history@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B281D6BFA2F00D48D6A /* invoice-history@3x.png */; };
+		2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */; };
+		2FC25B321D6C3CC200D48D6A /* CitysSelectorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B311D6C3CC200D48D6A /* CitysSelectorSheet.swift */; };
+		2FC25B341D6D416A00D48D6A /* limit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B331D6D416A00D48D6A /* limit@2x.png */; };
+		2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */; };
+		2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B371D6D874000D48D6A /* SettingsVC.swift */; };
+		2FC9537A1D701B450058E117 /* PushMessageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC953791D701B450058E117 /* PushMessageManager.swift */; };
 		2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */; };
 		2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */; };
 		2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCED1D65653900FD28CB /* LoginVC.swift */; };
@@ -127,6 +144,10 @@
 		2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyTravelUITests.swift; sourceTree = "<group>"; };
 		2FA75D171D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FA75D2A1D50DED300609C8E /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridge/Bridging-Header.h"; sourceTree = "<group>"; };
+		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
+		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
+		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
+		2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DistanceOfTravelCell.swift; path = Personal/DistanceOfTravelCell.swift; sourceTree = "<group>"; };
 		2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		2FBB5E741D51D2FC007BE4E0 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		2FBB5E781D51DB0A007BE4E0 /* msg-bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "msg-bubble@2x.png"; sourceTree = "<group>"; };
@@ -146,6 +167,19 @@
 		2FC25B041D6A9C7600D48D6A /* TallyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TallyCell.swift; path = Servant/TallyCell.swift; sourceTree = "<group>"; };
 		2FC25B0C1D6A9DA500D48D6A /* RecommendServantsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecommendServantsVC.swift; path = Servant/RecommendServantsVC.swift; sourceTree = "<group>"; };
 		2FC25B1F1D6AA41F00D48D6A /* ServantIntroCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantIntroCell.swift; path = Servant/ServantIntroCell.swift; sourceTree = "<group>"; };
+		2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletVC.swift; path = Personal/WalletVC.swift; sourceTree = "<group>"; };
+		2FC25B231D6BFA2F00D48D6A /* cash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cash@2x.png"; sourceTree = "<group>"; };
+		2FC25B241D6BFA2F00D48D6A /* cash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cash@3x.png"; sourceTree = "<group>"; };
+		2FC25B251D6BFA2F00D48D6A /* invoice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice@2x.png"; sourceTree = "<group>"; };
+		2FC25B261D6BFA2F00D48D6A /* invoice@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice@3x.png"; sourceTree = "<group>"; };
+		2FC25B271D6BFA2F00D48D6A /* invoice-history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-history@2x.png"; sourceTree = "<group>"; };
+		2FC25B281D6BFA2F00D48D6A /* invoice-history@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-history@3x.png"; sourceTree = "<group>"; };
+		2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CityInfo.swift; path = Common/CityInfo.swift; sourceTree = "<group>"; };
+		2FC25B311D6C3CC200D48D6A /* CitysSelectorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CitysSelectorSheet.swift; path = Map/CitysSelectorSheet.swift; sourceTree = "<group>"; };
+		2FC25B331D6D416A00D48D6A /* limit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "limit@2x.png"; sourceTree = "<group>"; };
+		2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DistanceOfTravelVC.swift; path = Personal/DistanceOfTravelVC.swift; sourceTree = "<group>"; };
+		2FC25B371D6D874000D48D6A /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsVC.swift; path = Personal/SettingsVC.swift; sourceTree = "<group>"; };
+		2FC953791D701B450058E117 /* PushMessageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageManager.swift; path = Personal/PushMessageManager.swift; sourceTree = "<group>"; };
 		2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorExt.swift; path = Common/ColorExt.swift; sourceTree = "<group>"; };
 		2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-detail-arrows-up@2x.png"; sourceTree = "<group>"; };
 		2FDAFCED1D65653900FD28CB /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginVC.swift; path = Login/LoginVC.swift; sourceTree = "<group>"; };
@@ -241,6 +275,13 @@
 		2F6959E31D54259A0072B7FF /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				2FC25B331D6D416A00D48D6A /* limit@2x.png */,
+				2FC25B231D6BFA2F00D48D6A /* cash@2x.png */,
+				2FC25B241D6BFA2F00D48D6A /* cash@3x.png */,
+				2FC25B251D6BFA2F00D48D6A /* invoice@2x.png */,
+				2FC25B261D6BFA2F00D48D6A /* invoice@3x.png */,
+				2FC25B271D6BFA2F00D48D6A /* invoice-history@2x.png */,
+				2FC25B281D6BFA2F00D48D6A /* invoice-history@3x.png */,
 				2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */,
 				2FE7C3821D6413E300994505 /* my-star-fill@2x.png */,
 				2FE7C3831D6413E300994505 /* my-star-fill@3x.png */,
@@ -360,6 +401,7 @@
 				2FE7C3761D63FD4700994505 /* ForthwithVC.swift */,
 				2FE7C3771D63FD4700994505 /* GuideTagCell.swift */,
 				2FE7C3781D63FD4700994505 /* MeetTagCell.swift */,
+				2FC25B311D6C3CC200D48D6A /* CitysSelectorSheet.swift */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -377,6 +419,14 @@
 			isa = PBXGroup;
 			children = (
 				2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */,
+				2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */,
+				2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */,
+				2FC25B371D6D874000D48D6A /* SettingsVC.swift */,
+				2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */,
+				2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */,
+				2FBA71F41D6E93CF00839E51 /* MessageCell.swift */,
+				2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */,
+				2FC953791D701B450058E117 /* PushMessageManager.swift */,
 			);
 			name = Personal;
 			sourceTree = "<group>";
@@ -487,6 +537,7 @@
 				2FE7C38E1D64527900994505 /* Protocol.h */,
 				2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */,
 				2FDAFCF01D65698E00FD28CB /* NotifyDefine.swift */,
+				2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -623,6 +674,7 @@
 				2FE7C3211D616C3C00994505 /* segment-right@2x.png in Resources */,
 				2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */,
 				2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */,
+				2FC25B2D1D6BFA2F00D48D6A /* invoice-history@2x.png in Resources */,
 				2FE7C3871D6413E300994505 /* my-star-fill@3x.png in Resources */,
 				2FE7C3351D61ACFC00994505 /* nav-personal@2x.png in Resources */,
 				2FE7C3241D61847C00994505 /* bottom_selector_selected@2x.png in Resources */,
@@ -632,6 +684,8 @@
 				2FDAFCF41D66CCEB00FD28CB /* address-selector-normal@2x.png in Resources */,
 				2FE7C36F1D63077C00994505 /* face-btn@2x.png in Resources */,
 				2FC25AFB1D6A972400D48D6A /* recommend@2x.png in Resources */,
+				2FC25B2C1D6BFA2F00D48D6A /* invoice@3x.png in Resources */,
+				2FC25B341D6D416A00D48D6A /* limit@2x.png in Resources */,
 				2FE7C33F1D62B52C00994505 /* side-service@2x.png in Resources */,
 				2FE7C3491D62BFAF00994505 /* guide-auth@2x.png in Resources */,
 				2FE7C3881D6413E300994505 /* my-star-hollow@2x.png in Resources */,
@@ -640,6 +694,8 @@
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				2FE7C3861D6413E300994505 /* my-star-fill@2x.png in Resources */,
 				2FE7C3301D61A66800994505 /* guide-tips@2x.png in Resources */,
+				2FC25B2B1D6BFA2F00D48D6A /* invoice@2x.png in Resources */,
+				2FC25B2E1D6BFA2F00D48D6A /* invoice-history@3x.png in Resources */,
 				2FE7C32E1D619C6D00994505 /* meet-tips@2x.png in Resources */,
 				2FDAFCF51D66CCEB00FD28CB /* address-selector-selected@2x.png in Resources */,
 				2FE7C31C1D616B2700994505 /* head-bg@2x.png in Resources */,
@@ -647,6 +703,8 @@
 				2FE7C3811D64133600994505 /* bottom_selector_normal@3x.png in Resources */,
 				2FE7C34A1D62BFAF00994505 /* guide-auth@3x.png in Resources */,
 				2F9D42071D597A5700D10FBC /* location@2x.png in Resources */,
+				2FC25B291D6BFA2F00D48D6A /* cash@2x.png in Resources */,
+				2FC25B2A1D6BFA2F00D48D6A /* cash@3x.png in Resources */,
 				2FE7C34E1D62BFAF00994505 /* guide-zhima-auth@3x.png in Resources */,
 				2FC25AFC1D6A972400D48D6A /* recommend@3x.png in Resources */,
 				2FE7C3381D62AA0E00994505 /* side-bg@2x.png in Resources */,
@@ -808,6 +866,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FC25B081D6A9C7600D48D6A /* ServantPersonalVC.swift in Sources */,
+				2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */,
+				2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */,
+				2FBA71F71D6EA49400839E51 /* DistanceOfTravelCell.swift in Sources */,
 				2FE7C3791D63FD4700994505 /* ForthwithVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
@@ -818,9 +879,11 @@
 				2FBB5E7F1D51DCEA007BE4E0 /* Chat.swift in Sources */,
 				2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */,
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
+				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
 				2FBB5E811D51DCF8007BE4E0 /* User.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
+				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FBB5E891D51EEB4007BE4E0 /* InputTextView.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
@@ -829,10 +892,15 @@
 				2FC25B0A1D6A9C7600D48D6A /* ServiceSheet.swift in Sources */,
 				2FBB5E751D51D2FC007BE4E0 /* Message.swift in Sources */,
 				2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */,
+				2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */,
 				2FBB5E831D51E655007BE4E0 /* ChatDateCell.swift in Sources */,
 				2FC25B0D1D6A9DA500D48D6A /* RecommendServantsVC.swift in Sources */,
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
+				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
+				2FC9537A1D701B450058E117 /* PushMessageManager.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
+				2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */,
+				2FC25B321D6C3CC200D48D6A /* CitysSelectorSheet.swift in Sources */,
 				2FA75CF61D5081CB00609C8E /* AppDelegate.swift in Sources */,
 				2FE7C37B1D63FD4700994505 /* MeetTagCell.swift in Sources */,
 			);

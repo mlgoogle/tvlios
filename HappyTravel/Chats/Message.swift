@@ -1,6 +1,6 @@
 import Foundation.NSDate
 
-class Message {
+class Message : NSObject {
     let incoming: Bool
     let text: String
     let sentDate: NSDate

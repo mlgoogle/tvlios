@@ -12,7 +12,7 @@ import UIKit
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate {
     
     var dateFormatter = NSDateFormatter()
-    var messages:[Message]?
+    var messages:Array<Message> = []
     var chatTable:UITableView?
     var toolBar: UIToolbar!
     var textView: UITextView!
@@ -21,6 +21,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var rotating = false
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
+    var servantInfo:UserInfo?
     
     override public var inputAccessoryView: UIView! {
         get {
@@ -82,27 +83,46 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-    }
-    
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
-    }
-    
     override public func canBecomeFirstResponder() -> Bool {
         return true
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = servantInfo?.nickname
+        view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
+        
+        if let msgList = PushMessageManager.getMessage(servantInfo!.uid!) {
+            for msg in msgList {
+                let message = msg as! PushMessage
+                let msgData = Message(incoming: true, text: message.content!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.time!).doubleValue))
+                messages.append(msgData)
+            }
+        }
+        
         initView()
     }
     
-    override public func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+    }
+    
+    func chatMessage(notification: NSNotification?) {
+        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
+        let fromUID = data["from_uid_"] as! Int
+        let toUID = data["to_uid_"] as! Int
+        let sendTime = data["msg_time_"] as! NSNumber
+        let content = data["content_"] as! String
+        let msgData = Message(incoming: false, text: content, sentDate: NSDate(timeIntervalSince1970: Double(sendTime.longLongValue)))
+        messages.append(msgData)
+        if fromUID == servantInfo?.uid && toUID == UserInfo.currentUser.uid {
+            chatTable?.beginUpdates()
+            let numberOfRows = chatTable?.numberOfRowsInSection(0)
+            chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0)], withRowAnimation: .Fade)
+            chatTable?.endUpdates()
+            chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        }
         
     }
     
@@ -154,15 +174,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     func initView() {
         dateFormatter.dateStyle = .ShortStyle
         dateFormatter.timeStyle = .ShortStyle
-        messages = [Message(incoming: true, text: "人在塔在，狡诈恶徒，你的贱就是我的剑，我将带头冲锋！", sentDate: NSDate(timeIntervalSinceNow: -60*60*24*2-60*60)),
-                    Message(incoming: false, text: "人在塔在，狡诈恶徒!", sentDate: NSDate(timeIntervalSinceNow: -60*60*24*2-60*60)),
-                    Message(incoming: true, text: "你的贱就是我的剑!", sentDate: NSDate(timeIntervalSinceNow: -60*60*24*2-60*60)),
-                    Message(incoming: false, text: "人在塔在，狡诈恶徒，你的贱就是我的剑!", sentDate: NSDate(timeIntervalSinceNow: -60*60*24*2-60*60)),
-                    Message(incoming: true, text: "人在塔在，狡诈恶徒，你的贱就是我的剑，我将带头冲锋！", sentDate: NSDate(timeIntervalSinceNow: -60*60*24*2-60*60))]
-        view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-        
-        navigationItem.title = "PAPI酱"
-    
+
         let rect = view.bounds
         chatTable = UITableView(frame: rect, style: .Plain)
         chatTable!.tag = 1001
@@ -233,11 +245,11 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (messages?.count)! * 2
+        return messages.count * 2
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let message = messages![indexPath.row / 2]
+        let message = messages[indexPath.row / 2]
         if indexPath.row % 2 == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatDateCell", forIndexPath: indexPath) as! ChatDateCell
             cell.sentDateLabel.text = dateFormatter.stringFromDate(message.sentDate)
@@ -250,7 +262,21 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func sendMessageAction() {
+        let msg = textView.text
+        let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
+        messages.append(msgData)
         
+        let data:Dictionary<String, AnyObject> = ["from_uid_": UserInfo.currentUser.uid!,
+                                                  "to_uid_": (servantInfo!.uid)!,
+                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
+                                                  "content_": msg]
+        SocketManager.sendData(.SendChatMessage, data: data)
+        
+        chatTable?.beginUpdates()
+        let numberOfRows = chatTable?.numberOfRowsInSection(0)
+        chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0)], withRowAnimation: .Fade)
+        chatTable?.endUpdates()
+        chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }
     
     func menuControllerWillHide(notification: NSNotification) {
@@ -262,6 +288,10 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func messageCopyTextAction(menuController: UIMenuController) {
         
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
 }

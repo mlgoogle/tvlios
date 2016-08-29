@@ -18,17 +18,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        let log = XCGLogger.defaultInstance()
-        log.xcodeColors = [
-            .Verbose: .lightGrey,
-            .Debug: .darkGrey,
-            .Info: .darkGreen,
-            .Warning: .orange,
-            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()), // Optionally use a UIColor
-            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0)) // Optionally use RGB values directly
-        ]
-        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Debug)
-        
+//        let log = XCGLogger.defaultInstance()
+//        log.xcodeColors = [
+//            .Verbose: .lightGrey,
+//            .Debug: .darkGrey,
+//            .Info: .darkGreen,
+//            .Warning: .orange,
+//            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()), // Optionally use a UIColor
+//            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0)) // Optionally use RGB values directly
+//        ]
+//        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Debug)
+//        
         application.applicationSupportsShakeToEdit = true
         
         commonViewSet()

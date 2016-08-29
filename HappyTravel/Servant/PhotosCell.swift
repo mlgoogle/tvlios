@@ -48,7 +48,7 @@ public class PhotosCell : UITableViewCell {
             moreBtn?.tag = 1002
             moreBtn?.contentMode = UIViewContentMode.ScaleAspectFit
             moreBtn!.addTarget(self, action: #selector(PhotosCell.moreAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            moreBtn!.setBackgroundImage(UIImage.init(named: "guide-detail-arrows"), forState: .Normal)
+            moreBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), forState: .Normal)
             view!.addSubview(moreBtn!)
             moreBtn!.snp_makeConstraints(closure: { (make) in
                 make.bottom.equalTo(view!)

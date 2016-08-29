@@ -11,15 +11,21 @@ import UIKit
 import SnapKit
 import XCGLogger
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate {
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
+    var msgCountLab:UILabel?
     var segmentSC:UISegmentedControl?
     var mapView:MAMapView?
-    var servantsInfo:Array<UserInfo>? = []
+    var servantsInfo:Dictionary<Int, UserInfo> = [:]
     var annotations:Array<MAPointAnnotation> = []
     var login = false
+    var serviceCitys:Dictionary<Int, CityInfo> = [:]
+    var citysAlertController:UIAlertController?
+    var recommendServants:Array<UserInfo> = []
+    var locality:String?
+    var location:CLLocation?
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -42,21 +48,44 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         super.viewWillAppear(true)
         
         if navigationItem.rightBarButtonItem == nil {
-            let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ForthwithVC.msgAction))
+            let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
+            msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
+            msgBtn.backgroundColor = UIColor.clearColor()
+            msgBtn.addTarget(self, action: #selector(ForthwithVC.msgAction(_:)), forControlEvents: .TouchUpInside)
+            
+            let msgItem = UIBarButtonItem.init(customView: msgBtn)
             navigationItem.rightBarButtonItem = msgItem
+
+            msgCountLab = UILabel()
+            msgCountLab!.backgroundColor = UIColor.redColor()
+            msgCountLab!.text = ""
+            msgCountLab!.textColor = UIColor.whiteColor()
+            msgCountLab!.textAlignment = .Center
+            msgCountLab!.font = UIFont.systemFontOfSize(10)
+            msgCountLab!.layer.cornerRadius = 18 / 2.0
+            msgCountLab!.layer.masksToBounds = true
+            msgCountLab!.hidden = true
+            msgBtn.addSubview(msgCountLab!)
+            msgCountLab!.snp_makeConstraints(closure: { (make) in
+                make.right.equalTo(msgBtn).offset(5)
+                make.top.equalTo(msgBtn).offset(-2)
+                make.width.equalTo(18)
+                make.height.equalTo(18)
+            })
+            
+        }
+        
+        if PushMessageManager.getUnreadMsgCnt() > 0 {
+            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt())"
+            msgCountLab?.hidden = false
+        } else {
+            msgCountLab?.hidden = true
         }
         
     }
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
-        mapView!.userTrackingMode = MAUserTrackingMode.Follow
-        mapView!.addAnnotations(annotations)
-        mapView!.showAnnotations(annotations, animated: true)
-        mapView!.setZoomLevel(12, animated: true)
-        mapView!.showsUserLocation = true
-        mapView!.showsCompass = true
         
         if login == false {
             let loginVC = LoginVC()
@@ -89,6 +118,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             make.top.equalTo(titleView).offset(20)
             make.bottom.equalTo(titleView)
         }
+        titleLab?.text = "我的位置"
         
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
@@ -189,11 +219,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             make.bottom.equalTo(bottomView)
         }
         
-        
-        AMapServices.sharedServices().apiKey = "11feec2b7ad127ae156d72aa08f2342e"
+        AMapServices.sharedServices().apiKey = "50bb1e806f1d2c1a797e6e789563e334"
         mapView = MAMapView()
         mapView!.tag = 1002
         mapView!.delegate = self
+        mapView!.userTrackingMode = MAUserTrackingMode.Follow
+        mapView!.setZoomLevel(12, animated: true)
+        mapView!.showsUserLocation = true
+        mapView!.showsCompass = true
         view.addSubview(mapView!)
         mapView!.snp_makeConstraints { (make) in
             make.top.equalTo(segmentBGV.snp_bottom)
@@ -203,6 +236,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         }
         
         let recommendBtn = UIButton()
+        recommendBtn.tag = 2001
         recommendBtn.backgroundColor = .clearColor()
         recommendBtn.setImage(UIImage.init(named: "recommend"), forState: .Normal)
         recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
@@ -213,21 +247,81 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             make.width.equalTo(30)
             make.height.equalTo(30)
         }
+        recommendBtn.enabled = false
+        
     }
     
     func recommendAction(sender: UIButton?) {
         let recommendVC = RecommendServantsVC()
+        recommendVC.servantsInfo = recommendServants
         navigationController?.pushViewController(recommendVC, animated: true)
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.reflushAddress), name: NotifyDefine.ReflushAddress, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
     }
     
-    func reflushAddress() {
-        titleLab?.text = UserInfo.currentUser.address!
-        SocketManager.sendData(.GetServantInfo, data: nil)
+    func chatMessage(notification: NSNotification?) {
+        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
+        let chatMessage = PushMessage()
+        chatMessage.setInfo(.ChatMessage, info: data)
+        PushMessageManager.insertMessage(chatMessage)
+        if PushMessageManager.getUnreadMsgCnt() > 0 {
+            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt())"
+            msgCountLab?.hidden = false
+            UIApplication.sharedApplication().applicationIconBadgeNumber = PushMessageManager.getUnreadMsgCnt()
+        }
+        if UserInfo.userList.valueForKey("\(chatMessage.fromUid!)") == nil {
+            SocketManager.sendData(.GetUserInfo, data: ["uid_": chatMessage.fromUid!])
+        }
+        
+    }
+    
+    func recommendServants(notification: NSNotification?) {
+        let data = notification?.userInfo!["data"]
+        let servants = data!["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+        for servant in servants! {
+            let servantInfo = UserInfo()
+            servantInfo.setInfo(.Servant, info: servant)
+            recommendServants.append(servantInfo)
+        }
+        if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
+            recommendBtn.enabled = true
+        }
+        
+    }
+    
+    func serviceCitys(notification: NSNotification?) {
+        let data = notification?.userInfo!["data"]
+        let citys = data!["service_city_"] as? Array<Dictionary<String, AnyObject>>
+        for city in citys! {
+            let cityInfo = CityInfo()
+            cityInfo.setInfo(city)
+            serviceCitys[cityInfo.cityCode!] = cityInfo
+        }
+        
+    }
+    
+    func jumpToWalletVC() {
+        let walletVC = WalletVC()
+        navigationController?.pushViewController(walletVC, animated: true)
+    }
+    
+    func jumpToDistanceOfTravelVC() {
+        let distanceOfTravelVC = DistanceOfTravelVC()
+        navigationController?.pushViewController(distanceOfTravelVC, animated: true)
+    }
+    
+    func jumpToSettingsVC() {
+        let settingsVC = SettingsVC()
+        navigationController?.pushViewController(settingsVC, animated: true)
     }
     
     func reflushServantInfo(notification: NSNotification?) {
@@ -243,7 +337,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         for servant in servants {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
-            servantsInfo?.append(servantInfo)
+            servantsInfo[servantInfo.uid!] = servantInfo
             let latitude = servantInfo.gpsLocation.latitude
             let longitude = servantInfo.gpsLocation.longitude
             let point = MAPointAnnotation.init()
@@ -251,15 +345,46 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             point.title = "\(servantInfo.uid)"
             annotations.append(point)
         }
+        mapView!.addAnnotations(annotations)
+        mapView!.showAnnotations(annotations, animated: true)
+        
+    }
+    
+    func servantDetailInfo(notification: NSNotification?) {
+        let data = notification?.userInfo!["data"]
+        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = servantsInfo[data!["uid_"] as! Int]
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
     
     func titleAction(sender: UIButton?) {
         XCGLogger.debug(sender?.currentTitle)
+        
+        if citysAlertController == nil {
+            citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            let sheet = CitysSelectorSheet()
+            let citys = NSDictionary.init(dictionary: serviceCitys)
+            sheet.citysList = citys.allValues as? Array<CityInfo>
+            sheet.delegate = self
+            citysAlertController!.view.addSubview(sheet)
+            sheet.snp_makeConstraints { (make) in
+                make.left.equalTo(citysAlertController!.view).offset(-10)
+                make.right.equalTo(citysAlertController!.view).offset(10)
+                make.bottom.equalTo(citysAlertController!.view).offset(10)
+                make.top.equalTo(citysAlertController!.view).offset(-10)
+            }
+        }
+        
+        presentViewController(citysAlertController!, animated: true, completion: nil)
     }
     
     func msgAction(sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("msg")
+        let msgVC = PushMessageVC()
+        msgVC.messageInfo = recommendServants
+        navigationController?.pushViewController(msgVC, animated: true)
         
     }
     
@@ -284,8 +409,40 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     // MARK MAP
     public func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        if updatingLocation {
-            
+        var latDiffValue = Double(0)
+        var lonDiffvalue = Double(0)
+        if location == nil {
+            location = userLocation.location
+            latDiffValue = 720.0
+        } else {
+            latDiffValue = location!.coordinate.latitude - userLocation.coordinate.latitude
+            lonDiffvalue = location!.coordinate.latitude - userLocation.coordinate.latitude
+        }
+        
+        if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+            let geoCoder = CLGeocoder()
+            geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
+                if placeMarks?.count == 1 {
+                    self.locality = (placeMarks?[0])!.locality
+                    self.titleLab?.text = self.locality
+                    XCGLogger.debug("Update locality: \(self.locality)")
+                    self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
+                }
+            }
+        }
+        
+    }
+    
+    func sendLocality() {
+        if serviceCitys.count > 0 {
+            for (cityCode, cityInfo) in serviceCitys {
+                if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
+                    SocketManager.sendData(.GetRecommendServants, data: cityCode)
+                    return
+                }
+            }
+        } else {
+            performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
         }
     }
     
@@ -294,7 +451,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         let lat = annotation.coordinate.latitude
         let lng = annotation.coordinate.longitude
         XCGLogger.defaultInstance().debug("\(lat)<===>\(lng)")
-        for servantInfo in servantsInfo! {
+        for (_, servantInfo) in servantsInfo {
             if servantInfo.gpsLocation.latitude == lat && servantInfo.gpsLocation.longitude == lng {
                 if servantInfo.userType == .Servant {
                     id = "Guide"
@@ -317,6 +474,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             }
         }
         
+        UserInfo.currentUser.gpsLocation.latitude = 31.20805228400625
+        UserInfo.currentUser.gpsLocation.longitude = 121.60019287100375
+        
         return nil
     }
     
@@ -326,14 +486,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view .isKindOfClass(GuideTagCell) {
-            XCGLogger.debug("LocalGuidePersonal")
-            let servantPersonalVC = ServantPersonalVC()
-            navigationController?.pushViewController(servantPersonalVC, animated: true)
+            SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
+            
         }
                 
     }
     
-    deinit {
+    // MARK: - ServiceSheetDelegate
+    func cancelAction(sender: UIButton?) {
+        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+        SocketManager.sendData(.GetRecommendServants, data: targetCity?.cityCode)
+    }
+    
+    deinit {        
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
