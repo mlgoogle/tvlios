@@ -350,7 +350,7 @@ class ServantIntroCell: UITableViewCell {
                     make.right.equalTo(tallyItemView!).offset(-10)
                 }
             }
-            tallyLabel!.text = tag
+            tallyLabel!.text = tag.tally
             
         }
         var tallyBottomView = tallyView?.viewWithTag(3001*10+1)
@@ -378,10 +378,14 @@ class ServantIntroCell: UITableViewCell {
         }
         
         if let limitLab = imageView.viewWithTag(10006) as? UILabel {
-            let myLongitude = UserInfo.currentUser.gpsLocation.longitude
-            let myLatitude = UserInfo.currentUser.gpsLocation.latitude
-            let servantLongitude = userInfo?.gpsLocation.longitude
-            let servantLatitude = userInfo?.gpsLocation.latitude
+//            let myLongitude = UserInfoManager.currentUser!.gpsLocation.longitude
+//            let myLatitude = UserInfoManager.currentUser!.gpsLocation.latitude
+//            let servantLongitude = userInfo?.gpsLocation.longitude
+//            let servantLatitude = userInfo?.gpsLocation.latitude
+            let myLongitude = UserInfoManager.currentUser!.gpsLocationLon
+            let myLatitude = UserInfoManager.currentUser!.gpsLocationLat
+            let servantLongitude = userInfo?.gpsLocationLon
+            let servantLatitude = userInfo?.gpsLocationLat
             limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
         }
         

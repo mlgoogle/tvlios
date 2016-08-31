@@ -8,56 +8,7 @@
 
 import Foundation
 import XCGLogger
-
-class PushMessage: NSObject {
-    
-    enum MessageType {
-        case ChatMessage
-        case SystemMessage
-        
-    }
-    
-    var type:MessageType = .ChatMessage
-    
-    var fromUid:Int?
-    
-    var toUid:Int?
-    
-    var time:Int64?
-    
-    var content:String?
-    
-    
-    override init() {
-        super.init()
-        
-    }
-    
-    func setInfo(type: MessageType, info: Dictionary<String, AnyObject>?) {
-        self.type = type
-        for (key, value) in info! {
-            switch key {
-            case "from_uid_":
-                fromUid = value as? Int
-                break
-            case "to_uid_":
-                toUid = value as? Int
-                break
-            case "msg_time_":
-                time = (value as? NSNumber)!.longLongValue
-                break
-            case "content_":
-                content = value as? String
-                break
-            default:
-                XCGLogger.debug("Exception:[\(key) : \(value)]")
-                break
-            }
-        }
-    }
-    
-}
-
+import RealmSwift
 
 class PushMessageManager : NSObject {
     
@@ -68,80 +19,68 @@ class PushMessageManager : NSObject {
         return Static.instance
     }
     
-    /*
-     [["uid": [message], "new": 3], ["uid": [message], "new": 2]]
-     */
-    var messageList:NSMutableArray = []
-    
-    var unreadMessageCnt = 0
-    
     override init() {
         super.init()
         
     }
     
-    static func getMessageCount() -> Int {
-        let manager = PushMessageManager.manager
-        return manager.messageList.count
-    }
-    
-    static func getUnreadMsgCnt() -> Int {
-        let manager = PushMessageManager.manager
-        return manager.unreadMessageCnt
-    }
-    
-    static func getMessage(uid: Int) -> NSMutableArray? {
-        let manager = PushMessageManager.manager
-        for (_, d) in manager.messageList.enumerate() {
-            let dict = d as! NSMutableDictionary
-            if let _ = dict.valueForKey("\(uid)") {
-                return dict.objectForKey("\(uid)") as? NSMutableArray
-            }
+    static func getMessageCount(uid: Int) -> Int {
+        let realm = try! Realm()
+        if uid == -1 {
+            return realm.objects(UserPushMessage.self).count
         }
-        
-        return nil
+        return (realm.objects(UserPushMessage.self).filter("uid = \(uid)").first?.msgList.count)!
+    }
+    
+    static func getUnreadMsgCnt(uid: Int) -> Int {
+        let realm = try! Realm()
+        if uid == -1 {
+            var cnt = 0
+            let objs = realm.objects(UserPushMessage.self)
+            for obj in objs {
+                cnt += obj.unread
+            }
+            return cnt
+        }
+        return realm.objects(UserPushMessage.self).filter("uid = \(uid)").count
+    }
+    
+    static func getMessage(uid: Int) -> UserPushMessage? {
+        let realm = try! Realm()
+        return realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
     }
     
     static func insertMessage(message: PushMessage) {
-        let manager = PushMessageManager.manager
-        manager.unreadMessageCnt += 1
-        let key = "\(message.fromUid!)"
-        for (index, d) in manager.messageList.enumerate() {
-            let dict = d as! NSMutableDictionary
-            if let msgList = dict.valueForKey(key) as? NSMutableArray {
-                msgList.addObject(message)
-                dict.setValue(msgList, forKey: key)
-                let unreadCount = dict.valueForKey("new") as! Int + 1
-                dict.setValue(unreadCount, forKey: "new")
-                manager.messageList.removeObjectAtIndex(index)
-                manager.messageList.insertObject(dict, atIndex: 0)
-                return
-            }
+        let realm = try! Realm()
+        var uid = -1
+        if message.from_uid_ == UserInfoManager.currentUser?.uid {
+            uid = message.to_uid_
+        } else if message.to_uid_ == UserInfoManager.currentUser?.uid {
+            uid = message.from_uid_
         }
-        
-        let msgList = NSMutableArray()
-        msgList.insertObject(message, atIndex: 0)
-        let dict = NSMutableDictionary()
-        dict.setValue(msgList, forKey: key)
-        dict.setValue(1, forKey: "new")
-        manager.messageList.insertObject(dict, atIndex: 0)
-        
+        var userPushMessage = realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
+        try! realm.write({
+            if userPushMessage == nil {
+                userPushMessage = UserPushMessage()
+                userPushMessage!.uid = message.from_uid_
+                userPushMessage!.msgList.append(message)
+                realm.add(userPushMessage!)
+            } else {
+                userPushMessage!.msgList.append(message)
+            }
+            userPushMessage!.unread += 1
+            
+        })
+
     }
     
     static func readMessage(uid: Int) {
-        let manager = PushMessageManager.manager
-        for (index, d) in manager.messageList.enumerate() {
-            let dict = d as! NSMutableDictionary
-            if let _ = dict.valueForKey("\(uid)") {
-                let cnt = dict.valueForKey("new") as! Int
-                manager.unreadMessageCnt -= cnt
-                dict.setValue(0, forKey: "new")
-                manager.messageList.removeObjectAtIndex(index)
-                manager.messageList.insertObject(dict, atIndex: index)
-                return
-            }
-        }
-
+        let realm = try! Realm()
+        let objs = realm.objects(UserPushMessage.self).filter("uid = \(uid)")
+        try! realm.write({ 
+            objs.setValue(0, forKey: "unread")
+        })
+        
     }
     
 }

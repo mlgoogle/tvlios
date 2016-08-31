@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 public class TallyCell : UITableViewCell {
     
@@ -75,7 +76,7 @@ public class TallyCell : UITableViewCell {
         
     }
     
-    func setInfo(tags: Array<String>?) {
+    func setInfo(tags: List<Tally>?) {
         if tags?.count != 0 {
             var lastTallyItemView:UIView?
             for (index, tag) in tags!.enumerate() {
@@ -132,7 +133,7 @@ public class TallyCell : UITableViewCell {
                         make.right.equalTo(tallyItemView!).offset(-10)
                     }
                 }
-                tallyLabel!.text = tag
+                tallyLabel!.text = tag.tally
                 
                 lastTallyItemView = tallyItemView
             }

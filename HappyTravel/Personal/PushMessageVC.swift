@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RealmSwift
+import XCGLogger
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -99,24 +101,15 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return segmentIndex == 0 ? PushMessageManager.getMessageCount() : 15
+        return segmentIndex == 0 ? PushMessageManager.getMessageCount(-1) : 15
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if segmentIndex == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
-            let dict = PushMessageManager.manager.messageList.objectAtIndex(indexPath.row) as? NSMutableDictionary
-            for (key, value) in dict! {
-                if key as! String != "new" {
-                    if let msgList = value as? NSMutableArray {
-                        if let msg = msgList.lastObject as? PushMessage {
-                            cell.setInfo(msg, unreadCnt: PushMessageManager.getUnreadMsgCnt())
-                        }
-                    }
-                    
-                }
-            }
-            
+            let realm = try! Realm()
+            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+            cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
@@ -127,24 +120,14 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let dict = PushMessageManager.manager.messageList.objectAtIndex(indexPath.row) as? NSMutableDictionary
-        for (key, value) in dict! {
-            if key as! String != "new" {
-                if let msgList = value as? NSMutableArray {
-                    if let msg = msgList[0] as? PushMessage {
-                        let userInfo = UserInfo.userList.objectForKey(key as! String) as? UserInfo
-                        PushMessageManager.readMessage(msg.fromUid!)
-                        let chatVC = ChatVC()
-                        chatVC.servantInfo = userInfo
-//                        let msg = Message(incoming: true, text: msg.content!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: msg.time!).doubleValue))
-//                        chatVC.messages = [msg]
-                        navigationController?.pushViewController(chatVC, animated: true)
-                    }
-                }
-                
-            }
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
+            PushMessageManager.readMessage(cell.userInfo!.uid)
+            let realm = try! Realm()
+            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+            let chatVC = ChatVC()
+            chatVC.servantInfo = UserInfoManager.getUserInfo(userPushMessage.uid)
+            navigationController?.pushViewController(chatVC, animated: true)
         }
-        
     }
     
     deinit {

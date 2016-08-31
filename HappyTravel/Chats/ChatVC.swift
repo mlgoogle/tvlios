@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate {
     
@@ -22,6 +23,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
     var servantInfo:UserInfo?
+    var msgList:List<PushMessage>?
     
     override public var inputAccessoryView: UIView! {
         get {
@@ -92,16 +94,15 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-        
-        if let msgList = PushMessageManager.getMessage(servantInfo!.uid!) {
-            for msg in msgList {
-                let message = msg as! PushMessage
-                let msgData = Message(incoming: true, text: message.content!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.time!).doubleValue))
-                messages.append(msgData)
-            }
-        }
+
+        msgList = PushMessageManager.getMessage(servantInfo!.uid)?.msgList
         
         initView()
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        chatTable!.scrollToRowAtIndexPath(NSIndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }
     
     func registerNotify() {
@@ -116,7 +117,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         let content = data["content_"] as! String
         let msgData = Message(incoming: false, text: content, sentDate: NSDate(timeIntervalSince1970: Double(sendTime.longLongValue)))
         messages.append(msgData)
-        if fromUID == servantInfo?.uid && toUID == UserInfo.currentUser.uid {
+        if fromUID == servantInfo?.uid && toUID == UserInfoManager.currentUser!.uid {
             chatTable?.beginUpdates()
             let numberOfRows = chatTable?.numberOfRowsInSection(0)
             chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0)], withRowAnimation: .Fade)
@@ -132,6 +133,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
+        
     }
     
     func invitationAction(sender: UIButton?) {
@@ -245,18 +247,19 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count * 2
+        return msgList == nil ? 0 : msgList!.count
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let message = messages[indexPath.row / 2]
-        if indexPath.row % 2 == 0 {
+        let message = msgList![indexPath.row]
+        if message.msg_type_ == PushMessage.MessageType.Date.rawValue {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatDateCell", forIndexPath: indexPath) as! ChatDateCell
-            cell.sentDateLabel.text = dateFormatter.stringFromDate(message.sentDate)
+            cell.sentDateLabel.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatBubbleCell", forIndexPath: indexPath) as! ChatBubbleCell
-            cell.configureWithMessage(message)
+            let msgData = Message(incoming: (message.from_uid_ == UserInfoManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
+            cell.configureWithMessage(msgData)
             return cell
         }
     }
@@ -266,17 +269,21 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
         
-        let data:Dictionary<String, AnyObject> = ["from_uid_": UserInfo.currentUser.uid!,
-                                                  "to_uid_": (servantInfo!.uid)!,
+        let data:Dictionary<String, AnyObject> = ["from_uid_": UserInfoManager.currentUser!.uid,
+                                                  "to_uid_": servantInfo!.uid,
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
+        
         SocketManager.sendData(.SendChatMessage, data: data)
+        let message = PushMessage(value: data)
+        PushMessageManager.insertMessage(message)
         
         chatTable?.beginUpdates()
         let numberOfRows = chatTable?.numberOfRowsInSection(0)
-        chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0)], withRowAnimation: .Fade)
+        chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
         chatTable?.endUpdates()
-        chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        
     }
     
     func menuControllerWillHide(notification: NSNotification) {

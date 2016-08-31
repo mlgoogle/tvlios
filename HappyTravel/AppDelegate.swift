@@ -9,12 +9,25 @@
 import UIKit
 import SideMenuController
 import XCGLogger
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+//    func CustomUncaughtExceptionHandler() -> @convention(c) (NSException) -> Void {
+//        return { (exception) -> Void in
+//            let arr = exception.callStackSymbols  // 得到当前调用栈信息
+//            let reason = exception.reason  // 非常重要，就是崩溃的原因
+//            let name = exception.name  // 异常类型
+//            
+//            NSLog("exception type : \(name) \n crash reason : \(reason) \n call stack info : \(arr)");
+//            print(exception)
+//            print(exception.callStackSymbols)
+//            
+//        }
+//    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -29,6 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        ]
 //        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Debug)
 //        
+//        do {
+//            try NSFileManager.defaultManager().removeItemAtURL(Realm.Configuration.defaultConfiguration.fileURL!)
+//        } catch {}
+        
+//        NSSetUncaughtExceptionHandler(CustomUncaughtExceptionHandler())
+        
+        XCGLogger.debug("\(try! Realm().configuration)")
+        
         application.applicationSupportsShakeToEdit = true
         
         commonViewSet()

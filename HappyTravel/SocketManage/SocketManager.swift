@@ -36,6 +36,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case InvitationResult = 2002
         case SendChatMessage = 2003
         case RecvChatMessage = 2004
+        case GetChatRecord = 2005
+        case ChatRecordResult = 2006
         
     }
     
@@ -50,6 +52,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     var buffer:NSMutableData = NSMutableData()
  
+    static var last_chat_id:Int = 0
+    
     override init() {
         super.init()
         
@@ -90,11 +94,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         var body:NSData?
         switch opcode {
         case .Heart:
-            if UserInfo.currentUser.uid == nil {
+            if UserInfoManager.currentUser!.uid == -1 {
                 return false
             }
             head.fields["opcode"] = 1000
-            let dict:Dictionary<String, AnyObject> = ["uid_": UserInfo.currentUser.uid!]
+            let dict:Dictionary<String, AnyObject> = ["uid_": UserInfoManager.currentUser!.uid]
             bodyJSON = JSON.init(dict)
             XCGLogger.debug("Heart")
             break
@@ -104,15 +108,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .GetServantInfo:
             head.fields["opcode"] = 1003
-            let dict:Dictionary<String, AnyObject> = ["latitude_": UserInfo.currentUser.gpsLocation.latitude,
-                                                      "longitude_": UserInfo.currentUser.gpsLocation.longitude,
+            let dict:Dictionary<String, AnyObject> = ["latitude_": UserInfoManager.currentUser!.gpsLocationLat,
+                                                      "longitude_": UserInfoManager.currentUser!.gpsLocationLon,
                                                       "distance_": 20.1]
             bodyJSON = JSON.init(dict)
             break
         case .GetServantDetailInfo:
             head.fields["opcode"] = 1005
             let info = data as! UserInfo
-            let dict:Dictionary<String, AnyObject> = ["uid_": info.uid!]
+            let dict:Dictionary<String, AnyObject> = ["uid_": info.uid]
             bodyJSON = JSON.init(dict)
             break
         case .GetRecommendServants:
@@ -140,6 +144,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = 2003
             head.fields["type"] = 2
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .GetChatRecord:
+            head.fields["opcode"] = 2005
+            head.fields["type"] = 2
+//            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            let dict = ["from_uid_": 1, "to_uid_": 2, "count_": 5, "last_chat_id_": SocketManager.last_chat_id]
+            bodyJSON = JSON.init(dict)
             break
         default:
             break
@@ -174,13 +185,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
-//        XCGLogger.debug(String.init(data: body as! NSData, encoding: NSUTF8StringEncoding))
         let opcode = (head!.fields["opcode"]! as! NSNumber).integerValue
         switch SockOpcode(rawValue: opcode)! {
         case .Logined:
             let dict = JSON.init(data: body as! NSData)
             XCGLogger.debug(dict.rawString())
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginResult, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            
+            SocketManager.sendData(.GetChatRecord, data: nil)
             break
         case .ServantInfo:
             let dict = JSON.init(data: body as! NSData)
@@ -218,7 +230,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             XCGLogger.debug("\(dict)")
             let user = UserInfo()
             user.setInfo(.Other, info: dict.dictionaryObject)
-            UserInfo.userList.setValue(user, forKey: "\(user.uid!)")
+            UserInfoManager.updateUserInfo(user)
             break
         case .InvitationResult:
             
@@ -227,6 +239,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let dict = JSON.init(data: body as! NSData)
             XCGLogger.debug("\(dict)")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            break
+        case .ChatRecordResult:
+            let dict = JSON.init(data: body as! NSData)
+            XCGLogger.debug("\(dict)")
             break
         default:
             break

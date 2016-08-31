@@ -28,8 +28,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func initView() {
-        let bgView = UIView()
-        bgView.backgroundColor = UIColor.whiteColor()
+        let bgView = UIImageView()
+        bgView.backgroundColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
         bgView.userInteractionEnabled = true
         addSubview(bgView)
         bgView.snp_makeConstraints { (make) in

@@ -6,18 +6,18 @@ target 'HappyTravel' do
   use_frameworks!
 
   # Pods for HappyTravel
-  pod 'Alamofire', '~> 3.4.1'
-  pod 'Realm', '~> 1.0.1'
-  pod 'SwiftyJSON', '~> 2.3.2'
-  pod 'XCGLogger', '~> 3.3'
-  pod 'SideMenuController', '~> 0.1.5'
-  pod 'SnapKit', '~> 0.21.1'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  pod 'XCGLogger'
+  pod 'SideMenuController'
+  pod 'SnapKit'
   pod 'AMap2DMap'
-  # pod 'AMapLocation'
-  pod 'Kingfisher', '~> 2.4'
+  pod 'Kingfisher'
   
   use_frameworks! # Add this if you are targeting iOS 8+ or using Swift
-  pod 'CocoaAsyncSocket', '~> 7.5.0'
+  pod 'CocoaAsyncSocket'
+  
+  pod 'RealmSwift'
   
   # Mob产品公共库
   pod 'MOBFoundation_IDFA'

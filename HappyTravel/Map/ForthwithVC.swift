@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 import XCGLogger
+import RealmSwift
 
 public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate {
     
@@ -75,8 +76,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         }
         
-        if PushMessageManager.getUnreadMsgCnt() > 0 {
-            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt())"
+        if PushMessageManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt(-1))"
             msgCountLab?.hidden = false
         } else {
             msgCountLab?.hidden = true
@@ -270,16 +271,18 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func chatMessage(notification: NSNotification?) {
         let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        let chatMessage = PushMessage()
-        chatMessage.setInfo(.ChatMessage, info: data)
-        PushMessageManager.insertMessage(chatMessage)
-        if PushMessageManager.getUnreadMsgCnt() > 0 {
-            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt())"
+
+        let msg = PushMessage(value: data)
+
+        PushMessageManager.insertMessage(msg)
+        if PushMessageManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt(-1))"
             msgCountLab?.hidden = false
-            UIApplication.sharedApplication().applicationIconBadgeNumber = PushMessageManager.getUnreadMsgCnt()
+            UIApplication.sharedApplication().applicationIconBadgeNumber = PushMessageManager.getUnreadMsgCnt(-1)
         }
-        if UserInfo.userList.valueForKey("\(chatMessage.fromUid!)") == nil {
-            SocketManager.sendData(.GetUserInfo, data: ["uid_": chatMessage.fromUid!])
+
+        if UserInfoManager.getUserInfo(msg.from_uid_) == nil {
+            SocketManager.sendData(.GetUserInfo, data: ["uid_": msg.from_uid_])
         }
         
     }
@@ -291,6 +294,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
             recommendServants.append(servantInfo)
+            UserInfoManager.updateUserInfo(servantInfo)
         }
         if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
             recommendBtn.enabled = true
@@ -337,9 +341,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         for servant in servants {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
-            servantsInfo[servantInfo.uid!] = servantInfo
-            let latitude = servantInfo.gpsLocation.latitude
-            let longitude = servantInfo.gpsLocation.longitude
+            servantsInfo[servantInfo.uid] = servantInfo
+            UserInfoManager.updateUserInfo(servantInfo)
+            let latitude = servantInfo.gpsLocationLat
+            let longitude = servantInfo.gpsLocationLon
             let point = MAPointAnnotation.init()
             point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
             point.title = "\(servantInfo.uid)"
@@ -353,8 +358,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func servantDetailInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]
         servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+        let user = servantsInfo[data!["uid_"] as! Int]
+        UserInfoManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = servantsInfo[data!["uid_"] as! Int]
+        servantPersonalVC.personalInfo = UserInfoManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
@@ -452,8 +459,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let lng = annotation.coordinate.longitude
         XCGLogger.defaultInstance().debug("\(lat)<===>\(lng)")
         for (_, servantInfo) in servantsInfo {
-            if servantInfo.gpsLocation.latitude == lat && servantInfo.gpsLocation.longitude == lng {
-                if servantInfo.userType == .Servant {
+            if servantInfo.gpsLocationLat == lat && servantInfo.gpsLocationLon == lng {
+                if servantInfo.userType == UserInfo.UserType.Servant.rawValue {
                     id = "Guide"
                     var annotationView:GuideTagCell? = mapView.dequeueReusableAnnotationViewWithIdentifier(id) as? GuideTagCell
                     if annotationView == nil{
@@ -461,7 +468,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                     annotationView!.setInfo(servantInfo)
                     return annotationView
-                } else if servantInfo.userType == .MeetLocation {
+                } else if servantInfo.userType == UserInfo.UserType.MeetLocation.rawValue {
                     id = "Meet"
                     var annotationView:MeetTagCell? = mapView.dequeueReusableAnnotationViewWithIdentifier(id) as? MeetTagCell
                     if annotationView == nil{
@@ -474,8 +481,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-        UserInfo.currentUser.gpsLocation.latitude = 31.20805228400625
-        UserInfo.currentUser.gpsLocation.longitude = 121.60019287100375
+        UserInfoManager.currentUser!.gpsLocationLat = 31.20805228400625
+        UserInfoManager.currentUser!.gpsLocationLon = 121.60019287100375
         
         return nil
     }

@@ -55,8 +55,8 @@ public class MyPersonalVC : UIViewController {
     
     func loginSuccessed(notification: NSNotification?) {
         let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        UserInfo.currentUser.setInfo(.CurrentUser, info: data)
-        UserInfo.currentUser.login = true
+        UserInfoManager.currentUser!.setInfo(.CurrentUser, info: data)
+        UserInfoManager.currentUser!.login = true
         initPersonalView()
         SocketManager.sendData(.GetServiceCity, data: nil)
         SocketManager.sendData(.GetServantInfo, data: nil)
@@ -97,7 +97,7 @@ public class MyPersonalVC : UIViewController {
                 make.width.equalTo(80)
             }
         }
-        headImageView!.kf_setImageWithURL(NSURL(string: UserInfo.currentUser.headUrl == nil ? "https://avatars0.githubusercontent.com/u/5572659?v=3&s=460" : UserInfo.currentUser.headUrl!))
+        headImageView!.kf_setImageWithURL(NSURL(string: UserInfoManager.currentUser!.headUrl == nil ? "https://avatars0.githubusercontent.com/u/5572659?v=3&s=460" : UserInfoManager.currentUser!.headUrl!))
         
         if nameLabel == nil {
             nameLabel = UILabel()
@@ -115,7 +115,7 @@ public class MyPersonalVC : UIViewController {
                 make.right.equalTo(personalView!.snp_right)
             }
         }
-        nameLabel!.text = UserInfo.currentUser.nickname!
+        nameLabel!.text = UserInfoManager.currentUser!.nickname!
         
         var starView = personalView!.viewWithTag(10003)
         if starView == nil {
@@ -150,7 +150,7 @@ public class MyPersonalVC : UIViewController {
                     make.width.equalTo(17)
                 })
             }
-            if UserInfo.currentUser.level! / Float(i) >= 1 {
+            if UserInfoManager.currentUser!.level / Float(i) >= 1 {
                 star!.image = UIImage.init(named: "my-star-fill")
             } else {
                 star!.image = UIImage.init(named: "my-star-hollow")

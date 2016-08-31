@@ -10,6 +10,10 @@ import Foundation
 
 class MessageCell: UITableViewCell {
     
+    var userInfo:UserInfo?
+    
+    var msgInfo:PushMessage?
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
@@ -120,14 +124,16 @@ class MessageCell: UITableViewCell {
     }
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
+        msgInfo = message
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            if let userInfo = UserInfo.userList.objectForKey("\(message!.fromUid!)") as? UserInfo {
-                headView.kf_setImageWithURL(NSURL(string: userInfo.headUrl!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            if let user = UserInfoManager.getUserInfo(message!.from_uid_) {
+                userInfo = user
+                headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = userInfo.nickname!
+                    nickNameLab.text = userInfo!.nickname!
                 }
             }
             
@@ -135,7 +141,7 @@ class MessageCell: UITableViewCell {
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.timeStyle = .ShortStyle
                 dateFormatter.dateStyle = .ShortStyle
-                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.time!).doubleValue))
+                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
                 timeLab.text = dateStr
             }
             
@@ -149,7 +155,7 @@ class MessageCell: UITableViewCell {
             }
             
             if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                msgLab.text = message?.content!
+                msgLab.text = message?.content_!
             }
         }
         

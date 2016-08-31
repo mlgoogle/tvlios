@@ -121,7 +121,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 && indexPath.row == 0 {
             rightLab?.hidden = false
-            var number = UserInfo.currentUser.phoneNumber == nil ? "***********" : UserInfo.currentUser.phoneNumber!
+            var number = UserInfoManager.currentUser!.phoneNumber == nil ? "***********" : UserInfoManager.currentUser!.phoneNumber!
             let startIndex = "...".endIndex
             let endIndex = ".......".endIndex
             number.replaceRange(startIndex..<endIndex, with: "****")

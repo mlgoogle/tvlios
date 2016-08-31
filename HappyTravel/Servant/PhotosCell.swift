@@ -8,6 +8,7 @@
 
 import Foundation
 import XCGLogger
+import RealmSwift
 
 protocol PhotosCellDelegate : NSObjectProtocol {
     
@@ -78,7 +79,7 @@ public class PhotosCell : UITableViewCell {
         
     }
     
-    func setInfo(photos: Array<String>?, setSpread spd: Bool) {
+    func setInfo(photos: List<PhotoUrl>?, setSpread spd: Bool) {
         let view = contentView.viewWithTag(101)
         let nonePhotosLabel = view!.viewWithTag(1003) as? UILabel
         if photos!.count != 0 {
@@ -91,7 +92,7 @@ public class PhotosCell : UITableViewCell {
                     photoView?.tag = 1003 * 10 + index
                     view?.addSubview(photoView!)
                 }
-                photoView!.kf_setImageWithURL(NSURL(string: photoURL), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                photoView!.kf_setImageWithURL(NSURL(string: photoURL.photoUrl!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 var previousView:UIImageView?

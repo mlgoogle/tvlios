@@ -50,7 +50,7 @@ class SockHead : NSObject {
             let fieldName = ft.allKeys[0] as! String
             let type = ft.valueForKey(fieldName) as! String
             srcData = setField(fieldName, typeStr: type, srcData: srcData)!
-            XCGLogger.defaultInstance().debug("\(fieldName):\(fields[fieldName]!)")
+            XCGLogger.defaultInstance().debug("\(fieldName):\(self.fields[fieldName]!)")
         }
     }
     

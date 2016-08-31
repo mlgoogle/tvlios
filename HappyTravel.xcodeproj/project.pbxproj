@@ -20,6 +20,8 @@
 		2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFE1D5081CB00609C8E /* LaunchScreen.storyboard */; };
 		2FA75D0B1D5081CB00609C8E /* HappyTravelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D0A1D5081CB00609C8E /* HappyTravelTests.swift */; };
 		2FA75D161D5081CB00609C8E /* HappyTravelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */; };
+		2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57FF31D74330E002C015F /* PushMessage.swift */; };
+		2FB57FF61D75326B002C015F /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57FF51D75326B002C015F /* UserInfoManager.swift */; };
 		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
@@ -144,6 +146,8 @@
 		2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyTravelUITests.swift; sourceTree = "<group>"; };
 		2FA75D171D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FA75D2A1D50DED300609C8E /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridge/Bridging-Header.h"; sourceTree = "<group>"; };
+		2FB57FF31D74330E002C015F /* PushMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessage.swift; path = Data/PushMessage.swift; sourceTree = "<group>"; };
+		2FB57FF51D75326B002C015F /* UserInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfoManager.swift; path = Data/UserInfoManager.swift; sourceTree = "<group>"; };
 		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
@@ -360,6 +364,7 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
+				2FB57FEE1D74026A002C015F /* Data */,
 				2FC25AFD1D6A9B8B00D48D6A /* Servant */,
 				2FDAFCEF1D65653F00FD28CB /* Login */,
 				2FE7C38D1D64469100994505 /* Common */,
@@ -426,9 +431,19 @@
 				2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */,
 				2FBA71F41D6E93CF00839E51 /* MessageCell.swift */,
 				2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */,
-				2FC953791D701B450058E117 /* PushMessageManager.swift */,
 			);
 			name = Personal;
+			sourceTree = "<group>";
+		};
+		2FB57FEE1D74026A002C015F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2FC953791D701B450058E117 /* PushMessageManager.swift */,
+				2FB57FF31D74330E002C015F /* PushMessage.swift */,
+				2FE7C38B1D64466300994505 /* UserInfo.swift */,
+				2FB57FF51D75326B002C015F /* UserInfoManager.swift */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		2FBB5E211D51CC47007BE4E0 /* Chats */ = {
@@ -533,7 +548,6 @@
 		2FE7C38D1D64469100994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2FE7C38B1D64466300994505 /* UserInfo.swift */,
 				2FE7C38E1D64527900994505 /* Protocol.h */,
 				2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */,
 				2FDAFCF01D65698E00FD28CB /* NotifyDefine.swift */,
@@ -874,6 +888,7 @@
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
+				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
 				2F9D42121D5C511000D10FBC /* SocketProtocol.swift in Sources */,
 				2FBB5E7F1D51DCEA007BE4E0 /* Chat.swift in Sources */,
@@ -886,6 +901,7 @@
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FBB5E891D51EEB4007BE4E0 /* InputTextView.swift in Sources */,
+				2FB57FF61D75326B002C015F /* UserInfoManager.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,

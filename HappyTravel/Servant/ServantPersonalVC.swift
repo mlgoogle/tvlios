@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Kingfisher
 import XCGLogger
+import RealmSwift
 
 public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
     
@@ -182,18 +183,24 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
-            let tallys = personalInfo!.businessTags! + personalInfo!.travalTags!
+            let tallys = List<Tally>()
+            for businessTag in personalInfo!.businessTags {
+                tallys.append(businessTag)
+            }
+            for travalTag in personalInfo!.travalTags {
+                tallys.append(travalTag)
+            }
             cell.setInfo(tallys)
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as! ServiceCell
             cell.delegate = self
-            cell.setInfo(personalInfo?.serviceList, setSpread: serviceSpread)
+            cell.setInfo(personalInfo!.serviceList, setSpread: serviceSpread)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("PhotosCell", forIndexPath: indexPath) as! PhotosCell
             cell.delegate = self
-            cell.setInfo(personalInfo?.photoUrlList, setSpread: serviceSpread)
+            cell.setInfo(personalInfo!.photoUrlList, setSpread: serviceSpread)
             return cell
         }
         

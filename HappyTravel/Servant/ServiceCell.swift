@@ -8,6 +8,7 @@
 
 import Foundation
 import XCGLogger
+import RealmSwift
 
 protocol ServiceCellDelegate : NSObjectProtocol {
     
@@ -24,7 +25,7 @@ public class ServiceCell : UITableViewCell {
                 "svcView": 1005]
     
     var spread = false
-    var servicesInfo:Array<Dictionary<String, AnyObject>>?
+    var servicesInfo:List<ServiceInfo>?
     weak var delegate:ServiceCellDelegate?
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -107,16 +108,16 @@ public class ServiceCell : UITableViewCell {
 
     }
     
-    func setInfo(services: Array<Dictionary<String, AnyObject>>?, setSpread spd: Bool) {
+    func setInfo(services: List<ServiceInfo>?, setSpread spd: Bool) {
         if services!.count != 0 {
             spread = spd
             servicesInfo = services
             if let bgView = contentView.viewWithTag(tags["view"]!) {
                 let serviceLabel = bgView.viewWithTag(tags["serviceLabel"]!) as? UILabel
                 for (index, service) in services!.enumerate() {
-                    let titleStr = service["service_name_"] as! String
-                    let timeStr = service["service_time_"] as! String
-                    let payStr = "\(service["service_price_"] as! Int)元"
+                    let titleStr = service.service_name_
+                    let timeStr = service.service_time_
+                    let payStr = "\(service.service_price_)元"
                     
                     var svcView = bgView.viewWithTag(tags["svcView"]! * 10 + index)
                     if svcView == nil {

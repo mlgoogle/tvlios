@@ -8,76 +8,78 @@
 
 import Foundation
 import XCGLogger
+import RealmSwift
 
-class UserInfo: NSObject {
+class Tally: Object {
     
-    class var currentUser : UserInfo {
-        struct Static {
-            static let instance:UserInfo = UserInfo()
-        }
-        return Static.instance
-    }
+    dynamic var tally:String?
     
-    class var userList : NSMutableDictionary {
-        struct Static {
-            static let instance:NSMutableDictionary = [:]
-        }
-        return Static.instance
-    }
+}
+
+class PhotoUrl: Object {
     
-    enum UserType {
+    dynamic var photoUrl:String?
+}
+
+class ServiceInfo: Object {
+    
+    dynamic var service_id_:Int = 0
+    
+    dynamic var service_name_:String?
+    
+    dynamic var service_time_:String?
+    
+    dynamic var service_price_:Int = 0
+}
+
+class UserInfo: Object {
+
+    enum UserType : Int {
         case CurrentUser
         case Servant
         case MeetLocation
         case Other
     }
     
-    var login:Bool = false
+    dynamic var login:Bool = false
     
-    var nickname:String?
+    dynamic var nickname:String? = "未登录"
     
-    var username:String?
+    dynamic var username:String?
     
-    var uid:Int?
+    dynamic var uid:Int = -1
     
-    var level:Float?
+    dynamic var level:Float = 0
     
-    var headUrl:String?
+    dynamic var headUrl:String?
 
-    var address:String?
+    dynamic var address:String?
     
-    var phoneNumber:String?
+    dynamic var phoneNumber:String?
     
-    var gpsLocation:CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    dynamic var gpsLocationLat:Double = 0
     
-    var userType:UserType = .Servant
+    dynamic var gpsLocationLon:Double = 0
     
-    var businessLv:Float = 0
+    dynamic var userType:Int = UserType.Servant.rawValue
     
-    var businessTags:Array<String>?
+    dynamic var businessLv:Float = 0
     
-    var bigBGPhotoUrl:String?
+    dynamic var bigBGPhotoUrl:String?
     
-    var certification:Bool?
+    dynamic var certification:Bool = false
     
-    var photoUrlList:Array<String>?
+    let businessTags:List<Tally> = List<Tally>()
     
-    var serviceList:Array<Dictionary<String, AnyObject>>?
+    let photoUrlList:List<PhotoUrl> = List<PhotoUrl>()
     
-    var travalTags:Array<String>?
+    let serviceList:List<ServiceInfo> = List<ServiceInfo>()
     
+    let travalTags:List<Tally> = List<Tally>()
     
-    override init() {
-        super.init()
-        if !login {
-            nickname = "未登录"
-            level = 0
-            userType = .Servant
-        }
-    }
-    
+
     func setInfo(type: UserType, info: Dictionary<String, AnyObject>?) {
-        userType = type
+        userType = type.rawValue
         for (key, value) in info! {
             switch key {
             case "address_":
@@ -87,7 +89,7 @@ class UserInfo: NSObject {
                 headUrl = value as? String
                 break
             case "level_":
-                level = value as? Float
+                level = value as! Float
                 break
             case "nickname_", "nick_name_":
                 nickname = value as? String
@@ -96,13 +98,13 @@ class UserInfo: NSObject {
                 phoneNumber = value as? String
                 break
             case "uid_":
-                uid = value as? Int
+                uid = value as! Int
                 break
             case "latitude_":
-                gpsLocation.latitude = (value as? CLLocationDegrees)!
+                gpsLocationLat = (value as? CLLocationDegrees)!
                 break
             case "longitude_":
-                gpsLocation.longitude = (value as? CLLocationDegrees)!
+                gpsLocationLon = (value as? CLLocationDegrees)!
                 break
             case "login_":
                 login = value as! Bool
@@ -111,22 +113,45 @@ class UserInfo: NSObject {
                 businessLv = value as! Float
                 break
             case "business_tag_":
-                businessTags = (value as! String).componentsSeparatedByString(",")
+                businessTags.removeAll()
+                let tags = (value as! String).componentsSeparatedByString(",")
+                for tag in tags {
+                    let tally = Tally()
+                    tally.tally = tag
+                    businessTags.append(tally)
+                }
                 break
             case "heag_bg_url_":
                 bigBGPhotoUrl = value as? String
                 break
             case "is_certification_":
-                certification = value as? Bool
+                certification = value as! Bool
                 break
             case "photo_list_":
-                photoUrlList = (value as! String).componentsSeparatedByString(",")
+                let urls = (value as! String).componentsSeparatedByString(",")
+                photoUrlList.removeAll()
+                for url in urls {
+                    let photoUrl = PhotoUrl()
+                    photoUrl.photoUrl = url
+                    photoUrlList.append(photoUrl)
+                }
                 break
             case "service":
-                serviceList = value as? Array<Dictionary<String, AnyObject>>
+                serviceList.removeAll()
+                let services = (value as? Array<Dictionary<String, AnyObject>>)
+                for service in services! {
+                    let svc = ServiceInfo(value: service)
+                    serviceList.append(svc)
+                }
                 break
             case "traval_tag_":
-                travalTags = (value as! String).componentsSeparatedByString(",")
+                travalTags.removeAll()
+                let tags = (value as! String).componentsSeparatedByString(",")
+                for tag in tags {
+                    let tally = Tally()
+                    tally.tally = tag
+                    travalTags.append(tally)
+                }
                 break
             default:
                 XCGLogger.debug("Exception:[\(key) : \(value)]")
@@ -135,4 +160,56 @@ class UserInfo: NSObject {
         }
     }
     
+    func updateInfo(info: UserInfo) {
+        login = info.login
+        
+        nickname = info.nickname
+        
+        username = info.username
+        
+        uid = info.uid
+        
+        level = info.level
+        
+        headUrl = info.headUrl
+        
+        address = info.address
+        
+        phoneNumber = info.phoneNumber
+        
+        gpsLocationLat = info.gpsLocationLat
+        
+        gpsLocationLon = info.gpsLocationLon
+        
+        userType = info.userType
+        
+        businessLv = info.businessLv
+        
+        bigBGPhotoUrl = info.bigBGPhotoUrl
+        
+        certification = info.certification
+        
+        businessTags.removeAll()
+        for tag in info.businessTags {
+            businessTags.append(tag)
+        }
+        
+        photoUrlList.removeAll()
+        for url in info.photoUrlList {
+            photoUrlList.append(url)
+        }
+        
+        serviceList.removeAll()
+        for svc in info.serviceList {
+            serviceList.append(svc)
+        }
+        
+        travalTags.removeAll()
+        for tag in info.travalTags {
+            travalTags.append(tag)
+        }
+        
+    }
+    
 }
+

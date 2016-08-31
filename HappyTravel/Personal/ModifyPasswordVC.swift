@@ -146,12 +146,16 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             title?.hidden = true
             sureBtn?.hidden = false
             inputView?.hidden = true
+            cell?.backgroundColor = UIColor.clearColor()
+            cell?.contentView.backgroundColor = UIColor.clearColor()
         } else {
             title?.hidden = false
             inputView?.hidden = false
             inputView?.placeholder = tableOption?[indexPath.section][indexPath.row][1]
             title?.text = tableOption?[indexPath.section][indexPath.row][0]
             sureBtn?.hidden = true
+            cell?.backgroundColor = UIColor.whiteColor()
+            cell?.contentView.backgroundColor = UIColor.whiteColor()
         }
         
         var separateLine = cell?.contentView.viewWithTag(1003)
@@ -189,9 +193,9 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func modifyPwd(sender: UIButton?) {
-//        let dict = ["uid_": UserInfo.currentUser.uid!, "old_passwd_": "123456x", "new_passwd_": "223456x"]
+//        let dict = ["uid_": UserInfoManager.currentUser!.uid!, "old_passwd_": "123456x", "new_passwd_": "223456x"]
 //        SocketManager.sendData(.ModifyPassword, data: dict)
-        XCGLogger.debug("\(oldPasswd!)\n\(newPasswd!)\n\(verifyPasswd!)")
+        XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }
     
     //MARK: - UITextField
