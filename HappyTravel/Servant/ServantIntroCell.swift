@@ -378,12 +378,8 @@ class ServantIntroCell: UITableViewCell {
         }
         
         if let limitLab = imageView.viewWithTag(10006) as? UILabel {
-//            let myLongitude = UserInfoManager.currentUser!.gpsLocation.longitude
-//            let myLatitude = UserInfoManager.currentUser!.gpsLocation.latitude
-//            let servantLongitude = userInfo?.gpsLocation.longitude
-//            let servantLatitude = userInfo?.gpsLocation.latitude
-            let myLongitude = UserInfoManager.currentUser!.gpsLocationLon
-            let myLatitude = UserInfoManager.currentUser!.gpsLocationLat
+            let myLongitude = DataManager.currentUser!.gpsLocationLon
+            let myLatitude = DataManager.currentUser!.gpsLocationLat
             let servantLongitude = userInfo?.gpsLocationLon
             let servantLatitude = userInfo?.gpsLocationLat
             limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"

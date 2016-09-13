@@ -101,7 +101,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return segmentIndex == 0 ? PushMessageManager.getMessageCount(-1) : 15
+        return segmentIndex == 0 ? DataManager.getMessageCount(-1) : 15
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -121,11 +121,11 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
-            PushMessageManager.readMessage(cell.userInfo!.uid)
+            DataManager.readMessage(cell.userInfo!.uid)
             let realm = try! Realm()
             let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
             let chatVC = ChatVC()
-            chatVC.servantInfo = UserInfoManager.getUserInfo(userPushMessage.uid)
+            chatVC.servantInfo = DataManager.getUserInfo(userPushMessage.uid)
             navigationController?.pushViewController(chatVC, animated: true)
         }
     }

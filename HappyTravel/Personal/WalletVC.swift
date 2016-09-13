@@ -164,6 +164,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
                 XCGLogger.debug("按行程开票")
+                let invoiceVC = InvoiceVC()
+                navigationController?.pushViewController(invoiceVC, animated: true)
             } else if indexPath.row == 1 {
                 XCGLogger.debug("开票记录")
             }

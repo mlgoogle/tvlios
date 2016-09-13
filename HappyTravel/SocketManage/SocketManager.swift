@@ -31,6 +31,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ModifyPasswordResult = 1012
         case GetUserInfo = 1013
         case UserInfoResult = 1014
+        case SendMessageVerify = 1019
+        case MessageVerifyResult = 1020
+        case SendImproveData = 1023
+        case ImproveDataResult = 1024
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -65,8 +69,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         buffer = NSMutableData()
         do {
-            //            try socket?.connectToHost("116.226.227.85", onPort: 10001, withTimeout: 5)
-            try socket?.connectToHost("192.168.2.67", onPort: 10001, withTimeout: 5)
+            try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
         } catch GCDAsyncSocketError.ClosedError {
             
         } catch GCDAsyncSocketError.ConnectTimeoutError {
@@ -94,11 +97,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         var body:NSData?
         switch opcode {
         case .Heart:
-            if UserInfoManager.currentUser!.uid == -1 {
+            if DataManager.currentUser!.uid == -1 {
                 return false
             }
             head.fields["opcode"] = 1000
-            let dict:Dictionary<String, AnyObject> = ["uid_": UserInfoManager.currentUser!.uid]
+            let dict:Dictionary<String, AnyObject> = ["uid_": DataManager.currentUser!.uid]
             bodyJSON = JSON.init(dict)
             XCGLogger.debug("Heart")
             break
@@ -108,8 +111,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .GetServantInfo:
             head.fields["opcode"] = 1003
-            let dict:Dictionary<String, AnyObject> = ["latitude_": UserInfoManager.currentUser!.gpsLocationLat,
-                                                      "longitude_": UserInfoManager.currentUser!.gpsLocationLon,
+            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
                                                       "distance_": 20.1]
             bodyJSON = JSON.init(dict)
             break
@@ -133,6 +136,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .GetUserInfo:
             head.fields["opcode"] = 1013
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .SendMessageVerify:
+            head.fields["opcode"] = 1019
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .SendImproveData:
+            head.fields["opcode"] = 1023
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .AskInvitation:
@@ -230,7 +241,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             XCGLogger.debug("\(dict)")
             let user = UserInfo()
             user.setInfo(.Other, info: dict.dictionaryObject)
-            UserInfoManager.updateUserInfo(user)
+            DataManager.updateUserInfo(user)
+            break
+        case .MessageVerifyResult:
+            let dict = JSON.init(data: body as! NSData)
+            XCGLogger.debug("\(dict)")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            break
+        case .ImproveDataResult:
+            XCGLogger.debug("Improve Data Successed")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataSuccessed, object: nil, userInfo: nil)
             break
         case .InvitationResult:
             
@@ -279,11 +299,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let head = SockHead(data: buffer)
             let packageLen = Int(head.fields["packageLen"]! as! NSNumber)
             let bodyLen = Int(head.fields["dataLen"]! as! NSNumber)
-            let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
-            let body = String.init(data: bodyData, encoding: NSUTF8StringEncoding)
-            XCGLogger.debug(body)
-            buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
-            recvData(head, body: bodyData)
+            if buffer.length >= packageLen {
+                let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
+                let body = String.init(data: bodyData, encoding: NSUTF8StringEncoding)
+                XCGLogger.debug(body)
+                buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
+                recvData(head, body: bodyData)
+            } else {
+                break
+            }
             
         }
         socket?.readDataWithTimeout(-1, tag: 0)

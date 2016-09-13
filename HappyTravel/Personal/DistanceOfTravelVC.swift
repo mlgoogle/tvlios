@@ -85,7 +85,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        let identDetailVC = IdentDetailVC()
+        navigationController?.pushViewController(identDetailVC, animated: true)
     }
     
     func segmentChange(sender: AnyObject?) {

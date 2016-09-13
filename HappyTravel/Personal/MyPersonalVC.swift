@@ -11,6 +11,7 @@ import UIKit
 import Kingfisher
 import SideMenuController
 import XCGLogger
+import RealmSwift
 
 public class MyPersonalVC : UIViewController {
     
@@ -55,15 +56,15 @@ public class MyPersonalVC : UIViewController {
     
     func loginSuccessed(notification: NSNotification?) {
         let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        UserInfoManager.currentUser!.setInfo(.CurrentUser, info: data)
-        UserInfoManager.currentUser!.login = true
+        DataManager.currentUser!.setInfo(.CurrentUser, info: data)
+        DataManager.currentUser!.login = true
+        DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
         initPersonalView()
         SocketManager.sendData(.GetServiceCity, data: nil)
         SocketManager.sendData(.GetServantInfo, data: nil)
     }
     
     func initPersonalView() {
-        
         var personalView = view.viewWithTag(1001)
         if personalView == nil {
             personalView = UIView()
@@ -97,7 +98,7 @@ public class MyPersonalVC : UIViewController {
                 make.width.equalTo(80)
             }
         }
-        headImageView!.kf_setImageWithURL(NSURL(string: UserInfoManager.currentUser!.headUrl == nil ? "https://avatars0.githubusercontent.com/u/5572659?v=3&s=460" : UserInfoManager.currentUser!.headUrl!))
+        headImageView!.kf_setImageWithURL(NSURL(string: DataManager.currentUser!.headUrl == nil ? "https://avatars0.githubusercontent.com/u/5572659?v=3&s=460" : DataManager.currentUser!.headUrl!))
         
         if nameLabel == nil {
             nameLabel = UILabel()
@@ -115,7 +116,7 @@ public class MyPersonalVC : UIViewController {
                 make.right.equalTo(personalView!.snp_right)
             }
         }
-        nameLabel!.text = UserInfoManager.currentUser!.nickname!
+        nameLabel!.text = DataManager.currentUser!.nickname!
         
         var starView = personalView!.viewWithTag(10003)
         if starView == nil {
@@ -150,7 +151,7 @@ public class MyPersonalVC : UIViewController {
                     make.width.equalTo(17)
                 })
             }
-            if UserInfoManager.currentUser!.level / Float(i) >= 1 {
+            if DataManager.currentUser!.level / Float(i) >= 1 {
                 star!.image = UIImage.init(named: "my-star-fill")
             } else {
                 star!.image = UIImage.init(named: "my-star-hollow")

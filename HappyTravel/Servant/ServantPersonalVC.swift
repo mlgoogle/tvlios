@@ -97,6 +97,31 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func bottomBarAction(sender: UIButton?) {
+        if DataManager.currentUser?.cash == 0 {
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
+            
+            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                XCGLogger.debug("去充值")
+                
+                let rechargeVC = RechargeVC()
+                self.navigationController?.pushViewController(rechargeVC, animated: true)
+                DataManager.currentUser?.cash = 10
+                
+            })
+            
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            
+            presentViewController(alert, animated: true, completion: { 
+                
+            })
+            
+            return
+        }
         if sender?.tag == 1001 {
             XCGLogger.debug("Chats")
             let chatVC = ChatVC()

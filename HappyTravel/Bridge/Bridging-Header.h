@@ -6,16 +6,12 @@
 //  Copyright © 2016年 陈奕涛. All rights reserved.
 //
 
-#ifndef Map_Bridging_Header_h
-#define Map_Bridging_Header_h
+#ifndef Bridging_Header_h
+#define Bridging_Header_h
 
 #import <AMapFoundationKit/AMapFoundationKit.h>
-//#import <AMapSearchKit/AMapSearchKit.h>
 #import <MAMapKit/MAMapKit.h>
-//#import <AMapLocationKit/AMapLocationKit.h>
-//#import "APIKey.h"
 
-#import "Protocol.h"
-
+#import "AlipaySDK/AlipaySDK.h"
 
 #endif /* Bridging_Header_h */

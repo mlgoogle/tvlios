@@ -48,11 +48,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        NSSetUncaughtExceptionHandler(CustomUncaughtExceptionHandler())
         
-        XCGLogger.debug("\(try! Realm().configuration)")
+//        XCGLogger.debug("\(try! Realm().configuration)")
         
         application.applicationSupportsShakeToEdit = true
         
         commonViewSet()
+        
+        return true
+    }
+    
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+//        AlipaySDK.defaultService().processOrderWithPaymentResult(url) { (data: [NSObject : AnyObject]!) in
+//            XCGLogger.debug("\(data)")
+//        }
+        
+        return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
         
         return true
     }
@@ -100,6 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
         tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
         
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
     }
 }
 

@@ -95,34 +95,41 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
 
-        msgList = PushMessageManager.getMessage(servantInfo!.uid)?.msgList
+        msgList = DataManager.getMessage(servantInfo!.uid)?.msgList
         
         initView()
+        
+        registerNotify()
     }
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        chatTable!.scrollToRowAtIndexPath(NSIndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        if msgList != nil {
+            chatTable!.scrollToRowAtIndexPath(NSIndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        }
+        
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(ChatVC.menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(ChatVC.chatMessage(_:)), name: NotifyDefine.UpdateChatVC, object: nil)
+
     }
     
     func chatMessage(notification: NSNotification?) {
         let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
         let fromUID = data["from_uid_"] as! Int
         let toUID = data["to_uid_"] as! Int
-        let sendTime = data["msg_time_"] as! NSNumber
-        let content = data["content_"] as! String
-        let msgData = Message(incoming: false, text: content, sentDate: NSDate(timeIntervalSince1970: Double(sendTime.longLongValue)))
-        messages.append(msgData)
-        if fromUID == servantInfo?.uid && toUID == UserInfoManager.currentUser!.uid {
+        if fromUID == servantInfo?.uid && toUID == DataManager.currentUser!.uid {
             chatTable?.beginUpdates()
             let numberOfRows = chatTable?.numberOfRowsInSection(0)
-            chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0)], withRowAnimation: .Fade)
+            chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
             chatTable?.endUpdates()
-            chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!+1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+            chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
+            DataManager.readMessage(fromUID)
         }
         
     }
@@ -191,11 +198,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         chatTable!.registerClass(ChatBubbleCell.self, forCellReuseIdentifier: "ChatBubbleCell")
         view.addSubview(chatTable!)
 
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(ChatVC.menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
     }
+    
     
     func keyboardWillShow(notification: NSNotification) {
         let userInfo = notification.userInfo as NSDictionary!
@@ -258,7 +262,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatBubbleCell", forIndexPath: indexPath) as! ChatBubbleCell
-            let msgData = Message(incoming: (message.from_uid_ == UserInfoManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
+            let msgData = Message(incoming: (message.from_uid_ == DataManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
             cell.configureWithMessage(msgData)
             return cell
         }
@@ -269,20 +273,25 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
         
-        let data:Dictionary<String, AnyObject> = ["from_uid_": UserInfoManager.currentUser!.uid,
+        let data:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
                                                   "to_uid_": servantInfo!.uid,
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
         
         SocketManager.sendData(.SendChatMessage, data: data)
         let message = PushMessage(value: data)
-        PushMessageManager.insertMessage(message)
+        DataManager.insertMessage(message)
         
-        chatTable?.beginUpdates()
         let numberOfRows = chatTable?.numberOfRowsInSection(0)
-        chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
-        chatTable?.endUpdates()
-        chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        if numberOfRows! == 0 {
+            msgList = DataManager.getMessage(servantInfo!.uid)?.msgList
+            chatTable?.reloadData()
+        } else {
+            chatTable?.beginUpdates()
+            chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
+            chatTable?.endUpdates()
+            chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
+        }
         
     }
     

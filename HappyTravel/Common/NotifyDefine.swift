@@ -28,9 +28,15 @@ class NotifyDefine: NSObject {
     
     static let JumpToSettingsVC = "JumpToSettingsVC"
     
+    static let VerifyCodeInfo = "VerifyCodeInfo"
+    
+    static let ImproveDataSuccessed = "ImproveDataSuccessed"
+    
     
     static let AskInvitationNotify = "AskInvitationNotify"
     
     static let ChatMessgaeNotiy = "ChatMessageNotify"
+    
+    static let UpdateChatVC = "UpdateChatVC"
     
 }

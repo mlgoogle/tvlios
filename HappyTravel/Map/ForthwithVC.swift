@@ -27,6 +27,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var recommendServants:Array<UserInfo> = []
     var locality:String?
     var location:CLLocation?
+    var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
+//    var regOrLoginSelVC:LoginVC? = LoginVC()
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -76,8 +78,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         }
         
-        if PushMessageManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt(-1))"
+        if DataManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
             msgCountLab?.hidden = false
         } else {
             msgCountLab?.hidden = true
@@ -88,10 +90,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        if login == false {
-            let loginVC = LoginVC()
-            presentViewController(loginVC, animated: true, completion: nil)
-            login = true
+        if DataManager.currentUser?.login == false {
+            presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
+            
         }
         
     }
@@ -274,27 +275,28 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
         let msg = PushMessage(value: data)
 
-        PushMessageManager.insertMessage(msg)
-        if PushMessageManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(PushMessageManager.getUnreadMsgCnt(-1))"
+        DataManager.insertMessage(msg)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpdateChatVC, object: nil, userInfo: ["data": data])
+        if DataManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
             msgCountLab?.hidden = false
-            UIApplication.sharedApplication().applicationIconBadgeNumber = PushMessageManager.getUnreadMsgCnt(-1)
+            UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         }
 
-        if UserInfoManager.getUserInfo(msg.from_uid_) == nil {
+        if DataManager.getUserInfo(msg.from_uid_) == nil {
             SocketManager.sendData(.GetUserInfo, data: ["uid_": msg.from_uid_])
         }
         
     }
     
     func recommendServants(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        let servants = data!["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
-        for servant in servants! {
+        let data = notification?.userInfo!["data"] as? Array<Dictionary<String, AnyObject>>
+//        let servants = data!["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+        for servant in data! {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
             recommendServants.append(servantInfo)
-            UserInfoManager.updateUserInfo(servantInfo)
+            DataManager.updateUserInfo(servantInfo)
         }
         if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
             recommendBtn.enabled = true
@@ -309,6 +311,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let cityInfo = CityInfo()
             cityInfo.setInfo(city)
             serviceCitys[cityInfo.cityCode!] = cityInfo
+        }
+        regOrLoginSelVC!.dismissViewControllerAnimated(false) {
+            self.regOrLoginSelVC?.dismissViewControllerAnimated(false) {
+//                if DataManager.currentUser!.registerSstatus == 0 {
+                if true {
+                    let completeBaseInfoVC = CompleteBaseInfoVC()
+                    self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+                }
+                
+            }
         }
         
     }
@@ -342,7 +354,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
             servantsInfo[servantInfo.uid] = servantInfo
-            UserInfoManager.updateUserInfo(servantInfo)
+            DataManager.updateUserInfo(servantInfo)
             let latitude = servantInfo.gpsLocationLat
             let longitude = servantInfo.gpsLocationLon
             let point = MAPointAnnotation.init()
@@ -357,11 +369,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func servantDetailInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]
+        if data!["error_"]! != nil {
+            XCGLogger.debug("Get UserInfo Error:\(data!["error"])")
+            return
+        }
         servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
         let user = servantsInfo[data!["uid_"] as! Int]
-        UserInfoManager.updateUserInfo(user!)
+        DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = UserInfoManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
@@ -481,8 +497,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-        UserInfoManager.currentUser!.gpsLocationLat = 31.20805228400625
-        UserInfoManager.currentUser!.gpsLocationLon = 121.60019287100375
+        DataManager.currentUser!.gpsLocationLat = 31.20805228400625
+        DataManager.currentUser!.gpsLocationLon = 121.60019287100375
         
         return nil
     }
