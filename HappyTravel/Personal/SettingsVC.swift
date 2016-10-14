@@ -189,6 +189,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 XCGLogger.debug("开票记录")
             }
+        } else if indexPath.section == 3 {
+            if indexPath.row == 0 { // 退出登录
+                SocketManager.logoutCurrentAccount()
+                navigationController?.popViewControllerAnimated(false)
+            }
         }
     }
     

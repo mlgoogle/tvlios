@@ -9,9 +9,16 @@
 import Foundation
 import XCGLogger
 
-class IdentCommentCell: UITableViewCell {
+
+class IdentCommentCell: UITableViewCell, UITextViewDelegate {
     
     var servantInfo:UserInfo?
+    
+    var hodometerInfo:HodometerInfo?
+    
+    var serviceStar = 0
+    var servantStar = 0
+    var comment = ""
     
     let tags = ["bgView": 1001,
                 "headImageView": 1002,
@@ -45,7 +52,7 @@ class IdentCommentCell: UITableViewCell {
             })
         }
 
-        let lineTitles = ["PAPI酱 全天游 评价", "服务者评价", "服务者评论"]
+        let lineTitles = ["PAPI酱 全天游 评价", "服务者评价", "评论"]
         var lastLineView:UIView?
         for i in 0...2 {
             var lineView = bgView?.viewWithTag(tags["lineView"]! * 10 + i)
@@ -122,12 +129,14 @@ class IdentCommentCell: UITableViewCell {
         if textView == nil {
             textView = UITextView()
             textView?.tag = tags["textView"]!
+            textView?.delegate = self
             textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
             textView?.textAlignment = .Left
-            textView?.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
+            textView?.textColor = UIColor.init(decR: 100, decG: 100, decB: 100, a: 1)
             textView?.font = UIFont.systemFontOfSize(15)
             textView?.layer.cornerRadius = 5
             textView?.layer.masksToBounds = true
+            textView?.returnKeyType = .Done
             bgView?.addSubview(textView!)
             textView?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(bgView!).offset(10)
@@ -141,15 +150,22 @@ class IdentCommentCell: UITableViewCell {
         
     }
     
-    func setInfo(userInfo: UserInfo?, commonInfo: Dictionary<String, AnyObject>?) {
+    func setInfo(info: HodometerInfo?) {
+        hodometerInfo = info
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
-            lineTitleLab.text = "\(userInfo?.nickname) 全天游 评价"
+            lineTitleLab.text = "\(info!.service_name_!) 评价"
         }
     }
     
     func starAction(sender: UIButton) {
         XCGLogger.debug("\(sender.tag)")
+        let tmp = sender.tag / ((tags["starBGView"]! * 10 + 1) * 10)
+        if tmp == 0 {
+            servantStar = sender.tag % ((tags["starBGView"]! * 10) * 10) + 1
+        } else {
+            serviceStar = sender.tag % ((tags["starBGView"]! * 10 + 1) * 10) + 1
+        }
         let tag = sender.tag % 100
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
             if let starBGView = bgView.viewWithTag(tags["starBGView"]! * 10 + (tag < 10 ? 0 : 1)) {
@@ -162,6 +178,29 @@ class IdentCommentCell: UITableViewCell {
             
         }
         
+    }
+    
+    //MARK: - TextViewDelegate
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.text == "来一两句吧......" {
+            textView.text = ""
+        }
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        if range.location > 255 {
+            return false
+        }
+        
+        return true
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        comment = textView.text!
     }
     
     required init?(coder aDecoder: NSCoder) {

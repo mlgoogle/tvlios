@@ -20,7 +20,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     
     var username:String?
     var passwd:String?
-    var verifyCode:String?
+    var verifyCode = 0
     var verifyCodeTime = 0
     var token:String?
     
@@ -36,7 +36,22 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         initView()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         registerNotify()
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
     }
     
     func initView() {
@@ -47,6 +62,10 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         bgView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(LoginWithMSGVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        bgView.addGestureRecognizer(touch)
         
         let blurEffect = UIBlurEffect(style: .Dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -171,23 +190,40 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let textField = view.viewWithTag(tags["usernameField"]!) {
-            if !textField.exclusiveTouch {
-                textField.resignFirstResponder()
-            }
-        }
-        
-        if let textField = view.viewWithTag(tags["verifyCodeField"]!) {
-            if !textField.exclusiveTouch {
-                textField.resignFirstResponder()
-            }
-        }
-    }
-    
+//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        if let textField = view.viewWithTag(tags["usernameField"]!) {
+//            if !textField.exclusiveTouch {
+//                textField.resignFirstResponder()
+//            }
+//        }
+//        
+//        if let textField = view.viewWithTag(tags["verifyCodeField"]!) {
+//            if !textField.exclusiveTouch {
+//                textField.resignFirstResponder()
+//            }
+//        }
+//    }
+
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.verifyCodeInfoNotify(_:)), name: NotifyDefine.VerifyCodeInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        var vFrame = view.frame
+        if vFrame.origin.y == 0 {
+            vFrame.origin.y -= frame.size.height
+            view.frame = vFrame
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        var vFrame = view.frame
+        vFrame.origin.y = 0
+        view.frame = vFrame
     }
     
     func loginResult(notification: NSNotification?) {
@@ -196,7 +232,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             return key as! String == "error_" ? true : false
         })
         if err {
-            XCGLogger.debug("err:\(data!["error_"] as! Int)")
+            XCGLogger.error("err:\(data!["error_"] as! Int)")
             return
         }
         XCGLogger.debug("\(data!)")
@@ -225,6 +261,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         resetPasswdVC = ResetPasswdVC()
         resetPasswdVC!.verifyCodeTime = verifyCodeTime
         resetPasswdVC!.token = token
+        resetPasswdVC?.username = username
+        resetPasswdVC?.verifyCode = verifyCode
         presentViewController(resetPasswdVC!, animated: false, completion: nil)
     }
     
@@ -235,7 +273,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             username = textField.text
             break
         case tags["verifyCodeField"]!:
-            verifyCode = textField.text
+            verifyCode = Int.init(textField.text!)!
         default:
             break
         }
@@ -246,14 +284,11 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         if range.location > 15 {
             return false
         }
-        if let loginBtn = view.viewWithTag(tags["loginBtn"]!) as? UIButton {
-            loginBtn.enabled = false
-        }
         
         if textField.tag == tags["usernameField"]! {
             username = textField.text! + string
         } else if textField.tag == tags["verifyCodeField"]! {
-            verifyCode = textField.text! + string
+            verifyCode = Int.init((textField.text!) + string)!
             
         }
         

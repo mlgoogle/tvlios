@@ -14,4 +14,8 @@
 
 #import "AlipaySDK/AlipaySDK.h"
 
+#import "GeTuiSdk.h"
+
+#import "MJRefresh/MJRefresh.h"
+
 #endif /* Bridging_Header_h */

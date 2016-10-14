@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import RealmSwift
+import MJRefresh
 
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate {
     
@@ -24,6 +25,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var alertController:UIAlertController?
     var servantInfo:UserInfo?
     var msgList:List<PushMessage>?
+    let header:MJRefreshStateHeader = MJRefreshStateHeader()
     
     override public var inputAccessoryView: UIView! {
         get {
@@ -91,7 +93,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
 
@@ -99,14 +100,40 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         initView()
         
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         registerNotify()
+        
+        if navigationItem.rightBarButtonItem == nil {
+            let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
+            navigationItem.rightBarButtonItem = msgItem
+        }
+        
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         if msgList != nil {
-            chatTable!.scrollToRowAtIndexPath(NSIndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: true)
+            chatTable!.scrollToRowAtIndexPath(NSIndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: false)
         }
+        let unreadCntBefore = DataManager.getUnreadMsgCnt(-1)
+        DataManager.readMessage(servantInfo!.uid)
+        let unreadCntLater = DataManager.getUnreadMsgCnt(-1)
+        var readCnt = unreadCntBefore - unreadCntLater
+        if readCnt == unreadCntBefore {
+            readCnt = -1
+        }
+        SocketManager.sendData(.FeedbackMSGReadCnt, data: ["uid_": servantInfo!.uid, "count_": readCnt])
+        UIApplication.sharedApplication().applicationIconBadgeNumber = unreadCntLater
         
     }
     
@@ -116,29 +143,41 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ChatVC.menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ChatVC.chatMessage(_:)), name: NotifyDefine.UpdateChatVC, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
+        
+    }
+    
+    
+    func invitationResult(notifucation: NSNotification?) {
+        let currentUser = DataManager.currentUser
+        if let order = notifucation?.userInfo!["orderInfo"] as? OrderInfo {
+            if order.order_status_ == 0 {
+                if currentUser?.uid == order.from_uid_ {
+                    let alert = UIAlertController.init(title: "邀约状态", message: "邀约发起成功，等待对方接受邀请", preferredStyle: .Alert)
+                    
+                    let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                        
+                    })
+                    
+                    alert.addAction(action)
+                    presentViewController(alert, animated: true, completion: nil)
+                } else if currentUser?.uid == order.to_uid_ {
+                    
+                }
+                
+            }
+        }
     }
     
     func chatMessage(notification: NSNotification?) {
-        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        let fromUID = data["from_uid_"] as! Int
-        let toUID = data["to_uid_"] as! Int
-        if fromUID == servantInfo?.uid && toUID == DataManager.currentUser!.uid {
+        let msg = (notification?.userInfo!["data"])! as! PushMessage
+        if msg.from_uid_ == servantInfo?.uid && msg.to_uid_ == DataManager.currentUser!.uid {
             chatTable?.beginUpdates()
             let numberOfRows = chatTable?.numberOfRowsInSection(0)
             chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
             chatTable?.endUpdates()
             chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
-            DataManager.readMessage(fromUID)
-        }
-        
-    }
-    
-    public override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if navigationItem.rightBarButtonItem == nil {
-            let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
-            navigationItem.rightBarButtonItem = msgItem
+            DataManager.readMessage(msg.from_uid_)
         }
         
     }
@@ -148,9 +187,11 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func invitation() {
+        textView.resignFirstResponder()
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = ServiceSheet()
+            sheet.servantInfo = DataManager.getUserInfo(servantInfo!.uid)
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -170,10 +211,12 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?) {
+    func sureAction(service: ServiceInfo?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
-        self.view.addSubview(invitaionVC.view)
-        invitaionVC.start()
+        
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                                      "to_uid_": servantInfo!.uid,
+                                                      "service_id_": service!.service_id_])
     }
     
     public func textViewDidChange(textView: UITextView) {
@@ -197,9 +240,21 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         chatTable!.registerClass(ChatDateCell.self, forCellReuseIdentifier: "ChatDateCell")
         chatTable!.registerClass(ChatBubbleCell.self, forCellReuseIdentifier: "ChatBubbleCell")
         view.addSubview(chatTable!)
+        
+        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
+        chatTable?.mj_header = header
 
     }
     
+    func headerRefresh() {
+        
+        
+        performSelector(#selector(ChatVC.endRefresh), withObject: nil, afterDelay: 5)
+    }
+    
+    func endRefresh() {
+        header.endRefreshing()
+    }
     
     func keyboardWillShow(notification: NSNotification) {
         let userInfo = notification.userInfo as NSDictionary!

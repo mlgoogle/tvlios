@@ -13,6 +13,7 @@ import SwiftyJSON
 
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
+
     
     enum SockOpcode : Int {
         case AppError = -1
@@ -33,8 +34,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case UserInfoResult = 1014
         case SendMessageVerify = 1019
         case MessageVerifyResult = 1020
+        case RegisterAccountRequest = 1021
+        case RegisterAccountReply = 1022
         case SendImproveData = 1023
         case ImproveDataResult = 1024
+        case ObtainTripRequest = 1025
+        case ObtainTripReply = 1026
+        case DrawBillRequest = 1029
+        case DrawBillReply = 1030
+        case PutDeviceToken = 1031
+        case DeviceTokenResult = 1032
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -42,6 +51,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case RecvChatMessage = 2004
         case GetChatRecord = 2005
         case ChatRecordResult = 2006
+        case FeedbackMSGReadCnt = 2007
+        case MSGReadCntResult = 2008
+        case EvaluateTripRequest = 2009
+        case EvaluatetripReply = 2010
+        case AnswerInvitationRequest = 2011
+        case AnswerInvitationReply = 2012
         
     }
     
@@ -57,6 +72,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     var buffer:NSMutableData = NSMutableData()
  
     static var last_chat_id:Int = 0
+    
+    static var isLogout = false
     
     override init() {
         super.init()
@@ -77,6 +94,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         } catch {
             
         }
+    }
+    
+    static func logoutCurrentAccount() {
+        let sock:SocketManager? = SocketManager.shareInstance
+        if sock == nil {
+            return
+        }
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserName)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
+        SocketManager.isLogout = true
+        DataManager.currentUser?.login = false
+        sock?.socket?.disconnect()
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
@@ -108,6 +138,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .Login:
             head.fields["opcode"] = 1001
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            XCGLogger.info(data as! Dictionary<String, AnyObject>)
             break
         case .GetServantInfo:
             head.fields["opcode"] = 1003
@@ -124,8 +155,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .GetRecommendServants:
             head.fields["opcode"] = 1007
-            let dict:Dictionary<String, AnyObject> = ["city_code_": data as! Int]
-            bodyJSON = JSON.init(dict)
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .GetServiceCity:
             head.fields["opcode"] = 1009
@@ -142,8 +172,24 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = 1019
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+        case .RegisterAccountRequest:
+            head.fields["opcode"] = SockOpcode.RegisterAccountRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
         case .SendImproveData:
             head.fields["opcode"] = 1023
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .ObtainTripRequest:
+            head.fields["opcode"] = SockOpcode.ObtainTripRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .DrawBillRequest:
+            head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .PutDeviceToken:
+            head.fields["opcode"] = 1031
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .AskInvitation:
@@ -162,6 +208,21 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             let dict = ["from_uid_": 1, "to_uid_": 2, "count_": 5, "last_chat_id_": SocketManager.last_chat_id]
             bodyJSON = JSON.init(dict)
+            break
+        case .FeedbackMSGReadCnt:
+            head.fields["opcode"] = SockOpcode.FeedbackMSGReadCnt.rawValue
+            head.fields["type"] = 2
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .EvaluateTripRequest:
+            head.fields["opcode"] = SockOpcode.EvaluateTripRequest.rawValue
+            head.fields["type"] = 2
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .AnswerInvitationRequest:
+            head.fields["opcode"] = SockOpcode.AnswerInvitationRequest.rawValue
+            head.fields["type"] = 2
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
             break
@@ -200,14 +261,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         switch SockOpcode(rawValue: opcode)! {
         case .Logined:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug(dict.rawString())
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginResult, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            
+            XCGLogger.info(dict.dictionaryObject!)
             SocketManager.sendData(.GetChatRecord, data: nil)
             break
         case .ServantInfo:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug(dict.rawString())
             if dict.count == 0 {
                 return false
             }
@@ -215,7 +274,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ServantDetailInfo:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug(dict.rawString())
             if dict.count == 0 {
                 return false
             }
@@ -223,46 +281,102 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .RecommendServants:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .ServiceCity:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .ModifyPasswordResult:
             if (head!.fields["type"] as! NSNumber).integerValue == 0 {
-                XCGLogger.debug("Modify passwd failed")
+                XCGLogger.warning("Modify passwd failed")
             }
             break
         case .UserInfoResult:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
-            let user = UserInfo()
-            user.setInfo(.Other, info: dict.dictionaryObject)
-            DataManager.updateUserInfo(user)
+            for info in dict["userinfo_list"] {
+                let user = UserInfo()
+                user.setInfo(.Other, info: info.1.dictionaryObject!)
+                DataManager.updateUserInfo(user)
+            }
+            
             break
         case .MessageVerifyResult:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
+        case .RegisterAccountReply:
+            let dict = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.RegisterAccountReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            break
         case .ImproveDataResult:
-            XCGLogger.debug("Improve Data Successed")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataSuccessed, object: nil, userInfo: nil)
             break
-        case .InvitationResult:
+        case .ObtainTripReply:
+            if (body as? NSData)?.length <= 0 {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
+                return true
+            }
+            let dict = JSON.init(data: body as! NSData)
+            if let tripList = dict.dictionaryObject!["trip_list"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for trip in tripList {
+                    let hodotemerInfo = HodometerInfo(value: trip)
+                    DataManager.insertHodometerInfo(hodotemerInfo)
+                    lastOrderID = hodotemerInfo.order_id_
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            }
+            break
+        case .DeviceTokenResult:
             
+            break
+        case .DrawBillReply:
+            let dict = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            break
+        case .InvitationResult:
+            let dict = JSON.init(data: body as! NSData)
+            let order = HodometerInfo(value: dict.dictionaryObject!)
+            DataManager.insertHodometerInfo(order)
+            if UIApplication.sharedApplication().applicationState == .Background {
+                let body = "系统消息: 您有新的行程消息!"
+                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                userInfo["type"] = PushMessage.MessageType.System.rawValue
+                userInfo["data"] = dict.dictionaryObject!
+                localNotify(body, userInfo: userInfo)
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
+            }
             break
         case .RecvChatMessage:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            let msg = PushMessage(value: dict.dictionaryObject!)
+            DataManager.insertMessage(msg)
+            
+            if UIApplication.sharedApplication().applicationState == .Background {
+                if let user = DataManager.getUserInfo(msg.from_uid_) {
+                    let body = "\(user.nickname!): \(msg.content_!)"
+                    var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                    userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+                    userInfo["data"] = dict.dictionaryObject!
+                    localNotify(body, userInfo: userInfo)
+                }
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
+            }
             break
         case .ChatRecordResult:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
+            break
+        case .MSGReadCntResult:
+            
+            break
+        case .EvaluatetripReply:
+            
+            break
+        case .AnswerInvitationReply:
+            
             break
         default:
             break
@@ -271,11 +385,44 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         return true
     }
     
+    func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
+        let localNotify = UILocalNotification()
+        localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
+        localNotify.timeZone = NSTimeZone.defaultTimeZone()
+        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
+        localNotify.soundName = UILocalNotificationDefaultSoundName
+        if #available(iOS 8.2, *) {
+            localNotify.alertTitle = "V领队"
+        } else {
+            // Fallback on earlier versions
+        }
+        localNotify.alertBody = body!
+        localNotify.userInfo = userInfo
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
+        
+    }
+    
     // MARK: - GCDAsyncSocketDelegate
     func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
-        XCGLogger.defaultInstance().debug("didConnectToHost:\(host)  \(port)")
+        XCGLogger.info("didConnectToHost:\(host)  \(port)")
+        SocketManager.isLogout = false
         
+        sock.performBlock({() -> Void in
+            sock.enableBackgroundingOnSocket()
+        })
         socket?.readDataWithTimeout(-1, tag: 0)
+        
+        let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
+        let passwd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String
+        var userType:Int?
+        if let type = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserType) as? String {
+            userType = Int.init(type)
+        }
+        
+        if username != nil && passwd != nil && userType != nil {
+            let dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": userType!]
+            SocketManager.sendData(.Login, data: dict)
+        }
         
 //        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
     }
@@ -286,13 +433,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
-        XCGLogger.defaultInstance().debug("socketDidDisconnect:\(err)")
-        
+        XCGLogger.warning("socketDidDisconnect:\(err)")
+        if SocketManager.isLogout {
+            connectSock()
+            return
+        }
         performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 15)
     }
     
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
-        XCGLogger.defaultInstance().debug("didReadData:\(data)")
         buffer.appendData(data)
         let headLen = SockHead.size
         while buffer.length >= headLen {
@@ -301,8 +450,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let bodyLen = Int(head.fields["dataLen"]! as! NSNumber)
             if buffer.length >= packageLen {
                 let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
-                let body = String.init(data: bodyData, encoding: NSUTF8StringEncoding)
-                XCGLogger.debug(body)
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
                 recvData(head, body: bodyData)
             } else {

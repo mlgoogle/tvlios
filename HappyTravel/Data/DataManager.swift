@@ -10,7 +10,21 @@ import Foundation
 import RealmSwift
 import XCGLogger
 
+enum HodometerType : Int {
+    case All
+    case Business
+    case Highend
+}
+
 class DataManager: NSObject {
+    
+    enum OrderType : Int {
+        case All
+        case Business
+        case Highend
+    }
+    
+    static var initialized = false
     
     static func setDefaultRealmForUID(uid: Int) {
         var config = Realm.Configuration()
@@ -20,7 +34,16 @@ class DataManager: NSObject {
         path = path.stringByAppendingPathComponent("\(uid)")
         path = path.stringByAppendingPathExtension("realm")!
         config.fileURL = NSURL(string: path as String)
+        config.schemaVersion = 1
+        config.migrationBlock = {migration, oldSchemaVersion in
+            if oldSchemaVersion < 1 {
+                migration.enumerate(OrderInfo.className()) { oldObject, newObject in
+                    newObject!["start_time_"] = 123
+                }
+            }
+        }
         Realm.Configuration.defaultConfiguration = config
+        DataManager.initialized = true
         XCGLogger.debug("\(try! Realm().configuration.fileURL)")
     }
     
@@ -28,6 +51,9 @@ class DataManager: NSObject {
     static let currentUser:UserInfo? = UserInfo()
     
     static func getUserInfo(uid: Int) -> UserInfo? {
+        if DataManager.initialized == false {
+            return nil
+        }
         let realm = try! Realm()
         let users = realm.objects(UserInfo.self).first
         if users == nil {
@@ -37,6 +63,9 @@ class DataManager: NSObject {
     }
     
     static func updateUserInfo(info: UserInfo) {
+        if DataManager.initialized == false {
+            return
+        }
         let realm = try! Realm()
         let user = realm.objects(UserInfo.self).filter("uid = \(info.uid)").first
         try! realm.write({
@@ -53,6 +82,9 @@ class DataManager: NSObject {
     
     //MARK: - PushMessage
     static func getMessageCount(uid: Int) -> Int {
+        if DataManager.initialized == false {
+            return 0
+        }
         let realm = try! Realm()
         if uid == -1 {
             return realm.objects(UserPushMessage.self).count
@@ -61,6 +93,9 @@ class DataManager: NSObject {
     }
     
     static func getUnreadMsgCnt(uid: Int) -> Int {
+        if DataManager.initialized == false {
+            return 0
+        }
         let realm = try! Realm()
         if uid == -1 {
             var cnt = 0
@@ -77,11 +112,17 @@ class DataManager: NSObject {
     }
     
     static func getMessage(uid: Int) -> UserPushMessage? {
+        if DataManager.initialized == false {
+            return nil
+        }
         let realm = try! Realm()
         return realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
     }
     
     static func insertMessage(message: PushMessage) {
+        if DataManager.initialized == false {
+            return
+        }
         let realm = try! Realm()
         var uid = -1
         if message.from_uid_ == DataManager.currentUser?.uid {
@@ -108,12 +149,114 @@ class DataManager: NSObject {
     }
     
     static func readMessage(uid: Int) {
+        if DataManager.initialized == false {
+            return
+        }
         let realm = try! Realm()
         let objs = realm.objects(UserPushMessage.self).filter("uid = \(uid)")
         try! realm.write({
             objs.setValue(0, forKey: "unread")
         })
         
+    }
+    
+    //MARK: - OrderInfo
+    static func getOrderInfo(oid: Int) -> OrderInfo? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        return realm.objects(OrderInfo.self).filter("oid_ = \(oid)").first
+    }
+    
+    static func getOrderCount(type: OrderType) -> Int {
+        if DataManager.initialized == false {
+            return 0
+        }
+        let realm = try! Realm()
+        if type == .All {
+            return realm.objects(OrderInfo.self).count
+        } else if type == .Business {
+            return 0
+        }
+        return 0
+    }
+    
+    static func insertOrderInfo(info: OrderInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let orderInfo = realm.objects(OrderInfo.self).filter("oid_ = \(info.oid_)").first
+        try! realm.write({
+            if orderInfo == nil {
+                realm.add(info)
+                
+            }
+        })
+        
+    }
+    
+    static func updateOrderStatus(info: OrderInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let orderInfo = realm.objects(OrderInfo.self).filter("oid_ = \(info.oid_)").first
+        try! realm.write({
+            if orderInfo == nil {
+                realm.add(info)
+            } else {
+                orderInfo?.order_status_ = info.order_status_
+            }
+        })
+    }
+    
+    //MARK: - HodometerInfo
+    static func getHodometerInfo(oid: Int) -> HodometerInfo? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        return realm.objects(HodometerInfo.self).filter("order_id_ = \(oid)").first
+    }
+    
+    static func getHodometerCount(type: HodometerType) -> Int {
+        if DataManager.initialized == false {
+            return 0
+        }
+        let realm = try! Realm()
+        if type == .All {
+            return realm.objects(HodometerInfo.self).count
+        } else if type == .Business {
+            return 0
+        }
+        return 0
+    }
+    
+    static func insertHodometerInfo(info: HodometerInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let hodometerInfo = realm.objects(HodometerInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if hodometerInfo == nil {
+                realm.add(info)
+            } else {
+                hodometerInfo?.setInfo(info)
+            }
+        })
+        
+    }
+    
+    static func getHodometerHistory() ->Results<HodometerInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Paid.rawValue)")
+        return hodometerInfos
     }
     
 }

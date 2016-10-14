@@ -16,6 +16,8 @@ class RegOrLoginSelVC: UIViewController {
     
     var loginVC:LoginVC?
     
+    var isShow:Bool = false
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
@@ -27,6 +29,16 @@ class RegOrLoginSelVC: UIViewController {
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        isShow = true
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        isShow = false
+    }
+
     func initView() {
         let bgView = UIImageView()
         bgView.userInteractionEnabled = true

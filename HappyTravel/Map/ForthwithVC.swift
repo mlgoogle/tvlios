@@ -11,24 +11,29 @@ import UIKit
 import SnapKit
 import XCGLogger
 import RealmSwift
+import MJRefresh
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate {
+public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MAMapViewDelegate, CitysSelectorSheetDelegate, ServantIntroCellDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
     var msgCountLab:UILabel?
     var segmentSC:UISegmentedControl?
     var mapView:MAMapView?
+    var table:UITableView?
+    let header:MJRefreshStateHeader = MJRefreshStateHeader()
     var servantsInfo:Dictionary<Int, UserInfo> = [:]
     var annotations:Array<MAPointAnnotation> = []
     var login = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
     var citysAlertController:UIAlertController?
     var recommendServants:Array<UserInfo> = []
+    var subscribeServants:Array<UserInfo> = []
     var locality:String?
     var location:CLLocation?
     var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
-//    var regOrLoginSelVC:LoginVC? = LoginVC()
+    var cityCode = 0
+
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -85,15 +90,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             msgCountLab?.hidden = true
         }
         
+        if DataManager.currentUser?.login == false {
+            let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
+            if username == nil && regOrLoginSelVC?.isShow == false {
+                presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
+            }
+        }
+        
     }
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
-        if DataManager.currentUser?.login == false {
-            presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
-            
-        }
         
     }
     
@@ -233,7 +240,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         mapView!.snp_makeConstraints { (make) in
             make.top.equalTo(segmentBGV.snp_bottom)
             make.left.equalTo(view).offset(0.5)
-            make.right.equalTo(view).offset(-0.5)
+            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
         
@@ -251,6 +258,25 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         recommendBtn.enabled = false
         
+        table = UITableView(frame: CGRectZero, style: .Plain)
+        table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
+        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table?.delegate = self
+        table?.dataSource = self
+        table?.estimatedRowHeight = 256
+        table?.rowHeight = UITableViewAutomaticDimension
+        table?.separatorStyle = .None
+        table?.registerClass(ServantIntroCell.self, forCellReuseIdentifier: "ServantIntroCell")
+        view.addSubview(table!)
+        table?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(mapView!.snp_right).offset(0.5)
+            make.top.equalTo(segmentBGV.snp_bottom)
+            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            make.bottom.equalTo(bottomView.snp_top)
+        })
+        
+        header.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.headerRefresh))
+        table?.mj_header = header
     }
     
     func recommendAction(sender: UIButton?) {
@@ -260,8 +286,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
@@ -270,52 +298,88 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
     }
     
-    func chatMessage(notification: NSNotification?) {
-        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-
-        let msg = PushMessage(value: data)
-
-        DataManager.insertMessage(msg)
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpdateChatVC, object: nil, userInfo: ["data": data])
-        if DataManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
-            msgCountLab?.hidden = false
-            UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
-        }
-
-        if DataManager.getUserInfo(msg.from_uid_) == nil {
-            SocketManager.sendData(.GetUserInfo, data: ["uid_": msg.from_uid_])
+    func loginResult(notification: NSNotification?) {
+        let data = notification?.userInfo!["data"]
+        let err = data!.allKeys!.contains({ (key) -> Bool in
+            return key as! String == "error_" ? true : false
+        })
+        if !err {
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
         }
         
     }
     
-    func recommendServants(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"] as? Array<Dictionary<String, AnyObject>>
-//        let servants = data!["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
-        for servant in data! {
-            let servantInfo = UserInfo()
-            servantInfo.setInfo(.Servant, info: servant)
-            recommendServants.append(servantInfo)
-            DataManager.updateUserInfo(servantInfo)
+    func chatMessage(notification: NSNotification?) {
+        let msg = (notification?.userInfo!["data"])! as! PushMessage
+
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpdateChatVC, object: nil, userInfo: ["data": msg])
+        
+        if DataManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
+            msgCountLab?.hidden = false
         }
-        if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
-            recommendBtn.enabled = true
+
+        if DataManager.getUserInfo(msg.from_uid_) == nil {
+            //TUDO
+            SocketManager.sendData(.GetUserInfo, data: ["uid_": msg.from_uid_])
+        }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
+    }
+    
+    func recommendServants(notification: NSNotification?) {
+        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+            let type = data["recommend_type"] as! Int
+            var uid_str = ""
+            if type == 1 {
+                for servant in servants! {
+                    let servantInfo = UserInfo()
+                    servantInfo.setInfo(.Servant, info: servant)
+                    recommendServants.append(servantInfo)
+                    DataManager.updateUserInfo(servantInfo)
+                    uid_str += "\(servantInfo.uid),"
+                }
+                if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
+                    recommendBtn.enabled = true
+                }
+            } else if type == 2 {
+                for servant in servants! {
+                    let servantInfo = UserInfo()
+                    servantInfo.setInfo(.Servant, info: servant)
+                    subscribeServants.append(servantInfo)
+                    DataManager.updateUserInfo(servantInfo)
+                    uid_str += "\(servantInfo.uid),"
+                }
+                if header.state == .Refreshing {
+                    header.endRefreshing()
+                }
+                table?.reloadData()
+                
+            }
+            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+            SocketManager.sendData(.GetUserInfo, data: dict)
         }
         
     }
     
     func serviceCitys(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        let citys = data!["service_city_"] as? Array<Dictionary<String, AnyObject>>
-        for city in citys! {
-            let cityInfo = CityInfo()
-            cityInfo.setInfo(city)
-            serviceCitys[cityInfo.cityCode!] = cityInfo
+        if let data = notification?.userInfo!["data"] {
+            if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
+                for city in citys {
+                    let cityInfo = CityInfo()
+                    cityInfo.setInfo(city)
+                    serviceCitys[cityInfo.cityCode!] = cityInfo
+                }
+            }
+            
         }
+        
         regOrLoginSelVC!.dismissViewControllerAnimated(false) {
             self.regOrLoginSelVC?.dismissViewControllerAnimated(false) {
-//                if DataManager.currentUser!.registerSstatus == 0 {
-                if true {
+                if DataManager.currentUser!.registerSstatus == 0 {
+//                if true {
                     let completeBaseInfoVC = CompleteBaseInfoVC()
                     self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
                 }
@@ -323,6 +387,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
+    }
+    
+    func jumpToCenturionCardCenter() {
+        let centurionCardCenter = CenturionCardVC()
+        navigationController?.pushViewController(centurionCardCenter, animated: true)
     }
     
     func jumpToWalletVC() {
@@ -346,7 +415,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             return key as! String == "error_" ? true : false
         })
         if err {
-            XCGLogger.debug("err:\(data!["error_"] as! Int)")
+            XCGLogger.error("err:\(data!["error_"] as! Int)")
             return
         }
         let servants = data!["result"] as! Array<Dictionary<String, AnyObject>>
@@ -370,7 +439,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func servantDetailInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]
         if data!["error_"]! != nil {
-            XCGLogger.debug("Get UserInfo Error:\(data!["error"])")
+            XCGLogger.error("Get UserInfo Error:\(data!["error"])")
             return
         }
         servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
@@ -404,19 +473,40 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func msgAction(sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("msg")
         let msgVC = PushMessageVC()
-        msgVC.messageInfo = recommendServants
-        navigationController?.pushViewController(msgVC, animated: true)
+
+        if sender?.isKindOfClass(UIButton) == false {
+            navigationController?.pushViewController(msgVC, animated: false)
+            if let userInfo = sender as? [NSObject: AnyObject] {
+                let type = userInfo["type"] as? Int
+                if type == PushMessage.MessageType.Chat.rawValue {
+                    performSelector(#selector(ForthwithVC.postPushMessageNotify(_:)), withObject: userInfo["data"], afterDelay: 0.5)
+                }
+            }
+            
+        } else {
+            navigationController?.pushViewController(msgVC, animated: true)
+        }
         
+    }
+    
+    func postPushMessageNotify(data: AnyObject?) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": data!])
     }
     
     func bottomSelectorAction(sender: AnyObject?) {
         let bottomSelector = sender as! UISlider
         if bottomSelector.value > 0.5 {
             bottomSelector.setValue(1, animated: true)
+            mapView!.snp_updateConstraints { (make) in
+                make.width.equalTo(0)
+            }
+            table?.reloadData()
         } else {
             bottomSelector.setValue(0, animated: false)
+            mapView!.snp_updateConstraints { (make) in
+                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            }
         }
         XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
     }
@@ -444,14 +534,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
             let geoCoder = CLGeocoder()
-            geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
+            if userLocation.location != nil {
+                geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
                 if placeMarks?.count == 1 {
                     self.locality = (placeMarks?[0])!.locality
                     self.titleLab?.text = self.locality
-                    XCGLogger.debug("Update locality: \(self.locality)")
+                    XCGLogger.debug("Update locality: \(self.locality!)")
                     self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
                 }
             }
+            }
+            
         }
         
     }
@@ -460,7 +553,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if serviceCitys.count > 0 {
             for (cityCode, cityInfo) in serviceCitys {
                 if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
-                    SocketManager.sendData(.GetRecommendServants, data: cityCode)
+                    var dict = ["city_code_": cityCode, "recommend_type_": 1]
+                    SocketManager.sendData(.GetRecommendServants, data: dict)
+                    dict["recommend_type_"] = 2
+                    SocketManager.sendData(.GetRecommendServants, data: dict)
                     return
                 }
             }
@@ -473,7 +569,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         var id = ""
         let lat = annotation.coordinate.latitude
         let lng = annotation.coordinate.longitude
-        XCGLogger.defaultInstance().debug("\(lat)<===>\(lng)")
         for (_, servantInfo) in servantsInfo {
             if servantInfo.gpsLocationLat == lat && servantInfo.gpsLocationLon == lng {
                 if servantInfo.userType == UserInfo.UserType.Servant.rawValue {
@@ -497,8 +592,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-        DataManager.currentUser!.gpsLocationLat = 31.20805228400625
-        DataManager.currentUser!.gpsLocationLon = 121.60019287100375
+//        DataManager.currentUser!.gpsLocationLat = 31.20805228400625
+//        DataManager.currentUser!.gpsLocationLon = 121.60019287100375
         
         return nil
     }
@@ -523,6 +618,32 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func sureAction(sender: UIButton?, targetCity: CityInfo?) {
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         SocketManager.sendData(.GetRecommendServants, data: targetCity?.cityCode)
+    }
+    
+    func headerRefresh() {
+        let dict = ["city_code_": cityCode, "recommend_type_": 2]
+        SocketManager.sendData(.GetRecommendServants, data: dict)
+    }
+    
+    // MARK: - UITableViewDelegate
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return subscribeServants.count
+    }
+    
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("ServantIntroCell", forIndexPath: indexPath) as! ServantIntroCell
+        cell.delegate = self
+        cell.setInfo(subscribeServants[indexPath.row])
+        
+        return cell
+    }
+    
+    //MARK: - ServantIntroCellDeleagte
+    func chatAction(servantInfo: UserInfo?) {
+        SocketManager.sendData(.GetServantDetailInfo, data: servantInfo)
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = servantInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
     }
     
     deinit {        

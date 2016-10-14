@@ -34,11 +34,36 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         initView()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         registerNotify()
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     
     func registerNotify() {
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
     }
     
     func initView() {
@@ -54,6 +79,19 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         table?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
+        
+        hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
     }
     
     //MARK: - TableView

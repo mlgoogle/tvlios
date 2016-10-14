@@ -163,7 +163,8 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 make.right.equalTo(-25)
             })
         }
-        titleLab?.text = cities?.valueForKey((keys![indexPath.section]) as! String)![indexPath.row] as? String
+        let key = (keys![indexPath.section]) as! String
+        titleLab?.text = (cities?.valueForKey(key) as? NSArray)![indexPath.row] as? String
         
         var selectedIcon = cell?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIButton
         if selectedIcon == nil {

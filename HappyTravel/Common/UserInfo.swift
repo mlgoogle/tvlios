@@ -166,7 +166,7 @@ class UserInfo: Object {
                 gender = value as! Int
                 break
             default:
-                XCGLogger.debug("Exception:[\(key) : \(value)]")
+                XCGLogger.warning("Exception:[\(key) : \(value)]")
                 break
             }
         }

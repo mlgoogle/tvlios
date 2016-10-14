@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import XCGLogger
 
-class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate {
     
     var table:UITableView?
-    var messageInfo:Array<UserInfo>? = []
+    var selectedOrderList:Dictionary<Int, HodometerInfo> = [:]
     var segmentIndex = 0
+    var descLab:UILabel?
+    var descLabText:String?
     
     let tags = ["titleLab_Invoice": 1001,
                 "textField_Invoice": 1002,
@@ -23,12 +26,21 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 "commitBtn": 1006,
                 "bottomLine": 1007]
     
+    var invoiceInfoDict = ["order_id_": -1,
+                           "title_": "",
+                           "taxpayer_num_": "",
+                           "company_addr_": "",
+                           "invoice_type_": 0,
+                           
+                           "user_name_": "",
+                           "user_mobile_": "",
+                           "area_": "",
+                           "addr_detail_": "",
+                           "remarks_": ""]
+    
     let invoiceInfo = ["发票抬头",
                        "纳税人号",
                        "注册地址",
-                       "注册电话",
-                       "开户银行",
-                       "银行账号",
                        "发票类型"]
     
     let personalInfo = ["联 系 人",
@@ -37,6 +49,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                         "详细地址",
                         "备注信息"]
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,6 +57,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         navigationItem.title = "开票信息设置"
         
         initView()
+        
+        registerNotify()
     }
     
     func initView() {
@@ -63,6 +78,53 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.right.equalTo(view)
             make.bottom.equalTo(view)
         })
+        
+        hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
+    }
+    
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.drawBillReply(_:)), name: NotifyDefine.DrawBillReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func drawBillReply(notification: NSNotification?) {
+        if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            if dict["invoice_status_"] as! Int == 0 {
+                let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
+                
+                let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                
+                alert.addAction(action)
+                presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
     }
     
     // MARK: - UITableView
@@ -106,6 +168,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 commitBtn?.backgroundColor = UIColor.init(decR: 11, decG: 19, decB: 31, a: 1)
                 commitBtn?.layer.cornerRadius = 5
                 commitBtn?.layer.masksToBounds = true
+                commitBtn?.addTarget(self, action: #selector(InvoiceDetailVC.commit), forControlEvents: .TouchUpInside)
                 cell?.contentView.addSubview(commitBtn!)
                 commitBtn?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
@@ -180,15 +243,16 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                     make.top.equalTo(titleLab!)
                     make.bottom.equalTo(titleLab!)
                 })
+                self.descLab = descLab
             }
-            descLab?.text = invoiceInfo[indexPath.row]
+            descLab?.text = descLabText == nil ? invoiceInfo[indexPath.row] : descLabText
         } else {
             cell?.accessoryType = .None
             var textField = cell?.contentView.viewWithTag(tags["textField_Invoice"]!) as? UITextField
             if textField == nil {
                 textField = UITextField()
                 textField?.tag = tags["textField_Invoice"]!
-                textField?.secureTextEntry = true
+                textField?.secureTextEntry = false
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
@@ -201,6 +265,22 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 })
             }
             textField?.placeholder = invoiceInfo[indexPath.row]
+            if textField?.placeholder?.compare("发票抬头") == .OrderedSame {
+                textField?.text = invoiceInfoDict["title_"] as? String
+            } else if textField?.placeholder?.compare("纳税人号") == .OrderedSame {
+                textField?.text = invoiceInfoDict["taxpayer_num_"] as? String
+            } else if textField?.placeholder?.compare("注册地址") == .OrderedSame {
+                textField?.text = invoiceInfoDict["company_addr_"] as? String
+            } else if textField?.placeholder?.compare("联 系 人") == .OrderedSame {
+                textField?.text = invoiceInfoDict["user_name_"] as? String
+            } else if textField?.placeholder?.compare("联系电话") == .OrderedSame {
+                textField?.text = invoiceInfoDict["user_mobile_"] as? String
+                textField?.keyboardType = .PhonePad
+            } else if textField?.placeholder?.compare("所在区域") == .OrderedSame {
+                textField?.text = invoiceInfoDict["area_"] as? String
+            } else if textField?.placeholder?.compare("详细地址") == .OrderedSame {
+                textField?.text = invoiceInfoDict["addr_detail_"] as? String
+            }
         }
         
         var bottomLine = cell?.contentView.viewWithTag(tags["bottomLine"]!)
@@ -266,6 +346,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             var textView = cell?.contentView.viewWithTag(tags["textView_Personal"]!) as? UITextView
             if textView == nil {
                 textView = UITextView()
+                textView?.delegate = self
                 textView?.tag = tags["textView_Personal"]!
                 textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
                 textView?.textAlignment = .Left
@@ -290,12 +371,18 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 make.top.equalTo(textView!.snp_bottom).offset(10)
             })
             
+            textView?.text = invoiceInfoDict["remark_"] as? String
+            if textView?.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+                textView?.textColor = UIColor.blackColor()
+            }
+            
+            
         } else {
             var textField = cell?.contentView.viewWithTag(tags["textField_Invoice"]!) as? UITextField
             if textField == nil {
                 textField = UITextField()
                 textField?.tag = tags["textField_Invoice"]!
-                textField?.secureTextEntry = true
+                textField?.secureTextEntry = false
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
@@ -315,6 +402,23 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 make.right.equalTo(cell!.contentView)
                 make.height.equalTo(1)
             })
+            
+            if textField?.placeholder?.compare("发票抬头") == .OrderedSame {
+                textField?.text = invoiceInfoDict["title_"] as? String
+            } else if textField?.placeholder?.compare("纳税人号") == .OrderedSame {
+                textField?.text = invoiceInfoDict["taxpayer_num_"] as? String
+            } else if textField?.placeholder?.compare("注册地址") == .OrderedSame {
+                textField?.text = invoiceInfoDict["company_addr_"] as? String
+            } else if textField?.placeholder?.compare("联 系 人") == .OrderedSame {
+                textField?.text = invoiceInfoDict["user_name_"] as? String
+            } else if textField?.placeholder?.compare("联系电话") == .OrderedSame {
+                textField?.text = invoiceInfoDict["user_mobile_"] as? String
+                textField?.keyboardType = .PhonePad
+            } else if textField?.placeholder?.compare("所在区域") == .OrderedSame {
+                textField?.text = invoiceInfoDict["area_"] as? String
+            } else if textField?.placeholder?.compare("详细地址") == .OrderedSame {
+                textField?.text = invoiceInfoDict["addr_detail_"] as? String
+            }
         }
         
         return cell!
@@ -322,7 +426,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 && indexPath.row == invoiceInfo.count - 1 {
-            let action = UIAlertView.init(title: "选择发票类型", message: "", delegate: nil, cancelButtonTitle: "取消", otherButtonTitles: "差旅费", "文体用品", "餐饮发票", "其他")
+            let action = UIAlertView.init(title: "选择发票类型", message: "", delegate: self, cancelButtonTitle: "取消", otherButtonTitles: "差旅费", "文体用品", "餐饮发票", "其他")
             action.show()
             
         }
@@ -343,10 +447,66 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         return 0.001
     }
     
-    func segmentChange(sender: AnyObject?) {
-        segmentIndex = (sender?.selectedSegmentIndex)!
-        table?.reloadData()
+    //MARK: - UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField.placeholder?.compare("发票抬头") == .OrderedSame {
+            invoiceInfoDict["title_"] = textField.text
+        } else if textField.placeholder?.compare("纳税人号") == .OrderedSame {
+            invoiceInfoDict["taxpayer_num_"] = textField.text
+        } else if textField.placeholder?.compare("注册地址") == .OrderedSame {
+            invoiceInfoDict["company_addr_"] = textField.text
+        } else if textField.placeholder?.compare("联 系 人") == .OrderedSame {
+            invoiceInfoDict["user_name_"] = textField.text
+        } else if textField.placeholder?.compare("联系电话") == .OrderedSame {
+            invoiceInfoDict["user_mobile_"] = textField.text
+        } else if textField.placeholder?.compare("所在区域") == .OrderedSame {
+            invoiceInfoDict["area_"] = textField.text
+        } else if textField.placeholder?.compare("详细地址") == .OrderedSame {
+            invoiceInfoDict["addr_detail_"] = textField.text
+        }
+    }
+    
+    //MARK: - UITextViewDelegate
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text.compare("\n").rawValue == 0 {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        invoiceInfoDict["remark_"] = textView.text
+        if textView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+            textView.textColor = UIColor.blackColor()
+        } else {
+            textView.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
+        }
+    }
+    
+    //MARK: - UIAlertViewDelegate
+    func alertViewCancel(alertView: UIAlertView) {
+        
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        invoiceInfoDict["invoice_type_"] = buttonIndex
+        XCGLogger.debug("\(buttonIndex)")
+        descLab?.text = alertView.buttonTitleAtIndex(buttonIndex)
+        descLabText = descLab?.text
+        descLab?.textColor = UIColor.blackColor()
+    }
+    
+    func commit() {
+        for (order_id_, _) in selectedOrderList {
+            invoiceInfoDict["order_id_"] = order_id_
+            SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
+        }
+    }
 }
 

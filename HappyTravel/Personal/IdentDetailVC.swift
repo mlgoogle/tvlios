@@ -7,13 +7,25 @@
 //
 
 import Foundation
+import XCGLogger
 
 class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var segmentSC:UISegmentedControl?
     var table:UITableView?
-    var messageInfo:Array<UserInfo>? = []
-    var segmentIndex = 0
+    var commonCell:IdentCommentCell?
+    
+    var servantInfo:UserInfo?
+    var hodometerInfo:HodometerInfo?
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        registerNotify()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,10 +67,48 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             make.right.equalTo(view)
             make.bottom.equalTo(commitBtn.snp_top)
         })
+        
+        hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
+    }
+    
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
     }
     
     func commitAction(sender: UIButton) {
-        
+        XCGLogger.info("\(self.commonCell!.serviceStar)   \(self.commonCell!.servantStar)    \(self.commonCell!.comment)")
+        let dict:Dictionary<String, AnyObject> = ["from_uid_": (hodometerInfo?.from_uid_)!,
+                                                  "to_uid_": (hodometerInfo?.to_uid_)!,
+                                                  "order_id_": (hodometerInfo?.order_id_)!,
+                                                  "service_score_": (self.commonCell?.serviceStar)!,
+                                                  "user_score_": (self.commonCell?.servantStar)!,
+                                                  "remark_": self.commonCell!.comment]
+        SocketManager.sendData(.EvaluateTripRequest, data: dict)
     }
     
     // MARK: - UITableView
@@ -68,24 +118,17 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
+            let user = DataManager.getUserInfo(hodometerInfo!.to_uid_)
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentBaseInfoCell", forIndexPath: indexPath) as! IdentBaseInfoCell
-                cell.setInfo(DataManager.getUserInfo(2))
+            cell.setInfo(user)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
-                cell.setInfo(DataManager.getUserInfo(2), commonInfo: nil)
+            cell.setInfo(hodometerInfo)
+            commonCell = cell
             return cell
         }
         
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
-    
-    func segmentChange(sender: AnyObject?) {
-        segmentIndex = (sender?.selectedSegmentIndex)!
-        table?.reloadData()
     }
     
 }

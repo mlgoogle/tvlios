@@ -29,7 +29,6 @@ class ViewController: SideMenuController {
             controller.addSideMenuButton()
         })
         
-        
     }
     
     override func viewDidLoad() {
@@ -38,7 +37,7 @@ class ViewController: SideMenuController {
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
         SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = 280
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
         SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan

@@ -130,6 +130,8 @@ class IdentBaseInfoCell: UITableViewCell {
     }
     
     func setInfo(userInfo: UserInfo?) {
+        servantInfo = userInfo
+        
         let tallys = List<Tally>()
         for businessTag in userInfo!.businessTags {
             tallys.append(businessTag)
@@ -143,6 +145,10 @@ class IdentBaseInfoCell: UITableViewCell {
             headImageView.kf_setImageWithURL(NSURL(string: (userInfo?.headUrl)!), placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
                 
             })
+        }
+        
+        if let nicknameLab = contentView.viewWithTag(tags["nicknameLab"]!) as? UILabel {
+            nicknameLab.text = userInfo?.nickname!
         }
         
         if tallys.count != 0 {

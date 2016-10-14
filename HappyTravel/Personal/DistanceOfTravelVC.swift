@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RealmSwift
+import MJRefresh
 
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -14,6 +16,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var table:UITableView?
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
+    var orderID = 0
+    var hotometers:Results<HodometerInfo>?
+    
+    let header:MJRefreshStateHeader = MJRefreshStateHeader()
+    let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +29,46 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.title = "我的行程"
         
         initView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        registerNotify()
+        
+        header.beginRefreshing()
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+    }
+    
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        
+    }
+    
+    func obtainTripReply(notification: NSNotification) {
+        if header.state == MJRefreshState.Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == MJRefreshState.Refreshing {
+            footer.endRefreshing()
+        }
+        
+        let realm = try! Realm()
+        hotometers = realm.objects(HodometerInfo.self).sorted("start_", ascending: false)
+        
+        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
+        if lastOrderID == -1001 {
+            footer.state = .NoMoreData
+            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            return
+        }
+        orderID = lastOrderID
+        table?.reloadData()
     }
     
     func initView() {
@@ -69,24 +116,48 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.right.equalTo(view)
             make.bottom.equalTo(view)
         })
+        header.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.headerRefresh))
+        table?.mj_header = header
+        footer.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.footerRefresh))
+        table?.mj_footer = footer
+     
+    }
+    
+    func headerRefresh() {
+        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            "order_id_": 0,
+            "count_": 10])
+        
+    }
+    
+    func footerRefresh() {
+        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            "order_id_": orderID,
+            "count_": 10])
     }
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15
-        return messageInfo!.count
+        return hotometers != nil ? hotometers!.count : 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-        cell.setInfo(nil)
+        cell.setHodometerInfo(hotometers![indexPath.row])
         return cell
         
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let identDetailVC = IdentDetailVC()
-        navigationController?.pushViewController(identDetailVC, animated: true)
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
+            if cell.curHodometerInfo?.status_ != HodometerStatus.Paid.rawValue {
+                return
+            }
+            let identDetailVC = IdentDetailVC()
+            identDetailVC.hodometerInfo = cell.curHodometerInfo!
+            navigationController?.pushViewController(identDetailVC, animated: true)
+        }
+        
     }
     
     func segmentChange(sender: AnyObject?) {

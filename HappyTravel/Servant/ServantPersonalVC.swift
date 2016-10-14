@@ -17,7 +17,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var personalInfo:UserInfo?
     var personalTable:UITableView?
     var bottomBar:UIImageView?
-    var serviceSpread = false
+    var serviceSpread = true
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
     
@@ -138,6 +138,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = ServiceSheet()
+            sheet.servantInfo = personalInfo
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -158,10 +159,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?) {
+    func sureAction(service: ServiceInfo?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
-        self.view.addSubview(invitaionVC.view)
-        invitaionVC.start()
+        
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                                      "to_uid_": personalInfo!.uid,
+                                                      "service_id_": service!.service_id_])
+
     }
     
     func back() {
@@ -172,6 +176,26 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         
         initView()
+        
+    }
+    
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ServantPersonalVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
+    }
+    
+    func invitationResult(notifucation: NSNotification?) {
+        if let order = notifucation?.userInfo!["orderInfo"] as? OrderInfo {
+            if order.order_status_ == 0 {
+                let alert = UIAlertController.init(title: "邀约状态", message: "邀约发起成功，等待对方接受邀请", preferredStyle: .Alert)
+                
+                let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                    
+                })
+                
+                alert.addAction(action)
+                presentViewController(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -181,15 +205,37 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        registerNotify()
         
         if navigationItem.rightBarButtonItem == nil {
-            let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction))
+            let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
     }
     
-    func msgAction() {
-        XCGLogger.debug("msgAction")
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+    }
+    
+    func msgAction(sender: AnyObject?) {
+        let msgVC = PushMessageVC()
+//        msgVC.messageInfo = recommendServants
+        
+        if sender?.isKindOfClass(UIButton) == false {
+            navigationController?.pushViewController(msgVC, animated: false)
+            if let userInfo = sender as? [NSObject: AnyObject] {
+                let type = userInfo["type"] as? Int
+                if type == PushMessage.MessageType.Chat.rawValue {
+                    performSelector(#selector(ForthwithVC.postPushMessageNotify(_:)), withObject: userInfo["data"], afterDelay: 0.5)
+                }
+            }
+            
+        } else {
+            navigationController?.pushViewController(msgVC, animated: true)
+        }
+        
     }
     
     // MARK -- UITableViewDelegate & UITableViewDataSource

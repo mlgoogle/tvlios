@@ -41,11 +41,11 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
         initView()
         
-        registerNotify()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        registerNotify()
         
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
@@ -58,6 +58,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             navigationItem.rightBarButtonItem = sureItem
             
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     
     func sureAction(sender: UIButton) {
@@ -95,10 +101,37 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             make.edges.equalTo(view)
         })
         
+        hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
     }
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
     }
     
     func improveDataSuccessed(notification: NSNotification?) {

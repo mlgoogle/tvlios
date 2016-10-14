@@ -34,7 +34,21 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         initView()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         registerNotify()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
     }
     
     func initView() {
@@ -45,6 +59,11 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         bgView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
+        
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(LoginVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        bgView.addGestureRecognizer(touch)
         
         let blurEffect = UIBlurEffect(style: .Dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -168,26 +187,45 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if let textField = view.viewWithTag(tags["usernameField"]!) {
-            if !textField.exclusiveTouch {
-                textField.resignFirstResponder()
-            }
-        }
-        
-        if let textField = view.viewWithTag(tags["passwdField"]!) {
-            if !textField.exclusiveTouch {
-                textField.resignFirstResponder()
-            }
-        }
-    }
+//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        if let textField = view.viewWithTag(tags["usernameField"]!) {
+//            if !textField.exclusiveTouch {
+//                textField.resignFirstResponder()
+//            }
+//        }
+//        
+//        if let textField = view.viewWithTag(tags["passwdField"]!) {
+//            if !textField.exclusiveTouch {
+//                textField.resignFirstResponder()
+//            }
+//        }
+//    }
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        var vFrame = view.frame
+        if vFrame.origin.y == 0 {
+            vFrame.origin.y -= frame.size.height
+            view.frame = vFrame
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        var vFrame = view.frame
+        vFrame.origin.y = 0
+        view.frame = vFrame
     }
     
     func login(sender: UIButton?) {
         var dict:Dictionary<String, AnyObject>?
+        
         if sender?.tag == tags["loginBtn"]! {
             dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
         } else if sender?.tag == 20001 {
@@ -198,7 +236,24 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             return
         }
         
+        NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
+        NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
+        NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
+        
         SocketManager.sendData(.Login, data: dict)
+        
+        
+    }
+    
+    func randomSmallCaseString(length: Int) -> String {
+        var output = ""
+        
+        for _ in 0..<length {
+            let randomNumber = arc4random() % 26 + 97
+            let randomChar = Character(UnicodeScalar(randomNumber))
+            output.append(randomChar)
+        }
+        return output
     }
     
     func loginResult(notification: NSNotification?) {
@@ -207,7 +262,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             return key as! String == "error_" ? true : false
         })
         if err {
-            XCGLogger.debug("err:\(data!["error_"] as! Int)")
+            XCGLogger.error("err:\(data!["error_"] as! Int)")
             return
         }
         XCGLogger.debug("\(data!)")
@@ -231,9 +286,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         if range.location > 15 {
             return false
-        }
-        if let loginBtn = view.viewWithTag(tags["loginBtn"]!) as? UIButton {
-            loginBtn.enabled = false
         }
         
         if textField.tag == tags["usernameField"]! {
