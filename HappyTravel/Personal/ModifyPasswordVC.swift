@@ -30,7 +30,18 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableOption = [[["原始密码", "请输入原始密码"]], [["新密码", "请输入新密码"],["确认密码", "请重新输入密码"]], [["确认"]]]
         initView()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         registerNotify()
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     
     func registerNotify() {
@@ -39,11 +50,16 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func keyboardWillShow(notification: NSNotification?) {
-        
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
     }
     
     func keyboardWillHide(notification: NSNotification?) {
-        
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
     }
     
     func initView() {
@@ -59,6 +75,19 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         table?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
+        
+        hideKeyboard()
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
     }
     
     //MARK: - TableView
@@ -193,8 +222,8 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func modifyPwd(sender: UIButton?) {
-//        let dict = ["uid_": UserInfoManager.currentUser!.uid!, "old_passwd_": "123456x", "new_passwd_": "223456x"]
-//        SocketManager.sendData(.ModifyPassword, data: dict)
+        let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd))", "new_passwd_": "\(newPasswd)"]
+        SocketManager.sendData(.ModifyPassword, data: dict)
         XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }
     

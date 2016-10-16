@@ -22,15 +22,30 @@ class NotifyDefine: NSObject {
     
     static let RecommendServants = "RecommendServants"
     
+    static let JumpToCenturionCardCenter = "JumpToCenturionCardCenter"
+    
     static let JumpToWalletVC = "JumpToWalletVC"
     
     static let JumpToDistanceOfTravelVC = "JumpToDistanceOfTravelVC"
     
     static let JumpToSettingsVC = "JumpToSettingsVC"
     
+    static let VerifyCodeInfo = "VerifyCodeInfo"
     
-    static let AskInvitationNotify = "AskInvitationNotify"
+    static let ImproveDataSuccessed = "ImproveDataSuccessed"
+    
+    static let ObtainTripReply = "ObtainTripReply"
+    
+    static let RegisterAccountReply = "RegisterAccountReply"
+    
+    static let DrawBillReply = "DrawBillReply"
+    
+    static let AskInvitationResult = "AskInvitationResult"
     
     static let ChatMessgaeNotiy = "ChatMessageNotify"
+    
+    static let UpdateChatVC = "UpdateChatVC"
+    
+    static let PushMessageNotify = "PushMessageNotify"
     
 }

@@ -10,6 +10,23 @@ import Foundation
 
 class DistanceOfTravelCell: UITableViewCell {
     
+    var dateFormatter = NSDateFormatter()
+    
+    let statusDict:Dictionary<OrderStatus, String> = [.WaittingAccept: "等待接受",
+                                                      .Reject: "已拒绝",
+                                                      .Accept: "已接受",
+                                                      .WaittingPay: "等待支付",
+                                                      .Paid: "支付完成",
+                                                      .Cancel: "已取消"]
+    let statusColor:Dictionary<OrderStatus, UIColor> = [.WaittingAccept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
+                                                        .Reject: UIColor.redColor(),
+                                                        .Accept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
+                                                        .WaittingPay: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
+                                                        .Paid: UIColor.greenColor(),
+                                                        .Cancel: UIColor.grayColor()]
+    
+    var curHodometerInfo:HodometerInfo?
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
@@ -128,24 +145,24 @@ class DistanceOfTravelCell: UITableViewCell {
         
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setOrderInfo(orderInfo: OrderInfo?) {
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            headView.kf_setImageWithURL(NSURL(string: "http://www.mmonly.cc/gqbz/dmbz/11072_2.html"), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                 
             }
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-            nickNameLab.text = "PAPI酱"
+            nickNameLab.text = (orderInfo?.to_name_)!
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {
-            serviceTitleLab.text = "【全天服务】"
+            serviceTitleLab.text = (orderInfo?.service_name_)!
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = "1024.00"
+            payLab.text = "\((orderInfo?.service_price_)!)￥"
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
@@ -153,7 +170,45 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
-            statusLab.text = "已接单"
+            statusLab.text = statusDict[OrderStatus(rawValue: (orderInfo?.order_status_)!)!]
+            statusLab.textColor = statusColor[OrderStatus(rawValue: (orderInfo?.order_status_)!)!]
+        }
+        
+    }
+    
+    func setHodometerInfo(hotometer: HodometerInfo?) {
+        curHodometerInfo = hotometer
+        let view = contentView.viewWithTag(101)
+        if let headView = view!.viewWithTag(1001) as? UIImageView {
+            headView.kf_setImageWithURL(NSURL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                
+            }
+        }
+        
+        if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
+            nickNameLab.text = (hotometer?.to_name_)!
+        }
+        
+        if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {
+            if hotometer?.service_name_ != nil {
+                serviceTitleLab.text = (hotometer?.service_name_)!
+            }
+            
+        }
+        
+        if let payLab = view!.viewWithTag(1004) as? UILabel {
+            payLab.text = "\((hotometer?.service_price_)!)￥"
+        }
+        
+        if let timeLab = view!.viewWithTag(1005) as? UILabel {
+            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.timeStyle = .ShortStyle
+            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(hotometer!.start_)))
+        }
+        
+        if let statusLab = view!.viewWithTag(1006) as? UILabel {
+            statusLab.text = statusDict[OrderStatus(rawValue: (hotometer?.status_)!)!]
+            statusLab.textColor = statusColor[OrderStatus(rawValue: (hotometer?.status_)!)!]
         }
         
     }

@@ -21,8 +21,7 @@ class PersonalHeadCell : UITableViewCell {
                 "zhimaAuth": 1006,
                 "authTips": 1007,
                 "limitLab": 1008,
-                "limitIcon": 1009,
-                "bottomControl": 1010]
+                "limitIcon": 1009]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,6 +55,7 @@ class PersonalHeadCell : UITableViewCell {
                 make.left.equalTo(view!)
                 make.width.equalTo(width)
                 make.height.equalTo(width / 3.0 * 2.0)
+                make.bottom.equalTo(view!)
             }
         }
         
@@ -190,21 +190,7 @@ class PersonalHeadCell : UITableViewCell {
             })
             limitIcon?.image = UIImage.init(named: "limit")
         }
-        
-        var bottomControl = view?.viewWithTag(tags["bottomControl"]!)
-        if bottomControl == nil {
-            bottomControl = UIView()
-            bottomControl!.tag = tags["bottomControl"]!
-            bottomControl!.backgroundColor = UIColor.clearColor()
-            view?.addSubview(bottomControl!)
-            bottomControl?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(personalView!.snp_bottom)
-                make.bottom.equalTo(view!)
-                make.left.equalTo(view!)
-                make.right.equalTo(view!)
-            })
-        }
-        
+
     }
     
     func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
@@ -237,12 +223,8 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let limitLab = personalView.viewWithTag(tags["limitLab"]!) as? UILabel {
-//                let myLongitude = UserInfoManager.currentUser!.gpsLocation.longitude
-//                let myLatitude = UserInfoManager.currentUser!.gpsLocation.latitude
-//                let servantLongitude = userInfo?.gpsLocation.longitude
-//                let servantLatitude = userInfo?.gpsLocation.latitude
-                let myLongitude = UserInfoManager.currentUser!.gpsLocationLon
-                let myLatitude = UserInfoManager.currentUser!.gpsLocationLat
+                let myLongitude = DataManager.currentUser!.gpsLocationLon
+                let myLatitude = DataManager.currentUser!.gpsLocationLat
                 let servantLongitude = userInfo?.gpsLocationLon
                 let servantLatitude = userInfo?.gpsLocationLat
                 limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"

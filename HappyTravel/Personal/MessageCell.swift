@@ -110,7 +110,8 @@ class MessageCell: UITableViewCell {
             msgLab?.tag = 1004
             msgLab?.backgroundColor = UIColor.clearColor()
             msgLab?.textAlignment = .Left
-            msgLab?.font = UIFont.systemFontOfSize(15)
+            msgLab?.font = UIFont.systemFontOfSize(14)
+            msgLab?.textColor = UIColor.grayColor()
             msgLab?.numberOfLines = 0
             view?.addSubview(msgLab!)
             msgLab?.snp_makeConstraints(closure: { (make) in
@@ -127,13 +128,24 @@ class MessageCell: UITableViewCell {
         msgInfo = message
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            if let user = UserInfoManager.getUserInfo(message!.from_uid_) {
+            var uid = 0
+            if message!.from_uid_ == DataManager.currentUser!.uid {
+                uid = message!.to_uid_
+            } else {
+                uid = message!.from_uid_
+            }
+            if let user = DataManager.getUserInfo(uid) {
                 userInfo = user
                 headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
                     nickNameLab.text = userInfo!.nickname!
+                }
+                
+                if let msgLab = view!.viewWithTag(1004) as? UILabel {
+                    let nickname = DataManager.getUserInfo(message!.from_uid_)?.nickname
+                    msgLab.text = "\(nickname!) : \((message?.content_!)!)"
                 }
             }
             
@@ -154,9 +166,6 @@ class MessageCell: UITableViewCell {
                 }
             }
             
-            if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                msgLab.text = message?.content_!
-            }
         }
         
     }

@@ -12,13 +12,23 @@ protocol ServiceSheetDelegate : NSObjectProtocol {
     
     func cancelAction(sender: UIButton?)
     
-    func sureAction(sender: UIButton?)
+    func sureAction(service: ServiceInfo?)
     
 }
 
-class ServiceSheet: UIView {
+class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
     
     weak var delegate:ServiceSheetDelegate?
+    
+    var selectedIndexPath:NSIndexPath?
+    
+    var servantInfo:UserInfo?
+    
+    var table:UITableView?
+    
+    let tags = ["selectBtn": 1001,
+                "priceLab": 1002,
+                "descLab": 1003]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,67 +84,23 @@ class ServiceSheet: UIView {
             make.bottom.equalTo(head)
         }
         
-        let body = UIView()
-        body.backgroundColor = UIColor.clearColor()
-        body.userInteractionEnabled = true
-        addSubview(body)
-        body.snp_makeConstraints { (make) in
-            make.left.equalTo(bgView).offset(48)
-            make.right.equalTo(bgView).offset(-48)
-            make.top.equalTo(head.snp_bottom).offset(28)
-            make.bottom.equalTo(bgView).offset(-38)
-        }
-        
-        for i in 0...3 {
-            let btn = UIButton()
-            btn.tag = 1001 + i
-            btn.setBackgroundImage(UIImage.init(named: "service-unselect"), forState: .Normal)
-            btn.setBackgroundImage(UIImage.init(named: "service-selected"), forState: .Selected)
-            btn.backgroundColor = UIColor.clearColor()
-            body.addSubview(btn)
-            btn.snp_makeConstraints { (make) in
-                make.left.equalTo(body)
-                if i == 0 {
-                    make.top.equalTo(body)
-                    btn.selected = true
-                } else {
-                    make.top.equalTo((body.viewWithTag(1001 + i - 1) as? UIButton)!.snp_bottom).offset(30)
-                }
-                if i == 3 - 1 {
-                    make.bottom.equalTo(body)
-                } else {
-                    make.height.equalTo(20)
-                }
-                make.width.equalTo(20)
-            }
-            
-            let pay = UILabel()
-            pay.backgroundColor = UIColor.clearColor()
-            pay.textAlignment = .Right
-            pay.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            pay.font = UIFont.systemFontOfSize(15)
-            body.addSubview(pay)
-            pay.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(body)
-                make.top.equalTo(btn)
-                make.bottom.equalTo(btn)
-            })
-            pay.text = "1200元"
-            
-            let time = UILabel()
-            time.backgroundColor = UIColor.clearColor()
-            time.textAlignment = .Left
-            time.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            time.font = UIFont.systemFontOfSize(15)
-            body.addSubview(time)
-            time.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(btn.snp_right).offset(37)
-                make.right.equalTo(pay.snp_left)
-                make.top.equalTo(btn)
-                make.bottom.equalTo(btn)
-            })
-            time.text = "全天     08:00-24:00"
-        }
+        table = UITableView(frame: CGRectZero, style: .Plain)
+        table?.backgroundColor = UIColor.clearColor()
+        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table?.delegate = self
+        table?.dataSource = self
+        table?.estimatedRowHeight = 256
+        table?.rowHeight = UITableViewAutomaticDimension
+        table?.separatorStyle = .None
+        table?.registerClass(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
+        addSubview(table!)
+        table?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(self)
+            make.top.equalTo(head.snp_bottom)
+            make.right.equalTo(self)
+            make.bottom.equalTo(self).offset(-20)
+            make.height.equalTo(UIScreen.mainScreen().bounds.size.height / 3.0)
+        })
     }
     
     func cancelAction(sender: UIButton?) {
@@ -142,7 +108,97 @@ class ServiceSheet: UIView {
     }
     
     func sureAction(sender: UIButton?) {
-        delegate?.sureAction(sender)
+        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row])
+    }
+    
+    // MARK: - UITableView
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return servantInfo != nil ? servantInfo!.serviceList.count : 0
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier("SettingCell")
+        if cell == nil {
+            cell = UITableViewCell()
+            cell?.selectionStyle = .None
+        }
+        
+        let service = servantInfo?.serviceList[indexPath.row]
+        
+        var selectBtn = cell?.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton
+        if selectBtn == nil {
+            selectBtn = UIButton()
+            selectBtn?.tag = tags["selectBtn"]!
+            selectBtn?.setBackgroundImage(UIImage.init(named: "service-unselect"), forState: .Normal)
+            selectBtn?.setBackgroundImage(UIImage.init(named: "service-selected"), forState: .Selected)
+            selectBtn?.backgroundColor = UIColor.clearColor()
+            cell?.contentView.addSubview(selectBtn!)
+            selectBtn?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(cell!.contentView).offset(15)
+                make.top.equalTo(cell!.contentView).offset(20)
+                make.width.equalTo(20)
+                make.bottom.equalTo(cell!.contentView).offset(-20)
+                
+            })
+        }
+        
+        var priceLab = cell?.contentView.viewWithTag(tags["priceLab"]!) as? UILabel
+        if priceLab == nil {
+            priceLab = UILabel()
+            priceLab?.tag = tags["priceLab"]!
+            priceLab?.backgroundColor = UIColor.clearColor()
+            priceLab?.textAlignment = .Right
+            priceLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
+            priceLab?.font = UIFont.systemFontOfSize(15)
+            cell?.contentView.addSubview(priceLab!)
+            priceLab!.snp_makeConstraints(closure: { (make) in
+                make.right.equalTo(cell!.contentView).offset(-15)
+                make.top.equalTo(selectBtn!)
+                make.bottom.equalTo(selectBtn!)
+            })
+        }
+        priceLab!.text = "\(service!.service_price_) 元"
+        
+        var descLab = cell?.contentView.viewWithTag(tags["descLab"]!) as? UILabel
+        if descLab == nil {
+            descLab = UILabel()
+            descLab?.tag = tags["descLab"]!
+            descLab?.backgroundColor = UIColor.clearColor()
+            descLab?.textAlignment = .Left
+            descLab?.numberOfLines = 0
+            descLab?.preferredMaxLayoutWidth = UIScreen.mainScreen().bounds.size.width / 5.0 * 3
+            descLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
+            descLab?.font = UIFont.systemFontOfSize(15)
+            cell?.contentView.addSubview(descLab!)
+            descLab!.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(selectBtn!.snp_right).offset(15)
+                make.right.equalTo(priceLab!.snp_left)
+                make.top.equalTo(cell!.contentView).offset(10)
+                make.bottom.equalTo(cell!.contentView).offset(-10)
+            })
+        }
+        
+        descLab!.text = "\(service!.service_name_!)    \(service!.service_time_!)"
+        
+        return cell!
+        
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if selectedIndexPath != nil {
+            let cell = tableView.cellForRowAtIndexPath(selectedIndexPath!)
+            if let selectBtn = cell?.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+                selectBtn.selected = false
+            }
+        }
+        
+        if let currentCell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let selectBtn = currentCell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+                selectBtn.selected = true
+                selectedIndexPath = indexPath
+            }
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -12,73 +12,33 @@ import XCGLogger
 import RealmSwift
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
 
     var window: UIWindow?
+    
+    var rootVC:UIViewController?
 
-//    func CustomUncaughtExceptionHandler() -> @convention(c) (NSException) -> Void {
-//        return { (exception) -> Void in
-//            let arr = exception.callStackSymbols  // 得到当前调用栈信息
-//            let reason = exception.reason  // 非常重要，就是崩溃的原因
-//            let name = exception.name  // 异常类型
-//            
-//            NSLog("exception type : \(name) \n crash reason : \(reason) \n call stack info : \(arr)");
-//            print(exception)
-//            print(exception.callStackSymbols)
-//            
-//        }
-//    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-//        let log = XCGLogger.defaultInstance()
-//        log.xcodeColors = [
-//            .Verbose: .lightGrey,
-//            .Debug: .darkGrey,
-//            .Info: .darkGreen,
-//            .Warning: .orange,
-//            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()), // Optionally use a UIColor
-//            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0)) // Optionally use RGB values directly
-//        ]
-//        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: nil, fileLogLevel: .Debug)
-//        
-//        do {
-//            try NSFileManager.defaultManager().removeItemAtURL(Realm.Configuration.defaultConfiguration.fileURL!)
-//        } catch {}
-        
-//        NSSetUncaughtExceptionHandler(CustomUncaughtExceptionHandler())
-        
-        XCGLogger.debug("\(try! Realm().configuration)")
-        
         application.applicationSupportsShakeToEdit = true
+        
+        XCGLogger.defaultInstance().xcodeColorsEnabled = true
+        XCGLogger.defaultInstance().xcodeColors = [
+            .Verbose: .lightGrey,
+            .Debug: .darkGrey,
+            .Info: .green,
+            .Warning: .orange,
+            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()),
+            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
+        ]
         
         commonViewSet()
         
+        pushMessageRegister()
+        
         return true
     }
-
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
-
-    func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
+    
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
         bar.setBackgroundImage(UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(0, 0, -88, 0)), forBarMetrics: UIBarMetrics.Default)
@@ -99,6 +59,113 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Selected)
         attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
         tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
+        
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
+    }
+    
+    func pushMessageRegister() {
+        //注册消息推送
+        GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
+        
+        let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+    }
+
+    //MARK: - OpenURL
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+//        AlipaySDK.defaultService().processOrderWithPaymentResult(url) { (data: [NSObject : AnyObject]!) in
+//            XCGLogger.debug("\(data)")
+//        }
+        
+        return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
+        
+        return true
+    }
+
+    //MARK: - BG FG
+    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        GeTuiSdk.resume()
+        completionHandler(UIBackgroundFetchResult.NewData)
+    }
+    
+    func applicationDidEnterBackground(application: UIApplication) {
+        GeTuiSdk.destroy()
+    }
+    
+    //MARK: - Notify
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        var token = deviceToken.description
+        token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
+        token = token.stringByReplacingOccurrencesOfString("<", withString: "")
+        token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+        XCGLogger.info("\(token)")
+        GeTuiSdk.registerDeviceToken(token)
+        NSUserDefaults.standardUserDefaults().setObject(token, forKey: CommonDefine.DeviceToken)
+        
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        XCGLogger.error("\(error)")
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
+        for vc in vcs! {
+            if vc.isKindOfClass(ForthwithVC) {
+                if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+                    vc.navigationController?.popToRootViewControllerAnimated(false)
+                    (vc as! ForthwithVC).msgAction(notification.userInfo)
+                    
+                }
+                
+                break
+            }
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
+        application.applicationIconBadgeNumber = 0
+        completionHandler(UIBackgroundFetchResult.NewData)
+//        let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
+//        for vc in vcs! {
+//            if vc.isKindOfClass(ForthwithVC) {
+//                vc.navigationController?.popToRootViewControllerAnimated(false)
+//                (vc as! ForthwithVC).msgAction(nil)
+//                break
+//            }
+//        }
+    }
+    
+    //MARK: - GeTuiSdkDelegate
+    func GeTuiSdkDidRegisterClient(clientId: String!) {
+        XCGLogger.info("CID:\(clientId)")
+    }
+    
+    func GeTuiSdkDidReceivePayloadData(payloadData: NSData!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {
+        GeTuiSdk.resetBadge()
+        XCGLogger.debug("\(payloadData.length)")
+        XCGLogger.debug("\(String.init(data: payloadData, encoding: NSUTF8StringEncoding))")
+    }
+    
+    func GeTuiSdkDidSendMessage(messageId: String!, result: Int32) {
+        
+    }
+    
+    func GeTuiSdkDidOccurError(error: NSError!) {
+        
+    }
+    
+    func GeTuiSDkDidNotifySdkState(aStatus: SdkStatus) {
+        
+    }
+    
+    func GeTuiSdkDidSetPushMode(isModeOff: Bool, error: NSError!) {
         
     }
 }

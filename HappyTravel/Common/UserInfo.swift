@@ -47,6 +47,8 @@ class UserInfo: Object {
     
     dynamic var username:String?
     
+    dynamic var cash:Int = 0
+    
     dynamic var uid:Int = -1
     
     dynamic var level:Float = 0
@@ -68,6 +70,10 @@ class UserInfo: Object {
     dynamic var bigBGPhotoUrl:String?
     
     dynamic var certification:Bool = false
+    
+    dynamic var registerSstatus = 0
+    
+    dynamic var gender = 0
     
     let businessTags:List<Tally> = List<Tally>()
     
@@ -153,8 +159,14 @@ class UserInfo: Object {
                     travalTags.append(tally)
                 }
                 break
+            case "register_status_":
+                registerSstatus = value as! Int
+                break
+            case "gender_":
+                gender = value as! Int
+                break
             default:
-                XCGLogger.debug("Exception:[\(key) : \(value)]")
+                XCGLogger.warning("Exception:[\(key) : \(value)]")
                 break
             }
         }
