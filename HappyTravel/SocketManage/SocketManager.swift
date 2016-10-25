@@ -44,6 +44,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case DrawBillReply = 1030
         case PutDeviceToken = 1031
         case DeviceTokenResult = 1032
+        case CenturionCardInfoRequest = 1035
+        case CenturionCardInfoReply = 1036
+        case UserCenturionCardInfoRequest = 1037
+        case UserCenturionCardInfoReply = 1038
+        case CenturionCardConsumedRequest = 1039
+        case CenturionCardConsumedReply = 1040
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -192,6 +198,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = 1031
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+        case .CenturionCardInfoRequest:
+            head.fields["opcode"] = SockOpcode.CenturionCardInfoRequest.rawValue
+            break
+        case .UserCenturionCardInfoRequest:
+            head.fields["opcode"] = SockOpcode.UserCenturionCardInfoRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .CenturionCardConsumedRequest:
+            head.fields["opcode"] = SockOpcode.CenturionCardConsumedRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+            
+            
         case .AskInvitation:
             head.fields["opcode"] = 2001
             head.fields["type"] = 2
@@ -299,7 +318,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 user.setInfo(.Other, info: info.1.dictionaryObject!)
                 DataManager.updateUserInfo(user)
             }
-            
             break
         case .MessageVerifyResult:
             let dict = JSON.init(data: body as! NSData)
@@ -335,6 +353,35 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let dict = JSON.init(data: body as! NSData)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
+        case .CenturionCardInfoReply:
+            let dict = JSON.init(data: body as! NSData)
+            if let privilegeList = dict.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
+                for privilege in privilegeList {
+                    let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
+                    DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
+                }
+                
+            }
+            break
+        case .UserCenturionCardInfoReply:
+            let dict = JSON.init(data: body as! NSData)
+            DataManager.currentUser?.setInfo(.CurrentUser, info: dict.dictionaryObject)
+            break
+        case .CenturionCardConsumedReply:
+            let dict = JSON.init(data: body as! NSData)
+            if let orderList = dict.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for order in orderList {
+                    let info = CenturionCardConsumedInfo(value: order)
+                    DataManager.insertCerturionCardConsumedInfo(info)
+                    lastOrderID = info.order_id_
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            }
+            break
+            
+            
+            
         case .InvitationResult:
             let dict = JSON.init(data: body as! NSData)
             let order = HodometerInfo(value: dict.dictionaryObject!)
@@ -368,7 +415,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ChatRecordResult:
             let dict = JSON.init(data: body as! NSData)
-            break
+//            break
         case .MSGReadCntResult:
             
             break

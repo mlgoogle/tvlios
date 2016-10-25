@@ -36,6 +36,8 @@ class NotifyDefine: NSObject {
     
     static let ObtainTripReply = "ObtainTripReply"
     
+    static let CenturionCardConsumedReply = "CenturionCardConsumedReply"
+    
     static let RegisterAccountReply = "RegisterAccountReply"
     
     static let DrawBillReply = "DrawBillReply"

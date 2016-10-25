@@ -129,6 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        
         XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)

@@ -61,13 +61,14 @@ public class MyPersonalVC : UIViewController {
         DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
         initPersonalView()
         SocketManager.sendData(.GetServiceCity, data: nil)
-        SocketManager.sendData(.GetServantInfo, data: nil)
+        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
                         "device_token_": dt]
             SocketManager.sendData(.PutDeviceToken, data: dict)
         }
-        
+        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
+        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func initPersonalView() {
@@ -182,7 +183,7 @@ public class MyPersonalVC : UIViewController {
             make.bottom.equalTo(view)
         }
         
-        let itemsTitle = ["黑卡会员", "钱包", "我的行程", "客服", "设置"]
+        let itemsTitle = ["黑卡会员", "钱包", "我的消费", "客服", "设置"]
         let itemsIcon = ["side-wallet", "side-wallet", "side-travel", "side-service", "side-settings"]
         for index in 0...itemsTitle.count - 1 {
             let itemBtn = UIButton()
