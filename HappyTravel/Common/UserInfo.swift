@@ -75,6 +75,20 @@ class UserInfo: Object {
     
     dynamic var gender = 0
     
+    dynamic var creditLv = 0
+    
+    dynamic var praiseLv = 0
+    
+    dynamic var cashLv = 0
+    
+    dynamic var centurionCardStartTime = 0
+    
+    dynamic var centurionCardEndTime = 0
+    
+    dynamic var centurionCardLv = 0
+    
+    dynamic var centurionCardValid = 0
+    
     let businessTags:List<Tally> = List<Tally>()
     
     let photoUrlList:List<PhotoUrl> = List<PhotoUrl>()
@@ -164,6 +178,27 @@ class UserInfo: Object {
                 break
             case "gender_":
                 gender = value as! Int
+                break
+            case "credit_lv_":
+                creditLv = value as! Int
+                break
+            case "praise_lv_":
+                praiseLv = value as! Int
+                break
+            case "cash_lv_":
+                cashLv = value as! Int
+                break
+            case "start_time_":
+                centurionCardStartTime = (value as! NSNumber).longValue
+                break
+            case "end_time_":
+                centurionCardEndTime = (value as! NSNumber).longValue
+                break
+            case "blackcard_lv_":
+                centurionCardLv = value as! Int
+                break
+            case "result":
+                centurionCardValid = value as! Int
                 break
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")

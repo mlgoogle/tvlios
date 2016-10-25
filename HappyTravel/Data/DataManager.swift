@@ -259,4 +259,78 @@ class DataManager: NSObject {
         return hodometerInfos
     }
     
+    // MARK: - CenturionCardServiceInfo
+    static func getCenturionCardServiceWithID(id: Int) ->Results<CenturionCardServiceInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let centurionCardServiceInfos = realm.objects(CenturionCardServiceInfo.self).filter("privilege_id_ = \(id)")
+        return centurionCardServiceInfos
+    }
+    
+    static func getCenturionCardServiceWithLV(lv: Int) ->Results<CenturionCardServiceInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let centurionCardServiceInfos = realm.objects(CenturionCardServiceInfo.self).filter("privilege_lv_ = \(lv)")
+        return centurionCardServiceInfos
+    }
+    
+    static func insertCenturionCardServiceInfo(info: CenturionCardServiceInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let centurionCardServiceInfo = realm.objects(CenturionCardServiceInfo.self).filter("privilege_id_ = \(info.privilege_id_)").first
+        try! realm.write({
+            if centurionCardServiceInfo == nil {
+                realm.add(info)
+            } else {
+                centurionCardServiceInfo?.setInfo(info)
+            }
+        })
+        
+    }
+    
+    // MARK: - CerturionCardConsumedInfo
+    static func getCerturionCardConsumedInfo(oid: Int) -> CenturionCardConsumedInfo? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let centurionCardConsumedInfo = realm.objects(CenturionCardConsumedInfo.self).filter("order_id_ = \(oid)").first
+        return centurionCardConsumedInfo
+    }
+    
+    static func getCerturionCardConsumedInfos(lv: Int) -> Results<CenturionCardConsumedInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let centurionCardConsumedInfos = realm.objects(CenturionCardConsumedInfo.self)
+        return centurionCardConsumedInfos
+    }
+    
+    static func insertCerturionCardConsumedInfo(info: CenturionCardConsumedInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let centurionCardConsumedInfo = realm.objects(CenturionCardConsumedInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if centurionCardConsumedInfo == nil {
+                realm.add(info)
+            } else {
+                centurionCardConsumedInfo?.setInfo(info)
+            }
+        })
+        
+    }
+    
 }

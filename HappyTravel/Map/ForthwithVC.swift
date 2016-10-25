@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 import SnapKit
 import XCGLogger
 import RealmSwift
@@ -33,6 +32,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     var location:CLLocation?
     var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
     var cityCode = 0
+    let bottomSelector = UISlider()
 
     
     required public init?(coder aDecoder: NSCoder) {
@@ -91,12 +91,14 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         if DataManager.currentUser?.login == false {
+            mapView!.setZoomLevel(12, animated: true)
             let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
-            if username == nil && regOrLoginSelVC?.isShow == false {
+            if regOrLoginSelVC?.isShow == false { // username == nil &&
                 presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
             }
         }
         
+        bottomSelector.setValue(0, animated: false)
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -181,7 +183,6 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
             make.height.equalTo(65)
         }
         
-        let bottomSelector = UISlider()
         bottomSelector.minimumValue = 0
         bottomSelector.maximumValue = 1
         bottomSelector.value = 0
@@ -497,16 +498,19 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     func bottomSelectorAction(sender: AnyObject?) {
         let bottomSelector = sender as! UISlider
         if bottomSelector.value > 0.5 {
-            bottomSelector.setValue(1, animated: true)
-            mapView!.snp_updateConstraints { (make) in
-                make.width.equalTo(0)
-            }
-            table?.reloadData()
+            let appointmentVC = AppointmentVC()
+            appointmentVC.serviceCitys = serviceCitys
+            navigationController?.pushViewController(appointmentVC, animated: true)
+//            bottomSelector.setValue(1, animated: true)
+//            mapView!.snp_updateConstraints { (make) in
+//                make.width.equalTo(0)
+//            }
+//            table?.reloadData()
         } else {
-            bottomSelector.setValue(0, animated: false)
-            mapView!.snp_updateConstraints { (make) in
-                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            }
+//            bottomSelector.setValue(0, animated: false)
+//            mapView!.snp_updateConstraints { (make) in
+//                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+//            }
         }
         XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
     }
@@ -529,20 +533,23 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
             latDiffValue = 720.0
         } else {
             latDiffValue = location!.coordinate.latitude - userLocation.coordinate.latitude
-            lonDiffvalue = location!.coordinate.latitude - userLocation.coordinate.latitude
+            lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
         }
         
         if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
-                if placeMarks?.count == 1 {
-                    self.locality = (placeMarks?[0])!.locality
-                    self.titleLab?.text = self.locality
-                    XCGLogger.debug("Update locality: \(self.locality!)")
-                    self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
+                    if placeMarks?.count == 1 {
+                        self.locality = (placeMarks?[0])!.locality
+                        self.titleLab?.text = self.locality
+                        XCGLogger.debug("Update locality: \(self.locality!)")
+                        DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
+                        DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
+                        self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
+                        SocketManager.sendData(.GetServantInfo, data: nil)
+                    }
                 }
-            }
             }
             
         }
@@ -550,6 +557,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func sendLocality() {
+        mapView!.setZoomLevel(12, animated: true)
         if serviceCitys.count > 0 {
             for (cityCode, cityInfo) in serviceCitys {
                 if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
@@ -617,7 +625,8 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func sureAction(sender: UIButton?, targetCity: CityInfo?) {
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        SocketManager.sendData(.GetRecommendServants, data: targetCity?.cityCode)
+        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
+        SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
     func headerRefresh() {

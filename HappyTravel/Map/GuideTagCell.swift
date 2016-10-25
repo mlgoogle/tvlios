@@ -26,7 +26,7 @@ class GuideTagCell: MAAnnotationView {
         if headView == nil {
             headView = UIImageView()
             headView?.tag = 1001
-            headView?.layer.cornerRadius = 20
+            headView?.layer.cornerRadius = 25
             headView?.layer.masksToBounds = true
             headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
             headView?.layer.borderWidth = 1
@@ -35,8 +35,8 @@ class GuideTagCell: MAAnnotationView {
             headView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)
                 make.top.equalTo(self)
-                make.width.equalTo(40)
-                make.height.equalTo(40)
+                make.width.equalTo(50)
+                make.height.equalTo(50)
             })
             image = UIImage.init(named: "location")
         }

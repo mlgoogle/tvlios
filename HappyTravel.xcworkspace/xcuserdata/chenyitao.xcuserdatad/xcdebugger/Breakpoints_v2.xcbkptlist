@@ -28,11 +28,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HappyTravel/AppDelegate.swift"
-            timestampString = "496728248.607573"
+            timestampString = "498628962.756885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "GeTuiSdkDidReceivePayloadData(_:andTaskId:andMsgId:andOffLine:fromGtAppId:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HappyTravel/AppDelegate.swift"
-            timestampString = "496728248.607573"
+            timestampString = "498628962.756885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "GeTuiSdkDidSendMessage(_:result:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -60,11 +60,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HappyTravel/AppDelegate.swift"
-            timestampString = "496728248.607573"
+            timestampString = "498628962.756885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "GeTuiSdkDidOccurError(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -82,22 +82,6 @@
             startingLineNumber = "252"
             endingLineNumber = "252"
             landmarkName = "headerRefresh()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HappyTravel/SocketManage/SocketManager.swift"
-            timestampString = "497707407.217444"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
-            landmarkName = "recvData(_:body:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
