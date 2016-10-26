@@ -50,4 +50,6 @@ class NotifyDefine: NSObject {
     
     static let PushMessageNotify = "PushMessageNotify"
     
+    
+    
 }
