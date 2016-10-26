@@ -131,7 +131,9 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return hotometers != nil ? hotometers!.count : 0
+        let cnt = hotometers != nil ? hotometers!.count : 0
+        footer.hidden = cnt < 10 ? true : false
+        return cnt
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

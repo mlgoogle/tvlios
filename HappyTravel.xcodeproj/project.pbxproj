@@ -51,6 +51,7 @@
 		2F9684411D7D22660028E3F2 /* star-common-hollow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F96843D1D7D22660028E3F2 /* star-common-hollow@2x.png */; };
 		2F9684421D7D22660028E3F2 /* star-common-hollow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F96843E1D7D22660028E3F2 /* star-common-hollow@3x.png */; };
 		2F9C378C1DBF389100B163C5 /* LaunchScreen-512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9C378B1DBF389100B163C5 /* LaunchScreen-512@2x.png */; };
+		2F9C378E1DBF5D8000B163C5 /* autobuild.py in Resources */ = {isa = PBXBuildFile; fileRef = 2F9C378D1DBF5D8000B163C5 /* autobuild.py */; };
 		2F9D42071D597A5700D10FBC /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9D42061D597A5700D10FBC /* location@2x.png */; };
 		2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */; };
 		2F9D42121D5C511000D10FBC /* SocketProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D42111D5C511000D10FBC /* SocketProtocol.swift */; };
@@ -102,6 +103,8 @@
 		2FC25B341D6D416A00D48D6A /* limit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FC25B331D6D416A00D48D6A /* limit@2x.png */; };
 		2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */; };
 		2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B371D6D874000D48D6A /* SettingsVC.swift */; };
+		2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB5D931DC042B8006DEB26 /* SkillInfo.swift */; };
+		2FCB5D961DC093E6006DEB26 /* InvoiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB5D951DC093E6006DEB26 /* InvoiceInfo.swift */; };
 		2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */; };
 		2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */; };
 		2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCED1D65653900FD28CB /* LoginVC.swift */; };
@@ -194,7 +197,7 @@
 		2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */; };
 		2FF72B9E1DB4B28B001EEED2 /* city-selector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF72B9C1DB4B28B001EEED2 /* city-selector@2x.png */; };
 		2FF72B9F1DB4B28B001EEED2 /* city-selector@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF72B9D1DB4B28B001EEED2 /* city-selector@3x.png */; };
-		2FF72BA11DB61E7F001EEED2 /* TallysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA01DB61E7F001EEED2 /* TallysCell.swift */; };
+		2FF72BA11DB61E7F001EEED2 /* SkillsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */; };
 		2FF72BA31DB73054001EEED2 /* DateSelectorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */; };
 		2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */; };
 		2FF72BA71DB76CF9001EEED2 /* CenturionCardServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA61DB76CF9001EEED2 /* CenturionCardServiceInfo.swift */; };
@@ -279,10 +282,11 @@
 		2F96843D1D7D22660028E3F2 /* star-common-hollow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-common-hollow@2x.png"; sourceTree = "<group>"; };
 		2F96843E1D7D22660028E3F2 /* star-common-hollow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-common-hollow@3x.png"; sourceTree = "<group>"; };
 		2F9C378B1DBF389100B163C5 /* LaunchScreen-512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen-512@2x.png"; sourceTree = "<group>"; };
+		2F9C378D1DBF5D8000B163C5 /* autobuild.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = autobuild.py; sourceTree = "<group>"; };
 		2F9D42061D597A5700D10FBC /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketManager.swift; path = SocketManage/SocketManager.swift; sourceTree = "<group>"; };
 		2F9D42111D5C511000D10FBC /* SocketProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketProtocol.swift; path = SocketManage/SocketProtocol.swift; sourceTree = "<group>"; };
-		2FA75CF21D5081CB00609C8E /* V领队.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "V领队.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FA75CF21D5081CB00609C8E /* HappyTravel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyTravel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FA75CF51D5081CB00609C8E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FA75CF71D5081CB00609C8E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2FA75CFA1D5081CB00609C8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -337,6 +341,8 @@
 		2FC25B331D6D416A00D48D6A /* limit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "limit@2x.png"; sourceTree = "<group>"; };
 		2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DistanceOfTravelVC.swift; path = Personal/DistanceOfTravelVC.swift; sourceTree = "<group>"; };
 		2FC25B371D6D874000D48D6A /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsVC.swift; path = Personal/SettingsVC.swift; sourceTree = "<group>"; };
+		2FCB5D931DC042B8006DEB26 /* SkillInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillInfo.swift; path = Data/SkillInfo.swift; sourceTree = "<group>"; };
+		2FCB5D951DC093E6006DEB26 /* InvoiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceInfo.swift; path = Data/InvoiceInfo.swift; sourceTree = "<group>"; };
 		2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorExt.swift; path = Common/ColorExt.swift; sourceTree = "<group>"; };
 		2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-detail-arrows-up@2x.png"; sourceTree = "<group>"; };
 		2FDAFCED1D65653900FD28CB /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginVC.swift; path = Login/LoginVC.swift; sourceTree = "<group>"; };
@@ -429,7 +435,7 @@
 		2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentVC.swift; path = Map/Appointment/AppointmentVC.swift; sourceTree = "<group>"; };
 		2FF72B9C1DB4B28B001EEED2 /* city-selector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "city-selector@2x.png"; sourceTree = "<group>"; };
 		2FF72B9D1DB4B28B001EEED2 /* city-selector@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "city-selector@3x.png"; sourceTree = "<group>"; };
-		2FF72BA01DB61E7F001EEED2 /* TallysCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TallysCell.swift; path = Map/Appointment/TallysCell.swift; sourceTree = "<group>"; };
+		2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillsCell.swift; path = Map/Appointment/SkillsCell.swift; sourceTree = "<group>"; };
 		2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateSelectorSheet.swift; path = Map/Appointment/DateSelectorSheet.swift; sourceTree = "<group>"; };
 		2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillTreeVC.swift; path = Map/Appointment/SkillTreeVC.swift; sourceTree = "<group>"; };
 		2FF72BA61DB76CF9001EEED2 /* CenturionCardServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardServiceInfo.swift; path = Data/CenturionCardServiceInfo.swift; sourceTree = "<group>"; };
@@ -596,6 +602,7 @@
 		2FA75CE91D5081CB00609C8E = {
 			isa = PBXGroup;
 			children = (
+				2F9C378D1DBF5D8000B163C5 /* autobuild.py */,
 				2F337A841D9BC249003BAE20 /* Todo.swift */,
 				2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */,
 				2FA75CF41D5081CB00609C8E /* HappyTravel */,
@@ -612,7 +619,7 @@
 		2FA75CF31D5081CB00609C8E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2FA75CF21D5081CB00609C8E /* V领队.app */,
+				2FA75CF21D5081CB00609C8E /* HappyTravel.app */,
 				2FA75D061D5081CB00609C8E /* HappyTravelTests.xctest */,
 				2FA75D111D5081CB00609C8E /* HappyTravelUITests.xctest */,
 			);
@@ -714,6 +721,8 @@
 				2F337A821D9BC1FB003BAE20 /* HodometerInfo.swift */,
 				2FF72BA61DB76CF9001EEED2 /* CenturionCardServiceInfo.swift */,
 				2F2A2B151DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift */,
+				2FCB5D931DC042B8006DEB26 /* SkillInfo.swift */,
+				2FCB5D951DC093E6006DEB26 /* InvoiceInfo.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -904,7 +913,7 @@
 			isa = PBXGroup;
 			children = (
 				2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */,
-				2FF72BA01DB61E7F001EEED2 /* TallysCell.swift */,
+				2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */,
 				2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */,
 				2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */,
 			);
@@ -952,7 +961,7 @@
 			);
 			name = HappyTravel;
 			productName = HappyTravel;
-			productReference = 2FA75CF21D5081CB00609C8E /* V领队.app */;
+			productReference = 2FA75CF21D5081CB00609C8E /* HappyTravel.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2FA75D051D5081CB00609C8E /* HappyTravelTests */ = {
@@ -1127,6 +1136,7 @@
 				2FE7C3411D62B52C00994505 /* side-travel@2x.png in Resources */,
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				2FF72B701DAF6217001EEED2 /* bg-baseinfo@2x.png in Resources */,
+				2F9C378E1DBF5D8000B163C5 /* autobuild.py in Resources */,
 				2FE7C3861D6413E300994505 /* my-star-fill@2x.png in Resources */,
 				2FF72B6E1DAF6217001EEED2 /* advanced-level@2x.png in Resources */,
 				2FF72B961DAF6217001EEED2 /* vipper-rest@3x.png in Resources */,
@@ -1507,9 +1517,10 @@
 				2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */,
 				2F9684131D76D5250028E3F2 /* IdentCommentCell.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
+				2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */,
 				2FF72BAF1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift in Sources */,
 				2FF72BAB1DB8A0A2001EEED2 /* CenturionCardLvSelCell.swift in Sources */,
-				2FF72BA11DB61E7F001EEED2 /* TallysCell.swift in Sources */,
+				2FF72BA11DB61E7F001EEED2 /* SkillsCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FBB5E891D51EEB4007BE4E0 /* InputTextView.swift in Sources */,
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,
@@ -1529,6 +1540,7 @@
 				2FC25B0D1D6A9DA500D48D6A /* RecommendServantsVC.swift in Sources */,
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
 				2F337A851D9BC249003BAE20 /* Todo.swift in Sources */,
+				2FCB5D961DC093E6006DEB26 /* InvoiceInfo.swift in Sources */,
 				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
 				2F96840F1D76CB6F0028E3F2 /* IdentDetailVC.swift in Sources */,
@@ -1696,7 +1708,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
-				PRODUCT_NAME = "V领队";
+				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1722,7 +1734,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
-				PRODUCT_NAME = "V领队";
+				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;

@@ -50,6 +50,7 @@ class HodometerInfo : Object {
     
     dynamic var from_name_:String?
     
+    dynamic var is_asked_ = 0
     
     func setInfo(info: HodometerInfo) {
         service_type_ = info.service_type_
@@ -82,6 +83,7 @@ class HodometerInfo : Object {
         
         from_name_ = info.from_name_
         
+        is_asked_ = info.is_asked_
     }
     
 }

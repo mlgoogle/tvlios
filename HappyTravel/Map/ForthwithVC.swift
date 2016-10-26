@@ -97,9 +97,8 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         if DataManager.currentUser?.login == false {
-            mapView!.setZoomLevel(12, animated: true)
-            let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
-            if regOrLoginSelVC?.isShow == false { // username == nil &&
+            mapView!.setZoomLevel(11, animated: true)
+            if regOrLoginSelVC?.isShow == false {
                 presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
             }
         }
@@ -238,7 +237,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         mapView!.tag = 1002
         mapView!.delegate = self
         mapView!.userTrackingMode = .Follow
-        mapView!.setZoomLevel(3, animated: true)
+        mapView!.setZoomLevel(11, animated: true)
         mapView!.showsUserLocation = true
         mapView!.showsCompass = true
         view.addSubview(mapView!)
@@ -369,6 +368,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func serviceCitys(notification: NSNotification?) {
+   
         if let data = notification?.userInfo!["data"] {
             if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
                 for city in citys {
@@ -564,7 +564,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func sendLocality() {
-        mapView!.setZoomLevel(12, animated: true)
+        mapView!.setZoomLevel(11, animated: true)
         if serviceCitys.count > 0 {
             for (cityCode, cityInfo) in serviceCitys {
                 if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {

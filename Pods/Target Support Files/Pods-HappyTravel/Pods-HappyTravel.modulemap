@@ -1,0 +1,6 @@
+framework module Pods_HappyTravel {
+  umbrella header "Pods-HappyTravel-umbrella.h"
+
+  export *
+  module * { export * }
+}
