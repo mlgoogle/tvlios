@@ -102,6 +102,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func drawBillReply(notification: NSNotification?) {
         if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if dict["invoice_status_"] as! Int == 0 {
+                
                 let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
                 
                 let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in

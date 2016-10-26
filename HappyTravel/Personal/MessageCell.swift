@@ -144,7 +144,12 @@ class MessageCell: UITableViewCell {
                 }
                 
                 if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                    let nickname = DataManager.getUserInfo(message!.from_uid_)?.nickname
+                    var nickname:String?
+                    if message!.from_uid_ == DataManager.currentUser!.uid {
+                        nickname = DataManager.currentUser?.nickname
+                    } else {
+                        nickname = userInfo?.nickname
+                    }
                     msgLab.text = "\(nickname!) : \((message?.content_!)!)"
                 }
             }

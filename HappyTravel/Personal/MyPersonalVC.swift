@@ -69,6 +69,7 @@ public class MyPersonalVC : UIViewController {
         }
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.SkillsInfoRequest, data: nil)
     }
     
     func initPersonalView() {

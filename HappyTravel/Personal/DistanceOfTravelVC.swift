@@ -173,10 +173,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var cnt = 0
         if segmentIndex == 2 {
-            return consumes != nil ? consumes!.count : 0
+            cnt = consumes != nil ? consumes!.count : 0
+        } else {
+            cnt = hotometers != nil ? hotometers!.count : 0
         }
-        return hotometers != nil ? hotometers!.count : 0
+        footer.hidden = cnt < 10 ? true : false
+        return cnt
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

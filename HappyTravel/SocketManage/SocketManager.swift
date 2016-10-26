@@ -11,6 +11,10 @@ import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
 
+enum SockErrCode : Int {
+
+    case NoOrder = -1015
+}
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
@@ -44,12 +48,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case DrawBillReply = 1030
         case PutDeviceToken = 1031
         case DeviceTokenResult = 1032
+        case InvoiceInfoRequest = 1033
+        case InvoiceInfoReply = 1034
         case CenturionCardInfoRequest = 1035
         case CenturionCardInfoReply = 1036
         case UserCenturionCardInfoRequest = 1037
         case UserCenturionCardInfoReply = 1038
         case CenturionCardConsumedRequest = 1039
         case CenturionCardConsumedReply = 1040
+        case SkillsInfoRequest = 1041
+        case SkillsInfoReply = 1042
+        case AppointmentRequest = 1043
+        case AppointmentReply = 1044
+        
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -113,6 +124,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
         sock?.socket?.disconnect()
+    }
+    
+    static func getErrorCode(dict: [String: AnyObject]) -> SockErrCode? {
+        if let err = dict["error_"] {
+            return SockErrCode(rawValue: err as! Int)
+        }
+        return nil
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
@@ -194,6 +212,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+        case .InvoiceInfoRequest:
+            head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
         case .PutDeviceToken:
             head.fields["opcode"] = 1031
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
@@ -207,6 +229,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .CenturionCardConsumedRequest:
             head.fields["opcode"] = SockOpcode.CenturionCardConsumedRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .SkillsInfoRequest:
+            head.fields["opcode"] = SockOpcode.SkillsInfoRequest.rawValue
+            break
+        case .AppointmentRequest:
+            head.fields["opcode"] = SockOpcode.AppointmentRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
             
@@ -351,6 +380,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .DrawBillReply:
             let dict = JSON.init(data: body as! NSData)
+            DataManager.updateData(HodometerInfo.self, data: dict.dictionaryObject!)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .CenturionCardInfoReply:
@@ -379,12 +409,34 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
             }
             break
+        case .SkillsInfoReply:
+            let dict = JSON.init(data: body as! NSData)
+            if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
+                for skill in skillList {
+                    let info = SkillInfo(value: skill)
+                    DataManager.insertData(SkillInfo.self, data: info)
+                    
+                }
+
+            }
+            break
+        case .AppointmentReply:
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
+            break
             
             
             
         case .InvitationResult:
             let dict = JSON.init(data: body as! NSData)
+            if let _ = SocketManager.getErrorCode(dict.dictionaryObject!) {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: dict.dictionaryObject)
+                return true
+            }
             let order = HodometerInfo(value: dict.dictionaryObject!)
+            if order.is_asked_ == 1 {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
+                return true
+            }
             DataManager.insertHodometerInfo(order)
             if UIApplication.sharedApplication().applicationState == .Background {
                 let body = "系统消息: 您有新的行程消息!"
@@ -415,12 +467,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ChatRecordResult:
             let dict = JSON.init(data: body as! NSData)
-//            break
+            break
         case .MSGReadCntResult:
             
             break
         case .EvaluatetripReply:
-            
+            let dict = JSON.init(data: body as! NSData)
+            XCGLogger.debug("\(dict)")
             break
         case .AnswerInvitationReply:
             
@@ -515,7 +568,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func socket(sock: GCDAsyncSocket, shouldTimeoutWriteWithTag tag: Int, elapsed: NSTimeInterval, bytesDone length: UInt) -> NSTimeInterval {
         return 0
     }
-    
     
     deinit {
         socket?.disconnect()

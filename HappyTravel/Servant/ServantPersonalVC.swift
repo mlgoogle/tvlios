@@ -184,17 +184,34 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func invitationResult(notifucation: NSNotification?) {
-        if let order = notifucation?.userInfo!["orderInfo"] as? OrderInfo {
-            if order.order_status_ == 0 {
-                let alert = UIAlertController.init(title: "邀约状态", message: "邀约发起成功，等待对方接受邀请", preferredStyle: .Alert)
-                
-                let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                    
-                })
-                
-                alert.addAction(action)
-                presentViewController(alert, animated: true, completion: nil)
+        var msg = ""
+        if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
+            switch err {
+            case .NoOrder:
+                msg = "邀约失败，订单异常"
+                break
+            default:
+                msg = "邀约失败，订单异常"
+                break
             }
+            
+        }
+        
+        if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {
+            if msg == "" {
+                msg = order.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+            }
+            let alert = UIAlertController.init(title: "邀约状态",
+                                               message: msg,
+                                               preferredStyle: .Alert)
+            
+            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                
+            })
+            
+            alert.addAction(action)
+            presentViewController(alert, animated: true, completion: nil)
+            
         }
     }
     

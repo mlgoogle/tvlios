@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2FA75CF11D5081CB00609C8E"
-               BuildableName = "V&#x9886;&#x961f;.app"
+               BuildableName = "HappyTravel.app"
                BlueprintName = "HappyTravel"
                ReferencedContainer = "container:HappyTravel.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FA75CF11D5081CB00609C8E"
-            BuildableName = "V&#x9886;&#x961f;.app"
+            BuildableName = "HappyTravel.app"
             BlueprintName = "HappyTravel"
             ReferencedContainer = "container:HappyTravel.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FA75CF11D5081CB00609C8E"
-            BuildableName = "V&#x9886;&#x961f;.app"
+            BuildableName = "HappyTravel.app"
             BlueprintName = "HappyTravel"
             ReferencedContainer = "container:HappyTravel.xcodeproj">
          </BuildableReference>
@@ -99,7 +99,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FA75CF11D5081CB00609C8E"
-            BuildableName = "V&#x9886;&#x961f;.app"
+            BuildableName = "HappyTravel.app"
             BlueprintName = "HappyTravel"
             ReferencedContainer = "container:HappyTravel.xcodeproj">
          </BuildableReference>

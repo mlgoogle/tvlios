@@ -10,7 +10,8 @@ import Foundation
 import RealmSwift
 import XCGLogger
 
-class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DateSelectorSheetDelegate , CitysSelectorSheetDelegate, TallysCellDelegate {
+
+class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DateSelectorSheetDelegate , CitysSelectorSheetDelegate, SkillsCellDelegate, SkillTreeVCDelegate {
     
     var table:UITableView?
     var agent = false
@@ -20,18 +21,14 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var curIndexPath:NSIndexPath?
     var selectedBtn:UIButton?
     
-    var cityName:String?
+    var cityInfo:CityInfo?
     var startDate:NSDate?
     var endDate:NSDate?
     var gender = false
+    var name:String?
+    var tel:String?
 
-    var skills:Array<Dictionary<String, AnyObject>> = [["id": 0, "title": "开车", "selected": false],
-                                                       ["id": 1, "title": "浇花", "selected": false],
-                                                       ["id": 2, "title": "打酱油", "selected": false],
-                                                       ["id": 3, "title": "高尔夫", "selected": false],
-                                                       ["id": 4, "title": "种田", "selected": false],
-                                                       ["id": 5, "title": "打滚", "selected": false]]
-
+    var skills:Array<Dictionary<SkillInfo, Bool>> = []
     
     let tags = ["citySelectorLab": 1001,
                 "separatorLine": 1002,
@@ -84,8 +81,22 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentVC.appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
+    }
+    
+    func appointmentReply(notification: NSNotification) {
+        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
+        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+            self.performSelector(#selector(AppointmentVC.backAction), withObject: nil, afterDelay: 0.3)
+        })
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func backAction() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -118,6 +129,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
         commitBtn.layer.cornerRadius = 5
         commitBtn.layer.masksToBounds = true
+        commitBtn.addTarget(self, action: #selector(AppointmentVC.appointment), forControlEvents: .TouchUpInside)
         view.addSubview(commitBtn)
         commitBtn.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -194,7 +206,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
             line = indexPath.row < 2 ? true : false
         } else if indexPath.section == 1 {
-            let tallys = TallysCell()
+            let tallys = SkillsCell()
             tallys.delegate = self
             tallys.style = .AddNew
             tallys.setInfo(skills)
@@ -261,7 +273,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            cityLab?.text = cityName == nil ? "  请选择" : cityName
+            cityLab?.text = cityInfo == nil ? "  请选择" : (cityInfo!.cityName)!
         }
         
         var citySelector = cell?.contentView.viewWithTag(tags["citySelector"]!) as? UIImageView
@@ -506,7 +518,11 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     //MARK: - UITextField
     func textFieldDidEndEditing(textField: UITextField) {
-        
+        if textField.placeholder == "预约对象姓名" {
+            name = textField.text
+        } else {
+            tel = textField.text
+        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -531,8 +547,8 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         if let cell = table?.cellForRowAtIndexPath(curIndexPath!) {
             if let cityLab = cell.contentView.viewWithTag(tags["cityLab"]!) as? UILabel {
-                cityLab.text = "  \(targetCity?.cityName)"
-                cityName = targetCity?.cityName
+                cityLab.text = "  \((targetCity?.cityName)!)"
+                cityInfo = targetCity
             }
         }
     }
@@ -578,7 +594,70 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - TallysCellDelegate
     func addNewAction() {
         let skillTree = SkillTreeVC()
+        skillTree.delegate = self
+        skillTree.selectedSkills = skills
         navigationController?.pushViewController(skillTree, animated: true)
+    }
+    
+    // MARK: - Appointment
+    func appointment() {
+        var alright = true
+        var errMsg = ""
+        if startDate == nil {
+            alright = false
+            errMsg = "请选择起始时间"
+        } else if endDate == nil {
+            alright = false
+            errMsg = "请选择结束时间"
+        } else if cityInfo == nil {
+            alright = false
+            errMsg = "请选择目标城市"
+        } else if skills.count == 0 {
+            alright = false
+            errMsg = "请选择服务者技能"
+        } else if agent == true {
+            if name == nil {
+                alright = false
+                errMsg = "请输入联系人名字"
+            } else if tel == nil {
+                alright = false
+                errMsg = "请输入联系人电话"
+            }
+        }
+        
+        if alright == false {
+            let alert = UIAlertController.init(title: "资料不完善", message: errMsg, preferredStyle: .Alert)
+            let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+            alert.addAction(action)
+            presentViewController(alert, animated: true, completion: nil)
+            return
+        }
+        
+        var skillStr = ""
+        for skillInfo in skills {
+            for (skill, _) in skillInfo {
+                skillStr += ("\(skill.skill_id_)")
+                skillStr += ","
+            }
+            
+        }
+        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+                                        "city_code_": cityInfo!.cityCode!,
+                                        "start_time_": startDate!.timeIntervalSince1970,
+                                        "end_time_": endDate!.timeIntervalSince1970,
+                                        "skills_": skillStr,
+                                        "is_other_": agent == false ? 0 : 1,
+                                        "other_name_": agent == true ? name! : "",
+                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
+                                        "other_phone_": agent == true ? tel! : ""]
+        SocketManager.sendData(.AppointmentRequest, data: dict)
+    
+    }
+
+    // MARK: - SkillTreeVCDelegate
+    func endEdit(skills: Array<Dictionary<SkillInfo, Bool>>) {
+        self.skills = skills
+        table?.reloadSections(NSIndexSet.init(index: 1), withRowAnimation: .Fade)
     }
     
     required init?(coder aDecoder: NSCoder) {

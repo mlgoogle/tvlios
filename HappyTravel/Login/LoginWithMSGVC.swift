@@ -129,7 +129,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             make.right.equalTo(usernameField)
             make.top.equalTo(verifyCodeField)
             make.bottom.equalTo(verifyCodeField)
-            make.width.equalTo(90)
+            make.width.equalTo(100)
         }
         
         verifyCodeField.snp_makeConstraints(closure: { (make) in
