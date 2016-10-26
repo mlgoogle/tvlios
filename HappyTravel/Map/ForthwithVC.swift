@@ -53,9 +53,14 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         registerNotify()
     }
     
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.ServantDetailInfo, object: nil)
+    }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
             msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
@@ -288,7 +293,6 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)

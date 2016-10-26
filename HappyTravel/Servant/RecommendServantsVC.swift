@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import XCGLogger
 
 class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, ServantIntroCellDelegate {
     
     var servantsTable:UITableView?
     var servantsInfo:Array<UserInfo>? = []
     
+    
+    var servantInfo:Dictionary<Int, UserInfo> = [:]
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -25,7 +28,13 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         
         initView()
     }
-    
+    override func viewWillAppear(animated: Bool) {
+        
+        registerNotice()
+    }
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     func initView() {
         servantsTable = UITableView(frame: CGRectZero, style: .Plain)
         servantsTable?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
@@ -41,6 +50,10 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
             make.edges.equalTo(view)
         })
         
+    }
+    
+    func registerNotice(){
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RecommendServantsVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
     }
     
     // MARK: - UITableView
@@ -70,9 +83,30 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(servantInfo: UserInfo?) {
-        let chatVC = ChatVC()
-        chatVC.servantInfo = servantInfo
-        navigationController?.pushViewController(chatVC, animated: true)
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = servantInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
+//        
+        
+        SocketManager.sendData(.GetServantDetailInfo, data:servantInfo)
+        self.servantInfo[(servantInfo?.uid)!] = servantInfo
+//        let servantPersonalVC = ServantPersonalVC()
+//        servantPersonalVC.personalInfo = servantInfo
+//        navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
     
+    func servantDetailInfo(notification: NSNotification?) {
+        let data = notification?.userInfo!["data"]
+        if data!["error_"]! != nil {
+            XCGLogger.error("Get UserInfo Error:\(data!["error"])")
+            return
+        }
+        servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+        let user = servantInfo[data!["uid_"] as! Int]
+        DataManager.updateUserInfo(user!)
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
+        
+    }
 }
