@@ -348,6 +348,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
         }
         
+        textView.text = ""
     }
     
     func menuControllerWillHide(notification: NSNotification) {
