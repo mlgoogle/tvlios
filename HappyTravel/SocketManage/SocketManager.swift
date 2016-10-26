@@ -467,13 +467,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ChatRecordResult:
             let dict = JSON.init(data: body as! NSData)
+            XCGLogger.debug("\(dict.dictionaryObject)")
             break
         case .MSGReadCntResult:
             
             break
         case .EvaluatetripReply:
             let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict)")
+            XCGLogger.debug("\(dict.dictionaryObject)")
             break
         case .AnswerInvitationReply:
             
