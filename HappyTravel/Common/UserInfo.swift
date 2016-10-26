@@ -100,6 +100,10 @@ class UserInfo: Object {
 
     func setInfo(type: UserType, info: Dictionary<String, AnyObject>?) {
         userType = type.rawValue
+
+        if info == nil {
+            return
+        }
         for (key, value) in info! {
             switch key {
             case "address_":
