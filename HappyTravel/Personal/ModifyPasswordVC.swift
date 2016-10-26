@@ -132,7 +132,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                 make.left.equalTo(cell!.contentView).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
-                make.width.equalTo(60)
+                make.width.equalTo(65)
             })
         }
         

@@ -18,4 +18,5 @@
 
 #import "MJRefresh/MJRefresh.h"
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #endif /* Bridging_Header_h */
