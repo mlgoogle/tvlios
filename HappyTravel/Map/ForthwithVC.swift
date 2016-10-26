@@ -32,6 +32,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     var location:CLLocation?
     var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
     var cityCode = 0
+    var firstLanch = true
     let bottomSelector = UISlider()
 
     
@@ -46,7 +47,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.userInteractionEnabled = true
-        
+        firstLanch = true
         initView()
         
         registerNotify()
@@ -103,19 +104,19 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        
+  
     }
     
     func initView() {
         let width = UIScreen.mainScreen().bounds.width
-        let titleView = UIView()
+        let titleView = UIView.init(frame: CGRectMake(0,0,width,40))
         titleView.backgroundColor = .clearColor()
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
-        titleView.snp_makeConstraints { (make) in
-            make.width.equalTo(width)
-            make.height.equalTo(60)
-        }
+//        titleView.snp_makeConstraints { (make) in
+//            make.width.equalTo(width)
+//            make.height.equalTo(60)
+//        }
         
         titleLab = UILabel()
         titleLab?.backgroundColor = .clearColor()
@@ -126,8 +127,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         titleView.addSubview(titleLab!)
         titleLab!.snp_makeConstraints { (make) in
             make.centerX.equalTo(titleView.snp_centerX).offset(-10)
-            make.top.equalTo(titleView).offset(20)
-            make.bottom.equalTo(titleView)
+            make.centerY.equalTo(titleView.snp_centerY)
         }
         titleLab?.text = "我的位置"
         
@@ -140,8 +140,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         titleBtn!.snp_makeConstraints { (make) in
             make.left.equalTo(titleLab!.snp_right)
             make.width.equalTo(20)
-            make.top.equalTo(titleView).offset(20)
-            make.bottom.equalTo(titleView)
+            make.centerY.equalTo(titleLab!.snp_centerY)
         }
         
         let segmentBGV = UIImageView()
@@ -233,7 +232,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         mapView = MAMapView()
         mapView!.tag = 1002
         mapView!.delegate = self
-        mapView!.userTrackingMode = MAUserTrackingMode.Follow
+        mapView!.userTrackingMode = .Follow
         mapView!.setZoomLevel(11, animated: true)
         mapView!.showsUserLocation = true
         mapView!.showsCompass = true
@@ -527,6 +526,8 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK MAP
     public func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
+     
+        
         var latDiffValue = Double(0)
         var lonDiffvalue = Double(0)
         if location == nil {
@@ -555,6 +556,8 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
+       
+        
     }
     
     func sendLocality() {
@@ -569,9 +572,16 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
                     return
                 }
             }
+            
+            if firstLanch {
+                mapView!.centerCoordinate = location!.coordinate
+                firstLanch = false
+            }
         } else {
             performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
         }
+        
+        
     }
     
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
@@ -618,6 +628,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         }
                 
     }
+   
     
     // MARK: - ServiceSheetDelegate
     func cancelAction(sender: UIButton?) {

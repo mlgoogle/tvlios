@@ -8,7 +8,7 @@
 
 import Foundation
 import XCGLogger
-
+import SVProgressHUD
 class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     
     let tags = ["usernameField": 1001,
@@ -253,11 +253,50 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func getVerifyCodeAction(sender: UIButton) {
-        let dict  = ["verify_type_": 1, "phone_num_": "15157109258"]
-        SocketManager.sendData(.SendMessageVerify, data: dict)
+        
+        
+        let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
+        if predicate.evaluateWithObject(username) {
+            
+            let dict  = ["verify_type_": 1, "phone_num_": username!]
+            SocketManager.sendData(.SendMessageVerify, data: dict)
+        } else {
+            
+            SVProgressHUD.showErrorWithStatus("请输入正确的手机号")
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
+
+        }
     }
     
     func nextAction(sender: UIButton?) {
+        
+        
+        let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
+        if predicate.evaluateWithObject(username) == false {
+            SVProgressHUD.showErrorWithStatus("请输入正确的手机号")
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
+            return
+        }
+        else if (token == nil || verifyCodeTime == 0) {
+            SVProgressHUD.showErrorWithStatus("请先获取验证码")
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
+            return
+        }
+        else if (verifyCode == 0)
+        {
+            SVProgressHUD.showErrorWithStatus("请输入验证码")
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
+            return
+        }
+        
         resetPasswdVC = ResetPasswdVC()
         resetPasswdVC!.verifyCodeTime = verifyCodeTime
         resetPasswdVC!.token = token

@@ -8,6 +8,7 @@
 
 import Foundation
 import XCGLogger
+import SVProgressHUD
 
 class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     
@@ -185,6 +186,15 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func sureAction(sender: UIButton?) {
+        
+
+        if passwd != repasswd {
+            SVProgressHUD.showErrorWithStatus("两次输入密码不一致")
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                SVProgressHUD.dismiss()
+            })
+            return
+        }
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
                                                    "passwd_": passwd!,
                                                    "user_type_": 1,
