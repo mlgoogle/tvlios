@@ -27,6 +27,8 @@
 		2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */; };
 		2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */; };
 		2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F6959E41D54259A0072B7FF /* default-big-photo.png */; };
+		2F6E2D5A1DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */; };
+		2F6E2D5C1DC0DFBF00AD0BB1 /* AppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */; };
 		2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684081D76AAD50028E3F2 /* InvoiceVC.swift */; };
 		2F96840B1D76ACC90028E3F2 /* InvoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96840A1D76ACC90028E3F2 /* InvoiceCell.swift */; };
 		2F96840D1D76B82A0028E3F2 /* InvoiceDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F96840C1D76B82A0028E3F2 /* InvoiceDetailVC.swift */; };
@@ -252,6 +254,8 @@
 		2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWithMSGVC.swift; path = Login/LoginWithMSGVC.swift; sourceTree = "<group>"; };
 		2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyPersonalVC.swift; path = Personal/MyPersonalVC.swift; sourceTree = "<group>"; };
 		2F6959E41D54259A0072B7FF /* default-big-photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-big-photo.png"; sourceTree = "<group>"; };
+		2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceHistoryVC.swift; path = Personal/InvoiceHistoryVC.swift; sourceTree = "<group>"; };
+		2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentView.swift; path = Map/Appointment/AppointmentView.swift; sourceTree = "<group>"; };
 		2F9684081D76AAD50028E3F2 /* InvoiceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceVC.swift; path = Personal/InvoiceVC.swift; sourceTree = "<group>"; };
 		2F96840A1D76ACC90028E3F2 /* InvoiceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceCell.swift; path = Personal/InvoiceCell.swift; sourceTree = "<group>"; };
 		2F96840C1D76B82A0028E3F2 /* InvoiceDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceDetailVC.swift; path = Personal/InvoiceDetailVC.swift; sourceTree = "<group>"; };
@@ -553,6 +557,49 @@
 			path = Personal;
 			sourceTree = "<group>";
 		};
+		2F6E2D551DC0D1A400AD0BB1 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				2F9684261D791CCB0028E3F2 /* RechargeVC.swift */,
+				2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */,
+				2F9684081D76AAD50028E3F2 /* InvoiceVC.swift */,
+				2F96840A1D76ACC90028E3F2 /* InvoiceCell.swift */,
+				2F96840C1D76B82A0028E3F2 /* InvoiceDetailVC.swift */,
+				2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */,
+			);
+			name = Wallet;
+			sourceTree = "<group>";
+		};
+		2F6E2D561DC0D1EA00AD0BB1 /* Consume */ = {
+			isa = PBXGroup;
+			children = (
+				2F96840E1D76CB6F0028E3F2 /* IdentDetailVC.swift */,
+				2F9684101D76CD040028E3F2 /* IdentBaseInfoCell.swift */,
+				2F9684121D76D5250028E3F2 /* IdentCommentCell.swift */,
+				2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */,
+				2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */,
+			);
+			name = Consume;
+			sourceTree = "<group>";
+		};
+		2F6E2D571DC0D21E00AD0BB1 /* MessageCenter */ = {
+			isa = PBXGroup;
+			children = (
+				2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */,
+				2FBA71F41D6E93CF00839E51 /* MessageCell.swift */,
+			);
+			name = MessageCenter;
+			sourceTree = "<group>";
+		};
+		2F6E2D581DC0D23C00AD0BB1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2FC25B371D6D874000D48D6A /* SettingsVC.swift */,
+				2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		2F9684141D77D1200028E3F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,22 +738,12 @@
 		2FA75D2B1D518D2600609C8E /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				2F6E2D581DC0D23C00AD0BB1 /* Settings */,
+				2F6E2D571DC0D21E00AD0BB1 /* MessageCenter */,
+				2F6E2D561DC0D1EA00AD0BB1 /* Consume */,
+				2F6E2D551DC0D1A400AD0BB1 /* Wallet */,
 				2FF72B3D1DAF5791001EEED2 /* CenturionCard */,
 				2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */,
-				2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */,
-				2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */,
-				2FC25B371D6D874000D48D6A /* SettingsVC.swift */,
-				2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */,
-				2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */,
-				2FBA71F41D6E93CF00839E51 /* MessageCell.swift */,
-				2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */,
-				2F9684081D76AAD50028E3F2 /* InvoiceVC.swift */,
-				2F96840A1D76ACC90028E3F2 /* InvoiceCell.swift */,
-				2F96840C1D76B82A0028E3F2 /* InvoiceDetailVC.swift */,
-				2F96840E1D76CB6F0028E3F2 /* IdentDetailVC.swift */,
-				2F9684101D76CD040028E3F2 /* IdentBaseInfoCell.swift */,
-				2F9684121D76D5250028E3F2 /* IdentCommentCell.swift */,
-				2F9684261D791CCB0028E3F2 /* RechargeVC.swift */,
 			);
 			name = Personal;
 			sourceTree = "<group>";
@@ -916,6 +953,7 @@
 				2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */,
 				2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */,
 				2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */,
+				2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */,
 			);
 			name = Appointment;
 			sourceTree = "<group>";
@@ -998,7 +1036,6 @@
 				2FA75D0E1D5081CB00609C8E /* Frameworks */,
 				2FA75D0F1D5081CB00609C8E /* Resources */,
 				13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */,
-
 				6EC6C0E8187BFE62C1ECFE2A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -1221,21 +1258,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		11536A43BBA5EB8EC3DEE73D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1491,6 +1513,7 @@
 				2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */,
 				2F337A831D9BC1FB003BAE20 /* HodometerInfo.swift in Sources */,
 				2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */,
+				2F6E2D5A1DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift in Sources */,
 				2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */,
 				2FBA71F71D6EA49400839E51 /* DistanceOfTravelCell.swift in Sources */,
 				2FF72BA31DB73054001EEED2 /* DateSelectorSheet.swift in Sources */,
@@ -1522,6 +1545,7 @@
 				2FF72BAB1DB8A0A2001EEED2 /* CenturionCardLvSelCell.swift in Sources */,
 				2FF72BA11DB61E7F001EEED2 /* SkillsCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
+				2F6E2D5C1DC0DFBF00AD0BB1 /* AppointmentView.swift in Sources */,
 				2FBB5E891D51EEB4007BE4E0 /* InputTextView.swift in Sources */,
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,
 				2FF72BA71DB76CF9001EEED2 /* CenturionCardServiceInfo.swift in Sources */,

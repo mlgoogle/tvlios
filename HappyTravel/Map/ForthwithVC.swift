@@ -12,14 +12,13 @@ import XCGLogger
 import RealmSwift
 import MJRefresh
 
-public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MAMapViewDelegate, CitysSelectorSheetDelegate, ServantIntroCellDelegate {
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, ServantIntroCellDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
     var msgCountLab:UILabel?
     var segmentSC:UISegmentedControl?
     var mapView:MAMapView?
-    var table:UITableView?
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     var servantsInfo:Dictionary<Int, UserInfo> = [:]
     var annotations:Array<MAPointAnnotation> = []
@@ -34,6 +33,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     var cityCode = 0
     var firstLanch = true
     let bottomSelector = UISlider()
+    let appointmentView = AppointmentView()
 
     
     required public init?(coder aDecoder: NSCoder) {
@@ -48,6 +48,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         view.userInteractionEnabled = true
         firstLanch = true
+        
         initView()
         
         registerNotify()
@@ -102,13 +103,12 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
                 presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
             }
         }
-        
-        bottomSelector.setValue(0, animated: false)
+     
     }
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-  
+        appointmentView.nav = navigationController
     }
     
     func initView() {
@@ -117,10 +117,6 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         titleView.backgroundColor = .clearColor()
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
-//        titleView.snp_makeConstraints { (make) in
-//            make.width.equalTo(width)
-//            make.height.equalTo(60)
-//        }
         
         titleLab = UILabel()
         titleLab?.backgroundColor = .clearColor()
@@ -150,13 +146,7 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
         view.addSubview(segmentBGV)
-        segmentBGV.snp_makeConstraints { (make) in
-            make.top.equalTo(view)
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.height.equalTo(60)
-        }
-        
+
         let segmentItems = ["商务游", "高端游"]
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
@@ -247,6 +237,12 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
+        segmentBGV.snp_makeConstraints { (make) in
+            make.top.equalTo(view)
+            make.left.equalTo(view)
+            make.right.equalTo(mapView!)
+            make.height.equalTo(60)
+        }
         
         let recommendBtn = UIButton()
         recommendBtn.tag = 2001
@@ -262,25 +258,15 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         recommendBtn.enabled = false
         
-        table = UITableView(frame: CGRectZero, style: .Plain)
-        table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
-        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        table?.delegate = self
-        table?.dataSource = self
-        table?.estimatedRowHeight = 256
-        table?.rowHeight = UITableViewAutomaticDimension
-        table?.separatorStyle = .None
-        table?.registerClass(ServantIntroCell.self, forCellReuseIdentifier: "ServantIntroCell")
-        view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        view.addSubview(appointmentView)
+        appointmentView.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(mapView!.snp_right).offset(0.5)
-            make.top.equalTo(segmentBGV.snp_bottom)
+            make.top.equalTo(view)
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         })
         
-        header.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.headerRefresh))
-        table?.mj_header = header
+        hideKeyboard()
     }
     
     func recommendAction(sender: UIButton?) {
@@ -299,6 +285,43 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
+    }
+    
+    func hideKeyboard() {
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentVC.touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        appointmentView.table?.addGestureRecognizer(touch)
+    }
+    
+    func touchWhiteSpace() {
+        view.endEditing(true)
+    }
+    
+    func appointmentReply(notification: NSNotification) {
+        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
+        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+            self.performSelector(#selector(AppointmentVC.backAction), withObject: nil, afterDelay: 0.3)
+        })
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        appointmentView.table?.contentInset = inset
+        appointmentView.table?.scrollIndicatorInsets = inset
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        appointmentView.table?.contentInset = inset
+        appointmentView.table?.scrollIndicatorInsets =  inset
     }
     
     func loginResult(notification: NSNotification?) {
@@ -357,7 +380,6 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
                 if header.state == .Refreshing {
                     header.endRefreshing()
                 }
-                table?.reloadData()
                 
             }
             uid_str.removeAtIndex(uid_str.endIndex.predecessor())
@@ -368,7 +390,6 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func serviceCitys(notification: NSNotification?) {
-   
         if let data = notification?.userInfo!["data"] {
             if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
                 for city in citys {
@@ -379,11 +400,11 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             
         }
+        appointmentView.serviceCitys = serviceCitys
         
         regOrLoginSelVC!.dismissViewControllerAnimated(false) {
             self.regOrLoginSelVC?.dismissViewControllerAnimated(false) {
                 if DataManager.currentUser!.registerSstatus == 0 {
-//                if true {
                     let completeBaseInfoVC = CompleteBaseInfoVC()
                     self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
                 }
@@ -501,19 +522,16 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
     func bottomSelectorAction(sender: AnyObject?) {
         let bottomSelector = sender as! UISlider
         if bottomSelector.value > 0.5 {
-            let appointmentVC = AppointmentVC()
-            appointmentVC.serviceCitys = serviceCitys
-            navigationController?.pushViewController(appointmentVC, animated: true)
-//            bottomSelector.setValue(1, animated: true)
-//            mapView!.snp_updateConstraints { (make) in
-//                make.width.equalTo(0)
-//            }
-//            table?.reloadData()
+            bottomSelector.setValue(1, animated: true)
+            mapView!.snp_updateConstraints { (make) in
+                make.width.equalTo(0)
+            }
+
         } else {
-//            bottomSelector.setValue(0, animated: false)
-//            mapView!.snp_updateConstraints { (make) in
-//                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-//            }
+            bottomSelector.setValue(0, animated: false)
+            mapView!.snp_updateConstraints { (make) in
+                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            }
         }
         XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
     }
@@ -649,25 +667,10 @@ public class ForthwithVC: UIViewController, UITableViewDelegate, UITableViewData
         SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
-    // MARK: - UITableViewDelegate
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subscribeServants.count
-    }
-    
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServantIntroCell", forIndexPath: indexPath) as! ServantIntroCell
-        cell.delegate = self
-        cell.setInfo(subscribeServants[indexPath.row])
-        
-        return cell
-    }
-    
     //MARK: - ServantIntroCellDeleagte
     func chatAction(servantInfo: UserInfo?) {
         SocketManager.sendData(.GetServantDetailInfo, data: servantInfo)
-//        let chatVC = ChatVC()
-//        chatVC.servantInfo = servantInfo
-//        navigationController?.pushViewController(chatVC, animated: true)
+
     }
     
     deinit {        

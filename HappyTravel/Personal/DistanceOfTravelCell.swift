@@ -17,13 +17,17 @@ class DistanceOfTravelCell: UITableViewCell {
                                                       .Accept: "已接受",
                                                       .WaittingPay: "等待支付",
                                                       .Paid: "支付完成",
-                                                      .Cancel: "已取消"]
+                                                      .Cancel: "已取消",
+                                                      .InvoiceMaking: "开票中",
+                                                      .InvoiceMaked: "已开票"]
     let statusColor:Dictionary<OrderStatus, UIColor> = [.WaittingAccept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .Reject: UIColor.redColor(),
                                                         .Accept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .WaittingPay: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .Paid: UIColor.greenColor(),
-                                                        .Cancel: UIColor.grayColor()]
+                                                        .Cancel: UIColor.grayColor(),
+                                                        .InvoiceMaking: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
+                                                        .InvoiceMaked: UIColor.greenColor()]
     
     var curHodometerInfo:HodometerInfo?
     
