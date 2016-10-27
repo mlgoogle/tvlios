@@ -379,9 +379,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             break
         case .DrawBillReply:
-            let dict = JSON.init(data: body as! NSData)
-            DataManager.updateData(HodometerInfo.self, data: dict.dictionaryObject!)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
+            let json = JSON.init(data: body as! NSData)
+            var dict = ["invoice_status_": HodometerStatus.InvoiceMaking.rawValue]
+            let oidStr = json.dictionaryObject!["oid_str_"] as? String
+            let oids = oidStr?.componentsSeparatedByString(",")
+            for oid in oids! {
+                if oid == "" {
+                    continue
+                }
+                dict["order_id_"] = Int.init(oid)
+                DataManager.updateData(HodometerInfo.self, data: dict)
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": json.dictionaryObject!])
             break
         case .CenturionCardInfoReply:
             let dict = JSON.init(data: body as! NSData)

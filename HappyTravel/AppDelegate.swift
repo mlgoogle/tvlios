@@ -12,7 +12,7 @@ import XCGLogger
 import RealmSwift
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate {
 
     var window: UIWindow?
     
@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
             .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()),
             .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
         ]
+        
+        WXApi.registerApp("wxb4ba3c02aa476ea1", withDescription: "vLeader-1.0(alpha)") //wx9dc39aec13ee3158
         
         commonViewSet()
         
@@ -129,7 +131,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        
         XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)
@@ -168,6 +169,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate {
     
     func GeTuiSdkDidSetPushMode(isModeOff: Bool, error: NSError!) {
         
+    }
+    
+    // WXApiDelegate
+    func onReq(req: BaseReq!) {
+        XCGLogger.debug("s")
+    }
+    
+    func onResp(resp: BaseResp!) {
+        XCGLogger.debug("s")
     }
 }
 

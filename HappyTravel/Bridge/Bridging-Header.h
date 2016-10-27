@@ -19,4 +19,8 @@
 #import "MJRefresh/MJRefresh.h"
 
 #import <SVProgressHUD/SVProgressHUD.h>
+
+#import "WXApi.h"
+#import "WXApiObject.h"
+
 #endif /* Bridging_Header_h */
