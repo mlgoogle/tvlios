@@ -645,7 +645,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
-        if view .isKindOfClass(GuideTagCell) {
+        if view.isKindOfClass(GuideTagCell) {
+            mapView.deselectAnnotation(view.annotation, animated: false)
             SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
             
         }
