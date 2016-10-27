@@ -436,10 +436,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 for invoice in invoiceList {
                     let historyInfo = InvoiceHistoryInfo(value: invoice)
                     DataManager.insertInvoiceHistotyInfo(historyInfo)
-                    lastOrderID = Int(historyInfo.oid_str_!)!
+                    lastOrderID = historyInfo.invoice_id_
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
             }
+            
             
             break
 
