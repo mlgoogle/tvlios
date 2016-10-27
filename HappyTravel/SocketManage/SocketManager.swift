@@ -213,7 +213,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .InvoiceInfoRequest:
-            head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
+            head.fields["opcode"] = SockOpcode.InvoiceInfoRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .PutDeviceToken:
@@ -433,8 +433,26 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
             break
             
+        case .InvoiceInfoReply:
+            
+            if (body as? NSData)?.length <= 0 {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
+                return true
+            }
+            let dict = JSON.init(data: body as! NSData)
+            if let invoiceList = dict.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for invoice in invoiceList {
+                    let historyInfo = InvoiceHistoryInfo(value: invoice)
+                    DataManager.insertInvoiceHistotyInfo(historyInfo)
+                    lastOrderID = historyInfo.invoice_id_
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            }
             
             
+            break
+
         case .InvitationResult:
             let dict = JSON.init(data: body as! NSData)
             if let _ = SocketManager.getErrorCode(dict.dictionaryObject!) {
