@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="88af75fd-dd09-491b-a6a7-bfa61f9ae980" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HappyTravel/Personal/InvoiceHistoryCell.swift" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HappyTravel/Personal/InvoiceHistoryDetailVC.swift" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HappyTravel/Personal/InvoiceIncludeServiceVC.swift" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HappyTravel/Personal/InvouiceHistoryDetailHeader.swift" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Pods/XCGLogger/XCGLogger/Library/XCGLogger/XCGLogger.h" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Pods/AMapFoundation/AMapFoundationKit.framework/1.2.0.9d54ef7" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/autobuild.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/AMapFoundation/AMapFoundationKit.framework/AMapFoundationKit" afterPath="$PROJECT_DIR$/Pods/AMapFoundation/AMapFoundationKit.framework/AMapFoundationKit" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/MOBFoundation" afterPath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/MOBFoundation" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/SMS_SDK" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/SMS_SDK" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/HappyTravel.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel/Base.lproj/LaunchScreen.storyboard" afterPath="$PROJECT_DIR$/HappyTravel/Base.lproj/LaunchScreen.storyboard" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel/Common/NotifyDefine.swift" afterPath="$PROJECT_DIR$/HappyTravel/Common/NotifyDefine.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel/Personal/InvoiceHistoryVC.swift" afterPath="$PROJECT_DIR$/HappyTravel/Personal/InvoiceHistoryVC.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel/Personal/WalletVC.swift" afterPath="$PROJECT_DIR$/HappyTravel/Personal/WalletVC.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HappyTravel/SocketManage/SocketManager.swift" afterPath="$PROJECT_DIR$/HappyTravel/SocketManage/SocketManager.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/AMapFoundation/AMapFoundationKit.framework/Headers/AMapFoundationVersion.h" afterPath="$PROJECT_DIR$/Pods/AMapFoundation/AMapFoundationKit.framework/Headers/AMapFoundationVersion.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Kingfisher/Sources/ImagePrefetcher.swift" afterPath="$PROJECT_DIR$/Pods/Kingfisher/Sources/ImagePrefetcher.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/Headers/MOBFImageGetter.h" afterPath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/Headers/MOBFImageGetter.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/Info.plist" afterPath="$PROJECT_DIR$/Pods/MOBFoundation_IDFA/MOBFoundation.framework/Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Pods.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/Pods/Pods.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/RealmSwift/RealmSwift/SwiftVersion.swift" afterPath="$PROJECT_DIR$/Pods/RealmSwift/RealmSwift/SwiftVersion.swift" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMSSDKUI.bundle/en.lproj/Localizable.strings" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMSSDKUI.bundle/en.lproj/Localizable.strings" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMSSDKUI.bundle/zh-Hans.lproj/Localizable.strings" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMSSDKUI.bundle/zh-Hans.lproj/Localizable.strings" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDK+AddressBookMethods.h" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDK+AddressBookMethods.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDKResultHanderDef.h" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDKResultHanderDef.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDKUserInfo.h" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/Extend/SMSSDKUserInfo.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/SMSSDK.h" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Headers/SMSSDK.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Info.plist" afterPath="$PROJECT_DIR$/Pods/SMSSDK/SMS_SDK/SMS_SDK.framework/Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Alamofire/Alamofire.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Alamofire/Alamofire.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/CocoaAsyncSocket/CocoaAsyncSocket.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Kingfisher/Info.plist" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Kingfisher/Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Kingfisher/Kingfisher.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Kingfisher/Kingfisher.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/MJRefresh/MJRefresh.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/MJRefresh/MJRefresh.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-frameworks.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-frameworks.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-resources.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-resources.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel.debug.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel.debug.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel.release.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel.release.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.debug.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.debug.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.release.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.release.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-frameworks.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-frameworks.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.release.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.release.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/Realm/Realm.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/Realm/Realm.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/RealmSwift/RealmSwift.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/RealmSwift/RealmSwift.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/SVProgressHUD/SVProgressHUD.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/SVProgressHUD/SVProgressHUD.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/SideMenuController/SideMenuController.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/SideMenuController/SideMenuController.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/SnapKit/SnapKit.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/SnapKit/SnapKit.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/SwiftyJSON/Info.plist" afterPath="$PROJECT_DIR$/Pods/Target Support Files/SwiftyJSON/Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/SwiftyJSON/SwiftyJSON.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/SwiftyJSON/SwiftyJSON.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/Info.plist" afterPath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/Info.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/XCGLogger-umbrella.h" afterPath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/XCGLogger-umbrella.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/XCGLogger.xcconfig" afterPath="$PROJECT_DIR$/Pods/Target Support Files/XCGLogger/XCGLogger.xcconfig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/XCGLogger/README.md" afterPath="$PROJECT_DIR$/Pods/XCGLogger/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pods/XCGLogger/XCGLogger/Library/XCGLogger/XCGLogger.swift" afterPath="$PROJECT_DIR$/Pods/XCGLogger/XCGLogger/Library/XCGLogger/XCGLogger.swift" />
+    </list>
+    <ignored path="tvlios.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="HappyTravel" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="67" />
+    <option name="width" value="1400" />
+    <option name="height" value="785" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Cidr.FilesView" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HappyTravel" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HappyTravel" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HappyTravel" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HappyTravel" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HappyTravel" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Login" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="88af75fd-dd09-491b-a6a7-bfa61f9ae980" name="Default" comment="" />
+      <created>1477558956940</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1477558956940</updated>
+      <workItem from="1477558964572" duration="7000" />
+      <workItem from="1477558975484" duration="42000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="49000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="67" width="1400" height="785" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+</project>

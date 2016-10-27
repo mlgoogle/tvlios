@@ -401,4 +401,47 @@ class DataManager: NSObject {
         return false
     }
     
+
+    // MARK: - InvoiceHistoryInfo
+    /**
+     开票记录
+     - parameter info:
+     */
+
+    static func insertInvoiceHistotyInfo(info: InvoiceHistoryInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let historyInfo = realm.objects(InvoiceHistoryInfo.self).filter("invoice_id_ = \(info.invoice_id_)").first
+        try! realm.write({
+            if historyInfo == nil {
+                realm.add(info)
+            } else {
+                historyInfo?.setInfo(info)
+            }
+        })
+        
+    }
+    static func getInvoiceHistoryInfo(oid: Int) -> InvoiceHistoryInfo? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let histroyInfo = realm.objects(InvoiceHistoryInfo.self).filter("oid_str_ = \(oid)").first
+        return histroyInfo
+    }
+    
+    static func getInvoiceHistoryInfos(lv: Int) -> Results<InvoiceHistoryInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let histroyInfo = realm.objects(InvoiceHistoryInfo.self)
+        return histroyInfo
+    }
+    
+    
 }
