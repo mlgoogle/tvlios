@@ -26,6 +26,8 @@
 		2F4EEC3D1D969148004DFFC8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4EEC3C1D969148004DFFC8 /* MapKit.framework */; };
 		2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */; };
 		2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */; };
+		2F5F2D4A1DC19C6300EB5773 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F5F2D451DC19C6300EB5773 /* libWeChatSDK.a */; };
+		2F5F2D4B1DC19C6300EB5773 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2F5F2D461DC19C6300EB5773 /* README.txt */; };
 		2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */; };
 		2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F6959E41D54259A0072B7FF /* default-big-photo.png */; };
 		2F6E2D5A1DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */; };
@@ -255,6 +257,11 @@
 		2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HappyTravel.entitlements; sourceTree = "<group>"; };
 		2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonDefine.swift; path = Common/CommonDefine.swift; sourceTree = "<group>"; };
 		2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWithMSGVC.swift; path = Login/LoginWithMSGVC.swift; sourceTree = "<group>"; };
+		2F5F2D451DC19C6300EB5773 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = WeChatSDK1.7.4/libWeChatSDK.a; sourceTree = "<group>"; };
+		2F5F2D461DC19C6300EB5773 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = WeChatSDK1.7.4/README.txt; sourceTree = "<group>"; };
+		2F5F2D471DC19C6300EB5773 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WechatAuthSDK.h; path = WeChatSDK1.7.4/WechatAuthSDK.h; sourceTree = "<group>"; };
+		2F5F2D481DC19C6300EB5773 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApi.h; path = WeChatSDK1.7.4/WXApi.h; sourceTree = "<group>"; };
+		2F5F2D491DC19C6300EB5773 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApiObject.h; path = WeChatSDK1.7.4/WXApiObject.h; sourceTree = "<group>"; };
 		2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyPersonalVC.swift; path = Personal/MyPersonalVC.swift; sourceTree = "<group>"; };
 		2F6959E41D54259A0072B7FF /* default-big-photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-big-photo.png"; sourceTree = "<group>"; };
 		2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceHistoryVC.swift; path = Personal/InvoiceHistoryVC.swift; sourceTree = "<group>"; };
@@ -473,6 +480,7 @@
 				2F4EEC3D1D969148004DFFC8 /* MapKit.framework in Frameworks */,
 				2F9684191D77D1200028E3F2 /* AlipaySDK.framework in Frameworks */,
 				C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */,
+				2F5F2D4A1DC19C6300EB5773 /* libWeChatSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +503,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15D6A2398044AD9831E7D92F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6389D485B50E0B01A79080F4 /* Pods-HappyTravel.debug.xcconfig */,
+				27F4CD03F95B3D68A5787462 /* Pods-HappyTravel.release.xcconfig */,
+				D3748157331D4CA9F8AA1E79 /* Pods-HappyTravelTests.debug.xcconfig */,
+				4AC133E1DBB20D55AA0BDC5B /* Pods-HappyTravelTests.release.xcconfig */,
+				6E092CF08771194D6363487F /* Pods-HappyTravelUITests.debug.xcconfig */,
+				D2D8051757043C56E69F4FBE /* Pods-HappyTravelUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2F5F2D441DC19C3300EB5773 /* WeChatSDK */ = {
+			isa = PBXGroup;
+			children = (
+				2F5F2D451DC19C6300EB5773 /* libWeChatSDK.a */,
+				2F5F2D461DC19C6300EB5773 /* README.txt */,
+				2F5F2D471DC19C6300EB5773 /* WechatAuthSDK.h */,
+				2F5F2D481DC19C6300EB5773 /* WXApi.h */,
+				2F5F2D491DC19C6300EB5773 /* WXApiObject.h */,
+			);
+			name = WeChatSDK;
+			sourceTree = "<group>";
+		};
 		2F6959E31D54259A0072B7FF /* Personal */ = {
 			isa = PBXGroup;
 			children = (
@@ -602,6 +635,7 @@
 		2F9684141D77D1200028E3F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				2F5F2D441DC19C3300EB5773 /* WeChatSDK */,
 				2F9684151D77D1200028E3F2 /* Alipay */,
 			);
 			path = Other;
@@ -1207,6 +1241,7 @@
 				2FBAB5861DBA1BF000CE8A14 /* LaunchScreen@2x.png in Resources */,
 				2FF72B881DAF6217001EEED2 /* service-disable@3x.png in Resources */,
 				2FF72B931DAF6217001EEED2 /* vipper-rest-disable@2x.png in Resources */,
+				2F5F2D4B1DC19C6300EB5773 /* README.txt in Resources */,
 				2F9D42071D597A5700D10FBC /* location@2x.png in Resources */,
 				2FC25B291D6BFA2F00D48D6A /* cash@2x.png in Resources */,
 				2FC25B2A1D6BFA2F00D48D6A /* cash@3x.png in Resources */,
@@ -1682,6 +1717,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1728,10 +1764,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1741,6 +1779,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1762,6 +1801,10 @@
 				INFOPLIST_FILE = HappyTravel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
@@ -1788,6 +1831,10 @@
 				INFOPLIST_FILE = HappyTravel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;

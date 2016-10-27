@@ -26,17 +26,17 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 "commitBtn": 1006,
                 "bottomLine": 1007]
     
-    var invoiceInfoDict = ["order_id_": -1,
-                           "title_": "",
-                           "taxpayer_num_": "",
-                           "company_addr_": "",
-                           "invoice_type_": 0,
-                           
-                           "user_name_": "",
-                           "user_mobile_": "",
-                           "area_": "",
-                           "addr_detail_": "",
-                           "remarks_": ""]
+    var invoiceInfoDict:[String: AnyObject] = ["oid_str_": "",
+                                               "title_": "",
+                                               "taxpayer_num_": "",
+                                               "company_addr_": "",
+                                               "invoice_type_": 0,
+                                               "user_name_": "",
+                                               "user_mobile_": "",
+                                               "area_": "",
+                                               "addr_detail_": "",
+                                               "remarks_": "",
+                                               "uid_": DataManager.currentUser!.uid]
     
     let invoiceInfo = ["发票抬头",
                        "纳税人号",
@@ -101,10 +101,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func drawBillReply(notification: NSNotification?) {
         if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if dict["invoice_status_"] as! Int == 0 {
-                
+            if let _ = dict["oid_str_"] as? String {
                 let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
-                
                 let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                     self.navigationController?.popViewControllerAnimated(true)
                 })
@@ -504,10 +502,15 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func commit() {
-        for (order_id_, _) in selectedOrderList {
-            invoiceInfoDict["order_id_"] = order_id_
-            SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
+        var oidStr = ""
+        for (index, orderInfo) in selectedOrderList.enumerate() {
+            oidStr += "\(orderInfo.0)"
+            if index < selectedOrderList.count - 1 {
+                oidStr += ","
+            }
         }
+        invoiceInfoDict["oid_str_"] = oidStr
+        SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
     }
 }
 
