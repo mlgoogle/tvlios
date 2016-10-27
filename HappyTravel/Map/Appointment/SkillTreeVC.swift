@@ -41,7 +41,16 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func initData() {
         if let infos = DataManager.getData(SkillInfo.self, filter: nil) as? Results<SkillInfo> {
             for info in infos {
-                skills.append([info: false])
+                var selected = false
+                for sk in selectedSkills {
+                    for (skill, _) in sk {
+                        if skill.skill_id_ == info.skill_id_ {
+                            selected = true
+                        }
+                    }
+                }
+                skills.append([info: selected])
+                
             }
         }
         

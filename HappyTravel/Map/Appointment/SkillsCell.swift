@@ -53,6 +53,7 @@ class SkillsCell : UITableViewCell {
             noTallyLabel!.tag = tags["noTallyLabel"]!
             noTallyLabel!.font = UIFont.systemFontOfSize(12)
             noTallyLabel!.numberOfLines = 0
+            noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
             noTallyLabel?.textAlignment = .Center
             noTallyLabel!.layer.cornerRadius = 30 / 2.0
             noTallyLabel?.layer.masksToBounds = true
@@ -114,7 +115,6 @@ class SkillsCell : UITableViewCell {
                         tallyBtn?.layer.cornerRadius = 30 / 2.0
                         tallyBtn?.layer.masksToBounds = true
                         tallyBtn?.layer.borderWidth = 1
-                        tallyBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
                         tallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
                         tallyBtn?.setTitleColor(UIColor.grayColor(), forState: .Disabled)
                         tallyBtn?.addTarget(self, action: #selector(SkillsCell.selectAction(_:)), forControlEvents: .TouchUpInside)
@@ -141,6 +141,7 @@ class SkillsCell : UITableViewCell {
                     }
                     tallyBtn!.setTitle("    \(skill.skill_name_!)    ", forState: .Normal)
                     tallyBtn?.enabled = !selected
+                    tallyBtn?.layer.borderColor = selected == false ? UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor : UIColor.grayColor().CGColor
                     
                     var deleteIcon = contentView.viewWithTag(self.tags["deleteIcon"]!) as? UILabel
                     if deleteIcon == nil {
