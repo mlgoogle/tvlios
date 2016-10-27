@@ -80,13 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
 //            XCGLogger.debug("\(data)")
 //        }
         
-        return true
+        return WXApi.handleOpenURL(url, delegate: self)
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
         
-        return true
+        return WXApi.handleOpenURL(url, delegate: self)
     }
 
     //MARK: - BG FG
@@ -177,7 +177,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func onResp(resp: BaseResp!) {
-        XCGLogger.debug("s")
+        var strMsg = "(resp.errCode)"
+        if resp.isKindOfClass(PayResp) {
+            switch resp.errCode {
+            case 0 :
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatPaySuccessed, object: nil)
+            default:
+                strMsg = "支付失败，请您重新支付!"
+                print("retcode = (resp.errCode), retstr = (resp.errStr)")
+            }
+        }
+        let alert = UIAlertView(title: "支付结果", message: strMsg, delegate: nil, cancelButtonTitle: "好的")
+        alert.show()
     }
 }
 
