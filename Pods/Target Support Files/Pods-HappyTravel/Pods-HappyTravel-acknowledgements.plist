@@ -16,6 +16,8 @@
 			<key>FooterText</key>
 			<string>Copyright &#169; 2014 AutoNavi. All Rights Reserved.
 </string>
+			<key>License</key>
+			<string>Copyright</string>
 			<key>Title</key>
 			<string>AMap2DMap</string>
 			<key>Type</key>
@@ -25,6 +27,8 @@
 			<key>FooterText</key>
 			<string>Copyright &#169; 2014 AutoNavi. All Rights Reserved.
 </string>
+			<key>License</key>
+			<string>Copyright</string>
 			<key>Title</key>
 			<string>AMapFoundation</string>
 			<key>Type</key>
@@ -52,6 +56,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>Alamofire</string>
 			<key>Type</key>
@@ -66,6 +72,8 @@ The CocoaAsyncSocket project is in the public domain.
 The original TCP version (AsyncSocket) was created by Dustin Voss in January 2003.
 Updated and maintained by Deusty LLC and the Apple development community.
 </string>
+			<key>License</key>
+			<string>public domain</string>
 			<key>Title</key>
 			<string>CocoaAsyncSocket</string>
 			<key>Type</key>
@@ -414,6 +422,8 @@ library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>GTSDK</string>
 			<key>Type</key>
@@ -444,6 +454,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>Kingfisher</string>
 			<key>Type</key>
@@ -471,6 +483,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>MJRefresh</string>
 			<key>Type</key>
@@ -479,6 +493,8 @@ THE SOFTWARE.
 		<dict>
 			<key>FooterText</key>
 			<string>Copyright &#169; 2012-2015 mob</string>
+			<key>License</key>
+			<string>Copyright &#169; 2012-2015 mob.com</string>
 			<key>Title</key>
 			<string>MOBFoundation_IDFA</string>
 			<key>Type</key>
@@ -756,6 +772,8 @@ or to any person or organization on or affiliated with the Department of
 Commerce lists of Denied Persons, Unverified Parties or Restricted Entities, or
 otherwise in violation of any such restrictions or regulations.
 </string>
+			<key>License</key>
+			<string>Apache 2.0</string>
 			<key>Title</key>
 			<string>Realm</string>
 			<key>Type</key>
@@ -1033,6 +1051,8 @@ or to any person or organization on or affiliated with the Department of
 Commerce lists of Denied Persons, Unverified Parties or Restricted Entities, or
 otherwise in violation of any such restrictions or regulations.
 </string>
+			<key>License</key>
+			<string>Apache 2.0</string>
 			<key>Title</key>
 			<string>RealmSwift</string>
 			<key>Type</key>
@@ -1040,6 +1060,8 @@ otherwise in violation of any such restrictions or regulations.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright &#169; 2012-2015 mob.com</string>
+			<key>License</key>
 			<string>Copyright &#169; 2012-2015 mob.com</string>
 			<key>Title</key>
 			<string>SMSSDK</string>
@@ -1075,6 +1097,8 @@ A different license may apply to other resources included in this package,
 including Freepik Icons. Please consult their 
 respective headers for the terms of their individual licenses.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>SVProgressHUD</string>
 			<key>Type</key>
@@ -1105,6 +1129,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>SideMenuController</string>
 			<key>Type</key>
@@ -1132,6 +1158,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>SnapKit</string>
 			<key>Type</key>
@@ -1161,6 +1189,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>SwiftyJSON</string>
 			<key>Type</key>
@@ -1190,6 +1220,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </string>
+			<key>License</key>
+			<string>MIT</string>
 			<key>Title</key>
 			<string>XCGLogger</string>
 			<key>Type</key>

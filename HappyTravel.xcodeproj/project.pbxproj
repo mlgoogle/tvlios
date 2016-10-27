@@ -209,6 +209,12 @@
 		2FF72BAF1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BAE1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift */; };
 		3F8410B3068CF6330ED6A9DF /* Pods_HappyTravelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB4403C1077D14C2C3FEA82 /* Pods_HappyTravelTests.framework */; };
 		43895373C90AE325788756F4 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259FE8A698CF79F06C131D41 /* Pods_HappyTravel.framework */; };
+		B39D84041DC2267B00B10E98 /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39D84031DC2267B00B10E98 /* UIImageExt.swift */; };
+		B3C0D3761DC1CEC400030804 /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B3C0D3741DC1CEC400030804 /* tianjia@2x.png */; };
+		B3C0D3771DC1CEC400030804 /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B3C0D3751DC1CEC400030804 /* tianjia@3x.png */; };
+		B3C0D37B1DC1D13700030804 /* UploadUserPictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0D37A1DC1D13700030804 /* UploadUserPictureVC.swift */; };
+		B3E6867B1DC1F09D003AD24A /* LabelEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E6867A1DC1F09D003AD24A /* LabelEx.swift */; };
+		B3E6867D1DC1F41F003AD24A /* example@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B3E6867C1DC1F41F003AD24A /* example@2x.png */; };
 		E78E64C460DFB59F2FFEC43F /* Pods_HappyTravelUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F2D12637C10FF12EA27AB7 /* Pods_HappyTravelUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -452,6 +458,12 @@
 		6E092CF08771194D6363487F /* Pods-HappyTravelUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		9CB4403C1077D14C2C3FEA82 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B39D84031DC2267B00B10E98 /* UIImageExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExt.swift; sourceTree = "<group>"; };
+		B3C0D3741DC1CEC400030804 /* tianjia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@2x.png"; sourceTree = "<group>"; };
+		B3C0D3751DC1CEC400030804 /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
+		B3C0D37A1DC1D13700030804 /* UploadUserPictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadUserPictureVC.swift; sourceTree = "<group>"; };
+		B3E6867A1DC1F09D003AD24A /* LabelEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelEx.swift; path = Common/LabelEx.swift; sourceTree = "<group>"; };
+		B3E6867C1DC1F41F003AD24A /* example@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "example@2x.png"; sourceTree = "<group>"; };
 		D2D8051757043C56E69F4FBE /* Pods-HappyTravelUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D3748157331D4CA9F8AA1E79 /* Pods-HappyTravelTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -503,6 +515,9 @@
 		2F6959E31D54259A0072B7FF /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				B3E6867C1DC1F41F003AD24A /* example@2x.png */,
+				B3C0D3741DC1CEC400030804 /* tianjia@2x.png */,
+				B3C0D3751DC1CEC400030804 /* tianjia@3x.png */,
 				2FF72B401DAF6217001EEED2 /* CenturionCard */,
 				2F26A6921D8245A900FFA6A7 /* default-head@2x.png */,
 				2F26A6931D8245A900FFA6A7 /* default-head@3x.png */,
@@ -596,6 +611,7 @@
 			children = (
 				2FC25B371D6D874000D48D6A /* SettingsVC.swift */,
 				2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */,
+				B3C0D37A1DC1D13700030804 /* UploadUserPictureVC.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -880,6 +896,8 @@
 				2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */,
 				2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */,
 				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
+				B3E6867A1DC1F09D003AD24A /* LabelEx.swift */,
+				B39D84031DC2267B00B10E98 /* UIImageExt.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -991,7 +1009,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1A1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravel" */;
 			buildPhases = (
-				48B62CE27E96867DEE98DBA3 /* Check Pods Manifest.lock */,
+				48B62CE27E96867DEE98DBA3 /* [CP] Check Pods Manifest.lock */,
 				6C83F539A506A10F26E92363 /* [CP] Check Pods Manifest.lock */,
 				2FA75CEE1D5081CB00609C8E /* Sources */,
 				2FA75CEF1D5081CB00609C8E /* Frameworks */,
@@ -1014,7 +1032,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */;
 			buildPhases = (
-				D2A61308B9145163520071F5 /* Check Pods Manifest.lock */,
+				D2A61308B9145163520071F5 /* [CP] Check Pods Manifest.lock */,
 				7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */,
 				2FA75D021D5081CB00609C8E /* Sources */,
 				2FA75D031D5081CB00609C8E /* Frameworks */,
@@ -1038,7 +1056,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */;
 			buildPhases = (
-				A6902878BC2DF504D5593177 /* Check Pods Manifest.lock */,
+				A6902878BC2DF504D5593177 /* [CP] Check Pods Manifest.lock */,
 				15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */,
 				2FA75D0D1D5081CB00609C8E /* Sources */,
 				2FA75D0E1D5081CB00609C8E /* Frameworks */,
@@ -1194,6 +1212,7 @@
 				2FDAFCF51D66CCEB00FD28CB /* address-selector-selected@2x.png in Resources */,
 				2FF72B941DAF6217001EEED2 /* vipper-rest-disable@3x.png in Resources */,
 				2FE7C31C1D616B2700994505 /* head-bg@2x.png in Resources */,
+				B3C0D3761DC1CEC400030804 /* tianjia@2x.png in Resources */,
 				2FF72B711DAF6217001EEED2 /* bg-card-detail@2x.png in Resources */,
 				2F26A69B1D8245A900FFA6A7 /* default-head@2x.png in Resources */,
 				2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */,
@@ -1207,6 +1226,7 @@
 				2FC25B291D6BFA2F00D48D6A /* cash@2x.png in Resources */,
 				2FC25B2A1D6BFA2F00D48D6A /* cash@3x.png in Resources */,
 				2FF72B871DAF6217001EEED2 /* service-disable@2x.png in Resources */,
+				B3E6867D1DC1F41F003AD24A /* example@2x.png in Resources */,
 				2F26A6A11D8245A900FFA6A7 /* logo@3x.png in Resources */,
 				2FF72B6D1DAF6217001EEED2 /* advanced-level-disable@3x.png in Resources */,
 				2F9684321D792C3E0028E3F2 /* pay-selected@2x.png in Resources */,
@@ -1245,6 +1265,7 @@
 				2FE7C3891D6413E300994505 /* my-star-hollow@3x.png in Resources */,
 				2FF72B841DAF6217001EEED2 /* service-agent-disable@3x.png in Resources */,
 				2FF72B8C1DAF6217001EEED2 /* share-wechat-moment@3x.png in Resources */,
+				B3C0D3771DC1CEC400030804 /* tianjia@3x.png in Resources */,
 				2FE7C3281D618EC900994505 /* map_meet@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1311,19 +1332,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		48B62CE27E96867DEE98DBA3 /* Check Pods Manifest.lock */ = {
+		48B62CE27E96867DEE98DBA3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		58FE031919B13DBB5C3C6F67 /* [CP] Copy Pods Resources */ = {
@@ -1431,19 +1452,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A6902878BC2DF504D5593177 /* Check Pods Manifest.lock */ = {
+		A6902878BC2DF504D5593177 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C6DE6AAB2CA80B1D8C0413D4 /* [CP] Embed Pods Frameworks */ = {
@@ -1476,19 +1497,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2A61308B9145163520071F5 /* Check Pods Manifest.lock */ = {
+		D2A61308B9145163520071F5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F48ADD5E13D5A1D2B4D36585 /* Embed Pods Frameworks */ = {
@@ -1560,11 +1581,14 @@
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
+				B3C0D37B1DC1D13700030804 /* UploadUserPictureVC.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
+				B39D84041DC2267B00B10E98 /* UIImageExt.swift in Sources */,
 				2FC25B0A1D6A9C7600D48D6A /* ServiceSheet.swift in Sources */,
 				2FBB5E751D51D2FC007BE4E0 /* Message.swift in Sources */,
 				2F9684271D791CCB0028E3F2 /* RechargeVC.swift in Sources */,
 				2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */,
+				B3E6867B1DC1F09D003AD24A /* LabelEx.swift in Sources */,
 				2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */,
 				2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */,
 				2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */,

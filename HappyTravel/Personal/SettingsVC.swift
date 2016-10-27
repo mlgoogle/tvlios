@@ -182,6 +182,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
+            }else if indexPath.row == 2 {
+                let controller = UploadUserPictureVC()
+                navigationController?.pushViewController(controller, animated: true)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {

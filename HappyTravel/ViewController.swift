@@ -46,6 +46,8 @@ class ViewController: SideMenuController {
         initMainInterface()
         
         startSockThread()
+        
+        
     }
     
     func startSockThread() {
@@ -56,7 +58,7 @@ class ViewController: SideMenuController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+   
 }
 
