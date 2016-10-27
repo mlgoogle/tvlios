@@ -622,6 +622,7 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
+				B3C0D3711DC1984000030804 /* Extension */,
 				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				2F9684141D77D1200028E3F2 /* Other */,
 				2FB57FEE1D74026A002C015F /* Data */,
@@ -911,6 +912,13 @@
 			name = Appointment;
 			sourceTree = "<group>";
 		};
+		B3C0D3711DC1984000030804 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		D1BF5A800EB0D1063BCBAE20 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -989,7 +997,6 @@
 				2FA75D0E1D5081CB00609C8E /* Frameworks */,
 				2FA75D0F1D5081CB00609C8E /* Resources */,
 				13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */,
-
 				6EC6C0E8187BFE62C1ECFE2A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -1211,21 +1218,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		11536A43BBA5EB8EC3DEE73D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
