@@ -10,17 +10,20 @@ import Foundation
 import XCGLogger
 import RealmSwift
 
-class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate, TallysCellDelegate {
+protocol SkillTreeVCDelegate : NSObjectProtocol {
+    
+    func endEdit(skills: Array<Dictionary<SkillInfo, Bool>>)
+    
+}
+
+class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate, SkillsCellDelegate {
+    
+    weak var delegate:SkillTreeVCDelegate?
     
     var table:UITableView?
-    var skills:Array<Dictionary<String, AnyObject>> = [["id": 0, "title": "开车", "selected": false],
-                                                       ["id": 1, "title": "浇花", "selected": false],
-                                                       ["id": 2, "title": "打酱油", "selected": false],
-                                                       ["id": 3, "title": "高尔夫", "selected": false],
-                                                       ["id": 4, "title": "种田", "selected": false],
-                                                       ["id": 5, "title": "打滚", "selected": false]]
+    var skills:Array<Dictionary<SkillInfo, Bool>> = []
 
-    var selectedSkills:Array<Dictionary<String, AnyObject>> = []
+    var selectedSkills:Array<Dictionary<SkillInfo, Bool>> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +31,29 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "选择技能"
         
+        initData()
+        
         initView()
         
         registerNotify()
+    }
+    
+    func initData() {
+        if let infos = DataManager.getData(SkillInfo.self, filter: nil) as? Results<SkillInfo> {
+            for info in infos {
+                var selected = false
+                for sk in selectedSkills {
+                    for (skill, _) in sk {
+                        if skill.skill_id_ == info.skill_id_ {
+                            selected = true
+                        }
+                    }
+                }
+                skills.append([info: selected])
+                
+            }
+        }
+        
     }
     
     func initView() {
@@ -42,7 +65,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         table?.estimatedRowHeight = 256
         table?.rowHeight = UITableViewAutomaticDimension
         table?.separatorStyle = .None
-        table?.registerClass(TallysCell.self, forCellReuseIdentifier: "TallysCell")
+        table?.registerClass(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -73,13 +96,13 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TallysCell", forIndexPath: indexPath) as? TallysCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("SkillsCell", forIndexPath: indexPath) as? SkillsCell
             cell?.delegate = self
             cell?.style = .Delete
             cell?.setInfo(selectedSkills)
             return cell!
         } else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TallysCell", forIndexPath: indexPath) as? TallysCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("SkillsCell", forIndexPath: indexPath) as? SkillsCell
             cell?.delegate = self
             cell?.style = .Select
             cell?.setInfo(skills)
@@ -102,6 +125,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 ok?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 ok?.layer.cornerRadius = 5
                 ok?.layer.masksToBounds = true
+                ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), forControlEvents: .TouchUpInside)
                 cell?.contentView.addSubview(ok!)
                 ok?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(40)
@@ -137,18 +161,40 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     // MARK: - TallysCellDelegate
-    func selectedAction(info: Dictionary<String, AnyObject>) {
+    func selectedAction(info: Dictionary<SkillInfo, Bool>) {
         selectedSkills.append(info)
         table?.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: .None)
-        skills[info["id"] as! Int]["selected"] = true
+        for (index, skillInfo) in skills.enumerate() {
+            for (skill, _) in skillInfo {
+                if skill.skill_id_ == info.keys.first?.skill_id_ {
+                    skills[index][skill] = true
+                    return
+                }
+            }
+        }
+
     }
     
-    func deleteAction(index: Int, info: Dictionary<String, AnyObject>) {
+    func deleteAction(index: Int, info: Dictionary<SkillInfo, Bool>) {
         selectedSkills.removeAtIndex(index)
+        
+        for (_index, skillInfo) in skills.enumerate() {
+            for (skill, _) in skillInfo {
+                if skill.skill_id_ == info.keys.first?.skill_id_ {
+                    skills[_index][skill] = false
+                    break
+                }
+            }
+            
+        }
         table?.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: .None)
-        skills[info["id"] as! Int]["selected"] = false
         table?.reloadSections(NSIndexSet.init(index: 1), withRowAnimation: .None)
     }
     
+    // MARK: - DoneAction
+    func doneAction(sender: UIButton) {
+        delegate?.endEdit(selectedSkills)
+        navigationController?.popViewControllerAnimated(true)
+    }
 }
 

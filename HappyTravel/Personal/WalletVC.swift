@@ -95,6 +95,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = UITableViewCell()
             cell?.accessoryType = .DisclosureIndicator
+            cell?.selectionStyle = .None
         }
         
         var icon = cell?.contentView.viewWithTag(1001) as? UIImageView

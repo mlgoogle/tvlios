@@ -77,7 +77,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func chatMessage(notification: NSNotification?) {
-        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
+//        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
         
     }
     

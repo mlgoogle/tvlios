@@ -38,6 +38,7 @@ class GuideTagCell: MAAnnotationView {
                 make.width.equalTo(50)
                 make.height.equalTo(50)
             })
+            headView?.image = UIImage.init(named: "default-head")
             image = UIImage.init(named: "location")
         }
         
@@ -81,10 +82,10 @@ class GuideTagCell: MAAnnotationView {
     
     func setInfo(info: UserInfo?) {
         userInfo = info
-        let headView = viewWithTag(1001) as? UIImageView
-        if headView != nil {
-            headView!.kf_setImageWithURL(NSURL(string: (info?.headUrl)!))
-        }
+//        let headView = viewWithTag(1001) as? UIImageView
+//        if headView != nil {
+//            headView!.kf_setImageWithURL(NSURL(string: (info?.headUrl)!))
+//        }
         
     }
     

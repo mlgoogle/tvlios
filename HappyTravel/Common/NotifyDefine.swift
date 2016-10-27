@@ -50,6 +50,6 @@ class NotifyDefine: NSObject {
     
     static let PushMessageNotify = "PushMessageNotify"
     
-    
+    static let AppointmentReply = "AppointmentReply"
     
 }

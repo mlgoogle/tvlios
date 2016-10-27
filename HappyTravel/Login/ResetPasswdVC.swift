@@ -185,20 +185,6 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         view.frame = vFrame
     }
     
-//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        if let textField = view.viewWithTag(tags["passwdField"]!) {
-//            if !textField.exclusiveTouch {
-//                textField.resignFirstResponder()
-//            }
-//        }
-//        
-//        if let textField = view.viewWithTag(tags["reInPasswdField"]!) {
-//            if !textField.exclusiveTouch {
-//                textField.resignFirstResponder()
-//            }
-//        }
-//    }
-    
     func sureAction(sender: UIButton?) {
         
 

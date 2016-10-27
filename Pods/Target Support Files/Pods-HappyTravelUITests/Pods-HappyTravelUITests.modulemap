@@ -1,0 +1,6 @@
+framework module Pods_HappyTravelUITests {
+  umbrella header "Pods-HappyTravelUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -333,4 +333,72 @@ class DataManager: NSObject {
         
     }
     
+    static func insertData<T: Object>(type: T.Type, data: AnyObject) {
+        if DataManager.initialized == false {
+            return
+        }
+        
+        let realm = try! Realm()
+        switch type.className() {
+        case SkillInfo.className():
+            let obj = data as! SkillInfo
+            let info = realm.objects(SkillInfo.self).filter("skill_id_ = \(obj.skill_id_)").first
+            try! realm.write({
+                if info == nil {
+                    realm.add(obj)
+                } else {
+                    info?.setInfo(obj)
+                }
+            })
+            break
+        default:
+            break
+        }
+        
+    }
+    
+    static func getData<T: Object>(type: T.Type, filter: String?) -> AnyObject? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        switch type.className() {
+        case SkillInfo.className():
+            let objs = realm.objects(SkillInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
+            
+        default:
+            break
+        }
+        
+        return nil
+    }
+    
+    static func updateData<T: Object>(type: T.Type, data: AnyObject) -> Bool {
+        if DataManager.initialized == false {
+            return false
+        }
+        let realm = try! Realm()
+        switch type.className() {
+        case HodometerInfo.className():
+            let dict = data as! [String: Int]
+            let obj = realm.objects(HodometerInfo.self).filter("order_id_ = \(dict["order_id_"]!)").first
+            try! realm.write({
+                if obj != nil {
+                    obj?.status_ = dict["invoice_status_"]!
+                }
+            })
+            
+        default:
+            break
+        }
+        
+        return false
+    }
+    
 }
