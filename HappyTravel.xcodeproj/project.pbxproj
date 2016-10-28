@@ -221,6 +221,7 @@
 		B341CE191DC2E97700DF93CB /* example@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE171DC2E97700DF93CB /* example@2x.png */; };
 		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
+		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -480,6 +481,7 @@
 		B341CE171DC2E97700DF93CB /* example@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "example@2x.png"; sourceTree = "<group>"; };
 		B341CE181DC2E97700DF93CB /* tianjia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@2x.png"; sourceTree = "<group>"; };
 		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
+		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -901,6 +903,7 @@
 		2FE7C3311D61ACFC00994505 /* Nav */ = {
 			isa = PBXGroup;
 			children = (
+				B341CE1D1DC322B200DF93CB /* nav_clear.png */,
 				2FE7C3321D61ACFC00994505 /* nav-msg@2x.png */,
 				2FE7C3331D61ACFC00994505 /* nav-personal@2x.png */,
 			);
@@ -1184,6 +1187,7 @@
 				2FE7C3631D62D09600994505 /* guide-detail-arrows@2x.png in Resources */,
 				2FE7C3751D632F8400994505 /* service-unselect@2x.png in Resources */,
 				2FE7C3211D616C3C00994505 /* segment-right@2x.png in Resources */,
+				B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */,
 				2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */,
 				B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */,
 				2F26A69D1D8245A900FFA6A7 /* localaddress@2x.png in Resources */,

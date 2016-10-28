@@ -16,7 +16,8 @@ class ViewController: SideMenuController {
         let forthwithVC = ForthwithVC()
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
-        
+        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
+        forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]
         

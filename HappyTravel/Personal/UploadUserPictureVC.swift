@@ -57,11 +57,11 @@ class UploadCell: UITableViewCell {
 }
 
 class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    var tableView:UITableView? = nil
+    var tableView:UITableView?
     let titles:[String]! = ["正面","背面","示例","注意"]
-    var selectImages:[UIImage]? = nil
+    var selectImages:[UIImage]?
     var index:NSInteger = 0
-    var imagePicker:UIImagePickerController? = nil
+    var imagePicker:UIImagePickerController? 	
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,8 +131,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
         cell?.titleLable.textColor = indexPath.section == 2 ? colorWithHexString("#999999"):UIColor.blackColor()
-         cell?.iconImage.image = selectImages![indexPath.section]
-        
+        cell?.iconImage.image = selectImages![indexPath.section]
         return cell!
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
