@@ -218,6 +218,9 @@
 		B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE111DC2E6F800DF93CB /* LabelEx.swift */; };
 		B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE121DC2E6F800DF93CB /* UIImageExt.swift */; };
 		B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE151DC2E70D00DF93CB /* UploadUserPictureVC.swift */; };
+		B341CE191DC2E97700DF93CB /* example@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE171DC2E97700DF93CB /* example@2x.png */; };
+		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
+		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -474,6 +477,9 @@
 		B341CE111DC2E6F800DF93CB /* LabelEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LabelEx.swift; path = Common/LabelEx.swift; sourceTree = "<group>"; };
 		B341CE121DC2E6F800DF93CB /* UIImageExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIImageExt.swift; path = Common/UIImageExt.swift; sourceTree = "<group>"; };
 		B341CE151DC2E70D00DF93CB /* UploadUserPictureVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UploadUserPictureVC.swift; path = Personal/UploadUserPictureVC.swift; sourceTree = "<group>"; };
+		B341CE171DC2E97700DF93CB /* example@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "example@2x.png"; sourceTree = "<group>"; };
+		B341CE181DC2E97700DF93CB /* tianjia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@2x.png"; sourceTree = "<group>"; };
+		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -524,6 +530,9 @@
 		2F6959E31D54259A0072B7FF /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */,
+				B341CE171DC2E97700DF93CB /* example@2x.png */,
+				B341CE181DC2E97700DF93CB /* tianjia@2x.png */,
 				2FF72B401DAF6217001EEED2 /* CenturionCard */,
 				2F26A6921D8245A900FFA6A7 /* default-head@2x.png */,
 				2F26A6931D8245A900FFA6A7 /* default-head@3x.png */,
@@ -1176,6 +1185,7 @@
 				2FE7C3751D632F8400994505 /* service-unselect@2x.png in Resources */,
 				2FE7C3211D616C3C00994505 /* segment-right@2x.png in Resources */,
 				2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */,
+				B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */,
 				2F26A69D1D8245A900FFA6A7 /* localaddress@2x.png in Resources */,
 				2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */,
 				2FC25B2D1D6BFA2F00D48D6A /* invoice-history@2x.png in Resources */,
@@ -1231,6 +1241,7 @@
 				2FF72B711DAF6217001EEED2 /* bg-card-detail@2x.png in Resources */,
 				2F26A69B1D8245A900FFA6A7 /* default-head@2x.png in Resources */,
 				2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */,
+				B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */,
 				2FE7C3811D64133600994505 /* bottom_selector_normal@3x.png in Resources */,
 				2F9684421D7D22660028E3F2 /* star-common-hollow@3x.png in Resources */,
 				2FE7C34A1D62BFAF00994505 /* guide-auth@3x.png in Resources */,
@@ -1273,6 +1284,7 @@
 				2F26A69C1D8245A900FFA6A7 /* default-head@3x.png in Resources */,
 				2FE7C3801D64133600994505 /* bottom_selector_normal@2x.png in Resources */,
 				2FF72B811DAF6217001EEED2 /* primary-level@3x.png in Resources */,
+				B341CE191DC2E97700DF93CB /* example@2x.png in Resources */,
 				2FF72B951DAF6217001EEED2 /* vipper-rest@2x.png in Resources */,
 				2FF72B7D1DAF6217001EEED2 /* middle-level@2x.png in Resources */,
 				2FF72B8A1DAF6217001EEED2 /* service@3x.png in Resources */,
