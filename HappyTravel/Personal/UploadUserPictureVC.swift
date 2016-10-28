@@ -57,15 +57,15 @@ class UploadCell: UITableViewCell {
 }
 
 class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    var tableView:UITableView! = UITableView.init(frame: CGRectZero, style: .Plain)
-    
+    var tableView:UITableView? = nil
     let titles:[String]! = ["正面","背面","示例","注意"]
-    var selectImages:[UIImage]! = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
+    var selectImages:[UIImage]? = nil
     var index:NSInteger = 0
     var imagePicker:UIImagePickerController? = nil
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        initData()
         initImagePick()
         initTableView()
         initNav()
@@ -94,15 +94,16 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     //MARK: -- tableView
     func initTableView() {
-        tableView.backgroundColor = colorWithHexString("#f2f2f2")
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = 180
-        tableView.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .None
-        view.addSubview(tableView)
-        tableView.snp_makeConstraints { (make) in
+        tableView = UITableView.init(frame: CGRectZero, style: .Plain)
+        tableView!.backgroundColor = colorWithHexString("#f2f2f2")
+        tableView!.delegate = self
+        tableView!.dataSource = self
+        tableView!.rowHeight = 180
+        tableView!.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
+        tableView!.tableFooterView = UIView()
+        tableView!.separatorStyle = .None
+        view.addSubview(tableView!)
+        tableView!.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
     }
@@ -130,7 +131,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
         cell?.titleLable.textColor = indexPath.section == 2 ? colorWithHexString("#999999"):UIColor.blackColor()
-         cell?.iconImage.image = selectImages[indexPath.section]
+         cell?.iconImage.image = selectImages![indexPath.section]
         
         return cell!
     }
@@ -163,12 +164,12 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         selectImages![index] = image.reSizeImage(CGSizeMake(162, 125))
-        tableView.reloadData()
+        tableView!.reloadData()
         imagePicker?.dismissViewControllerAnimated(true, completion: nil)
     }
     //MARK: -- DATA
     func initData() {
-        
+        selectImages = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
     }
     
    
