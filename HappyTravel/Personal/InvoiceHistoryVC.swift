@@ -92,7 +92,7 @@ class InvoiceHistoryVC:UIViewController {
         tableView?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         tableView?.delegate = self
         tableView?.dataSource = self
-        tableView?.rowHeight = 60 * ScreenScale
+        tableView?.rowHeight = 60
         tableView?.separatorStyle = .None
         tableView?.registerClass(InvoiceHistoryCell.self, forCellReuseIdentifier: "InvoiceHistory")
         view.addSubview(tableView!)

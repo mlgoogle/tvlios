@@ -44,6 +44,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ImproveDataResult = 1024
         case ObtainTripRequest = 1025
         case ObtainTripReply = 1026
+        case ServiceDetailRequest = 1027
+        case ServiceDetailReply = 1028
         case DrawBillRequest = 1029
         case DrawBillReply = 1030
         case PutDeviceToken = 1031
@@ -60,7 +62,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SkillsInfoReply = 1042
         case AppointmentRequest = 1043
         case AppointmentReply = 1044
-        
+        case InvoiceDetailRequest = 1045
+        case InvoiceDetailReply = 1046
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -204,6 +207,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = 1023
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+            
+        case .ServiceDetailRequest:
+            head.fields["opcode"] = SockOpcode.ServiceDetailRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
         case .ObtainTripRequest:
             head.fields["opcode"] = SockOpcode.ObtainTripRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
@@ -212,6 +220,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+            
         case .InvoiceInfoRequest:
             head.fields["opcode"] = SockOpcode.InvoiceInfoRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
@@ -238,7 +247,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = SockOpcode.AppointmentRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
-            
+        case .InvoiceDetailRequest:
+            head.fields["opcode"] = SockOpcode.InvoiceDetailRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
             
         case .AskInvitation:
             head.fields["opcode"] = 2001
@@ -375,6 +387,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
             }
             break
+            
+        case .ServiceDetailReply:
+            
+            
+
+            break
         case .DeviceTokenResult:
             
             break
@@ -432,7 +450,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AppointmentReply:
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
             break
+        case .InvoiceDetailReply:
+            let dict = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
             
+            break
         case .InvoiceInfoReply:
             
             if (body as? NSData)?.length <= 0 {

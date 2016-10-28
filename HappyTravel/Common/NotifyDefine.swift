@@ -56,5 +56,6 @@ class NotifyDefine: NSObject {
 
     static let InvoiceInfoReply = "InvoiceInfoReply"
 
-    
+    static let InvoiceDetailReply = "InvoiceDetailReply"
+
 }
