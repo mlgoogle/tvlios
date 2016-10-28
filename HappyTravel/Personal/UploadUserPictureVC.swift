@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Qiniu
 
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
@@ -63,6 +64,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var selectImages:[UIImage]! = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
     var index:NSInteger = 0
     var imagePicker:UIImagePickerController? = nil
+    var photoPaths:[String] = []
+    
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +93,19 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
+        let token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:UslVOLze87dvvwIcxnw8FIehLkk=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc2NTI4MTh9"
+        let qnManager = QNUploadManager()
+        for path in photoPaths {
+            qnManager.putFile(path, key: nil, token: token, complete: { (info, key, resp) -> Void in
+                if (info.statusCode == 200 && resp != nil){
+                    
+                }else{
+                    
+                }
+                
+                }, option: nil)
+            
+        }
         
     }
     //MARK: -- tableView
@@ -165,6 +181,28 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         selectImages![index] = image.reSizeImage(CGSizeMake(162, 125))
         tableView.reloadData()
         imagePicker?.dismissViewControllerAnimated(true, completion: nil)
+        
+        //先把图片转成NSData
+        let data = UIImageJPEGRepresentation(image, 0.5)
+        //图片保存的路径
+        //这里将图片放在沙盒的documents文件夹中
+        
+        //Home目录
+        let homeDirectory = NSHomeDirectory()
+        let documentPath = homeDirectory + "/Documents"
+        //文件管理器
+        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
+        do {
+            try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch let _ {
+        }
+        fileManager.createFileAtPath(documentPath.stringByAppendingString("/image.png"), contents: data, attributes: nil)
+        //得到选择后沙盒中图片的完整路径
+        let filePath: String = String(format: "%@%@", documentPath, "/image.png")
+        
+        photoPaths.append(filePath)
     }
     //MARK: -- DATA
     func initData() {
