@@ -39,6 +39,10 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         })
     }
     
+    func initData() {
+        
+    }
+    
     //MARK: - TableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -138,10 +142,27 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         separateLine?.hidden = true
         
+        var subTitleLabel = cell?.contentView.viewWithTag(1004) as? UILabel
+        if subTitleLabel == nil {
+            subTitleLabel = UILabel()
+            subTitleLabel?.tag = 1004
+            subTitleLabel?.backgroundColor = UIColor.clearColor()
+            subTitleLabel?.textColor = UIColor.blackColor()
+            subTitleLabel?.font = UIFont.systemFontOfSize(15)
+            cell?.contentView.addSubview(subTitleLabel!)
+            subTitleLabel?.snp_makeConstraints(closure: { (make) in
+                make.centerY.equalTo(cell!.contentView.snp_centerY)
+                make.right.equalTo(0)
+            })
+        }
+        subTitleLabel?.hidden = indexPath.section != 0
+        
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 icon?.image = UIImage.init(named: "cash")
                 title?.text = "余额"
+                let cash:NSInteger = (DataManager.currentUser?.cash)!
+                subTitleLabel?.text = "\(cash)元"
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -161,6 +182,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 XCGLogger.debug("余额")
+                let rechargeVC = RechargeVC()
+                navigationController?.pushViewController(rechargeVC, animated: true)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -173,6 +196,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(invoiceHistotyVC, animated: true)
             }
         }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     required init?(coder aDecoder: NSCoder) {

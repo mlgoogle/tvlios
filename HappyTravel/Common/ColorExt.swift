@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 extension UIColor {
     
     convenience init(decR: CGFloat, decG: CGFloat, decB: CGFloat, a: CGFloat) {
@@ -18,4 +19,6 @@ extension UIColor {
         self.init(red: hexR/255.0, green: hexG/255.0, blue: hexB/255.0, alpha: a)
     }
     
-}
+    
+  
+}   

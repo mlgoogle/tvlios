@@ -83,19 +83,13 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(servantInfo: UserInfo?) {
-//        let chatVC = ChatVC()
-//        chatVC.servantInfo = servantInfo
-//        navigationController?.pushViewController(chatVC, animated: true)
-//        
         
         SocketManager.sendData(.GetServantDetailInfo, data:servantInfo)
         self.servantInfo[(servantInfo?.uid)!] = servantInfo
-//        let servantPersonalVC = ServantPersonalVC()
-//        servantPersonalVC.personalInfo = servantInfo
-//        navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
     
     func servantDetailInfo(notification: NSNotification?) {
+        
         let data = notification?.userInfo!["data"]
         if data!["error_"]! != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error"])")
