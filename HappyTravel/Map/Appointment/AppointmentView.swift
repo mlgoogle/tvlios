@@ -136,8 +136,11 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         } else if indexPath.section == 2 {
             cell = agentCell(tableView, indexPath: indexPath)
             line = indexPath.row < 3 ? true : false
+            if !agent {
+                line = false
+            }
         } else if indexPath.section == 3 {
-            line = indexPath.row < 3 ? true : false
+            line = false
             cell = tableView.dequeueReusableCellWithIdentifier("AppointmentCell")
             if cell == nil {
                 cell = UITableViewCell()
@@ -446,7 +449,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.bottom.equalTo(citysAlertController!.view).offset(10)
                     make.top.equalTo(citysAlertController!.view).offset(-10)
                 }
-                UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(citysAlertController!, animated: true, completion: nil)
+                nav?.presentViewController(citysAlertController!, animated: true, completion: nil)
             } else if indexPath.row == 1 || indexPath.row == 2 {
                 if dateAlertController == nil {
                     dateAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -462,7 +465,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     
                 }
                 
-                UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(dateAlertController!, animated: true, completion: nil)
+                nav?.presentViewController(dateAlertController!, animated: true, completion: nil)
             }
         }
     }
@@ -580,7 +583,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             let alert = UIAlertController.init(title: "资料不完善", message: errMsg, preferredStyle: .Alert)
             let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
             alert.addAction(action)
-            UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(alert, animated: true, completion: nil)
+            nav?.presentViewController(alert, animated: true, completion: nil)
             return
         }
         

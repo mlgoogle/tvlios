@@ -8,12 +8,15 @@
 
 import Foundation
 import XCGLogger
+import SwiftyJSON
 
-class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     var table:UITableView?
-    var sureBtn:UIButton?
+    var payBtn:UIButton?
     var selectedIndex = 0
+    var selectedIcon:UIImageView?
+    var amount:String?
     
     let tags = ["amountLab": 1001,
                 "amountTextField": 1002,
@@ -152,17 +155,19 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
-                    make.width.equalTo(30)
+                    make.width.equalTo(40)
                 })
             }
         
             var amountTextField = cell?.contentView.viewWithTag(tags["amountTextField"]!) as? UITextField
             if amountTextField == nil {
                 amountTextField = UITextField()
+                amountTextField?.delegate = self
                 amountTextField?.tag = tags["amountTextField"]!
                 amountTextField?.backgroundColor = UIColor.clearColor()
                 amountTextField?.placeholder = "请输入充值金额"
                 amountTextField?.rightViewMode = .WhileEditing
+                amountTextField?.keyboardType = .NumbersAndPunctuation
                 amountTextField?.clearButtonMode = .WhileEditing
                 cell?.contentView.addSubview(amountTextField!)
                 amountTextField?.snp_makeConstraints(closure: { (make) in
@@ -226,6 +231,9 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 })
             }
             selectedIcon?.image = indexPath.row == selectedIndex ? UIImage.init(named: "pay-selected") : UIImage.init(named: "pay-unselect")
+            if indexPath.row == 0 {
+                self.selectedIcon = selectedIcon
+            }
     
             if indexPath.row == 0 {
                 channelIcon?.image = UIImage.init(named: "alipay")
@@ -280,6 +288,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     make.bottom.equalTo(cell!.contentView).offset(-10)
                     make.height.equalTo(40)
                 })
+                self.payBtn = payBtn
             }
             
             return cell!
@@ -288,22 +297,25 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                XCGLogger.debug("余额")
-            }
-        } else if indexPath.section == 1 {
+        if indexPath.section == 1 {
             selectedIndex = indexPath.row
-            tableView.reloadData()
-        } else if indexPath.section == 2 {
-            
+            selectedIcon?.image = UIImage.init(named: "pay-unselect")
+            if let icon = tableView.cellForRowAtIndexPath(indexPath)?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIImageView {
+                icon.image = UIImage.init(named: "pay-selected")
+                selectedIcon = icon
+            }
         }
     }
     
     
     //MARK: - UITextField
     func textFieldDidEndEditing(textField: UITextField) {
-        
+        amount = textField.text
+        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+        } else {
+            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -311,6 +323,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func textFieldShouldClear(textField: UITextField) -> Bool {
+        amount = ""
         return true
     }
     
@@ -318,17 +331,64 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if range.location > 5 {
             return false
         }
-        
+        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+        } else {
+            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+        }
         return true
     }
     
     func payAction(sender: UIButton) {
-        DataManager.currentUser?.cash = 10
-        let orderStr = "app_id=2016102102273564&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22BBCXFY4KAL3U6DB%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA&timestamp=2016-09-01%2013%3A49%3A34&version=1.0&sign=imFFzjpv%2BUt8iPLyFmrUqTUceLKWBZmn%2Bixy4siNLs3VmIw5jNddnLf1V0JdtkVQgAUhNWiw8oDTVlv6HuUAHj7Ja0Rz%2BdsYcr4MzTiqy1NHYYvoLUVFOlQGy1QXU6bMzYnhrQnjjkTf0hnNJiy6fVEA7iPRFnWr8cScHgA2JZI%3D"
-        AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [NSObject : AnyObject]!) in
-            XCGLogger.debug("\(data)")
-        })
+        if selectedIndex == 0 {
+            DataManager.currentUser?.cash = 10
+            let orderStr = "app_id=2016102102273564&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22BBCXFY4KAL3U6DB%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA&timestamp=2016-09-01%2013%3A49%3A34&version=1.0&sign=imFFzjpv%2BUt8iPLyFmrUqTUceLKWBZmn%2Bixy4siNLs3VmIw5jNddnLf1V0JdtkVQgAUhNWiw8oDTVlv6HuUAHj7Ja0Rz%2BdsYcr4MzTiqy1NHYYvoLUVFOlQGy1QXU6bMzYnhrQnjjkTf0hnNJiy6fVEA7iPRFnWr8cScHgA2JZI%3D"
+            AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [NSObject : AnyObject]!) in
+                XCGLogger.debug("\(data)")
+            })
+        } else if selectedIndex == 1 {
+            let retStr = jumpToBizPay()
+            XCGLogger.debug(retStr!)
+        }
+        
     }
+    
+    func jumpToBizPay() -> String? {
+        //============================================================
+        // V3&V4支付流程实现
+        // 注意:参数配置请查看服务器端Demo
+        // 更新时间：2015年11月20日
+        //============================================================
+        let urlString = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=ios"
+        //解析服务端返回json数据
+        //加载一个NSURL对象
+        let request = NSURLRequest.init(URL: NSURL(string: urlString)!)
+        //将请求的url数据放到NSData对象中
+        let response = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil)
+        if ( response != nil) {
+            //IOS5自带解析类NSJSONSerialization从response中解析出数据放到字典中
+            if let dict = JSON.init(data: response!).dictionaryObject {
+                let stamp = dict["timestamp"] as? NSNumber
+                //调起微信支付
+                let req = PayReq()
+                req.partnerId = dict["partnerid"] as? String
+                req.prepayId = dict["prepayid"] as? String
+                req.nonceStr = dict["noncestr"] as? String
+                req.timeStamp = stamp!.unsignedIntValue
+                req.package = dict["package"] as? String
+                req.sign = dict["sign"] as? String
+                WXApi.sendReq(req)
+                
+                return ""
+            } else {
+                return "服务器返回错误，未获取到json对象"
+            }
+        }else{
+            return "服务器返回错误"
+        }
+    
+    }
+
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

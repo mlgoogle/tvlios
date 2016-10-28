@@ -100,6 +100,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
             if regOrLoginSelVC?.isShow == false {
+                let rechargeVC = RechargeVC()
+//                navigationController?.pushViewController(rechargeVC, animated: true)
                 presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
             }
         }
@@ -180,8 +182,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         bottomSelector.maximumValue = 1
         bottomSelector.value = 0
         bottomSelector.continuous = false
-        bottomSelector.addTarget(self, action: #selector(ForthwithVC.bottomSelectorAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: UIControlState.Normal)
+        bottomSelector.addTarget(self, action: #selector(ForthwithVC.bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
+        bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
         bottomSelector.tintColor = UIColor.whiteColor()
         bottomSelector.minimumTrackTintColor = UIColor.whiteColor()
         bottomSelector.maximumTrackTintColor = UIColor.whiteColor()
@@ -305,7 +307,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func appointmentReply(notification: NSNotification) {
         let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
         let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
-            self.performSelector(#selector(AppointmentVC.backAction), withObject: nil, afterDelay: 0.3)
+            
         })
         alert.addAction(action)
         presentViewController(alert, animated: true, completion: nil)
@@ -643,7 +645,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
-        if view .isKindOfClass(GuideTagCell) {
+        if view.isKindOfClass(GuideTagCell) {
+            mapView.deselectAnnotation(view.annotation, animated: false)
             SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
             
         }

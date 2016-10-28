@@ -192,6 +192,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(invoiceVC, animated: true)
             } else if indexPath.row == 1 {
                 XCGLogger.debug("开票记录")
+                let invoiceHistotyVC = InvoiceHistoryVC()
+                navigationController?.pushViewController(invoiceHistotyVC, animated: true)
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
