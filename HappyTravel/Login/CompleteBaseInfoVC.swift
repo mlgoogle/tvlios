@@ -80,8 +80,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                                                       "gender_": self.sex,
                                                       "head_url_": "http://www.abc.com",
                                                       "address_": self.address!,
-                                                      "longitude_": 121.604742,//Float.init(location[0])!,
-                                                      "latitude_": 31.212959]//Float.init(location[1])!]
+                                                      "longitude_": Float.init(location[0])!,//121.604742,//Float.init(location[0])!,
+                                                      "latitude_": Float.init(location[1])!]//31.212959]//Float.init(location[1])!]
             SocketManager.sendData(.SendImproveData, data: dict)
         }
         
