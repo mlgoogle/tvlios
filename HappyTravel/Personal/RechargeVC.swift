@@ -54,6 +54,11 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
+    }
+    
+    func wechatPaySuccessed(notification: NSNotification) {
+        
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -276,6 +281,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 payBtn = UIButton()
                 payBtn?.tag = tags["payBtn"]!
                 payBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
+                payBtn?.enabled = false
                 payBtn?.setTitle("确认充值", forState: .Normal)
                 payBtn?.layer.cornerRadius = 5
                 payBtn?.layer.masksToBounds = true
@@ -311,11 +317,18 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     //MARK: - UITextField
     func textFieldDidEndEditing(textField: UITextField) {
         amount = textField.text
-        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
-        } else {
-            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
-        }
+//        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+//            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+//            payBtn?.enabled = true
+//        } else {
+//            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+//            payBtn?.enabled = false
+//        }
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        
+        return true
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -324,17 +337,33 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func textFieldShouldClear(textField: UITextField) -> Bool {
         amount = ""
+        payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+        payBtn?.enabled = false
+        return true
+    }
+    
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+            payBtn?.enabled = true
+        } else {
+            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+            payBtn?.enabled = false
+        }
         return true
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if range.location > 5 {
+        if range.location > 8 {
             return false
         }
-        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
-        } else {
+        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 1 &&
+        string == "" {
             payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+            payBtn?.enabled = false
+        } else {
+            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+            payBtn?.enabled = true
         }
         return true
     }

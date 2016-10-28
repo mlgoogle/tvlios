@@ -209,7 +209,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
-                make.width.equalTo(60)
+                make.width.equalTo(80)
             })
         }
         
@@ -269,7 +269,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
-                make.width.equalTo(60)
+                make.width.equalTo(80)
             })
         }
         dateTitleLab?.text = indexPath.row == 1 ? "开始日期" : "结束日期"
@@ -315,7 +315,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
-                    make.width.equalTo(60)
+                    make.width.equalTo(80)
                 })
             }
             
@@ -352,7 +352,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
-                    make.width.equalTo(60)
+                    make.width.equalTo(80)
                 })
             }
             lab?.text = indexPath.row == 1 ? "姓名" : "联系电话"
@@ -396,7 +396,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
-                    make.width.equalTo(60)
+                    make.width.equalTo(80)
                 })
             }
             
