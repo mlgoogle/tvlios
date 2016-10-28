@@ -23,4 +23,8 @@
 #import "WXApi.h"
 #import "WXApiObject.h"
 
+#import "AFNetworking/AFNetworking.h"
+#import "Qiniu/QiniuSDK.h"
+#import "HappyDNS/HappyDNS.h"
+
 #endif /* Bridging_Header_h */

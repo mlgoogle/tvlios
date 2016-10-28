@@ -242,7 +242,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         segmentBGV.snp_makeConstraints { (make) in
             make.top.equalTo(view)
             make.left.equalTo(view)
-            make.right.equalTo(mapView!)
+            make.right.equalTo(mapView!).offset(0.5)
             make.height.equalTo(60)
         }
         
