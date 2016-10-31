@@ -7,29 +7,52 @@
 //
 
 import UIKit
-
+import RealmSwift
 class InvoiceIncludeServiceVC: UIViewController {
-
+    
+    var tableView:UITableView?
+    
+    var services:Results<InvoiceHistoryInfo>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        title = "所含服务"
+        
+        initViews()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func initViews() {
+        
+        tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        tableView?.delegate = self
+        tableView?.dataSource = self
+        tableView?.rowHeight = 60
+        tableView?.separatorStyle = .None
+        tableView?.registerClass(InvoiceIncludeCell.self, forCellReuseIdentifier: "includeCell")
+        view.addSubview(tableView!)
+        tableView?.snp_makeConstraints(closure: { (make) in
+            make.edges.equalTo(view)
+        })
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+}
+extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let count = services != nil ? services?.count : 0
+        return 10
     }
-    */
-
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("includeCell", forIndexPath: indexPath) as! InvoiceIncludeCell
+        
+        cell.setupData()
+        return cell
+        
+    }
+    
+    
 }

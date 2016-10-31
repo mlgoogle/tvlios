@@ -52,6 +52,10 @@ class NotifyDefine: NSObject {
     
     static let AppointmentReply = "AppointmentReply"
     
+    static let WeChatPaySuccessed = "WeChatPaySuccessed"
+
     static let InvoiceInfoReply = "InvoiceInfoReply"
-    
+
+    static let InvoiceDetailReply = "InvoiceDetailReply"
+
 }

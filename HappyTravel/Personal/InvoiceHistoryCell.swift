@@ -6,7 +6,7 @@
 //  Copyright © 2016年 陈奕涛. All rights reserved.
 //
 
-public let ScreenScale = UIScreen.mainScreen().bounds.size.width / 375.0
+//public let ScreenScale = UIScreen.mainScreen().bounds.size.width / 375.0
 import UIKit
 
 class InvoiceHistoryCell: UITableViewCell {
@@ -36,11 +36,11 @@ class InvoiceHistoryCell: UITableViewCell {
             priceLabel?.backgroundColor = UIColor.clearColor()
             priceLabel?.textAlignment = .Left
             priceLabel?.textColor = UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)
-            priceLabel?.font = UIFont.systemFontOfSize(15 * ScreenScale)
+            priceLabel?.font = UIFont.systemFontOfSize(15)
             contentView.addSubview(priceLabel!)
             priceLabel?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(contentView).offset(20 * ScreenScale)
-                make.top.equalTo(contentView).offset(13 * ScreenScale)
+                make.left.equalTo(contentView).offset(20)
+                make.top.equalTo(contentView).offset(13)
             })
         }
         priceLabel!.text = "1111111元"
@@ -50,11 +50,11 @@ class InvoiceHistoryCell: UITableViewCell {
             dateLabel?.backgroundColor = UIColor.clearColor()
             dateLabel?.textAlignment = .Left
             dateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
-            dateLabel?.font = UIFont.systemFontOfSize(12 * ScreenScale)
+            dateLabel?.font = UIFont.systemFontOfSize(12)
             contentView.addSubview(dateLabel!)
             dateLabel?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(priceLabel!)
-                make.bottom.equalTo(contentView).offset(-10 * ScreenScale)
+                make.bottom.equalTo(contentView).offset(-10)
             })
             
         }
@@ -66,7 +66,7 @@ class InvoiceHistoryCell: UITableViewCell {
             statusLabel?.backgroundColor = UIColor.clearColor()
             statusLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
             statusLabel?.textAlignment = .Center
-            statusLabel?.font = UIFont.systemFontOfSize(13 * ScreenScale)
+            statusLabel?.font = UIFont.systemFontOfSize(13)
             statusLabel?.layer.borderWidth = 1
             statusLabel?.layer.borderColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0).CGColor
             statusLabel?.layer.cornerRadius = 12
@@ -74,11 +74,11 @@ class InvoiceHistoryCell: UITableViewCell {
             statusLabel?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(contentView).offset(-10)
                 make.centerY.equalTo(contentView)
-                make.width.equalTo(60 * ScreenScale)
-                make.height.equalTo(25 * ScreenScale)
+                make.width.equalTo(60)
+                make.height.equalTo(25)
             })
         }
-        statusLabel?.text = "未开票"
+        statusLabel?.text = "待开票"
 
         
         if bottomLine == nil {
