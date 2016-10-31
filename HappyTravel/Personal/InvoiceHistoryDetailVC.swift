@@ -19,7 +19,10 @@ class InvoiceHistoryDetailVC: UIViewController {
     var titles =  [["发票抬头", "收件人", "联系电话", "所在区域", "收件地址"],
                    ["发票类型","发票金额","申请时间"]]
     /// 开票类型
-    var invoiceTypes = [1 : "差旅费", 2 :"文体用品" , 3 : "餐饮发票", 4 : "其他"]
+    var invoiceTypes = [1 : "差旅费",
+                        2 :"文体用品",
+                        3 : "餐饮发票",
+                        4 : "其他"]
 
     lazy var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()

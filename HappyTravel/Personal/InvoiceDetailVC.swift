@@ -255,6 +255,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
+                textField?.font = UIFont.systemFontOfSize(15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -385,6 +386,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
+                textField?.font = UIFont.systemFontOfSize(15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
