@@ -62,7 +62,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     let titles:[String]! = ["正面","背面","示例","注意"]
     var selectImages:[UIImage]?
     var index:NSInteger = 0
-
+    var token: NSString? = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9"
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = []
 
@@ -82,7 +82,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewWillDisappear(animated)
     }
     deinit{
-        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     //MARK: -- Nav
     func initNav()  {
@@ -94,12 +94,17 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
-        let token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:UslVOLze87dvvwIcxnw8FIehLkk=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc2NTI4MTh9"
+        
         let qnManager = QNUploadManager()
-        for path in photoPaths {
+        for (index,path) in photoPaths.enumerate() {
             qnManager.putFile(path, key: nil, token: token, complete: { (info, key, resp) -> Void in
                 if (info.statusCode == 200 && resp != nil){
                     
+                    
+                    //第二张图片上传成功后跳转到下一步
+                    if index == 1{
+                        popBackToSetting()
+                    }
                 }else{
                     
                 }
@@ -107,6 +112,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                 }, option: nil)
             
         }
+        
+    }
+    func popBackToSetting() {
+        let alter: UIAlterController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .ActionSheet)
         
     }
     //MARK: -- tableView
@@ -203,11 +212,19 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         //得到选择后沙盒中图片的完整路径
         let filePath: String = String(format: "%@%@", documentPath, "/image.png")
         
-        photoPaths.append(filePath)
+        photoPaths[index] = filePath
     }
     //MARK: -- DATA
     func initData() {
         selectImages = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadImageToken:", name: NotifyDefine.UploadImageToken, object: nil)
+        SocketManager.sendData(.UploadImageToken, data: nil)
+    }
+    
+    func uploadImageToken(notice: NSNotification?) {
+        print(notice)
+        let data = notice?.userInfo["data"]
+        token = data["token"]
     }
     
    

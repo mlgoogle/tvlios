@@ -58,4 +58,5 @@ class NotifyDefine: NSObject {
 
     static let InvoiceDetailReply = "InvoiceDetailReply"
 
+    static let UpLoadImageToken = "UpLoadImageToken"
 }

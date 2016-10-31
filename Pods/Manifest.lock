@@ -1,4 +1,19 @@
 PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
   - Alamofire (3.4.2)
   - AMap2DMap (4.2.0):
     - AMapFoundation (~> 1.2)
@@ -7,9 +22,13 @@ PODS:
     - CocoaAsyncSocket/GCD (= 7.5.0)
   - CocoaAsyncSocket/GCD (7.5.0)
   - GTSDK (1.4.3)
+  - HappyDNS (0.3.10)
   - Kingfisher (2.5.1)
   - MJRefresh (3.1.12)
   - MOBFoundation_IDFA (2.0.11)
+  - Qiniu (7.1.2):
+    - AFNetworking (~> 3)
+    - HappyDNS (~> 0.3)
   - Realm (1.0.2):
     - Realm/Headers (= 1.0.2)
   - Realm/Headers (1.0.2)
@@ -30,6 +49,7 @@ DEPENDENCIES:
   - Kingfisher (~> 2.5.0)
   - MJRefresh (~> 3.1.12)
   - MOBFoundation_IDFA (~> 2.0.10)
+  - Qiniu (~> 7.1)
   - RealmSwift (~> 1.0.2)
   - SideMenuController (~> 0.1.6)
   - SMSSDK (~> 2.0.5)
@@ -39,14 +59,17 @@ DEPENDENCIES:
   - XCGLogger (~> 3.5.1)
 
 SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 6aa33201d20d069e1598891cf928883ff1888c7a
   AMap2DMap: 82228a353bafa585f58c600bf7ee4687072b2e43
   AMapFoundation: 636834a27cd003084f56b4232f3031e6a44c7e7e
   CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
   GTSDK: b5a84db52e4d341af3ec8bad7e1cced010a8ee62
+  HappyDNS: 06a9fed2796663fd87626dbf02552933265bf059
   Kingfisher: 9b82e0e1f1a296f149a50bbc2214532eaa4df4f1
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MOBFoundation_IDFA: fb7bf493361568f392e0a71bd2503aaa5b8dab9d
+  Qiniu: d57cb922b5c31f0d1cfe2c8fea3cf83997cdcf62
   Realm: 9d5c46a4d7d27958530a8dfc58f63a99e5c2cba3
   RealmSwift: 82f3ac5e24530143dddfde2033acc0d308f27d96
   SideMenuController: 442d67af6d5892934065d42d5c1c3b7d5be4953e
@@ -56,6 +79,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 0fd0a115a3c0c09b277d2ab801df154902b942c3
   XCGLogger: dbe4a9c7bbaac73717a34e0b94c64fd151c74d6c
 
-PODFILE CHECKSUM: 07d308e747260fc7a35812d12671145dfea39fa4
+PODFILE CHECKSUM: 5319e26e3ada11a4feba2481295d9606933a6381
 
 COCOAPODS: 1.0.1
