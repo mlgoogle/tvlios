@@ -494,6 +494,9 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            return
+        }
         invoiceInfoDict["invoice_type_"] = buttonIndex
         XCGLogger.debug("\(buttonIndex)")
         descLab?.text = alertView.buttonTitleAtIndex(buttonIndex)

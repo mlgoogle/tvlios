@@ -76,7 +76,8 @@ extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("includeCell", forIndexPath: indexPath) as! InvoiceIncludeCell
         
-        cell.setupData(services[indexPath.row])
+        let last = indexPath.row == services.count - 1 ? true : false
+        cell.setupData(services[indexPath.row], isLast:last)
         return cell
         
     }

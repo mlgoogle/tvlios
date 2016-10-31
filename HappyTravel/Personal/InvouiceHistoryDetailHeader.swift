@@ -15,7 +15,7 @@ class InvouiceHistoryDetailHeader: UIView {
     
     var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
-        dateFomatter.dateFormat = "YYYY.MM.DD"
+        dateFomatter.dateFormat = "YYYY.MM.dd"
         return dateFomatter
     }()
     override init(frame: CGRect) {

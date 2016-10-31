@@ -426,6 +426,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .CenturionCardConsumedReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
+                break
+            }
             if let orderList = dict.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
                 var lastOrderID = 0
                 for order in orderList {
@@ -473,6 +477,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = historyInfo.invoice_id_
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
             }
             
             

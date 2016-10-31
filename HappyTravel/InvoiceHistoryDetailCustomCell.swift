@@ -7,7 +7,7 @@
 //
 
 import UIKit
-/// 最下面 非常规cell
+// MARK: - 非常规cell
 class InvoiceHistoryDetailCustomCell: UITableViewCell {
 
     
@@ -62,10 +62,16 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
         })
     }
     
-   
+    /**
+     
+       数据填充
+     - parameter orderNum:
+     - parameter first_time_:
+     - parameter final_time_: 
+     */
     func setupData(orderNum:Int, first_time_:Int, final_time_:Int) {
         
-        dateFormatter.dateFormat = "YYYY.MM.DD hh:mm"
+        dateFormatter.dateFormat = "YYYY.MM.dd hh:mm"
 
         titleLabel?.text = "所含服务（\(orderNum))"
         let firstTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(first_time_)))
@@ -83,13 +89,14 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
     }
 
 }
-/// 上面 常规cell
+// MARK: - 上面 常规cell
 class InvoiceHistoryDetailNormalCell: UITableViewCell {
     
     
     var titleLabel:UILabel?
     var infoLabel:UILabel?
-    
+    var bottomLine:UIView?
+
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -108,39 +115,21 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
             infoLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
 
         }
+        if bottomLine == nil {
+            
+            bottomLine = UIView()
+            bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
+            
+        }
         
         contentView.addSubview(titleLabel!)
         contentView.addSubview(infoLabel!)
-        
+        contentView.addSubview(bottomLine!)
         addSubViewConstraints()
     }
     
     
-    
-    func setTitleLabelText(text:String) {
-        if titleLabel != nil {
-            
-            titleLabel?.text = text
-        }
-    }
-    
-    func setInfoLabelText(text:String, isPrice:Bool) {
-        
-        if infoLabel != nil {            
-            if isPrice {
-                
-                let attributeText = NSMutableAttributedString(string: text + " 元")
-                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
-                infoLabel?.attributedText = attributeText
-                
-            } else {
-                
-                infoLabel?.text = text
-            }
-        }
-    }
-    
-    
+
     
     /**
      添加约束
@@ -155,6 +144,45 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
             make.centerY.equalTo(titleLabel!)
         })
     
+        bottomLine?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(titleLabel!)
+            make.bottom.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.height.equalTo(1)
+        })
+    }
+    
+    
+    /**
+     
+     数据填充
+     - parameter text:
+     - parameter isLast: 最后一个需要隐藏分割线
+     */
+    func setTitleLabelText(text:String, isLast:Bool) {
+        if titleLabel != nil {
+            
+            titleLabel?.text = text
+        }
+        if bottomLine != nil {
+            bottomLine?.hidden = isLast
+        }
+    }
+    
+    func setInfoLabelText(text:String, isPrice:Bool) {
+        
+        if infoLabel != nil {
+            if isPrice {
+                
+                let attributeText = NSMutableAttributedString(string: text + " 元")
+                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
+                infoLabel?.attributedText = attributeText
+                
+            } else {
+                
+                infoLabel?.text = text
+            }
+        }
     }
     
     

@@ -132,8 +132,13 @@ class InvoiceIncludeCell: UITableViewCell {
     }
     
     
-
-    func setupData(info:InvoiceServiceInfo) {
+    /**
+     数据填充
+     
+     - parameter info:
+     - parameter isLast: 最后一个需要隐藏分割线
+     */
+    func setupData(info:InvoiceServiceInfo, isLast:Bool) {
         if nicknameLabel != nil {
             
             nicknameLabel?.text = info.nick_name_
@@ -155,7 +160,9 @@ class InvoiceIncludeCell: UITableViewCell {
             dateFormatter.timeStyle = .ShortStyle
             serviceDateLabel?.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.order_time_)))
         }
-        
+        if bottomLine != nil {
+            bottomLine?.hidden = isLast
+        }
     }
     
     

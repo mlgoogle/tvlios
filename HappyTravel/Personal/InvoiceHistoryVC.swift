@@ -34,7 +34,6 @@ class InvoiceHistoryVC:UIViewController {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        header.beginRefreshing()
     }
     override func viewDidLoad() {
         title = "开票记录"
@@ -63,7 +62,7 @@ class InvoiceHistoryVC:UIViewController {
             header.endRefreshing()
         }
         if footer.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
+            footer.endRefreshing()
         }
     
         let realm = try! Realm()
@@ -108,6 +107,7 @@ class InvoiceHistoryVC:UIViewController {
         footer.setRefreshingTarget(self, refreshingAction: #selector(InvoiceHistoryVC.footerRefresh))
         tableView?.mj_footer = footer
         registerNotify()
+        header.beginRefreshing()
 
     }
     

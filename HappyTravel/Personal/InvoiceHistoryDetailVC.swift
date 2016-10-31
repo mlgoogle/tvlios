@@ -15,7 +15,7 @@ class InvoiceHistoryDetailVC: UIViewController {
     var headerView:InvouiceHistoryDetailHeader?
     var tableView:UITableView?
     var historyInfo:InvoiceHistoryInfo?
-    var rows:Array = [5 , 3, 1]
+    var rows:Array = [5, 3, 1]
     var titles =  [["发票抬头", "收件人", "联系电话", "所在区域", "收件地址"],
                    ["发票类型","发票金额","申请时间"]]
     /// 开票类型
@@ -23,7 +23,7 @@ class InvoiceHistoryDetailVC: UIViewController {
 
     lazy var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
-        dateFomatter.dateFormat = "YYYY.MM.DD hh:mm"
+        dateFomatter.dateFormat = "YYYY.MM.dd hh:mm"
         return dateFomatter
     }()
 
@@ -76,7 +76,10 @@ class InvoiceHistoryDetailVC: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceHistoryDetailVC.receivedData(_:)), name: NotifyDefine.InvoiceDetailReply, object: nil)
     }
     
-    
+    /**
+     回调
+     - parameter notification:
+     */
     func receivedData(notification:NSNotification) {
         
         if let dict = notification.userInfo!["data"] {
@@ -129,10 +132,13 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("detailNormalCell", forIndexPath: indexPath) as! InvoiceHistoryDetailNormalCell
         
 
+        
+        let last = indexPath.row == rows[indexPath.section] - 1 ? true : false
+
         /**
          - 填充cell数据:
          */
-        cell.setTitleLabelText(titles[indexPath.section][indexPath.row])
+        cell.setTitleLabelText(titles[indexPath.section][indexPath.row], isLast:last)
         
         if historyInfo != nil {
             var text = ""
