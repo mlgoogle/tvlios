@@ -285,9 +285,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .UploadImageToken:
-            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+//            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
+//            head.fields["type"] = 2
+//            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
             break
@@ -535,7 +535,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .UploadImageToken:
             let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict])
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
 
         default:

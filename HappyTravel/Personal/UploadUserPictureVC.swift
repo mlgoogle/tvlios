@@ -8,7 +8,7 @@
 
 import Foundation
 import Qiniu
-
+import XCGLogger
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
     var iconImage:UIImageView! = UIImageView()
@@ -25,6 +25,7 @@ class UploadCell: UITableViewCell {
             titleLable.snp_makeConstraints { (make) in
                 make.top.equalTo(15)
                 make.left.equalTo(15)
+                make.right.equalTo(-15)
                 make.height.equalTo(15)
             }
             
@@ -62,9 +63,9 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     let titles:[String]! = ["正面","背面","示例","注意"]
     var selectImages:[UIImage]?
     var index:NSInteger = 0
-    var token: NSString? = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9"
+    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9"
     var imagePicker:UIImagePickerController? = nil
-    var photoPaths:[String] = []
+    var photoPaths:[String] = ["",""]
 
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
@@ -88,7 +89,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func initNav()  {
         title = "上传身份信息"
         
-        let nextLabel = UILabel.init(text: "下一步", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
+        let nextLabel = UILabel.init(text: "上传", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
@@ -97,17 +98,17 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         
         let qnManager = QNUploadManager()
         for (index,path) in photoPaths.enumerate() {
-            qnManager.putFile(path, key: nil, token: token, complete: { (info, key, resp) -> Void in
-                if (info.statusCode == 200 && resp != nil){
-                    
-                    
-                    //第二张图片上传成功后跳转到下一步
-                    if index == 1{
-                        popBackToSetting()
+            qnManager.putFile(path, key: nil, token: "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9", complete: { (info, key, resp) -> Void in
+                    if (info.statusCode == 200 && resp != nil){
+                        
+                        
+                        //第二张图片上传成功后跳转到下一步
+                        if index == 1{
+                            self.popBackToSetting()
+                        }
+                    }else{
+                        XCGLogger.error("\(info.error)")
                     }
-                }else{
-                    
-                }
                 
                 }, option: nil)
             
@@ -115,8 +116,12 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         
     }
     func popBackToSetting() {
-        let alter: UIAlterController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .ActionSheet)
-        
+        let alter: UIAlertController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .Alert)
+        let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
+            alter.dismissViewControllerAnimated(true, completion: nil)
+        }
+        alter.addAction(backActiong)
+        presentViewController(alter, animated: true, completion: nil)
     }
     //MARK: -- tableView
     func initTableView() {
@@ -130,7 +135,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         tableView!.separatorStyle = .None
         view.addSubview(tableView!)
         tableView!.snp_makeConstraints { (make) in
-            make.edges.equalTo(view)
+            make.top.equalTo(0)
+            make.bottom.equalTo(0)
+            make.right.equalTo(0)
+            make.left.equalTo(0)
         }
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -162,6 +170,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        if indexPath.row == 2 {
+            return
+        }
+        
         index = indexPath.section
         let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
         let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
@@ -217,14 +229,14 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     //MARK: -- DATA
     func initData() {
         selectImages = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "uploadImageToken:", name: NotifyDefine.UploadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImage(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         SocketManager.sendData(.UploadImageToken, data: nil)
     }
     
-    func uploadImageToken(notice: NSNotification?) {
+    func uploadImage(notice: NSNotification?) {
         print(notice)
-        let data = notice?.userInfo["data"]
-        token = data["token"]
+        let data = notice?.userInfo!["data"]
+        
     }
     
    
