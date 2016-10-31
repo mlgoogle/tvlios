@@ -18,7 +18,8 @@ class InvoiceIncludeCell: UITableViewCell {
     var servicePriceLabel:UILabel?
     var bottomLine:UIView?
 
-    
+    var serviceTypes = [0:"未指定", 1:"高端游", 2:"商务游"]
+     var dateFormatter = NSDateFormatter()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -132,9 +133,28 @@ class InvoiceIncludeCell: UITableViewCell {
     
     
 
-    func setupData() {
-        
-        
+    func setupData(info:InvoiceServiceInfo) {
+        if nicknameLabel != nil {
+            
+            nicknameLabel?.text = info.nick_name_
+        }
+        if serviceNameLabel != nil {
+            
+            serviceNameLabel?.text = info.service_name_
+        }
+        if serviceTypeLabel != nil {
+            
+            serviceTypeLabel?.text = serviceTypes[info.service_type_]
+        }
+        if servicePriceLabel != nil {
+            
+            servicePriceLabel?.text = String(info.service_price_) + "元"
+        }
+        if serviceDateLabel != nil {
+            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.timeStyle = .ShortStyle
+            serviceDateLabel?.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.order_time_)))
+        }
         
     }
     

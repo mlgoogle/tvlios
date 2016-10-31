@@ -423,13 +423,13 @@ class DataManager: NSObject {
         })
         
     }
-    static func getInvoiceHistoryInfo(oid: Int) -> InvoiceHistoryInfo? {
+    static func getInvoiceHistoryInfo(invoice_id_: Int) -> InvoiceHistoryInfo? {
         if DataManager.initialized == false {
             return nil
         }
         
         let realm = try! Realm()
-        let histroyInfo = realm.objects(InvoiceHistoryInfo.self).filter("oid_str_ = \(oid)").first
+        let histroyInfo = realm.objects(InvoiceHistoryInfo.self).filter("invoice_id_ = \(invoice_id_)").first
         return histroyInfo
     }
     
@@ -442,6 +442,25 @@ class DataManager: NSObject {
         let histroyInfo = realm.objects(InvoiceHistoryInfo.self)
         return histroyInfo
     }
+    
+    static func updateInvoiceHistoryInfo(info:InvoiceHistoryInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let historyInfo = realm.objects(InvoiceHistoryInfo.self).filter("invoice_id_ = \(info.invoice_id_)").first
+        try! realm.write({
+            if historyInfo == nil {
+                let historyInfo = InvoiceHistoryInfo()
+                historyInfo.setInfo(info)
+                realm.add(historyInfo)
+            } else {
+                historyInfo!.refreshOtherInfo(info)
+            }
+            
+        })
+    }
+    
     
     
 }

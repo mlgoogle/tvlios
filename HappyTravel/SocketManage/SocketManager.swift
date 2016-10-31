@@ -389,9 +389,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
             
         case .ServiceDetailReply:
-            
-            
-
+            let json = JSON.init(data: body as! NSData)
+            json.dictionaryObject
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : json.dictionaryObject!])
             break
         case .DeviceTokenResult:
             
@@ -452,7 +452,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .InvoiceDetailReply:
             let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
+            if dict != nil {
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
+            }
             
             break
         case .InvoiceInfoReply:

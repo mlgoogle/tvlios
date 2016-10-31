@@ -25,14 +25,16 @@ class InvoiceHistoryVC:UIViewController {
     
     
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+
+    }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         header.beginRefreshing()
-        registerNotify()
     }
     override func viewDidLoad() {
         title = "开票记录"
@@ -105,6 +107,8 @@ class InvoiceHistoryVC:UIViewController {
         
         footer.setRefreshingTarget(self, refreshingAction: #selector(InvoiceHistoryVC.footerRefresh))
         tableView?.mj_footer = footer
+        registerNotify()
+
     }
     
     
@@ -135,6 +139,8 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let histroyDetailVC = InvoiceHistoryDetailVC()
+        let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
+        histroyDetailVC.invoice_id_ = invoiceInfo.invoice_id_
         navigationController?.pushViewController(histroyDetailVC, animated: true)
     }
     

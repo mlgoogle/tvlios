@@ -12,8 +12,14 @@ class InvoiceIncludeServiceVC: UIViewController {
     
     var tableView:UITableView?
     
-    var services:Results<InvoiceHistoryInfo>?
+    var services:Array<InvoiceServiceInfo> = Array()
     
+    var oid_str_:String!
+
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,6 +40,28 @@ class InvoiceIncludeServiceVC: UIViewController {
         tableView?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
+        
+        SocketManager.sendData(.ServiceDetailRequest, data: ["oid_str_" : oid_str_])
+        registerNotifaction()
+    }
+    func registerNotifaction() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceIncludeServiceVC.receivedData(_:)), name: NotifyDefine.ServiceDetailReply, object: nil)
+    }
+    
+    
+    func receivedData(notifcation:NSNotification) {
+        
+        if  let dict = notifcation.userInfo!["data"] {
+            if let serviceList  = dict["service_list"] as? Array<Dictionary<String, AnyObject>> {
+                
+                for service in serviceList {
+                    let serviceInfo = InvoiceServiceInfo(value: service)
+                    services.append(serviceInfo)
+                }
+                tableView?.reloadData()
+            }
+        }
+        
     }
     
 }
@@ -41,17 +69,21 @@ extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let count = services != nil ? services?.count : 0
-        return 10
+        return services.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("includeCell", forIndexPath: indexPath) as! InvoiceIncludeCell
         
-        cell.setupData()
+        cell.setupData(services[indexPath.row])
         return cell
         
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return 10
     }
     
     

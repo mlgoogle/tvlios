@@ -63,10 +63,14 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
     }
     
    
-    func setupData() {
+    func setupData(orderNum:Int, first_time_:Int, final_time_:Int) {
         
         dateFormatter.dateFormat = "YYYY.MM.DD hh:mm"
-        
+
+        titleLabel?.text = "所含服务（\(orderNum))"
+        let firstTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(first_time_)))
+        let finalTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(final_time_)))
+        dateLabel?.text = firstTime + "-" + finalTime
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -89,7 +93,7 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        selectionStyle = .None
         
         if titleLabel == nil {
             titleLabel = UILabel()
@@ -114,12 +118,26 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
     
     
     func setTitleLabelText(text:String) {
-        
-        titleLabel?.text = text
+        if titleLabel != nil {
+            
+            titleLabel?.text = text
+        }
     }
     
-    func setInfoLabelText(text:String) {
-        infoLabel?.text = text
+    func setInfoLabelText(text:String, isPrice:Bool) {
+        
+        if infoLabel != nil {            
+            if isPrice {
+                
+                let attributeText = NSMutableAttributedString(string: text + " 元")
+                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
+                infoLabel?.attributedText = attributeText
+                
+            } else {
+                
+                infoLabel?.text = text
+            }
+        }
     }
     
     
