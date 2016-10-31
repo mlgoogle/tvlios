@@ -9,6 +9,12 @@
 import Foundation
 import Qiniu
 import XCGLogger
+
+
+protocol UploadUserPicktureDelegate: NSObjectProtocol {
+    func didUploadUserPictureSuccess()
+}
+
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
     var iconImage:UIImageView! = UIImageView()
@@ -66,7 +72,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9"
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
-
+    var delegate: UploadUserPicktureDelegate?
+    
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,10 +102,13 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
+        //test
+        popBackToSetting()
+        return
         
         let qnManager = QNUploadManager()
         for (index,path) in photoPaths.enumerate() {
-            qnManager.putFile(path, key: nil, token: "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9", complete: { (info, key, resp) -> Void in
+            qnManager.putFile(path, key: nil, token: self.token, complete: { (info, key, resp) -> Void in
                     if (info.statusCode == 200 && resp != nil){
                         
                         
@@ -118,7 +128,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func popBackToSetting() {
         let alter: UIAlertController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .Alert)
         let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
-            alter.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popViewControllerAnimated(true)
+            self.delegate?.didUploadUserPictureSuccess()
+            DataManager.currentUser!.authentication = true
+            DataManager.currentUser?.updateInfo(DataManager.currentUser!)
         }
         alter.addAction(backActiong)
         presentViewController(alter, animated: true, completion: nil)

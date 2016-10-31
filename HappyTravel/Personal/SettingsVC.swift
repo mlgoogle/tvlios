@@ -9,7 +9,7 @@
 import Foundation
 import XCGLogger
 
-class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UploadUserPicktureDelegate {
     
     var settingsTable:UITableView?
     var settingOption:Array<Array<String>>?
@@ -126,7 +126,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let endIndex = ".......".endIndex
             number.replaceRange(startIndex..<endIndex, with: "****")
             rightLab?.text = number
-        } else if indexPath.section == 2 && indexPath.row == 0 {
+        } else if indexPath.section == 0 && indexPath.row == 2 && DataManager.currentUser?.authentication == true {
+            rightLab?.hidden = false
+            rightLab?.text = "已认证"
+            cell?.accessoryType = .None
+        }else if indexPath.section == 2 && indexPath.row == 0 {
             rightLab?.hidden = false
             rightLab?.text = "0 M"
         } else if indexPath.section == 2 && indexPath.row == 1 {
@@ -176,14 +180,19 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 XCGLogger.debug("余额")
             } else if indexPath.row == 1 {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
-            }else if indexPath.row == 2 {
+            }else if indexPath.row == 2  {
+                if DataManager.currentUser?.authentication == true{
+                    return
+                }
                 let controller = UploadUserPictureVC()
+                controller.delegate = self
                 navigationController?.pushViewController(controller, animated: true)
             }
         } else if indexPath.section == 1 {
@@ -200,6 +209,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func didUploadUserPictureSuccess() {
+        settingsTable?.reloadData()
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

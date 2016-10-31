@@ -89,6 +89,8 @@ class UserInfo: Object {
     
     dynamic var centurionCardValid = 0
     
+    dynamic var authentication = false
+    
     let businessTags:List<Tally> = List<Tally>()
     
     let photoUrlList:List<PhotoUrl> = List<PhotoUrl>()
@@ -204,6 +206,9 @@ class UserInfo: Object {
             case "result":
                 centurionCardValid = value as! Int
                 break
+            case "authentication":
+                authentication = value as! Bool
+                break
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")
                 break
@@ -239,6 +244,8 @@ class UserInfo: Object {
         bigBGPhotoUrl = info.bigBGPhotoUrl
         
         certification = info.certification
+        
+        authentication = info.authentication
         
         businessTags.removeAll()
         for tag in info.businessTags {
