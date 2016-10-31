@@ -1037,7 +1037,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1A1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravel" */;
 			buildPhases = (
-				5B988BE9DED4019DC62C2A2D /* Check Pods Manifest.lock */,
+				5B988BE9DED4019DC62C2A2D /* [CP] Check Pods Manifest.lock */,
 				6C83F539A506A10F26E92363 /* [CP] Check Pods Manifest.lock */,
 				2FA75CEE1D5081CB00609C8E /* Sources */,
 				2FA75CEF1D5081CB00609C8E /* Frameworks */,
@@ -1060,7 +1060,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */;
 			buildPhases = (
-				0DFB104DD0C46ED4108FDB1C /* Check Pods Manifest.lock */,
+				0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */,
 				7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */,
 				2FA75D021D5081CB00609C8E /* Sources */,
 				2FA75D031D5081CB00609C8E /* Frameworks */,
@@ -1084,7 +1084,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */;
 			buildPhases = (
-				43E3CC8853F990523E240FA8 /* Check Pods Manifest.lock */,
+				43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */,
 				15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */,
 				2FA75D0D1D5081CB00609C8E /* Sources */,
 				2FA75D0E1D5081CB00609C8E /* Frameworks */,
@@ -1317,14 +1317,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0DFB104DD0C46ED4108FDB1C /* Check Pods Manifest.lock */ = {
+		0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1392,14 +1392,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		43E3CC8853F990523E240FA8 /* Check Pods Manifest.lock */ = {
+		43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1422,14 +1422,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5B988BE9DED4019DC62C2A2D /* Check Pods Manifest.lock */ = {
+		5B988BE9DED4019DC62C2A2D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
