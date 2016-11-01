@@ -13,7 +13,11 @@ class InvouiceHistoryDetailHeader: UIView {
     var statusLabel:UILabel?
     var sendOutTimeLabel:UILabel?
     
-    
+    var dateFormatter:NSDateFormatter = {
+        var dateFomatter = NSDateFormatter()
+        dateFomatter.dateFormat = "YYYY.MM.dd"
+        return dateFomatter
+    }()
     override init(frame: CGRect) {
         
         super.init(frame: frame)
@@ -54,6 +58,18 @@ class InvouiceHistoryDetailHeader: UIView {
         })
         
         
+    }
+    
+    func setupInfo(date:Int, invoiceSatus:Int) {
+        if statusLabel != nil {
+            
+            statusLabel?.text = invoiceSatus == 0 ? "待开票" : "已开票"
+        }
+        if sendOutTimeLabel != nil {
+            
+            let dateStrig = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(date)))
+            sendOutTimeLabel?.text = "预计最晚发出时间：\(dateStrig) 后一个工作日"
+        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

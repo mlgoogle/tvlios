@@ -255,6 +255,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
+                textField?.font = UIFont.systemFontOfSize(15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -385,6 +386,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
+                textField?.font = UIFont.systemFontOfSize(15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -494,6 +496,9 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            return
+        }
         invoiceInfoDict["invoice_type_"] = buttonIndex
         XCGLogger.debug("\(buttonIndex)")
         descLab?.text = alertView.buttonTitleAtIndex(buttonIndex)

@@ -107,14 +107,17 @@ class InvoiceHistoryCell: UITableViewCell {
 
             priceLabel?.text = String(info!.invoice_price_) + "元"
         }
+        
         if dateLabel != nil {
             dateFormatter.dateStyle = .ShortStyle
             dateFormatter.timeStyle = .ShortStyle
             dateLabel?.text =  dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.invoice_time_)))
         }
+        
         if statusLabel != nil {
-            statusLabel?.text = info!.invoice_status_ == 0 ? "未开票" : "已开票"
+            statusLabel?.text = info!.invoice_status_ == 0 ? "待开票" : "已开票"
         }
+        
         if bottomLine != nil {
             
             bottomLine?.hidden = last

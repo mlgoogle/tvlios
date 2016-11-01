@@ -389,9 +389,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
             
         case .ServiceDetailReply:
-            
-            
-
+            let json = JSON.init(data: body as! NSData)
+            json.dictionaryObject
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : json.dictionaryObject!])
             break
         case .DeviceTokenResult:
             
@@ -426,6 +426,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .CenturionCardConsumedReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
+                break
+            }
             if let orderList = dict.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
                 var lastOrderID = 0
                 for order in orderList {
@@ -452,7 +456,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .InvoiceDetailReply:
             let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
+            if dict != nil {
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
+            }
             
             break
         case .InvoiceInfoReply:
@@ -470,6 +477,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = historyInfo.invoice_id_
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
             }
             
             
