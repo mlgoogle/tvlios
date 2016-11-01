@@ -9,6 +9,21 @@
 import Foundation
 import XCGLogger
 import SwiftyJSON
+import Alamofire
+
+extension String {
+    var MD5:String {
+        let cString = self.cStringUsingEncoding(NSUTF8StringEncoding)
+        let length = CUnsignedInt(
+            self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+        )
+        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(Int(CC_MD5_DIGEST_LENGTH))
+        CC_MD5(cString!,length,result)
+        return String(format:"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                      result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7],result[8],
+                      result[9],result[10],result[11],result[12],result[13],result[14],result[15])
+    }
+}
 
 class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -376,10 +391,43 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 XCGLogger.debug("\(data)")
             })
         } else if selectedIndex == 1 {
-            let retStr = jumpToBizPay()
+            let retStr = jumpToBizPayTest()
             XCGLogger.debug(retStr!)
         }
         
+    }
+    
+    func jumpToBizPayTest() -> String? {
+        let req = PayReq()
+        req.partnerId = "1404391902"
+        req.prepayId = "wx201610311757239cb4fb4a450446789538"
+        req.nonceStr = "NKXOlMnmrJv7UkGp"
+        req.timeStamp = 1477907810
+        req.package = "sign=WXPay"
+        req.sign = "241b71f361d6663c12a12e0f43208ae9"
+        WXApi.sendReq(req)
+        
+        return ""
+    }
+    
+    func createMd5Sign(dict: [String: String]) -> String {
+        var contentString = ""
+        var keys = dict.keys.reverse().sort({ (s1, s2) -> Bool in
+            return s1.compare(s2).rawValue < 0 ? true : false
+            
+        })
+        
+        for key in keys {
+            let value  = dict[key]
+            if value != "" && value != "sign" && value != "key" {
+                contentString.appendContentsOf("\(key)=\(value!)&")
+            }
+        }
+        
+        contentString.appendContentsOf("key=241b71f361d6663c12a12e0f43208ae9&")
+        let md5Str = contentString.MD5
+        
+        return md5Str
     }
     
     func jumpToBizPay() -> String? {
