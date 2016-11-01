@@ -61,4 +61,6 @@ class NotifyDefine: NSObject {
     static let ServiceDetailReply = "ServiceDetailReply"
 
     static let UpLoadImageToken = "UpLoadImageToken"
+    
+    static let AuthenticateUserCard = "AuthenticateUserCard"
 }

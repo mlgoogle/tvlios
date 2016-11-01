@@ -78,6 +78,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AnswerInvitationRequest = 2011
         case AnswerInvitationReply = 2012
         case UploadImageToken = 2013
+        case AuthenticateUserCard = 2014
     }
     
     class var shareInstance : SocketManager {
@@ -288,6 +289,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
 //            head.fields["type"] = 2
 //            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .AuthenticateUserCard:
+            
             break
         default:
             break
@@ -543,6 +547,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             break
         case .UploadImageToken:
+            let dict = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
+        case .AuthenticateUserCard:
             let dict = JSON.init(data: body as! NSData)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break

@@ -229,6 +229,7 @@
 		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
 		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
+		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -497,6 +498,7 @@
 		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
 		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -941,6 +943,7 @@
 				2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */,
 				2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */,
 				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
+				BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1674,6 +1677,7 @@
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
 				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */,
+				BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */,
 				2FF72BAD1DB8B2DF001EEED2 /* CenturionCardDetailVC.swift in Sources */,
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
 				2F9D42121D5C511000D10FBC /* SocketProtocol.swift in Sources */,

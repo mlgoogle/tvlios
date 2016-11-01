@@ -9,10 +9,11 @@
 import Foundation
 import XCGLogger
 
-class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UploadUserPicktureDelegate {
+class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var settingsTable:UITableView?
     var settingOption:Array<Array<String>>?
+    let authUserCardCode = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard)
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -192,8 +193,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource,U
                     return
                 }
                 let controller = UploadUserPictureVC()
-                controller.delegate = self
-//                navigationController?.viewControllers.append(controller)
                 self.navigationController!.pushViewController(controller, animated: true)
             }
         } else if indexPath.section == 1 {
@@ -208,10 +207,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource,U
                 navigationController?.popViewControllerAnimated(false)
             }
         }
-    }
-    
-    func didUploadUserPictureSuccess() {
-        settingsTable?.reloadData()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
