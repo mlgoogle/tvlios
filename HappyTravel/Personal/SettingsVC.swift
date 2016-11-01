@@ -193,7 +193,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource,U
                 }
                 let controller = UploadUserPictureVC()
                 controller.delegate = self
-                navigationController?.pushViewController(controller, animated: true)
+//                navigationController?.viewControllers.append(controller)
+                self.navigationController!.pushViewController(controller, animated: true)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {

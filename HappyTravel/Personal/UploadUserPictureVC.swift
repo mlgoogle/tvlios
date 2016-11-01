@@ -69,7 +69,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     let titles:[String]! = ["正面","背面","示例","注意"]
     var selectImages:[UIImage]?
     var index:NSInteger = 0
-    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:dflse96Ieag6T24kOUO26NNb0YY=:eyJzY29wZSI6InF0ZXN0YnVja2V0IiwiZGVhZGxpbmUiOjE0Nzc5MzgxODl9"
+    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:AxcXvO2aO61lzVP4LDVuU9fsUes=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc5MTAwNzB9"
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
     var delegate: UploadUserPicktureDelegate?
@@ -77,6 +77,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = colorWithHexString("#f2f2f2")
         initData()
         initImagePick()
         initTableView()
@@ -96,15 +97,12 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func initNav()  {
         title = "上传身份信息"
         
-        let nextLabel = UILabel.init(text: "上传", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
+//        let nextLabel = UILabel.init(text: "上传", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
+//        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "上传", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
-        //test
-        popBackToSetting()
-        return
         
         let qnManager = QNUploadManager()
         for (index,path) in photoPaths.enumerate() {
@@ -183,7 +181,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        if indexPath.row == 2 {
+        if indexPath.section == 2 {
             return
         }
         
