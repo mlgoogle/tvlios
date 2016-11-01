@@ -228,6 +228,7 @@
 		B341CE191DC2E97700DF93CB /* example@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE171DC2E97700DF93CB /* example@2x.png */; };
 		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
+		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -494,6 +495,7 @@
 		B341CE171DC2E97700DF93CB /* example@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "example@2x.png"; sourceTree = "<group>"; };
 		B341CE181DC2E97700DF93CB /* tianjia@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@2x.png"; sourceTree = "<group>"; };
 		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
+		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -922,6 +924,7 @@
 		2FE7C3311D61ACFC00994505 /* Nav */ = {
 			isa = PBXGroup;
 			children = (
+				B341CE1D1DC322B200DF93CB /* nav_clear.png */,
 				2FE7C3321D61ACFC00994505 /* nav-msg@2x.png */,
 				2FE7C3331D61ACFC00994505 /* nav-personal@2x.png */,
 			);
@@ -1055,7 +1058,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1A1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravel" */;
 			buildPhases = (
-				6A8F5360DC649019021BDABF /* Check Pods Manifest.lock */,
+				6A8F5360DC649019021BDABF /* [CP] Check Pods Manifest.lock */,
 				5B988BE9DED4019DC62C2A2D /* [CP] Check Pods Manifest.lock */,
 				6C83F539A506A10F26E92363 /* [CP] Check Pods Manifest.lock */,
 				2FA75CEE1D5081CB00609C8E /* Sources */,
@@ -1079,7 +1082,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */;
 			buildPhases = (
-				FFD86A81F631AC3E27F62F68 /* Check Pods Manifest.lock */,
+				FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */,
 				0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */,
 				7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */,
 				2FA75D021D5081CB00609C8E /* Sources */,
@@ -1104,7 +1107,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */;
 			buildPhases = (
-				E297CF6E229EE035088867A0 /* Check Pods Manifest.lock */,
+				E297CF6E229EE035088867A0 /* [CP] Check Pods Manifest.lock */,
 				43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */,
 				15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */,
 				2FA75D0D1D5081CB00609C8E /* Sources */,
@@ -1208,6 +1211,7 @@
 				2FE7C3631D62D09600994505 /* guide-detail-arrows@2x.png in Resources */,
 				2FE7C3751D632F8400994505 /* service-unselect@2x.png in Resources */,
 				2FE7C3211D616C3C00994505 /* segment-right@2x.png in Resources */,
+				B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */,
 				2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */,
 				B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */,
 				2F26A69D1D8245A900FFA6A7 /* localaddress@2x.png in Resources */,
@@ -1476,14 +1480,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6A8F5360DC649019021BDABF /* Check Pods Manifest.lock */ = {
+		6A8F5360DC649019021BDABF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1611,14 +1615,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E297CF6E229EE035088867A0 /* Check Pods Manifest.lock */ = {
+		E297CF6E229EE035088867A0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1626,14 +1630,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		FFD86A81F631AC3E27F62F68 /* Check Pods Manifest.lock */ = {
+		FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

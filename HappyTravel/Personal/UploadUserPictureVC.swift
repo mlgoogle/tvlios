@@ -8,6 +8,12 @@
 
 import Foundation
 import Qiniu
+import XCGLogger
+
+
+protocol UploadUserPicktureDelegate: NSObjectProtocol {
+    func didUploadUserPictureSuccess()
+}
 
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
@@ -25,6 +31,7 @@ class UploadCell: UITableViewCell {
             titleLable.snp_makeConstraints { (make) in
                 make.top.equalTo(15)
                 make.left.equalTo(15)
+                make.right.equalTo(-15)
                 make.height.equalTo(15)
             }
             
@@ -58,17 +65,20 @@ class UploadCell: UITableViewCell {
 }
 
 class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    var tableView:UITableView! = UITableView.init(frame: CGRectZero, style: .Plain)
-    
+    var tableView:UITableView?
     let titles:[String]! = ["正面","背面","示例","注意"]
-    var selectImages:[UIImage]! = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
+    var selectImages:[UIImage]?
     var index:NSInteger = 0
+    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:AxcXvO2aO61lzVP4LDVuU9fsUes=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc5MTAwNzB9"
     var imagePicker:UIImagePickerController? = nil
-    var photoPaths:[String] = []
+    var photoPaths:[String] = ["",""]
+    var delegate: UploadUserPicktureDelegate?
     
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = colorWithHexString("#f2f2f2")
+        initData()
         initImagePick()
         initTableView()
         initNav()
@@ -81,45 +91,65 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewWillDisappear(animated)
     }
     deinit{
-        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     //MARK: -- Nav
     func initNav()  {
         title = "上传身份信息"
         
-        let nextLabel = UILabel.init(text: "下一步", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
+//        let nextLabel = UILabel.init(text: "上传", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
+//        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "下一步", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "上传", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
-        let token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:UslVOLze87dvvwIcxnw8FIehLkk=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc2NTI4MTh9"
+        
         let qnManager = QNUploadManager()
-        for path in photoPaths {
-            qnManager.putFile(path, key: nil, token: token, complete: { (info, key, resp) -> Void in
-                if (info.statusCode == 200 && resp != nil){
-                    
-                }else{
-                    
-                }
+        for (index,path) in photoPaths.enumerate() {
+            qnManager.putFile(path, key: nil, token: self.token, complete: { (info, key, resp) -> Void in
+                    if (info.statusCode == 200 && resp != nil){
+                        
+                        
+                        //第二张图片上传成功后跳转到下一步
+                        if index == 1{
+                            self.popBackToSetting()
+                        }
+                    }else{
+                        XCGLogger.error("\(info.error)")
+                    }
                 
                 }, option: nil)
             
         }
         
     }
+    func popBackToSetting() {
+        let alter: UIAlertController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .Alert)
+        let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
+            self.navigationController?.popViewControllerAnimated(true)
+            self.delegate?.didUploadUserPictureSuccess()
+            DataManager.currentUser!.authentication = true
+            DataManager.currentUser?.updateInfo(DataManager.currentUser!)
+        }
+        alter.addAction(backActiong)
+        presentViewController(alter, animated: true, completion: nil)
+    }
     //MARK: -- tableView
     func initTableView() {
-        tableView.backgroundColor = colorWithHexString("#f2f2f2")
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = 180
-        tableView.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .None
-        view.addSubview(tableView)
-        tableView.snp_makeConstraints { (make) in
-            make.edges.equalTo(view)
+        tableView = UITableView.init(frame: CGRectZero, style: .Plain)
+        tableView!.backgroundColor = colorWithHexString("#f2f2f2")
+        tableView!.delegate = self
+        tableView!.dataSource = self
+        tableView!.rowHeight = 180
+        tableView!.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
+        tableView!.tableFooterView = UIView()
+        tableView!.separatorStyle = .None
+        view.addSubview(tableView!)
+        tableView!.snp_makeConstraints { (make) in
+            make.top.equalTo(0)
+            make.bottom.equalTo(0)
+            make.right.equalTo(0)
+            make.left.equalTo(0)
         }
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -146,12 +176,15 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
         cell?.titleLable.textColor = indexPath.section == 2 ? colorWithHexString("#999999"):UIColor.blackColor()
-         cell?.iconImage.image = selectImages[indexPath.section]
-        
+        cell?.iconImage.image = selectImages![indexPath.section]
         return cell!
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        if indexPath.section == 2 {
+            return
+        }
+        
         index = indexPath.section
         let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
         let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
@@ -179,7 +212,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         selectImages![index] = image.reSizeImage(CGSizeMake(162, 125))
-        tableView.reloadData()
+        tableView!.reloadData()
         imagePicker?.dismissViewControllerAnimated(true, completion: nil)
         
         //先把图片转成NSData
@@ -202,10 +235,18 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         //得到选择后沙盒中图片的完整路径
         let filePath: String = String(format: "%@%@", documentPath, "/image.png")
         
-        photoPaths.append(filePath)
+        photoPaths[index] = filePath
     }
     //MARK: -- DATA
     func initData() {
+        selectImages = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImage(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        SocketManager.sendData(.UploadImageToken, data: nil)
+    }
+    
+    func uploadImage(notice: NSNotification?) {
+        print(notice)
+        let data = notice?.userInfo!["data"]
         
     }
     
