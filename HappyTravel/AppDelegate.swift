@@ -32,7 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
         ]
         
-        WXApi.registerApp("wxb4ba3c02aa476ea1", withDescription: "vLeader-1.0(alpha)") //wx9dc39aec13ee3158
+//        WXApi.registerApp("wxb4ba3c02aa476ea1", withDescription: "vLeader-1.0(alpha)") // test
+        WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")
         
         commonViewSet()
         

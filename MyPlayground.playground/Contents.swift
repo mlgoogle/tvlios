@@ -2,28 +2,25 @@
 
 import UIKit
 
-var str = "Hello, playground"
+var dict = ["c": "1",
+            "a": "2",
+            "b": "3"]
 
+dict.keys.reverse()
 
-let dict = ["error": -1015]
+var keys = dict.keys.reverse().sort({ (s1, s2) -> Bool in
+    return s1.compare(s2).rawValue < 0 ? true : false
+    
+})
 
-if dict["error"] != nil {
-    print("1015")
+var contentString = ""
+for key in keys {
+    let value  = dict[key]
+    if value != "" && value != "sign" && value != "key" {
+        contentString.appendContentsOf("\(key)=\(value!)&")
+    }
 }
 
-if dict["abc"] != nil {
-    print("asd")
-} else {
-    print("as5")
-}
-
-print(dict["asd"])
+contentString
 
 
-enum Test : Int {
-    case T1 = 2
-}
-
-if Test.T1 == Test(rawValue: 2) {
-    print("asd")
-}
