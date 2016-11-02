@@ -64,20 +64,20 @@ class CenturionCardServicesCell : UITableViewCell {
                         if index / 4 == 0 {
                             make.top.equalTo(contentView).offset(20)
                         } else {
-                            make.top.equalTo(contentView).offset(20 + (80 + 10) * (CGFloat(index) / 4.0))
+                            make.top.equalTo(contentView).offset(20 + (80 + 20) * (index / 4))
                         }
                         if index % 4 == 0 {
                             make.left.equalTo(contentView).offset(40)
                         } else {
-                            let space = (UIScreen.mainScreen().bounds.size.width - 60 * 4 - 40 * 2) / 3.0
-                            make.left.equalTo(contentView).offset(40 + (60 + space) * (CGFloat(index) % 4))
+                            let space = (UIScreen.mainScreen().bounds.size.width - 40 * 4 - 40 * 2) / 3.0
+                            make.left.equalTo(contentView).offset(40 + (40 + space) * (CGFloat(index) % 4))
                         }
                     } else {
                         make.top.equalTo(contentView).offset(20)
                         make.left.equalTo(contentView).offset(40)
                     }
-                    make.width.equalTo(60)
-                    make.height.equalTo(60)
+                    make.width.equalTo(40)
+                    make.height.equalTo(40)
                     
                 })
                 
@@ -90,13 +90,13 @@ class CenturionCardServicesCell : UITableViewCell {
                 titleLab = UILabel()
                 titleLab?.tag = serviceBtn!.tag * 100 + index
                 titleLab?.backgroundColor = UIColor.clearColor()
-                titleLab?.font = UIFont.systemFontOfSize(16)
+                titleLab?.font = UIFont.systemFontOfSize(13)
                 titleLab?.textColor = UIColor.blackColor()
                 serviceBtn?.addSubview(titleLab!)
                 titleLab?.snp_makeConstraints(closure: { (make) in
                     make.centerX.equalTo(serviceBtn!)
                     make.height.equalTo(20)
-                    make.top.equalTo(serviceBtn!.snp_bottom)
+                    make.top.equalTo(serviceBtn!.snp_bottom).offset(5)
                     if index == self.services!.count - 1 && index < DataManager.currentUser!.centurionCardLv {
                         make.bottom.equalTo(contentView).offset(-20)
                     }

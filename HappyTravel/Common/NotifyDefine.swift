@@ -65,4 +65,9 @@ class NotifyDefine: NSObject {
     static let WXplaceOrderReply = "WXplaceOrderReply"
     
     static let WXPayStatusReply = "WXPayStatusReply"
+
+    static let AuthenticateUserCard = "AuthenticateUserCard"
+    
+    static let CheckAuthenticateResult = "CheckAuthenticateResult"
+
 }

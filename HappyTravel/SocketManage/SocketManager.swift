@@ -82,7 +82,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case EvaluatetripReply = 2010
         case AnswerInvitationRequest = 2011
         case AnswerInvitationReply = 2012
-        case UploadImageToken = 2013
+        case UploadImageToken = 1047
+        case UploadImageTokenReply = 1048
+        case AuthenticateUserCard = 1055
+        case AuthenticateUserCardReply = 1056
+        case checkAuthenticateResult = 1057
+        case checkAuthenticateResultReply = 1058
     }
     
     class var shareInstance : SocketManager {
@@ -299,9 +304,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .UploadImageToken:
-//            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
-//            head.fields["type"] = 2
-//            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
+            head.fields["type"] = 1
+            break
+        case .AuthenticateUserCard:
+            head.fields["opcode"] = SockOpcode.AuthenticateUserCard.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .checkAuthenticateResult:
+            head.fields["opcode"] = SockOpcode.checkAuthenticateResult.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
             break
@@ -431,6 +445,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .CenturionCardInfoReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                break
+            }
             if let privilegeList = dict.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
                 for privilege in privilegeList {
                     let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
@@ -461,6 +478,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .SkillsInfoReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                break
+            }
             if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
                 for skill in skillList {
                     let info = SkillInfo(value: skill)
@@ -570,11 +590,27 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AnswerInvitationReply:
             
             break
-        case .UploadImageToken:
-            let dict = JSON.init(data: body as! NSData)
+        case .UploadImageTokenReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
-
+        case .AuthenticateUserCardReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
+        case .checkAuthenticateResultReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
         default:
             break
         }
