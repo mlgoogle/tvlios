@@ -12,7 +12,6 @@ import XCGLogger
 import SVProgressHUD
 
 
-
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
     var iconImage:UIImageView! = UIImageView()
@@ -67,16 +66,17 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     let titles:[String]! = ["正面","背面","示例","注意"]
     var selectImages:[UIImage] = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
     var index:NSInteger = 0
-    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:LAQkNSYNtVT0w4FVzWw1HffXpQM=:eyJzY29wZSI6InZsZWFkZXIiLCJkZWFkbGluZSI6MTQ3Nzk5MjQ4M30="
+    var token:NSString = ""
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
     var photoURL = [NSString: NSString]()
     var qiniuHost = "http://oanncn4v6.bkt.clouddn.com/"
-//    //MARK: -- LIFECYCLE
+    //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
-        initImagePick()
+        SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境，请稍后！")
+        SocketManager.sendData(.UploadImageToken, data: nil)
         initTableView()
         initNav()
     }
@@ -84,9 +84,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(autoUserCardResult(_:)), name: NotifyDefine.AuthenticateUserCard, object: nil)
-        SVProgressHUD.showProgress(1, status: "验证认证环境,请稍后")
-        SocketManager.sendData(.UploadImageToken, data: nil)
-        
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        initImagePick()
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -103,21 +104,19 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func rightItemTapped(item: UIBarButtonItem) {
         for path in photoPaths {
             if path == "" {
-                SVProgressHUD.showErrorWithStatus("请一次上传正反两面照片")
+                SVProgressHUD.showWainningMessage(WainningMessage: "请一次提交照片正反两面信息",ForDuration:1, completion:nil)
                 return
             }
         }
         
         item.enabled = false
         let qnManager = QNUploadManager()
-        SVProgressHUD.showProgress(1, status: "提交中...")
-        SVProgressHUD.setDefaultStyle(.Dark)
-//        weak let weakSelf: UploadUserPictureVC! = self
+        SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
         for (index,path) in photoPaths.enumerate() {
-            qnManager.putFile(path, key: nil, token: self.token, complete: { (info, key, resp) -> Void in
+            qnManager.putFile(path, key: nil, token: self.token as String, complete: { (info, key, resp) -> Void in
                 
                 if info.statusCode != 200 || resp == nil{
-                    SVProgressHUD.showErrorWithStatus("提交失败,请稍后再试")
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
                     return
                 }
         
@@ -247,11 +246,13 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let data = notice?.userInfo!["data"] as! NSDictionary
         let code = data.valueForKey("code")
         if code?.intValue == 0 {
-            SVProgressHUD.showErrorWithStatus("暂时无法认证，请稍后再试")
-            navigationController?.popViewControllerAnimated(true)
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: { 
+                    self.navigationController?.popViewControllerAnimated(true)
+            })
             return
         }
-        token = data.valueForKey("token") as! NSString as String
+        SVProgressHUD.dismiss()
+        token = data.valueForKey("img_token_") as! NSString
     }
     //认证结果
     func autoUserCardResult(notice: NSNotification?) {
@@ -271,7 +272,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
             self.presentViewController(alter, animated: true, completion: nil)
             
         default:
-            SVProgressHUD.showErrorWithStatus("提交失败")
+            SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败", ForDuration: 1, completion: nil)
         }
     }
 

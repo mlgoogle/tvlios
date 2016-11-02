@@ -230,6 +230,7 @@
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
 		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
 		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
+		BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -499,6 +500,7 @@
 		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
+		BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVProgressHUDExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -944,6 +946,7 @@
 				2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */,
 				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
 				BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */,
+				BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1706,6 +1709,7 @@
 				2FF72BA71DB76CF9001EEED2 /* CenturionCardServiceInfo.swift in Sources */,
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
 				B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */,
+				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
