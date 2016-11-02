@@ -31,7 +31,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         get {
             if toolBar == nil {
                 toolBar = UIToolbar(frame: CGRectMake(0, 0, 0, 44-0.5))
-                
+                toolBar.backgroundColor = colorWithHexString("#f2f2f2")
                 faceButton = UIButton(type: .Custom)
                 faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
                 faceButton.addTarget(self, action: #selector(ChatVC.sendMessageAction), forControlEvents: UIControlEvents.TouchUpInside)

@@ -108,6 +108,9 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func sureAction(sender: UIButton?) {
+        if selectedIndexPath == nil {
+            return
+        }
         delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row])
     }
     
