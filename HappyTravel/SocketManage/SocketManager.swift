@@ -417,6 +417,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .CenturionCardInfoReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                break
+            }
             if let privilegeList = dict.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
                 for privilege in privilegeList {
                     let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
@@ -447,6 +450,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .SkillsInfoReply:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                break
+            }
             if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
                 for skill in skillList {
                     let info = SkillInfo(value: skill)
