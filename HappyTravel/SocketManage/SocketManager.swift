@@ -77,7 +77,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case EvaluatetripReply = 2010
         case AnswerInvitationRequest = 2011
         case AnswerInvitationReply = 2012
-        case UploadImageToken = 2013
+        case UploadImageToken = 1047
+        case UploadImageTokenReply = 1048
         case AuthenticateUserCard = 2014
     }
     
@@ -286,9 +287,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .UploadImageToken:
-//            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
-//            head.fields["type"] = 2
-//            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
+            head.fields["type"] = 1
             break
         case .AuthenticateUserCard:
             
@@ -546,8 +546,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AnswerInvitationReply:
             
             break
-        case .UploadImageToken:
-            let dict = JSON.init(data: body as! NSData)
+        case .UploadImageTokenReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
         case .AuthenticateUserCard:

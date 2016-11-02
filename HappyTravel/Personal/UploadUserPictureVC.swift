@@ -72,24 +72,25 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var photoPaths:[String] = ["",""]
     var photoURL = [NSString: NSString]()
     var qiniuHost = "http://oanncn4v6.bkt.clouddn.com/"
-    weak var weakSelf:UploadUserPictureVC?
-    //MARK: -- LIFECYCLE
+//    //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        weakSelf = self
+        view.backgroundColor = UIColor.whiteColor()
         initImagePick()
         initTableView()
         initNav()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImage(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(autoUserCardResult(_:)), name: NotifyDefine.AuthenticateUserCard, object: nil)
+        SVProgressHUD.showProgress(1, status: "验证认证环境,请稍后")
         SocketManager.sendData(.UploadImageToken, data: nil)
         
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
     }
     deinit{
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -100,14 +101,18 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "提交", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
-        if photoPaths.count < 2  {
-            SVProgressHUD.showErrorWithStatus("请一次上传正反两面")
-            return
+        for path in photoPaths {
+            if path == "" {
+                SVProgressHUD.showErrorWithStatus("请一次上传正反两面照片")
+                return
+            }
         }
         
+        item.enabled = false
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgress(1, status: "提交中...")
         SVProgressHUD.setDefaultStyle(.Dark)
+//        weak let weakSelf: UploadUserPictureVC! = self
         for (index,path) in photoPaths.enumerate() {
             qnManager.putFile(path, key: nil, token: self.token, complete: { (info, key, resp) -> Void in
                 
@@ -117,7 +122,6 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                 }
         
                 if (info.statusCode == 200 ){
-                    
                     let respDic: NSDictionary? = resp
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
@@ -130,14 +134,6 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
             
         }
         
-    }
-    func popBackToSetting() {
-      
-        
-        self.navigationController?.popViewControllerAnimated(true)
-        self.delegate?.didUploadUserPictureSuccess()
-        DataManager.currentUser!.authentication = true
-        DataManager.currentUser?.updateInfo(DataManager.currentUser!)
     }
     //MARK: -- tableView
     func initTableView() {
@@ -244,16 +240,22 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         
         photoPaths[index] = filePath
     }
-    //MARK: -- DATA
+    //MARK: --
   
-    //上传图片
-    func uploadImage(notice: NSNotification?) {
-        print(notice)
+    //上传图片Token
+    func uploadImageToken(notice: NSNotification?) {
         let data = notice?.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorWithStatus("暂时无法认证，请稍后再试")
+            navigationController?.popViewControllerAnimated(true)
+            return
+        }
         token = data.valueForKey("token") as! NSString as String
     }
     //认证结果
     func autoUserCardResult(notice: NSNotification?) {
+        navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
         let resultCode = data.valueForKey("code")?.integerValue
         NSUserDefaults.standardUserDefaults().setObject(resultCode, forKey: UserDefaultKeys.authUserCard)
@@ -261,8 +263,9 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         case 200 as NSInteger :
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
             let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
-                self.popBackToSetting()
-                alter.dismissViewControllerAnimated(true, completion: nil)
+                alter.dismissViewControllerAnimated(true, completion: { 
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
             }
             alter.addAction(backActiong)
             self.presentViewController(alter, animated: true, completion: nil)
@@ -271,4 +274,5 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
             SVProgressHUD.showErrorWithStatus("提交失败")
         }
     }
+
 }

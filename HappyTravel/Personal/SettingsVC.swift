@@ -13,7 +13,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var settingsTable:UITableView?
     var settingOption:Array<Array<String>>?
-    let authUserCardCode = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard)
+    let authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard) as?  NSInteger
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -127,7 +127,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let endIndex = ".......".endIndex
             number.replaceRange(startIndex..<endIndex, with: "****")
             rightLab?.text = number
-        } else if indexPath.section == 0 && indexPath.row == 2 && DataManager.currentUser?.authentication == true {
+        } else if indexPath.section == 0 && indexPath.row == 2 && authUserCardCode != 0 {
             rightLab?.hidden = false
             rightLab?.text = "已认证"
             cell?.accessoryType = .None
