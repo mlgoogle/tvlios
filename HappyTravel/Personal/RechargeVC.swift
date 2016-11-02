@@ -32,6 +32,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var selectedIndex = 0
     var selectedIcon:UIImageView?
     var amount:String?
+    var rechageID:String?
     
     let tags = ["amountLab": 1001,
                 "amountTextField": 1002,
@@ -70,9 +71,43 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wxPlaceOrderReply(_:)), name: NotifyDefine.WXplaceOrderReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wxPayStatusReply(_:)), name: NotifyDefine.WXPayStatusReply, object: nil)
+    }
+    
+    func wxPayStatusReply(notification: NSNotification) {
+        if let dict = notification.userInfo {
+            if let code = dict["return_code_"] as? Int {
+                if code == 3 {
+                    DataManager.currentUser!.cash = dict["user_cash_"] as! Int
+                    let alert = UIAlertController.init(title: "支付结构", message: "支付成功!", preferredStyle: .Alert)
+                    
+                    weak var weakSelf = self
+                    let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                            weakSelf!.navigationController?.popViewControllerAnimated(true)
+                        })
+                        
+                    })
+                    
+                    alert.addAction(ok)
+                    presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    func wxPlaceOrderReply(notification: NSNotification) {
+        if let dict = notification.userInfo {
+            jumpToBizPay(dict)
+        }
     }
     
     func wechatPaySuccessed(notification: NSNotification) {
+        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+                                        "recharge_id_": Int(rechageID!)!,
+                                        "pay_result_": 1]
+        SocketManager.sendData(.ClientWXPayStatusRequest, data: dict)
         
     }
     
@@ -332,13 +367,6 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     //MARK: - UITextField
     func textFieldDidEndEditing(textField: UITextField) {
         amount = textField.text
-//        if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-//            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
-//            payBtn?.enabled = true
-//        } else {
-//            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
-//            payBtn?.enabled = false
-//        }
     }
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -391,79 +419,35 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 XCGLogger.debug("\(data)")
             })
         } else if selectedIndex == 1 {
-            let retStr = jumpToBizPayTest()
-            XCGLogger.debug(retStr!)
-        }
-        
-    }
-    
-    func jumpToBizPayTest() -> String? {
-        let req = PayReq()
-        req.partnerId = "1404391902"
-        req.prepayId = "wx201610311757239cb4fb4a450446789538"
-        req.nonceStr = "NKXOlMnmrJv7UkGp"
-        req.timeStamp = 1477907810
-        req.package = "sign=WXPay"
-        req.sign = "241b71f361d6663c12a12e0f43208ae9"
-        WXApi.sendReq(req)
-        
-        return ""
-    }
-    
-    func createMd5Sign(dict: [String: String]) -> String {
-        var contentString = ""
-        var keys = dict.keys.reverse().sort({ (s1, s2) -> Bool in
-            return s1.compare(s2).rawValue < 0 ? true : false
+            rechargeWithWX()
             
-        })
-        
-        for key in keys {
-            let value  = dict[key]
-            if value != "" && value != "sign" && value != "key" {
-                contentString.appendContentsOf("\(key)=\(value!)&")
-            }
         }
         
-        contentString.appendContentsOf("key=241b71f361d6663c12a12e0f43208ae9&")
-        let md5Str = contentString.MD5
-        
-        return md5Str
     }
     
-    func jumpToBizPay() -> String? {
-        //============================================================
-        // V3&V4支付流程实现
-        // 注意:参数配置请查看服务器端Demo
-        // 更新时间：2015年11月20日
-        //============================================================
-        let urlString = "http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=ios"
-        //解析服务端返回json数据
-        //加载一个NSURL对象
-        let request = NSURLRequest.init(URL: NSURL(string: urlString)!)
-        //将请求的url数据放到NSData对象中
-        let response = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: nil)
-        if ( response != nil) {
-            //IOS5自带解析类NSJSONSerialization从response中解析出数据放到字典中
-            if let dict = JSON.init(data: response!).dictionaryObject {
-                let stamp = dict["timestamp"] as? NSNumber
-                //调起微信支付
-                let req = PayReq()
-                req.partnerId = dict["partnerid"] as? String
-                req.prepayId = dict["prepayid"] as? String
-                req.nonceStr = dict["noncestr"] as? String
-                req.timeStamp = stamp!.unsignedIntValue
-                req.package = dict["package"] as? String
-                req.sign = dict["sign"] as? String
-                WXApi.sendReq(req)
-                
-                return ""
-            } else {
-                return "服务器返回错误，未获取到json对象"
-            }
-        }else{
-            return "服务器返回错误"
-        }
+    func rechargeWithWX() {
+        let dict = ["uid_": DataManager.currentUser!.uid,
+                    "title_": "V领队-余额充值",
+                    "price_": 1]
+        SocketManager.sendData(.WXPlaceOrderRequest, data: dict)
     
+    }
+    
+    func jumpToBizPay(dict: [NSObject: AnyObject]) {
+        rechageID = dict["recharge_id_"] as? String
+        let req = PayReq()
+        req.partnerId = dict["partnerid"] as? String
+        req.prepayId = dict["prepayid"] as? String
+        req.nonceStr = dict["noncestr"] as? String
+        req.timeStamp = UInt32.init((dict["timestamp"] as? String)!)!
+        req.package = dict["package"] as? String
+        req.sign = dict["sign"] as? String
+        if WXApi.sendReq(req) {
+            XCGLogger.debug("suc")
+        } else {
+            XCGLogger.debug("err")
+        }
+        
     }
 
     

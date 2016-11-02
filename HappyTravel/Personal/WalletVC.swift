@@ -17,6 +17,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        walletTable?.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
