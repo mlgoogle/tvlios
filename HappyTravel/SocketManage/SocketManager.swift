@@ -350,6 +350,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ServiceCity:
             let dict = JSON.init(data: body as! NSData)
+            if dict == nil {
+                break
+            }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .ModifyPasswordResult:
