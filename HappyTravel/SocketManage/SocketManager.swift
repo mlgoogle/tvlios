@@ -64,6 +64,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentReply = 1044
         case InvoiceDetailRequest = 1045
         case InvoiceDetailReply = 1046
+        case WXPlaceOrderRequest = 1049
+        case WXplaceOrderReply = 1050
+        case ClientWXPayStatusRequest = 1051
+        case ClientWXPayStatusReply = 1052
+        case ServerWXPayStatusReply = 1054
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -251,6 +256,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["opcode"] = SockOpcode.InvoiceDetailRequest.rawValue
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+        case .WXPlaceOrderRequest:
+            head.fields["opcode"] = SockOpcode.WXPlaceOrderRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .ClientWXPayStatusRequest:
+            head.fields["opcode"] = SockOpcode.ClientWXPayStatusRequest.rawValue
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+            
             
         case .AskInvitation:
             head.fields["opcode"] = 2001
@@ -456,6 +470,20 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
             }
             break
+        case .WXplaceOrderReply:
+            let json = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: json.dictionaryObject!)
+            break
+        case .ClientWXPayStatusReply:
+            let json = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXPayStatusReply, object: nil, userInfo: json.dictionaryObject!)
+            break
+        case .ServerWXPayStatusReply:
+            let json = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXPayStatusReply, object: nil, userInfo: json.dictionaryObject!)
+            break
+            
+            
         case .AppointmentReply:
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
             break
