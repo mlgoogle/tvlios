@@ -9,11 +9,8 @@
 import Foundation
 import Qiniu
 import XCGLogger
+import SVProgressHUD
 
-
-protocol UploadUserPicktureDelegate: NSObjectProtocol {
-    func didUploadUserPictureSuccess()
-}
 
 class UploadCell: UITableViewCell {
     var titleLable:UILabel! = UILabel()
@@ -27,20 +24,22 @@ class UploadCell: UITableViewCell {
             selectionStyle = .None
             titleLable.font = UIFont.systemFontOfSize(15)
             titleLable.textColor = UIColor.blackColor()
+            titleLable.userInteractionEnabled = true
             contentView.addSubview(titleLable)
             titleLable.snp_makeConstraints { (make) in
-                make.top.equalTo(15)
+                make.top.equalTo(0)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
-                make.height.equalTo(15)
+                make.height.equalTo(42)
             }
-            
+            let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(titleLabTapped))
+            titleLable.addGestureRecognizer(tapGesture)
             
             backView.layer.cornerRadius = 5
             backView.backgroundColor = UIColor.whiteColor()
             contentView.addSubview(backView)
             backView.snp_makeConstraints { (make) in
-                make.top.equalTo(titleLable.snp_bottom).offset(12)
+                make.top.equalTo(titleLable.snp_bottom)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
                 make.bottom.equalTo(-8)
@@ -48,6 +47,7 @@ class UploadCell: UITableViewCell {
         
             iconImage.contentMode = .Center
             iconImage.layer.masksToBounds = true
+            iconImage.userInteractionEnabled = true
             backView.addSubview(iconImage)
             iconImage.snp_makeConstraints { (make) in
                 make.top.equalTo(0)
@@ -62,85 +62,100 @@ class UploadCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func titleLabTapped() {
+        
+    }
 }
 
 class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     var tableView:UITableView?
     let titles:[String]! = ["正面","背面","示例","注意"]
-    var selectImages:[UIImage]?
+    var selectImages:[UIImage] = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
     var index:NSInteger = 0
-    var token = "7IH8GbgsJ1h0pVye98BPKqcGGvtyu1aouVSyeYo7:AxcXvO2aO61lzVP4LDVuU9fsUes=:eyJzY29wZSI6Im1hcmtkb3duIiwiZGVhZGxpbmUiOjE0Nzc5MTAwNzB9"
+    var token:NSString = ""
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
-    var delegate: UploadUserPicktureDelegate?
-    
+    var photoURL = [NSString: NSString]()
+    var photoKeys = [String]()
+    var qiniuHost = "http://oanncn4v6.bkt.clouddn.com/"
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = colorWithHexString("#f2f2f2")
-        initData()
-        initImagePick()
+        view.backgroundColor = UIColor.whiteColor()
+        SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境，请稍后！")
+        SocketManager.sendData(.UploadImageToken, data: nil)
         initTableView()
         initNav()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(autoUserCardResult(_:)), name: NotifyDefine.AuthenticateUserCard, object: nil)
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        initImagePick()
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
     }
     deinit{
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     //MARK: -- Nav
     func initNav()  {
-        title = "上传身份信息"
-        
-//        let nextLabel = UILabel.init(text: "上传", font: UIFont.systemFontOfSize(15), textColor: UIColor.whiteColor())
-//        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: nextLabel)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "上传", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
+        title = "上传身份信息"  
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "提交", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
     func rightItemTapped(item: UIBarButtonItem) {
+        for path in photoPaths {
+            if path == "" {
+                SVProgressHUD.showWainningMessage(WainningMessage: "请一次提交照片正反两面信息",ForDuration:1, completion:nil)
+                return
+            }
+        }
         
+        item.enabled = false
         let qnManager = QNUploadManager()
+        SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
         for (index,path) in photoPaths.enumerate() {
-            qnManager.putFile(path, key: nil, token: self.token, complete: { (info, key, resp) -> Void in
-                    if (info.statusCode == 200 && resp != nil){
-                        
-                        
-                        //第二张图片上传成功后跳转到下一步
-                        if index == 1{
-                            self.popBackToSetting()
-                        }
-                    }else{
-                        XCGLogger.error("\(info.error)")
-                    }
+            qnManager.putFile(path, key: "settings/auth/\(photoKeys[index])", token: self.token as String, complete: { (info, key, resp) -> Void in
                 
-                }, option: nil)
+                if info.statusCode != 200 || resp == nil{
+                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
+                    return
+                }
+        
+                if (info.statusCode == 200 ){
+                    let respDic: NSDictionary? = resp
+                    let value:String? = respDic!.valueForKey("key") as? String
+                    self.photoURL["pic\(index)"] = self.qiniuHost+value!
+                    if self.photoURL.count == 2{
+                        var param = [NSString : NSString]()
+                        param["uid_"] = "\(DataManager.currentUser?.uid)"
+                        param["front_pic_"] = self.photoURL["pic1"]
+                        param["back_pic_"] = self.photoURL["pic0"]
+                        SocketManager.sendData(.AuthenticateUserCard, data:param)
+                    }
+                }
+                
+            }, option: nil)
             
         }
         
     }
-    func popBackToSetting() {
-        let alter: UIAlertController = UIAlertController.init(title: "上传成功！", message: nil, preferredStyle: .Alert)
-        let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
-            self.navigationController?.popViewControllerAnimated(true)
-            self.delegate?.didUploadUserPictureSuccess()
-            DataManager.currentUser!.authentication = true
-            DataManager.currentUser?.updateInfo(DataManager.currentUser!)
-        }
-        alter.addAction(backActiong)
-        presentViewController(alter, animated: true, completion: nil)
-    }
     //MARK: -- tableView
     func initTableView() {
+        
+        view.backgroundColor = colorWithHexString("#f2f2f2")
         tableView = UITableView.init(frame: CGRectZero, style: .Plain)
         tableView!.backgroundColor = colorWithHexString("#f2f2f2")
         tableView!.delegate = self
         tableView!.dataSource = self
-        tableView!.rowHeight = 180
+        tableView!.rowHeight = 182
         tableView!.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
         tableView!.tableFooterView = UIView()
         tableView!.separatorStyle = .None
@@ -176,7 +191,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
         cell?.titleLable.textColor = indexPath.section == 2 ? colorWithHexString("#999999"):UIColor.blackColor()
-        cell?.iconImage.image = selectImages![indexPath.section]
+        cell?.iconImage.image = selectImages[indexPath.section]
         return cell!
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -204,6 +219,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         presentViewController(sheetController, animated: true, completion: nil)
         
     }
+
     //MARK: -- imagePicker
     func initImagePick() {
         imagePicker = UIImagePickerController()
@@ -211,7 +227,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         imagePicker?.allowsEditing = true
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        selectImages![index] = image.reSizeImage(CGSizeMake(162, 125))
+        selectImages[index] = image.reSizeImage(CGSizeMake(162, 125))
         tableView!.reloadData()
         imagePicker?.dismissViewControllerAnimated(true, completion: nil)
         
@@ -228,27 +244,52 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
         do {
             try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+            
         }
-        catch let _ {
+        catch _ {
         }
-        fileManager.createFileAtPath(documentPath.stringByAppendingString("/image.png"), contents: data, attributes: nil)
+        let key = "imageId\(DataManager.currentUser!.uid)_time\(NSDate().timeIntervalSince1970)\(index).png"
+        photoKeys.append(key)
+        fileManager.createFileAtPath(documentPath.stringByAppendingString(key), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
-        let filePath: String = String(format: "%@%@", documentPath, "/image.png")
+        let filePath: String = String(format: "%@%@", documentPath, key)
         
         photoPaths[index] = filePath
     }
-    //MARK: -- DATA
-    func initData() {
-        selectImages = [UIImage.init(named: "tianjia")!,UIImage.init(named: "tianjia")!,UIImage.init(named: "example")!]
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImage(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
-        SocketManager.sendData(.UploadImageToken, data: nil)
+    //MARK: --
+  
+    //上传图片Token
+    func uploadImageToken(notice: NSNotification?) {
+        let data = notice?.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: { 
+                    self.navigationController?.popViewControllerAnimated(true)
+            })
+            return
+        }
+        SVProgressHUD.dismiss()
+        token = data.valueForKey("img_token_") as! NSString
     }
-    
-    func uploadImage(notice: NSNotification?) {
-        print(notice)
-        let data = notice?.userInfo!["data"]
-        
+    //认证结果
+    func autoUserCardResult(notice: NSNotification?) {
+        navigationItem.rightBarButtonItem?.enabled = true
+        let data = notice?.userInfo!["data"] as! NSDictionary
+        let resultCode = data.valueForKey("review_status_")?.integerValue
+        switch resultCode {
+        case 0 as NSInteger :
+            SVProgressHUD.dismiss()
+            let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
+            let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
+                alter.dismissViewControllerAnimated(true, completion:nil)
+                 self.navigationController?.popViewControllerAnimated(true)
+            }
+            alter.addAction(backActiong)
+            presentViewController(alter, animated: true, completion: nil)
+            
+        default:
+            SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
+        }
     }
-    
-   
+
 }
