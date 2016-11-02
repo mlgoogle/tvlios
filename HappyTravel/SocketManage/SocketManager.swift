@@ -79,7 +79,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AnswerInvitationReply = 2012
         case UploadImageToken = 1047
         case UploadImageTokenReply = 1048
-        case AuthenticateUserCard = 2014
+        case AuthenticateUserCard = 1055
+        case AuthenticateUserCardReply = 1056
+        case checkAuthenticateResult = 1057
+        case checkAuthenticateResultReply = 1058
     }
     
     class var shareInstance : SocketManager {
@@ -291,7 +294,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["type"] = 1
             break
         case .AuthenticateUserCard:
-            
+            head.fields["opcode"] = SockOpcode.AuthenticateUserCard.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .checkAuthenticateResult:
+            head.fields["opcode"] = SockOpcode.checkAuthenticateResult.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
             break
@@ -553,11 +563,20 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
-        case .AuthenticateUserCard:
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
+        case .AuthenticateUserCardReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
-
+        case .checkAuthenticateResultReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
         default:
             break
         }

@@ -13,7 +13,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var settingsTable:UITableView?
     var settingOption:Array<Array<String>>?
-    let authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard) as?  NSInteger
+    var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser?.uid)") as?  NSInteger
+    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -26,6 +27,20 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         settingOption = [["当前账号", "密码修改", "个人认证", "芝麻信用"], ["阅后即焚"], ["清除缓存", "更新版本", "关于我们"], ["退出当前账号"]]
         initView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if authUserCardCode == nil  {
+            let param = ["uid_":"\(DataManager.currentUser?.uid)"]
+            SocketManager.sendData(.checkAuthenticateResult, data:param)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func initView() {
@@ -127,9 +142,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let endIndex = ".......".endIndex
             number.replaceRange(startIndex..<endIndex, with: "****")
             rightLab?.text = number
-        } else if indexPath.section == 0 && indexPath.row == 2 && authUserCardCode != 0 {
+        } else if indexPath.section == 0 && indexPath.row == 2 && authUserCardCode != nil {
             rightLab?.hidden = false
-            rightLab?.text = "已认证"
+            rightLab?.text = authUserCardCode == 1 ? "认证中" : (authUserCardCode == 2 ? "已认证":"认证失败")
             cell?.accessoryType = .None
         }else if indexPath.section == 2 && indexPath.row == 0 {
             rightLab?.hidden = false
@@ -189,9 +204,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
             }else if indexPath.row == 2  {
-                if DataManager.currentUser?.authentication == true{
-                    return
-                }
+//                if authUserCardCode == 1||authUserCardCode == 2{
+//                    return
+//                }
                 let controller = UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
             }
@@ -207,6 +222,17 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 navigationController?.popViewControllerAnimated(false)
             }
         }
+    }
+    
+    func checkAuthResult(notice: NSNotification) {
+        let data = notice.userInfo!["data"] as! NSDictionary
+        let failedReson = data["failed_reason_"] as? NSString
+        if failedReson != "" {
+            return
+        }
+        authUserCardCode = (data.valueForKey("review_status_")?.integerValue)! + 1
+        let key = UserDefaultKeys.authUserCard+"\(DataManager.currentUser?.uid)"
+        NSUserDefaults.standardUserDefaults().setValue(authUserCardCode, forKey:key)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

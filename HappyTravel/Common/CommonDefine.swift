@@ -27,11 +27,12 @@ func colorWithHexString(hex: String) -> UIColor {
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
 }
 
-let ScreenWidth = UIScreen().bounds.size.width
-let ScreenHeight = UIScreen().bounds.size.height
+let ScreenWidth = UIScreen.mainScreen().bounds.size.width
+let ScreenHeight = UIScreen.mainScreen().bounds.size.height
 
 func  AtapteValue(value: CGFloat) -> CGFloat {
-    let atapteValue = value*UIScreen().bounds.size.width/375.0
+    let mate = ScreenWidth/375.0
+    let atapteValue = value*mate
     return atapteValue
 }
 

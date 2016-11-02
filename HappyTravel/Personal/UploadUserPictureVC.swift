@@ -24,20 +24,22 @@ class UploadCell: UITableViewCell {
             selectionStyle = .None
             titleLable.font = UIFont.systemFontOfSize(15)
             titleLable.textColor = UIColor.blackColor()
+            titleLable.userInteractionEnabled = true
             contentView.addSubview(titleLable)
             titleLable.snp_makeConstraints { (make) in
-                make.top.equalTo(15)
+                make.top.equalTo(0)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
-                make.height.equalTo(15)
+                make.height.equalTo(42)
             }
-            
+            let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(titleLabTapped))
+            titleLable.addGestureRecognizer(tapGesture)
             
             backView.layer.cornerRadius = 5
             backView.backgroundColor = UIColor.whiteColor()
             contentView.addSubview(backView)
             backView.snp_makeConstraints { (make) in
-                make.top.equalTo(titleLable.snp_bottom).offset(12)
+                make.top.equalTo(titleLable.snp_bottom)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
                 make.bottom.equalTo(-8)
@@ -45,6 +47,7 @@ class UploadCell: UITableViewCell {
         
             iconImage.contentMode = .Center
             iconImage.layer.masksToBounds = true
+            iconImage.userInteractionEnabled = true
             backView.addSubview(iconImage)
             iconImage.snp_makeConstraints { (make) in
                 make.top.equalTo(0)
@@ -59,6 +62,10 @@ class UploadCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func titleLabTapped() {
+        
+    }
 }
 
 class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
@@ -70,6 +77,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
     var photoURL = [NSString: NSString]()
+    var photoKeys = [String]()
     var qiniuHost = "http://oanncn4v6.bkt.clouddn.com/"
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
@@ -113,9 +121,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
         for (index,path) in photoPaths.enumerate() {
-            qnManager.putFile(path, key: nil, token: self.token as String, complete: { (info, key, resp) -> Void in
+            qnManager.putFile(path, key: "settings/auth/\(photoKeys[index])", token: self.token as String, complete: { (info, key, resp) -> Void in
                 
                 if info.statusCode != 200 || resp == nil{
+                    self.navigationItem.rightBarButtonItem?.enabled = true
                     SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
                     return
                 }
@@ -125,7 +134,11 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
-                        SocketManager.sendData(.AuthenticateUserCard, data: self.photoURL)
+                        var param = [NSString : NSString]()
+                        param["uid_"] = "\(DataManager.currentUser?.uid)"
+                        param["front_pic_"] = self.photoURL["pic1"]
+                        param["back_pic_"] = self.photoURL["pic0"]
+                        SocketManager.sendData(.AuthenticateUserCard, data:param)
                     }
                 }
                 
@@ -142,7 +155,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         tableView!.backgroundColor = colorWithHexString("#f2f2f2")
         tableView!.delegate = self
         tableView!.dataSource = self
-        tableView!.rowHeight = 180
+        tableView!.rowHeight = 182
         tableView!.registerClass(UploadCell.classForCoder(), forCellReuseIdentifier: "cell")
         tableView!.tableFooterView = UIView()
         tableView!.separatorStyle = .None
@@ -206,6 +219,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         presentViewController(sheetController, animated: true, completion: nil)
         
     }
+
     //MARK: -- imagePicker
     func initImagePick() {
         imagePicker = UIImagePickerController()
@@ -231,11 +245,12 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         do {
             try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
         }
-        catch let _ {
+        catch _ {
         }
-        fileManager.createFileAtPath(documentPath.stringByAppendingString("/image\(index).png"), contents: data, attributes: nil)
+        photoKeys.append("image\(DataManager.currentUser!.uid)_\(index).png")
+        fileManager.createFileAtPath(documentPath.stringByAppendingString("/image\(DataManager.currentUser!.uid)_\(index).png"), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
-        let filePath: String = String(format: "%@%@", documentPath, "/image\(index).png")
+        let filePath: String = String(format: "%@%@", documentPath, "/image\(DataManager.currentUser!.uid)_\(index).png")
         
         photoPaths[index] = filePath
     }
@@ -258,21 +273,20 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func autoUserCardResult(notice: NSNotification?) {
         navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
-        let resultCode = data.valueForKey("code")?.integerValue
-        NSUserDefaults.standardUserDefaults().setObject(resultCode, forKey: UserDefaultKeys.authUserCard)
+        let resultCode = data.valueForKey("review_status_")?.integerValue
         switch resultCode {
-        case 200 as NSInteger :
+        case 0 as NSInteger :
+            SVProgressHUD.dismiss()
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
             let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
-                alter.dismissViewControllerAnimated(true, completion: { 
-                    self.navigationController?.popViewControllerAnimated(true)
-                })
+                alter.dismissViewControllerAnimated(true, completion:nil)
+                 self.navigationController?.popViewControllerAnimated(true)
             }
             alter.addAction(backActiong)
-            self.presentViewController(alter, animated: true, completion: nil)
+            presentViewController(alter, animated: true, completion: nil)
             
         default:
-            SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败", ForDuration: 1, completion: nil)
+            SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
         }
     }
 
