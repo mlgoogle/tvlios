@@ -244,13 +244,15 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
         do {
             try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+            
         }
         catch _ {
         }
-        photoKeys.append("image\(DataManager.currentUser!.uid)_\(index).png")
-        fileManager.createFileAtPath(documentPath.stringByAppendingString("/image\(DataManager.currentUser!.uid)_\(index).png"), contents: data, attributes: nil)
+        let key = "imageId\(DataManager.currentUser!.uid)_time\(NSDate().timeIntervalSince1970)\(index).png"
+        photoKeys.append(key)
+        fileManager.createFileAtPath(documentPath.stringByAppendingString(key), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
-        let filePath: String = String(format: "%@%@", documentPath, "/image\(DataManager.currentUser!.uid)_\(index).png")
+        let filePath: String = String(format: "%@%@", documentPath, key)
         
         photoPaths[index] = filePath
     }

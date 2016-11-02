@@ -29,7 +29,7 @@ func colorWithHexString(hex: String) -> UIColor {
 
 let ScreenWidth = UIScreen.mainScreen().bounds.size.width
 let ScreenHeight = UIScreen.mainScreen().bounds.size.height
-
+let Timestamp = NSDate().timeIntervalSince1970
 func  AtapteValue(value: CGFloat) -> CGFloat {
     let mate = ScreenWidth/375.0
     let atapteValue = value*mate

@@ -204,9 +204,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
             }else if indexPath.row == 2  {
-//                if authUserCardCode == 1||authUserCardCode == 2{
-//                    return
-//                }
+                if authUserCardCode == 1||authUserCardCode == 2{
+                    return
+                }
                 let controller = UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
             }
