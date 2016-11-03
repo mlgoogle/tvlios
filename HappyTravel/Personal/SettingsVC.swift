@@ -13,7 +13,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var settingsTable:UITableView?
     var settingOption:Array<Array<String>>?
-    var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser?.uid)") as?  NSInteger
+    var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)") as?  NSInteger
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -32,7 +32,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if authUserCardCode == nil  {
-            let param = ["uid_":"\(DataManager.currentUser?.uid)"]
+            let param = ["uid_":"\(DataManager.currentUser!.uid)"]
             SocketManager.sendData(.checkAuthenticateResult, data:param)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
         }
@@ -84,6 +84,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = UITableViewCell()
         }
+        cell?.selectionStyle = .None
         if indexPath.section == 0 && indexPath.row == 0 {
             cell?.accessoryType = .None
         } else if indexPath.section == 1 && indexPath.row == 0 {
@@ -204,9 +205,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
             }else if indexPath.row == 2  {
-                if authUserCardCode == 1||authUserCardCode == 2{
-                    return
-                }
+//                if authUserCardCode == 1||authUserCardCode == 2{
+//                    return
+//                }
                 let controller = UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
             }
@@ -227,12 +228,17 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func checkAuthResult(notice: NSNotification) {
         let data = notice.userInfo!["data"] as! NSDictionary
         let failedReson = data["failed_reason_"] as? NSString
+        let reviewStatus = data.valueForKey("review_status_")?.integerValue
+        if reviewStatus == -1 {
+            return
+        }
         if failedReson != "" {
             return
         }
-        authUserCardCode = (data.valueForKey("review_status_")?.integerValue)! + 1
-        let key = UserDefaultKeys.authUserCard+"\(DataManager.currentUser?.uid)"
+        authUserCardCode = reviewStatus! + 1
+        let key = UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)"
         NSUserDefaults.standardUserDefaults().setValue(authUserCardCode, forKey:key)
+        settingsTable?.reloadData()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
