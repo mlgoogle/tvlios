@@ -248,13 +248,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         NSUserDefaults.standardUserDefaults().setValue(authUserCardCode, forKey:key)
         settingsTable?.reloadData()
     }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-
-extension SettingsVC{
+    // 计算缓存
     func calculateCacle() ->Double {
         let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
         let files = NSFileManager.defaultManager().subpathsAtPath(path!)
@@ -271,7 +265,7 @@ extension SettingsVC{
         let totalSize = size/1024/1024
         return totalSize
     }
-    
+    // 清除缓存
     func clearCacleSizeCompletion(completion: (()->Void)?) {
         let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
         let files = NSFileManager.defaultManager().subpathsAtPath(path!)
@@ -288,8 +282,11 @@ extension SettingsVC{
         }
         SVProgressHUD.showSuccessMessage(SuccessMessage: "清除成功", ForDuration: 1, completion: completion)
     }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
-extension SettingsVC{
-    
-}
+
+
+
