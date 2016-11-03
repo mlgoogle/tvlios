@@ -134,8 +134,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
-                        var param = [NSString : NSString]()
-                        param["uid_"] = "\(DataManager.currentUser!.uid)"
+                        var param = [NSString : AnyObject]()
+                        param["uid_"] = DataManager.currentUser!.uid
                         param["front_pic_"] = self.photoURL["pic1"]
                         param["back_pic_"] = self.photoURL["pic0"]
                         SocketManager.sendData(.AuthenticateUserCard, data:param)

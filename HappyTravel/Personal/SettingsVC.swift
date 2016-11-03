@@ -32,7 +32,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if authUserCardCode == nil  {
-            let param = ["uid_":"\(DataManager.currentUser!.uid)"]
+            let param = ["uid_":DataManager.currentUser!.uid]
             SocketManager.sendData(.checkAuthenticateResult, data:param)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
         }
@@ -205,9 +205,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
             }else if indexPath.row == 2  {
-//                if authUserCardCode == 1||authUserCardCode == 2{
-//                    return
-//                }
+                if authUserCardCode == 1||authUserCardCode == 2{
+                    return
+                }
                 let controller = UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
 
