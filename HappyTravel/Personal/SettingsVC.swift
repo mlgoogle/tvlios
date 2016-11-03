@@ -8,6 +8,7 @@
 
 import Foundation
 import XCGLogger
+import SVProgressHUD
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -149,7 +150,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cell?.accessoryType = .None
         }else if indexPath.section == 2 && indexPath.row == 0 {
             rightLab?.hidden = false
-            rightLab?.text = "0 M"
+            rightLab?.text = String(format: "%.2f m",calculateCacle())
         } else if indexPath.section == 2 && indexPath.row == 1 {
             rightLab?.hidden = false
             rightLab?.text = "当前为最新版本"
@@ -218,7 +219,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 XCGLogger.debug("开票记录")
             }
-        } else if indexPath.section == 3 {
+        }else if indexPath.section == 2 {
+            if indexPath.row == 0 {
+                clearCacleSizeCompletion({ 
+                    tableView.reloadData()
+                })
+            }
+        }else if indexPath.section == 3 {
             if indexPath.row == 0 { // 退出登录
                 SocketManager.logoutCurrentAccount()
                 navigationController?.popViewControllerAnimated(false)
@@ -244,4 +251,45 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+
+extension SettingsVC{
+    func calculateCacle() ->Double {
+        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
+        let files = NSFileManager.defaultManager().subpathsAtPath(path!)
+        var size = 0.00
+        for file in files! {
+            let filePath = path?.stringByAppendingString("/\(file)")
+            let fileAtrributes = try! NSFileManager.defaultManager().attributesOfItemAtPath(filePath!)
+            for (attrKey,attrVale) in fileAtrributes {
+                if attrKey == NSFileSize {
+                    size += attrVale.doubleValue
+                }
+            }
+        }
+        let totalSize = size/1024/1024
+        return totalSize
+    }
+    
+    func clearCacleSizeCompletion(completion: (()->Void)?) {
+        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
+        let files = NSFileManager.defaultManager().subpathsAtPath(path!)
+        
+        for file in files! {
+            let filePath = path?.stringByAppendingString("/\(file)")
+            if NSFileManager.defaultManager().fileExistsAtPath(filePath!) {
+                do{
+                    try NSFileManager.defaultManager().removeItemAtPath(filePath!)
+                }catch{
+                    
+                }
+            }
+        }
+        SVProgressHUD.showSuccessMessage(SuccessMessage: "清除成功", ForDuration: 1, completion: completion)
+    }
+}
+
+extension SettingsVC{
+    
 }
