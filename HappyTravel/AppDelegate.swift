@@ -90,6 +90,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         return WXApi.handleOpenURL(url, delegate: self)
     }
 
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        
+        return WXApi.handleOpenURL(url, delegate: self)
+    }
+    
     //MARK: - BG FG
     func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         GeTuiSdk.resume()
@@ -132,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        
+       
         XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)
@@ -186,11 +191,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatPaySuccessed, object: nil)
             default:
                 strMsg = "支付失败，请您重新支付!"
-                print("retcode = (resp.errCode), retstr = (resp.errStr)")
+                print("retcode = \(resp.errCode), retstr = \(resp.errStr)")
+                let alert = UIAlertView(title: "支付结果", message: strMsg, delegate: nil, cancelButtonTitle: "好的")
+                alert.show()
             }
         }
-        let alert = UIAlertView(title: "支付结果", message: strMsg, delegate: nil, cancelButtonTitle: "好的")
-        alert.show()
+        
     }
 }
 

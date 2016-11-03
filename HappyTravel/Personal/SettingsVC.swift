@@ -210,6 +210,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //                }
                 let controller = UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
+
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {

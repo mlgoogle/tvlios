@@ -91,7 +91,6 @@ class InvoiceIncludeCell: UITableViewCell {
         contentView.addSubview(servicePriceLabel!)
         contentView.addSubview(bottomLine!)
 
-        addSubViewConstraints()
     }
     
     /**
@@ -131,7 +130,9 @@ class InvoiceIncludeCell: UITableViewCell {
         
     }
     
-    
+    override func layoutSubviews() {
+        addSubViewConstraints()
+    }
     /**
      数据填充
      
