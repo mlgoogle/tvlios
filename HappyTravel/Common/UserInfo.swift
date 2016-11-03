@@ -89,7 +89,7 @@ class UserInfo: Object {
     
     dynamic var centurionCardValid = 0
     
-    dynamic var authentication = false
+    dynamic var authentication = 0
     
     let businessTags:List<Tally> = List<Tally>()
     
@@ -207,7 +207,7 @@ class UserInfo: Object {
                 centurionCardValid = value as! Int
                 break
             case "authentication":
-                authentication = value as! Bool
+                authentication = value as! Int
                 break
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")

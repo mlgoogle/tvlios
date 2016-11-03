@@ -83,7 +83,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
-        SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境，请稍后！")
+        SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境中，请稍后！")
         SocketManager.sendData(.UploadImageToken, data: nil)
         initTableView()
         initNav()
@@ -99,10 +99,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        SVProgressHUD.dismiss()
     }
     deinit{
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        SVProgressHUD.dismiss()
     }
     //MARK: -- Nav
     func initNav()  {
@@ -134,8 +134,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
-                        var param = [NSString : NSString]()
-                        param["uid_"] = "\(DataManager.currentUser?.uid)"
+                        var param = [NSString : AnyObject]()
+                        param["uid_"] = DataManager.currentUser!.uid
                         param["front_pic_"] = self.photoURL["pic1"]
                         param["back_pic_"] = self.photoURL["pic0"]
                         SocketManager.sendData(.AuthenticateUserCard, data:param)
