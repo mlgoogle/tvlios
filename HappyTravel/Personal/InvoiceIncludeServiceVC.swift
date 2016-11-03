@@ -40,7 +40,7 @@ class InvoiceIncludeServiceVC: UIViewController {
         tableView?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
-        
+
         SocketManager.sendData(.ServiceDetailRequest, data: ["oid_str_" : oid_str_])
         registerNotifaction()
     }
