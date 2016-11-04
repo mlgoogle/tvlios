@@ -113,17 +113,20 @@ extension SettingCell{
 }
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    let UserNum = "当前帐号"
-    let ChangPwd = "密码修改"
-    let AuthUser = "个人认证"
-    let SesameCredit = "芝麻信用"
-    let NoLeft = "阅后即焚"
-    let ClearCache = "清楚缓存"
-    let UpdateVerison = "更新版本"
-    let AboutUs = "关于我们"
-    let LogoutUser = "退出当前帐号"
+    enum SettingItem: String {
+        case UserNum = "当前帐号"
+        case ChangPwd = "密码修改"
+        case AuthUser = "个人认证"
+        case SesameCredit = "芝麻信用"
+        case NoLeft = "阅后即焚"
+        case ClearCache = "清楚缓存"
+        case UpdateVerison = "更新版本"
+        case AboutUs = "关于我们"
+        case LogoutUser = "退出当前帐号"
+    }
+    
     var settingsTable:UITableView?
-    var settingOption:[[String]]?
+    var settingOption:[[SettingItem]]?
     var settingOptingValue:[[String]]?
     var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)") as?  NSInteger
     var selectIndex: NSIndexPath?
@@ -175,9 +178,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsTable = UITableView(frame: CGRectZero, style: .Grouped)
         settingsTable?.delegate = self
         settingsTable?.dataSource = self
-        settingsTable?.estimatedRowHeight = 60
         settingsTable?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
-        settingsTable?.rowHeight = UITableViewAutomaticDimension
+        settingsTable?.rowHeight = 45
         settingsTable?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         settingsTable?.separatorStyle = .None
         settingsTable?.registerClass(SettingCell.classForCoder(), forCellReuseIdentifier: "SettingCell")
@@ -199,14 +201,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section < 3 ? 10:40
     }
-    
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.01
-    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
-        cell.titleLable?.text = settingOption?[indexPath.section][indexPath.row]
+        cell.titleLable?.text = settingOption?[indexPath.section][indexPath.row].rawValue
         cell.rightLabel?.text = settingOptingValue?[indexPath.section][indexPath.row]
         cell.accessoryType = settingOptingValue?[indexPath.section][indexPath.row] == "" ? .DisclosureIndicator:.None
         cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
@@ -219,26 +216,26 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         selectIndex = indexPath
-        let selectOption = settingOption![indexPath.section][indexPath.row]
+        let selectOption: SettingItem = settingOption![indexPath.section][indexPath.row] 
         switch selectOption {
-        case ChangPwd:
+        case .ChangPwd:
             let modifyPasswordVC = ModifyPasswordVC()
             navigationController?.pushViewController(modifyPasswordVC, animated: true)
             break
-        case AuthUser:
+        case .AuthUser:
             if authUserCardCode == 1||authUserCardCode == 2{
                 return
             }
             let controller = UploadUserPictureVC()
             self.navigationController!.pushViewController(controller, animated: true)
             break
-        case ClearCache:
+        case .ClearCache:
             clearCacleSizeCompletion({
                 self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f m",self.calculateCacle())
                 tableView.reloadData()
             })
             break
-        case LogoutUser:
+        case .LogoutUser:
             SocketManager.logoutCurrentAccount()
             navigationController?.popViewControllerAnimated(false)
             break
@@ -246,7 +243,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             break
         }
     }
-    
+    //查询认证状态
     func checkAuthResult(notice: NSNotification) {
         let data = notice.userInfo!["data"] as! NSDictionary
         let failedReson = data["failed_reason_"] as? NSString
@@ -305,10 +302,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let endIndex = ".......".endIndex
         number.replaceRange(startIndex..<endIndex, with: "****")
     
-        settingOption = [[UserNum, ChangPwd, AuthUser, SesameCredit],
-                         [NoLeft],
-                         [ClearCache, UpdateVerison, AboutUs],
-                         [LogoutUser]]
+        settingOption = [[.UserNum, .ChangPwd, .AuthUser, .SesameCredit],
+                         [.NoLeft],
+                         [.ClearCache, .UpdateVerison, .AboutUs],
+                         [.LogoutUser]]
         settingOptingValue = [[number, "", autoStatus, ""],
                               [""],
                               [String(format: "%.2f m",calculateCacle()), "已是更新版本", ""],

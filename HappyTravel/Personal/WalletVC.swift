@@ -8,7 +8,7 @@
 
 import Foundation
 import XCGLogger
-
+import SVProgressHUD
 class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var walletTable:UITableView?
@@ -20,6 +20,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         walletTable?.reloadData()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NotifyDefine.CheckUserCashResult, object: nil)
+        SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
     }
     
     override func viewDidLoad() {
@@ -28,6 +30,10 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.title = "钱包"
         
         initView()
+    }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func initView() {
@@ -166,8 +172,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 icon?.image = UIImage.init(named: "cash")
                 title?.text = "余额"
-                let cash:NSInteger = (DataManager.currentUser?.cash)!
-                subTitleLabel?.text = "\(cash)元"
+                let cash: String = String(format:"%.2f元", Double((DataManager.currentUser?.cash)!)/100)
+                subTitleLabel?.text = cash
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -202,6 +208,21 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func checkUserResultReply(notice: NSNotification) {
+        let data = notice.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            return
+        }
+        SVProgressHUD.dismiss()
+        let cash = data.valueForKey("user_cash_") as! Int
+        DataManager.currentUser!.cash = cash
+        walletTable?.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {
