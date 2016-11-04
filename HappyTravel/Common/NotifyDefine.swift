@@ -69,5 +69,7 @@ class NotifyDefine: NSObject {
     static let AuthenticateUserCard = "AuthenticateUserCard"
     
     static let CheckAuthenticateResult = "CheckAuthenticateResult"
+    
+    static let ServersManInfoReply = "ServersManInfoReply"
 
 }

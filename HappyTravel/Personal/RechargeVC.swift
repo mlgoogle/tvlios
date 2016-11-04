@@ -230,8 +230,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     make.top.equalTo(amountLab!)
                     make.bottom.equalTo(amountLab!)
                     make.right.equalTo(cell!.contentView).offset(-20)
-                })
-            }
+                })              }
             return cell!
         } else if indexPath.section == 1 {
             var cell = tableView.dequeueReusableCellWithIdentifier("ChannelCell")

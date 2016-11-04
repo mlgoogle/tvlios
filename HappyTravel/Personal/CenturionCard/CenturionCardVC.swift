@@ -11,7 +11,7 @@ import UIKit
 import Kingfisher
 import XCGLogger
 import RealmSwift
-
+import SVProgressHUD
 
 class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CenturionCardLvSelCellDelegate, CenturionCardServicesCellDelegate {
     
@@ -43,9 +43,30 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
-    
-    func registerNotify() {
+    func receivedData(notifation:NSNotification) {
         
+        let dict = notifation.userInfo!["data"]
+        
+
+
+        if let errorCode = dict!["error_"] {
+            SVProgressHUD.showErrorMessage(ErrorMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误\(errorCode)", ForDuration: 1.5, completion: nil)
+        } else {
+            let userInfo = UserInfo()
+            
+            userInfo.setInfo(.Other, info: dict as? Dictionary<String, AnyObject>)
+            
+            DataManager.updateUserInfo(userInfo)
+            let chatVC = ChatVC()
+            chatVC.servantInfo = userInfo
+            navigationController?.pushViewController(chatVC, animated: true)
+            
+        }
+        
+        
+    }
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CenturionCardVC.receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
     }
     
     func initView() {
@@ -68,6 +89,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         callServantBtn?.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
         callServantBtn?.addTarget(self, action: #selector(CenturionCardVC.callSrevant), forControlEvents: .TouchUpInside)
         view.addSubview(callServantBtn!)
+        callServantBtn?.hidden = DataManager.currentUser!.centurionCardLv <= 0
         callServantBtn?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
@@ -75,7 +97,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.height.equalTo(DataManager.currentUser!.centurionCardLv > 0 ? 65 : 0.01)
             
         })
-        
+    
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
@@ -85,16 +107,17 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func callSrevant() {
-        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
-        })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-            
-        })
-        alert.addAction(ensure)
-        alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
+        SocketManager.sendData(.ServersManInfoRequest, data: nil)
+//        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
+//        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+//        })
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+//            
+//        })
+//        alert.addAction(ensure)
+//        alert.addAction(cancel)
+//        presentViewController(alert, animated: true, completion: nil)
         
     }
     
@@ -140,6 +163,19 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let detailVC = CenturionCardDetailVC()
         detailVC.service = service
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func buyNowButtonTouched() {
+        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
+        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+        })
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+            
+        })
+        alert.addAction(ensure)
+        alert.addAction(cancel)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
 }

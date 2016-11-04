@@ -262,10 +262,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             SocketManager.sendData(.SendMessageVerify, data: dict)
         } else {
             
-            SVProgressHUD.showErrorWithStatus("请输入正确的手机号")
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                SVProgressHUD.dismiss()
-            })
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
 
         }
     }
@@ -275,25 +272,15 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
         if predicate.evaluateWithObject(username) == false {
-            SVProgressHUD.showErrorWithStatus("请输入正确的手机号")
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                SVProgressHUD.dismiss()
-            })
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
-        }
-        else if (token == nil || verifyCodeTime == 0) {
-            SVProgressHUD.showErrorWithStatus("请先获取验证码")
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                SVProgressHUD.dismiss()
-            })
+        } else if (token == nil || verifyCodeTime == 0) {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请先获取验证码", ForDuration: 1.5, completion: nil)
+
             return
-        }
-        else if (verifyCode == 0)
-        {
-            SVProgressHUD.showErrorWithStatus("请输入验证码")
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                SVProgressHUD.dismiss()
-            })
+        } else if (verifyCode == 0) {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入验证码", ForDuration: 1.5, completion: nil)
+
             return
         }
         

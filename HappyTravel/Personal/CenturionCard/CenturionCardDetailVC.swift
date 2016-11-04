@@ -8,8 +8,7 @@
 
 import Foundation
 import XCGLogger
-
-
+import SVProgressHUD
 class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var table:UITableView?
@@ -47,9 +46,30 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
-    
-    func registerNotify() {
+    func receivedData(notifation:NSNotification) {
         
+        let dict = notifation.userInfo!["data"]
+        
+        
+        if let errorCode = dict!["error_"] {
+            SVProgressHUD.showErrorMessage(ErrorMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误：\(errorCode)", ForDuration: 1.5, completion: nil)
+        } else {
+            let userInfo = UserInfo()
+            
+            userInfo.setInfo(.Other, info: dict as? Dictionary<String, AnyObject>)
+            
+            DataManager.updateUserInfo(userInfo)
+            let chatVC = ChatVC()
+            chatVC.servantInfo = userInfo
+            navigationController?.pushViewController(chatVC, animated: true)
+            
+        }
+        
+        
+    }
+    func registerNotify() {
+    
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CenturionCardDetailVC.receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
     }
     
     func initView() {
@@ -200,16 +220,23 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func callSrevant() {
-        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
-        })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+        if service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
+            SocketManager.sendData(.ServersManInfoRequest, data: nil)
+
             
-        })
-        alert.addAction(ensure)
-        alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
+        } else {
+            
+            let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
+            let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+            })
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            alert.addAction(ensure)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
+        }
         
     }
     
