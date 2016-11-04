@@ -137,7 +137,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 return "认证中"
             case 2:
                 return "已认证"
-            case 1:
+            case 3:
                 return "认证失败，重新认证"
             default:
                 return ""
@@ -260,6 +260,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         authUserCardCode = reviewStatus! + 1
         let key = UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)"
         NSUserDefaults.standardUserDefaults().setValue(authUserCardCode, forKey:key)
+        settingOptingValue![0][2] = autoStatus
         settingsTable?.reloadData()
     }
     // 计算缓存
