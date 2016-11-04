@@ -90,7 +90,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AuthenticateUserCardReply = 1056
         case checkAuthenticateResult = 1057
         case checkAuthenticateResultReply = 1058
+        case checkUserCash = 1067
+        case checkUserCashReply = 1068
     }
+    
     
     class var shareInstance : SocketManager {
         struct Static {
@@ -320,6 +323,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .checkAuthenticateResult:
             head.fields["opcode"] = SockOpcode.checkAuthenticateResult.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .checkUserCash:
+            head.fields["opcode"] = SockOpcode.checkUserCash.rawValue
             head.fields["type"] = 1
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
@@ -625,6 +633,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 dict = ["code":"0"]
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
+        case .checkUserCashReply:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
         default:
             break
