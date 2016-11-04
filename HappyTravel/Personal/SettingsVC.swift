@@ -10,11 +10,140 @@ import Foundation
 import XCGLogger
 import SVProgressHUD
 
-class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingCell: UITableViewCell{
+    var titleLable: UILabel? = UILabel.init()
+    var rightLabel: UILabel? = UILabel.init()
+    var switchBtn: UISwitch?
     
+    var isBtnCell: Bool?{
+        didSet{
+            addSwitchBtn()
+        }
+    }
+    var isLogoutCell: Bool? {
+        didSet{
+            setLogoutCell()
+        }
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        if !self.isEqual(nil) {
+            self.selectionStyle = .None
+            titleLable?.backgroundColor = UIColor.clearColor()
+            titleLable?.font = UIFont.systemFontOfSize(15)
+            titleLable?.textAlignment = .Left
+            titleLable?.textColor = UIColor.blackColor()
+            contentView.addSubview(titleLable!)
+            titleLable?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(contentView).offset(10)
+                make.top.equalTo(contentView).offset(10)
+                make.bottom.equalTo(contentView).offset(-10)
+                make.right.equalTo(contentView).offset(-10)
+            })
+            
+            rightLabel?.backgroundColor = UIColor.clearColor()
+            rightLabel?.textAlignment = .Right
+            rightLabel?.textColor = UIColor.grayColor()
+            rightLabel?.font = UIFont.systemFontOfSize(15)
+            contentView.addSubview(rightLabel!)
+            rightLabel?.snp_makeConstraints(closure: { (make) in
+                make.right.equalTo(titleLable!)
+                make.top.equalTo(titleLable!)
+                make.bottom.equalTo(titleLable!)
+            })
+            
+            let downLine = UIView()
+            downLine.backgroundColor = colorWithHexString("#e2e2e2")
+            contentView.addSubview(downLine)
+            downLine.snp_makeConstraints(closure: { (make) in
+                make.width.equalTo(ScreenWidth)
+                make.height.equalTo(0.5)
+                make.centerX.equalTo(contentView)
+                make.bottom.equalTo(contentView)
+            })
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension SettingCell{
+    
+    func addSwitchBtn() {
+
+        if isBtnCell == false {
+            return
+        }
+        switchBtn = UISwitch()
+        switchBtn?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
+        contentView.addSubview(switchBtn!)
+        switchBtn?.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(contentView).offset(-10)
+            make.top.equalTo(contentView).offset(10)
+            make.bottom.equalTo(contentView).offset(-10)
+        })
+    }
+    
+    func addUpLine() {
+        
+        let upLine = UIView()
+        accessoryType = .None
+        upLine.backgroundColor = colorWithHexString("#e2e2e2")
+        contentView.addSubview(upLine)
+        upLine.snp_makeConstraints(closure: { (make) in
+            make.width.equalTo(ScreenWidth)
+            make.height.equalTo(0.5)
+            make.centerX.equalTo(contentView)
+            make.top.equalTo(contentView)
+        })
+    }
+    
+    func setLogoutCell() {
+        
+        if isLogoutCell == false{
+            return
+        }
+        accessoryType = .None
+        titleLable!.textAlignment = .Center
+        titleLable!.textColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
+    }
+}
+
+class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    let UserNum = "当前帐号"
+    let ChangPwd = "密码修改"
+    let AuthUser = "个人认证"
+    let SesameCredit = "芝麻信用"
+    let NoLeft = "阅后即焚"
+    let ClearCache = "清楚缓存"
+    let UpdateVerison = "更新版本"
+    let AboutUs = "关于我们"
+    let LogoutUser = "退出当前帐号"
     var settingsTable:UITableView?
-    var settingOption:Array<Array<String>>?
+    var settingOption:[[String]]?
+    var settingOptingValue:[[String]]?
     var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)") as?  NSInteger
+    var selectIndex: NSIndexPath?
+    var autoStatus: String {
+        get{
+            if authUserCardCode == nil {
+                return ""
+            }
+            switch Int(authUserCardCode!) {
+            case 1:
+                return "认证中"
+            case 2:
+                return "已认证"
+            case 1:
+                return "认证失败，重新认证"
+            default:
+                return ""
+            }
+        }
+    }
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -23,10 +152,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "设置"
-        
-        settingOption = [["当前账号", "密码修改", "个人认证", "芝麻信用"], ["阅后即焚"], ["清除缓存", "更新版本", "关于我们"], ["退出当前账号"]]
+        initData()
         initView()
     }
     
@@ -53,6 +180,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsTable?.rowHeight = UITableViewAutomaticDimension
         settingsTable?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         settingsTable?.separatorStyle = .None
+        settingsTable?.registerClass(SettingCell.classForCoder(), forCellReuseIdentifier: "SettingCell")
         view.addSubview(settingsTable!)
         settingsTable?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
@@ -69,11 +197,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section < 3 {
-            return 10
-        } else {
-            return 40
-        }
+        return section < 3 ? 10:40
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -81,155 +205,45 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SettingCell")
-        if cell == nil {
-            cell = UITableViewCell()
+        let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
+        cell.titleLable?.text = settingOption?[indexPath.section][indexPath.row]
+        cell.rightLabel?.text = settingOptingValue?[indexPath.section][indexPath.row]
+        cell.accessoryType = settingOptingValue?[indexPath.section][indexPath.row] == "" ? .DisclosureIndicator:.None
+        cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
+        cell.isLogoutCell = indexPath.section == 3
+        if indexPath.row == 0 {
+            cell.addUpLine()
         }
-        cell?.selectionStyle = .None
-        if indexPath.section == 0 && indexPath.row == 0 {
-            cell?.accessoryType = .None
-        } else if indexPath.section == 1 && indexPath.row == 0 {
-            cell?.accessoryType = .None
-        } else if indexPath.section == 2 && indexPath.row == 1 {
-            cell?.accessoryType = .None
-        } else if indexPath.section == 3 && indexPath.row == 0 {
-            cell?.accessoryType = .None
-        } else {
-            cell?.accessoryType = .DisclosureIndicator
-        }
-        
-        var title = cell?.contentView.viewWithTag(1002) as? UILabel
-        if title == nil {
-            title = UILabel()
-            title?.tag = 1002
-            title?.backgroundColor = UIColor.clearColor()
-            title?.font = UIFont.systemFontOfSize(15)
-            cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(cell!.contentView).offset(10)
-                make.top.equalTo(cell!.contentView).offset(10)
-                make.bottom.equalTo(cell!.contentView).offset(-10)
-                make.right.equalTo(cell!.contentView).offset(-10)
-            })
-        }
-        if indexPath.section == 3 {
-            title?.textAlignment = .Center
-            title?.textColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
-        } else {
-            title?.textAlignment = .Left
-            title?.textColor = UIColor.blackColor()
-        }
-        title?.text = settingOption?[indexPath.section][indexPath.row]
-        
-        var rightLab = cell?.contentView.viewWithTag(2001) as? UILabel
-        if rightLab == nil {
-            rightLab = UILabel()
-            rightLab?.tag = 2001
-            rightLab?.backgroundColor = UIColor.clearColor()
-            rightLab?.textAlignment = .Right
-            rightLab?.textColor = UIColor.grayColor()
-            rightLab?.font = UIFont.systemFontOfSize(15)
-            cell?.contentView.addSubview(rightLab!)
-            rightLab?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(title!)
-                make.top.equalTo(title!)
-                make.bottom.equalTo(title!)
-            })
-        }
-        
-        if indexPath.section == 0 && indexPath.row == 0 {
-            rightLab?.hidden = false
-            var number = DataManager.currentUser!.phoneNumber == nil ? "***********" : DataManager.currentUser!.phoneNumber!
-            let startIndex = "...".endIndex
-            let endIndex = ".......".endIndex
-            number.replaceRange(startIndex..<endIndex, with: "****")
-            rightLab?.text = number
-        } else if indexPath.section == 0 && indexPath.row == 2 && authUserCardCode != nil {
-            rightLab?.hidden = false
-            rightLab?.text = authUserCardCode == 1 ? "认证中" : (authUserCardCode == 2 ? "已认证":"认证失败")
-            cell?.accessoryType = .None
-        }else if indexPath.section == 2 && indexPath.row == 0 {
-            rightLab?.hidden = false
-            rightLab?.text = String(format: "%.2f m",calculateCacle())
-        } else if indexPath.section == 2 && indexPath.row == 1 {
-            rightLab?.hidden = false
-            rightLab?.text = "当前为最新版本"
-        } else {
-            rightLab?.hidden = true
-        }
-        
-        var switchBtn = cell?.contentView.viewWithTag(2002) as? UISwitch
-        if switchBtn == nil {
-            switchBtn = UISwitch()
-            switchBtn?.tag = 2002
-            switchBtn?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
-            cell?.contentView.addSubview(switchBtn!)
-            switchBtn?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(cell!.contentView).offset(-10)
-                make.top.equalTo(cell!.contentView).offset(10)
-                make.bottom.equalTo(cell!.contentView).offset(-10)
-            })
-        }
-        if indexPath.section == 1 && indexPath.row == 0 {
-            switchBtn?.hidden = false
-        } else {
-            switchBtn?.hidden = true
-        }
-        
-        var separateLine = cell?.contentView.viewWithTag(1003)
-        if separateLine == nil {
-            separateLine = UIView()
-            separateLine?.tag = 1003
-            separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
-            cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(title!)
-                make.right.equalTo(cell!.contentView).offset(40)
-                make.bottom.equalTo(cell!.contentView).offset(0.5)
-                make.height.equalTo(1)
-            })
-        }
-        separateLine?.hidden = true
-        if ((settingOption?[indexPath.section].count)! > indexPath.row) && (((settingOption?[indexPath.section].count)! - 1) != indexPath.row) {
-            separateLine?.hidden = false
-        }
-        
-        return cell!
+        return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                XCGLogger.debug("余额")
-            } else if indexPath.row == 1 {
-                let modifyPasswordVC = ModifyPasswordVC()
-                navigationController?.pushViewController(modifyPasswordVC, animated: true)
-            }else if indexPath.row == 2  {
-                if authUserCardCode == 1||authUserCardCode == 2{
-                    return
-                }
-                let controller = UploadUserPictureVC()
-                self.navigationController!.pushViewController(controller, animated: true)
-
+        selectIndex = indexPath
+        let selectOption = settingOption![indexPath.section][indexPath.row]
+        switch selectOption {
+        case ChangPwd:
+            let modifyPasswordVC = ModifyPasswordVC()
+            navigationController?.pushViewController(modifyPasswordVC, animated: true)
+            break
+        case AuthUser:
+            if authUserCardCode == 1||authUserCardCode == 2{
+                return
             }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                XCGLogger.debug("按行程开票")
-            } else if indexPath.row == 1 {
-                XCGLogger.debug("开票记录")
-            }
-        }else if indexPath.section == 2 {
-            if indexPath.row == 0 {
-                clearCacleSizeCompletion({ 
-                    tableView.reloadData()
-                })
-            }
-        }else if indexPath.section == 3 {
-            if indexPath.row == 0 { // 退出登录
-                SocketManager.logoutCurrentAccount()
-                navigationController?.popViewControllerAnimated(false)
-            }
+            let controller = UploadUserPictureVC()
+            self.navigationController!.pushViewController(controller, animated: true)
+            break
+        case ClearCache:
+            clearCacleSizeCompletion({
+                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f m",self.calculateCacle())
+                tableView.reloadData()
+            })
+            break
+        case LogoutUser:
+            SocketManager.logoutCurrentAccount()
+            navigationController?.popViewControllerAnimated(false)
+            break
+        default:
+            break
         }
     }
     
@@ -282,11 +296,27 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         SVProgressHUD.showSuccessMessage(SuccessMessage: "清除成功", ForDuration: 1, completion: completion)
     }
+    
+    func initData() {
+        
+        var number = DataManager.currentUser!.phoneNumber == nil ? "***********" : DataManager.currentUser!.phoneNumber!
+        let startIndex = "...".endIndex
+        let endIndex = ".......".endIndex
+        number.replaceRange(startIndex..<endIndex, with: "****")
+    
+        settingOption = [[UserNum, ChangPwd, AuthUser, SesameCredit],
+                         [NoLeft],
+                         [ClearCache, UpdateVerison, AboutUs],
+                         [LogoutUser]]
+        settingOptingValue = [[number, "", autoStatus, ""],
+                              [""],
+                              [String(format: "%.2f m",calculateCacle()), "已是更新版本", ""],
+                              [""]]
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
 
 
