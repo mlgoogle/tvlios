@@ -248,7 +248,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         }
         catch _ {
         }
-        let key = "imageId\(DataManager.currentUser!.uid)_time\(NSDate().timeIntervalSince1970)\(index).png"
+        let timestemp:Int = Int(NSDate().timeIntervalSince1970)
+        let key = "/\(DataManager.currentUser!.uid)\(timestemp)\(index).png"
         photoKeys.append(key)
         fileManager.createFileAtPath(documentPath.stringByAppendingString(key), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
