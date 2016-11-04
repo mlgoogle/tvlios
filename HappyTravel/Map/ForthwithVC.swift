@@ -349,7 +349,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
         if DataManager.getUserInfo(msg.from_uid_) == nil {
             //TUDO
-            SocketManager.sendData(.GetUserInfo, data: ["uid_": msg.from_uid_])
+            SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(msg.from_uid_)"])
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
