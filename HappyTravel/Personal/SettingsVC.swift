@@ -14,6 +14,8 @@ class SettingCell: UITableViewCell{
     var titleLable: UILabel? = UILabel.init()
     var rightLabel: UILabel? = UILabel.init()
     var switchBtn: UISwitch?
+    var upLine: UIView = UIView()
+    
     
     var isBtnCell: Bool?{
         didSet{
@@ -53,15 +55,16 @@ class SettingCell: UITableViewCell{
                 make.bottom.equalTo(titleLable!)
             })
             
-            let downLine = UIView()
-            downLine.backgroundColor = colorWithHexString("#e2e2e2")
-            contentView.addSubview(downLine)
-            downLine.snp_makeConstraints(closure: { (make) in
+            let upLine = UIView()
+            upLine.backgroundColor = colorWithHexString("#e2e2e2")
+            contentView.addSubview(upLine)
+            upLine.snp_makeConstraints(closure: { (make) in
                 make.width.equalTo(ScreenWidth)
                 make.height.equalTo(0.5)
-                make.centerX.equalTo(contentView)
-                make.bottom.equalTo(contentView)
+                make.left.equalTo(titleLable!)
+                make.top.equalTo(contentView)
             })
+            self.upLine = upLine
         }
     }
     
@@ -84,20 +87,6 @@ extension SettingCell{
             make.right.equalTo(contentView).offset(-10)
             make.top.equalTo(contentView).offset(10)
             make.bottom.equalTo(contentView).offset(-10)
-        })
-    }
-    
-    func addUpLine() {
-        
-        let upLine = UIView()
-        accessoryType = .None
-        upLine.backgroundColor = colorWithHexString("#e2e2e2")
-        contentView.addSubview(upLine)
-        upLine.snp_makeConstraints(closure: { (make) in
-            make.width.equalTo(ScreenWidth)
-            make.height.equalTo(0.5)
-            make.centerX.equalTo(contentView)
-            make.top.equalTo(contentView)
         })
     }
     
@@ -208,9 +197,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.accessoryType = settingOptingValue?[indexPath.section][indexPath.row] == "" ? .DisclosureIndicator:.None
         cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
         cell.isLogoutCell = indexPath.section == 3
-        if indexPath.row == 0 {
-            cell.addUpLine()
-        }
+        cell.upLine.hidden = indexPath.row == 0
         return cell
     }
     

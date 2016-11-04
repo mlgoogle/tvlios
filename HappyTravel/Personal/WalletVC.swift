@@ -20,6 +20,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         walletTable?.reloadData()
+        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化钱包环境...")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NotifyDefine.CheckUserCashResult, object: nil)
         SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
     }
