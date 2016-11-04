@@ -14,7 +14,7 @@ import RealmSwift
 protocol CenturionCardServicesCellDelegate : NSObjectProtocol {
     
     func serviceTouched(service: CenturionCardServiceInfo)
-    
+    func buyNowButtonTouched()
 }
 
 class CenturionCardServicesCell : UITableViewCell {
@@ -117,6 +117,9 @@ class CenturionCardServicesCell : UITableViewCell {
                     buyNowBtn?.layer.cornerRadius = 5
                     buyNowBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
                     buyNowBtn?.layer.borderWidth = 1
+               
+                    buyNowBtn?.addTarget(self, action: #selector(CenturionCardServicesCell.buyNowButtonAction(_:)), forControlEvents: .TouchUpInside)
+                    buyNowBtn?.hidden = DataManager.currentUser!.centurionCardLv > 0
                     contentView.addSubview(buyNowBtn!)
                     buyNowBtn?.snp_makeConstraints(closure: { (make) in
                         make.centerX.equalTo(contentView)
@@ -131,12 +134,17 @@ class CenturionCardServicesCell : UITableViewCell {
             
         }
     }
-    
+
     func serviceTouched(sender: UIButton) {
+        
+        guard delegate != nil else { return }
         let index = sender.tag - tags["serviceBtn"]! * 10
-        delegate?.serviceTouched(services![index])
+        delegate!.serviceTouched(services![index])
     }
-    
+    func buyNowButtonAction(sender:UIButton) {
+        guard delegate != nil else { return }
+        delegate!.buyNowButtonTouched()
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -18,7 +18,8 @@ public class MyPersonalVC : UIViewController {
     var headImageView:UIImageView?
 
     var nameLabel:UILabel?
-    
+    var serviceTel = "10086"
+
     class var shareInstance : MyPersonalVC {
         struct Static {
             static let instance:MyPersonalVC = MyPersonalVC()
@@ -243,6 +244,7 @@ public class MyPersonalVC : UIViewController {
             sideMenuController?.toggle()
         case 10003:
             XCGLogger.defaultInstance().debug("客服")
+            callSrevant()
         case 10004:
             XCGLogger.defaultInstance().debug("设置")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToSettingsVC, object: nil, userInfo: nil)
@@ -251,7 +253,19 @@ public class MyPersonalVC : UIViewController {
             break
         }
     }
-    
+    func callSrevant() {
+        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
+        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+        })
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+            
+        })
+        alert.addAction(ensure)
+        alert.addAction(cancel)
+        presentViewController(alert, animated: true, completion: nil)
+        
+    }
     func feedbackAction(sender: UIButton?) {
         XCGLogger.debug("无情吐槽")
     }

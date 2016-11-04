@@ -466,7 +466,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func servantDetailInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]
         if data!["error_"]! != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error"])")
+            XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
             return
         }
         servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
@@ -660,6 +660,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+        
+        guard targetCity != nil else { return }
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
         SocketManager.sendData(.GetRecommendServants, data: dict)
