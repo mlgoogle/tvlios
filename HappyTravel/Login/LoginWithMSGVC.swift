@@ -23,7 +23,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     var verifyCode = 0
     var verifyCodeTime = 0
     var token:String?
-    
+    var timer:NSTimer?
+    var timeSecond:Int = 0
     var resetPasswdVC:ResetPasswdVC?
     
     
@@ -242,6 +243,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func verifyCodeInfoNotify(notification: NSNotification?) {
+        
         if let data = notification?.userInfo!["data"] {
             verifyCodeTime = (data["timestamp_"] as? Int)!
             token = data["token_"] as? String
@@ -251,15 +253,51 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     func loginWithAccountAction(sender: UIButton?) {
         dismissViewControllerAnimated(false, completion: nil)
     }
-    
+    /**
+     添加倒计时
+     */
+    func setupCountdown() {
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+        timeSecond = 60
+        let button = view.viewWithTag(tags["getVerifyCodeBtn"]!) as! UIButton
+        button.setTitle("60s", forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.5), forState: .Normal)
+
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LoginWithMSGVC.timerAction), userInfo: nil, repeats: true)
+    }
+    func timerAction() {
+        
+        timeSecond -= 1
+        let button = view.viewWithTag(tags["getVerifyCodeBtn"]!) as! UIButton
+        if timeSecond > 0 {
+            let showInfo = String(format: "%ds", timeSecond);
+            button.setTitle(showInfo, forState: .Normal)
+            
+        } else {
+            button.userInteractionEnabled = true
+            button.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
+            button.setTitle("重新获取", forState: .Normal)
+            timer?.invalidate()
+            timer = nil
+        }
+    }
+    /**
+     获取验证码
+     - parameter sender:
+     */
     func getVerifyCodeAction(sender: UIButton) {
         
         
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
         if predicate.evaluateWithObject(username) {
-            
             let dict  = ["verify_type_": 1, "phone_num_": username!]
             SocketManager.sendData(.SendMessageVerify, data: dict)
+            sender.userInteractionEnabled = false
+            setupCountdown()
+            
         } else {
             
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
@@ -327,6 +365,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        timer?.invalidate()
+        timer = nil
     }
     
     

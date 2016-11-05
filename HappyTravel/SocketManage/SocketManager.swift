@@ -10,7 +10,7 @@ import Foundation
 import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
-
+import SVProgressHUD
 enum SockErrCode : Int {
 
     case NoOrder = -1015
@@ -390,8 +390,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .ModifyPasswordResult:
+            let dict  = JSON.init(data: body as! NSData)
+            
             if (head!.fields["type"] as! NSNumber).integerValue == 0 {
+                let result = dict.dictionaryObject
+                SVProgressHUD.showWainningMessage(WainningMessage: "错误码：\(result!["error_"]))", ForDuration: 1.5, completion: nil)
                 XCGLogger.warning("Modify passwd failed")
+            } else {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
+
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: ["data": dict.dictionaryObject!])
             }
             break
         case .UserInfoResult:
