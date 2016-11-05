@@ -169,7 +169,7 @@ class ServantIntroCell: UITableViewCell {
             nickNameLab?.tag = 2001
             nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
-            nickNameLab?.textColor = .grayColor()
+            nickNameLab?.textColor = .blackColor()
             nickNameLab?.font = UIFont.boldSystemFontOfSize(16)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in

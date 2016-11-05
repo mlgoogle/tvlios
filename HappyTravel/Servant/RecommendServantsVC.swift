@@ -57,6 +57,25 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     // MARK: - UITableView
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "最佳服务者"
+    }
+    
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.textColor = colorWithHexString("#666666")
+            headerView.textLabel?.font = UIFont.systemFontOfSize(13)
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.01
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return servantsInfo!.count
     }
