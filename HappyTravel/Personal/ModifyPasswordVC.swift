@@ -47,8 +47,22 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.modifyPasswordSucceed), name: NotifyDefine.ModifyPasswordSucceed, object: nil)
+
     }
-    
+    /**
+     密码修改成功
+     */
+    func modifyPasswordSucceed() {
+        
+        SocketManager.logoutCurrentAccount()
+        navigationController?.popViewControllerAnimated(false)
+    }
+    /**
+     
+     键盘弹出监听
+     - parameter notification:
+     */
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
