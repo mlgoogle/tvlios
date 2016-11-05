@@ -10,6 +10,8 @@ import UIKit
 import SideMenuController
 import XCGLogger
 import RealmSwift
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate {
@@ -34,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
 //        WXApi.registerApp("wxb4ba3c02aa476ea1", withDescription: "vLeader-1.0(alpha)") // test
         WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")
-        
+        Fabric.with([Crashlytics.self])
         commonViewSet()
         
         pushMessageRegister()
