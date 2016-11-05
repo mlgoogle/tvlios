@@ -148,27 +148,27 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.centerY.equalTo(titleLab!.snp_centerY)
         }
         
-        let segmentBGV = UIImageView()
-        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
-        view.addSubview(segmentBGV)
-
-        let segmentItems = ["商务游", "高端游"]
-        segmentSC = UISegmentedControl(items: segmentItems)
-        segmentSC!.tag = 1001
-        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-        segmentSC!.selectedSegmentIndex = 0
-        segmentSC!.layer.masksToBounds = true
-        segmentSC?.layer.cornerRadius = 5
-        segmentSC?.backgroundColor = UIColor.clearColor()
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
-        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-        view.addSubview(segmentSC!)
-        segmentSC!.snp_makeConstraints { (make) in
-            make.center.equalTo(segmentBGV)
-            make.height.equalTo(30)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
-        }
+//        let segmentBGV = UIImageView()
+//        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
+//        view.addSubview(segmentBGV)
+//
+//        let segmentItems = ["商务游", "高端游"]
+//        segmentSC = UISegmentedControl(items: segmentItems)
+//        segmentSC!.tag = 1001
+//        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
+//        segmentSC!.selectedSegmentIndex = 0
+//        segmentSC!.layer.masksToBounds = true
+//        segmentSC?.layer.cornerRadius = 5
+//        segmentSC?.backgroundColor = UIColor.clearColor()
+//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
+//        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
+//        view.addSubview(segmentSC!)
+//        segmentSC!.snp_makeConstraints { (make) in
+//            make.center.equalTo(segmentBGV)
+//            make.height.equalTo(30)
+//            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+//        }
         
         let bottomView = UIImageView()
         bottomView.userInteractionEnabled = true
@@ -237,17 +237,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         mapView!.showsCompass = true
         view.addSubview(mapView!)
         mapView!.snp_makeConstraints { (make) in
-            make.top.equalTo(segmentBGV.snp_bottom)
+            make.top.equalTo(view)
             make.left.equalTo(view).offset(0.5)
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
-        segmentBGV.snp_makeConstraints { (make) in
-            make.top.equalTo(view)
-            make.left.equalTo(view)
-            make.right.equalTo(mapView!).offset(0.5)
-            make.height.equalTo(60)
-        }
+//        segmentBGV.snp_makeConstraints { (make) in
+//            make.top.equalTo(view)
+//            make.left.equalTo(view)
+//            make.right.equalTo(mapView!).offset(0.5)
+//            make.height.equalTo(60)
+//        }
         
         let recommendBtn = UIButton()
         recommendBtn.tag = 2001

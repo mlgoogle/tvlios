@@ -107,7 +107,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.height.equalTo(60)
         }
         
-        let segmentItems = ["商务游", "高端游", "黑卡消费"]
+        let segmentItems = ["商务游", "黑卡消费"]
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
         segmentSC!.addTarget(self, action: #selector(DistanceOfTravelVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
@@ -150,7 +150,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func headerRefresh() {
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
         } else {
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
@@ -161,7 +161,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func footerRefresh() {
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
         } else {
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
@@ -174,7 +174,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             cnt = consumes != nil ? consumes!.count : 0
         } else {
             cnt = hotometers != nil ? hotometers!.count : 0
@@ -184,7 +184,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
             cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
             return cell
@@ -196,7 +196,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             return
         }
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
@@ -213,7 +213,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
         table?.reloadData()
-        if segmentIndex == 2 {
+        if segmentIndex == 1 {
             header.beginRefreshing()
         }
     }
