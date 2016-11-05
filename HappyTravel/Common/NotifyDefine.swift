@@ -72,5 +72,10 @@ class NotifyDefine: NSObject {
     
     static let ServersManInfoReply = "ServersManInfoReply"
     
+
+    static let ModifyPasswordSucceed = "ModifyPasswordSucceed"
+
+    
     static let CheckUserCashResult = "CheckUserCashResult"
+
 }
