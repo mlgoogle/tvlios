@@ -158,15 +158,10 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerAccountReply(notification: NSNotification) {
-        if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if dict["result"] as! Int == 0 {
-                let action = UIAlertView.init(title: "注册失败", message: "账号已存在", delegate: nil, cancelButtonTitle: "确定")
-                action.show()
-            } else if dict["result"] as! Int == 1 {
-                let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
-                SocketManager.sendData(.Login, data: loginDict)
-                
-            }
+        if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
+            SocketManager.sendData(.Login, data: loginDict)
+            
         }
     }
     

@@ -105,7 +105,7 @@ class CenturionCardServicesCell : UITableViewCell {
             titleLab?.text = service.privilege_name_!
             titleLab?.textColor = service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? UIColor.blackColor() : UIColor.grayColor()
             
-            if index == self.services!.count - 1 && index >= DataManager.currentUser!.centurionCardLv {
+            if index == self.services!.count - 1 {
                 var buyNowBtn = contentView.viewWithTag(tags["buyNowBtn"]!) as? UIButton
                 if buyNowBtn == nil {
                     buyNowBtn = UIButton()
@@ -117,9 +117,8 @@ class CenturionCardServicesCell : UITableViewCell {
                     buyNowBtn?.layer.cornerRadius = 5
                     buyNowBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
                     buyNowBtn?.layer.borderWidth = 1
-               
+                    buyNowBtn?.hidden = service.privilege_lv_ > DataManager.currentUser!.centurionCardLv ? false : true
                     buyNowBtn?.addTarget(self, action: #selector(CenturionCardServicesCell.buyNowButtonAction(_:)), forControlEvents: .TouchUpInside)
-                    buyNowBtn?.hidden = DataManager.currentUser!.centurionCardLv > 0
                     contentView.addSubview(buyNowBtn!)
                     buyNowBtn?.snp_makeConstraints(closure: { (make) in
                         make.centerX.equalTo(contentView)
