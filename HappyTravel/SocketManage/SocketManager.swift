@@ -619,8 +619,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             break
         case .EvaluatetripReply:
-            let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict.dictionaryObject)")
+            let json = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
             break
         case .AnswerInvitationReply:
             

@@ -9,10 +9,20 @@
 import Foundation
 import XCGLogger
 import Alamofire
+import SVProgressHUD
+import Qiniu
 
-class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, AddressSelVCDelegate {
+class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, AddressSelVCDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var table:UITableView?
+    
+    var token:String?
+    
+    var headView:UIImageView?
+    
+    var headImagePath:String?
+    
+    var headImageName:String?
     
     var nickname:String?
     
@@ -30,6 +40,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 "headView": 1006,
                 "selectedRetLab": 1007]
     
+    var imagePicker:UIImagePickerController? = nil
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -46,6 +58,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+        initImagePick()
         
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
@@ -58,32 +71,56 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             navigationItem.rightBarButtonItem = sureItem
             
         }
+        
+        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
+        SocketManager.sendData(.UploadImageToken, data: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
+        DataManager.currentUser?.registerSstatus = 1
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
     
     func sureAction(sender: UIButton) {
-        let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-        Alamofire.request(.GET, addr).responseJSON() { response in
-            let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-            let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-            XCGLogger.debug("\(location)")
+        let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
+        let qnManager = QNUploadManager()
+        SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
+        
+        qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
             
-            let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
-            self.nickname = nicknameField?.text
-            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                                                      "nickname_": self.nickname!,
-                                                      "gender_": self.sex,
-                                                      "head_url_": "http://www.abc.com",
-                                                      "address_": self.address!,
-                                                      "longitude_": Float.init(location[0])!,//121.604742,//Float.init(location[0])!,
-                                                      "latitude_": Float.init(location[1])!]//31.212959]//Float.init(location[1])!]
-            SocketManager.sendData(.SendImproveData, data: dict)
-        }
+            if info.statusCode != 200 || resp == nil {
+                self.navigationItem.rightBarButtonItem?.enabled = true
+                SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
+                return
+            }
+            
+            if (info.statusCode == 200 ){
+                let respDic: NSDictionary? = resp
+                let value:String? = respDic!.valueForKey("key") as? String
+                let url = qiniuHost + value!
+                
+                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+                Alamofire.request(.GET, addr).responseJSON() { response in
+                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+                    XCGLogger.debug("\(location)")
+                    
+                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
+                    self.nickname = nicknameField?.text
+                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+                        "nickname_": self.nickname!,
+                        "gender_": self.sex,
+                        "head_url_": url,
+                        "address_": self.address!,
+                        "longitude_": Float.init(location[0])!,
+                        "latitude_": Float.init(location[1])!]
+                    SocketManager.sendData(.SendImproveData, data: dict)
+                }
+            }
+            
+        }, option: nil)
         
     }
     
@@ -119,6 +156,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -135,6 +174,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func improveDataSuccessed(notification: NSNotification?) {
+        SVProgressHUD.dismiss()
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -185,6 +225,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     make.width.equalTo(100)
                     make.height.equalTo(100)
                 })
+                self.headView = headView
             }
             
             cells[indexPath.row] = cell!
@@ -273,9 +314,28 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
 
     }
     
+    func setHeadImage() {
+        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
+        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
+            
+        }
+        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
+            self.imagePicker?.sourceType = .Camera
+            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+        }
+        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
+            self.imagePicker?.sourceType = .PhotoLibrary
+            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+        }
+        sheetController.addAction(cancelAction)
+        sheetController.addAction(cameraAction)
+        sheetController.addAction(labAction)
+        presentViewController(sheetController, animated: true, completion: nil)
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
-            XCGLogger.debug("余额")
+            setHeadImage()
         } else if indexPath.row == 2 {
             XCGLogger.debug("性别选择")
             let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -343,6 +403,62 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - UIImagePickreControllerDelegate
+    func initImagePick() {
+        if imagePicker == nil {
+            imagePicker = UIImagePickerController()
+            imagePicker?.delegate = self
+            imagePicker?.allowsEditing = true
+        }
+        
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        headView?.image = image.reSizeImage(CGSizeMake(100, 100))
+        
+        imagePicker?.dismissViewControllerAnimated(true, completion: nil)
+        
+        //先把图片转成NSData
+        let data = UIImageJPEGRepresentation(image, 0.5)
+        //图片保存的路径
+        //这里将图片放在沙盒的documents文件夹中
+        
+        //Home目录
+        let homeDirectory = NSHomeDirectory()
+        let documentPath = homeDirectory + "/Documents"
+        //文件管理器
+        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
+        do {
+            try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+            
+        }
+        catch _ {
+        }
+        let timestemp:Int = Int(NSDate().timeIntervalSince1970)
+        let fileName = "/\(DataManager.currentUser!.uid)_\(timestemp).png"
+        headImageName = fileName
+        fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
+        //得到选择后沙盒中图片的完整路径
+        let filePath: String = String(format: "%@%@", documentPath, fileName)
+        headImagePath = filePath
+    }
+    //MARK: --
+    
+    //上传图片Token
+    func uploadImageToken(notice: NSNotification?) {
+        let data = notice?.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            return
+        }
+        SVProgressHUD.dismiss()
+        token = data.valueForKey("img_token_") as? String
     }
 }
 
