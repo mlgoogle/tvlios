@@ -21,13 +21,19 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var serviceTel = "10086"
     
-    var services:Results<CenturionCardServiceInfo>? = DataManager.getCenturionCardServiceWithLV(DataManager.currentUser!.centurionCardLv)
+    var services:Results<CenturionCardServiceInfo>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "黑卡会员"
+        
+        var lv = DataManager.currentUser!.centurionCardLv
+        if lv == 0 {
+            lv += 1
+        }
+        services = DataManager.getCenturionCardServiceWithLV(lv)
         
         initView()
     }
@@ -104,6 +110,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.right.equalTo(view)
             make.bottom.equalTo(callServantBtn!.snp_top)
         })
+        
     }
     
     func callSrevant() {
@@ -166,16 +173,17 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func buyNowButtonTouched() {
-        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
-        })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-            
-        })
-        alert.addAction(ensure)
-        alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
+        UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
+//        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
+//        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+//        })
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+//            
+//        })
+//        alert.addAction(ensure)
+//        alert.addAction(cancel)
+//        presentViewController(alert, animated: true, completion: nil)
     }
     
 }

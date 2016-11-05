@@ -121,7 +121,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         buffer = NSMutableData()
         do {
-            try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
+            if !socket!.isConnected {
+                try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
+            }
         } catch GCDAsyncSocketError.ClosedError {
             
         } catch GCDAsyncSocketError.ConnectTimeoutError {
@@ -142,6 +144,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
         sock?.socket?.disconnect()
+        SocketManager.shareInstance.buffer = NSMutableData()
     }
     
     static func getErrorCode(dict: [String: AnyObject]) -> SockErrCode? {
@@ -155,6 +158,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
+        }
+        if !sock!.socket!.isConnected {
+            sock!.connectSock()
         }
         let head = SockHead()
         head.fields["isZipEncrypt"] = -1
@@ -705,11 +711,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
-        if SocketManager.isLogout {
-            connectSock()
-            return
-        }
-        performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 15)
+//        if SocketManager.isLogout {
+//            connectSock()
+//            performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 1)
+//            return
+//        }
+        performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5)
     }
     
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
