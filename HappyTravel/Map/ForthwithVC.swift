@@ -663,6 +663,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
+            if DataManager.currentUser!.certification == false {
+                let alert = UIAlertController.init(title: "尚未申请认证", message: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客", preferredStyle: .Alert)
+                let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                        let controller = UploadUserPictureVC()
+                        self.navigationController!.pushViewController(controller, animated: true)
+                        DataManager.currentUser?.certification = true
+                    })
+                })
+                alert.view.tintColor = UIColor.grayColor()
+                let cancel = UIAlertAction.init(title: "算了吧", style: .Default, handler: nil)
+                alert.addAction(ok)
+                alert.addAction(cancel)
+                presentViewController(alert, animated: true, completion: nil)
+                
+                return
+            }
             SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
             
         }
