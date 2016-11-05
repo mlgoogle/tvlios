@@ -390,7 +390,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
-                    make.top.equalTo(cell!.contentView).offset(10)
+                    make.top.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.bottom.equalTo(cell!.contentView).offset(-10)
                 })
