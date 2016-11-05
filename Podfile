@@ -27,7 +27,8 @@ target 'HappyTravel' do
     pod 'SVProgressHUD', '~> 2.0.3'
     
     pod 'Qiniu', '~> 7.1'
-    
+    pod 'Fabric'
+    pod 'Crashlytics'    
     target 'HappyTravelTests' do
         inherit! :search_paths
         # Pods for testing

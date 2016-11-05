@@ -1064,6 +1064,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1A1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravel" */;
 			buildPhases = (
+				C4952FAD2C84A402C734B3D3 /* Check Pods Manifest.lock */,
 				6A8F5360DC649019021BDABF /* [CP] Check Pods Manifest.lock */,
 				5B988BE9DED4019DC62C2A2D /* [CP] Check Pods Manifest.lock */,
 				6C83F539A506A10F26E92363 /* [CP] Check Pods Manifest.lock */,
@@ -1074,6 +1075,7 @@
 				58FE031919B13DBB5C3C6F67 /* [CP] Copy Pods Resources */,
 				3583E4C86F6762EFA7B2BC19 /* Embed Pods Frameworks */,
 				DCE85A5322AA5F470618A3C1 /* Copy Pods Resources */,
+				6EED9AD21DCC8C2B00A701DD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1088,6 +1090,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */;
 			buildPhases = (
+				050921CCA4ABA32CD2B50F4A /* Check Pods Manifest.lock */,
 				FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */,
 				0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */,
 				7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */,
@@ -1113,6 +1116,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */;
 			buildPhases = (
+				16414BA693E80CBB38CBE0A9 /* Check Pods Manifest.lock */,
 				E297CF6E229EE035088867A0 /* [CP] Check Pods Manifest.lock */,
 				43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */,
 				15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */,
@@ -1350,6 +1354,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		050921CCA4ABA32CD2B50F4A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1393,6 +1412,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		16414BA693E80CBB38CBE0A9 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		3583E4C86F6762EFA7B2BC19 /* Embed Pods Frameworks */ = {
@@ -1530,6 +1564,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6EED9AD21DCC8C2B00A701DD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 1f3f248a8bd706adb27d9d5ff78638813d1d1edf aa10ad91d5d01e45e76caec52b4d555906ba9fe2534551ef964db08c025d8f44";
+		};
 		7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1573,6 +1620,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4952FAD2C84A402C734B3D3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C6DE6AAB2CA80B1D8C0413D4 /* [CP] Embed Pods Frameworks */ = {
