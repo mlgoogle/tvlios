@@ -515,6 +515,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
                 for skill in skillList {
                     let info = SkillInfo(value: skill)
+                    let string:NSString = info.skill_name_!
+                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
+                    let rect = string.boundingRectWithSize(CGSizeMake(0, 20), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
+                    info.labelWidth = rect.size.width
                     DataManager.insertData(SkillInfo.self, data: info)
                     
                 }

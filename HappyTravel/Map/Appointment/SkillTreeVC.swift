@@ -47,6 +47,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         if skill.skill_id_ == info.skill_id_ {
                             selected = true
                         }
+
                     }
                 }
                 skills.append([info: selected])

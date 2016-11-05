@@ -32,6 +32,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         dateFromatter.dateFormat = "yyyy-MM-dd"
         return dateFromatter
     }()
+
     let tags = ["citySelectorLab": 1001,
                 "separatorLine": 1002,
                 "cityLab": 1003,

@@ -33,7 +33,7 @@ class SkillsCell : UITableViewCell {
     var style:SkillsCellStyle = .Normal
     
     var skills:Array<Dictionary<SkillInfo, Bool>>?
-    
+    var collectionView:UICollectionView?
     let tags = ["bgView": 1001,
                 "noTallyLabel": 1002,
                 "bottomControl": 1003,
@@ -46,32 +46,43 @@ class SkillsCell : UITableViewCell {
         selectionStyle = .None
         contentView.backgroundColor = UIColor.whiteColor()
         contentView.userInteractionEnabled = true
+        let layout = SkillWidthLayout()
+        layout.delegate = self
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        collectionView?.addSubview(collectionView!)
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
+        collectionView?.registerClass(SingleSkillCell.self, forCellWithReuseIdentifier: "skillCell")
         
-        var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
-        if noTallyLabel == nil {
-            noTallyLabel = UILabel(frame: CGRectZero)
-            noTallyLabel!.tag = tags["noTallyLabel"]!
-            noTallyLabel!.font = UIFont.systemFontOfSize(12)
-            noTallyLabel!.numberOfLines = 0
-            noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-            noTallyLabel?.textAlignment = .Center
-            noTallyLabel!.layer.cornerRadius = 30 / 2.0
-            noTallyLabel?.layer.masksToBounds = true
-            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            noTallyLabel?.layer.borderWidth = 1
-            noTallyLabel!.backgroundColor = UIColor.whiteColor()
-            contentView.addSubview(noTallyLabel!)
-            noTallyLabel!.snp_makeConstraints { (make) in
-                make.top.equalTo(contentView).offset(20)
-                make.left.equalTo(contentView).offset(20)
-                make.bottom.equalTo(contentView).offset(-20)
-                make.height.equalTo(30)
-                make.width.equalTo(30)
-            }
-        }
-        noTallyLabel?.hidden = false
-        noTallyLabel!.text = "无"
-        
+        collectionView?.snp_makeConstraints(closure: { (make) in
+            
+            make.edges.equalTo(contentView)
+        })
+//        var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
+//        if noTallyLabel == nil {
+//            noTallyLabel = UILabel(frame: CGRectZero)
+//            noTallyLabel!.tag = tags["noTallyLabel"]!
+//            noTallyLabel!.font = UIFont.systemFontOfSize(12)
+//            noTallyLabel!.numberOfLines = 0
+//            noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
+//            noTallyLabel?.textAlignment = .Center
+//            noTallyLabel!.layer.cornerRadius = 30 / 2.0
+//            noTallyLabel?.layer.masksToBounds = true
+//            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+//            noTallyLabel?.layer.borderWidth = 1
+//            noTallyLabel!.backgroundColor = UIColor.whiteColor()
+//            contentView.addSubview(noTallyLabel!)
+//            noTallyLabel!.snp_makeConstraints { (make) in
+//                make.top.equalTo(contentView).offset(20)
+//                make.left.equalTo(contentView).offset(20)
+//                make.bottom.equalTo(contentView).offset(-20)
+//                make.height.equalTo(30)
+//                make.width.equalTo(30)
+//            }
+//        }
+//        noTallyLabel?.hidden = false
+//        noTallyLabel!.text = "无"
+//        
         var addnewBtn = contentView.viewWithTag(tags["addnewBtn"]!) as? UIButton
         if addnewBtn == nil {
             addnewBtn = UIButton()
@@ -229,5 +240,35 @@ class SkillsCell : UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+//MARK: - SkillWidthLayoutDelegate
+
+extension SkillsCell:SkillWidthLayoutDelegate {
+    
+    func  autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->CGFloat {
+        
+        let skillInfoDict = skills![atIndexPath.item]
+        let skillInfo = skillInfoDict.keys.first! as SkillInfo
+        return skillInfo.labelWidth
+    }
+}
+
+//MARK: - UICollectionView
+extension SkillsCell:UICollectionViewDelegate, UICollectionViewDataSource{
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        let count = skills == nil ? 0 : skills?.count
+        
+        return count!
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+     
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("skillCell", forIndexPath: indexPath) as! SingleSkillCell
+        let skillInfoDict = skills![indexPath.item]
+        let skillInfo = skillInfoDict.keys.first! as SkillInfo
+        cell.setupDataWith(skillInfo.skill_name_!, style: .Normal)
+        return cell
     }
 }

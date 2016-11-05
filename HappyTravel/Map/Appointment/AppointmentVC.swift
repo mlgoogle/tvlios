@@ -31,7 +31,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var skills:Array<Dictionary<SkillInfo, Bool>> = []
     lazy var dateFormatter:NSDateFormatter = {
         var dateFromatter = NSDateFormatter()
-        dateFromatter.dateFormat = "yyyy-mm-dd"
+        dateFromatter.dateFormat = "yyyy-MM-dd"
         return dateFromatter
     }()
     let tags = ["citySelectorLab": 1001,
