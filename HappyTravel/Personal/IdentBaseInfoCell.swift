@@ -206,9 +206,8 @@ class IdentBaseInfoCell: UITableViewCell {
         if let starBGView = bgView?.viewWithTag(tags["starBGView"]!) {
             for i in 0...4 {
                 if let star = starBGView.viewWithTag(starBGView.tag * 10 + i) as? UIImageView {
-                    star.image = userInfo!.level / Float(i) >= 1 ? UIImage.init(named: "guide-star-fill") : UIImage.init(named: "guide-star-hollow")
+                    star.image = userInfo!.businessLv / Float(i+1) >= 1 ? UIImage.init(named: "guide-star-fill") : UIImage.init(named: "guide-star-hollow")
                 }
-                
                 
             }
         }
