@@ -13,7 +13,7 @@ import SVProgressHUD
 class SettingCell: UITableViewCell{
     var titleLable: UILabel? = UILabel.init()
     var rightLabel: UILabel? = UILabel.init()
-    var switchBtn: UISwitch?
+    var switchBtn: UISwitch? = UISwitch()
     var upLine: UIView = UIView()
     
     
@@ -80,7 +80,6 @@ extension SettingCell{
         if isBtnCell == false {
             return
         }
-        switchBtn = UISwitch()
         switchBtn?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
         contentView.addSubview(switchBtn!)
         switchBtn?.snp_makeConstraints(closure: { (make) in
@@ -188,7 +187,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section < 3 ? 10:40
+        return section < 2 ? 10:40
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
@@ -197,8 +196,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.titleLable?.text = option!.rawValue
         cell.rightLabel?.text = value
         cell.accessoryType = (value?.characters.count == 0 || option == .ClearCache) ? .DisclosureIndicator:.None
-        cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
-        cell.isLogoutCell = indexPath.section == 3
+        cell.isLogoutCell = option == .LogoutUser
         cell.upLine.hidden = indexPath.row == 0
         return cell
     }
@@ -292,11 +290,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         number.replaceRange(startIndex..<endIndex, with: "****")
     
         settingOption = [[.UserNum, .ChangPwd, .AuthUser, .SesameCredit],
-                         [.NoLeft],
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
         settingOptingValue = [[number, "", autoStatus, ""],
-                              [" "],
                               [String(format: "%.2fM",calculateCacle()), "已是更新版本", ""],
                               [""]]
     }
