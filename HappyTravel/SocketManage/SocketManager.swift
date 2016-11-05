@@ -526,7 +526,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .InvoiceDetailReply:
             let dict = JSON.init(data: body as! NSData)
-            if dict != nil {
+            if dict.dictionaryObject != nil {
                 
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
             }
@@ -580,7 +580,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let dict = JSON.init(data: body as! NSData)
             let msg = PushMessage(value: dict.dictionaryObject!)
             DataManager.insertMessage(msg)
-            
+            print(String(UIApplication.sharedApplication().applicationState))
             if UIApplication.sharedApplication().applicationState == .Background {
                 if let user = DataManager.getUserInfo(msg.from_uid_) {
                     let body = "\(user.nickname!): \(msg.content_!)"
