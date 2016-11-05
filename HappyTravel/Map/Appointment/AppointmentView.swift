@@ -27,7 +27,11 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var nav:UINavigationController?
     
     var skills:Array<Dictionary<SkillInfo, Bool>> = []
-    
+    lazy var dateFormatter:NSDateFormatter = {
+        var dateFromatter = NSDateFormatter()
+        dateFromatter.dateFormat = "yyyy-MM-dd"
+        return dateFromatter
+    }()
     let tags = ["citySelectorLab": 1001,
                 "separatorLine": 1002,
                 "cityLab": 1003,
@@ -288,7 +292,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            dateLab?.text = "2016-12-18"
+            let normalDate = NSDate.init(timeIntervalSinceNow: 3600 * 24)
+            startDate = normalDate
+            endDate = normalDate
+            dateLab?.text = dateFormatter.stringFromDate(normalDate)
         }
         
         return cell!
@@ -441,6 +448,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 let sheet = CitysSelectorSheet()
                 let citys = NSDictionary.init(dictionary: serviceCitys)
                 sheet.citysList = citys.allValues as? Array<CityInfo>
+                sheet.targetCity = sheet.citysList?.first
                 sheet.delegate = self
                 citysAlertController!.view.addSubview(sheet)
                 sheet.snp_makeConstraints { (make) in

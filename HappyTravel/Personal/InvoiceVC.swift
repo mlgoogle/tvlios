@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 import MJRefresh
 import XCGLogger
+import SVProgressHUD
 
 class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -124,6 +125,10 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func commitAction(sender: UIButton) {
         XCGLogger.debug("\(self.selectedOrderList.keys)")
+        if selectedOrderList.count == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "尚未选择开票行程", ForDuration: 1.5, completion: nil)
+            return
+        }
         let invoiceDetailVC = InvoiceDetailVC()
         invoiceDetailVC.selectedOrderList = selectedOrderList
         navigationController?.pushViewController(invoiceDetailVC, animated: true)

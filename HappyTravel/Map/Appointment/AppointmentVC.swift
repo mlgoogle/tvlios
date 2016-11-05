@@ -29,7 +29,11 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var tel:String?
 
     var skills:Array<Dictionary<SkillInfo, Bool>> = []
-    
+    lazy var dateFormatter:NSDateFormatter = {
+        var dateFromatter = NSDateFormatter()
+        dateFromatter.dateFormat = "yyyy-mm-dd"
+        return dateFromatter
+    }()
     let tags = ["citySelectorLab": 1001,
                 "separatorLine": 1002,
                 "cityLab": 1003,
@@ -332,7 +336,10 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            dateLab?.text = "2016-12-18"
+            let normalDate = NSDate.init(timeIntervalSinceNow: 3600 * 24)
+            startDate = normalDate
+            endDate = normalDate
+            dateLab?.text = dateFormatter.stringFromDate(normalDate)
         }
         
         return cell!
