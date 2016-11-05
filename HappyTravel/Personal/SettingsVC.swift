@@ -192,9 +192,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
-        cell.titleLable?.text = settingOption?[indexPath.section][indexPath.row].rawValue
-        cell.rightLabel?.text = settingOptingValue?[indexPath.section][indexPath.row]
-        cell.accessoryType = settingOptingValue?[indexPath.section][indexPath.row] == "" ? .DisclosureIndicator:.None
+        let option = settingOption?[indexPath.section][indexPath.row]
+        let value = settingOptingValue?[indexPath.section][indexPath.row]
+        cell.titleLable?.text = option!.rawValue
+        cell.rightLabel?.text = value
+        cell.accessoryType = (value?.characters.count == 0 || option == .ClearCache) ? .DisclosureIndicator:.None
         cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
         cell.isLogoutCell = indexPath.section == 3
         cell.upLine.hidden = indexPath.row == 0
@@ -218,7 +220,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             break
         case .ClearCache:
             clearCacleSizeCompletion({
-                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f m",self.calculateCacle())
+                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f M",self.calculateCacle())
                 tableView.reloadData()
             })
             break
@@ -294,8 +296,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
         settingOptingValue = [[number, "", autoStatus, ""],
-                              [""],
-                              [String(format: "%.2f m",calculateCacle()), "已是更新版本", ""],
+                              [" "],
+                              [String(format: "%.2fM",calculateCacle()), "已是更新版本", ""],
                               [""]]
     }
     
