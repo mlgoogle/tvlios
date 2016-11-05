@@ -22,6 +22,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     var citysList:Array<CityInfo>?
     var targetCity:CityInfo?
     
+    let pickView = UIPickerView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initView()
@@ -87,7 +89,6 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             make.bottom.equalTo(bgView).offset(-38)
         }
         
-        let pickView = UIPickerView()
         pickView.delegate = self
         pickView.dataSource = self
         pickView.backgroundColor = UIColor.clearColor()
@@ -140,7 +141,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func sureAction(sender: UIButton?) {
-        delegate?.sureAction(sender, targetCity: targetCity)
+        delegate?.sureAction(sender, targetCity: targetCity == nil ? self.citysList![0] : targetCity)
     }
     
     required init?(coder aDecoder: NSCoder) {

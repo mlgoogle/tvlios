@@ -268,7 +268,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.bottom.equalTo(bottomView.snp_top)
         })
         
+        let back2MyLocationBtn = UIButton()
+        back2MyLocationBtn.backgroundColor = .clearColor()
+        back2MyLocationBtn.setImage(UIImage.init(named: "recommend"), forState: .Normal)
+        back2MyLocationBtn.addTarget(self, action: #selector(ForthwithVC.back2MyLocationAction(_:)), forControlEvents: .TouchUpInside)
+        mapView?.addSubview(back2MyLocationBtn)
+        back2MyLocationBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(mapView!).offset(20)
+            make.bottom.equalTo(mapView!).offset(-20)
+            make.width.equalTo(30)
+            make.height.equalTo(30)
+        }
+        
         hideKeyboard()
+    }
+    
+    func back2MyLocationAction(sender: UIButton) {
+        mapView?.setCenterCoordinate(location!.coordinate, animated: true)
     }
     
     func recommendAction(sender: UIButton?) {
@@ -660,8 +676,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func sureAction(sender: UIButton?, targetCity: CityInfo?) {
-        
         guard targetCity != nil else { return }
+        recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
         SocketManager.sendData(.GetRecommendServants, data: dict)
