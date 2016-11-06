@@ -80,7 +80,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             if let code = dict["return_code_"] as? Int {
                 if code == 3 {
                     DataManager.currentUser!.cash = dict["user_cash_"] as! Int
-                    let alert = UIAlertController.init(title: "支付结构", message: "支付成功!", preferredStyle: .Alert)
+                    let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
                     
                     weak var weakSelf = self
                     let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in

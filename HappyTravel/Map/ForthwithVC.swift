@@ -100,12 +100,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
             if regOrLoginSelVC?.isShow == false {
-//                let rechargeVC = RechargeVC()
-//                navigationController?.pushViewController(rechargeVC, animated: true)
                 presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
             }
+        } else {
+            if DataManager.currentUser!.registerSstatus == 0 {
+                let completeBaseInfoVC = CompleteBaseInfoVC()
+                self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+            }
         }
-     
+        
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -145,27 +148,27 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.centerY.equalTo(titleLab!.snp_centerY)
         }
         
-        let segmentBGV = UIImageView()
-        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
-        view.addSubview(segmentBGV)
-
-        let segmentItems = ["商务游", "高端游"]
-        segmentSC = UISegmentedControl(items: segmentItems)
-        segmentSC!.tag = 1001
-        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-        segmentSC!.selectedSegmentIndex = 0
-        segmentSC!.layer.masksToBounds = true
-        segmentSC?.layer.cornerRadius = 5
-        segmentSC?.backgroundColor = UIColor.clearColor()
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
-        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-        view.addSubview(segmentSC!)
-        segmentSC!.snp_makeConstraints { (make) in
-            make.center.equalTo(segmentBGV)
-            make.height.equalTo(30)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
-        }
+//        let segmentBGV = UIImageView()
+//        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
+//        view.addSubview(segmentBGV)
+//
+//        let segmentItems = ["商务游", "高端游"]
+//        segmentSC = UISegmentedControl(items: segmentItems)
+//        segmentSC!.tag = 1001
+//        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
+//        segmentSC!.selectedSegmentIndex = 0
+//        segmentSC!.layer.masksToBounds = true
+//        segmentSC?.layer.cornerRadius = 5
+//        segmentSC?.backgroundColor = UIColor.clearColor()
+//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
+//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
+//        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
+//        view.addSubview(segmentSC!)
+//        segmentSC!.snp_makeConstraints { (make) in
+//            make.center.equalTo(segmentBGV)
+//            make.height.equalTo(30)
+//            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+//        }
         
         let bottomView = UIImageView()
         bottomView.userInteractionEnabled = true
@@ -234,17 +237,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         mapView!.showsCompass = true
         view.addSubview(mapView!)
         mapView!.snp_makeConstraints { (make) in
-            make.top.equalTo(segmentBGV.snp_bottom)
+            make.top.equalTo(view)
             make.left.equalTo(view).offset(0.5)
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
-        segmentBGV.snp_makeConstraints { (make) in
-            make.top.equalTo(view)
-            make.left.equalTo(view)
-            make.right.equalTo(mapView!).offset(0.5)
-            make.height.equalTo(60)
-        }
+//        segmentBGV.snp_makeConstraints { (make) in
+//            make.top.equalTo(view)
+//            make.left.equalTo(view)
+//            make.right.equalTo(mapView!).offset(0.5)
+//            make.height.equalTo(60)
+//        }
         
         let recommendBtn = UIButton()
         recommendBtn.tag = 2001
@@ -268,7 +271,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.bottom.equalTo(bottomView.snp_top)
         })
         
+        let back2MyLocationBtn = UIButton()
+        back2MyLocationBtn.backgroundColor = .clearColor()
+        back2MyLocationBtn.setImage(UIImage.init(named: "recommend"), forState: .Normal)
+        back2MyLocationBtn.addTarget(self, action: #selector(ForthwithVC.back2MyLocationAction(_:)), forControlEvents: .TouchUpInside)
+        mapView?.addSubview(back2MyLocationBtn)
+        back2MyLocationBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(mapView!).offset(20)
+            make.bottom.equalTo(mapView!).offset(-20)
+            make.width.equalTo(30)
+            make.height.equalTo(30)
+        }
+        
         hideKeyboard()
+    }
+    
+    func back2MyLocationAction(sender: UIButton) {
+        mapView?.setCenterCoordinate(location!.coordinate, animated: true)
     }
     
     func recommendAction(sender: UIButton?) {
@@ -650,6 +669,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
+            if DataManager.currentUser!.certification == false {
+                let alert = UIAlertController.init(title: "尚未申请认证", message: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客", preferredStyle: .Alert)
+                let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                        let controller = UploadUserPictureVC()
+                        self.navigationController!.pushViewController(controller, animated: true)
+                        DataManager.currentUser?.certification = true
+                    })
+                })
+                alert.view.tintColor = UIColor.grayColor()
+                let cancel = UIAlertAction.init(title: "算了吧", style: .Default, handler: nil)
+                alert.addAction(ok)
+                alert.addAction(cancel)
+                presentViewController(alert, animated: true, completion: nil)
+                
+                return
+            }
             SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
             
         }
@@ -663,8 +699,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func sureAction(sender: UIButton?, targetCity: CityInfo?) {
-        
         guard targetCity != nil else { return }
+        recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
         SocketManager.sendData(.GetRecommendServants, data: dict)

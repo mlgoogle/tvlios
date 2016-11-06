@@ -8,6 +8,7 @@
 
 import Foundation
 import XCGLogger
+import SVProgressHUD
 
 class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -83,8 +84,21 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        
+    }
+    
+    func servantDetailInfo(notification: NSNotification) {
+        table?.reloadData()
+    }
+    
+    func evaluatetripReply(notification: NSNotification) {
+        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+            self.navigationController?.popViewControllerAnimated(true)
+        })
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -102,6 +116,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func commitAction(sender: UIButton) {
         XCGLogger.info("\(self.commonCell!.serviceStar)   \(self.commonCell!.servantStar)    \(self.commonCell!.comment)")
+        
         let dict:Dictionary<String, AnyObject> = ["from_uid_": (hodometerInfo?.from_uid_)!,
                                                   "to_uid_": (hodometerInfo?.to_uid_)!,
                                                   "order_id_": (hodometerInfo?.order_id_)!,
@@ -118,9 +133,16 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let user = DataManager.getUserInfo(hodometerInfo!.to_uid_)
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentBaseInfoCell", forIndexPath: indexPath) as! IdentBaseInfoCell
-            cell.setInfo(user)
+            if let user = DataManager.getUserInfo(hodometerInfo!.to_uid_) {
+                cell.setInfo(user)
+            } else {
+                SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(hodometerInfo!.to_uid_)"])
+                let u = UserInfo()
+                u.uid = (hodometerInfo?.to_uid_)!
+                SocketManager.sendData(.GetServantDetailInfo, data: u)
+            }
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell

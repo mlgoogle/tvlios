@@ -78,7 +78,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var photoPaths:[String] = ["",""]
     var photoURL = [NSString: NSString]()
     var photoKeys = [String]()
-    var qiniuHost = "http://oanncn4v6.bkt.clouddn.com/"
+    var qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()

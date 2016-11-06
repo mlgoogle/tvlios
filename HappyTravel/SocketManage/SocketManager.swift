@@ -10,7 +10,7 @@ import Foundation
 import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
-
+import SVProgressHUD
 enum SockErrCode : Int {
 
     case NoOrder = -1015
@@ -121,7 +121,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         buffer = NSMutableData()
         do {
-            try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
+            if !socket!.isConnected {
+                try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
+            }
         } catch GCDAsyncSocketError.ClosedError {
             
         } catch GCDAsyncSocketError.ConnectTimeoutError {
@@ -142,6 +144,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
         sock?.socket?.disconnect()
+        SocketManager.shareInstance.buffer = NSMutableData()
     }
     
     static func getErrorCode(dict: [String: AnyObject]) -> SockErrCode? {
@@ -155,6 +158,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
+        }
+        if !sock!.socket!.isConnected {
+            sock!.connectSock()
         }
         let head = SockHead()
         head.fields["isZipEncrypt"] = -1
@@ -398,8 +404,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": dict.dictionaryObject!])
             break
         case .ModifyPasswordResult:
+            let dict  = JSON.init(data: body as! NSData)
+            
             if (head!.fields["type"] as! NSNumber).integerValue == 0 {
+                let result = dict.dictionaryObject
+                SVProgressHUD.showWainningMessage(WainningMessage: "错误码：\(result!["error_"]))", ForDuration: 1.5, completion: nil)
                 XCGLogger.warning("Modify passwd failed")
+            } else {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
+
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: ["data": dict.dictionaryObject!])
             }
             break
         case .UserInfoResult:
@@ -601,8 +615,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             break
         case .EvaluatetripReply:
-            let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict.dictionaryObject)")
+            let json = JSON.init(data: body as! NSData)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
             break
         case .AnswerInvitationReply:
             
@@ -697,11 +711,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
-        if SocketManager.isLogout {
-            connectSock()
-            return
-        }
-        performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 15)
+//        if SocketManager.isLogout {
+//            connectSock()
+//            performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 1)
+//            return
+//        }
+        performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5)
     }
     
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {

@@ -90,7 +90,7 @@ class DateSelectorSheet: UIView {
         
         datePicker = UIDatePicker()
         datePicker?.datePickerMode = .Date
-        datePicker?.minimumDate = NSDate.init(timeIntervalSinceNow: 0)
+        datePicker?.minimumDate = NSDate.init(timeIntervalSinceNow: 3600 * 24)
         datePicker?.maximumDate = NSDate.init(timeIntervalSinceNow: 3600 * 24 * 30)
         body.addSubview(datePicker!)
         datePicker?.snp_makeConstraints { (make) in

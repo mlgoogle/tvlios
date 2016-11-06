@@ -169,7 +169,7 @@ class ServantIntroCell: UITableViewCell {
             nickNameLab?.tag = 2001
             nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
-            nickNameLab?.textColor = .grayColor()
+            nickNameLab?.textColor = .blackColor()
             nickNameLab?.font = UIFont.boldSystemFontOfSize(16)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in
@@ -342,7 +342,6 @@ class ServantIntroCell: UITableViewCell {
                 tallyLabel?.textAlignment = .Center
                 tallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                 tallyItemView!.addSubview(tallyLabel!)
-//                tallyLabel!.translatesAutoresizingMaskIntoConstraints = false
                 tallyLabel!.snp_makeConstraints { (make) in
                     make.left.equalTo(tallyItemView!).offset(10)
                     make.top.equalTo(tallyItemView!)

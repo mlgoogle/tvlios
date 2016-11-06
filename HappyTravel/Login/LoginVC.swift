@@ -103,7 +103,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
-        usernameField.text = "15157109258"
+//        usernameField.text = "15157109258"
         username = usernameField.text
         
         let passwdField = UITextField()
@@ -123,7 +123,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.right.equalTo(usernameField)
             make.height.equalTo(35)
         })
-        passwdField.text = "223456"
+//        passwdField.text = "223456"
         passwd = passwdField.text
         
         for i in 0...2 {
@@ -155,23 +155,23 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.height.equalTo(45)
         }
         
-        let servantLoginBtn = UIButton()
-        servantLoginBtn.tag = 20001
-        servantLoginBtn.backgroundColor = .clearColor()
-        servantLoginBtn.setTitle("服务者登录", forState: .Normal)
-        servantLoginBtn.setTitleColor(UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1), forState: .Normal)
-        servantLoginBtn.layer.borderColor = UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1).CGColor
-        servantLoginBtn.layer.borderWidth = 1
-        servantLoginBtn.layer.cornerRadius = 5
-        servantLoginBtn.layer.masksToBounds = true
-        servantLoginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
-        view.addSubview(servantLoginBtn)
-        servantLoginBtn.snp_makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.top.equalTo(loginBtn.snp_bottom).offset(5)
-            make.width.equalTo(100)
-            make.height.equalTo(25)
-        }
+//        let servantLoginBtn = UIButton()
+//        servantLoginBtn.tag = 20001
+//        servantLoginBtn.backgroundColor = .clearColor()
+//        servantLoginBtn.setTitle("服务者登录", forState: .Normal)
+//        servantLoginBtn.setTitleColor(UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1), forState: .Normal)
+//        servantLoginBtn.layer.borderColor = UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1).CGColor
+//        servantLoginBtn.layer.borderWidth = 1
+//        servantLoginBtn.layer.cornerRadius = 5
+//        servantLoginBtn.layer.masksToBounds = true
+//        servantLoginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
+//        view.addSubview(servantLoginBtn)
+//        servantLoginBtn.snp_makeConstraints { (make) in
+//            make.centerX.equalTo(view)
+//            make.top.equalTo(loginBtn.snp_bottom).offset(5)
+//            make.width.equalTo(100)
+//            make.height.equalTo(25)
+//        }
         
         let loginWithMSGBtn = UIButton()
         loginWithMSGBtn.tag = tags["loginWithMSGBtn"]!
