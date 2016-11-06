@@ -12,6 +12,7 @@ import XCGLogger
 import RealmSwift
 import Fabric
 import Crashlytics
+//import YWFeedbackKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate {
@@ -20,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     var rootVC:UIViewController?
 
+    var feedBack: YWFeedbackKit?
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
@@ -40,6 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         commonViewSet()
         
         pushMessageRegister()
+        
+        configFeedBack()
         
         return true
     }
@@ -199,6 +204,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             }
         }
         
+    }
+    
+    //用户反馈-》阿里百川
+    func configFeedBack() {
+        feedBack = YWFeedbackKit.init(appKey: "23519848")
     }
 }
 

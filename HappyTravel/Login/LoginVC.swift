@@ -249,6 +249,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         })
         if err {
             XCGLogger.error("err:\(data!["error_"] as! Int)")
+            
             return
         }
         XCGLogger.debug("\(data!)")
@@ -283,6 +284,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         return true
     }
+    
+   
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
