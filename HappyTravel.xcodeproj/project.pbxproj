@@ -231,6 +231,14 @@
 		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
 		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
 		BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */; };
+		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
+		BF77CEEB1DCED43100F20C6A /* UTMini.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE31DCED43100F20C6A /* UTMini.framework */; };
+		BF77CEEC1DCED43100F20C6A /* WQConnectorBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */; };
+		BF77CEED1DCED43100F20C6A /* yw_1222.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BF77CEE51DCED43100F20C6A /* yw_1222.jpg */; };
+		BF77CEEE1DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		BF77CEEF1DCED43100F20C6A /* YWFeedbackFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */; };
+		BF77CEF01DCED43200F20C6A /* YWHybridWebViewFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */; };
+		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
@@ -501,6 +509,15 @@
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVProgressHUDExt.swift; sourceTree = "<group>"; };
+		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
+		BF77CEE21DCED43100F20C6A /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
+		BF77CEE31DCED43100F20C6A /* UTMini.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTMini.framework; sourceTree = "<group>"; };
+		BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WQConnectorBundle.framework; sourceTree = "<group>"; };
+		BF77CEE51DCED43100F20C6A /* yw_1222.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yw_1222.jpg; sourceTree = "<group>"; };
+		BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackAudioExtentionFMWK.framework; sourceTree = "<group>"; };
+		BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackFMWK.framework; sourceTree = "<group>"; };
+		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
+		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -510,9 +527,15 @@
 			files = (
 				2F9684251D77D2FD0028E3F2 /* CoreMotion.framework in Frameworks */,
 				2F4EEC3D1D969148004DFFC8 /* MapKit.framework in Frameworks */,
+				BF77CEEB1DCED43100F20C6A /* UTMini.framework in Frameworks */,
 				2F9684191D77D1200028E3F2 /* AlipaySDK.framework in Frameworks */,
+				BF77CEEF1DCED43100F20C6A /* YWFeedbackFMWK.framework in Frameworks */,
+				BF77CEF01DCED43200F20C6A /* YWHybridWebViewFMWK.framework in Frameworks */,
+				BF77CEEE1DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework in Frameworks */,
 				C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */,
 				2F5F2D4A1DC19C6300EB5773 /* libWeChatSDK.a in Frameworks */,
+				BF77CEEC1DCED43100F20C6A /* WQConnectorBundle.framework in Frameworks */,
+				BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,6 +683,7 @@
 		2F9684141D77D1200028E3F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				BF77CEE01DCED43100F20C6A /* BCFeedback */,
 				2F5F2D441DC19C3300EB5773 /* WeChatSDK */,
 				2F9684151D77D1200028E3F2 /* Alipay */,
 			);
@@ -780,6 +804,7 @@
 			children = (
 				2FF72B991DB47854001EEED2 /* Appointment */,
 				2FE7C3761D63FD4700994505 /* ForthwithVC.swift */,
+				BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */,
 				2FE7C3771D63FD4700994505 /* GuideTagCell.swift */,
 				2FE7C3781D63FD4700994505 /* MeetTagCell.swift */,
 				2FC25B311D6C3CC200D48D6A /* CitysSelectorSheet.swift */,
@@ -1039,6 +1064,21 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		BF77CEE01DCED43100F20C6A /* BCFeedback */ = {
+			isa = PBXGroup;
+			children = (
+				BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */,
+				BF77CEE21DCED43100F20C6A /* UTDID.framework */,
+				BF77CEE31DCED43100F20C6A /* UTMini.framework */,
+				BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */,
+				BF77CEE51DCED43100F20C6A /* yw_1222.jpg */,
+				BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */,
+				BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */,
+				BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */,
+			);
+			path = BCFeedback;
+			sourceTree = "<group>";
+		};
 		D1BF5A800EB0D1063BCBAE20 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1207,6 +1247,7 @@
 				2FE7C34B1D62BFAF00994505 /* guide-star-hollow@2x.png in Resources */,
 				2FF72B891DAF6217001EEED2 /* service@2x.png in Resources */,
 				2F9684331D792C3E0028E3F2 /* pay-selected@3x.png in Resources */,
+				BF77CEED1DCED43100F20C6A /* yw_1222.jpg in Resources */,
 				2F26A69E1D8245A900FFA6A7 /* localaddress@3x.png in Resources */,
 				2FF72B7F1DAF6217001EEED2 /* primary-level-disable@2x.png in Resources */,
 				2FF72B8D1DAF6217001EEED2 /* share-wechat@2x.png in Resources */,
@@ -1531,7 +1572,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6C83F539A506A10F26E92363 /* [CP] Check Pods Manifest.lock */ = {
@@ -1694,7 +1735,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */ = {
@@ -1709,7 +1750,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1772,6 +1813,7 @@
 				B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
+				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
@@ -1959,6 +2001,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/Alipay",
+					"$(PROJECT_DIR)/HappyTravel/Other/BCFeedback",
 				);
 				INFOPLIST_FILE = HappyTravel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1989,6 +2032,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/Alipay",
+					"$(PROJECT_DIR)/HappyTravel/Other/BCFeedback",
 				);
 				INFOPLIST_FILE = HappyTravel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

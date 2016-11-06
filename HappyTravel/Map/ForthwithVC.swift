@@ -34,7 +34,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var firstLanch = true
     let bottomSelector = UISlider()
     let appointmentView = AppointmentView()
-
+    var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -310,6 +310,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
     }
     
     func hideKeyboard() {
@@ -454,6 +455,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let settingsVC = SettingsVC()
         navigationController?.pushViewController(settingsVC, animated: true)
     }
+    
+  
     
     func reflushServantInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]

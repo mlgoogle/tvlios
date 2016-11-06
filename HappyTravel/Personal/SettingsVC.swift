@@ -13,7 +13,9 @@ import SVProgressHUD
 class SettingCell: UITableViewCell{
     var titleLable: UILabel? = UILabel.init()
     var rightLabel: UILabel? = UILabel.init()
-    var switchBtn: UISwitch?
+    var switchBtn: UISwitch? = UISwitch()
+    var upLine: UIView = UIView()
+    
     
     var isBtnCell: Bool?{
         didSet{
@@ -53,15 +55,16 @@ class SettingCell: UITableViewCell{
                 make.bottom.equalTo(titleLable!)
             })
             
-            let downLine = UIView()
-            downLine.backgroundColor = colorWithHexString("#e2e2e2")
-            contentView.addSubview(downLine)
-            downLine.snp_makeConstraints(closure: { (make) in
+            let upLine = UIView()
+            upLine.backgroundColor = colorWithHexString("#e2e2e2")
+            contentView.addSubview(upLine)
+            upLine.snp_makeConstraints(closure: { (make) in
                 make.width.equalTo(ScreenWidth)
                 make.height.equalTo(0.5)
-                make.centerX.equalTo(contentView)
-                make.bottom.equalTo(contentView)
+                make.left.equalTo(titleLable!)
+                make.top.equalTo(contentView)
             })
+            self.upLine = upLine
         }
     }
     
@@ -77,27 +80,12 @@ extension SettingCell{
         if isBtnCell == false {
             return
         }
-        switchBtn = UISwitch()
         switchBtn?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
         contentView.addSubview(switchBtn!)
         switchBtn?.snp_makeConstraints(closure: { (make) in
             make.right.equalTo(contentView).offset(-10)
             make.top.equalTo(contentView).offset(10)
             make.bottom.equalTo(contentView).offset(-10)
-        })
-    }
-    
-    func addUpLine() {
-        
-        let upLine = UIView()
-        accessoryType = .None
-        upLine.backgroundColor = colorWithHexString("#e2e2e2")
-        contentView.addSubview(upLine)
-        upLine.snp_makeConstraints(closure: { (make) in
-            make.width.equalTo(ScreenWidth)
-            make.height.equalTo(0.5)
-            make.centerX.equalTo(contentView)
-            make.top.equalTo(contentView)
         })
     }
     
@@ -199,18 +187,17 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section < 3 ? 10:40
+        return section < 2 ? 10:40
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
-        cell.titleLable?.text = settingOption?[indexPath.section][indexPath.row].rawValue
-        cell.rightLabel?.text = settingOptingValue?[indexPath.section][indexPath.row]
-        cell.accessoryType = settingOptingValue?[indexPath.section][indexPath.row] == "" ? .DisclosureIndicator:.None
-        cell.isBtnCell = indexPath.section == 1 && indexPath.row == 0
-        cell.isLogoutCell = indexPath.section == 3
-        if indexPath.row == 0 {
-            cell.addUpLine()
-        }
+        let option = settingOption?[indexPath.section][indexPath.row]
+        let value = settingOptingValue?[indexPath.section][indexPath.row]
+        cell.titleLable?.text = option!.rawValue
+        cell.rightLabel?.text = value
+        cell.accessoryType = (value?.characters.count == 0 || option == .ClearCache) ? .DisclosureIndicator:.None
+        cell.isLogoutCell = option == .LogoutUser
+        cell.upLine.hidden = indexPath.row == 0
         return cell
     }
     
@@ -231,7 +218,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             break
         case .ClearCache:
             clearCacleSizeCompletion({
-                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f m",self.calculateCacle())
+                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f M",self.calculateCacle())
                 tableView.reloadData()
             })
             break
@@ -303,12 +290,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         number.replaceRange(startIndex..<endIndex, with: "****")
     
         settingOption = [[.UserNum, .ChangPwd, .AuthUser, .SesameCredit],
-                         [.NoLeft],
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
         settingOptingValue = [[number, "", autoStatus, ""],
-                              [""],
-                              [String(format: "%.2f m",calculateCacle()), "已是更新版本", ""],
+                              [String(format: "%.2fM",calculateCacle()), "已是更新版本", ""],
                               [""]]
     }
     
