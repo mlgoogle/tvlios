@@ -150,16 +150,19 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if authUserCardCode == nil  {
-            let param = ["uid_":DataManager.currentUser!.uid]
-            SocketManager.sendData(.checkAuthenticateResult, data:param)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
-        }
+        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化...")
+        let param = ["uid_":DataManager.currentUser!.uid]
+        SocketManager.sendData(.checkAuthenticateResult, data:param)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
     }
     
     func initView() {
@@ -232,6 +235,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     //查询认证状态
     func checkAuthResult(notice: NSNotification) {
+        SVProgressHUD.dismiss()
         let data = notice.userInfo!["data"] as! NSDictionary
         let failedReson = data["failed_reason_"] as? NSString
         let reviewStatus = data.valueForKey("review_status_")?.integerValue
@@ -283,7 +287,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
-        
         var number = DataManager.currentUser!.phoneNumber == nil ? "***********" : DataManager.currentUser!.phoneNumber!
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex
