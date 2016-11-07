@@ -367,7 +367,7 @@ class ServantIntroCell: UITableViewCell {
         let starLevelView = view!.viewWithTag(4001)
         for i in 0...4 {
             if let star = starLevelView?.viewWithTag(starLevelView!.tag * 10 + i) as? UIImageView {
-                star.image = UIImage.init(named: (userInfo!.businessLv / Float(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
+                star.image = UIImage.init(named: (userInfo!.praiseLv / Int(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
                 
             }
         }
