@@ -47,11 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
-        bar.setBackgroundImage(UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(0, 0, -88, 0)), forBarMetrics: UIBarMetrics.Default)
+        bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
         bar.tintColor = UIColor.whiteColor()
         let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         bar.titleTextAttributes = attr
         bar.translucent = false
+        bar.shadowImage = UIImage()
+        bar.layer.masksToBounds = true
+        
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
         let tabbar = UITabBar.appearance()
