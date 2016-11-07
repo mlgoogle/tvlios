@@ -116,19 +116,18 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var settingsTable:UITableView?
     var settingOption:[[SettingItem]]?
     var settingOptingValue:[[String]]?
-    var authUserCardCode: NSInteger? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)") as?  NSInteger
+    let authUserCardCode = (DataManager.currentUser?.authentication)!
     var selectIndex: NSIndexPath?
     var autoStatus: String {
         get{
-            if authUserCardCode == nil {
-                return ""
-            }
-            switch Int(authUserCardCode!) {
-            case 1:
+            switch Int(authUserCardCode) {
+            case -1:
+                return "申请认证"
+            case 0:
                 return "认证中"
-            case 2:
+            case 1:
                 return "已认证"
-            case 3:
+            case 2:
                 return "认证失败，重新认证"
             default:
                 return ""
@@ -150,10 +149,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化...")
-        let param = ["uid_":DataManager.currentUser!.uid]
-        SocketManager.sendData(.checkAuthenticateResult, data:param)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -213,7 +209,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(modifyPasswordVC, animated: true)
             break
         case .AuthUser:
-            if authUserCardCode == 1||authUserCardCode == 2{
+            if authUserCardCode == 0 || authUserCardCode == 1 {
                 return
             }
             let controller = UploadUserPictureVC()
@@ -233,24 +229,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             break
         }
     }
-    //查询认证状态
-    func checkAuthResult(notice: NSNotification) {
-        SVProgressHUD.dismiss()
-        let data = notice.userInfo!["data"] as! NSDictionary
-        let failedReson = data["failed_reason_"] as? NSString
-        let reviewStatus = data.valueForKey("review_status_")?.integerValue
-        if reviewStatus == -1 {
-            return
-        }
-        if failedReson != "" {
-            return
-        }
-        authUserCardCode = reviewStatus! + 1
-        let key = UserDefaultKeys.authUserCard+"\(DataManager.currentUser!.uid)"
-        NSUserDefaults.standardUserDefaults().setValue(authUserCardCode, forKey:key)
-        settingOptingValue![0][2] = autoStatus
-        settingsTable?.reloadData()
-    }
+    
     // 计算缓存
     func calculateCacle() ->Double {
         let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
