@@ -130,28 +130,34 @@ class SkillsCell : UITableViewCell {
                         tallyBtn = UIButton()
                         tallyBtn!.tag = self.tags["tallyBtn"]! * 10 + index
                         tallyBtn!.backgroundColor = UIColor.whiteColor()
+                        tallyBtn?.titleEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 0)
                         tallyBtn?.layer.cornerRadius = 30 / 2.0
                         tallyBtn?.layer.masksToBounds = true
                         tallyBtn?.layer.borderWidth = 1
+                        
                         tallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
                         tallyBtn?.setTitleColor(UIColor.grayColor(), forState: .Disabled)
                         tallyBtn?.addTarget(self, action: #selector(SkillsCell.selectAction(_:)), forControlEvents: .TouchUpInside)
                         contentView.addSubview(tallyBtn!)
+                        /**
+                         *  记录宽度
+                         */
+                        allButtonWidth = allButtonWidth + 10 + skill.labelWidth
                         tallyBtn!.snp_makeConstraints { (make) in
                             let previousView = contentView.viewWithTag(tallyBtn!.tag - 1)
                             if previousView == nil {
-                                allButtonWidth = allButtonWidth + 20 + skill.labelWidth
                                 make.top.equalTo(self.contentView).offset(20)
                                 make.left.equalTo(self.contentView).offset(20)
                             } else {
-                                if allButtonWidth + 20 > contentView.mj_w {
-                                    
+                                /**
+                                 *  判断宽度 如果宽度大于屏幕宽度，另起一行
+                                 */
+                                if allButtonWidth > ScreenWidth {
                                     
                                     allButtonWidth = 20.0
                                     make.top.equalTo(previousView!.snp_bottom).offset(10)
                                     make.left.equalTo(self.contentView).offset(20)
                                 } else {
-                                    allButtonWidth = allButtonWidth + 20 + skill.labelWidth
                                     make.top.equalTo(previousView!)
                                     make.left.equalTo(previousView!.snp_right).offset(10)
                                 }
@@ -161,6 +167,7 @@ class SkillsCell : UITableViewCell {
                                 make.bottom.equalTo(contentView).offset(-20)
                             }
                             make.height.equalTo(30)
+                            make.width.equalTo(skill.labelWidth)
                         }
                     }
                     tallyBtn!.setTitle("    \(skill.skill_name_!)    ", forState: .Normal)
@@ -216,7 +223,7 @@ class SkillsCell : UITableViewCell {
             addnewBtn.hidden = style == .AddNew ? false : true
             if lastTallyItemView != nil {
                 addnewBtn.snp_remakeConstraints(closure: { (make) in
-                    if  allButtonWidth > contentView.mj_w {
+                    if  allButtonWidth + 50 > contentView.mj_w {
                         make.left.equalTo(contentView).offset(20)
                         make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
                     } else {

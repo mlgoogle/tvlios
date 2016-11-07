@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import RealmSwift
 protocol ServantIntroCellDelegate : NSObjectProtocol {
     
     func chatAction(servantInfo: UserInfo?)
@@ -289,12 +289,13 @@ class ServantIntroCell: UITableViewCell {
         }
         
         var lastTallyView:UIView?
-        let tags = (userInfo?.businessTags)! + (userInfo?.travalTags)!
+        let businessTags = List<Tally>() +  (userInfo?.businessTags)!
+        let tags = businessTags + (userInfo?.travalTags)!
         let tallyView = view!.viewWithTag(3001)
         for subview in tallyView!.subviews {
             subview.removeFromSuperview()
         }
-        allLabelWidth = 20.0
+        allLabelWidth = 10.0
         for (index, tag) in tags.enumerate() {
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
@@ -308,19 +309,21 @@ class ServantIntroCell: UITableViewCell {
                 tallyItemView?.layer.borderWidth = 1
                 tallyView!.addSubview(tallyItemView!)
                 tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
-                let previousView = tallyView!.viewWithTag(1001+index-1)
+                allLabelWidth = allLabelWidth + 10 + tag.labelWidth
                 tallyItemView!.snp_makeConstraints { (make) in
+                    let previousView = tallyView!.viewWithTag(1001+index-1)
+
                     if previousView == nil {
-                        allLabelWidth = allLabelWidth + 20 + tag.labelWidth
                         make.top.equalTo(tallyView!).offset(10)
                         make.left.equalTo(tallyView!)
                     } else {
-                        if allLabelWidth + 20 > contentView.mj_w {
-                            allLabelWidth = 20.0
+                        if allLabelWidth > ScreenWidth - 20 {
+                            print(allLabelWidth)
+
+                            allLabelWidth = 10.0
                             make.top.equalTo(previousView!.snp_bottom).offset(10)
                             make.left.equalTo(tallyView!)
                         } else {
-                            allLabelWidth = allLabelWidth + 20 + tag.labelWidth
                             make.top.equalTo(previousView!)
                             make.left.equalTo(previousView!.snp_right).offset(10)
                         }
@@ -339,7 +342,7 @@ class ServantIntroCell: UITableViewCell {
 //                        }
                     }
                     make.height.equalTo(25)
-                    
+                    make.width.equalTo(tag.labelWidth)
                 }
             }
             lastTallyView = tallyItemView

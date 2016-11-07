@@ -56,7 +56,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func modifyPasswordSucceed() {
         
         SocketManager.logoutCurrentAccount()
-        navigationController?.popViewControllerAnimated(false)
+        navigationController?.popToRootViewControllerAnimated(true)
     }
     /**
      

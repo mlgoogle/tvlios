@@ -146,8 +146,8 @@ class UserInfo: Object {
                     tally.tally = tag
                     let string:NSString = tag
                     let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                    let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
-                    tally.labelWidth = rect.size.width + 20
+                    let rect = string.boundingRectWithSize(CGSizeMake(0, 20), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
+                    tally.labelWidth = rect.size.width + 24
                     businessTags.append(tally)
                 }
                 break
@@ -183,7 +183,7 @@ class UserInfo: Object {
                     let string:NSString = tag
                     let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
                     let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
-                    tally.labelWidth = rect.size.width + 20
+                    tally.labelWidth = rect.size.width + 24
                     travalTags.append(tally)
                 }
                 break
