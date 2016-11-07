@@ -64,7 +64,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         table?.delegate = self
         table?.dataSource = self
-        table?.estimatedRowHeight = 256
+        table?.estimatedRowHeight = 256 / 2.0
         table?.rowHeight = UITableViewAutomaticDimension
         table?.separatorStyle = .None
         table?.registerClass(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")

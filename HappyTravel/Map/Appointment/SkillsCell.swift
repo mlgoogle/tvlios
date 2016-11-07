@@ -154,7 +154,7 @@ class SkillsCell : UITableViewCell {
                                  */
                                 if allButtonWidth > ScreenWidth {
                                     
-                                    allButtonWidth = 20.0
+                                    allButtonWidth = 20.0 + 10 + skill.labelWidth
                                     make.top.equalTo(previousView!.snp_bottom).offset(10)
                                     make.left.equalTo(self.contentView).offset(20)
                                 } else {

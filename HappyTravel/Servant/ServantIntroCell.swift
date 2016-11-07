@@ -18,7 +18,7 @@ class ServantIntroCell: UITableViewCell {
     
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
-    var allLabelWidth:CGFloat = 20.0
+    var allLabelWidth:CGFloat = 10.0
     var servantInfo:UserInfo?
     weak var delegate:ServantIntroCellDelegate?
     
@@ -295,7 +295,7 @@ class ServantIntroCell: UITableViewCell {
         for subview in tallyView!.subviews {
             subview.removeFromSuperview()
         }
-        allLabelWidth = 10.0
+        allLabelWidth = 0.0
         for (index, tag) in tags.enumerate() {
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
@@ -309,18 +309,21 @@ class ServantIntroCell: UITableViewCell {
                 tallyItemView?.layer.borderWidth = 1
                 tallyView!.addSubview(tallyItemView!)
                 tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
+                
+                
                 allLabelWidth = allLabelWidth + 10 + tag.labelWidth
+
                 tallyItemView!.snp_makeConstraints { (make) in
                     let previousView = tallyView!.viewWithTag(1001+index-1)
 
                     if previousView == nil {
+
                         make.top.equalTo(tallyView!).offset(10)
                         make.left.equalTo(tallyView!)
                     } else {
-                        if allLabelWidth > ScreenWidth - 20 {
-                            print(allLabelWidth)
+                        if allLabelWidth + 20 > ScreenWidth  {
 
-                            allLabelWidth = 10.0
+                            allLabelWidth = 10 + tag.labelWidth
                             make.top.equalTo(previousView!.snp_bottom).offset(10)
                             make.left.equalTo(tallyView!)
                         } else {
