@@ -26,11 +26,11 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     var imagePicker:UIImagePickerController? = nil
     
-    var headImagePath:String?
+    var headImagePath:String? = DataManager.currentUser?.headUrl
     
     var headImageName:String?
     
-    var nickName:String?
+    var nickName:String? = DataManager.currentUser?.nickname
     
     var token:String?
     
@@ -78,6 +78,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
         
     }
     
@@ -91,6 +92,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             nameLabel?.setTitle(nickName!, forState: .Normal)
             DataManager.currentUser?.nickname = nickName
         }
+    }
+    
+    func updateUserInfo() {
+        SVProgressHUD.dismiss()
+        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
+        nameLabel?.setTitle(DataManager.currentUser?.nickname, forState: .Normal)
     }
     
     func loginSuccessed(notification: NSNotification?) {
