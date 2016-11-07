@@ -25,12 +25,15 @@ class SkillInfo: Object {
     dynamic var skill_type = SkillType.Common.rawValue
     
     dynamic var labelWidth:CGFloat = 0.0
+    
     func setInfo(info: SkillInfo) {
         skill_id_ = info.skill_id_
         
         skill_name_ = info.skill_name_
         
         skill_type = info.skill_type
+        
+        labelWidth = info.labelWidth
     }
     
 }
