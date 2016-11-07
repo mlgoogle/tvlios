@@ -31,7 +31,7 @@ class SkillsCell : UITableViewCell {
     weak var delegate:SkillsCellDelegate?
     
     var style:SkillsCellStyle = .Normal
-    var allButtonWidth:CGFloat = 20.0
+    var allButtonWidth:Float = 20.0
     var skills:Array<Dictionary<SkillInfo, Bool>>?
     var collectionView:UICollectionView?
     let tags = ["bgView": 1001,
@@ -152,7 +152,7 @@ class SkillsCell : UITableViewCell {
                                 /**
                                  *  判断宽度 如果宽度大于屏幕宽度，另起一行
                                  */
-                                if allButtonWidth > ScreenWidth {
+                                if allButtonWidth > Float(ScreenWidth) {
                                     
                                     allButtonWidth = 20.0 + 10 + skill.labelWidth
                                     make.top.equalTo(previousView!.snp_bottom).offset(10)
@@ -223,7 +223,7 @@ class SkillsCell : UITableViewCell {
             addnewBtn.hidden = style == .AddNew ? false : true
             if lastTallyItemView != nil {
                 addnewBtn.snp_remakeConstraints(closure: { (make) in
-                    if  allButtonWidth + 50 > contentView.mj_w {
+                    if  allButtonWidth + 50 > Float(contentView.mj_w) {
                         make.left.equalTo(contentView).offset(20)
                         make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
                     } else {
@@ -266,7 +266,7 @@ class SkillsCell : UITableViewCell {
 
 extension SkillsCell:SkillWidthLayoutDelegate {
     
-    func  autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->CGFloat {
+    func  autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->Float {
         
         let skillInfoDict = skills![atIndexPath.item]
         let skillInfo = skillInfoDict.keys.first! as SkillInfo
