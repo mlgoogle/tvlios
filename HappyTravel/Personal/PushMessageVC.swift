@@ -92,8 +92,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
     }
     
-    func initView() {let segmentBGV = UIImageView()
-        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
+    func initView() {
+        let segmentBGV = UIImageView()
+        segmentBGV.image = UIImage.init(named: "segment-bg")
         view.addSubview(segmentBGV)
         segmentBGV.snp_makeConstraints { (make) in
             make.top.equalTo(view)
