@@ -414,7 +414,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             } else {
                 SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
 
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: ["data": dict.dictionaryObject!])
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
             }
             break
         case .UserInfoResult:
@@ -514,8 +514,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 break
             }
             if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
+                                
                 for skill in skillList {
                     let info = SkillInfo(value: skill)
+                    let string:NSString = info.skill_name_!
+                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
+                    let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(17)], context: nil)
+                    info.labelWidth = rect.size.width + 30
                     DataManager.insertData(SkillInfo.self, data: info)
                     
                 }

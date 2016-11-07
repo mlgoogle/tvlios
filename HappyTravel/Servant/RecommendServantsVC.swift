@@ -83,11 +83,13 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ServantIntroCell", forIndexPath: indexPath) as! ServantIntroCell
         cell.delegate = self
-        for (index, userInfo) in servantsInfo!.enumerate() {
-            if indexPath.row == index {
-                cell.setInfo(userInfo)
-            }
-        }
+        let userInfo = servantsInfo![indexPath.row]
+        cell.setInfo(userInfo)
+//        for (index, userInfo) in servantsInfo!.enumerate() {
+//            if indexPath.row == index {
+//                cell.setInfo(userInfo)
+//            }
+//        }
         return cell
         
     }

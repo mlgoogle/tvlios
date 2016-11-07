@@ -47,11 +47,13 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         if skill.skill_id_ == info.skill_id_ {
                             selected = true
                         }
+
                     }
                 }
                 skills.append([info: selected])
                 
             }
+            
         }
         
     }
@@ -95,6 +97,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("SkillsCell", forIndexPath: indexPath) as? SkillsCell
             cell?.delegate = self
@@ -140,11 +143,15 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         }
         
     }
-    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
     }
+
     
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 70
+    }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 40
