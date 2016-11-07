@@ -18,7 +18,7 @@ class ServantIntroCell: UITableViewCell {
     
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
-    var allLabelWidth:CGFloat = 10.0
+    var allLabelWidth:Float = 10.0
     var servantInfo:UserInfo?
     weak var delegate:ServantIntroCellDelegate?
     
@@ -321,7 +321,7 @@ class ServantIntroCell: UITableViewCell {
                         make.top.equalTo(tallyView!).offset(10)
                         make.left.equalTo(tallyView!)
                     } else {
-                        if allLabelWidth + 20 > ScreenWidth  {
+                        if allLabelWidth + 20 > Float(ScreenWidth) {
 
                             allLabelWidth = 10 + tag.labelWidth
                             make.top.equalTo(previousView!.snp_bottom).offset(10)

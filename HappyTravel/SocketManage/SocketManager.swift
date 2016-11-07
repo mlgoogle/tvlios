@@ -520,7 +520,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     let string:NSString = info.skill_name_!
                     let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
                     let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(17)], context: nil)
-                    info.labelWidth = rect.size.width + 30
+                    info.labelWidth = Float(rect.size.width) + 30
                     DataManager.insertData(SkillInfo.self, data: info)
                     
                 }

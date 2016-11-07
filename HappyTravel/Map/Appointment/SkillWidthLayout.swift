@@ -9,7 +9,7 @@
 import UIKit
 protocol SkillWidthLayoutDelegate : NSObjectProtocol {
 
-    func autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->CGFloat
+    func autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->Float
 }
 
 class SkillWidthLayout: UICollectionViewFlowLayout {
@@ -29,9 +29,9 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
     weak var delegate:SkillWidthLayoutDelegate?
 
     
-   private var currentX:CGFloat = 0.0
-   private var currentY:CGFloat = 0.0
-   private var currentMaxX:CGFloat = 0.0
+   private var currentX:Float = 0.0
+   private var currentY:Float = 0.0
+   private var currentMaxX:Float = 0.0
    private var attributedAry:Array<UICollectionViewLayoutAttributes>?
     
     
@@ -59,8 +59,8 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
     
     
     override func prepareLayout() {
-        currentX = skillSectionInset.left
-        currentY = skillSectionInset.top
+        currentX = Float(skillSectionInset.left)
+        currentY = Float(skillSectionInset.top)
         currentMaxX = currentX
         attributedAry?.removeAll()
         if let count = collectionView?.numberOfItemsInSection(0) {
@@ -122,15 +122,15 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
         
         let atr = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
         
-        atr.frame = CGRectMake(currentX, currentY, itemW, itemHeight)
-        currentMaxX = currentX + itemW + skillSectionInset.right
-        if currentMaxX - maxWidth! > 0 {
-            currentX = skillSectionInset.left
-            currentY = currentY + itemHeight + rowMargin
-            atr.frame = CGRectMake(currentX, currentY, itemW, itemHeight)
-            currentX = currentX + itemW + columnMargin
+        atr.frame = CGRectMake(CGFloat(currentX), CGFloat(currentY), CGFloat(itemW), itemHeight)
+        currentMaxX = currentX + itemW + Float(skillSectionInset.right)
+        if currentMaxX - Float(maxWidth!) > 0 {
+            currentX = Float(skillSectionInset.left)
+            currentY = currentY + Float(itemHeight) + Float(rowMargin)
+            atr.frame = CGRectMake(CGFloat(currentX), CGFloat(currentY), CGFloat(itemW), itemHeight)
+            currentX = currentX + itemW + Float(columnMargin)
         } else {
-            currentX = currentX + itemW + columnMargin
+            currentX = currentX + itemW + Float(columnMargin)
         }
         return atr
     }
