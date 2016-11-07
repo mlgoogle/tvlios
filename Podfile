@@ -1,5 +1,8 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, '9.0'
+#source 'http://repo.baichuan-ios.taobao.com/baichuanSDK/AliBCSpecs.git'
+#source 'http://repo.baichuan-ios.taobao.com/baichuanSDK/AliBCSpecsMirror.git'
+#source ‘http://repo.baichuan-ios.taobao.com/baichuanSDK/BetaAliBCSpecs.git’
 
 target 'HappyTravel' do
     # Comment this line if you're not using Swift and don't want to use dynamic frameworks
@@ -19,6 +22,7 @@ target 'HappyTravel' do
     pod 'RealmSwift', '~> 1.0.2'
     # Mob产品公共库
     pod 'MOBFoundation_IDFA', '~> 2.0.10'
+    #pod 'YWFeedbackFMWK', ‘~> 2.0.1.1’
     # SMSSDK必须
     pod 'SMSSDK', '~> 2.0.5'
     pod 'GTSDK', '~> 1.4.3'

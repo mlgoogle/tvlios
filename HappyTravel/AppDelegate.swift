@@ -12,6 +12,7 @@ import XCGLogger
 import RealmSwift
 import Fabric
 import Crashlytics
+//import YWFeedbackKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDelegate {
@@ -19,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     var window: UIWindow?
     
     var rootVC:UIViewController?
-
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
@@ -200,5 +201,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         }
         
     }
+    
 }
 

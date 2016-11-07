@@ -26,6 +26,8 @@
 #import "AFNetworking/AFNetworking.h"
 #import "Qiniu/QiniuSDK.h"
 #import "HappyDNS/HappyDNS.h"
-#import<CommonCrypto/CommonCrypto.h>
+#import <CommonCrypto/CommonCrypto.h>
+#import <YWFeedbackFMWK/YWFeedbackKit.h>
+#import <YWFeedbackFMWK/YWFeedbackViewController.h>
 
 #endif /* Bridging_Header_h */

@@ -75,7 +75,9 @@ class NotifyDefine: NSObject {
     static let ModifyPasswordSucceed = "ModifyPasswordSucceed"
 
     static let CheckUserCashResult = "CheckUserCashResult"
-    
+
+    static let FeedBackNoticeReply = "FeedBackNoticeReply"
+
     static let EvaluatetripReply = "EvaluatetripReply"
 
 }

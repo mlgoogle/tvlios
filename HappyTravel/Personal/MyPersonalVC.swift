@@ -351,6 +351,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func feedbackAction(sender: UIButton?) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.FeedBackNoticeReply, object: nil, userInfo: nil)
+        sideMenuController?.toggle()
         XCGLogger.debug("无情吐槽")
     }
     

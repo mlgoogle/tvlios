@@ -381,6 +381,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 textField?.clearButtonMode = .WhileEditing
                 textField?.backgroundColor = UIColor.clearColor()
                 textField?.textAlignment = .Left
+                textField?.keyboardType = .PhonePad
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(lab!.snp_right).offset(10)
