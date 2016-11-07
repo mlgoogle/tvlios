@@ -236,7 +236,7 @@ class SkillsCell : UITableViewCell {
                 })
             }
         }
-        
+        print(mj_h)
     }
     
     func selectAction(sender: UIButton) {
