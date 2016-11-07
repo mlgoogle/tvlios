@@ -105,7 +105,7 @@ class RegOrLoginSelVC: UIViewController {
     //绕过登录入口
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
-        return
+//        return
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.FeedBackNoticeReply, object: nil, userInfo:nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
