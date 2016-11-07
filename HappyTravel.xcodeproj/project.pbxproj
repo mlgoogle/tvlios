@@ -78,8 +78,6 @@
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
 		2FBA71F71D6EA49400839E51 /* DistanceOfTravelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */; };
-		2FBAB5821DBA1A7400CE8A14 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FBAB5801DBA1A7400CE8A14 /* Icon@2x.png */; };
-		2FBAB5831DBA1A7400CE8A14 /* Icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FBAB5811DBA1A7400CE8A14 /* Icon@3x.png */; };
 		2FBAB5861DBA1BF000CE8A14 /* LaunchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FBAB5841DBA1BF000CE8A14 /* LaunchScreen@2x.png */; };
 		2FBAB5871DBA1BF000CE8A14 /* LaunchScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FBAB5851DBA1BF000CE8A14 /* LaunchScreen@3x.png */; };
 		2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */; };
@@ -156,6 +154,12 @@
 		2FE7C3891D6413E300994505 /* my-star-hollow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FE7C3851D6413E300994505 /* my-star-hollow@3x.png */; };
 		2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE7C38B1D64466300994505 /* UserInfo.swift */; };
 		2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */; };
+		2FF578D91DD01671009500D9 /* icon58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D31DD01671009500D9 /* icon58@2x.png */; };
+		2FF578DA1DD01671009500D9 /* icon80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D41DD01671009500D9 /* icon80@2x.png */; };
+		2FF578DB1DD01671009500D9 /* icon87@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D51DD01671009500D9 /* icon87@3x.png */; };
+		2FF578DC1DD01671009500D9 /* icon120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D61DD01671009500D9 /* icon120@2x.png */; };
+		2FF578DD1DD01671009500D9 /* icon120@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D71DD01671009500D9 /* icon120@3x.png */; };
+		2FF578DE1DD01671009500D9 /* icon180@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578D81DD01671009500D9 /* icon180@3x.png */; };
 		2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */; };
 		2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */; };
 		2FF72B6C1DAF6217001EEED2 /* advanced-level-disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF72B411DAF6217001EEED2 /* advanced-level-disable@2x.png */; };
@@ -351,8 +355,6 @@
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
 		2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DistanceOfTravelCell.swift; path = Personal/DistanceOfTravelCell.swift; sourceTree = "<group>"; };
-		2FBAB5801DBA1A7400CE8A14 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		2FBAB5811DBA1A7400CE8A14 /* Icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@3x.png"; sourceTree = "<group>"; };
 		2FBAB5841DBA1BF000CE8A14 /* LaunchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@2x.png"; sourceTree = "<group>"; };
 		2FBAB5851DBA1BF000CE8A14 /* LaunchScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@3x.png"; sourceTree = "<group>"; };
 		2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
@@ -429,6 +431,12 @@
 		2FE7C3851D6413E300994505 /* my-star-hollow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my-star-hollow@3x.png"; sourceTree = "<group>"; };
 		2FE7C38B1D64466300994505 /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserInfo.swift; path = Common/UserInfo.swift; sourceTree = "<group>"; };
 		2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResetPasswdVC.swift; path = Login/ResetPasswdVC.swift; sourceTree = "<group>"; };
+		2FF578D31DD01671009500D9 /* icon58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon58@2x.png"; sourceTree = "<group>"; };
+		2FF578D41DD01671009500D9 /* icon80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon80@2x.png"; sourceTree = "<group>"; };
+		2FF578D51DD01671009500D9 /* icon87@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon87@3x.png"; sourceTree = "<group>"; };
+		2FF578D61DD01671009500D9 /* icon120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon120@2x.png"; sourceTree = "<group>"; };
+		2FF578D71DD01671009500D9 /* icon120@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon120@3x.png"; sourceTree = "<group>"; };
+		2FF578D81DD01671009500D9 /* icon180@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon180@3x.png"; sourceTree = "<group>"; };
 		2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardVC.swift; path = Personal/CenturionCard/CenturionCardVC.swift; sourceTree = "<group>"; };
 		2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardBaseInfoCell.swift; path = Personal/CenturionCard/CenturionCardBaseInfoCell.swift; sourceTree = "<group>"; };
 		2FF72B411DAF6217001EEED2 /* advanced-level-disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "advanced-level-disable@2x.png"; sourceTree = "<group>"; };
@@ -923,11 +931,15 @@
 		2FE7C3181D615AEF00994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2FF578D31DD01671009500D9 /* icon58@2x.png */,
+				2FF578D41DD01671009500D9 /* icon80@2x.png */,
+				2FF578D51DD01671009500D9 /* icon87@3x.png */,
+				2FF578D61DD01671009500D9 /* icon120@2x.png */,
+				2FF578D71DD01671009500D9 /* icon120@3x.png */,
+				2FF578D81DD01671009500D9 /* icon180@3x.png */,
 				2F9C378B1DBF389100B163C5 /* LaunchScreen-512@2x.png */,
 				2FBAB5851DBA1BF000CE8A14 /* LaunchScreen@3x.png */,
 				2FBAB5841DBA1BF000CE8A14 /* LaunchScreen@2x.png */,
-				2FBAB5801DBA1A7400CE8A14 /* Icon@2x.png */,
-				2FBAB5811DBA1A7400CE8A14 /* Icon@3x.png */,
 				2FE7C31B1D616B2700994505 /* head-bg@2x.png */,
 			);
 			path = Common;
@@ -1267,6 +1279,7 @@
 				2FE7C3631D62D09600994505 /* guide-detail-arrows@2x.png in Resources */,
 				2FE7C3751D632F8400994505 /* service-unselect@2x.png in Resources */,
 				2FE7C3211D616C3C00994505 /* segment-right@2x.png in Resources */,
+				2FF578DB1DD01671009500D9 /* icon87@3x.png in Resources */,
 				B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */,
 				2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */,
 				B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */,
@@ -1290,6 +1303,8 @@
 				2FE7C3401D62B52C00994505 /* side-settings@2x.png in Resources */,
 				2FDAFCF41D66CCEB00FD28CB /* address-selector-normal@2x.png in Resources */,
 				2FF72B731DAF6217001EEED2 /* hotel-disable@2x.png in Resources */,
+				2FF578DA1DD01671009500D9 /* icon80@2x.png in Resources */,
+				2FF578DD1DD01671009500D9 /* icon120@3x.png in Resources */,
 				2FE7C36F1D63077C00994505 /* face-btn@2x.png in Resources */,
 				2FF72B921DAF6217001EEED2 /* share@3x.png in Resources */,
 				2FF72B791DAF6217001EEED2 /* meeting@2x.png in Resources */,
@@ -1300,7 +1315,6 @@
 				2FC25B341D6D416A00D48D6A /* limit@2x.png in Resources */,
 				2FE7C33F1D62B52C00994505 /* side-service@2x.png in Resources */,
 				2F96843F1D7D22660028E3F2 /* star-common-fill@2x.png in Resources */,
-				2FBAB5821DBA1A7400CE8A14 /* Icon@2x.png in Resources */,
 				2FF72B6C1DAF6217001EEED2 /* advanced-level-disable@2x.png in Resources */,
 				2FE7C3491D62BFAF00994505 /* guide-auth@2x.png in Resources */,
 				2FE7C3881D6413E300994505 /* my-star-hollow@2x.png in Resources */,
@@ -1313,6 +1327,7 @@
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				2FF72B701DAF6217001EEED2 /* bg-baseinfo@2x.png in Resources */,
 				2FE7C3861D6413E300994505 /* my-star-fill@2x.png in Resources */,
+				2FF578D91DD01671009500D9 /* icon58@2x.png in Resources */,
 				2FF72B6E1DAF6217001EEED2 /* advanced-level@2x.png in Resources */,
 				2FF72B961DAF6217001EEED2 /* vipper-rest@3x.png in Resources */,
 				2FE7C3301D61A66800994505 /* guide-tips@2x.png in Resources */,
@@ -1327,6 +1342,7 @@
 				2FF72B711DAF6217001EEED2 /* bg-card-detail@2x.png in Resources */,
 				2F26A69B1D8245A900FFA6A7 /* default-head@2x.png in Resources */,
 				2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */,
+				2FF578DC1DD01671009500D9 /* icon120@2x.png in Resources */,
 				B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */,
 				2FE7C3811D64133600994505 /* bottom_selector_normal@3x.png in Resources */,
 				2F9684421D7D22660028E3F2 /* star-common-hollow@3x.png in Resources */,
@@ -1348,6 +1364,7 @@
 				2FF72B781DAF6217001EEED2 /* meeting-disable@3x.png in Resources */,
 				2FE7C34E1D62BFAF00994505 /* guide-zhima-auth@3x.png in Resources */,
 				2FC25AFC1D6A972400D48D6A /* recommend@3x.png in Resources */,
+				2FF578DE1DD01671009500D9 /* icon180@3x.png in Resources */,
 				2FE7C3381D62AA0E00994505 /* side-bg@2x.png in Resources */,
 				2FF72B861DAF6217001EEED2 /* service-agent@3x.png in Resources */,
 				2FE7C33E1D62B52C00994505 /* side-complain@2x.png in Resources */,
@@ -1355,7 +1372,6 @@
 				2FBB5E791D51DB0A007BE4E0 /* msg-bubble@2x.png in Resources */,
 				2F9684311D792C3E0028E3F2 /* alipay@3x.png in Resources */,
 				2F9684371D792C3E0028E3F2 /* wechat-pay@3x.png in Resources */,
-				2FBAB5831DBA1A7400CE8A14 /* Icon@3x.png in Resources */,
 				2FF72B8E1DAF6217001EEED2 /* share-wechat@3x.png in Resources */,
 				2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */,
 				2FF72B7E1DAF6217001EEED2 /* middle-level@3x.png in Resources */,
