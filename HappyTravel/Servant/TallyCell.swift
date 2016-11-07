@@ -15,7 +15,8 @@ public class TallyCell : UITableViewCell {
                 "noTallyLabel": 1002,
                 "bottomControl": 1003,
                 "tallyItemView": 1004]
-    
+    var allLabelWidth:Float = 10.0
+
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
@@ -77,8 +78,12 @@ public class TallyCell : UITableViewCell {
     }
     
     func setInfo(tags: List<Tally>?) {
+        
+        
         if tags?.count != 0 {
             var lastTallyItemView:UIView?
+            allLabelWidth = 10.0
+
             for (index, tag) in tags!.enumerate() {
                 var tallyItemView = contentView.viewWithTag(self.tags["tallyItemView"]! * 10 + index)
                 if tallyItemView == nil {
@@ -93,25 +98,38 @@ public class TallyCell : UITableViewCell {
                     contentView.addSubview(tallyItemView!)
                     tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
                     let previousView = contentView.viewWithTag(tallyItemView!.tag - 1)
+                    allLabelWidth = allLabelWidth + 10 + tag.labelWidth
+
                     tallyItemView!.snp_makeConstraints { (make) in
                         if previousView == nil {
                             make.top.equalTo(self.contentView).offset(10)
                             make.left.equalTo(self.contentView).offset(10)
                         } else {
-                            if index / 3 > 0 {
-                                if index % 3 == 0 {
-                                    make.top.equalTo(previousView!.snp_bottom).offset(10)
-                                    make.left.equalTo(self.contentView).offset(10)
-                                } else {
-                                    make.top.equalTo(previousView!.snp_top)
-                                    make.left.equalTo(previousView!.snp_right).offset(10)
-                                }
+                            if allLabelWidth + 10 > Float(ScreenWidth) {
+                                
+                                allLabelWidth = 10 + tag.labelWidth
+                                make.top.equalTo(previousView!.snp_bottom).offset(10)
+                                make.left.equalTo(self.contentView).offset(10)
                             } else {
                                 make.top.equalTo(previousView!)
                                 make.left.equalTo(previousView!.snp_right).offset(10)
                             }
+//                            if index / 3 > 0 {
+//                                if index % 3 == 0 {
+//                                    make.top.equalTo(previousView!.snp_bottom).offset(10)
+//                                    make.left.equalTo(self.contentView).offset(10)
+//                                } else {
+//                                    make.top.equalTo(previousView!.snp_top)
+//                                    make.left.equalTo(previousView!.snp_right).offset(10)
+//                                }
+//                            } else {
+//                                make.top.equalTo(previousView!)
+//                                make.left.equalTo(previousView!.snp_right).offset(10)
+//                            }
                         }
                         make.height.equalTo(25)
+                        make.width.equalTo(tag.labelWidth)
+
                     }
                 }
                 

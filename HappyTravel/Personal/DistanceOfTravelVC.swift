@@ -107,11 +107,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.height.equalTo(60)
         }
         
-        let segmentItems = ["商务游", "黑卡消费"]
+        let segmentItems = ["商务游", "预约", "黑卡消费"]
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
         segmentSC!.addTarget(self, action: #selector(DistanceOfTravelVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-        segmentSC!.selectedSegmentIndex = 0
+        segmentSC!.selectedSegmentIndex = segmentIndex
         segmentSC!.layer.masksToBounds = true
         segmentSC?.layer.cornerRadius = 5
         segmentSC?.backgroundColor = UIColor.clearColor()
@@ -150,12 +150,23 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func headerRefresh() {
-        if segmentIndex == 1 {
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
-        } else {
+
+        switch segmentIndex {
+        case 0:
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": 0,
                 "count_": 10])
+            break
+        case 1:
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                "order_id_": 0,
+                "count_": 10])
+            break
+        case 2:
+            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            break
+        default:
+            break
         }
         
     }
@@ -212,10 +223,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
-        table?.reloadData()
-        if segmentIndex == 1 {
-            header.beginRefreshing()
-        }
+        header.beginRefreshing()
+
     }
     
 }
