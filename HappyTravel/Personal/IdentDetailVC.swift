@@ -100,17 +100,6 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func servantDetailInfo(notification: NSNotification) {
-        let data = notification.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
-            return
-        }
-        serviceScore = data.valueForKey("service_score_") as? Int
-        userScore = data.valueForKey("user_score_") as? Int
-        remark = data.valueForKey("remarks_") as? String
-        self.commitBtn?.hidden = true
-        SVProgressHUD.dismiss()
         table?.reloadData()
     }
     
@@ -124,7 +113,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         serviceScore = data.valueForKey("service_score_") as? Int
         userScore = data.valueForKey("user_score_") as? Int
         remark = data.valueForKey("remarks_") as? String
-        self.commitBtn?.hidden = remark != nil
+        self.commitBtn?.enabled = remark == nil
         SVProgressHUD.dismiss()
         table?.reloadData()
     }
@@ -156,7 +145,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                                                   "order_id_": (hodometerInfo?.order_id_)!,
                                                   "service_score_": (self.commonCell?.serviceStar)!,
                                                   "user_score_": (self.commonCell?.servantStar)!,
-                                                  "remark_": self.commonCell!.comment]
+                                                  "remarks_": self.commonCell!.comment]
         SocketManager.sendData(.EvaluateTripRequest, data: dict)
     }
     
