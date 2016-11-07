@@ -34,6 +34,8 @@ class NotifyDefine: NSObject {
     
     static let ImproveDataSuccessed = "ImproveDataSuccessed"
     
+    static let ImproveDataNoticeToOthers = "ImproveDataNoticeToOthers"
+    
     static let ObtainTripReply = "ObtainTripReply"
     
     static let CenturionCardConsumedReply = "CenturionCardConsumedReply"

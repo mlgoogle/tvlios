@@ -176,6 +176,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func improveDataSuccessed(notification: NSNotification?) {
         SVProgressHUD.dismiss()
         navigationController?.popViewControllerAnimated(true)
+        DataManager.currentUser?.headUrl = headImagePath
+        DataManager.currentUser?.nickname = nickname
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     
     //MARK: - TableView
