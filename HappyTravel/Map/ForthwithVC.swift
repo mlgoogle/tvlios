@@ -287,7 +287,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func back2MyLocationAction(sender: UIButton) {
-        mapView?.setCenterCoordinate(location!.coordinate, animated: true)
+        if location != nil {
+            mapView?.setCenterCoordinate(location!.coordinate, animated: true)
+        }
+        
     }
     
     func recommendAction(sender: UIButton?) {
@@ -669,18 +672,28 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
-            if DataManager.currentUser!.certification == false {
-                let alert = UIAlertController.init(title: "尚未申请认证", message: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客", preferredStyle: .Alert)
+            let auth = (DataManager.currentUser?.authentication)!
+            if auth != 1 {
+                let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客",
+                            0: "尊敬的游客，您的认证尚未通过审核，在审核成功后将为您开通查看服务者信息的权限",
+                            2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为V领队的正式游客"]
+                let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[auth], preferredStyle: .Alert)
                 let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
                         let controller = UploadUserPictureVC()
                         self.navigationController!.pushViewController(controller, animated: true)
-                        DataManager.currentUser?.certification = true
+                        DataManager.currentUser?.authentication = 1   // 测试
                     })
                 })
                 alert.view.tintColor = UIColor.grayColor()
-                let cancel = UIAlertAction.init(title: "算了吧", style: .Default, handler: nil)
-                alert.addAction(ok)
+                let cancel = UIAlertAction.init(title: auth != 0 ? "算了吧" : "好的", style: .Default, handler: { (action) in
+                    if auth == 0 {
+                        DataManager.currentUser?.authentication = 1 // 测试
+                    }
+                })
+                if auth != 0{
+                    alert.addAction(ok)
+                }
                 alert.addAction(cancel)
                 presentViewController(alert, animated: true, completion: nil)
                 

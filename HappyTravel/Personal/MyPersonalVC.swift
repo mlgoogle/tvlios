@@ -78,8 +78,24 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
-        
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
+    }
+    
+    //查询认证状态
+    func checkAuthResult(notice: NSNotification) {
+        let data = notice.userInfo!["data"] as! NSDictionary
+        let failedReson = data["failed_reason_"] as? NSString
+        let reviewStatus = data.valueForKey("review_status_")?.integerValue
+        if reviewStatus == -1 {
+            return
+        }
+        if failedReson != "" {
+            return
+        }
+        DataManager.currentUser?.authentication = reviewStatus!
     }
     
     func improveDataSuccessed(notification: NSNotification) {
@@ -116,6 +132,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
         SocketManager.sendData(.SkillsInfoRequest, data: nil)
+        SocketManager.sendData(.checkAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
+        
     }
     
     func setHeadImage() {

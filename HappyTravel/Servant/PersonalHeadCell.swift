@@ -210,10 +210,10 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let starLevelView = personalView.viewWithTag(tags["starLevelView"]!) {
-                let level = userInfo?.businessLv
+                let level = userInfo?.praiseLv
                 for i in 0...4 {
                     if let star = starLevelView.viewWithTag(starLevelView.tag * 10 + i) as? UIImageView {
-                        star.image = UIImage.init(named: (level! / Float(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
+                        star.image = UIImage.init(named: (level! / Int(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
                     }
                 }
             }

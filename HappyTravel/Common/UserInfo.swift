@@ -88,8 +88,8 @@ class UserInfo: Object {
     dynamic var centurionCardLv = 0
     
     dynamic var centurionCardValid = 0
-    
-    dynamic var authentication = 0
+    // 认证状态==> -1 : 未认证 | 0 : 认证中 | 1 : 认证成功 | 2 : 认证失败
+    dynamic var authentication = -1
     
     let businessTags:List<Tally> = List<Tally>()
     
@@ -244,6 +244,24 @@ class UserInfo: Object {
         bigBGPhotoUrl = info.bigBGPhotoUrl
         
         certification = info.certification
+        
+        registerSstatus = info.registerSstatus
+        
+        gender = info.gender
+        
+        creditLv = info.creditLv
+        
+        praiseLv = info.praiseLv
+        
+        cashLv = info.cashLv
+        
+        centurionCardStartTime = info.centurionCardStartTime
+        
+        centurionCardEndTime = info.centurionCardEndTime
+        
+        centurionCardLv = info.centurionCardLv
+        
+        centurionCardValid = info.centurionCardValid
         
         authentication = info.authentication
         
