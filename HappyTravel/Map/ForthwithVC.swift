@@ -287,7 +287,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func back2MyLocationAction(sender: UIButton) {
-        mapView?.setCenterCoordinate(location!.coordinate, animated: true)
+        if location != nil {
+            mapView?.setCenterCoordinate(location!.coordinate, animated: true)
+        }
+        
     }
     
     func recommendAction(sender: UIButton?) {
