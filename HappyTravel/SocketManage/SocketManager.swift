@@ -14,6 +14,7 @@ import SVProgressHUD
 enum SockErrCode : Int {
 
     case NoOrder = -1015
+    case Other = 0
 }
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
@@ -615,7 +616,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             break
         case .EvaluatetripReply:
-            let json = JSON.init(data: body as! NSData)
+            _ = JSON.init(data: body as! NSData)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
             break
         case .AnswerInvitationReply:
