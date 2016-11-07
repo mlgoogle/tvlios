@@ -204,28 +204,28 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         selectIndex = indexPath
         let selectOption: SettingItem = settingOption![indexPath.section][indexPath.row] 
         switch selectOption {
-        case .ChangPwd:
-            let modifyPasswordVC = ModifyPasswordVC()
-            navigationController?.pushViewController(modifyPasswordVC, animated: true)
-            break
-        case .AuthUser:
-            if authUserCardCode == 0 || authUserCardCode == 1 {
-                return
-            }
-            let controller = UploadUserPictureVC()
-            self.navigationController!.pushViewController(controller, animated: true)
-            break
-        case .ClearCache:
-            clearCacleSizeCompletion({
-                self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f M",self.calculateCacle())
-                tableView.reloadData()
-            })
-            break
-        case .LogoutUser:
-            SocketManager.logoutCurrentAccount()
-            navigationController?.popViewControllerAnimated(false)
-            break
-        default:
+            case .ChangPwd:
+                let modifyPasswordVC = ModifyPasswordVC()
+                navigationController?.pushViewController(modifyPasswordVC, animated: true)
+                break
+            case .AuthUser:
+                if authUserCardCode == 0 || authUserCardCode == 1 {
+                    return
+                }
+                let controller = UploadUserPictureVC()
+                self.navigationController!.pushViewController(controller, animated: true)
+                break
+            case .ClearCache:
+                clearCacleSizeCompletion({
+                    self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f M",self.calculateCacle())
+                    tableView.reloadData()
+                })
+                break
+            case .LogoutUser:
+                SocketManager.logoutCurrentAccount()
+                navigationController?.popViewControllerAnimated(false)
+                break
+            default:
             break
         }
     }
