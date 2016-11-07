@@ -16,6 +16,10 @@ enum SockErrCode : Int {
     case NoOrder = -1015
 }
 
+protocol SocketManagerProtocl {
+    func didRecieveResult(Result result:AnyObject, Error error:NSError)
+}
+
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
     
@@ -92,6 +96,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case checkAuthenticateResultReply = 1058
         case checkUserCash = 1067
         case checkUserCashReply = 1068
+        case checkCommentDetail = 2015
+        case checkCommentDetailReplay = 2016
     }
     
     
@@ -109,6 +115,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     static var last_chat_id:Int = 0
     
     static var isLogout = false
+    
+//    weak var delegate: SocketManagerProtocl?
     
     override init() {
         super.init()
@@ -335,6 +343,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .checkUserCash:
             head.fields["opcode"] = SockOpcode.checkUserCash.rawValue
             head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .checkCommentDetail:
+            head.fields["opcode"] = SockOpcode.checkCommentDetail.rawValue
+            head.fields["type"] = 2
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
@@ -654,6 +667,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 dict = ["code":"0"]
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
+        case .checkCommentDetailReplay:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
         default:
             break

@@ -17,6 +17,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     var servantInfo:UserInfo?
     var hodometerInfo:HodometerInfo?
+    var serviceScore:Int?
+    var userScore:Int?
+    var remark:String?
+    var commitBtn: UIButton?
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -33,8 +38,9 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "订单详情"
-        
+        initData()
         initView()
+        
     }
     
     func initView() {
@@ -61,6 +67,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             make.bottom.equalTo(view)
             make.height.equalTo(60)
         }
+        self.commitBtn = commitBtn
         
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -88,10 +95,37 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.checkCommendDetail(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
         
     }
     
     func servantDetailInfo(notification: NSNotification) {
+        let data = notification.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
+            return
+        }
+        serviceScore = data.valueForKey("service_score_") as? Int
+        userScore = data.valueForKey("user_score_") as? Int
+        remark = data.valueForKey("remarks_") as? String
+        self.commitBtn?.hidden = true
+        SVProgressHUD.dismiss()
+        table?.reloadData()
+    }
+    
+    func checkCommendDetail(notification: NSNotification) {
+        let data = notification.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
+            return
+        }
+        serviceScore = data.valueForKey("service_score_") as? Int
+        userScore = data.valueForKey("user_score_") as? Int
+        remark = data.valueForKey("remarks_") as? String
+        self.commitBtn?.hidden = remark != nil
+        SVProgressHUD.dismiss()
         table?.reloadData()
     }
     
@@ -148,9 +182,20 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
             cell.setInfo(hodometerInfo)
             commonCell = cell
+            if serviceScore != nil {
+                cell.serviceSocre = serviceScore
+                cell.userScore = userScore
+                cell.remark = remark
+            }
             return cell
         }
         
+    }
+    
+    // MARK: - DATA
+    func initData() {
+        let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
+        SocketManager.sendData(.checkCommentDetail, data:param)
     }
     
 }
