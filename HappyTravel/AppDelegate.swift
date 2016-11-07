@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     var window: UIWindow?
     
     var rootVC:UIViewController?
-
-    var feedBack: YWFeedbackKit?
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -43,8 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         commonViewSet()
         
         pushMessageRegister()
-        
-        configFeedBack()
         
         return true
     }
@@ -206,9 +202,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
     }
     
-    //用户反馈-》阿里百川
-    func configFeedBack() {
-        feedBack = YWFeedbackKit.init(appKey: "23519848")
-    }
 }
 
