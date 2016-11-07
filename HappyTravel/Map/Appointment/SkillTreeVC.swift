@@ -53,6 +53,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 skills.append([info: selected])
                 
             }
+            
         }
         
     }

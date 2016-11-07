@@ -213,6 +213,10 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let tallys = SkillsCell()
             tallys.delegate = self
             tallys.style = .AddNew
+            let skillInfo = SkillInfo()
+            skillInfo.skill_name_ = "+"
+            skillInfo.labelWidth = 10.0
+            skills.append([skillInfo : false])
             tallys.setInfo(skills)
             return tallys
         } else if indexPath.section == 2 {

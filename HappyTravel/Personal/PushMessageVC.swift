@@ -15,6 +15,7 @@ import MJRefresh
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var segmentSC:UISegmentedControl?
+    var selectedIndex = 0
     var table:UITableView?
 //    var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
@@ -34,7 +35,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         navigationItem.title = "消息中心"
         
         initView()
-        
+        segmentChange(segmentSC)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -106,7 +107,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
         segmentSC!.addTarget(self, action: #selector(PushMessageVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-        segmentSC!.selectedSegmentIndex = 0
+        segmentSC!.selectedSegmentIndex = selectedIndex
         segmentSC!.layer.masksToBounds = true
         segmentSC?.layer.cornerRadius = 5
         segmentSC?.backgroundColor = UIColor.clearColor()

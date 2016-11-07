@@ -11,7 +11,7 @@ import SnapKit
 import XCGLogger
 import RealmSwift
 import MJRefresh
-
+import SVProgressHUD
 public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, ServantIntroCellDelegate {
     
     var titleLab:UILabel?
@@ -324,12 +324,21 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func appointmentReply(notification: NSNotification) {
-        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
-        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+        unowned let weakSelf = self
+        SVProgressHUD.showSuccessMessage(SuccessMessage: "预约已成功，请保持开机！祝您生活愉快！谢谢！", ForDuration: 1.5) {
+            let msgVC = PushMessageVC()
+            msgVC.selectedIndex = 1
+            weakSelf.navigationController?.pushViewController(msgVC, animated: true)
+
             
-        })
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+        }
+//        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
+//        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+//            
+//        })
+//        alert.addAction(action)
+//        presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func keyboardWillShow(notification: NSNotification?) {

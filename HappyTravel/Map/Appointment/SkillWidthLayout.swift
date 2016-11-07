@@ -19,7 +19,7 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      默认属性 可外部修改
      */
 
-    var columnMargin:CGFloat = 6.0
+    var columnMargin:CGFloat = 0.0
     var rowMargin:CGFloat = 6.0
     var skillSectionInset = UIEdgeInsetsMake(16.0, 16.0, 16.0, 16.0)
     var itemHeight:CGFloat = 24.0
@@ -38,7 +38,13 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
     
     override init() {
         super.init()
-
+        
+         columnMargin = 10.0
+         rowMargin = 10.0
+         skillSectionInset = UIEdgeInsetsMake(10.0, 16.0, 16.0, 16.0)
+         itemHeight = 24.0
+        attributedAry =  Array()
+        
         
     }
     
@@ -55,6 +61,7 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
     override func prepareLayout() {
         currentX = skillSectionInset.left
         currentY = skillSectionInset.top
+        currentMaxX = currentX
         attributedAry?.removeAll()
         if let count = collectionView?.numberOfItemsInSection(0) {
             for index in 0..<count {
@@ -75,7 +82,7 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      - returns:
      */
     override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
-        
+
         let oldBounds = collectionView?.bounds
         if CGRectGetWidth(oldBounds!) != CGRectGetWidth(newBounds) {
             
@@ -92,10 +99,13 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      */
     override func collectionViewContentSize() -> CGSize {
         
-        let atr = attributedAry?.last
-        let frame = atr?.frame
-        let height = CGRectGetMaxY(frame!) + skillSectionInset.bottom
-        return CGSizeMake(0, height)
+        if let atr = attributedAry?.last {
+            
+            let frame = atr.frame
+            let height = CGRectGetMaxY(frame) + skillSectionInset.bottom
+            return CGSizeMake(0, height)
+        }
+        return CGSizeMake(0, 0)
     }
     /**
      
@@ -117,7 +127,7 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
         if currentMaxX - maxWidth! > 0 {
             currentX = skillSectionInset.left
             currentY = currentY + itemHeight + rowMargin
-            atr.frame = CGRectMake(currentX, currentY, itemW, columnMargin)
+            atr.frame = CGRectMake(currentX, currentY, itemW, itemHeight)
             currentX = currentX + itemW + columnMargin
         } else {
             currentX = currentX + itemW + columnMargin

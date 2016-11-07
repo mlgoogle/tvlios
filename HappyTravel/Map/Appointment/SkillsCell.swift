@@ -31,7 +31,7 @@ class SkillsCell : UITableViewCell {
     weak var delegate:SkillsCellDelegate?
     
     var style:SkillsCellStyle = .Normal
-    
+    var allButtonWidth:CGFloat = 20.0
     var skills:Array<Dictionary<SkillInfo, Bool>>?
     var collectionView:UICollectionView?
     let tags = ["bgView": 1001,
@@ -45,44 +45,48 @@ class SkillsCell : UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
         contentView.backgroundColor = UIColor.whiteColor()
-        contentView.userInteractionEnabled = true
-        let layout = SkillWidthLayout()
-        layout.delegate = self
-        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
-        collectionView?.addSubview(collectionView!)
-        collectionView?.delegate = self
-        collectionView?.dataSource = self
-        collectionView?.registerClass(SingleSkillCell.self, forCellWithReuseIdentifier: "skillCell")
+
         
-        collectionView?.snp_makeConstraints(closure: { (make) in
-            
-            make.edges.equalTo(contentView)
-        })
-//        var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
-//        if noTallyLabel == nil {
-//            noTallyLabel = UILabel(frame: CGRectZero)
-//            noTallyLabel!.tag = tags["noTallyLabel"]!
-//            noTallyLabel!.font = UIFont.systemFontOfSize(12)
-//            noTallyLabel!.numberOfLines = 0
-//            noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-//            noTallyLabel?.textAlignment = .Center
-//            noTallyLabel!.layer.cornerRadius = 30 / 2.0
-//            noTallyLabel?.layer.masksToBounds = true
-//            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-//            noTallyLabel?.layer.borderWidth = 1
-//            noTallyLabel!.backgroundColor = UIColor.whiteColor()
-//            contentView.addSubview(noTallyLabel!)
-//            noTallyLabel!.snp_makeConstraints { (make) in
-//                make.top.equalTo(contentView).offset(20)
-//                make.left.equalTo(contentView).offset(20)
-//                make.bottom.equalTo(contentView).offset(-20)
-//                make.height.equalTo(30)
-//                make.width.equalTo(30)
-//            }
-//        }
-//        noTallyLabel?.hidden = false
-//        noTallyLabel!.text = "无"
-//        
+        contentView.userInteractionEnabled = true
+//        let layout = SkillWidthLayout.init()
+//        layout.delegate = self
+//        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+//        collectionView?.delegate = self
+//        collectionView?.dataSource = self
+//        collectionView?.scrollEnabled = false
+//        collectionView?.backgroundColor = UIColor.clearColor()
+//        collectionView?.registerClass(SingleSkillCell.self, forCellWithReuseIdentifier: "skillCell")
+//        contentView.addSubview(collectionView!)
+//
+//        collectionView?.snp_makeConstraints(closure: { (make) in
+//            
+//            make.edges.equalTo(contentView)
+//        })
+        var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
+        if noTallyLabel == nil {
+            noTallyLabel = UILabel(frame: CGRectZero)
+            noTallyLabel!.tag = tags["noTallyLabel"]!
+            noTallyLabel!.font = UIFont.systemFontOfSize(12)
+            noTallyLabel!.numberOfLines = 0
+            noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
+            noTallyLabel?.textAlignment = .Center
+            noTallyLabel!.layer.cornerRadius = 30 / 2.0
+            noTallyLabel?.layer.masksToBounds = true
+            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+            noTallyLabel?.layer.borderWidth = 1
+            noTallyLabel!.backgroundColor = UIColor.whiteColor()
+            contentView.addSubview(noTallyLabel!)
+            noTallyLabel!.snp_makeConstraints { (make) in
+                make.top.equalTo(contentView).offset(20)
+                make.left.equalTo(contentView).offset(20)
+                make.bottom.equalTo(contentView).offset(-20)
+                make.height.equalTo(30)
+                make.width.equalTo(30)
+            }
+        }
+        noTallyLabel?.hidden = false
+        noTallyLabel!.text = "无"
+        
         var addnewBtn = contentView.viewWithTag(tags["addnewBtn"]!) as? UIButton
         if addnewBtn == nil {
             addnewBtn = UIButton()
@@ -108,12 +112,15 @@ class SkillsCell : UITableViewCell {
     
     func setInfo(skills: Array<Dictionary<SkillInfo, Bool>>?) {
         self.skills = skills
+        
+        
         for subview in  contentView.subviews {
             if subview.tag == self.tags["addnewBtn"]! || subview.tag == self.tags["noTallyLabel"]! {
                 continue
             }
             subview.removeFromSuperview()
         }
+        allButtonWidth = 20.0
         var lastTallyItemView:UIButton?
         if skills?.count != 0 {
             for (index, value) in skills!.enumerate() {
@@ -133,17 +140,23 @@ class SkillsCell : UITableViewCell {
                         tallyBtn!.snp_makeConstraints { (make) in
                             let previousView = contentView.viewWithTag(tallyBtn!.tag - 1)
                             if previousView == nil {
+                                allButtonWidth = allButtonWidth + 20 + skill.labelWidth
                                 make.top.equalTo(self.contentView).offset(20)
                                 make.left.equalTo(self.contentView).offset(20)
                             } else {
-                                if index / 3 > 0 && index % 3 == 0 {
+                                if allButtonWidth + 20 > contentView.mj_w {
+                                    
+                                    
+                                    allButtonWidth = 20.0
                                     make.top.equalTo(previousView!.snp_bottom).offset(10)
                                     make.left.equalTo(self.contentView).offset(20)
                                 } else {
+                                    allButtonWidth = allButtonWidth + 20 + skill.labelWidth
                                     make.top.equalTo(previousView!)
                                     make.left.equalTo(previousView!.snp_right).offset(10)
                                 }
                             }
+                            
                             if index == skills!.count - 1 && style == .Normal {
                                 make.bottom.equalTo(contentView).offset(-20)
                             }
@@ -175,7 +188,7 @@ class SkillsCell : UITableViewCell {
                     if style != .Delete {
                         deleteIcon?.hidden = true
                     }
-                    
+//                    allButtonWidth = 20.0
                     lastTallyItemView = tallyBtn
                 }
                 
@@ -203,7 +216,7 @@ class SkillsCell : UITableViewCell {
             addnewBtn.hidden = style == .AddNew ? false : true
             if lastTallyItemView != nil {
                 addnewBtn.snp_remakeConstraints(closure: { (make) in
-                    if skills!.count % 3 == 0 {
+                    if  allButtonWidth > contentView.mj_w {
                         make.left.equalTo(contentView).offset(20)
                         make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
                     } else {
@@ -257,18 +270,49 @@ extension SkillsCell:SkillWidthLayoutDelegate {
 //MARK: - UICollectionView
 extension SkillsCell:UICollectionViewDelegate, UICollectionViewDataSource{
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        delegate?.addNewAction!()
+
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         let count = skills == nil ? 0 : skills?.count
         
         return count!
     }
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
      
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("skillCell", forIndexPath: indexPath) as! SingleSkillCell
         let skillInfoDict = skills![indexPath.item]
         let skillInfo = skillInfoDict.keys.first! as SkillInfo
-        cell.setupDataWith(skillInfo.skill_name_!, style: .Normal)
+        var cellStyle = SkillsCellStyle.Normal
+        switch style {
+        case .Select:
+            if skillInfoDict[skillInfo] == true {
+                cellStyle = .Select
+            } else {
+                cellStyle = .Normal
+            }
+            break
+        case .Normal:
+            
+            cellStyle = .Normal
+            break
+        case .Delete:
+            cellStyle = .Delete
+            break
+        case .AddNew:
+            cellStyle = .AddNew
+            break
+        default:
+            break
+        }
+        cell.setupDataWith(skillInfo.skill_name_!, style: cellStyle)
         return cell
     }
 }

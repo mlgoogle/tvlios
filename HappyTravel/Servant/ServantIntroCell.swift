@@ -18,7 +18,7 @@ class ServantIntroCell: UITableViewCell {
     
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
-    
+    var allLabelWidth:CGFloat = 20.0
     var servantInfo:UserInfo?
     weak var delegate:ServantIntroCellDelegate?
     
@@ -294,6 +294,7 @@ class ServantIntroCell: UITableViewCell {
         for subview in tallyView!.subviews {
             subview.removeFromSuperview()
         }
+        allLabelWidth = 20.0
         for (index, tag) in tags.enumerate() {
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
@@ -310,21 +311,32 @@ class ServantIntroCell: UITableViewCell {
                 let previousView = tallyView!.viewWithTag(1001+index-1)
                 tallyItemView!.snp_makeConstraints { (make) in
                     if previousView == nil {
+                        allLabelWidth = allLabelWidth + 20 + tag.labelWidth
                         make.top.equalTo(tallyView!).offset(10)
                         make.left.equalTo(tallyView!)
                     } else {
-                        if index / 3 > 0 {
-                            if index % 3 == 0 {
-                                make.top.equalTo(previousView!.snp_bottom).offset(10)
-                                make.left.equalTo(tallyView!)
-                            } else {
-                                make.top.equalTo(previousView!.snp_top)
-                                make.left.equalTo(previousView!.snp_right).offset(10)
-                            }
+                        if allLabelWidth + 20 > contentView.mj_w {
+                            allLabelWidth = 20.0
+                            make.top.equalTo(previousView!.snp_bottom).offset(10)
+                            make.left.equalTo(tallyView!)
                         } else {
+                            allLabelWidth = allLabelWidth + 20 + tag.labelWidth
                             make.top.equalTo(previousView!)
                             make.left.equalTo(previousView!.snp_right).offset(10)
                         }
+                        
+//                        if index / 3 > 0 {
+//                            if index % 3 == 0 {
+//                                make.top.equalTo(previousView!.snp_bottom).offset(10)
+//                                make.left.equalTo(tallyView!)
+//                            } else {
+//                                make.top.equalTo(previousView!.snp_top)
+//                                make.left.equalTo(previousView!.snp_right).offset(10)
+//                            }
+//                        } else {
+//                            make.top.equalTo(previousView!)
+//                            make.left.equalTo(previousView!.snp_right).offset(10)
+//                        }
                     }
                     make.height.equalTo(25)
                     
