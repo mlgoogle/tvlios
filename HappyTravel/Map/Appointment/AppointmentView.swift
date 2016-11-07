@@ -585,6 +585,9 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             } else if tel == nil {
                 alright = false
                 errMsg = "请输入联系人电话"
+            } else if isTelNumber(tel!) == false {
+                alright = false
+                errMsg = "请输入正确的手机号"
             }
         }
         
@@ -595,6 +598,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             nav?.presentViewController(alert, animated: true, completion: nil)
             return
         }
+        
         
         var skillStr = ""
         for skillInfo in skills {
