@@ -13,7 +13,7 @@ import RealmSwift
 class Tally: Object {
     
     dynamic var tally:String?
-    
+    dynamic var labelWidth:CGFloat = 0.0
 }
 
 class PhotoUrl: Object {
@@ -144,6 +144,10 @@ class UserInfo: Object {
                 for tag in tags {
                     let tally = Tally()
                     tally.tally = tag
+                    let string:NSString = tag
+                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
+                    let rect = string.boundingRectWithSize(CGSizeMake(0, 20), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
+                    tally.labelWidth = rect.size.width + 24
                     businessTags.append(tally)
                 }
                 break
@@ -176,6 +180,10 @@ class UserInfo: Object {
                 for tag in tags {
                     let tally = Tally()
                     tally.tally = tag
+                    let string:NSString = tag
+                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
+                    let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(12)], context: nil)
+                    tally.labelWidth = rect.size.width + 24
                     travalTags.append(tally)
                 }
                 break
