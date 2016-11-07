@@ -245,6 +245,24 @@ class UserInfo: Object {
         
         certification = info.certification
         
+        registerSstatus = info.registerSstatus
+        
+        gender = info.gender
+        
+        creditLv = info.creditLv
+        
+        praiseLv = info.praiseLv
+        
+        cashLv = info.cashLv
+        
+        centurionCardStartTime = info.centurionCardStartTime
+        
+        centurionCardEndTime = info.centurionCardEndTime
+        
+        centurionCardLv = info.centurionCardLv
+        
+        centurionCardValid = info.centurionCardValid
+        
         authentication = info.authentication
         
         businessTags.removeAll()
