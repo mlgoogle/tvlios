@@ -35,6 +35,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             for i in 0...Int((serviceStars.count)-1){
                 let star = serviceStars[i]
                 star.selected = i <= serviceSocre! - 1
+                star.userInteractionEnabled = false
             }
         }
     }
@@ -45,6 +46,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             for i in 0...Int((userStars.count)-1){
                 let star = userStars[i]
                 star.selected = i <= userScore! - 1
+                star.userInteractionEnabled = false
             }
         }
     }
@@ -53,6 +55,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         didSet{
             let textView = contentView.viewWithTag(tags["textView"]!) as! UITextView
             textView.text = remark
+            textView.userInteractionEnabled = false
         }
     }
     
