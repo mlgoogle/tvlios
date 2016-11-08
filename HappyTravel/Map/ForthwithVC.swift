@@ -330,9 +330,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func appointmentReply(notification: NSNotification) {
         unowned let weakSelf = self
         SVProgressHUD.showSuccessMessage(SuccessMessage: "预约已成功，请保持开机！祝您生活愉快！谢谢！", ForDuration: 1.5) {
-            let msgVC = PushMessageVC()
-            msgVC.selectedIndex = 1
-            weakSelf.navigationController?.pushViewController(msgVC, animated: true)
+            let vc = DistanceOfTravelVC()
+            vc.segmentIndex = 1
+            weakSelf.navigationController?.pushViewController(vc, animated: true)
 
             
         }

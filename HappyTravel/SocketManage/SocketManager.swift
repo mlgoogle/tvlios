@@ -422,7 +422,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             if (head!.fields["type"] as! NSNumber).integerValue == 0 {
                 let result = dict.dictionaryObject
-                SVProgressHUD.showWainningMessage(WainningMessage: "错误码：\(result!["error_"]))", ForDuration: 1.5, completion: nil)
+                SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
                 XCGLogger.warning("Modify passwd failed")
             } else {
                 SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)

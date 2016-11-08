@@ -300,9 +300,11 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
             let normalDate = NSDate.init(timeIntervalSinceNow: 3600 * 24)
-            startDate = normalDate
-            endDate = normalDate
+
             dateLab?.text = dateFormatter.stringFromDate(normalDate)
+            startDate = dateFormatter.dateFromString((dateLab?.text)!)
+
+            endDate =  dateFormatter.dateFromString((dateLab?.text)!)
         }
         
         return cell!
@@ -617,8 +619,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         }
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
                                         "city_code_": cityInfo!.cityCode!,
-                                        "start_time_": startDate!.timeIntervalSince1970,
-                                        "end_time_": endDate!.timeIntervalSince1970,
+                                        "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
+                                        "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,
                                         "is_other_": agent == false ? 0 : 1,
                                         "other_name_": agent == true ? name! : "",
