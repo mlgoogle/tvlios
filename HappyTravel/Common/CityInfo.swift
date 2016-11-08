@@ -9,12 +9,16 @@
 import Foundation
 import XCGLogger
 import RealmSwift
-class CityInfo:  Object{
+
+class CityInfo : Object {
     
-    var cityName:String?
-    var cityCode:Int = 0
-    var provinceName:String?
-    var provinceCode:Int?
+    dynamic var cityName:String?
+    
+    dynamic var cityCode:Int = 0
+    
+    dynamic var provinceName:String?
+    
+    dynamic var provinceCode:Int = 0
     
     func setInfo(info: Dictionary<String, AnyObject>?) {
         for (key, value) in info! {
@@ -29,7 +33,7 @@ class CityInfo:  Object{
                 provinceName = value as? String
                 break
             case "province_code_":
-                provinceCode = value as? Int
+                provinceCode = (value as? Int)!
                 break
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")
