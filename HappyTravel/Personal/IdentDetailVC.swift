@@ -95,27 +95,9 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.checkCommendDetail(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
-        
     }
     
     func servantDetailInfo(notification: NSNotification) {
-        table?.reloadData()
-    }
-    
-    func checkCommendDetail(notification: NSNotification) {
-
-        let data = notification.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
-            return
-        }
-        serviceScore = data.valueForKey("service_score_") as? Int
-        userScore = data.valueForKey("user_score_") as? Int
-        remark = data.valueForKey("remarks_") as? String
-        self.commitBtn?.enabled = remark == nil
-        SVProgressHUD.dismiss()
         table?.reloadData()
     }
     
@@ -186,7 +168,22 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - DATA
     func initData() {
         let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
-        SocketManager.sendData(.checkCommentDetail, data:param)
+        SocketManager.sendData(.checkCommentDetail, data: param) { [weak self](body) in
+            if let strongSelf = self{
+                let data = body!["data"] as! NSDictionary
+                let code = data.valueForKey("code")
+                if code?.intValue == 0 {
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)
+                    return
+                }
+                strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
+                strongSelf.userScore = data.valueForKey("user_score_") as? Int
+                strongSelf.remark = data.valueForKey("remarks_") as? String
+                strongSelf.commitBtn?.enabled = strongSelf.remark == nil
+                SVProgressHUD.dismiss()
+                strongSelf.table?.reloadData()
+            }
+        }
     }
     
 }

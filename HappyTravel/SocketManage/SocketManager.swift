@@ -17,13 +17,9 @@ enum SockErrCode : Int {
     case Other = 0
 }
 
-protocol SocketManagerProtocl: NSObjectProtocol {
-    func didRecieveResult(Result result:[NSObject : AnyObject]?)
-}
+
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
-
-    weak var delegate: SocketManagerProtocl?
     enum SockOpcode : Int {
         case AppError = -1
         case Heart = 1000
@@ -711,13 +707,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         }
         
-//        if delegate != nil {
-//            var dict = JSON.init(data: body as! NSData)
-//            if dict.count == 0 {
-//                dict = ["code":"0"]
-//            }
-//            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
-//        }
+        if SocketManager.completation != nil {
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            SocketManager.completation!(["data":dict.dictionaryObject!])
+            SocketManager.completation = nil
+        }
         
         return true
     }
