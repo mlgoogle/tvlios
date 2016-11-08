@@ -273,7 +273,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         let back2MyLocationBtn = UIButton()
         back2MyLocationBtn.backgroundColor = .clearColor()
-        back2MyLocationBtn.setImage(UIImage.init(named: "recommend"), forState: .Normal)
+        back2MyLocationBtn.setImage(UIImage.init(named: "mine_location"), forState: .Normal)
         back2MyLocationBtn.addTarget(self, action: #selector(ForthwithVC.back2MyLocationAction(_:)), forControlEvents: .TouchUpInside)
         mapView?.addSubview(back2MyLocationBtn)
         back2MyLocationBtn.snp_makeConstraints { (make) in
@@ -468,8 +468,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let settingsVC = SettingsVC()
         navigationController?.pushViewController(settingsVC, animated: true)
     }
-    
-  
     
     func reflushServantInfo(notification: NSNotification?) {
         let data = notification?.userInfo!["data"]
