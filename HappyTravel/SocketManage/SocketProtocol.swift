@@ -148,7 +148,7 @@ class SockHead : NSObject {
                 if typeStr.rangeOfString("8") != nil {
                     len = sizeof(Int8)
                     var valueBuf = Int8(0)
-                    srcData!.getBytes(&valueBuf, length: len)
+                    srcData!.getBytes(&valueBuf, length: len) 
                     value = Int(valueBuf)
                 } else if typeStr.rangeOfString("16") != nil {
                     len = sizeof(Int16)
