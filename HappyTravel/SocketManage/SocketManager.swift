@@ -685,13 +685,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         }
         
-        if delegate != nil {
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
-        }
+//        if delegate != nil {
+//            var dict = JSON.init(data: body as! NSData)
+//            if dict.count == 0 {
+//                dict = ["code":"0"]
+//            }
+//            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
+//        }
         
         return true
     }
