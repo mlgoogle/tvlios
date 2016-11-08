@@ -10,7 +10,7 @@ import Foundation
 import XCGLogger
 import SVProgressHUD
 
-class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, SocketManagerProtocl{
     
     var table:UITableView?
     var commonCell:IdentCommentCell?
@@ -26,6 +26,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+        SocketManager.shareInstance.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -104,7 +105,27 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func checkCommendDetail(notification: NSNotification) {
+        return
         let data = notification.userInfo!["data"] as! NSDictionary
+        let code = data.valueForKey("code")
+        if code?.intValue == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
+            return
+        }
+        serviceScore = data.valueForKey("service_score_") as? Int
+        userScore = data.valueForKey("user_score_") as? Int
+        remark = data.valueForKey("remarks_") as? String
+        self.commitBtn?.enabled = remark == nil
+        SVProgressHUD.dismiss()
+        table?.reloadData()
+    }
+    
+    func didRecieveResult(Result result: [NSObject : AnyObject]?) {
+        if result == nil {
+            return
+        }
+        
+        let data = result!["data"] as! NSDictionary
         let code = data.valueForKey("code")
         if code?.intValue == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion:nil)
