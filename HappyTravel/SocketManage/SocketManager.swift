@@ -17,9 +17,13 @@ enum SockErrCode : Int {
     case Other = 0
 }
 
+protocol SocketManagerProtocl: NSObjectProtocol {
+    func didRecieveResult(Result result:[NSObject : AnyObject]?)
+}
+
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
-    
+    weak var delegate: SocketManagerProtocl?
     enum SockOpcode : Int {
         case AppError = -1
         case Heart = 1000
@@ -95,6 +99,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case checkUserCashReply = 1068
         case AppointmentRecordRequest = 1069
         case AppointmentRecordReply = 1070
+        case checkCommentDetail = 2015
+        case checkCommentDetailReplay = 2016
+
     }
     
     
@@ -112,6 +119,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     static var last_chat_id:Int = 0
     
     static var isLogout = false
+    
+    
     
     override init() {
         super.init()
@@ -348,6 +357,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
             break
             
+        case .checkCommentDetail:
+            head.fields["opcode"] = SockOpcode.checkCommentDetail.rawValue
+            head.fields["type"] = 2
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
         default:
             break
         }
@@ -686,10 +700,24 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
  
+        case .checkCommentDetailReplay:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
         default:
             break
         }
+        
+//        if delegate != nil {
+//            var dict = JSON.init(data: body as! NSData)
+//            if dict.count == 0 {
+//                dict = ["code":"0"]
+//            }
+//            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
+//        }
         
         return true
     }

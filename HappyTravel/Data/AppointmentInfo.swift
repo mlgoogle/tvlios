@@ -17,7 +17,7 @@ class AppointmentInfo: Object {
     dynamic var city_code_ = 0
     dynamic var start_time_ = 0
     dynamic var end_time_ = 0
-    dynamic var is_other = 0
+    dynamic var is_other_ = 0
     dynamic var other_gender_ = 0
     dynamic var other_name_:String?
     dynamic var other_phone_:String?
@@ -38,7 +38,7 @@ class AppointmentInfo: Object {
         city_code_ = info.city_code_
         start_time_  = info.start_time_
         end_time_ = info.end_time_
-        is_other = info.is_other
+        is_other_ = info.is_other_
         
     }
     

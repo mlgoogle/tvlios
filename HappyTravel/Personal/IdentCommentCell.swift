@@ -19,6 +19,9 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
     var serviceStar = 0
     var servantStar = 0
     var comment = ""
+    var serviceStars: [UIButton] = []
+    var userStars: [UIButton] = []
+    
     
     let tags = ["bgView": 1001,
                 "headImageView": 1002,
@@ -26,6 +29,35 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                 "lineView": 1004,
                 "starBGView":1005,
                 "lineTitleLab": 1006]
+    
+    var serviceSocre:Int? {
+        didSet{
+            for i in 0...Int((serviceStars.count)-1){
+                let star = serviceStars[i]
+                star.selected = i <= serviceSocre! - 1
+                star.userInteractionEnabled = false
+            }
+        }
+    }
+    
+    
+    var userScore:Int? {
+        didSet{
+            for i in 0...Int((userStars.count)-1){
+                let star = userStars[i]
+                star.selected = i <= userScore! - 1
+                star.userInteractionEnabled = false
+            }
+        }
+    }
+    
+    var remark:String? {
+        didSet{
+            let textView = contentView.viewWithTag(tags["textView"]!) as! UITextView
+            textView.text = remark
+            textView.userInteractionEnabled = false
+        }
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -100,20 +132,20 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                         make.height.equalTo(25)
                     })
                 }
-                for i in 0...4 {
-                    var star = starBGView!.viewWithTag(starBGView!.tag * 10 + i) as? UIButton
+                for j in 0...4 {
+                    var star = starBGView!.viewWithTag(starBGView!.tag * 10 + j) as? UIButton
                     if star == nil {
                         star = UIButton()
                         star!.backgroundColor = .clearColor()
-                        star!.tag = starBGView!.tag * 10 + i
+                        star!.tag = starBGView!.tag * 10 + j
                         star?.addTarget(self, action: #selector(IdentCommentCell.starAction(_:)), forControlEvents: .TouchUpInside)
                         starBGView!.addSubview(star!)
                         star!.snp_makeConstraints(closure: { (make) in
-                            if i == 0 {
+                            if j == 0 {
                                 make.left.equalTo(starBGView!)
                             } else {
                                 let width = UIScreen.mainScreen().bounds.size.width - 120 - 20
-                                make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + i - 1) as? UIButton)!.snp_right).offset((width - 25*5) / 4.0)
+                                make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + j - 1) as? UIButton)!.snp_right).offset((width - 25*5) / 4.0)
                             }
                             make.top.equalTo(starBGView!)
                             make.bottom.equalTo(starBGView!)
@@ -121,6 +153,12 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                     }
                     star?.setImage(UIImage.init(named: "star-common-hollow"), forState: .Normal)
                     star?.setImage(UIImage.init(named: "star-common-fill"), forState: .Selected)
+                    
+                    if i == 0 {
+                        serviceStars.append(star!)
+                    }else{
+                        userStars.append(star!)
+                    }
                 }
             }
         }

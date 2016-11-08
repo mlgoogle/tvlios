@@ -98,6 +98,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         usernameField.clearButtonMode = .WhileEditing
         usernameField.backgroundColor = UIColor.clearColor()
         usernameField.textAlignment = .Left
+        usernameField.keyboardType = .PhonePad
         usernameField.attributedPlaceholder = NSAttributedString.init(string: "请输入手机号码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
         view.addSubview(usernameField)
         usernameField.snp_makeConstraints(closure: { (make) in

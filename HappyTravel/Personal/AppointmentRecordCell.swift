@@ -18,7 +18,15 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-            nickNameLab.text = DataManager.currentUser?.nickname
+            if recordInfo?.is_other_ == 1 {
+                
+                nickNameLab.text = recordInfo?.other_name_
+
+                
+            } else {
+                
+                nickNameLab.text = DataManager.currentUser?.nickname
+            }
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {
@@ -31,7 +39,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
                 
                 if let cityInfo = results.first  {
                     
-                    if recordInfo?.is_other == 1 {
+                    if recordInfo?.is_other_ == 1 {
                         
                         serviceTitleLab.text = cityInfo["cityName"] as! String + "(代订)"
                     } else {
@@ -52,13 +60,13 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
             dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
+//            dateFormatter.timeStyle = .ShortStyle
             timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.start_time_)!)))
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
-//                        statusLab.text = statusDict[OrderStatus(rawValue: (hotometer?.status_)!)!]
-//                        statusLab.textColor = statusColor[OrderStatus(rawValue: (hotometer?.status_)!)!]
+                        statusLab.text = statusDict[OrderStatus(rawValue: (recordInfo?.status_)!)!]
+                        statusLab.textColor = statusColor[OrderStatus(rawValue: (recordInfo?.status_)!)!]
         }
     }
 
