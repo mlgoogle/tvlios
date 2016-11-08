@@ -81,5 +81,7 @@ class NotifyDefine: NSObject {
     static let FeedBackNoticeReply = "FeedBackNoticeReply"
 
     static let EvaluatetripReply = "EvaluatetripReply"
+    
+    static let AppointmentRecordReply = "AppointmentRecordReply"
 
 }
