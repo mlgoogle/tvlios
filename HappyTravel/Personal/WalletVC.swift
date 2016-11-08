@@ -35,6 +35,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        SVProgressHUD.dismiss()
     }
     
     func initView() {

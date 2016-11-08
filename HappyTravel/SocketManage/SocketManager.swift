@@ -17,9 +17,13 @@ enum SockErrCode : Int {
     case Other = 0
 }
 
+protocol SocketManagerProtocl: NSObjectProtocol {
+    func didRecieveResult(Result result:[NSObject : AnyObject]?)
+}
+
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
-    
+    weak var delegate: SocketManagerProtocl?
     enum SockOpcode : Int {
         case AppError = -1
         case Heart = 1000
@@ -93,6 +97,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case checkAuthenticateResultReply = 1058
         case checkUserCash = 1067
         case checkUserCashReply = 1068
+        case checkCommentDetail = 2015
+        case checkCommentDetailReplay = 2016
     }
     
     
@@ -110,6 +116,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     static var last_chat_id:Int = 0
     
     static var isLogout = false
+    
+    
     
     override init() {
         super.init()
@@ -336,6 +344,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .checkUserCash:
             head.fields["opcode"] = SockOpcode.checkUserCash.rawValue
             head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            break
+        case .checkCommentDetail:
+            head.fields["opcode"] = SockOpcode.checkCommentDetail.rawValue
+            head.fields["type"] = 2
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         default:
@@ -661,8 +674,23 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
+        case .checkCommentDetailReplay:
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
+            break
         default:
             break
+        }
+        
+        if delegate != nil {
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
         }
         
         return true
