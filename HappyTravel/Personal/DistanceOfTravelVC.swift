@@ -22,7 +22,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var consumedOrderID = 0
     var consumes:Results<CenturionCardConsumedInfo>?
-    
+    var records:Results<AppointmentInfo>?
+    var lastRecordId = 0
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
@@ -52,6 +53,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
     }
     
     func obtainTripReply(notification: NSNotification) {
@@ -69,6 +71,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if lastOrderID == -1001 {
             footer.state = .NoMoreData
             footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            table?.reloadData()
             return
         }
         orderID = lastOrderID
@@ -90,10 +93,31 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if lastOrderID == -1001 {
             footer.state = .NoMoreData
             footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            table?.reloadData()
             return
         }
         consumedOrderID = lastOrderID
         table?.reloadData()
+    }
+    func receivedAppointmentInfos(notification:NSNotification) {
+        
+        if header.state == MJRefreshState.Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == MJRefreshState.Refreshing {
+            footer.endRefreshing()
+        }
+        let realm = try! Realm()
+        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
+        let lastID = notification.userInfo!["lastID"] as! Int
+        if lastID == -9999 {
+            footer.state = .NoMoreData
+            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            return
+        }
+        lastRecordId = lastID
+        table?.reloadData()
+        
     }
     
     func initView() {
@@ -135,6 +159,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         table?.separatorStyle = .None
         table?.registerClass(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
         table?.registerClass(CentrionCardConsumedCell.self, forCellReuseIdentifier: "CentrionCardConsumedCell")
+        table?.registerClass(AppointmentRecordCell.self, forCellReuseIdentifier: "AppointmentRecordCell")
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -158,8 +183,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                "order_id_": 0,
+            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                "last_id_": 0,
                 "count_": 10])
             break
         case 2:
@@ -172,12 +197,22 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func footerRefresh() {
-        if segmentIndex == 1 {
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
-        } else {
+        switch segmentIndex {
+        case 0:
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": orderID,
                 "count_": 10])
+            break
+        case 1:
+            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                "last_id_": lastRecordId,
+                "count_": 10])
+            break
+        case 2:
+            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            break
+        default:
+            break
         }
         
     }
@@ -185,24 +220,40 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
-        if segmentIndex == 1 {
-            cnt = consumes != nil ? consumes!.count : 0
-        } else {
+        if segmentIndex == 0 {
             cnt = hotometers != nil ? hotometers!.count : 0
+        } else if (segmentIndex == 1){
+            cnt = records != nil ? records!.count : 0
+        } else {
+            cnt = consumes != nil ? consumes!.count : 0
         }
         footer.hidden = cnt < 10 ? true : false
         return cnt
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if segmentIndex == 1 {
+
+        switch segmentIndex {
+        case 0:
+            let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
+            cell.setHodometerInfo(hotometers![indexPath.row])
+            return cell
+
+        case 1:
+            let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentRecordCell", forIndexPath: indexPath) as! AppointmentRecordCell
+            cell.setRecordInfo(records![indexPath.row])
+            return cell
+
+        case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
             cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
             return cell
+            
+        default:
+            break
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-        cell.setHodometerInfo(hotometers![indexPath.row])
-        return cell
+        
+        return UITableViewCell()
         
     }
     

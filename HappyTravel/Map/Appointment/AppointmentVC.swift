@@ -653,7 +653,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
         }
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
-                                        "city_code_": cityInfo!.cityCode!,
+                                        "city_code_": cityInfo!.cityCode,
                                         "start_time_": startDate!.timeIntervalSince1970,
                                         "end_time_": endDate!.timeIntervalSince1970,
                                         "skills_": skillStr,

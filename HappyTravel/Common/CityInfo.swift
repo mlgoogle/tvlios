@@ -8,11 +8,11 @@
 
 import Foundation
 import XCGLogger
-
-class CityInfo: NSObject {
+import RealmSwift
+class CityInfo:  Object{
     
     var cityName:String?
-    var cityCode:Int?
+    var cityCode:Int = 0
     var provinceName:String?
     var provinceCode:Int?
     
@@ -23,7 +23,7 @@ class CityInfo: NSObject {
                 cityName = value as? String
                 break
             case "city_code_":
-                cityCode = value as? Int
+                cityCode = (value as? Int)!
                 break
             case "province_name_":
                 provinceName = value as? String
@@ -37,5 +37,12 @@ class CityInfo: NSObject {
             }
         }
     }
+    func refreshInfo(info:CityInfo) {
+        cityName = info.cityName
+        cityCode = info.cityCode
+        provinceCode = info.provinceCode
+        provinceName = info.provinceName
+    }
+
     
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 import XCGLogger
-
+import SVProgressHUD
 class LoginVC: UIViewController, UITextFieldDelegate {
     
     let tags = ["usernameField": 1001,
@@ -250,7 +250,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         })
         if err {
             XCGLogger.error("err:\(data!["error_"] as! Int)")
-            
+            SVProgressHUD.showErrorMessage(ErrorMessage: "手机号或密码错误", ForDuration: 1.5, completion: nil)
             return
         }
         XCGLogger.debug("\(data!)")

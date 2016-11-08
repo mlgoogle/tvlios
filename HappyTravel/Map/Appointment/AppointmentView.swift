@@ -618,7 +618,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             
         }
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
-                                        "city_code_": cityInfo!.cityCode!,
+                                        "city_code_": cityInfo!.cityCode,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,

@@ -351,6 +351,16 @@ class DataManager: NSObject {
                 }
             })
             break
+        case CityInfo.className():
+            let obj = data as! CityInfo
+            let info = realm.objects(CityInfo.self).filter("cityCode = \(obj.cityCode)").first
+            try! realm.write({
+                if info == nil {
+                    realm.add(obj)
+                } else {
+                    info?.refreshInfo(obj)
+                }
+            })
         default:
             break
         }
@@ -366,6 +376,14 @@ class DataManager: NSObject {
         switch type.className() {
         case SkillInfo.className():
             let objs = realm.objects(SkillInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
+            
+        case CityInfo.className():
+            let objs = realm.objects(CityInfo.self)
             if filter == nil {
                 return objs
             } else {
@@ -393,7 +411,10 @@ class DataManager: NSObject {
                     obj?.status_ = dict["invoice_status_"]!
                 }
             })
-            
+            break
+        case CityInfo.className():
+
+            break
         default:
             break
         }
@@ -462,5 +483,31 @@ class DataManager: NSObject {
     }
     
     
+    //MARK: - 预约记录
     
-}
+    static func insertAppointmentRecordInfo(info: AppointmentInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let recordInfo = realm.objects(AppointmentInfo.self).filter("appointment_id_ = \(info.appointment_id_)").first
+        try! realm.write({
+            if recordInfo == nil {
+                realm.add(info)
+            } else {
+                recordInfo!.setInfo(info)
+            }
+        })
+        
+    }
+    static func getAppointmentRecordInfos(lv: Int) -> Results<AppointmentInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let appointmentRecordInfo = realm.objects(AppointmentInfo.self)
+        return appointmentRecordInfo
+    }
+    
+  }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class DistanceOfTravelCell: UITableViewCell {
     
@@ -30,7 +31,7 @@ class DistanceOfTravelCell: UITableViewCell {
                                                         .InvoiceMaked: UIColor.greenColor()]
     
     var curHodometerInfo:HodometerInfo?
-    
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
@@ -216,7 +217,6 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
