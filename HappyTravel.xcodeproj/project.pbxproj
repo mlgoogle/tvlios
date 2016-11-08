@@ -164,6 +164,8 @@
 		2FF578E41DD05E12009500D9 /* head-bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578E31DD05E12009500D9 /* head-bg@3x.png */; };
 		2FF578E71DD068C0009500D9 /* segment-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578E51DD068C0009500D9 /* segment-bg@2x.png */; };
 		2FF578E81DD068C0009500D9 /* segment-bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578E61DD068C0009500D9 /* segment-bg@3x.png */; };
+		2FF578EB1DD1DDB7009500D9 /* mine_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578E91DD1DDB7009500D9 /* mine_location@2x.png */; };
+		2FF578EC1DD1DDB7009500D9 /* mine_location@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF578EA1DD1DDB7009500D9 /* mine_location@3x.png */; };
 		2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */; };
 		2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */; };
 		2FF72B6C1DAF6217001EEED2 /* advanced-level-disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FF72B411DAF6217001EEED2 /* advanced-level-disable@2x.png */; };
@@ -445,6 +447,8 @@
 		2FF578E31DD05E12009500D9 /* head-bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "head-bg@3x.png"; sourceTree = "<group>"; };
 		2FF578E51DD068C0009500D9 /* segment-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-bg@2x.png"; sourceTree = "<group>"; };
 		2FF578E61DD068C0009500D9 /* segment-bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-bg@3x.png"; sourceTree = "<group>"; };
+		2FF578E91DD1DDB7009500D9 /* mine_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mine_location@2x.png"; sourceTree = "<group>"; };
+		2FF578EA1DD1DDB7009500D9 /* mine_location@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mine_location@3x.png"; sourceTree = "<group>"; };
 		2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardVC.swift; path = Personal/CenturionCard/CenturionCardVC.swift; sourceTree = "<group>"; };
 		2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardBaseInfoCell.swift; path = Personal/CenturionCard/CenturionCardBaseInfoCell.swift; sourceTree = "<group>"; };
 		2FF72B411DAF6217001EEED2 /* advanced-level-disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "advanced-level-disable@2x.png"; sourceTree = "<group>"; };
@@ -722,6 +726,8 @@
 		2F9D42051D597A5700D10FBC /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				2FF578E91DD1DDB7009500D9 /* mine_location@2x.png */,
+				2FF578EA1DD1DDB7009500D9 /* mine_location@3x.png */,
 				2F0E5EB81DC2EB6D006A6437 /* map-head-female@2x.png */,
 				2F0E5EB91DC2EB6D006A6437 /* map-head-female@3x.png */,
 				2F0E5EBA1DC2EB6D006A6437 /* map-head-male@2x.png */,
@@ -1274,6 +1280,7 @@
 				2FF72B801DAF6217001EEED2 /* primary-level-disable@3x.png in Resources */,
 				2FF72B7A1DAF6217001EEED2 /* meeting@3x.png in Resources */,
 				2F26A6A21D8245A900FFA6A7 /* search@2x.png in Resources */,
+				2FF578EC1DD1DDB7009500D9 /* mine_location@3x.png in Resources */,
 				2FE7C34B1D62BFAF00994505 /* guide-star-hollow@2x.png in Resources */,
 				2FF72B891DAF6217001EEED2 /* service@2x.png in Resources */,
 				2F9684331D792C3E0028E3F2 /* pay-selected@3x.png in Resources */,
@@ -1356,6 +1363,7 @@
 				2FF72B711DAF6217001EEED2 /* bg-card-detail@2x.png in Resources */,
 				2F26A69B1D8245A900FFA6A7 /* default-head@2x.png in Resources */,
 				2F6959E51D54259A0072B7FF /* default-big-photo.png in Resources */,
+				2FF578EB1DD1DDB7009500D9 /* mine_location@2x.png in Resources */,
 				2FF578DC1DD01671009500D9 /* icon120@2x.png in Resources */,
 				B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */,
 				2FE7C3811D64133600994505 /* bottom_selector_normal@3x.png in Resources */,
