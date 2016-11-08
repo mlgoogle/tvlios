@@ -31,7 +31,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var skills:Array<Dictionary<SkillInfo, Bool>> = []
     lazy var dateFormatter:NSDateFormatter = {
         var dateFromatter = NSDateFormatter()
-        dateFromatter.dateFormat = "yyyy-mm-dd"
+        dateFromatter.dateFormat = "yyyy-MM-dd"
         return dateFromatter
     }()
     let tags = ["citySelectorLab": 1001,
@@ -213,6 +213,10 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let tallys = SkillsCell()
             tallys.delegate = self
             tallys.style = .AddNew
+            let skillInfo = SkillInfo()
+            skillInfo.skill_name_ = "+"
+            skillInfo.labelWidth = 10.0
+            skills.append([skillInfo : false])
             tallys.setInfo(skills)
             return tallys
         } else if indexPath.section == 2 {

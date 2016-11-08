@@ -22,6 +22,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     var serviceTel = "10086"
     
     var services:Results<CenturionCardServiceInfo>?
+
+    var selectedIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,6 +156,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     // MARK: - CenturionCardLvSelCellDelegate
     func selectedAction(index: Int) {
+        selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
         callServantBtn?.snp_remakeConstraints(closure: { (make) in
@@ -173,17 +176,29 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func buyNowButtonTouched() {
-        UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
-//        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-//        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
-//        })
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-//            
-//        })
-//        alert.addAction(ensure)
-//        alert.addAction(cancel)
-//        presentViewController(alert, animated: true, completion: nil)
+        if selectedIndex == 0 {
+            UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
+        } else if selectedIndex == 1 {
+            if (DataManager.currentUser?.centurionCardLv)! < 1 {
+                let alert = UIAlertController.init(title: "提示", message: "购买失败，请先购买初级会员", preferredStyle: .Alert)
+                let ensure = UIAlertAction.init(title: "好的", style: .Default, handler: { (action: UIAlertAction) in
+                    
+                })
+                alert.addAction(ensure)
+                presentViewController(alert, animated: true, completion: nil)
+                return
+            }
+            XCGLogger.debug("zhongji")
+        } else if selectedIndex == 2 {
+            let alert = UIAlertController.init(title: "提示", message: "抱歉，高级黑卡会员仅限内部邀请，暂时无法升级", preferredStyle: .Alert)
+            let ensure = UIAlertAction.init(title: "好的", style: .Default, handler: { (action: UIAlertAction) in
+                
+            })
+            alert.addAction(ensure)
+            presentViewController(alert, animated: true, completion: nil)
+
+        }
+        
     }
     
 }

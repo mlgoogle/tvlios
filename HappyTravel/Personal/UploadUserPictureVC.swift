@@ -276,9 +276,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     func autoUserCardResult(notice: NSNotification?) {
         navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
-        let resultCode = data.valueForKey("review_status_")?.integerValue
-        switch resultCode {
-        case 0 as NSInteger :
+        let resultCode = data.valueForKey("review_status_") as? Int
+        if resultCode! == 0 {
             SVProgressHUD.dismiss()
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
             let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
@@ -287,8 +286,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
             }
             alter.addAction(backActiong)
             presentViewController(alter, animated: true, completion: nil)
-            
-        default:
+        } else {
             SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
         }
     }

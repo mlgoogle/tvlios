@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import RealmSwift
 protocol ServantIntroCellDelegate : NSObjectProtocol {
     
     func chatAction(servantInfo: UserInfo?)
@@ -18,7 +18,7 @@ class ServantIntroCell: UITableViewCell {
     
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
-    
+    var allLabelWidth:Float = 10.0
     var servantInfo:UserInfo?
     weak var delegate:ServantIntroCellDelegate?
     
@@ -289,11 +289,13 @@ class ServantIntroCell: UITableViewCell {
         }
         
         var lastTallyView:UIView?
-        let tags = (userInfo?.businessTags)! + (userInfo?.travalTags)!
+        let businessTags = List<Tally>() +  (userInfo?.businessTags)!
+        let tags = businessTags + (userInfo?.travalTags)!
         let tallyView = view!.viewWithTag(3001)
         for subview in tallyView!.subviews {
             subview.removeFromSuperview()
         }
+        allLabelWidth = 0.0
         for (index, tag) in tags.enumerate() {
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
@@ -307,27 +309,43 @@ class ServantIntroCell: UITableViewCell {
                 tallyItemView?.layer.borderWidth = 1
                 tallyView!.addSubview(tallyItemView!)
                 tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
-                let previousView = tallyView!.viewWithTag(1001+index-1)
+                
+                
+                allLabelWidth = allLabelWidth + 10 + tag.labelWidth
+
                 tallyItemView!.snp_makeConstraints { (make) in
+                    let previousView = tallyView!.viewWithTag(1001+index-1)
+
                     if previousView == nil {
+
                         make.top.equalTo(tallyView!).offset(10)
                         make.left.equalTo(tallyView!)
                     } else {
-                        if index / 3 > 0 {
-                            if index % 3 == 0 {
-                                make.top.equalTo(previousView!.snp_bottom).offset(10)
-                                make.left.equalTo(tallyView!)
-                            } else {
-                                make.top.equalTo(previousView!.snp_top)
-                                make.left.equalTo(previousView!.snp_right).offset(10)
-                            }
+                        if allLabelWidth + 20 > Float(ScreenWidth) {
+
+                            allLabelWidth = 10 + tag.labelWidth
+                            make.top.equalTo(previousView!.snp_bottom).offset(10)
+                            make.left.equalTo(tallyView!)
                         } else {
                             make.top.equalTo(previousView!)
                             make.left.equalTo(previousView!.snp_right).offset(10)
                         }
+                        
+//                        if index / 3 > 0 {
+//                            if index % 3 == 0 {
+//                                make.top.equalTo(previousView!.snp_bottom).offset(10)
+//                                make.left.equalTo(tallyView!)
+//                            } else {
+//                                make.top.equalTo(previousView!.snp_top)
+//                                make.left.equalTo(previousView!.snp_right).offset(10)
+//                            }
+//                        } else {
+//                            make.top.equalTo(previousView!)
+//                            make.left.equalTo(previousView!.snp_right).offset(10)
+//                        }
                     }
                     make.height.equalTo(25)
-                    
+                    make.width.equalTo(tag.labelWidth)
                 }
             }
             lastTallyView = tallyItemView
