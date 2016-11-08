@@ -17,13 +17,9 @@ enum SockErrCode : Int {
     case Other = 0
 }
 
-protocol SocketManagerProtocl: NSObjectProtocol {
-    func didRecieveResult(Result result:[NSObject : AnyObject]?)
-}
+
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
-
-    weak var delegate: SocketManagerProtocl?
     enum SockOpcode : Int {
         case AppError = -1
         case Heart = 1000
@@ -97,8 +93,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case checkAuthenticateResultReply = 1058
         case checkUserCash = 1067
         case checkUserCashReply = 1068
+        case AppointmentRecordRequest = 1069
+        case AppointmentRecordReply = 1070
         case checkCommentDetail = 2015
         case checkCommentDetailReplay = 2016
+
     }
     
     
@@ -346,6 +345,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             head.fields["type"] = 1
             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
+        case .AppointmentRecordRequest:
+         
+            head.fields["opcode"] = SockOpcode.AppointmentRecordRequest.rawValue
+            head.fields["type"] = 1
+            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+
+            break
+            
         case .checkCommentDetail:
             head.fields["opcode"] = SockOpcode.checkCommentDetail.rawValue
             head.fields["type"] = 2
@@ -421,7 +428,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let dict  = JSON.init(data: body as! NSData)
             
             if (head!.fields["type"] as! NSNumber).integerValue == 0 {
-                let result = dict.dictionaryObject
+                _ = dict.dictionaryObject
                 SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
                 XCGLogger.warning("Modify passwd failed")
             } else {
@@ -569,7 +576,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
             if (body as? NSData)?.length <= 0 {
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
-                return true
+                break
             }
             let dict = JSON.init(data: body as! NSData)
             if let invoiceList = dict.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {
@@ -674,6 +681,21 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
             break
+            
+        case .AppointmentRecordReply:
+            
+            let dict = JSON.init(data: body as! NSData)
+            
+            var lastID = -9999
+            if  let recordList = dict.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>> {
+                for record in recordList {
+                    let recordInfo = AppointmentInfo(value: record)
+                    DataManager.insertAppointmentRecordInfo(recordInfo)
+                    lastID = recordInfo.appointment_id_
+                }
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
+ 
         case .checkCommentDetailReplay:
             var dict = JSON.init(data: body as! NSData)
             if dict.count == 0 {
@@ -685,13 +707,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         }
         
-//        if delegate != nil {
-//            var dict = JSON.init(data: body as! NSData)
-//            if dict.count == 0 {
-//                dict = ["code":"0"]
-//            }
-//            delegate?.didRecieveResult(Result: ["data":dict.dictionaryObject!])
-//        }
+        if SocketManager.completation != nil {
+            var dict = JSON.init(data: body as! NSData)
+            if dict.count == 0 {
+                dict = ["code":"0"]
+            }
+            SocketManager.completation!(["data":dict.dictionaryObject!])
+            SocketManager.completation = nil
+        }
         
         return true
     }

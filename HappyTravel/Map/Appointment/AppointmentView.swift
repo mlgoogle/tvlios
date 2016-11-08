@@ -383,7 +383,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 textField?.clearButtonMode = .WhileEditing
                 textField?.backgroundColor = UIColor.clearColor()
                 textField?.textAlignment = .Left
-                textField?.keyboardType = .PhonePad
+                textField?.keyboardType = indexPath.row == 1 ? .Default : .PhonePad
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(lab!.snp_right).offset(10)
@@ -618,7 +618,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             
         }
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
-                                        "city_code_": cityInfo!.cityCode!,
+                                        "city_code_": cityInfo!.cityCode,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,

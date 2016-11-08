@@ -429,7 +429,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 for city in citys {
                     let cityInfo = CityInfo()
                     cityInfo.setInfo(city)
-                    serviceCitys[cityInfo.cityCode!] = cityInfo
+                    serviceCitys[cityInfo.cityCode] = cityInfo
+                    DataManager.insertData(CityInfo.self, data: cityInfo)
                 }
             }
             
