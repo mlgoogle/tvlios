@@ -158,7 +158,14 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerAccountReply(notification: NSNotification) {
-        if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+        if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            if let err = dict["error_"] {
+                SVProgressHUD.showErrorWithStatus("\(err) : （忘了啥错误了，方磊要看下代码）")
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+                    SVProgressHUD.dismiss()
+                })
+                return
+            }
             let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
             SocketManager.sendData(.Login, data: loginDict)
             
@@ -181,8 +188,6 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func sureAction(sender: UIButton?) {
-        
-
         if passwd != repasswd {
             SVProgressHUD.showErrorWithStatus("两次输入密码不一致")
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
