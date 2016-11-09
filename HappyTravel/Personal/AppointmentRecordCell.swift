@@ -18,15 +18,16 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-            if recordInfo?.is_other_ == 1 {
-                
-                nickNameLab.text = recordInfo?.other_name_
-
-                
-            } else {
-                
-                nickNameLab.text = DataManager.currentUser?.nickname
-            }
+//            if recordInfo?.is_other_ == 1 {
+//                
+//                nickNameLab.text = recordInfo?.other_name_
+//
+//                
+//            } else {
+//                
+//                nickNameLab.text = DataManager.currentUser?.nickname
+//            }
+            nickNameLab.text = "预约服务"
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {

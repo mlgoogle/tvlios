@@ -26,7 +26,7 @@ class CityInfo : Object {
             case "city_name_":
                 cityName = value as? String
                 break
-            case "city_code_":
+            case "city_code_":                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                 cityCode = (value as? Int)!
                 break
             case "province_name_":

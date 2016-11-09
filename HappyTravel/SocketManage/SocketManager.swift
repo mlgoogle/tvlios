@@ -768,14 +768,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
-//        if SocketManager.isLogout {
+        if !SocketManager.isLogout {
 //            connectSock()
 //            performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 1)
 //            return
-//        }
-        SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) { 
-            
-            self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 3.5)
+                SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
+                    
+                    self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 3.5)
+            }
         }
     }
     

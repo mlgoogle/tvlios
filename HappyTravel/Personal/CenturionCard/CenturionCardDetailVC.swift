@@ -52,7 +52,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         
         
         if let errorCode = dict!["error_"] {
-            SVProgressHUD.showErrorMessage(ErrorMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误：\(errorCode)", ForDuration: 1.5, completion: nil)
+            SVProgressHUD.showWainningMessage(WainningMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误：\(errorCode)", ForDuration: 1.5, completion: nil)
         } else {
             let userInfo = UserInfo()
             
