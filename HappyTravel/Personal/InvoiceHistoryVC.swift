@@ -66,7 +66,7 @@ class InvoiceHistoryVC:UIViewController {
         }
     
         let realm = try! Realm()
-        historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: true)
+        historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
 
         
         let lastOrderID = notify.userInfo!["lastOrderID"] as! Int

@@ -157,7 +157,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if section == 0 {
             return 1
         } else if section == 1 {
-            return 2
+            return 1
         } else if section == 2 {
             return 1
         }
@@ -289,10 +289,10 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 self.selectedIcon = selectedIcon
             }
     
-            if indexPath.row == 0 {
+            if indexPath.row == 1 {
                 channelIcon?.image = UIImage.init(named: "alipay")
                 channelLab?.text = "支付宝支付"
-            } else if indexPath.row == 1 {
+            } else if indexPath.row == 0 {
                 channelIcon?.image = UIImage.init(named: "wechat-pay")
                 channelLab?.text = "微信支付"
             }
@@ -411,13 +411,13 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func payAction(sender: UIButton) {
-        if selectedIndex == 0 {
+        if selectedIndex == 1 {
             DataManager.currentUser?.cash = 10
             let orderStr = "app_id=2016102102273564&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22BBCXFY4KAL3U6DB%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA&timestamp=2016-09-01%2013%3A49%3A34&version=1.0&sign=imFFzjpv%2BUt8iPLyFmrUqTUceLKWBZmn%2Bixy4siNLs3VmIw5jNddnLf1V0JdtkVQgAUhNWiw8oDTVlv6HuUAHj7Ja0Rz%2BdsYcr4MzTiqy1NHYYvoLUVFOlQGy1QXU6bMzYnhrQnjjkTf0hnNJiy6fVEA7iPRFnWr8cScHgA2JZI%3D"
             AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [NSObject : AnyObject]!) in
                 XCGLogger.debug("\(data)")
             })
-        } else if selectedIndex == 1 {
+        } else if selectedIndex == 0 {
             rechargeWithWX()
             
         }
