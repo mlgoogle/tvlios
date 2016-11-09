@@ -30,13 +30,18 @@ func colorWithHexString(hex: String) -> UIColor {
 let ScreenWidth = UIScreen.mainScreen().bounds.size.width
 let ScreenHeight = UIScreen.mainScreen().bounds.size.height
 let Timestamp = NSDate().timeIntervalSince1970
-func  AtapteValue(value: CGFloat) -> CGFloat {
+
+func  AtapteWidthValue(value: CGFloat) -> CGFloat {
     let mate = ScreenWidth/375.0
     let atapteValue = value*mate
     return atapteValue
 }
 
-
+func  AtapteHeightValue(value: CGFloat) -> CGFloat {
+    let mate = ScreenHeight/667.0
+    let atapteValue = value*mate
+    return atapteValue
+}
 func isTelNumber(num:NSString)->Bool
 {
     let mobile = "^1(3[0-9]|5[0-35-9]|8[025-9])\\d{8}$"
