@@ -2,25 +2,66 @@
 
 import UIKit
 
-var dict = ["c": "1",
-            "a": "2",
-            "b": "3"]
 
-dict.keys.reverse()
-
-var keys = dict.keys.reverse().sort({ (s1, s2) -> Bool in
-    return s1.compare(s2).rawValue < 0 ? true : false
+class Head: NSObject {
     
-})
-
-var contentString = ""
-for key in keys {
-    let value  = dict[key]
-    if value != "" && value != "sign" && value != "key" {
-        contentString.appendContentsOf("\(key)=\(value!)&")
-    }
+    var len:Int16 = 0
+    
+    var zipEncryptType:Int8 = 0
+    
+    var type:Int8 = 0
+    
+    var signature:Int16 = 0
+    
+    var opcode:Int16 = 0
+    
+    var bodyLen:Int16 = 0
+    
+    var timestamp:UInt32 = 0
+    
+    var sessionID:Int64 = 0
+    
+    var reserved:Int32 = 0
+    
 }
 
-contentString
+
+var cnt:UInt32 = 0
+
+var properList = class_copyPropertyList(Head.classForCoder(), &cnt)
+
+var ivars = class_copyIvarList(Head.classForCoder(), &cnt)
+
+for i in 0..<cnt {
+    var ivar = ivars[Int(i)]
+    var name = String.fromCString(ivar_getName(ivar))
+    var type = String.fromCString(ivar_getTypeEncoding(ivar))
+    
+    print(name!, type)
+    
+}
+
+for i in 0..<cnt {
+    var item = properList[Int(i)]
+    var name = String.fromCString(property_getName(item))
+    var attr = String.fromCString(property_getAttributes(item))
+    var value = property_copyAttributeValue(item, property_getAttributes(item))
+    var cnt2:UInt32 = 0
+    var prList = property_copyAttributeList(item, &cnt2)
+//    print(name!, " : " , attr!)
+    
+    for j in 0..<cnt2 {
+        var a = prList[Int(j)]
+//        print(String.fromCString(a.name)!, String.fromCString(a.value)!)
+    }
+
+}
+
+
+
+
+
+
+
 
 

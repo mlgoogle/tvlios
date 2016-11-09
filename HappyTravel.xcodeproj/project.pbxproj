@@ -111,6 +111,7 @@
 		2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B371D6D874000D48D6A /* SettingsVC.swift */; };
 		2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB5D931DC042B8006DEB26 /* SkillInfo.swift */; };
 		2FCB5D961DC093E6006DEB26 /* InvoiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB5D951DC093E6006DEB26 /* InvoiceInfo.swift */; };
+		2FD995961DD32842000CB006 /* SockHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD995951DD32842000CB006 /* SockHead.swift */; };
 		2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */; };
 		2FDAFCEC1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */; };
 		2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDAFCED1D65653900FD28CB /* LoginVC.swift */; };
@@ -397,6 +398,7 @@
 		2FC25B371D6D874000D48D6A /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsVC.swift; path = Personal/SettingsVC.swift; sourceTree = "<group>"; };
 		2FCB5D931DC042B8006DEB26 /* SkillInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillInfo.swift; path = Data/SkillInfo.swift; sourceTree = "<group>"; };
 		2FCB5D951DC093E6006DEB26 /* InvoiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceInfo.swift; path = Data/InvoiceInfo.swift; sourceTree = "<group>"; };
+		2FD995951DD32842000CB006 /* SockHead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SockHead.swift; path = SocketManage/SockHead.swift; sourceTree = "<group>"; };
 		2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorExt.swift; path = Common/ColorExt.swift; sourceTree = "<group>"; };
 		2FDAFCEB1D6562DA00FD28CB /* guide-detail-arrows-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-detail-arrows-up@2x.png"; sourceTree = "<group>"; };
 		2FDAFCED1D65653900FD28CB /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginVC.swift; path = Login/LoginVC.swift; sourceTree = "<group>"; };
@@ -762,6 +764,7 @@
 				2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */,
 				2F9D42111D5C511000D10FBC /* SocketProtocol.swift */,
 				BF0E5F5B1DD18151001F5813 /* SocketManagerExt.swift */,
+				2FD995951DD32842000CB006 /* SockHead.swift */,
 			);
 			name = SocketManage;
 			sourceTree = "<group>";
@@ -1884,6 +1887,7 @@
 				2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */,
 				2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */,
 				2FBB5E831D51E655007BE4E0 /* ChatDateCell.swift in Sources */,
+				2FD995961DD32842000CB006 /* SockHead.swift in Sources */,
 				6E3060311DD1C31B00EB1D2F /* AppointmentRecordCell.swift in Sources */,
 				6E1074721DC3412C00F3F46F /* InvoiceHistoryDetailCustomCell.swift in Sources */,
 				2FC25B0D1D6A9DA500D48D6A /* RecommendServantsVC.swift in Sources */,
