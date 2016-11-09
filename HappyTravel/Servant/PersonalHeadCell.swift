@@ -54,7 +54,7 @@ class PersonalHeadCell : UITableViewCell {
                 make.top.equalTo(view!)
                 make.left.equalTo(view!)
                 make.width.equalTo(width)
-                make.height.equalTo(width / 3.0 * 2.0)
+                make.height.equalTo(AtapteWidthValue(width) / 3.0 * 2.0)
                 make.bottom.equalTo(view!)
             }
         }
@@ -63,7 +63,7 @@ class PersonalHeadCell : UITableViewCell {
         if headImageView == nil {
             headImageView = UIImageView()
             headImageView!.tag = tags["headImageView"]!
-            headImageView?.layer.cornerRadius = width / 7.0
+            headImageView?.layer.cornerRadius = AtapteWidthValue(100) / 2
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
             headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
@@ -71,10 +71,10 @@ class PersonalHeadCell : UITableViewCell {
             headImageView!.backgroundColor = UIColor.clearColor()
             personalView!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
-                make.left.equalTo(personalView!).offset(25)
+                make.left.equalTo(personalView!).offset(AtapteWidthValue(25))
                 make.centerY.equalTo(personalView!)
-                make.height.equalTo(width / 7.0 * 2.0)
-                make.width.equalTo(width / 7.0 * 2.0)
+                make.height.equalTo(AtapteWidthValue(100))
+                make.width.equalTo(AtapteWidthValue(100))
             }
         }
         
@@ -85,10 +85,10 @@ class PersonalHeadCell : UITableViewCell {
             starLevelView?.backgroundColor = UIColor.clearColor()
             personalView!.addSubview(starLevelView!)
             starLevelView?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(headImageView!.snp_bottom).offset(20)
-                make.centerX.equalTo(headImageView!).offset(10)
-                make.width.equalTo(width / 3.0 + 20)
-                make.height.equalTo(20)
+                make.bottom.equalTo(personalView!).offset(AtapteWidthValue(-20))
+                make.centerX.equalTo(headImageView!).offset(AtapteWidthValue(10))
+                make.width.equalTo(AtapteWidthValue(width) / 3.0 + AtapteWidthValue(20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
             for i in 0...4 {
                 var star = starLevelView?.viewWithTag(starLevelView!.tag * 10 + i) as? UIImageView
@@ -100,8 +100,8 @@ class PersonalHeadCell : UITableViewCell {
                     star?.snp_makeConstraints(closure: { (make) in
                         make.left.equalTo(starLevelView!.snp_left).offset(((width / 3.0 + 20) / 5.0) * CGFloat(i))
                         make.centerY.equalTo(starLevelView!)
-                        make.width.equalTo(20)
-                        make.height.equalTo(20)
+                        make.width.equalTo(AtapteWidthValue(20))
+                        make.height.equalTo(AtapteHeightValue(20))
                         
                     })
                     star?.image = UIImage.init(named: i > 3 ? "guide-star-hollow": "guide-star-fill")
@@ -117,10 +117,10 @@ class PersonalHeadCell : UITableViewCell {
             officialAuth?.contentMode = .ScaleAspectFit
             personalView?.addSubview(officialAuth!)
             officialAuth?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(personalView!).offset(20)
-                make.top.equalTo(personalView!).offset(20)
-                make.width.equalTo(20)
-                make.height.equalTo(20)
+                make.left.equalTo(personalView!).offset(AtapteWidthValue(20))
+                make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
+                make.width.equalTo(AtapteWidthValue(20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
         }
         officialAuth?.image = UIImage.init(named: "guide-auth")
@@ -133,10 +133,10 @@ class PersonalHeadCell : UITableViewCell {
             zhimaAuth?.contentMode = .ScaleAspectFit
             personalView?.addSubview(zhimaAuth!)
             zhimaAuth?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(officialAuth!.snp_right).offset(10)
-                make.top.equalTo(personalView!).offset(20)
-                make.width.equalTo(20)
-                make.height.equalTo(20)
+                make.left.equalTo(officialAuth!.snp_right).offset(AtapteWidthValue(10))
+                make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
+                make.width.equalTo(AtapteWidthValue(20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
         }
         zhimaAuth?.image = UIImage.init(named: "guide-zhima-auth")
@@ -148,12 +148,12 @@ class PersonalHeadCell : UITableViewCell {
             authTips?.backgroundColor = UIColor.clearColor()
             authTips?.textAlignment = .Right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
-            authTips?.font = UIFont.boldSystemFontOfSize(15)
+            authTips?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
             personalView?.addSubview(authTips!)
             authTips?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(personalView!).offset(-20)
-                make.top.equalTo(personalView!).offset(20)
-                make.height.equalTo(20)
+                make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
+                make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
         }
         authTips?.text = "照片已认证"
@@ -165,12 +165,12 @@ class PersonalHeadCell : UITableViewCell {
             limitLab?.backgroundColor = UIColor.clearColor()
             limitLab?.textAlignment = .Right
             limitLab?.textColor = .whiteColor()
-            limitLab?.font = UIFont.boldSystemFontOfSize(15)
+            limitLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
             personalView?.addSubview(limitLab!)
             limitLab?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(personalView!).offset(-20)
-                make.bottom.equalTo(personalView!).offset(-20)
-                make.height.equalTo(20)
+                make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
+                make.bottom.equalTo(personalView!).offset(AtapteHeightValue(-20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
         }
         limitLab?.text = "0 Km"
@@ -183,10 +183,10 @@ class PersonalHeadCell : UITableViewCell {
             limitIcon?.contentMode = .ScaleAspectFit
             personalView?.addSubview(limitIcon!)
             limitIcon?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(limitLab!.snp_left).offset(-5)
+                make.right.equalTo(limitLab!.snp_left).offset(AtapteWidthValue(-5))
                 make.bottom.equalTo(limitLab!)
-                make.width.equalTo(20)
-                make.height.equalTo(20)
+                make.width.equalTo(AtapteWidthValue(20))
+                make.height.equalTo(AtapteHeightValue(20))
             })
             limitIcon?.image = UIImage.init(named: "limit")
         }

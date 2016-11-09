@@ -582,6 +582,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         } else if endDate == nil {
             alright = false
             errMsg = "请选择结束时间"
+        } else if Int(UInt64(startDate!.timeIntervalSince1970)) > Int(UInt64(endDate!.timeIntervalSince1970)) {
+            alright = false
+
+            errMsg = "开始时间不能大于结束时间"
         } else if cityInfo == nil {
             alright = false
             errMsg = "请选择目标城市"

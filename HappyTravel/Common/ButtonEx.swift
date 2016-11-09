@@ -17,13 +17,13 @@ extension UIButton {
     
     //imageView在上,label在下
     func setImageAndTitleLeft(spacing:CGFloat){
-        let imageSize =  self.imageView?.frame.size
-        let titleSize = self.titleLabel?.frame.size;
+        let imageSize =  imageView?.frame.size
+        let titleSize = titleLabel?.frame.size;
         
         let totalHeight = imageSize!.height + titleSize!.height + spacing
         
-        self.imageEdgeInsets = UIEdgeInsetsMake(-(totalHeight - imageSize!.height), 0.0, 0.0, -titleSize!.width)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, -imageSize!.width, -(totalHeight - titleSize!.height), 0.0)
+        imageEdgeInsets = UIEdgeInsetsMake(-(totalHeight - imageSize!.height), 0.0, 0.0, -titleSize!.width)
+        titleEdgeInsets = UIEdgeInsetsMake(0, -imageSize!.width, -(totalHeight - titleSize!.height), 0.0)
     }
     
 }

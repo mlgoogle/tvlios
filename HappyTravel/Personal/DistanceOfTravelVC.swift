@@ -113,6 +113,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if lastID == -9999 {
             footer.state = .NoMoreData
             footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            table?.reloadData()
             return
         }
         lastRecordId = lastID
