@@ -78,7 +78,7 @@ class CenturionCardLvSelCell : UITableViewCell {
             
         }
         
-        indirector.frame = CGRectMake(ScreenWidth/6-10, contentView.frame.maxY+10, 16, 16)
+        indirector.frame = CGRectMake(ScreenWidth/6-10, contentView.frame.maxY+15, 20, 20)
         indirector.image = UIImage.init(named: "indirector")
         contentView.addSubview(indirector)
     }
