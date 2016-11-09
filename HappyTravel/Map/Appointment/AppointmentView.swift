@@ -383,7 +383,6 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 textField?.clearButtonMode = .WhileEditing
                 textField?.backgroundColor = UIColor.clearColor()
                 textField?.textAlignment = .Left
-                textField?.keyboardType = indexPath.row == 1 ? .Default : .PhonePad
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(lab!.snp_right).offset(10)
@@ -392,6 +391,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.bottom.equalTo(lab!).offset(5)
                 })
             }
+            
+            textField?.keyboardType = indexPath.row == 1 ? .Default : .PhonePad
             textField?.attributedPlaceholder = NSAttributedString.init(string: indexPath.row == 1 ? "预约对象姓名" : "联系电话", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
             
         } else if indexPath.row == 2 {
