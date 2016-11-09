@@ -117,6 +117,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         verifyCodeField.clearButtonMode = .WhileEditing
         verifyCodeField.backgroundColor = UIColor.clearColor()
         verifyCodeField.textAlignment = .Left
+        verifyCodeField.keyboardType = .NumberPad
         verifyCodeField.attributedPlaceholder = NSAttributedString.init(string: "请输入验证码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
         view.addSubview(verifyCodeField)
         
@@ -351,7 +352,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
         
         if textField.tag == tags["usernameField"]! {
-            username = textField.text! + string
+            username = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         } else if textField.tag == tags["verifyCodeField"]! {
             verifyCode = Int.init((textField.text!) + string)!
             
