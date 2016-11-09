@@ -253,6 +253,7 @@
 		BF77CEEE1DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BF77CEEF1DCED43100F20C6A /* YWFeedbackFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */; };
 		BF77CEF01DCED43200F20C6A /* YWHybridWebViewFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */; };
+		BFDB31B91DD32FAC0074C1B6 /* indirector.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDB31B81DD32FAC0074C1B6 /* indirector.png */; };
 		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
@@ -547,6 +548,7 @@
 		BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackAudioExtentionFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
+		BFDB31B81DD32FAC0074C1B6 /* indirector.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = indirector.png; sourceTree = "<group>"; };
 		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -603,6 +605,7 @@
 		2F6959E31D54259A0072B7FF /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				BFDB31B81DD32FAC0074C1B6 /* indirector.png */,
 				B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */,
 				B341CE171DC2E97700DF93CB /* example@2x.png */,
 				B341CE181DC2E97700DF93CB /* tianjia@2x.png */,
@@ -1427,6 +1430,7 @@
 				2FE7C3341D61ACFC00994505 /* nav-msg@2x.png in Resources */,
 				2FE7C3891D6413E300994505 /* my-star-hollow@3x.png in Resources */,
 				2FF578E41DD05E12009500D9 /* head-bg@3x.png in Resources */,
+				BFDB31B91DD32FAC0074C1B6 /* indirector.png in Resources */,
 				2FF72B841DAF6217001EEED2 /* service-agent-disable@3x.png in Resources */,
 				2FF72B8C1DAF6217001EEED2 /* share-wechat-moment@3x.png in Resources */,
 				2FE7C3281D618EC900994505 /* map_meet@2x.png in Resources */,

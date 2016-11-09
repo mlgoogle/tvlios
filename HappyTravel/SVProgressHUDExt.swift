@@ -33,7 +33,7 @@ extension SVProgressHUD{
         initStyle()
         SVProgressHUD.showWithStatus(message)
     }
-    
+
     public class func initStyle(){
         SVProgressHUD.setDefaultStyle(.Dark)
         SVProgressHUD.setDefaultMaskType(.None)
