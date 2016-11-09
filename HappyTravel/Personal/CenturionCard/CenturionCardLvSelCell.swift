@@ -18,6 +18,7 @@ protocol CenturionCardLvSelCellDelegate : NSObjectProtocol {
 class CenturionCardLvSelCell : UITableViewCell {
     
     weak var delegate:CenturionCardLvSelCellDelegate?
+    var indirector: UIImageView = UIImageView()
     
     let tags = ["lvBtn": 1001,
                 "servicesBGView": 1002]
@@ -30,8 +31,6 @@ class CenturionCardLvSelCell : UITableViewCell {
                              1: [0: "middle-level-disable", 1: "middle-level"],
                              2: [0: "advanced-level-disable", 1: "advanced-level"]]
     
-    var servicesViews:Array<UIView> = []
-    
     let services = [0: []]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -39,7 +38,6 @@ class CenturionCardLvSelCell : UITableViewCell {
         selectionStyle = .None
         contentView.backgroundColor = UIColor.redColor()
         backgroundColor = UIColor.redColor()
-        
         for i in 0..<centurionCardIcon.count {
             let buttonWidth:CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
             let buttonHeight:CGFloat = 70.0
@@ -73,15 +71,21 @@ class CenturionCardLvSelCell : UITableViewCell {
                     make.width.equalTo(buttonWidth)
                     make.bottom.equalTo(contentView)
                 })
+                
             }
             lvBtn?.setImage(UIImage.init(named: i < DataManager.currentUser!.centurionCardLv ? centurionCardIcon[i]![1]! : centurionCardIcon[i]![0]!), forState: .Normal)
             lvBtn?.setTitleColor(i < DataManager.currentUser!.centurionCardLv ? UIColor.blackColor() : UIColor.grayColor(), forState: .Normal)
+            
         }
+        
+        indirector.frame = CGRectMake(ScreenWidth/6-10, contentView.frame.maxY+15, 20, 20)
+        indirector.image = UIImage.init(named: "indirector")
+        contentView.addSubview(indirector)
     }
     
     func switchoverServicesView(sender: UIButton) {
-        for (index, view) in servicesViews.enumerate() {
-            view.hidden = index == sender.tag - tags["lvBtn"]! * 10 ? false : true
+        UIView.animateWithDuration(0.5) {
+            self.indirector.mj_x = sender.center.x - 10
         }
         delegate?.selectedAction(sender.tag - tags["lvBtn"]! * 10)
     }
