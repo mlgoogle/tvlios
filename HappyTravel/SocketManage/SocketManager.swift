@@ -773,7 +773,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //            performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 1)
 //            return
 //        }
-        performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5)
+        SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) { 
+            
+            self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 3.5)
+        }
     }
     
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
