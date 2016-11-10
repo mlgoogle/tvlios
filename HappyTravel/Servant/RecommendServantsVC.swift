@@ -104,8 +104,8 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(servantInfo: UserInfo?) {
-        
-        SocketManager.sendData(.GetServantDetailInfo, data:servantInfo)
+        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+        SocketManager.sendData(.GetServantDetailInfo, data:dict)
         self.servantInfo[(servantInfo?.uid)!] = servantInfo
     }
     
