@@ -233,6 +233,9 @@
 		6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */; };
 		6E3060311DD1C31B00EB1D2F /* AppointmentRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */; };
 		6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */; };
+		6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */; };
+		6E5E4E4E1DD45A3100368011 /* AppointmentDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */; };
+		6E5E4E501DD4726C00368011 /* appointment-detail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4F1DD4726C00368011 /* appointment-detail@2x.png */; };
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
 		6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */; };
 		6EED9AD91DCDD5E500A701DD /* SingleSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */; };
@@ -523,6 +526,9 @@
 		6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceIncludeCell.swift; path = Personal/InvoiceIncludeCell.swift; sourceTree = "<group>"; };
 		6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRecordCell.swift; path = Personal/AppointmentRecordCell.swift; sourceTree = "<group>"; };
 		6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentInfo.swift; path = Data/AppointmentInfo.swift; sourceTree = "<group>"; };
+		6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailVC.swift; path = Personal/AppointmentDetailVC.swift; sourceTree = "<group>"; };
+		6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailCell.swift; path = Personal/AppointmentDetailCell.swift; sourceTree = "<group>"; };
+		6E5E4E4F1DD4726C00368011 /* appointment-detail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appointment-detail@2x.png"; sourceTree = "<group>"; };
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillWidthLayout.swift; path = Map/Appointment/SkillWidthLayout.swift; sourceTree = "<group>"; };
@@ -691,6 +697,8 @@
 				2FBA71F61D6EA49400839E51 /* DistanceOfTravelCell.swift */,
 				2FC25B351D6D6E7B00D48D6A /* DistanceOfTravelVC.swift */,
 				6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */,
+				6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */,
+				6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */,
 			);
 			name = Consume;
 			sourceTree = "<group>";
@@ -957,6 +965,7 @@
 		2FE7C3181D615AEF00994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6E5E4E4F1DD4726C00368011 /* appointment-detail@2x.png */,
 				2FF578E51DD068C0009500D9 /* segment-bg@2x.png */,
 				2FF578E61DD068C0009500D9 /* segment-bg@3x.png */,
 				2FF578E31DD05E12009500D9 /* head-bg@3x.png */,
@@ -1428,6 +1437,7 @@
 				B341CE191DC2E97700DF93CB /* example@2x.png in Resources */,
 				2FF72B951DAF6217001EEED2 /* vipper-rest@2x.png in Resources */,
 				2FF72B7D1DAF6217001EEED2 /* middle-level@2x.png in Resources */,
+				6E5E4E501DD4726C00368011 /* appointment-detail@2x.png in Resources */,
 				2FF72B8A1DAF6217001EEED2 /* service@3x.png in Resources */,
 				2FE7C3341D61ACFC00994505 /* nav-msg@2x.png in Resources */,
 				2FE7C3891D6413E300994505 /* my-star-hollow@3x.png in Resources */,
@@ -1853,6 +1863,7 @@
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */,
 				2F96840D1D76B82A0028E3F2 /* InvoiceDetailVC.swift in Sources */,
+				6E5E4E4E1DD45A3100368011 /* AppointmentDetailCell.swift in Sources */,
 				2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */,
 				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
 				2F2A2B161DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift in Sources */,
@@ -1879,6 +1890,7 @@
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
+				6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */,
 				6E09F4791DC1AAF200F1D4FA /* InvoiceIncludeServiceVC.swift in Sources */,
 				2FC25B0A1D6A9C7600D48D6A /* ServiceSheet.swift in Sources */,
 				6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */,
