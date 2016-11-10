@@ -25,6 +25,7 @@
 		2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */; };
 		2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */; };
 		2F2A2B161DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2A2B151DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift */; };
+		2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */; };
 		2F337A831D9BC1FB003BAE20 /* HodometerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F337A821D9BC1FB003BAE20 /* HodometerInfo.swift */; };
 		2F337A851D9BC249003BAE20 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F337A841D9BC249003BAE20 /* Todo.swift */; };
 		2F4EEC3D1D969148004DFFC8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4EEC3C1D969148004DFFC8 /* MapKit.framework */; };
@@ -296,6 +297,7 @@
 		2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegOrLoginSelVC.swift; path = Login/RegOrLoginSelVC.swift; sourceTree = "<group>"; };
 		2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompleteBaseInfoVC.swift; path = Login/CompleteBaseInfoVC.swift; sourceTree = "<group>"; };
 		2F2A2B151DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardConsumedInfo.swift; path = Data/CenturionCardConsumedInfo.swift; sourceTree = "<group>"; };
+		2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BMB2Object.swift; path = Common/BMB2Object.swift; sourceTree = "<group>"; };
 		2F337A821D9BC1FB003BAE20 /* HodometerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HodometerInfo.swift; path = Common/HodometerInfo.swift; sourceTree = "<group>"; };
 		2F337A841D9BC249003BAE20 /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Todo.swift; path = HappyTravel/Todo.swift; sourceTree = "<group>"; };
 		2F4EEC3C1D969148004DFFC8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -719,6 +721,7 @@
 		2F9684141D77D1200028E3F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				2FB57FEE1D74026A002C015F /* Data */,
 				BF77CEE01DCED43100F20C6A /* BCFeedback */,
 				2F5F2D441DC19C3300EB5773 /* WeChatSDK */,
 				2F9684151D77D1200028E3F2 /* Alipay */,
@@ -803,7 +806,6 @@
 			children = (
 				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				2F9684141D77D1200028E3F2 /* Other */,
-				2FB57FEE1D74026A002C015F /* Data */,
 				2FC25AFD1D6A9B8B00D48D6A /* Servant */,
 				2FDAFCEF1D65653F00FD28CB /* Login */,
 				2FE7C38D1D64469100994505 /* Common */,
@@ -891,6 +893,7 @@
 				6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */,
 			);
 			name = Data;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		2FBB5E211D51CC47007BE4E0 /* Chats */ = {
@@ -1021,6 +1024,7 @@
 				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
 				BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */,
 				BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */,
+				2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1829,6 +1833,7 @@
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
 				2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
+				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
 				2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */,
 				2F337A831D9BC1FB003BAE20 /* HodometerInfo.swift in Sources */,
 				2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */,

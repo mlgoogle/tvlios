@@ -9,11 +9,11 @@
 import Foundation
 import XCGLogger
 
-class SockHead : NSObject {
+class SockHeadOld : NSObject {
     static var size:Int {
         get {
             var len = 0
-            for item in SockHead.fieldsAttr {
+            for item in SockHeadOld.fieldsAttr {
                 let ft = item as NSDictionary
                 let fieldName = ft.allKeys[0] as! String
                 let type = ft.valueForKey(fieldName) as! String
@@ -45,7 +45,7 @@ class SockHead : NSObject {
     init(data: NSData) {
         super.init()
         var srcData = data
-        for item in SockHead.fieldsAttr {
+        for item in SockHeadOld.fieldsAttr {
             let ft = item as NSDictionary
             let fieldName = ft.allKeys[0] as! String
             let type = ft.valueForKey(fieldName) as! String
@@ -56,7 +56,7 @@ class SockHead : NSObject {
     
     override init() {
         super.init()
-        for item in SockHead.fieldsAttr {
+        for item in SockHeadOld.fieldsAttr {
             let ft = item as NSDictionary
             let fieldName = ft.allKeys[0] as! String
             let type = ft.valueForKey(fieldName) as! String
@@ -66,7 +66,7 @@ class SockHead : NSObject {
     
     func makePackage() -> NSData? {
         let data = NSMutableData()
-        for item in SockHead.fieldsAttr {
+        for item in SockHeadOld.fieldsAttr {
             let ft = item as NSDictionary
             let fieldName = ft.allKeys[0] as! String
             let type = ft.valueForKey(fieldName) as! String

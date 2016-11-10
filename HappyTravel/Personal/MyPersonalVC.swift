@@ -132,7 +132,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
         SocketManager.sendData(.SkillsInfoRequest, data: nil)
-        SocketManager.sendData(.checkAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
         
     }
     

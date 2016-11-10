@@ -605,7 +605,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
                         DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
-                        SocketManager.sendData(.GetServantInfo, data: nil)
+                        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
+                                                                  "distance_": 20.1]
+                        SocketManager.sendData(.GetServantInfo, data: dict)
                     }
                 }
             }
@@ -707,7 +710,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 
                 return
             }
-            SocketManager.sendData(.GetServantDetailInfo, data: (view as! GuideTagCell).userInfo)
+
+            let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid]
+            SocketManager.sendData(.GetServantDetailInfo, data: dict)
             
         }
                 
@@ -734,7 +739,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(servantInfo: UserInfo?) {
-        SocketManager.sendData(.GetServantDetailInfo, data: servantInfo)
+        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+        SocketManager.sendData(.GetServantDetailInfo, data: dict)
 
     }
     
