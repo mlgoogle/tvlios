@@ -54,7 +54,7 @@ class InvoiceCell: UITableViewCell {
             nameLab?.tag = tags["nameLab"]!
             nameLab?.backgroundColor = UIColor.clearColor()
             nameLab?.textAlignment = .Left
-            nameLab?.font = UIFont.systemFontOfSize(15)
+            nameLab?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(nameLab!)
             nameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(selectBtn!.snp_right).offset(10)
@@ -69,7 +69,7 @@ class InvoiceCell: UITableViewCell {
             titleLab?.tag = tags["titleLab"]!
             titleLab?.backgroundColor = UIColor.clearColor()
             titleLab?.textAlignment = .Left
-            titleLab?.font = UIFont.systemFontOfSize(15)
+            titleLab?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(titleLab!)
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nameLab!.snp_right).offset(10)
@@ -84,7 +84,7 @@ class InvoiceCell: UITableViewCell {
             priceLab?.tag = tags["priceLab"]!
             priceLab?.backgroundColor = UIColor.clearColor()
             priceLab?.textAlignment = .Right
-            priceLab?.font = UIFont.systemFontOfSize(15)
+            priceLab?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(priceLab!)
             priceLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -101,7 +101,7 @@ class InvoiceCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(13)
+            timeLab?.font = UIFont.systemFontOfSize(S13)
             contentView.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nameLab!)
@@ -118,7 +118,7 @@ class InvoiceCell: UITableViewCell {
             typeLab?.backgroundColor = UIColor.clearColor()
             typeLab?.textAlignment = .Right
             typeLab?.textColor = UIColor.grayColor()
-            typeLab?.font = UIFont.systemFontOfSize(13)
+            typeLab?.font = UIFont.systemFontOfSize(S13)
             contentView.addSubview(typeLab!)
             typeLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(timeLab!.snp_right)

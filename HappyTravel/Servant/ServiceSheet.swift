@@ -152,7 +152,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
             priceLab?.backgroundColor = UIColor.clearColor()
             priceLab?.textAlignment = .Right
             priceLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            priceLab?.font = UIFont.systemFontOfSize(15)
+            priceLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(priceLab!)
             priceLab!.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(cell!.contentView).offset(-15)
@@ -171,7 +171,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
             descLab?.numberOfLines = 0
             descLab?.preferredMaxLayoutWidth = UIScreen.mainScreen().bounds.size.width / 5.0 * 3
             descLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            descLab?.font = UIFont.systemFontOfSize(15)
+            descLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(descLab!)
             descLab!.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(selectBtn!.snp_right).offset(15)

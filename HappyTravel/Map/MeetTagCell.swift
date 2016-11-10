@@ -42,7 +42,7 @@ class MeetTagCell: MAAnnotationView {
         if timeLab == nil {
             timeLab = UILabel()
             timeLab?.tag = 1002
-            timeLab?.font = UIFont.systemFontOfSize(15)
+            timeLab?.font = UIFont.systemFontOfSize(S15)
             timeLab?.textColor = UIColor.whiteColor()
             timeLab?.textAlignment = NSTextAlignment.Center
             timeLab?.backgroundColor = UIColor.clearColor()
@@ -60,7 +60,7 @@ class MeetTagCell: MAAnnotationView {
         if timeUnitLab == nil {
             timeUnitLab = UILabel()
             timeUnitLab?.tag = 1003
-            timeUnitLab?.font = UIFont.systemFontOfSize(10)
+            timeUnitLab?.font = UIFont.systemFontOfSize(S10)
             timeUnitLab?.textColor = UIColor.whiteColor()
             timeUnitLab?.textAlignment = NSTextAlignment.Center
             timeUnitLab?.backgroundColor = UIColor.clearColor()
@@ -79,7 +79,7 @@ class MeetTagCell: MAAnnotationView {
             tipsLab = UILabel()
             tipsLab?.tag = 1005
             tipsLab?.text = "这里会面"
-            tipsLab?.font = UIFont.systemFontOfSize(13)
+            tipsLab?.font = UIFont.systemFontOfSize(S13)
             tipsLab?.textColor = UIColor.whiteColor()
             tipsLab?.textAlignment = NSTextAlignment.Center
             tipsLab?.backgroundColor = UIColor.clearColor()

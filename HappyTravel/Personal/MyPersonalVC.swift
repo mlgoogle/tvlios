@@ -223,7 +223,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             nameLabel!.backgroundColor = .clearColor()
             nameLabel!.titleLabel?.textAlignment = .Left
             nameLabel!.titleLabel?.textColor = .whiteColor()
-            nameLabel!.titleLabel?.font = .systemFontOfSize(20)
+            nameLabel!.titleLabel?.font = .systemFontOfSize(AtapteWidthValue(20))
             nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), forControlEvents: .TouchUpInside)
             personalView!.addSubview(nameLabel!)
             nameLabel!.snp_makeConstraints { (make) in

@@ -120,7 +120,7 @@ class ServantIntroCell: UITableViewCell {
             authTips?.backgroundColor = UIColor.clearColor()
             authTips?.textAlignment = .Right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
-            authTips?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
+            authTips?.font = UIFont.boldSystemFontOfSize(S15)
             personalView?.addSubview(authTips!)
             authTips?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -137,7 +137,7 @@ class ServantIntroCell: UITableViewCell {
             limitLab?.backgroundColor = UIColor.clearColor()
             limitLab?.textAlignment = .Right
             limitLab?.textColor = .whiteColor()
-            limitLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
+            limitLab?.font = UIFont.boldSystemFontOfSize(S15)
             personalView?.addSubview(limitLab!)
             limitLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -171,7 +171,7 @@ class ServantIntroCell: UITableViewCell {
             nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
             nickNameLab?.textColor = .blackColor()
-            nickNameLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(16))
+            nickNameLab?.font = UIFont.boldSystemFontOfSize(S15)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(view!).offset(AtapteWidthValue(20))
@@ -355,7 +355,7 @@ class ServantIntroCell: UITableViewCell {
             if tallyLabel == nil {
                 tallyLabel = UILabel(frame: CGRectZero)
                 tallyLabel!.tag = tallyItemView!.tag * 100 + 1
-                tallyLabel!.font = UIFont.systemFontOfSize(AtapteWidthValue(12))
+                tallyLabel!.font = UIFont.systemFontOfSize(S12)
                 tallyLabel!.userInteractionEnabled = false
                 tallyLabel!.backgroundColor = UIColor.clearColor()
                 tallyLabel?.textAlignment = .Center

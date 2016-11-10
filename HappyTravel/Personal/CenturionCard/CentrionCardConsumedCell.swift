@@ -67,7 +67,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             serviceTitleLab?.backgroundColor = UIColor.clearColor()
             serviceTitleLab?.textAlignment = .Left
             serviceTitleLab?.textColor = UIColor.blackColor()
-            serviceTitleLab?.font = UIFont.systemFontOfSize(15)
+            serviceTitleLab?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(serviceTitleLab!)
             serviceTitleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -82,7 +82,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             costLab?.backgroundColor = UIColor.clearColor()
             costLab?.textAlignment = .Right
             costLab?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-            costLab?.font = UIFont.systemFontOfSize(15)
+            costLab?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(costLab!)
             costLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(contentView).offset(-14)
@@ -97,7 +97,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(13)
+            timeLab?.font = UIFont.systemFontOfSize(S13)
             contentView.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
                 make.top.equalTo(serviceTitleLab!.snp_bottom).offset(11)

@@ -148,7 +148,7 @@ class PersonalHeadCell : UITableViewCell {
             authTips?.backgroundColor = UIColor.clearColor()
             authTips?.textAlignment = .Right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
-            authTips?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
+            authTips?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(S15))
             personalView?.addSubview(authTips!)
             authTips?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -165,7 +165,7 @@ class PersonalHeadCell : UITableViewCell {
             limitLab?.backgroundColor = UIColor.clearColor()
             limitLab?.textAlignment = .Right
             limitLab?.textColor = .whiteColor()
-            limitLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(15))
+            limitLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(S15))
             personalView?.addSubview(limitLab!)
             limitLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))

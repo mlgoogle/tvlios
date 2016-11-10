@@ -155,7 +155,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             titleLab?.tag = tags["titleLab"]!
             titleLab?.backgroundColor = UIColor.whiteColor()
             titleLab?.textColor = UIColor.blackColor()
-            titleLab?.font = UIFont.systemFontOfSize(15)
+            titleLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(titleLab!)
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(20)

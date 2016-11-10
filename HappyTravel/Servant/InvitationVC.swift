@@ -35,7 +35,7 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         creatTimer()
         
         let tipsLabel = UILabel()
-        tipsLabel.font = UIFont.systemFontOfSize(18)
+        tipsLabel.font = UIFont.systemFontOfSize(S18)
         tipsLabel.textAlignment = NSTextAlignment.Center
         tipsLabel.backgroundColor = UIColor.clearColor()
         tipsLabel.textColor = UIColor.whiteColor()
@@ -134,7 +134,7 @@ class AnnularProgressView: UIView {
     func initView() {
         timeLabel = UILabel()
         timeLabel?.backgroundColor = UIColor.clearColor()
-        timeLabel?.font = UIFont.systemFontOfSize(22)
+        timeLabel?.font = UIFont.systemFontOfSize(AtapteWidthValue(22))
         timeLabel?.textAlignment = NSTextAlignment.Center
         addSubview(timeLabel!)
         timeLabel?.snp_makeConstraints(closure: { (make) in

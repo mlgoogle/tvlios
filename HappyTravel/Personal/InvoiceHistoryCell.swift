@@ -36,7 +36,7 @@ class InvoiceHistoryCell: UITableViewCell {
             priceLabel?.backgroundColor = UIColor.clearColor()
             priceLabel?.textAlignment = .Left
             priceLabel?.textColor = UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)
-            priceLabel?.font = UIFont.systemFontOfSize(15)
+            priceLabel?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(priceLabel!)
             priceLabel?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(contentView).offset(20)
@@ -50,7 +50,7 @@ class InvoiceHistoryCell: UITableViewCell {
             dateLabel?.backgroundColor = UIColor.clearColor()
             dateLabel?.textAlignment = .Left
             dateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
-            dateLabel?.font = UIFont.systemFontOfSize(12)
+            dateLabel?.font = UIFont.systemFontOfSize(S12)
             contentView.addSubview(dateLabel!)
             dateLabel?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(priceLabel!)
@@ -66,7 +66,7 @@ class InvoiceHistoryCell: UITableViewCell {
             statusLabel?.backgroundColor = UIColor.clearColor()
             statusLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
             statusLabel?.textAlignment = .Center
-            statusLabel?.font = UIFont.systemFontOfSize(13)
+            statusLabel?.font = UIFont.systemFontOfSize(S13)
             statusLabel?.layer.borderWidth = 1
             statusLabel?.layer.borderColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0).CGColor
             statusLabel?.layer.cornerRadius = 12

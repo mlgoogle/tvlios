@@ -140,7 +140,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             title = UILabel()
             title?.tag = 1001
             title?.backgroundColor = UIColor.clearColor()
-            title?.font = UIFont.systemFontOfSize(15)
+            title?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(title!)
             title?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(10)

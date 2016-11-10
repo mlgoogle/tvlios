@@ -22,7 +22,7 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
         accessoryType = .DisclosureIndicator
         if titleLabel == nil {
             titleLabel = UILabel()
-            titleLabel?.font = UIFont.systemFontOfSize(15)
+            titleLabel?.font = UIFont.systemFontOfSize(S15)
             titleLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         
             titleLabel?.textAlignment = .Left
@@ -35,7 +35,7 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
         
         if dateLabel == nil {
             dateLabel = UILabel()
-            dateLabel?.font = UIFont.systemFontOfSize(12)
+            dateLabel?.font = UIFont.systemFontOfSize(S12)
             dateLabel?.textAlignment = .Left
             dateLabel?.backgroundColor = UIColor.clearColor()
             dateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
@@ -105,13 +105,13 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
         if titleLabel == nil {
             titleLabel = UILabel()
             titleLabel?.backgroundColor = UIColor.clearColor()
-            titleLabel?.font = UIFont.systemFontOfSize(15)
+            titleLabel?.font = UIFont.systemFontOfSize(S15)
             titleLabel?.textColor =  UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
         }
         if infoLabel == nil {
             infoLabel = UILabel()
             infoLabel?.backgroundColor = UIColor.clearColor()
-            infoLabel?.font = UIFont.systemFontOfSize(15)
+            infoLabel?.font = UIFont.systemFontOfSize(S15)
             infoLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
 
         }

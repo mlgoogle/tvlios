@@ -90,7 +90,7 @@ class CenturionCardServicesCell : UITableViewCell {
                 titleLab = UILabel()
                 titleLab?.tag = serviceBtn!.tag * 100 + index
                 titleLab?.backgroundColor = UIColor.clearColor()
-                titleLab?.font = UIFont.systemFontOfSize(13)
+                titleLab?.font = UIFont.systemFontOfSize(S13)
                 titleLab?.textColor = UIColor.blackColor()
                 serviceBtn?.addSubview(titleLab!)
                 titleLab?.snp_makeConstraints(closure: { (make) in

@@ -69,7 +69,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             levelLabel?.backgroundColor = UIColor.clearColor()
             levelLabel?.textAlignment = .Center
             levelLabel?.textColor = UIColor.whiteColor()
-            levelLabel?.font = UIFont.boldSystemFontOfSize(16)
+            levelLabel?.font = UIFont.boldSystemFontOfSize(S15)
             bgView?.addSubview(levelLabel!)
             levelLabel?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(bgView!)
@@ -85,7 +85,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             nicknameLabel?.backgroundColor = UIColor.clearColor()
             nicknameLabel?.textAlignment = .Center
             nicknameLabel?.textColor = .whiteColor()
-            nicknameLabel?.font = UIFont.boldSystemFontOfSize(16)
+            nicknameLabel?.font = UIFont.boldSystemFontOfSize(S15)
             bgView?.addSubview(nicknameLabel!)
             nicknameLabel?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(bgView!)

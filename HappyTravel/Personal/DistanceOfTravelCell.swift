@@ -79,7 +79,7 @@ class DistanceOfTravelCell: UITableViewCell {
             nickNameLab?.tag = 1002
             nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
-            nickNameLab?.font = UIFont.systemFontOfSize(15)
+            nickNameLab?.font = UIFont.systemFontOfSize(S15)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -94,7 +94,7 @@ class DistanceOfTravelCell: UITableViewCell {
             serviceTitleLab?.backgroundColor = UIColor.clearColor()
             serviceTitleLab?.textAlignment = .Left
             serviceTitleLab?.textColor = UIColor.blackColor()
-            serviceTitleLab?.font = UIFont.systemFontOfSize(15)
+            serviceTitleLab?.font = UIFont.systemFontOfSize(S15)
             view?.addSubview(serviceTitleLab!)
             serviceTitleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nickNameLab!)
@@ -124,7 +124,7 @@ class DistanceOfTravelCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(13)
+            timeLab?.font = UIFont.systemFontOfSize(S13)
             view?.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
                 make.top.equalTo(serviceTitleLab!.snp_bottom).offset(11)
@@ -140,7 +140,7 @@ class DistanceOfTravelCell: UITableViewCell {
             statusLab?.backgroundColor = UIColor.clearColor()
             statusLab?.textAlignment = .Right
             statusLab?.textColor = UIColor.init(red: 245/255.0, green: 146/255.0, blue: 49/255.0, alpha: 1)
-            statusLab?.font = UIFont.systemFontOfSize(15)
+            statusLab?.font = UIFont.systemFontOfSize(S15)
             view?.addSubview(statusLab!)
             statusLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(payLab!)

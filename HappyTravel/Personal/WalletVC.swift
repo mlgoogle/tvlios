@@ -89,11 +89,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let label = UILabel()
             label.backgroundColor = .clearColor()
             label.text = "发票管理"
-            label.font = .systemFontOfSize(15)
+            label.font = .systemFontOfSize(S15)
             label.textColor = UIColor.grayColor()
             view.addSubview(label)
             label.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(view).offset(20)
+                make.left.equalTo(view).offset(AtapteWidthValue(20))
                 make.top.equalTo(view)
                 make.right.equalTo(view)
                 make.bottom.equalTo(view)

@@ -63,7 +63,7 @@ public class PhotosCell : UITableViewCell {
         if nonePhotosLabel == nil {
             nonePhotosLabel = UILabel()
             nonePhotosLabel?.tag = 1003
-            nonePhotosLabel!.font = UIFont.systemFontOfSize(24)
+            nonePhotosLabel!.font = UIFont.systemFontOfSize(AtapteWidthValue(24))
             nonePhotosLabel?.textAlignment = .Center
             nonePhotosLabel!.text = "无照片"
             nonePhotosLabel!.textColor = UIColor.grayColor()

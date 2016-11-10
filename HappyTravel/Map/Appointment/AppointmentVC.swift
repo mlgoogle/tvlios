@@ -185,7 +185,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let label = UILabel()
             label.backgroundColor = .clearColor()
             label.text = section == 0 ? "预约信息" : "服务者技能"
-            label.font = .systemFontOfSize(15)
+            label.font = .systemFontOfSize(AtapteWidthValue(S15))
             label.textColor = UIColor.grayColor()
             view.addSubview(label)
             label.snp_makeConstraints(closure: { (make) in
@@ -255,7 +255,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             citySelectorLab?.tag = tags["citySelectorLab"]!
             citySelectorLab?.text = "目标城市"
             citySelectorLab?.textColor = UIColor.blackColor()
-            citySelectorLab?.font = UIFont.systemFontOfSize(15)
+            citySelectorLab?.font = UIFont.systemFontOfSize(AtapteWidthValue(S15))
             cell?.contentView.addSubview(citySelectorLab!)
             citySelectorLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
@@ -272,7 +272,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             cityLab?.backgroundColor = UIColor.init(red: 241/255.0, green: 242/255.0, blue: 243/255.0, alpha: 1)
             cityLab?.layer.cornerRadius = 5
             cityLab?.layer.masksToBounds = true
-            cityLab?.font = UIFont.systemFontOfSize(15)
+            cityLab?.font = UIFont.systemFontOfSize(S15)
             cityLab?.textColor = UIColor.grayColor()
             cell?.contentView.addSubview(cityLab!)
             cityLab?.snp_makeConstraints(closure: { (make) in
@@ -315,7 +315,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             dateTitleLab?.tag = tags["dateTitleLab"]!
             dateTitleLab?.text = "目标城市"
             dateTitleLab?.textColor = UIColor.blackColor()
-            dateTitleLab?.font = UIFont.systemFontOfSize(15)
+            dateTitleLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(dateTitleLab!)
             dateTitleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
@@ -331,7 +331,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             dateLab = UILabel()
             dateLab?.tag = tags["dateLab"]!
             dateLab?.backgroundColor = UIColor.clearColor()
-            dateLab?.font = UIFont.systemFontOfSize(15)
+            dateLab?.font = UIFont.systemFontOfSize(S15)
             dateLab?.textColor = UIColor.blackColor()
             cell?.contentView.addSubview(dateLab!)
             dateLab?.snp_makeConstraints(closure: { (make) in
@@ -363,7 +363,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 agentSelectorLab = UILabel()
                 agentSelectorLab?.tag = tags["agentSelectorLab"]!
                 agentSelectorLab?.backgroundColor = UIColor.clearColor()
-                agentSelectorLab?.font = UIFont.systemFontOfSize(15)
+                agentSelectorLab?.font = UIFont.systemFontOfSize(S15)
                 agentSelectorLab?.text = "代订"
                 cell?.contentView.addSubview(agentSelectorLab!)
                 agentSelectorLab?.snp_makeConstraints(closure: { (make) in
@@ -401,7 +401,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 lab = UILabel()
                 lab?.tag = tags["nameTelLab"]!
                 lab?.backgroundColor = UIColor.clearColor()
-                lab?.font = UIFont.systemFontOfSize(15)
+                lab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(lab!)
                 lab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
@@ -444,7 +444,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 lab = UILabel()
                 lab?.tag = tags["genderLab"]!
                 lab?.backgroundColor = UIColor.clearColor()
-                lab?.font = UIFont.systemFontOfSize(15)
+                lab?.font = UIFont.systemFontOfSize(S15)
                 lab?.text = "性别"
                 cell?.contentView.addSubview(lab!)
                 lab?.snp_makeConstraints(closure: { (make) in

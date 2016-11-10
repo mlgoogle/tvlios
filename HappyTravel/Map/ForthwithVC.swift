@@ -76,7 +76,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             msgCountLab!.text = ""
             msgCountLab!.textColor = UIColor.whiteColor()
             msgCountLab!.textAlignment = .Center
-            msgCountLab!.font = UIFont.systemFontOfSize(10)
+            msgCountLab!.font = UIFont.systemFontOfSize(S10)
             msgCountLab!.layer.cornerRadius = 18 / 2.0
             msgCountLab!.layer.masksToBounds = true
             msgCountLab!.hidden = true
@@ -126,7 +126,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab = UILabel()
         titleLab?.backgroundColor = .clearColor()
         titleLab?.textColor = .whiteColor()
-        titleLab?.font = UIFont.systemFontOfSize(18)
+        titleLab?.font = UIFont.systemFontOfSize(S18)
         titleLab?.textAlignment = .Center
         titleLab?.userInteractionEnabled = true
         titleView.addSubview(titleLab!)
@@ -202,7 +202,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         leftTips.textAlignment = NSTextAlignment.Right
         leftTips.text = "现在"
         leftTips.userInteractionEnabled = true
-        leftTips.font = UIFont.systemFontOfSize(13)
+        leftTips.font = UIFont.systemFontOfSize(S13)
         leftTips.textColor = UIColor.whiteColor()
         bottomView.addSubview(leftTips)
         leftTips.snp_makeConstraints { (make) in
@@ -217,7 +217,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         rightTips.textAlignment = NSTextAlignment.Left
         rightTips.text = "预约"
         rightTips.userInteractionEnabled = true
-        rightTips.font = UIFont.systemFontOfSize(13)
+        rightTips.font = UIFont.systemFontOfSize(S13)
         rightTips.textColor = UIColor.whiteColor()
         bottomView.addSubview(rightTips)
         rightTips.snp_makeConstraints { (make) in
