@@ -169,7 +169,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
         SocketManager.sendData(.CheckCommentDetail, data: param) { [weak self](body) in
             if let strongSelf = self{
-                let data = body!["data"] as! NSDictionary
+                let data = body["data"] as! NSDictionary
                 let code = data.valueForKey("code")
                 if code?.intValue == 0 {
                     SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)

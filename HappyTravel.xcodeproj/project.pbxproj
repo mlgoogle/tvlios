@@ -244,7 +244,6 @@
 		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
 		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
-		BF0E5F5C1DD18151001F5813 /* SocketManagerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0E5F5B1DD18151001F5813 /* SocketManagerExt.swift */; };
 		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
 		BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */; };
 		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
@@ -539,7 +538,6 @@
 		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
 		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF0E5F5B1DD18151001F5813 /* SocketManagerExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManagerExt.swift; sourceTree = "<group>"; };
 		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVProgressHUDExt.swift; sourceTree = "<group>"; };
 		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
@@ -766,7 +764,6 @@
 			isa = PBXGroup;
 			children = (
 				2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */,
-				BF0E5F5B1DD18151001F5813 /* SocketManagerExt.swift */,
 				2FD995951DD32842000CB006 /* SockHead.swift */,
 			);
 			name = SocketManage;
@@ -1857,7 +1854,6 @@
 				6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */,
 				2F96840D1D76B82A0028E3F2 /* InvoiceDetailVC.swift in Sources */,
 				2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */,
-				BF0E5F5C1DD18151001F5813 /* SocketManagerExt.swift in Sources */,
 				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
 				2F2A2B161DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift in Sources */,
 				2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */,
