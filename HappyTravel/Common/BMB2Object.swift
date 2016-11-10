@@ -1,88 +1,12 @@
-//: Playground - noun: a place where people can play
+//
+//  BMB2Object.swift
+//  HappyTravel
+//
+//  Created by 陈奕涛 on 16/11/10.
+//  Copyright © 2016年 陈奕涛. All rights reserved.
+//
 
-import UIKit
-
-//class BMB2Object : NSObject {
-//    /// Binary Memory Block To Object
-//    
-//    init(data: NSData) {
-//        super.init()
-//    
-//        unpack(data)
-//    }
-//    
-//    func unpack(data: NSData) {
-//        var cnt:UInt32 = 0
-//        let memberList = class_copyPropertyList(self.classForCoder, &cnt)
-//        for i in 0..<cnt {
-//            let item = memberList[Int(i)]
-//            var cnt2:UInt32 = 0
-//            let prList = property_copyAttributeList(item, &cnt2)
-//            
-//            var type = ""
-//            var valueName = ""
-//            var ivar:Ivar?
-//            for j in 0..<cnt2 {
-//                let property = prList[Int(j)]
-//                let propertyName = String.fromCString(property.name)
-//                if propertyName == "T" {
-//                    type = String.fromCString(property.value)!
-//                } else if propertyName == "V" {
-//                    valueName = String.fromCString(property.value)!
-//                    ivar = class_getClassVariable(self.classForCoder, property.value)
-//                }
-//                
-//            }
-//            let size = getMemSizeWith(type)
-//            print(type, "[", size, "]", " : ", valueName)
-////            var buffer = Int64(0)
-//            
-//            data.getBytes(&ivar, length: size)
-////            data.getBytes(&buffer, length: size)
-//            setValue(ivar?.hashValue, forKey: valueName)
-//        }
-//
-//    }
-//
-//    func getMemSizeWith(type: String) -> Int {
-//        switch type {
-//        case "c":
-//            return sizeof(Int8)
-//        case "s":
-//            return sizeof(Int16)
-//        case "i", "I":
-//            return sizeof(Int32)
-//        case "q", "Q":
-//            return sizeof(Int64)
-//        default:
-//            return 0
-//        }
-//    }
-//    
-//}
-//
-//class Head: BMB2Object {
-//    
-//    var len:Int16 = 0
-//    
-//    var zipEncryptType:Int8 = 0
-//    
-//    var type:Int8 = 0
-//    
-//    var signature:Int16 = 0
-//    
-//    var opcode:Int16 = 0
-//    
-//    var bodyLen:Int16 = 0
-//    
-//    var timestamp:UInt32 = 0
-//    
-//    var sessionID:Int64 = 0
-//    
-//    var reserved:Int32 = 0
-//    
-//}
-//
+import Foundation
 
 class BMB2Object : NSObject {
     /// Binary Memory Block To Object
@@ -255,51 +179,3 @@ class BMB2Object : NSObject {
     }
     
 }
-class Head: BMB2Object {
-    
-    var len:Int16 = 0
-    
-    var zipEncryptType:Int8 = 0
-    
-    var type:Int8 = 0
-    
-    var signature:Int16 = 0
-    
-    var opcode:Int16 = 0
-    
-    var bodyLen:Int16 = 0
-    
-    var timestamp:UInt32 = 0
-    
-    var sessionID:Int64 = 0
-    
-    var reserved:Int32 = 0
-    
-}
-
-
-var head = Head()
-head.len = 1
-head.zipEncryptType = -2
-head.type = 3
-head.signature = 4
-head.opcode = 5
-head.bodyLen = 6
-head.timestamp = 7
-head.sessionID = 8
-head.reserved = 9
-
-let data = head.pack()
-
-var head2 = Head(data: data!)
-print(head2.len)
-print(head2.zipEncryptType)
-print(head2.type)
-print(head2.signature)
-print(head2.opcode)
-print(head2.bodyLen)
-print(head2.timestamp)
-print(head2.sessionID)
-print(head2.reserved)
-
-print(Head.size)

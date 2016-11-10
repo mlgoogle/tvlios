@@ -145,9 +145,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 cell.setInfo(user)
             } else {
                 SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(hodometerInfo!.to_uid_)"])
-                let u = UserInfo()
-                u.uid = (hodometerInfo?.to_uid_)!
-                SocketManager.sendData(.GetServantDetailInfo, data: u)
+                let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)!]
+                SocketManager.sendData(.GetServantDetailInfo, data: dict)
             }
             
             return cell
@@ -168,7 +167,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - DATA
     func initData() {
         let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
-        SocketManager.sendData(.checkCommentDetail, data: param) { [weak self](body) in
+        SocketManager.sendData(.CheckCommentDetail, data: param) { [weak self](body) in
             if let strongSelf = self{
                 let data = body!["data"] as! NSDictionary
                 let code = data.valueForKey("code")
