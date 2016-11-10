@@ -33,7 +33,7 @@ class SettingCell: UITableViewCell{
         if !self.isEqual(nil) {
             self.selectionStyle = .None
             titleLable?.backgroundColor = UIColor.clearColor()
-            titleLable?.font = UIFont.systemFontOfSize(15)
+            titleLable?.font = UIFont.systemFontOfSize(S15)
             titleLable?.textAlignment = .Left
             titleLable?.textColor = UIColor.blackColor()
             contentView.addSubview(titleLable!)
@@ -47,7 +47,7 @@ class SettingCell: UITableViewCell{
             rightLabel?.backgroundColor = UIColor.clearColor()
             rightLabel?.textAlignment = .Right
             rightLabel?.textColor = UIColor.grayColor()
-            rightLabel?.font = UIFont.systemFontOfSize(15)
+            rightLabel?.font = UIFont.systemFontOfSize(S15)
             contentView.addSubview(rightLabel!)
             rightLabel?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(titleLable!)

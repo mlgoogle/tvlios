@@ -41,7 +41,7 @@ public class TallyCell : UITableViewCell {
         if noTallyLabel == nil {
             noTallyLabel = UILabel(frame: CGRectZero)
             noTallyLabel!.tag = tags["noTallyLabel"]!
-            noTallyLabel!.font = UIFont.systemFontOfSize(12)
+            noTallyLabel!.font = UIFont.systemFontOfSize(S12)
             noTallyLabel!.userInteractionEnabled = false
             noTallyLabel!.numberOfLines = 0
             noTallyLabel!.layer.cornerRadius = 25 / 2.0
@@ -137,7 +137,7 @@ public class TallyCell : UITableViewCell {
                 if tallyLabel == nil {
                     tallyLabel = UILabel(frame: CGRectZero)
                     tallyLabel!.tag = tallyItemView!.tag * 10 + 1
-                    tallyLabel!.font = UIFont.systemFontOfSize(12)
+                    tallyLabel!.font = UIFont.systemFontOfSize(S12)
                     tallyLabel!.userInteractionEnabled = false
                     tallyLabel!.backgroundColor = UIColor.clearColor()
                     tallyLabel?.textAlignment = .Center

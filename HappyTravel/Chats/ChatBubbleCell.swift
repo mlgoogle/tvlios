@@ -40,7 +40,7 @@ class ChatBubbleCell: UITableViewCell {
         bubbleImageView.userInteractionEnabled = true // #CopyMesage
         
         messageLabel = UILabel(frame: CGRectZero)
-        messageLabel.font = UIFont.systemFontOfSize(15)
+        messageLabel.font = UIFont.systemFontOfSize(S15)
         messageLabel.numberOfLines = 0
         messageLabel.userInteractionEnabled = false   // #CopyMessage
         messageLabel.preferredMaxLayoutWidth = 218

@@ -66,7 +66,7 @@ class SkillsCell : UITableViewCell {
         if noTallyLabel == nil {
             noTallyLabel = UILabel(frame: CGRectZero)
             noTallyLabel!.tag = tags["noTallyLabel"]!
-            noTallyLabel!.font = UIFont.systemFontOfSize(12)
+            noTallyLabel!.font = UIFont.systemFontOfSize(S12)
             noTallyLabel!.numberOfLines = 0
             noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
             noTallyLabel?.textAlignment = .Center

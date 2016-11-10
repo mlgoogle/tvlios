@@ -109,7 +109,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                 lineTitleLab?.backgroundColor = UIColor.whiteColor()
                 lineTitleLab?.textColor = UIColor.grayColor()
                 lineTitleLab?.textAlignment = .Center
-                lineTitleLab?.font = UIFont.systemFontOfSize(14)
+                lineTitleLab?.font = UIFont.systemFontOfSize(S15)
                 bgView?.addSubview(lineTitleLab!)
                 lineTitleLab?.snp_makeConstraints(closure: { (make) in
                     make.center.equalTo(lineView!)
@@ -171,7 +171,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
             textView?.textAlignment = .Left
             textView?.textColor = UIColor.init(decR: 100, decG: 100, decB: 100, a: 1)
-            textView?.font = UIFont.systemFontOfSize(15)
+            textView?.font = UIFont.systemFontOfSize(S15)
             textView?.layer.cornerRadius = 5
             textView?.layer.masksToBounds = true
             textView?.returnKeyType = .Done

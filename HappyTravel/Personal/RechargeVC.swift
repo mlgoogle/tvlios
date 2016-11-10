@@ -204,7 +204,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 amountLab?.tag = tags["amountLab"]!
                 amountLab?.backgroundColor = UIColor.clearColor()
                 amountLab?.text = "金额"
-                amountLab?.font = UIFont.systemFontOfSize(15)
+                amountLab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(amountLab!)
                 amountLab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
@@ -262,7 +262,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 channelLab = UILabel()
                 channelLab?.tag = tags["channelLab"]!
                 channelLab?.backgroundColor = UIColor.clearColor()
-                channelLab?.font = UIFont.systemFontOfSize(15)
+                channelLab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(channelLab!)
                 channelLab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(channelIcon!.snp_right).offset(10)

@@ -28,7 +28,7 @@ class SingleSkillCell: UICollectionViewCell {
         label.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
         label.layer.borderWidth = 1.0
         label.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-        label.font = UIFont.systemFontOfSize(17)
+        label.font = UIFont.systemFontOfSize(S18)
         return label
     }()
     

@@ -61,7 +61,7 @@ class MessageCell: UITableViewCell {
             nickNameLab?.tag = 1002
             nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
-            nickNameLab?.font = UIFont.systemFontOfSize(15)
+            nickNameLab?.font = UIFont.systemFontOfSize(S15)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -76,7 +76,7 @@ class MessageCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(13)
+            timeLab?.font = UIFont.systemFontOfSize(S13)
             view?.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(view!).offset(-14)
@@ -91,7 +91,7 @@ class MessageCell: UITableViewCell {
             unreadCntLab?.backgroundColor = UIColor.redColor()
             unreadCntLab?.textAlignment = .Center
             unreadCntLab?.textColor = UIColor.whiteColor()
-            unreadCntLab?.font = UIFont.systemFontOfSize(10)
+            unreadCntLab?.font = UIFont.systemFontOfSize(S10)
             unreadCntLab?.layer.cornerRadius = 18 / 2.0
             unreadCntLab?.layer.masksToBounds = true
             view?.addSubview(unreadCntLab!)
@@ -110,7 +110,7 @@ class MessageCell: UITableViewCell {
             msgLab?.tag = 1004
             msgLab?.backgroundColor = UIColor.clearColor()
             msgLab?.textAlignment = .Left
-            msgLab?.font = UIFont.systemFontOfSize(14)
+            msgLab?.font = UIFont.systemFontOfSize(S13)
             msgLab?.textColor = UIColor.grayColor()
             msgLab?.numberOfLines = 0
             view?.addSubview(msgLab!)

@@ -26,7 +26,7 @@ class InvouiceHistoryDetailHeader: UIView {
             statusLabel = UILabel()
             statusLabel?.backgroundColor = UIColor.clearColor()
             statusLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
-            statusLabel?.font = UIFont.systemFontOfSize(15)
+            statusLabel?.font = UIFont.systemFontOfSize(S15)
             statusLabel?.textAlignment = .Center
             addSubview(statusLabel!)
             
@@ -35,7 +35,7 @@ class InvouiceHistoryDetailHeader: UIView {
                 sendOutTimeLabel = UILabel()
                 sendOutTimeLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
                 sendOutTimeLabel?.backgroundColor = UIColor.clearColor()
-                sendOutTimeLabel?.font = UIFont.systemFontOfSize(12)
+                sendOutTimeLabel?.font = UIFont.systemFontOfSize(S12)
                 sendOutTimeLabel?.textAlignment = .Center
                 addSubview(sendOutTimeLabel!)
             }

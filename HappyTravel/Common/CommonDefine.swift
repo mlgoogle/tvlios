@@ -26,10 +26,15 @@ func colorWithHexString(hex: String) -> UIColor {
     
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
 }
-
+//MARK: -- 字体大小全局变量
 let ScreenWidth = UIScreen.mainScreen().bounds.size.width
 let ScreenHeight = UIScreen.mainScreen().bounds.size.height
 let Timestamp = NSDate().timeIntervalSince1970
+let S18 = AtapteWidthValue(18)
+let S15 = AtapteWidthValue(15)
+let S13 = AtapteWidthValue(13)          
+let S12 = AtapteWidthValue(12)
+let S10 = AtapteWidthValue(10)
 
 func  AtapteWidthValue(value: CGFloat) -> CGFloat {
     let mate = ScreenWidth/375.0
@@ -42,6 +47,8 @@ func  AtapteHeightValue(value: CGFloat) -> CGFloat {
     let atapteValue = value*mate
     return atapteValue
 }
+
+//MARK: --正则表达
 func isTelNumber(num:NSString)->Bool
 {
     let mobile = "^1(3[0-9]|5[0-35-9]|8[025-9])\\d{8}$"

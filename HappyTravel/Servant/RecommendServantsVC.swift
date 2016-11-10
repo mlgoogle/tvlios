@@ -64,7 +64,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textColor = colorWithHexString("#666666")
-            headerView.textLabel?.font = UIFont.systemFontOfSize(13)
+            headerView.textLabel?.font = UIFont.systemFontOfSize(S13)
         }
     }
     
