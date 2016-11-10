@@ -21,82 +21,157 @@ enum SockErrCode : Int {
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
     enum SockOpcode: Int16 {
+        // 异常
         case AppError = -1
+        // 心跳包
         case Heart = 1000
+        // 请求登录
         case Login = 1001
+        // 登录返回
         case Logined = 1002
+        // 请求周边服务者
         case GetServantInfo = 1003
+        // 周边服务者信息返回
         case ServantInfo = 1004
+        // 请求服务者详情
         case GetServantDetailInfo = 1005
+        // 服务者详情返回
         case ServantDetailInfo = 1006
+        // 请求推荐服务者
         case GetRecommendServants = 1007
+        // 推荐服务者返回
         case RecommendServants = 1008
+        // 请求服务城市列表
         case GetServiceCity = 1009
+        // 服务城市列表返回
         case ServiceCity = 1010
+        // 请求修改密码
         case ModifyPassword = 1011
+        // 修改密码返回
         case ModifyPasswordResult = 1012
+        // 请求用户信息
         case GetUserInfo = 1013
+        // 用户信息返回
         case UserInfoResult = 1014
+        // 请求发送验证码
         case SendMessageVerify = 1019
+        // 发送验证码返回
         case MessageVerifyResult = 1020
+        // 请求注册新用户
         case RegisterAccountRequest = 1021
+        // 注册新用户返回
         case RegisterAccountReply = 1022
+        // 请求修改个人信息
         case SendImproveData = 1023
+        // 修改个人信息返回
         case ImproveDataResult = 1024
+        // 请求行程信息
         case ObtainTripRequest = 1025
+        // 返回行程信息
         case ObtainTripReply = 1026
+        // 请求服务详情信息
         case ServiceDetailRequest = 1027
+        // 服务详情信息返回
         case ServiceDetailReply = 1028
+        // 请求开票
         case DrawBillRequest = 1029
+        // 开票返回
         case DrawBillReply = 1030
+        // 请求注册设备推送Token
         case PutDeviceToken = 1031
+        // 注册设备推送Token返回
         case DeviceTokenResult = 1032
+        // 请求开票记录
         case InvoiceInfoRequest = 1033
+        // 开票记录返回
         case InvoiceInfoReply = 1034
+        // 请求黑卡会员特权信息
         case CenturionCardInfoRequest = 1035
+        // 黑卡会员特权信息返回
         case CenturionCardInfoReply = 1036
+        // 请求当前用户黑卡信息
         case UserCenturionCardInfoRequest = 1037
+        // 当前用户黑卡信息返回
         case UserCenturionCardInfoReply = 1038
+        // 请求黑卡消费记录
         case CenturionCardConsumedRequest = 1039
+        // 黑卡消费记录返回
         case CenturionCardConsumedReply = 1040
+        // 请求平台技能标签
         case SkillsInfoRequest = 1041
+        // 平台技能标签返回
         case SkillsInfoReply = 1042
+        // 请求预约
         case AppointmentRequest = 1043
+        // 预约返回
         case AppointmentReply = 1044
+        // 请求开票详情
         case InvoiceDetailRequest = 1045
+        // 开票详情返回
         case InvoiceDetailReply = 1046
+        // 请求上传图片Token
         case UploadImageToken = 1047
+        // 上传图片Token返回
         case UploadImageTokenReply = 1048
+        // 请求微信支付订单
         case WXPlaceOrderRequest = 1049
+        // 微信支付订单返回
         case WXplaceOrderReply = 1050
+        // 请求微信支付状态
         case ClientWXPayStatusRequest = 1051
+        // 微信客户端支付状态返回
         case ClientWXPayStatusReply = 1052
+        // 微信服务端支付状态返回
         case ServerWXPayStatusReply = 1054
+        // 请求上传身份证认证
         case AuthenticateUserCard = 1055
+        // 上传身份证认证返回
         case AuthenticateUserCardReply = 1056
+        // 请求身份证认证进度
         case CheckAuthenticateResult = 1057
+        // 身份证认证进度返回
         case CheckAuthenticateResultReply = 1058
+        // 请求当前用户余额信息
         case CheckUserCash = 1067
+        // 当前用户余额信息返回
         case CheckUserCashReply = 1068
+        // 请求预约记录
         case AppointmentRecordRequest = 1069
+        // 预约记录返回
         case AppointmentRecordReply = 1070
+
         
-        
+        // 请求邀请服务者
         case AskInvitation = 2001
+        // 邀请服务者返回
         case InvitationResult = 2002
+        // 请求发送聊天信息
         case SendChatMessage = 2003
+        // 发送聊天信息返回
         case RecvChatMessage = 2004
+        // 请求聊天记录
         case GetChatRecord = 2005
+        // 聊天记录返回
         case ChatRecordResult = 2006
+        // 请求提交读取消息数量
         case FeedbackMSGReadCnt = 2007
+        // 提交读取消息数量返回
         case MSGReadCntResult = 2008
+        // 请求评价订单
         case EvaluateTripRequest = 2009
+        // 评价订单返回
         case EvaluatetripReply = 2010
+        //
         case AnswerInvitationRequest = 2011
+        //
         case AnswerInvitationReply = 2012
+        // 请求联系客服
         case ServersManInfoRequest = 2013
+        // 联系客服返回
         case ServersManInfoReply = 2014
+        // 请求评价详情
         case CheckCommentDetail = 2015
+        // 评价详情返回
         case CheckCommentDetailReplay = 2016
 
     }
@@ -185,111 +260,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         head.opcode = opcode.rawValue
         head.type = Int8(opcode.rawValue / 1000)
         
-        XCGLogger.debug(opcode)
-        
         var bodyJSON:JSON?
         if data != nil {
              bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
         }
         var body:NSData?
-        switch opcode {
-        case .Heart:
-            if DataManager.currentUser!.uid == -1 {
-                return false
-            }
-            XCGLogger.debug("Heart")
-        case .Login:
-            XCGLogger.info(data as! Dictionary<String, AnyObject>)
-        case .GetServantInfo:
-            break
-        case .GetServantDetailInfo:
-            break
-        case .GetRecommendServants:
-            break
-        case .GetServiceCity:
-            break
-        case .ModifyPassword:
-            break
-        case .GetUserInfo:
-            break
-        case .SendMessageVerify:
-            break
-        case .RegisterAccountRequest:
-            break
-        case .SendImproveData:
-            break
-            
-        case .ServiceDetailRequest:
-            break
-        case .ObtainTripRequest:
-            break
-        case .DrawBillRequest:
-            break
-            
-        case .InvoiceInfoRequest:
-            break
-        case .PutDeviceToken:
-            break
-        case .CenturionCardInfoRequest:
-            break
-        case .UserCenturionCardInfoRequest:
-            break
-        case .CenturionCardConsumedRequest:
-            break
-        case .SkillsInfoRequest:
-            break
-        case .AppointmentRequest:
-            break
-        case .InvoiceDetailRequest:
-            break
-        case .WXPlaceOrderRequest:
-            break
-        case .ClientWXPayStatusRequest:
-            break
-            
-            
-        case .AskInvitation:
-            break
-        case .SendChatMessage:
-            break
-        case .GetChatRecord:
-            /*
-            let dict = ["from_uid_": 1, "to_uid_": 2, "count_": 5, "last_chat_id_": SocketManager.last_chat_id]
-            bodyJSON = JSON.init(dict)
-             */
-            break
-        case .FeedbackMSGReadCnt:
-            break
-        case .EvaluateTripRequest:
-            break
-        case .AnswerInvitationRequest:
-            break
-        case .ServersManInfoRequest:
-            break
-        case .UploadImageToken:
-            break
-        case .AuthenticateUserCard:
-            break
-        case .CheckAuthenticateResult:
-            break
-        case .CheckUserCash:
-            break
-        case .AppointmentRecordRequest:
-            break
-            
-        case .CheckCommentDetail:
-            break
-        default:
-            break
-        }
-        do {
-            body = try bodyJSON?.rawData()
-        } catch {
-            
-        }
-        if opcode == SockOpcode.AppError {
-            return false
-        }
+        body = try! bodyJSON?.rawData()
         
         if body != nil {
             head.bodyLen = Int16(body!.length)
@@ -303,6 +279,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
+        XCGLogger.debug(opcode)
         return true
         
     }

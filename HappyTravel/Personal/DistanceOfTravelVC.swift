@@ -259,18 +259,32 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if segmentIndex == 1 {
-            return
-        }
+
+       
+        switch segmentIndex {
+        case 0:
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
-            if cell.curHodometerInfo?.status_ != HodometerStatus.Paid.rawValue {
-                return
+            if cell.curHodometerInfo?.status_ == HodometerStatus.Paid.rawValue ||
+            cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+            cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue{
+
+                let identDetailVC = IdentDetailVC()
+                identDetailVC.hodometerInfo = cell.curHodometerInfo!
+                navigationController?.pushViewController(identDetailVC, animated: true)
             }
-            let identDetailVC = IdentDetailVC()
-            identDetailVC.hodometerInfo = cell.curHodometerInfo!
-            navigationController?.pushViewController(identDetailVC, animated: true)
         }
-        
+            break
+        case 1:
+            let detailVC = AppointmentDetailVC()
+            detailVC.appointmentInfo = records![indexPath.row]
+            navigationController?.pushViewController(detailVC, animated: true)
+            break
+        case 2:
+            break
+        default:
+            break
+
+        }
     }
     
     func segmentChange(sender: AnyObject?) {
