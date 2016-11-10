@@ -119,7 +119,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var isLogout = false
     
+    typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
     
+    static var completationsDic = [Int16: recevieDataBlock]()
     
     override init() {
         super.init()
@@ -305,6 +307,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
+    static func sendData(opcode: SockOpcode, data: AnyObject?, result: recevieDataBlock?) {
+        SocketManager.sendData(opcode, data: data)
+        if result != nil {
+            completationsDic[opcode.rawValue+1] = result
+        }
+    }
+    
     func recvData(head: SockHead?, body:AnyObject?) ->Bool {
         if head == nil {
             return false
@@ -317,6 +326,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             
         }
+        
         switch SockOpcode(rawValue: head!.opcode)! {
         case .Logined:
             logined(jsonBody)
@@ -400,14 +410,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         }
         
-        if SocketManager.completation != nil {
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
+        let blockKey = head!.opcode
+        if SocketManager.completationsDic[blockKey] != nil {
+            if jsonBody == nil {
+                jsonBody = ["code" : 0]
             }
-            SocketManager.completation!(["data":dict.dictionaryObject!])
-            SocketManager.completation = nil
+            let completation = SocketManager.completationsDic[blockKey]
+            completation!(["data": jsonBody!.dictionaryObject!])
+            SocketManager.completationsDic.removeValueForKey(blockKey)
         }
+        
         
         return true
     }

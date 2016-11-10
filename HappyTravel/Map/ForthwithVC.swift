@@ -193,7 +193,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         bottomView.addSubview(bottomSelector)
         bottomSelector.snp_makeConstraints { (make) in
             make.center.equalTo(bottomView)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+            make.width.equalTo(ScreenWidth / 2.0)
             make.height.equalTo(65)
         }
         
