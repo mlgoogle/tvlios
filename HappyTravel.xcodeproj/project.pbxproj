@@ -63,7 +63,6 @@
 		2F9C378C1DBF389100B163C5 /* LaunchScreen-512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9C378B1DBF389100B163C5 /* LaunchScreen-512@2x.png */; };
 		2F9D42071D597A5700D10FBC /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9D42061D597A5700D10FBC /* location@2x.png */; };
 		2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */; };
-		2F9D42121D5C511000D10FBC /* SocketProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D42111D5C511000D10FBC /* SocketProtocol.swift */; };
 		2FA75CF61D5081CB00609C8E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75CF51D5081CB00609C8E /* AppDelegate.swift */; };
 		2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75CF71D5081CB00609C8E /* ViewController.swift */; };
 		2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CF91D5081CB00609C8E /* Main.storyboard */; };
@@ -345,7 +344,6 @@
 		2F9C378B1DBF389100B163C5 /* LaunchScreen-512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen-512@2x.png"; sourceTree = "<group>"; };
 		2F9D42061D597A5700D10FBC /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketManager.swift; path = SocketManage/SocketManager.swift; sourceTree = "<group>"; };
-		2F9D42111D5C511000D10FBC /* SocketProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketProtocol.swift; path = SocketManage/SocketProtocol.swift; sourceTree = "<group>"; };
 		2FA75CF21D5081CB00609C8E /* HappyTravel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyTravel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FA75CF51D5081CB00609C8E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FA75CF71D5081CB00609C8E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -768,7 +766,6 @@
 			isa = PBXGroup;
 			children = (
 				2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */,
-				2F9D42111D5C511000D10FBC /* SocketProtocol.swift */,
 				BF0E5F5B1DD18151001F5813 /* SocketManagerExt.swift */,
 				2FD995951DD32842000CB006 /* SockHead.swift */,
 			);
@@ -1244,6 +1241,7 @@
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 96YGS7NXK5;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1852,7 +1850,6 @@
 				BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */,
 				2FF72BAD1DB8B2DF001EEED2 /* CenturionCardDetailVC.swift in Sources */,
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
-				2F9D42121D5C511000D10FBC /* SocketProtocol.swift in Sources */,
 				2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */,
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
