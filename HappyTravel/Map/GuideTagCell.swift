@@ -64,7 +64,7 @@ class GuideTagCell: MAAnnotationView {
         if guideTipsLab == nil {
             guideTipsLab = UILabel()
             guideTipsLab?.tag = 10021
-            guideTipsLab?.font = UIFont.systemFontOfSize(15)
+            guideTipsLab?.font = UIFont.systemFontOfSize(S15)
             guideTipsLab?.textColor = UIColor.whiteColor()
             guideTipsLab?.textAlignment = NSTextAlignment.Center
             guideTipsLab?.backgroundColor = UIColor.clearColor()

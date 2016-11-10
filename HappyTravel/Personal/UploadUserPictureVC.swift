@@ -22,7 +22,7 @@ class UploadCell: UITableViewCell {
         if !self.isEqual(nil) {
             contentView.backgroundColor = colorWithHexString("#f2f2f2")
             selectionStyle = .None
-            titleLable.font = UIFont.systemFontOfSize(15)
+            titleLable.font = UIFont.systemFontOfSize(S15)
             titleLable.textColor = UIColor.blackColor()
             titleLable.userInteractionEnabled = true
             contentView.addSubview(titleLable)

@@ -214,7 +214,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             titleLab?.tag = tags["titleLab_Invoice"]!
             titleLab?.backgroundColor = UIColor.clearColor()
             titleLab?.textAlignment = .Right
-            titleLab?.font = UIFont.systemFontOfSize(15)
+            titleLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(titleLab!)
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
@@ -234,7 +234,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 descLab?.backgroundColor = UIColor.clearColor()
                 descLab?.textAlignment = .Left
                 descLab?.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
-                descLab?.font = UIFont.systemFontOfSize(15)
+                descLab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(descLab!)
                 descLab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -255,7 +255,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
-                textField?.font = UIFont.systemFontOfSize(15)
+                textField?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)
@@ -317,7 +317,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             titleLab?.tag = tags["titleLab_Personal"]!
             titleLab?.backgroundColor = UIColor.clearColor()
             titleLab?.textAlignment = .Right
-            titleLab?.font = UIFont.systemFontOfSize(15)
+            titleLab?.font = UIFont.systemFontOfSize(S15)
             cell?.contentView.addSubview(titleLab!)
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
@@ -351,7 +351,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
                 textView?.textAlignment = .Left
                 textView?.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
-                textView?.font = UIFont.systemFontOfSize(15)
+                textView?.font = UIFont.systemFontOfSize(S15)
                 textView?.layer.cornerRadius = 5
                 textView?.layer.masksToBounds = true
                 cell?.contentView.addSubview(textView!)
@@ -386,7 +386,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.delegate = self
                 textField?.rightViewMode = .WhileEditing
                 textField?.clearButtonMode = .WhileEditing
-                textField?.font = UIFont.systemFontOfSize(15)
+                textField?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(textField!)
                 textField?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!.snp_right).offset(10)

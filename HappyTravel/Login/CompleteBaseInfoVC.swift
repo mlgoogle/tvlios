@@ -247,7 +247,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 titleLab?.tag = tags["titleLab"]!
                 titleLab?.backgroundColor = UIColor.clearColor()
                 titleLab?.textColor = UIColor.blackColor()
-                titleLab?.font = UIFont.systemFontOfSize(15)
+                titleLab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(titleLab!)
                 titleLab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
@@ -303,7 +303,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 selectedRetLab?.backgroundColor = UIColor.clearColor()
                 selectedRetLab?.textColor = UIColor.grayColor()
                 selectedRetLab?.textAlignment = .Right
-                selectedRetLab?.font = UIFont.systemFontOfSize(15)
+                selectedRetLab?.font = UIFont.systemFontOfSize(S15)
                 cell?.contentView.addSubview(selectedRetLab!)
                 selectedRetLab?.snp_makeConstraints(closure: { (make) in
                     make.right.equalTo(cell!.contentView).offset(-10)

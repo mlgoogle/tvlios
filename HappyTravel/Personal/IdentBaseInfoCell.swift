@@ -70,7 +70,7 @@ class IdentBaseInfoCell: UITableViewCell {
             nicknameLab = UILabel()
             nicknameLab?.tag = tags["nicknameLab"]!
             nicknameLab?.backgroundColor = UIColor.clearColor()
-            nicknameLab?.font = UIFont.systemFontOfSize(15)
+            nicknameLab?.font = UIFont.systemFontOfSize(S15)
             bgView?.addSubview(nicknameLab!)
             nicknameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -185,7 +185,7 @@ class IdentBaseInfoCell: UITableViewCell {
                 if tallyLabel == nil {
                     tallyLabel = UILabel(frame: CGRectZero)
                     tallyLabel!.tag = tallyItemView!.tag * 10 + 1
-                    tallyLabel!.font = UIFont.systemFontOfSize(12)
+                    tallyLabel!.font = UIFont.systemFontOfSize(S12)
                     tallyLabel!.userInteractionEnabled = false
                     tallyLabel!.backgroundColor = UIColor.clearColor()
                     tallyLabel?.textAlignment = .Center

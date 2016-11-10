@@ -61,7 +61,7 @@ public class ServiceCell : UITableViewCell {
             
             serviceLabel = UILabel(frame: CGRectZero)
             serviceLabel!.tag = tags["serviceLabel"]!
-            serviceLabel!.font = UIFont.systemFontOfSize(18)
+            serviceLabel!.font = UIFont.systemFontOfSize(S18)
             serviceLabel!.userInteractionEnabled = true
             serviceLabel!.backgroundColor = UIColor.whiteColor()
             view!.addSubview(serviceLabel!)
@@ -146,7 +146,7 @@ public class ServiceCell : UITableViewCell {
                     if titleLabel == nil {
                         titleLabel = UILabel()
                         titleLabel!.tag = svcView!.tag * 10 + index
-                        titleLabel!.font = UIFont.systemFontOfSize(14)
+                        titleLabel!.font = UIFont.systemFontOfSize(S15)
                         titleLabel!.userInteractionEnabled = true
                         titleLabel!.backgroundColor = UIColor.clearColor()
                         titleLabel!.textAlignment = NSTextAlignment.Left
@@ -164,7 +164,7 @@ public class ServiceCell : UITableViewCell {
                     if timeLabel == nil {
                         timeLabel = UILabel()
                         timeLabel!.tag = svcView!.tag * 11 + index
-                        timeLabel!.font = UIFont.systemFontOfSize(14)
+                        timeLabel!.font = UIFont.systemFontOfSize(S15)
                         timeLabel!.userInteractionEnabled = true
                         timeLabel!.backgroundColor = UIColor.clearColor()
                         timeLabel!.textAlignment = NSTextAlignment.Left
@@ -182,7 +182,7 @@ public class ServiceCell : UITableViewCell {
                     if payLabel == nil {
                         payLabel = UILabel()
                         payLabel!.tag = svcView!.tag * 12 + index
-                        payLabel!.font = UIFont.systemFontOfSize(14)
+                        payLabel!.font = UIFont.systemFontOfSize(S15)
                         payLabel!.userInteractionEnabled = true
                         payLabel!.backgroundColor = UIColor.clearColor()
                         payLabel!.textAlignment = NSTextAlignment.Left

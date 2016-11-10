@@ -46,7 +46,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 sendButton = UIButton(type: .System)
                 sendButton.enabled = false
-                sendButton.titleLabel?.font = UIFont.systemFontOfSize(17)
+                sendButton.titleLabel?.font = UIFont.systemFontOfSize(S18)
                 sendButton.layer.cornerRadius = 5
                 sendButton.layer.masksToBounds = true
                 sendButton.backgroundColor = UIColor.init(red: 20/255, green: 31/255, blue: 49/255, alpha: 1)
@@ -67,7 +67,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 textView = InputTextView(frame: CGRectZero)
                 textView.backgroundColor = UIColor(white: 250/255, alpha: 1)
                 textView.delegate = self
-                textView.font = UIFont.systemFontOfSize(17)
+                textView.font = UIFont.systemFontOfSize(S18)
                 textView.layer.borderColor = UIColor(red: 200/255, green: 200/255, blue: 205/255, alpha:1).CGColor
                 textView.layer.borderWidth = 0.5
                 textView.layer.cornerRadius = 5

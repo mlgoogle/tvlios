@@ -151,7 +151,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             title = UILabel()
             title?.tag = tags["titleLab"]!
             title?.backgroundColor = UIColor.clearColor()
-            title?.font = UIFont.systemFontOfSize(16)
+            title?.font = UIFont.systemFontOfSize(S15)
             title?.textColor = UIColor.blackColor()
             cell?.contentView.addSubview(title!)
             title?.snp_makeConstraints(closure: { (make) in
@@ -167,7 +167,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             descLab = UILabel()
             descLab?.tag = tags["descLab"]!
             descLab?.backgroundColor = UIColor.clearColor()
-            descLab?.font = UIFont.systemFontOfSize(14)
+            descLab?.font = UIFont.systemFontOfSize(S13)
             descLab?.textColor = UIColor.grayColor()
             descLab?.numberOfLines = 0
             cell?.contentView.addSubview(descLab!)

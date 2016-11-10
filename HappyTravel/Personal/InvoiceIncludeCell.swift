@@ -30,7 +30,7 @@ class InvoiceIncludeCell: UITableViewCell {
             nicknameLabel = UILabel()
             nicknameLabel?.backgroundColor = UIColor.clearColor()
             nicknameLabel?.textAlignment = .Left
-            nicknameLabel?.font = UIFont.systemFontOfSize(15)
+            nicknameLabel?.font = UIFont.systemFontOfSize(S15)
             nicknameLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
 
@@ -41,7 +41,7 @@ class InvoiceIncludeCell: UITableViewCell {
             serviceNameLabel = UILabel()
             serviceNameLabel?.backgroundColor = UIColor.clearColor()
             serviceNameLabel?.textAlignment = .Left
-            serviceNameLabel?.font = UIFont.systemFontOfSize(15)
+            serviceNameLabel?.font = UIFont.systemFontOfSize(S15)
             serviceNameLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
 
@@ -51,7 +51,7 @@ class InvoiceIncludeCell: UITableViewCell {
             servicePriceLabel = UILabel()
             servicePriceLabel?.backgroundColor = UIColor.clearColor()
             servicePriceLabel?.textAlignment = .Left
-            servicePriceLabel?.font = UIFont.systemFontOfSize(15)
+            servicePriceLabel?.font = UIFont.systemFontOfSize(S15)
             servicePriceLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
         servicePriceLabel?.text = "120.00元"
@@ -60,7 +60,7 @@ class InvoiceIncludeCell: UITableViewCell {
             serviceDateLabel = UILabel()
             serviceDateLabel?.backgroundColor = UIColor.clearColor()
             serviceDateLabel?.textAlignment = .Right
-            serviceDateLabel?.font = UIFont.systemFontOfSize(12)
+            serviceDateLabel?.font = UIFont.systemFontOfSize(S12)
             serviceDateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
         }
         serviceDateLabel?.text = "10月28日 周六 21：25"
@@ -70,7 +70,7 @@ class InvoiceIncludeCell: UITableViewCell {
             serviceTypeLabel = UILabel()
             serviceTypeLabel?.backgroundColor = UIColor.clearColor()
             serviceTypeLabel?.textAlignment = .Right
-            serviceTypeLabel?.font = UIFont.systemFontOfSize(12)
+            serviceTypeLabel?.font = UIFont.systemFontOfSize(S12)
             serviceTypeLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
             
         }
