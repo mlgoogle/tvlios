@@ -51,7 +51,6 @@ class InvoiceHistoryDetailVC: UIViewController {
         
         title = "开票详情"
         
-        
         initViews()
         SocketManager.sendData(.InvoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
     }
@@ -133,8 +132,6 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         let cell = tableView.dequeueReusableCellWithIdentifier("detailNormalCell", forIndexPath: indexPath) as! InvoiceHistoryDetailNormalCell
-        
-
         
         let last = indexPath.row == rows[indexPath.section] - 1 ? true : false
 
