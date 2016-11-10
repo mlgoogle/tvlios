@@ -11,16 +11,16 @@ import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
 import SVProgressHUD
+
+
 enum SockErrCode : Int {
 
     case NoOrder = -1015
     case Other = 0
 }
 
-
-
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
-    enum SockOpcode : Int {
+    enum SockOpcode: Int16 {
         case AppError = -1
         case Heart = 1000
         case Login = 1001
@@ -65,11 +65,22 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentReply = 1044
         case InvoiceDetailRequest = 1045
         case InvoiceDetailReply = 1046
+        case UploadImageToken = 1047
+        case UploadImageTokenReply = 1048
         case WXPlaceOrderRequest = 1049
         case WXplaceOrderReply = 1050
         case ClientWXPayStatusRequest = 1051
         case ClientWXPayStatusReply = 1052
         case ServerWXPayStatusReply = 1054
+        case AuthenticateUserCard = 1055
+        case AuthenticateUserCardReply = 1056
+        case CheckAuthenticateResult = 1057
+        case CheckAuthenticateResultReply = 1058
+        case CheckUserCash = 1067
+        case CheckUserCashReply = 1068
+        case AppointmentRecordRequest = 1069
+        case AppointmentRecordReply = 1070
+        
         
         case AskInvitation = 2001
         case InvitationResult = 2002
@@ -85,18 +96,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AnswerInvitationReply = 2012
         case ServersManInfoRequest = 2013
         case ServersManInfoReply = 2014
-        case UploadImageToken = 1047
-        case UploadImageTokenReply = 1048
-        case AuthenticateUserCard = 1055
-        case AuthenticateUserCardReply = 1056
-        case checkAuthenticateResult = 1057
-        case checkAuthenticateResultReply = 1058
-        case checkUserCash = 1067
-        case checkUserCashReply = 1068
-        case AppointmentRecordRequest = 1069
-        case AppointmentRecordReply = 1070
-        case checkCommentDetail = 2015
-        case checkCommentDetailReplay = 2016
+        case CheckCommentDetail = 2015
+        case CheckCommentDetailReplay = 2016
 
     }
     
@@ -111,6 +112,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     var socket:GCDAsyncSocket?
     
     var buffer:NSMutableData = NSMutableData()
+    
+    var sockTag = 0
  
     static var last_chat_id:Int = 0
     
@@ -162,6 +165,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         return nil
     }
     
+    func postNotification(aName: String, object anObject: AnyObject?, userInfo aUserInfo: [NSObject : AnyObject]?) {
+        NSNotificationCenter.defaultCenter().postNotificationName(aName,
+                                                                  object: anObject,
+                                                                  userInfo: aUserInfo)
+    }
+    
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
@@ -171,192 +180,102 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             sock!.connectSock()
         }
         let head = SockHead()
-        head.fields["isZipEncrypt"] = -1
-        head.fields["opcode"] = -1
-        head.fields["type"] = 1
-        head.fields["signature"] = 3
-        head.fields["timestamp"] = Int(UInt64(NSDate().timeIntervalSince1970))
-        head.fields["sessionID"] = 7
-        head.fields["reserved"] = 8
+        head.opcode = opcode.rawValue
+        head.type = Int8(opcode.rawValue / 1000)
+        
+        XCGLogger.debug(opcode)
         
         var bodyJSON:JSON?
+        if data != nil {
+             bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+        }
         var body:NSData?
         switch opcode {
         case .Heart:
             if DataManager.currentUser!.uid == -1 {
                 return false
             }
-            head.fields["opcode"] = 1000
-            let dict:Dictionary<String, AnyObject> = ["uid_": DataManager.currentUser!.uid]
-            bodyJSON = JSON.init(dict)
             XCGLogger.debug("Heart")
-            break
         case .Login:
-            head.fields["opcode"] = 1001
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             XCGLogger.info(data as! Dictionary<String, AnyObject>)
-            break
         case .GetServantInfo:
-            head.fields["opcode"] = 1003
-            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                      "distance_": 20.1]
-            bodyJSON = JSON.init(dict)
             break
         case .GetServantDetailInfo:
-            head.fields["opcode"] = 1005
-            let info = data as! UserInfo
-            let dict:Dictionary<String, AnyObject> = ["uid_": info.uid]
-            bodyJSON = JSON.init(dict)
             break
         case .GetRecommendServants:
-            head.fields["opcode"] = 1007
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .GetServiceCity:
-            head.fields["opcode"] = 1009
             break
         case .ModifyPassword:
-            head.fields["opcode"] = 1011
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .GetUserInfo:
-            head.fields["opcode"] = 1013
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .SendMessageVerify:
-            head.fields["opcode"] = 1019
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .RegisterAccountRequest:
-            head.fields["opcode"] = SockOpcode.RegisterAccountRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .SendImproveData:
-            head.fields["opcode"] = 1023
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
             
         case .ServiceDetailRequest:
-            head.fields["opcode"] = SockOpcode.ServiceDetailRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .ObtainTripRequest:
-            head.fields["opcode"] = SockOpcode.ObtainTripRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .DrawBillRequest:
-            head.fields["opcode"] = SockOpcode.DrawBillRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
             
         case .InvoiceInfoRequest:
-            head.fields["opcode"] = SockOpcode.InvoiceInfoRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .PutDeviceToken:
-            head.fields["opcode"] = 1031
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .CenturionCardInfoRequest:
-            head.fields["opcode"] = SockOpcode.CenturionCardInfoRequest.rawValue
             break
         case .UserCenturionCardInfoRequest:
-            head.fields["opcode"] = SockOpcode.UserCenturionCardInfoRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .CenturionCardConsumedRequest:
-            head.fields["opcode"] = SockOpcode.CenturionCardConsumedRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .SkillsInfoRequest:
-            head.fields["opcode"] = SockOpcode.SkillsInfoRequest.rawValue
             break
         case .AppointmentRequest:
-            head.fields["opcode"] = SockOpcode.AppointmentRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .InvoiceDetailRequest:
-            head.fields["opcode"] = SockOpcode.InvoiceDetailRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .WXPlaceOrderRequest:
-            head.fields["opcode"] = SockOpcode.WXPlaceOrderRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .ClientWXPayStatusRequest:
-            head.fields["opcode"] = SockOpcode.ClientWXPayStatusRequest.rawValue
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
             
             
         case .AskInvitation:
-            head.fields["opcode"] = 2001
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .SendChatMessage:
-            head.fields["opcode"] = 2003
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .GetChatRecord:
-            head.fields["opcode"] = 2005
-            head.fields["type"] = 2
-//            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+            /*
             let dict = ["from_uid_": 1, "to_uid_": 2, "count_": 5, "last_chat_id_": SocketManager.last_chat_id]
             bodyJSON = JSON.init(dict)
+             */
             break
         case .FeedbackMSGReadCnt:
-            head.fields["opcode"] = SockOpcode.FeedbackMSGReadCnt.rawValue
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .EvaluateTripRequest:
-            head.fields["opcode"] = SockOpcode.EvaluateTripRequest.rawValue
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .AnswerInvitationRequest:
-            head.fields["opcode"] = SockOpcode.AnswerInvitationRequest.rawValue
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
         case .ServersManInfoRequest:
-           head.fields["opcode"] = SockOpcode.ServersManInfoRequest.rawValue
-           head.fields["type"] = 2
             break
         case .UploadImageToken:
-            head.fields["opcode"] = SockOpcode.UploadImageToken.rawValue
-            head.fields["type"] = 1
             break
         case .AuthenticateUserCard:
-            head.fields["opcode"] = SockOpcode.AuthenticateUserCard.rawValue
-            head.fields["type"] = 1
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
             break
-        case .checkAuthenticateResult:
-            head.fields["opcode"] = SockOpcode.checkAuthenticateResult.rawValue
-            head.fields["type"] = 1
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+        case .CheckAuthenticateResult:
             break
-        case .checkUserCash:
-            head.fields["opcode"] = SockOpcode.checkUserCash.rawValue
-            head.fields["type"] = 1
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+        case .CheckUserCash:
             break
         case .AppointmentRecordRequest:
-         
-            head.fields["opcode"] = SockOpcode.AppointmentRecordRequest.rawValue
-            head.fields["type"] = 1
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
-
             break
             
-        case .checkCommentDetail:
-            head.fields["opcode"] = SockOpcode.checkCommentDetail.rawValue
-            head.fields["type"] = 2
-            bodyJSON = JSON.init(data as! Dictionary<String, AnyObject>)
+        case .CheckCommentDetail:
             break
         default:
             break
@@ -370,18 +289,17 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             return false
         }
         
-        if body == nil {
-            head.fields["dataLen"] = 0
-            head.fields["packageLen"] = SockHead.size
-        } else {
-            head.fields["dataLen"] = body!.length
-            head.fields["packageLen"] = SockHead.size + body!.length
+        if body != nil {
+            head.bodyLen = Int16(body!.length)
+            head.len = Int16(SockHead.size + body!.length)
         }
-        let package = head.makePackage()!.mutableCopy() as! NSMutableData
+        let package = head.pack()!.mutableCopy() as! NSMutableData
         if body != nil {
             package.appendData(body!)
         }
-        sock?.socket?.writeData(package, withTimeout: 5, tag: 1)
+        
+        sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
+        sock?.sockTag += 1
         
         return true
         
@@ -391,318 +309,93 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
-        let opcode = (head!.fields["opcode"]! as! NSNumber).integerValue
-        switch SockOpcode(rawValue: opcode)! {
+        var jsonBody:JSON?
+        if body != nil && (body as! NSData).length > 0 {
+            jsonBody = JSON.init(data: body as! NSData)
+            if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
+                XCGLogger.warning(err)
+            }
+            
+        }
+        switch SockOpcode(rawValue: head!.opcode)! {
         case .Logined:
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginResult, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            XCGLogger.info(dict.dictionaryObject!)
-            SocketManager.sendData(.GetChatRecord, data: nil)
-            break
+            logined(jsonBody)
         case .ServantInfo:
-            let dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                return false
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServantInfo, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            servantInfoReply(jsonBody)
         case .ServantDetailInfo:
-            let dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                return false
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServantDetailInfo, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            servantDetailInfoReply(jsonBody)
         case .RecommendServants:
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            recommonServantsReply(jsonBody)
         case .ServiceCity:
-            let dict = JSON.init(data: body as! NSData)
-            if dict == nil {
-                break
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            servicesCityReply(jsonBody)
         case .ModifyPasswordResult:
-            let dict  = JSON.init(data: body as! NSData)
-            
-            if (head!.fields["type"] as! NSNumber).integerValue == 0 {
-                _ = dict.dictionaryObject
-                SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
-                XCGLogger.warning("Modify passwd failed")
-            } else {
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
-
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
-            }
-            break
+            modifyPasswordReply(head, jsonBody: jsonBody)
         case .UserInfoResult:
-            let dict = JSON.init(data: body as! NSData)
-            for info in dict["userinfo_list"] {
-                let user = UserInfo()
-                user.setInfo(.Other, info: info.1.dictionaryObject!)
-                DataManager.updateUserInfo(user)
-            }
-            break
+            userInfoReply(jsonBody)
         case .MessageVerifyResult:
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            messageVerifyReply(jsonBody)
         case .RegisterAccountReply:
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.RegisterAccountReply, object: nil, userInfo: ["data": dict.dictionaryObject!])
-            break
+            registerAccountReply(jsonBody)
         case .ImproveDataResult:
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataSuccessed, object: nil, userInfo: nil)
-            break
+            improveDataReply(jsonBody)
         case .ObtainTripReply:
-            if (body as? NSData)?.length <= 0 {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
-                return true
-            }
-            let dict = JSON.init(data: body as! NSData)
-            if let tripList = dict.dictionaryObject!["trip_list"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for trip in tripList {
-                    let hodotemerInfo = HodometerInfo(value: trip)
-                    DataManager.insertHodometerInfo(hodotemerInfo)
-                    lastOrderID = hodotemerInfo.order_id_
-                }
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            }
-            break
-            
+            obtainTripReply(jsonBody)
         case .ServiceDetailReply:
-            let json = JSON.init(data: body as! NSData)
-            json.dictionaryObject
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : json.dictionaryObject!])
-            break
+            serviceDetailReply(jsonBody)
         case .DeviceTokenResult:
-            
             break
         case .DrawBillReply:
-            let json = JSON.init(data: body as! NSData)
-            var dict = ["invoice_status_": HodometerStatus.InvoiceMaking.rawValue]
-            let oidStr = json.dictionaryObject!["oid_str_"] as? String
-            let oids = oidStr?.componentsSeparatedByString(",")
-            for oid in oids! {
-                if oid == "" {
-                    continue
-                }
-                dict["order_id_"] = Int.init(oid)
-                DataManager.updateData(HodometerInfo.self, data: dict)
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": json.dictionaryObject!])
-            break
+            drawBillReply(jsonBody)
         case .CenturionCardInfoReply:
-            let dict = JSON.init(data: body as! NSData)
-            if dict == nil {
-                break
-            }
-            if let privilegeList = dict.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
-                for privilege in privilegeList {
-                    let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
-                    DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
-                }
-                
-            }
-            break
+            centurionCardInfoReply(jsonBody)
         case .UserCenturionCardInfoReply:
-            let dict = JSON.init(data: body as! NSData)
-            DataManager.currentUser?.setInfo(.CurrentUser, info: dict.dictionaryObject)
-            break
+            userCenturionCardInfoReply(jsonBody)
         case .CenturionCardConsumedReply:
-            let dict = JSON.init(data: body as! NSData)
-            if dict == nil {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
-                break
-            }
-            if let orderList = dict.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for order in orderList {
-                    let info = CenturionCardConsumedInfo(value: order)
-                    DataManager.insertCerturionCardConsumedInfo(info)
-                    lastOrderID = info.order_id_
-                }
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            }
-            break
+            centurionCardConsumedReply(jsonBody)
         case .SkillsInfoReply:
-            let dict = JSON.init(data: body as! NSData)
-            if dict == nil {
-                break
-            }
-            if let skillList = dict.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
-                                
-                for skill in skillList {
-                    let info = SkillInfo(value: skill)
-                    let string:NSString = info.skill_name_!
-                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                    let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(17)], context: nil)
-                    info.labelWidth = Float(rect.size.width) + 30
-                    DataManager.insertData(SkillInfo.self, data: info)
-                    
-                }
-
-            }
-            break
-        case .WXplaceOrderReply:
-            let json = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: json.dictionaryObject!)
-            break
-        case .ClientWXPayStatusReply:
-            let json = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXPayStatusReply, object: nil, userInfo: json.dictionaryObject!)
-            break
-        case .ServerWXPayStatusReply:
-            let json = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WXPayStatusReply, object: nil, userInfo: json.dictionaryObject!)
-            break
-            
-            
+            skillsInfoReply(jsonBody)
         case .AppointmentReply:
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
-            break
+            appointmentReply(jsonBody)
         case .InvoiceDetailReply:
-            let dict = JSON.init(data: body as! NSData)
-            if dict.dictionaryObject != nil {
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
-            }
-            
-            break
+            invoiceDetailReply(jsonBody)
         case .InvoiceInfoReply:
+            invoiceInfoReply(jsonBody)
+        case .UploadImageTokenReply:
+            uploadImageTokenReply(jsonBody)
+        case .WXplaceOrderReply:
+            wxPlaceOrderReply(jsonBody)
+        case .ClientWXPayStatusReply:
+            clientWXPayStatusReply(jsonBody)
+        case .ServerWXPayStatusReply:
+            serverWXPayStatusReply(jsonBody)
+        case .AuthenticateUserCardReply:
+            authenticateUserCardReply(jsonBody)
+        case .CheckAuthenticateResultReply:
+            checkAuthenticateResultReply(jsonBody)
+        case .CheckUserCashReply:
+            checkUserCashReply(jsonBody)
+        case .AppointmentRecordReply:
+            appointmentRecordReply(jsonBody)
+ 
             
-            if (body as? NSData)?.length <= 0 {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
-                break
-            }
-            let dict = JSON.init(data: body as! NSData)
-            if let invoiceList = dict.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for invoice in invoiceList {
-                    let historyInfo = InvoiceHistoryInfo(value: invoice)
-                    DataManager.insertInvoiceHistotyInfo(historyInfo)
-                    lastOrderID = historyInfo.invoice_id_
-                }
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            } else {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
-            }
-            
-            
-            break
-
+        // Opcode => 2000+
+        
         case .InvitationResult:
-            let dict = JSON.init(data: body as! NSData)
-            if let _ = SocketManager.getErrorCode(dict.dictionaryObject!) {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: dict.dictionaryObject)
-                return true
-            }
-            let order = HodometerInfo(value: dict.dictionaryObject!)
-            if order.is_asked_ == 1 {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-                return true
-            }
-            DataManager.insertHodometerInfo(order)
-            if UIApplication.sharedApplication().applicationState == .Background {
-                let body = "系统消息: 您有新的行程消息!"
-                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                userInfo["type"] = PushMessage.MessageType.System.rawValue
-                userInfo["data"] = dict.dictionaryObject!
-                localNotify(body, userInfo: userInfo)
-            } else {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-            }
-            break
+            invitationReply(jsonBody)
         case .RecvChatMessage:
-            let dict = JSON.init(data: body as! NSData)
-            let msg = PushMessage(value: dict.dictionaryObject!)
-            DataManager.insertMessage(msg)
-            print(String(UIApplication.sharedApplication().applicationState))
-            if UIApplication.sharedApplication().applicationState == .Background {
-                if let user = DataManager.getUserInfo(msg.from_uid_) {
-                    let body = "\(user.nickname!): \(msg.content_!)"
-                    var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                    userInfo["type"] = PushMessage.MessageType.Chat.rawValue
-                    userInfo["data"] = dict.dictionaryObject!
-                    localNotify(body, userInfo: userInfo)
-                }
-            } else {
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
-            }
-            break
+            chatMessageReply(jsonBody)
         case .ChatRecordResult:
-            let dict = JSON.init(data: body as! NSData)
-            XCGLogger.debug("\(dict.dictionaryObject)")
-            break
+            chatRecordReply(jsonBody)
         case .MSGReadCntResult:
-            
             break
         case .EvaluatetripReply:
-            _ = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
-            break
+            evaluatetripReply(jsonBody)
         case .AnswerInvitationReply:
-            
             break
         case .ServersManInfoReply:
-            guard body != nil else { break }
-            let dict = JSON.init(data: body as! NSData)
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ServersManInfoReply, object: nil, userInfo: ["data" : dict.dictionaryObject!])
-
-            break
-        case .UploadImageTokenReply:
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":dict.dictionaryObject!])
-            break
-        case .AuthenticateUserCardReply:
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data":dict.dictionaryObject!])
-            break
-        case .checkAuthenticateResultReply:
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
-            break
-        case .checkUserCashReply:
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
-            break
-            
-        case .AppointmentRecordReply:
-            
-            let dict = JSON.init(data: body as! NSData)
-            
-            var lastID = -9999
-            if  let recordList = dict.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>> {
-                for record in recordList {
-                    let recordInfo = AppointmentInfo(value: record)
-                    DataManager.insertAppointmentRecordInfo(recordInfo)
-                    lastID = recordInfo.appointment_id_
-                }
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
- 
-        case .checkCommentDetailReplay:
-            var dict = JSON.init(data: body as! NSData)
-            if dict.count == 0 {
-                dict = ["code":"0"]
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data":dict.dictionaryObject!])
-            break
+            serversManInfoReply(jsonBody)
+        case .CheckCommentDetailReplay:
+            checkCommentDetailReplay(jsonBody)
         default:
             break
         }
@@ -717,23 +410,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         return true
-    }
-    
-    func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
-        let localNotify = UILocalNotification()
-        localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
-        localNotify.timeZone = NSTimeZone.defaultTimeZone()
-        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
-        localNotify.soundName = UILocalNotificationDefaultSoundName
-        if #available(iOS 8.2, *) {
-            localNotify.alertTitle = "V领队"
-        } else {
-            // Fallback on earlier versions
-        }
-        localNotify.alertBody = body!
-        localNotify.userInfo = userInfo
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
-        
     }
     
     // MARK: - GCDAsyncSocketDelegate
@@ -784,8 +460,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let headLen = SockHead.size
         while buffer.length >= headLen {
             let head = SockHead(data: buffer)
-            let packageLen = Int(head.fields["packageLen"]! as! NSNumber)
-            let bodyLen = Int(head.fields["dataLen"]! as! NSNumber)
+            let packageLen = Int(head.len)
+            let bodyLen = Int(head.bodyLen)
             if buffer.length >= packageLen {
                 let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
@@ -809,6 +485,278 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     deinit {
         socket?.disconnect()
+    }
+    
+    // MARK: -
+    
+    func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
+        let localNotify = UILocalNotification()
+        localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
+        localNotify.timeZone = NSTimeZone.defaultTimeZone()
+        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
+        localNotify.soundName = UILocalNotificationDefaultSoundName
+        if #available(iOS 8.2, *) {
+            localNotify.alertTitle = "V领队"
+        } else {
+            // Fallback on earlier versions
+        }
+        localNotify.alertBody = body!
+        localNotify.userInfo = userInfo
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
+        
+    }
+    
+    func logined(jsonBody: JSON?) {
+        postNotification(NotifyDefine.LoginResult, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
+    }
+    
+    func servantInfoReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.ServantInfo, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
+    }
+    
+    func servantDetailInfoReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.ServantDetailInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func recommonServantsReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func servicesCityReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
+        if head!.type == Int8(0) {
+            SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
+            XCGLogger.warning("Modify passwd failed")
+        } else {
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
+            postNotification(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
+        }
+    }
+    
+    func userInfoReply(jsonBody: JSON?) {
+        for info in jsonBody!["userinfo_list"] {
+            let user = UserInfo()
+            user.setInfo(.Other, info: info.1.dictionaryObject!)
+            DataManager.updateUserInfo(user)
+        }
+    }
+    
+    func messageVerifyReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func registerAccountReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.RegisterAccountReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func improveDataReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.ImproveDataSuccessed, object: nil, userInfo: nil)
+    }
+    
+    func obtainTripReply(jsonBody: JSON?) {
+        if try! jsonBody?.rawData().length <= 0 {
+            postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
+        } else {
+            if let tripList = jsonBody!.dictionaryObject!["trip_list"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for trip in tripList {
+                    let hodotemerInfo = HodometerInfo(value: trip)
+                    DataManager.insertHodometerInfo(hodotemerInfo)
+                    lastOrderID = hodotemerInfo.order_id_
+                }
+                postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            }
+        }
+    }
+    
+    func serviceDetailReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
+    }
+    
+    func drawBillReply(jsonBody: JSON?) {
+        var dict = ["invoice_status_": HodometerStatus.InvoiceMaking.rawValue]
+        let oidStr = jsonBody?.dictionaryObject!["oid_str_"] as? String
+        let oids = oidStr?.componentsSeparatedByString(",")
+        for oid in oids! {
+            if oid == "" {
+                continue
+            }
+            dict["order_id_"] = Int.init(oid)
+            DataManager.updateData(HodometerInfo.self, data: dict)
+        }
+        postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func centurionCardInfoReply(jsonBody: JSON?) {
+        if let privilegeList = jsonBody?.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
+            for privilege in privilegeList {
+                let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
+                DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
+            }
+        }
+    }
+    
+    func userCenturionCardInfoReply(jsonBody: JSON?) {
+        DataManager.currentUser?.setInfo(.CurrentUser, info: (jsonBody?.dictionaryObject)!)
+    }
+    
+    func centurionCardConsumedReply(jsonBody: JSON?) {
+        if jsonBody == nil {
+            postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
+        } else {
+            if let orderList = jsonBody?.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for order in orderList {
+                    let info = CenturionCardConsumedInfo(value: order)
+                    DataManager.insertCerturionCardConsumedInfo(info)
+                    lastOrderID = info.order_id_
+                }
+                postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            }
+        }
+    }
+    
+    func skillsInfoReply(jsonBody: JSON?) {
+        if let skillList = jsonBody?.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
+            for skill in skillList {
+                let info = SkillInfo(value: skill)
+                let string:NSString = info.skill_name_!
+                let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
+                let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(17)], context: nil)
+                info.labelWidth = Float(rect.size.width) + 30
+                DataManager.insertData(SkillInfo.self, data: info)
+            }
+        }
+    }
+    
+    func appointmentReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
+    }
+    
+    func invoiceDetailReply(jsonBody: JSON?) {
+        if jsonBody?.dictionaryObject != nil {
+            postNotification(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
+        }
+    }
+    
+    func invoiceInfoReply(jsonBody: JSON?) {
+        if try! jsonBody?.rawData().length <= 0 {
+            postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
+        } else {
+            if let invoiceList = jsonBody?.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {
+                var lastOrderID = 0
+                for invoice in invoiceList {
+                    let historyInfo = InvoiceHistoryInfo(value: invoice)
+                    DataManager.insertInvoiceHistotyInfo(historyInfo)
+                    lastOrderID = historyInfo.invoice_id_
+                }
+                postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
+            }
+        }
+    }
+    
+    func uploadImageTokenReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
+    }
+    
+    func wxPlaceOrderReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
+    }
+    
+    func clientWXPayStatusReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
+    }
+    
+    func serverWXPayStatusReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
+    }
+    
+    func authenticateUserCardReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func checkAuthenticateResultReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func checkUserCashReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func appointmentRecordReply(jsonBody: JSON?) {
+        var lastID = -9999
+        if  let recordList = jsonBody?.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>> {
+            for record in recordList {
+                let recordInfo = AppointmentInfo(value: record)
+                DataManager.insertAppointmentRecordInfo(recordInfo)
+                lastID = recordInfo.appointment_id_
+            }
+        }
+        postNotification(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
+    }
+    
+    // Opcode => 2000+
+    
+    func invitationReply(jsonBody: JSON?) {
+        /*
+         if let _ = SocketManager.getErrorCode(dict.dictionaryObject!) {
+         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: dict.dictionaryObject)
+         return true
+         }
+         */
+        let order = HodometerInfo(value: (jsonBody?.dictionaryObject)!)
+        if order.is_asked_ == 1 {
+            postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
+        } else {
+            DataManager.insertHodometerInfo(order)
+            if UIApplication.sharedApplication().applicationState == .Background {
+                let body = "系统消息: 您有新的行程消息!"
+                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                userInfo["type"] = PushMessage.MessageType.System.rawValue
+                userInfo["data"] = (jsonBody?.dictionaryObject)!
+                localNotify(body, userInfo: userInfo)
+            } else {
+                postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
+            }
+        }
+    }
+    
+    func chatMessageReply(jsonBody: JSON?) {
+        let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
+        DataManager.insertMessage(msg)
+        if UIApplication.sharedApplication().applicationState == .Background {
+            if let user = DataManager.getUserInfo(msg.from_uid_) {
+                let body = "\(user.nickname!): \(msg.content_!)"
+                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+                userInfo["data"] = (jsonBody?.dictionaryObject)!
+                localNotify(body, userInfo: userInfo)
+            }
+        } else {
+            postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
+        }
+    }
+    
+    func chatRecordReply(jsonBody: JSON?) {
+        
+    }
+    
+    func evaluatetripReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
+    }
+    
+    func serversManInfoReply(jsonBody: JSON?) {
+        guard jsonBody != nil else { return }
+        postNotification(NotifyDefine.ServersManInfoReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
+    }
+    
+    func checkCommentDetailReplay(jsonBody: JSON?) {
+        postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
 }
