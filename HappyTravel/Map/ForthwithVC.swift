@@ -186,14 +186,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         bottomSelector.value = 0
         bottomSelector.continuous = false
         bottomSelector.addTarget(self, action: #selector(ForthwithVC.bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
-        bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
+//        bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
         bottomSelector.tintColor = UIColor.whiteColor()
         bottomSelector.minimumTrackTintColor = UIColor.whiteColor()
         bottomSelector.maximumTrackTintColor = UIColor.whiteColor()
         bottomView.addSubview(bottomSelector)
         bottomSelector.snp_makeConstraints { (make) in
             make.center.equalTo(bottomView)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+            make.width.equalTo(ScreenWidth / 2.0)
             make.height.equalTo(65)
         }
         
