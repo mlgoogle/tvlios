@@ -35,7 +35,7 @@ class AppointmentDetailVC: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "预约详情"
         view.addSubview(tableView)
         tableView.registerClass(SkillsCell.self, forCellReuseIdentifier: "skillCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "normal")
