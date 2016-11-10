@@ -85,7 +85,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
           SVProgressHUD.showWainningMessage(WainningMessage: "还没为您分配V领队", ForDuration: 1.5, completion: nil)
         }
     }
@@ -103,6 +103,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
+                cell.selectionStyle = .None
                 cell.textLabel?.font = UIFont.systemFontOfSize(S15)
                 cell.textLabel?.textColor = colorWithHexString("#131f32")
                 cell.textLabel?.text = "代订 : " + (appointmentInfo?.other_name_)! + " " + (appointmentInfo?.other_phone_)!
