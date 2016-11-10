@@ -126,6 +126,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         XCGLogger.error("\(error)")
     }
+
+    
+
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
