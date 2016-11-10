@@ -13,6 +13,9 @@ class AppointmentDetailVC: UIViewController {
     var appointmentInfo:AppointmentInfo?
     lazy private var tableView:UITableView = {
         let tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        tableView.estimatedRowHeight = 200
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .None
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -36,6 +39,7 @@ class AppointmentDetailVC: UIViewController {
         view.addSubview(tableView)
         tableView.registerClass(SkillsCell.self, forCellReuseIdentifier: "skillCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "normal")
+        tableView.registerClass(AppointmentDetailCell.self, forCellReuseIdentifier: "detailCell")
         tableView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
@@ -92,14 +96,15 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
          */
         if appointmentInfo?.is_other_ == 1 {
             
-            switch indexPath.row {
+            switch indexPath.section {
             case 0:
-                let cell = tableView.dequeueReusableCellWithIdentifier("", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
                 
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
-                
+                cell.textLabel?.font = UIFont.systemFontOfSize(S15)
+                cell.textLabel?.textColor = colorWithHexString("#131f32")
                 cell.textLabel?.text = "代订 : " + (appointmentInfo?.other_name_)! + " " + (appointmentInfo?.other_phone_)!
                 return cell
             default:
@@ -113,8 +118,8 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
         
         
         
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("", forIndexPath: indexPath)
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
             
             return cell
             
@@ -129,6 +134,20 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
         /**
          *  判断是否添加代订信息
          */
+        return 1
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+     
         return appointmentInfo?.is_other_ == 1 ? 3 : 2
+        
+    }
+    
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10
+    }
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.001
     }
 }

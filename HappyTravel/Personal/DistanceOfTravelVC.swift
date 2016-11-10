@@ -275,6 +275,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             break
         case 1:
             let detailVC = AppointmentDetailVC()
+            detailVC.appointmentInfo = records![indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
             break
         case 2:
