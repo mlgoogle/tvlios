@@ -220,7 +220,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
-                make.width.equalTo(65)
+                make.width.equalTo(AtapteWidthValue(65))
             })
         }
         titleLab?.text = invoiceInfo[indexPath.row]
@@ -322,7 +322,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(15)
-                make.width.equalTo(65)
+                make.width.equalTo(AtapteWidthValue(65))
             })
         }
         titleLab?.text = personalInfo[indexPath.row]
