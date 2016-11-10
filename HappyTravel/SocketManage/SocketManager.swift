@@ -304,6 +304,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         }
         
+        if jsonBody == nil {
+            jsonBody = ["code" : 0]
+        }
+        
         switch SockOpcode(rawValue: head!.opcode)! {
         case .Logined:
             logined(jsonBody)
@@ -389,9 +393,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         let blockKey = head!.opcode
         if SocketManager.completationsDic[blockKey] != nil {
-            if jsonBody == nil {
-                jsonBody = ["code" : 0]
-            }
             let completation = SocketManager.completationsDic[blockKey]
             completation!(["data": jsonBody!.dictionaryObject!])
             SocketManager.completationsDic.removeValueForKey(blockKey)

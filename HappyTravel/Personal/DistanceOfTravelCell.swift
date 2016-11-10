@@ -212,6 +212,7 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
+            guard hotometer?.status_ > -1 else { return }
             statusLab.text = statusDict[OrderStatus(rawValue: (hotometer?.status_)!)!]
             statusLab.textColor = statusColor[OrderStatus(rawValue: (hotometer?.status_)!)!]
         }

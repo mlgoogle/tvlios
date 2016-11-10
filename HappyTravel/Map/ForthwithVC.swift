@@ -719,6 +719,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
    
     
+    public func mapView(mapView: MAMapView!, didFailToLocateUserWithError error: NSError!) {
+        
+        switch error.code {
+        case 1:
+            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
+            firstLanch = true
+            break
+        case 4:
+            SVProgressHUD.showWainningMessage(WainningMessage: "网络连接超时", ForDuration: 1.5, completion: nil)
+
+            break
+        default:
+            break
+        }
+        
+        
+    }
     // MARK: - ServiceSheetDelegate
     func cancelAction(sender: UIButton?) {
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
