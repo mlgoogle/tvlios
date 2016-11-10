@@ -263,12 +263,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
-            if cell.curHodometerInfo?.status_ != HodometerStatus.Paid.rawValue {
-                return
+            if cell.curHodometerInfo?.status_ == HodometerStatus.Paid.rawValue ||
+            cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+            cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue{
+                let identDetailVC = IdentDetailVC()
+                identDetailVC.hodometerInfo = cell.curHodometerInfo!
+                navigationController?.pushViewController(identDetailVC, animated: true)
             }
-            let identDetailVC = IdentDetailVC()
-            identDetailVC.hodometerInfo = cell.curHodometerInfo!
-            navigationController?.pushViewController(identDetailVC, animated: true)
+            
         }
         
     }
