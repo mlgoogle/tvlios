@@ -36,6 +36,8 @@ let S13 = AtapteWidthValue(13)
 let S12 = AtapteWidthValue(12)
 let S10 = AtapteWidthValue(10)
 
+
+
 func  AtapteWidthValue(value: CGFloat) -> CGFloat {
     let mate = ScreenWidth/375.0
     let atapteValue = value*mate
