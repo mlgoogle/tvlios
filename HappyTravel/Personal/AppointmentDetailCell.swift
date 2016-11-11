@@ -9,7 +9,17 @@
 import UIKit
 
 class AppointmentDetailCell: UITableViewCell {
+    
+    
+    var serviceTypes = [0:"未指定", 1:"高端游", 2:"商务游"]
 
+    lazy private var dateFomatter:NSDateFormatter = {
+        var dateFomatter = NSDateFormatter()
+        dateFomatter.dateFormat = "YYYY/MM/dd"
+        
+        return dateFomatter
+    }()
+    
     lazy private var iconImageView:UIImageView = {
        let imageView = UIImageView()
         imageView.layer.cornerRadius = AtapteWidthValue(45) / 2
@@ -28,7 +38,7 @@ class AppointmentDetailCell: UITableViewCell {
     var serviceTypeLabel:UILabel = {
        
         let label = UILabel()
-        label.text = "二郎神"
+        label.text = "【二郎神】"
         label.font = UIFont.systemFontOfSize(S15)
         label.backgroundColor = UIColor.clearColor()
         label.textColor = colorWithHexString("#131f32")
@@ -89,11 +99,11 @@ class AppointmentDetailCell: UITableViewCell {
             make.left.equalTo(iconImageView.snp_right).offset(AtapteWidthValue(20))
         }
         serviceTypeLabel.snp_makeConstraints { (make) in
-            make.left.equalTo(nicknameLabel)
+            make.left.equalTo(nicknameLabel.snp_left).offset(-7)
             make.top.equalTo(nicknameLabel.snp_bottom).offset(AtapteHeightValue(9))
         }
         dateLabel.snp_makeConstraints { (make) in
-            make.left.equalTo(serviceTypeLabel)
+            make.left.equalTo(nicknameLabel)
             make.top.equalTo(serviceTypeLabel.snp_bottom).offset(AtapteHeightValue(13))
         }
         cityImageView.snp_makeConstraints { (make) in
@@ -101,7 +111,7 @@ class AppointmentDetailCell: UITableViewCell {
             make.width.equalTo(22 / 1.5)
             make.height.equalTo(30 / 1.5)
             make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
-            make.bottom.equalTo(contentView).offset(AtapteHeightValue(-22))
+            make.bottom.equalTo(contentView).offset(AtapteHeightValue(0))
         }
         cityLabel.snp_makeConstraints { (make) in
             make.left.equalTo(cityImageView.snp_right).offset(10)
@@ -113,6 +123,73 @@ class AppointmentDetailCell: UITableViewCell {
         }
         
     }
+    
+    
+    
+    
+    /**
+     预约详情顶部处理
+     */
+    func hideCityInfo() {
+
+        cityImageView.snp_remakeConstraints { (make) in
+            make.left.equalTo(dateLabel)
+            make.width.equalTo(0)
+            make.height.equalTo(0)
+            make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
+            make.bottom.equalTo(contentView).offset(AtapteHeightValue(0))
+        }
+        cityImageView.hidden = true
+        cityLabel.hidden = true
+    }
+    func setupDataWithInfo(info:UserInfo) {
+        
+
+        iconImageView.kf_setImageWithURL(NSURL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        nicknameLabel.text = info.nickname
+        
+    }
+    
+    func setServiceInfo(info:HodometerInfo) {
+        
+        serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"
+//        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.service_time_)))
+//        let endTime =
+ 
+//        dateLabel.text = info.service_time_!
+        
+    }
+    /**
+     预约详情顶部处理
+     */
+    
+    
+    
+    
+    
+    
+    
+    /**
+     
+     
+     */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
