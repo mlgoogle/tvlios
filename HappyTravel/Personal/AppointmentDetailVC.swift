@@ -169,7 +169,43 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
 //            }
             return cell
             
+        } else {
+            switch indexPath.section {
+            case 0:
+                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
+                
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+                
+                cell.setInfo(skills)
+                cell.contentView.backgroundColor = UIColor.whiteColor()
+                //                 cell.style = .Normal
+                //                cell.setInfo(skills)
+                return cell
+                
+//            case 2:
+//                let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
+//                cell.selectionStyle = .None
+//                cell.textLabel?.font = UIFont.systemFontOfSize(S15)
+//                cell.textLabel?.textColor = colorWithHexString("#131f32")
+//                cell.textLabel?.text = "代订 : " + (appointmentInfo?.other_name_)! + " " + (appointmentInfo?.other_phone_)!
+//                return cell
+            default:
+                break
+            }
+            let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
+            //            cell.setInfo(hodometerInfo)
+            //            commonCell = cell
+            //            if serviceScore != nil {
+            //                cell.serviceSocre = serviceScore
+            //                cell.userScore = userScore
+            //                cell.remark = remark
+            //            }
+            return cell
         }
+        
+        
         
         
         let cell = tableView.dequeueReusableCellWithIdentifier("skillCell", forIndexPath: indexPath)

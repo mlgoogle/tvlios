@@ -17,7 +17,8 @@ class CentrionCardConsumedCell: UITableViewCell {
                 "serviceTitleLab": 1002,
                 "costLab": 1003,
                 "timeLab": 1004,
-                "bgView": 1005]
+                "bgView": 1005,
+                "subTitle": 1006]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -71,7 +72,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             contentView.addSubview(serviceTitleLab!)
             serviceTitleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
-                make.top.equalTo(headImageView!).offset(10)
+                make.top.equalTo(headImageView!)
             })
         }
         
@@ -86,7 +87,24 @@ class CentrionCardConsumedCell: UITableViewCell {
             contentView.addSubview(costLab!)
             costLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(contentView).offset(-14)
-                make.top.equalTo(serviceTitleLab!)
+                make.center.equalTo(contentView)
+            })
+        }
+        
+        var subTitleLab = contentView.viewWithTag(tags["subTitle"]!) as? UILabel
+        if subTitleLab == nil {
+            subTitleLab = UILabel()
+            subTitleLab?.tag = tags["subTitle"]!
+            subTitleLab?.backgroundColor = UIColor.clearColor()
+            subTitleLab?.textAlignment = .Left
+            subTitleLab?.textColor = UIColor.grayColor()
+            subTitleLab?.font = UIFont.systemFontOfSize(S13)
+            subTitleLab?.text = "中级黑卡"
+            contentView.addSubview(subTitleLab!)
+            subTitleLab?.snp_makeConstraints(closure: { (make) in
+                make.top.equalTo(serviceTitleLab!.snp_bottom).offset(8)
+                make.left.equalTo(serviceTitleLab!)
+                make.height.equalTo(S13)
             })
         }
         
@@ -97,10 +115,11 @@ class CentrionCardConsumedCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
+            timeLab?.text = "2016-11-11"
             timeLab?.font = UIFont.systemFontOfSize(S13)
             contentView.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(serviceTitleLab!.snp_bottom).offset(11)
+                make.top.equalTo(subTitleLab!.snp_bottom).offset(4)
                 make.left.equalTo(serviceTitleLab!)
                 make.bottom.equalTo(bgView!).offset(-14)
             })
