@@ -113,7 +113,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func indexAction(sender: UIButton) {
-        let index = sender.tag - self.tags["indexBtn"]!
+        let index = sender.tag - tags["indexBtn"]!
         XCGLogger.debug("\(self.keys![index] as? String)")
         table?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: 0, inSection: index), atScrollPosition: .Middle, animated: true)
     }
