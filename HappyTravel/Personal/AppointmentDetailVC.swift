@@ -8,8 +8,11 @@
 
 import Foundation
 import SVProgressHUD
-class AppointmentDetailVC: UIViewController {
+import RealmSwift
 
+class AppointmentDetailVC: UIViewController {
+    var commitBtn: UIButton?
+    var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfo?
     lazy private var tableView:UITableView = {
         let tableView = UITableView(frame: CGRectZero, style: .Grouped)
@@ -37,16 +40,52 @@ class AppointmentDetailVC: UIViewController {
         super.viewDidLoad()
         title = "预约详情"
         view.addSubview(tableView)
-        tableView.registerClass(SkillsCell.self, forCellReuseIdentifier: "skillCell")
+        tableView.registerClass(TallyCell.self, forCellReuseIdentifier: "TallyCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "normal")
         tableView.registerClass(AppointmentDetailCell.self, forCellReuseIdentifier: "detailCell")
+        tableView.registerClass(IdentCommentCell.self, forCellReuseIdentifier: "CommentCell")
         tableView.snp_makeConstraints { (make) in
-            make.edges.equalTo(view)
+            make.top.equalTo(view)
+            make.right.equalTo(view)
+            make.left.equalTo(view)
+            make.bottom.equalTo(view).offset(-60)
         }
-        initFooterView()    
+        let commitBtn = UIButton()
+        commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
+        commitBtn.setTitle("取消预约", forState: .Normal)
+        commitBtn.addTarget(self, action: #selector(AppointmentDetailVC.cancelOrCommitButtonAction), forControlEvents: .TouchUpInside)
+        view.addSubview(commitBtn)
+        commitBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(view)
+            make.height.equalTo(60)
+        }
+        self.commitBtn = commitBtn
+//        initFooterView()
+//        if let infos = DataManager.getData(SkillInfo.self, filter: nil) as? Results<SkillInfo> {
+//            for info in infos {
+//                let selected = false
+//      
+//                skills.append([info: selected])
+//                
+//            }
+//            
+//        }
+        for _ in 0...10 {
+            
+            let tally = Tally()
+            tally.tally = "标签"
+            tally.labelWidth = 60
+            skills.append(tally)
+        }
+        
     }
 
-    
+    func cancelOrCommitButtonAction() {
+        
+        SVProgressHUD.showWainningMessage(WainningMessage: "还不能取消预约哦！", ForDuration: 1.5, completion: nil)
+    }
     func initFooterView() {
         let footerView = UIView (frame:CGRectMake(0, 0, ScreenWidth, AtapteHeightValue(110)))
         
@@ -102,6 +141,15 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                 
                 return cell
             case 1:
+                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+                
+                cell.setInfo(skills)
+                cell.contentView.backgroundColor = UIColor.whiteColor()
+//                 cell.style = .Normal
+//                cell.setInfo(skills)
+                return cell
+                
+            case 2:
                 let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
                 cell.selectionStyle = .None
                 cell.textLabel?.font = UIFont.systemFontOfSize(S15)
@@ -111,20 +159,55 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             default:
                 break
             }
-            let cell = tableView.dequeueReusableCellWithIdentifier("skillCell", forIndexPath: indexPath)
-            
+            let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
+//            cell.setInfo(hodometerInfo)
+//            commonCell = cell
+//            if serviceScore != nil {
+//                cell.serviceSocre = serviceScore
+//                cell.userScore = userScore
+//                cell.remark = remark
+//            }
             return cell
             
+        } else {
+            switch indexPath.section {
+            case 0:
+                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
+                
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+                
+                cell.setInfo(skills)
+                cell.contentView.backgroundColor = UIColor.whiteColor()
+                //                 cell.style = .Normal
+                //                cell.setInfo(skills)
+                return cell
+                
+//            case 2:
+//                let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
+//                cell.selectionStyle = .None
+//                cell.textLabel?.font = UIFont.systemFontOfSize(S15)
+//                cell.textLabel?.textColor = colorWithHexString("#131f32")
+//                cell.textLabel?.text = "代订 : " + (appointmentInfo?.other_name_)! + " " + (appointmentInfo?.other_phone_)!
+//                return cell
+            default:
+                break
+            }
+            let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
+            //            cell.setInfo(hodometerInfo)
+            //            commonCell = cell
+            //            if serviceScore != nil {
+            //                cell.serviceSocre = serviceScore
+            //                cell.userScore = userScore
+            //                cell.remark = remark
+            //            }
+            return cell
         }
         
         
         
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
-            
-            return cell
-            
-        }
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("skillCell", forIndexPath: indexPath)
         
         
@@ -140,12 +223,17 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
-        return appointmentInfo?.is_other_ == 1 ? 3 : 2
+        return appointmentInfo?.is_other_ == 1 ? 4 : 3
         
     }
     
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 0.001
+        } else if section == 3 {
+            return 0.001
+        }
         return 10
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

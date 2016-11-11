@@ -54,6 +54,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.separatorStyle = .None
         table?.registerClass(IdentBaseInfoCell.self, forCellReuseIdentifier: "IdentBaseInfoCell")
         table?.registerClass(IdentCommentCell.self, forCellReuseIdentifier: "IdentCommentCell")
+        table?.registerClass(AppointmentDetailCell.self, forCellReuseIdentifier: "AppointmentDetailCell")
         view.addSubview(table!)
         
         let commitBtn = UIButton()
@@ -140,9 +141,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("IdentBaseInfoCell", forIndexPath: indexPath) as! IdentBaseInfoCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentDetailCell", forIndexPath: indexPath) as! AppointmentDetailCell
             if let user = DataManager.getUserInfo(hodometerInfo!.to_uid_) {
-                cell.setInfo(user)
+                cell.setupDataWithInfo(user)
+                cell.setServiceInfo(hodometerInfo!)
+                cell.hideCityInfo()
             } else {
                 SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(hodometerInfo!.to_uid_)"])
                 let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)!]
