@@ -16,7 +16,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var table:UITableView?
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
-    
+    var timer:NSTimer?
+
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
     
@@ -39,15 +40,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        
-        header.beginRefreshing()
-        
+        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
+
     }
     
+    func appearheaderRefresh() {
+        header.beginRefreshing()
+    }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
     }
     
     func registerNotify() {
@@ -180,7 +182,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         table?.mj_header = header
         footer.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.footerRefresh))
         table?.mj_footer = footer
-     
+
     }
     
     func headerRefresh() {
@@ -202,7 +204,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         default:
             break
         }
-        
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(DistanceOfTravelVC.endRefresh), userInfo: nil, repeats: false)
+        /**
+         加入mainloop 防止滑动计时器停止
+         */
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     
     func footerRefresh() {
@@ -304,10 +310,21 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
-        if header.state == .Idle && footer.state == .Idle {
+        if header.state == .Idle && (footer.state == .Idle || footer.state == .NoMoreData){
             header.beginRefreshing()
         }
 
+    }
+    func endRefresh() {
+    
+        if header.state == .Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == .Refreshing {
+            footer.endRefreshing()
+        }
+        timer?.invalidate()
+        timer = nil
     }
     
 }

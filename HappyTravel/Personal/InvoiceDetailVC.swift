@@ -40,6 +40,13 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                         "备注信息"]
     
     
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
