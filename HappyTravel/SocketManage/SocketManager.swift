@@ -612,6 +612,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = info.order_id_
                 }
                 postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
+
             }
         }
     }
@@ -622,7 +625,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 let info = SkillInfo(value: skill)
                 let string:NSString = info.skill_name_!
                 let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(17)], context: nil)
+                let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(AtapteWidthValue(12))], context: nil)
                 info.labelWidth = Float(rect.size.width) + 30
                 DataManager.insertData(SkillInfo.self, data: info)
             }
