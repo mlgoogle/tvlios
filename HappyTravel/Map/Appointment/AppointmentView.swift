@@ -10,6 +10,7 @@ import Foundation
 class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DateSelectorSheetDelegate , CitysSelectorSheetDelegate, SkillsCellDelegate, SkillTreeVCDelegate {
     
     var table:UITableView?
+    var commitBtn:UIButton?
     var agent = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
     var citysAlertController:UIAlertController?
@@ -180,6 +181,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.height.equalTo(40)
                     make.bottom.equalTo(cell!.contentView)
                 })
+                self.commitBtn = commitBtn
             }
         }
         
@@ -632,7 +634,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                                         "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
                                         "other_phone_": agent == true ? tel! : ""]
         SocketManager.sendData(.AppointmentRequest, data: dict)
-        
+        commitBtn?.enabled = false
     }
     
     // MARK: - SkillTreeVCDelegate

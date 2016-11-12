@@ -109,6 +109,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
+        appointmentView.commitBtn?.enabled = true
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -334,8 +335,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             vc.segmentIndex = 1
             weakSelf.navigationController?.pushViewController(vc, animated: true)
 
-            
         }
+
 //        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
 //        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
 //            
