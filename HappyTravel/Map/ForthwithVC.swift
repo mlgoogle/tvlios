@@ -109,6 +109,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
+        appointmentView.commitBtn?.enabled = true
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -334,8 +335,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             vc.segmentIndex = 1
             weakSelf.navigationController?.pushViewController(vc, animated: true)
 
-            
         }
+
 //        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
 //        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
 //            
@@ -615,8 +616,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         }
         
-       
-        
     }
     
     func sendLocality() {
@@ -670,9 +669,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-//        DataManager.currentUser!.gpsLocationLat = 31.20805228400625
-//        DataManager.currentUser!.gpsLocationLon = 121.60019287100375
-        
         return nil
     }
     
@@ -683,6 +679,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
+            // 认证状态限制查看个人信息
             let auth = (DataManager.currentUser?.authentication)!
             if auth != 1 {
                 let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客",
@@ -710,6 +707,32 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 
                 return
             }
+            // 余额限制查看个人信息
+            if DataManager.currentUser?.cash == 0 {
+                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
+                
+                let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                    XCGLogger.debug("去充值")
+                    
+                    let rechargeVC = RechargeVC()
+                    self.navigationController?.pushViewController(rechargeVC, animated: true)
+                    DataManager.currentUser?.cash = 10
+                    
+                })
+                
+                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                    
+                })
+                
+                alert.addAction(ok)
+                alert.addAction(cancel)
+                
+                presentViewController(alert, animated: true, completion: {
+                    
+                })
+                
+                return
+            }
 
             let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid]
             SocketManager.sendData(.GetServantDetailInfo, data: dict)
@@ -718,7 +741,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 
     }
    
-    
     public func mapView(mapView: MAMapView!, didFailToLocateUserWithError error: NSError!) {
         
         switch error.code {

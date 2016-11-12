@@ -14,6 +14,7 @@ enum SkillsCellStyle : Int {
     case AddNew = 1
     case Select = 2
     case Delete = 3
+    case Other = 4
 }
 
 @objc protocol SkillsCellDelegate : NSObjectProtocol {

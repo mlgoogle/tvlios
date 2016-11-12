@@ -74,7 +74,7 @@ class SingleSkillCell: UICollectionViewCell {
             setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor, cornerRadius:  12.0, isDelete: true)
 
             break
-         default:
+        default:
             break
         }
         
