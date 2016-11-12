@@ -54,7 +54,7 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
     //分享按钮
     lazy var shareCollection: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
-       layout.itemSize = CGSize.init(width: ScreenWidth / CGFloat(self.shareTitles.count)-10, height: AtapteWidthValue(102))
+       layout.itemSize = CGSize.init(width: ScreenWidth / 2 - 20, height: AtapteWidthValue(102))
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
        let collection = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)

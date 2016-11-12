@@ -166,6 +166,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     // MARK: - CenturionCardLvSelCellDelegate
     func selectedAction(index: Int) {
+        if selectedIndex == index {
+            return
+        }
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)

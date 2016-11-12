@@ -24,9 +24,10 @@ class CenturionCardServicesCell : UITableViewCell {
     let tags = ["serviceBtn": 1001,
                 "buyNowBtn": 1002]
     
-    let centurionCardTitle = [0: "初级会员",
-                              1: "中级会员",
-                              2: "高级会员"]
+    let centurionCardTitle = [0: "一星会员",
+                              1: "二星会员",
+                              2: "三星会员",
+                              4: "四星会员"]
     
     let centurionCardIcon = [0: [0: "primary-level-disable", 1: "primary-level"],
                              1: [0: "middle-level-disable", 1: "middle-level"],
@@ -46,9 +47,24 @@ class CenturionCardServicesCell : UITableViewCell {
     }
     
     func setInfo(services: Results<CenturionCardServiceInfo>?) {
+       
+        
         self.services = services
         for subview in contentView.subviews {
             subview.removeFromSuperview()
+        }
+        
+        if services!.count == 0 {
+            let noDataLabel = UILabel.init(text: "只接受内部邀请", font: UIFont.systemFontOfSize(S15), textColor: colorWithHexString("#666666"))
+            noDataLabel.textAlignment = .Center
+            contentView.addSubview(noDataLabel)
+            noDataLabel.snp_makeConstraints(closure: { (make) in
+                make.top.equalTo(80)
+                make.left.equalTo(0)
+                make.right.equalTo(0)
+                make.height.equalTo(S15)
+            })
+            return
         }
         
         for (index, service) in self.services!.enumerate() {
@@ -132,6 +148,7 @@ class CenturionCardServicesCell : UITableViewCell {
             }
             
         }
+        
     }
 
     func serviceTouched(sender: UIButton) {
