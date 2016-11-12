@@ -451,8 +451,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         while buffer.length >= headLen {
             let head = SockHead(data: buffer)
             let packageLen = Int(head.len)
-            let bodyLen = Int(head.bodyLen)
             if buffer.length >= packageLen {
+                let bodyLen = Int(head.bodyLen)
                 let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
                 recvData(head, body: bodyData)
@@ -461,7 +461,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
             
         }
-        socket?.readDataWithTimeout(-1, tag: 0)
+        socket?.readDataWithTimeout(-1, tag: tag)
     
     }
     
