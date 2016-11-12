@@ -75,7 +75,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         orderID = lastOrderID
-        table?.reloadData()
+        if segmentIndex == 0 {
+            table?.reloadData()
+        }
+        
     }
     
     func centurionCardConsumedReply(notification: NSNotification) {
@@ -97,7 +100,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         consumedOrderID = lastOrderID
-        table?.reloadData()
+        if segmentIndex == 2 {
+            table?.reloadData()
+        }
+        
     }
     func receivedAppointmentInfos(notification:NSNotification) {
         
@@ -117,7 +123,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         lastRecordId = lastID
-        table?.reloadData()
+        if segmentIndex == 1 {
+            table?.reloadData()
+        }
         
     }
     
@@ -237,17 +245,26 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         switch segmentIndex {
         case 0:
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-            cell.setHodometerInfo(hotometers![indexPath.row])
+            if hotometers?.count > 0 && indexPath.row < hotometers?.count {
+                cell.setHodometerInfo(hotometers![indexPath.row])
+            }
+            
             return cell
 
         case 1:
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentRecordCell", forIndexPath: indexPath) as! AppointmentRecordCell
-            cell.setRecordInfo(records![indexPath.row])
+            if records?.count > 0 && indexPath.row < records?.count {
+                cell.setRecordInfo(records![indexPath.row])
+            }
+            
             return cell
 
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
-            cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
+            if consumes?.count > 0 && indexPath.row < consumes?.count {
+                cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
+            }
+            
             return cell
             
         default:
@@ -287,7 +304,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
-        header.beginRefreshing()
+        if header.state == .Idle && footer.state == .Idle {
+            header.beginRefreshing()
+        }
 
     }
     
