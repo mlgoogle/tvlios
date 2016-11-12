@@ -605,6 +605,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = info.order_id_
                 }
                 postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
+
             }
         }
     }

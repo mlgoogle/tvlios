@@ -27,11 +27,13 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+
     }
     
     override func viewDidLoad() {
