@@ -9,6 +9,7 @@
 import Foundation
 import XCGLogger
 import SVProgressHUD
+import RealmSwift
 
 class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
@@ -99,7 +100,27 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func servantDetailInfo(notification: NSNotification) {
-        table?.reloadData()
+
+            
+            let data = notification.userInfo!["data"]
+            if data!["error_"]! != nil {
+                XCGLogger.error("Get UserInfo Error:\(data!["error"])")
+                return
+            }
+        
+          servantInfo = DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+          let realm = try! Realm()
+          try! realm.write({
+            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+            
+            })
+        
+     
+            DataManager.updateUserInfo(servantInfo!)
+            let servantPersonalVC = ServantPersonalVC()
+            servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+            navigationController?.pushViewController(servantPersonalVC, animated: true)
+       
     }
     
     
@@ -166,7 +187,18 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
     }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 0 {
+            let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)!]
+            SocketManager.sendData(.GetServantDetailInfo, data:dict)
+           
+        }
+    }
     
+
+    
+    
+
     // MARK: - DATA
     func initData() {
         let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
