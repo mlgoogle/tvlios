@@ -14,6 +14,7 @@ enum SkillsCellStyle : Int {
     case AddNew = 1
     case Select = 2
     case Delete = 3
+    case Other = 4
 }
 
 @objc protocol SkillsCellDelegate : NSObjectProtocol {
@@ -134,6 +135,7 @@ class SkillsCell : UITableViewCell {
                         tallyBtn?.layer.cornerRadius = 30 / 2.0
                         tallyBtn?.layer.masksToBounds = true
                         tallyBtn?.layer.borderWidth = 1
+                        tallyBtn?.titleLabel?.font = UIFont.systemFontOfSize(S12)
                         
                         tallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
                         tallyBtn?.setTitleColor(UIColor.grayColor(), forState: .Disabled)
@@ -223,7 +225,7 @@ class SkillsCell : UITableViewCell {
             addnewBtn.hidden = style == .AddNew ? false : true
             if lastTallyItemView != nil {
                 addnewBtn.snp_remakeConstraints(closure: { (make) in
-                    if  allButtonWidth + 50 > Float(contentView.mj_w) {
+                    if  allButtonWidth + 50 > Float(ScreenWidth) {
                         make.left.equalTo(contentView).offset(20)
                         make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
                     } else {

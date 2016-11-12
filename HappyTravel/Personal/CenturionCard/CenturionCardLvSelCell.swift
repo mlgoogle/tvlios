@@ -40,6 +40,9 @@ class CenturionCardLvSelCell : UITableViewCell {
         selectionStyle = .None
         contentView.backgroundColor = UIColor.redColor()
         backgroundColor = UIColor.redColor()
+        
+        let lv = DataManager.currentUser?.centurionCardLv
+        var curSelBtn:UIButton?
         for i in 0..<centurionCardIcon.count {
             let buttonWidth:CGFloat = UIScreen.mainScreen().bounds.size.width / CGFloat(centurionCardIcon.count)
             let buttonHeight:CGFloat = 70.0
@@ -73,22 +76,28 @@ class CenturionCardLvSelCell : UITableViewCell {
                     make.width.equalTo(buttonWidth)
                     make.bottom.equalTo(contentView)
                 })
-                
+
             }
-            lvBtn?.setImage(UIImage.init(named: i < DataManager.currentUser!.centurionCardLv ? centurionCardIcon[i]![1]! : centurionCardIcon[i]![0]!), forState: .Normal)
-            lvBtn?.setTitleColor(i < DataManager.currentUser!.centurionCardLv ? UIColor.blackColor() : UIColor.grayColor(), forState: .Normal)
-            
+            lvBtn?.setImage(UIImage.init(named: i < lv ? centurionCardIcon[i]![1]! : centurionCardIcon[i]![0]!), forState: .Normal)
+            lvBtn?.setTitleColor(i < lv ? UIColor.blackColor() : UIColor.grayColor(), forState: .Normal)
+            if lv == i + 1 || (lv == 0 && i == 0) {
+                curSelBtn = lvBtn
+            }
         }
         
-        indirector.frame = CGRectMake(ScreenWidth/6-10, contentView.frame.maxY+15, 20, 20)
         indirector.image = UIImage.init(named: "indirector")
         contentView.addSubview(indirector)
+        indirector.snp_makeConstraints(closure: { (make) in
+            make.centerX.equalTo(curSelBtn!.snp_centerX)
+            make.bottom.equalTo(contentView).offset(2)
+        })
     }
     
     func switchoverServicesView(sender: UIButton) {
-        UIView.animateWithDuration(0.5) {
-            self.indirector.mj_x = sender.center.x - 10
-        }
+        self.indirector.snp_remakeConstraints(closure: { (make) in
+            make.centerX.equalTo(sender.snp_centerX)
+            make.bottom.equalTo(self.contentView).offset(2)
+        })
         delegate?.selectedAction(sender.tag - tags["lvBtn"]! * 10)
     }
     

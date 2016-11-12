@@ -302,4 +302,15 @@ print(head2.timestamp)
 print(head2.sessionID)
 print(head2.reserved)
 
-print(Head.size)
+print(Head.size, "\n\n\n")
+
+
+let x = 1
+switch x {
+case 1:
+    print("1")
+case 2:
+    print("2")
+default:
+    print("def")
+}

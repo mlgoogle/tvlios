@@ -40,7 +40,7 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewWillAppear(animated)
         registerNotify()
         
-        header.beginRefreshing()
+        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
         
     }
     
