@@ -256,6 +256,7 @@
 		BF77CEEE1DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BF77CEEF1DCED43100F20C6A /* YWFeedbackFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */; };
 		BF77CEF01DCED43200F20C6A /* YWHybridWebViewFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */; };
+		BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */; };
 		BFDB31B91DD32FAC0074C1B6 /* indirector.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDB31B81DD32FAC0074C1B6 /* indirector.png */; };
 		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
@@ -554,6 +555,7 @@
 		BF77CEE61DCED43100F20C6A /* YWFeedbackAudioExtentionFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackAudioExtentionFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
+		BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		BFDB31B81DD32FAC0074C1B6 /* indirector.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = indirector.png; sourceTree = "<group>"; };
 		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -806,6 +808,7 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
+				BF9B4CFB1DD6DA7A00EC8E78 /* Share */,
 				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				2F9684141D77D1200028E3F2 /* Other */,
 				2FC25AFD1D6A9B8B00D48D6A /* Servant */,
@@ -1135,6 +1138,14 @@
 				BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */,
 			);
 			path = BCFeedback;
+			sourceTree = "<group>";
+		};
+		BF9B4CFB1DD6DA7A00EC8E78 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 		D1BF5A800EB0D1063BCBAE20 /* Frameworks */ = {
@@ -1889,6 +1900,7 @@
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
+				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
 				6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */,
 				6E09F4791DC1AAF200F1D4FA /* InvoiceIncludeServiceVC.swift in Sources */,

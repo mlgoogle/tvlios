@@ -113,6 +113,16 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.bottom.equalTo(callServantBtn!.snp_top)
         })
         
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "share"), style: .Plain, target: self, action: #selector(shareToOthers))
+    }
+    
+    func shareToOthers() {
+        let shareController = ShareViewController()
+        shareController.modalPresentationStyle = .Custom
+        shareController.shareImage = shareImage()
+        presentViewController(shareController, animated: true
+            , completion: nil)
     }
     
     func callSrevant() {
@@ -199,6 +209,14 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 
         }
         
+    }
+    
+    func shareImage()-> UIImage  {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(ScreenWidth, ScreenHeight), false, 0.0)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let scrennImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scrennImage
     }
     
 }
