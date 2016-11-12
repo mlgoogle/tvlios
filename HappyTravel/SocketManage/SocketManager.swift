@@ -255,6 +255,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         if !sock!.socket!.isConnected {
             sock!.connectSock()
+            return true
         }
         let head = SockHead()
         head.opcode = opcode.rawValue
@@ -279,7 +280,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.debug(opcode)
+        XCGLogger.info("Send: \(opcode)")
         return true
         
     }
@@ -295,13 +296,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
+        XCGLogger.info("Recv: \(SockOpcode.init(rawValue: head!.opcode)!)")
+        
         var jsonBody:JSON?
         if body != nil && (body as! NSData).length > 0 {
             jsonBody = JSON.init(data: body as! NSData)
-            if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
-                XCGLogger.warning(err)
+            if jsonBody?.dictionaryObject != nil {
+                if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
+                    XCGLogger.warning(err)
+                }
+            } else {
+                XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
+                return false
             }
-            
         }
         
         if jsonBody == nil {
