@@ -101,22 +101,23 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func servantDetailInfo(notification: NSNotification) {
 
-            
+
             let data = notification.userInfo!["data"]
             if data!["error_"]! != nil {
                 XCGLogger.error("Get UserInfo Error:\(data!["error"])")
                 return
             }
+
         
-          servantInfo = DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+        
+      servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
           let realm = try! Realm()
           try! realm.write({
             servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-            
+
             })
         
-     
-            DataManager.updateUserInfo(servantInfo!)
+
             let servantPersonalVC = ServantPersonalVC()
             servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
             navigationController?.pushViewController(servantPersonalVC, animated: true)

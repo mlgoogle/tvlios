@@ -134,13 +134,13 @@ class AppointmentDetailCell: UITableViewCell {
 
         cityImageView.snp_remakeConstraints { (make) in
             make.left.equalTo(dateLabel)
-            make.width.equalTo(0)
-            make.height.equalTo(0)
+            make.width.equalTo(22 / 1.5)
+            make.height.equalTo(30 / 1.5)
             make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
-            make.bottom.equalTo(contentView).offset(AtapteHeightValue(0))
+            make.bottom.equalTo(contentView).offset(AtapteHeightValue(-10))
         }
-        cityImageView.hidden = true
-        cityLabel.hidden = true
+//        cityImageView.hidden = true
+//        cityLabel.hidden = true
     }
     func setupDataWithInfo(info:UserInfo) {
         
