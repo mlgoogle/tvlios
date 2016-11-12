@@ -56,7 +56,7 @@ class CenturionCardLvSelCell : UITableViewCell {
                 lvBtn?.setTitle(centurionCardTitle[i]!, forState: .Normal)
                 lvBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 lvBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, buttonWidth/2.0-imageWidth/2.0, buttonHeight/7.0*2, buttonWidth/2.0-imageWidth/2.0)
-                lvBtn?.titleEdgeInsets = UIEdgeInsetsMake(buttonHeight/7.0*5-10, -buttonWidth/2.0, 0, -imageWidth/2.0)
+                lvBtn?.titleEdgeInsets = UIEdgeInsetsMake(buttonHeight/7.0*5-AtapteHeightValue(15), -buttonWidth/2.0, 0, -imageWidth/2.0)
                 lvBtn?.titleLabel?.font = UIFont.systemFontOfSize(S12)
                 lvBtn?.addTarget(self, action: #selector(CenturionCardLvSelCell.switchoverServicesView(_:)), forControlEvents: .TouchUpInside)
                 contentView.addSubview(lvBtn!)
