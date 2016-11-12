@@ -23,13 +23,15 @@ class CenturionCardLvSelCell : UITableViewCell {
     let tags = ["lvBtn": 1001,
                 "servicesBGView": 1002]
     
-    let centurionCardTitle = [0: "初级会员",
-                              1: "中级会员",
-                              2: "高级会员"]
+    let centurionCardTitle = [0: "一星会员",
+                              1: "二星会员",
+                              2: "三星会员",
+                              3: "四星会员"]
     
     let centurionCardIcon = [0: [0: "primary-level-disable", 1: "primary-level"],
                              1: [0: "middle-level-disable", 1: "middle-level"],
-                             2: [0: "advanced-level-disable", 1: "advanced-level"]]
+                             2: [0: "advanced-level-disable", 1: "advanced-level"],
+                             3: [0: "advanced-level-disable", 1: "advanced-level"]]
     
     let services = [0: []]
     
@@ -42,7 +44,7 @@ class CenturionCardLvSelCell : UITableViewCell {
         let lv = DataManager.currentUser?.centurionCardLv
         var curSelBtn:UIButton?
         for i in 0..<centurionCardIcon.count {
-            let buttonWidth:CGFloat = UIScreen.mainScreen().bounds.size.width / 3.0
+            let buttonWidth:CGFloat = UIScreen.mainScreen().bounds.size.width / CGFloat(centurionCardIcon.count)
             let buttonHeight:CGFloat = 70.0
             let imageWidth:CGFloat = 28.0
             var lvBtn = contentView.viewWithTag(tags["lvBtn"]! * 10 + i) as? UIButton
@@ -54,7 +56,7 @@ class CenturionCardLvSelCell : UITableViewCell {
                 lvBtn?.setTitle(centurionCardTitle[i]!, forState: .Normal)
                 lvBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 lvBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, buttonWidth/2.0-imageWidth/2.0, buttonHeight/7.0*2, buttonWidth/2.0-imageWidth/2.0)
-                lvBtn?.titleEdgeInsets = UIEdgeInsetsMake(buttonHeight/7.0*5-20, 0, 0, imageWidth)
+                lvBtn?.titleEdgeInsets = UIEdgeInsetsMake(buttonHeight/7.0*5-10, -buttonWidth/2.0, 0, -imageWidth/2.0)
                 lvBtn?.titleLabel?.font = UIFont.systemFontOfSize(S12)
                 lvBtn?.addTarget(self, action: #selector(CenturionCardLvSelCell.switchoverServicesView(_:)), forControlEvents: .TouchUpInside)
                 contentView.addSubview(lvBtn!)

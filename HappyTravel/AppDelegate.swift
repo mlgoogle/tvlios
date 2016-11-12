@@ -205,6 +205,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                 alert.show()
             }
         }
+        XCGLogger.debug(resp)
+        if resp.isKindOfClass(SendMessageToWXResp) {
+            let message = resp.errCode == 0 ? "分享成功":"分享失败"
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatShareResult, object: ["result":message])
+            
+        }
         
     }
     
