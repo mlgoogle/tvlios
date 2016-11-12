@@ -28,7 +28,7 @@ class ShareItem: UICollectionViewCell {
         contentView.addSubview(shareIcon)
         shareIcon.snp_makeConstraints { (make) in
             make.centerX.equalTo(contentView)
-            make.top.equalTo(0)
+            make.top.equalTo(AtapteWidthValue(10))
             make.width.equalTo(CGSizeMake(AtapteWidthValue(60), AtapteWidthValue(60)))
         }
         
@@ -54,7 +54,7 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
     //分享按钮
     lazy var shareCollection: UICollectionView = {
        let layout = UICollectionViewFlowLayout()
-       layout.itemSize = CGSize.init(width: ScreenWidth / CGFloat(self.shareTitles.count)-10, height: AtapteWidthValue(102))
+       layout.itemSize = CGSize.init(width: ScreenWidth / 2 - 20, height: AtapteWidthValue(102))
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
        let collection = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)
@@ -129,7 +129,7 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         let sectionHeader: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath)
         let headerLabel = UILabel.init(text: "分享到", font: UIFont.systemFontOfSize(S18), textColor: colorWithHexString("#666666"))
         headerLabel.textAlignment = .Center
-        headerLabel.frame = CGRect.init(x: 0, y: 0, width: ScreenWidth, height: 50)
+        headerLabel.frame = CGRect.init(x: 0, y: 0, width: ScreenWidth, height: AtapteWidthValue(50))
         sectionHeader.addSubview(headerLabel)
         return sectionHeader
     }
