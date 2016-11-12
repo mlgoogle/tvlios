@@ -323,8 +323,18 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if footer.state == .Refreshing {
             footer.endRefreshing()
         }
-        timer?.invalidate()
-        timer = nil
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
     }
     
+    deinit {
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
+    }
 }

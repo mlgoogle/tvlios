@@ -374,6 +374,14 @@ class DataManager: NSObject {
         
         let realm = try! Realm()
         switch type.className() {
+            
+        case UserInfo.className():
+            let objs = realm.objects(UserInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
         case SkillInfo.className():
             let objs = realm.objects(SkillInfo.self)
             if filter == nil {

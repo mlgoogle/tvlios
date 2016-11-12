@@ -275,8 +275,11 @@ class ServantIntroCell: UITableViewCell {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
-        let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl)!)
-        imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        if let bigBGPhotoUrl = userInfo?.bigBGPhotoUrl {
+            
+            let photoUrl = NSURL(string: (bigBGPhotoUrl))
+            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            }
             
         }
         let headUrl = NSURL(string: userInfo!.headUrl!)

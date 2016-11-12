@@ -21,6 +21,7 @@ class PushMessage: Object {
         case Chat = 0
         case System = 1
         case Date
+        case Appointment
     }
     
     dynamic var msg_type_ = MessageType.Chat.rawValue
