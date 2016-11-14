@@ -88,7 +88,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         delegate!.serviceTouched(services![indexPath.row])
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize.init(width: ScreenWidth, height: 80)
+        return DataManager.currentUser!.centurionCardLv <= 0 ? CGSize.init(width: ScreenWidth, height: 80) : CGSizeZero
     }
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
