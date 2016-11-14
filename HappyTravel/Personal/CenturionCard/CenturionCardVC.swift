@@ -83,8 +83,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         table?.delegate = self
         table?.dataSource = self
-        table?.estimatedRowHeight = 256
-        table?.rowHeight = UITableViewAutomaticDimension
         table?.separatorStyle = .None
         table?.registerClass(CenturionCardBaseInfoCell.self, forCellReuseIdentifier: "CenturionCardBaseInfoCell")
         table?.registerClass(CenturionCardServicesCell.self, forCellReuseIdentifier: "CenturionCardServicesCell")
@@ -143,6 +141,10 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : ScreenHeight - AtapteWidthValue(279))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
