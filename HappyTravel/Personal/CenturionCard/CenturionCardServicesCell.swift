@@ -44,7 +44,6 @@ class CenturionCardServerItem: UICollectionViewCell {
             make.centerX.equalTo(contentView)
             make.top.equalTo(iconBtn.snp_bottom).offset(AtapteWidthValue(4))
             make.height.equalTo(S12)
-            make.bottom.equalTo(AtapteWidthValue(-12))
         }
     }
     
