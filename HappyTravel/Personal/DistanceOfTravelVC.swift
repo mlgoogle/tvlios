@@ -10,6 +10,8 @@ import Foundation
 import RealmSwift
 import MJRefresh
 import XCGLogger
+import SVProgressHUD
+
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var segmentSC:UISegmentedControl?
@@ -302,7 +304,12 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 XCGLogger.error("注意: records数据是空的！")
                 return
             }
+            
             let object = records![indexPath.row]
+            guard object.status_ > 1  else {
+              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                return
+            }
             detailVC.appointmentInfo = records![indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
             break

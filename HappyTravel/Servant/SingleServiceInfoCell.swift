@@ -163,6 +163,9 @@ class SingleServiceInfoCell: UITableViewCell {
 
     func setupInfo(service:ServiceInfo,count:Int, isNormal:Bool) {
         
+        if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
+            priceLab.text = "\(Double(service.service_price_) / 100) 元"
+        }
 
         if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
             descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
