@@ -26,7 +26,7 @@ class InvoiceCell: UITableViewCell {
             }
             
             if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
-                typeLab.text = info?.content
+                typeLab.text = info?.type
             }
             
             if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
