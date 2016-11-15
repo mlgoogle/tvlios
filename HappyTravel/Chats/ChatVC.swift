@@ -221,13 +221,16 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(service: ServiceInfo?) {
+    
+    func sureAction(service: ServiceInfo?, daysCount: Int?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
         
         SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                      "to_uid_": servantInfo!.uid,
-                                                      "service_id_": service!.service_id_])
+            "to_uid_": servantInfo!.uid,
+            "service_id_": service!.service_id_,
+            "day_count_":daysCount!])
     }
+
     
     public func textViewDidChange(textView: UITextView) {
         sendButton.enabled = textView.hasText()

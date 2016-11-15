@@ -12,13 +12,12 @@ class InvoiceIncludeServiceVC: UIViewController {
     
     var tableView:UITableView?
     
-    var services:Array<InvoiceServiceInfo> = Array()
-    
+    var services:Results<InvoiceServiceInfo>?
     var oid_str_:String!
 
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,12 +45,27 @@ class InvoiceIncludeServiceVC: UIViewController {
                 if  let dict = result["data"] {
                     if let serviceList  = dict["service_list"] as? Array<Dictionary<String, AnyObject>> {
                         
-                        for service in serviceList {
-                            let serviceInfo = InvoiceServiceInfo(value: service)
-                            strongSelf.services.append(serviceInfo)
+                        for var service in serviceList {
+                            service["oid_str_"] = strongSelf.oid_str_
+                            let serviceInfo = InvoiceServiceInfo()
+                            serviceInfo.setInfoWithCommenInvoice(service)
+                            DataManager.insertInvoiceServiceInfo(serviceInfo)
                         }
-                        strongSelf.tableView?.reloadData()
                     }
+                    
+                    if let serviceList  = dict["black_list"] as? Array<Dictionary<String, AnyObject>> {
+                        
+                        for var service in serviceList {
+                            service["oid_str_"] = strongSelf.oid_str_
+                            let serviceInfo = InvoiceServiceInfo()
+                            serviceInfo.setInfoWithBlackCardInvoice(service)
+                            DataManager.insertInvoiceServiceInfo(serviceInfo)
+                        }
+                    }
+                    
+                    let realm = try! Realm()
+                    strongSelf.services = realm.objects(InvoiceServiceInfo.self).filter("oid_str_ == \"\(strongSelf.oid_str_)\"").sorted("order_time_", ascending: true)
+                    strongSelf.tableView?.reloadData()
                 }
             }
         }
@@ -64,15 +78,15 @@ extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return services.count
+        return services == nil ? 0 : services!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("includeCell", forIndexPath: indexPath) as! InvoiceIncludeCell
         
-        let last = indexPath.row == services.count - 1 ? true : false
-        cell.setupData(services[indexPath.row], isLast:last)
+        let last = indexPath.row == services!.count - 1 ? true : false
+        cell.setupData(services![indexPath.row], isLast:last)
         return cell
         
     }

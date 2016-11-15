@@ -258,7 +258,9 @@ class DataManager: NSObject {
         let openInfo = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(info.order_id_)").first
         try! realm.write({
             if openInfo == nil {
-                realm.add(info)
+                let tempInfo = OpenTicketInfo()
+                tempInfo.setInfoWithHodometer(info)
+                realm.add(tempInfo)
             } else {
                 openInfo?.setInfoWithHodometer(info)
             }
@@ -278,6 +280,21 @@ class DataManager: NSObject {
                 realm.add(tempInfo)
             } else {
                 openInfo?.setInfoWithConsumedInfo(info)
+            }
+        })
+    }
+    
+    static func insertInvoiceServiceInfo(info: InvoiceServiceInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        var tempInfo = realm.objects(InvoiceServiceInfo.self).filter("service_id_ = \(info.service_id_)").first
+        try! realm.write({
+            if tempInfo == nil {
+                realm.add(info)
+            } else {
+                tempInfo = info
             }
         })
     }
@@ -424,6 +441,14 @@ class DataManager: NSObject {
         
         let realm = try! Realm()
         switch type.className() {
+            
+        case UserInfo.className():
+            let objs = realm.objects(UserInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
         case SkillInfo.className():
             let objs = realm.objects(SkillInfo.self)
             if filter == nil {

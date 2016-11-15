@@ -207,10 +207,39 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if segmentIndex == 0 {
+            let realm = try! Realm()
+            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+//
+//            let vc = RecommendServantsVC()
+//            let results = DataManager.getData(UserInfo.self, filter: "userType = 1") as! Results<UserInfo>
+//            var array = Array<UserInfo>()
+//            for servantInfo in results {
+//                
+//                array.append(servantInfo)
+//            }
+//            vc.servantsInfo = array
+//            navigationController?.pushViewController(vc, animated: true)
+            if userPushMessage.msgList.last?.msg_type_ == 3 {
+                
+                let vc = RecommendServantsVC()
+                let results = DataManager.getData(UserInfo.self, filter: "userType = 1") as! Results<UserInfo>
+                var array = Array<UserInfo>()
+                for servantInfo in results {
+                    
+                    array.append(servantInfo)
+                }
+                vc.servantsInfo = array
+                navigationController?.pushViewController(vc, animated: true)
+                return
+
+            }
+
+            
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
                 chatVC.servantInfo = cell.userInfo
                 navigationController?.pushViewController(chatVC, animated: true)
+                
             }
         } else if segmentIndex == 1 {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {

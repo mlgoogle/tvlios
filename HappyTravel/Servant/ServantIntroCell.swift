@@ -51,7 +51,7 @@ class ServantIntroCell: UITableViewCell {
         if personalView == nil {
             personalView = UIImageView()
             personalView!.tag = 1001
-            personalView!.backgroundColor = UIColor.redColor()
+//            personalView!.backgroundColor = UIColor.redColor()
             personalView!.userInteractionEnabled = true
             view!.addSubview(personalView!)
             personalView!.snp_makeConstraints { (make) in
@@ -141,7 +141,6 @@ class ServantIntroCell: UITableViewCell {
             personalView?.addSubview(limitLab!)
             limitLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
-                print(AtapteWidthValue(-20))
                 make.bottom.equalTo(personalView!).offset(AtapteHeightValue(-20))
                 make.height.equalTo(AtapteHeightValue(20))
             })
@@ -275,8 +274,11 @@ class ServantIntroCell: UITableViewCell {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
-        let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl)!)
-        imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        if let bigBGPhotoUrl = userInfo?.bigBGPhotoUrl {
+            
+            let photoUrl = NSURL(string: (bigBGPhotoUrl))
+            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            }
             
         }
         let headUrl = NSURL(string: userInfo!.headUrl!)
@@ -330,20 +332,7 @@ class ServantIntroCell: UITableViewCell {
                         } else {
                             make.top.equalTo(previousView!)
                             make.left.equalTo(previousView!.snp_right).offset(AtapteWidthValue(10))
-                        }
-                        
-//                        if index / 3 > 0 {
-//                            if index % 3 == 0 {
-//                                make.top.equalTo(previousView!.snp_bottom).offset(10)
-//                                make.left.equalTo(tallyView!)
-//                            } else {
-//                                make.top.equalTo(previousView!.snp_top)
-//                                make.left.equalTo(previousView!.snp_right).offset(10)
-//                            }
-//                        } else {
-//                            make.top.equalTo(previousView!)
-//                            make.left.equalTo(previousView!.snp_right).offset(10)
-//                        }
+                        } 
                     }
                     make.height.equalTo(25)
                     make.width.equalTo(tag.labelWidth)
@@ -371,17 +360,19 @@ class ServantIntroCell: UITableViewCell {
             tallyLabel!.text = tag.tally
             
         }
-        var tallyBottomView = tallyView?.viewWithTag(3001*10+1)
-        if tallyBottomView == nil {
-            tallyBottomView = UIView()
-            tallyBottomView?.tag = 3001*10+1
-            tallyBottomView?.backgroundColor = UIColor.clearColor()
-            tallyView?.addSubview(tallyBottomView!)
+        if lastTallyView != nil {
+            var tallyBottomView = tallyView?.viewWithTag(3001*10+1)
+            if tallyBottomView == nil {
+                tallyBottomView = UIView()
+                tallyBottomView?.tag = 3001*10+1
+                tallyBottomView?.backgroundColor = UIColor.clearColor()
+                tallyView?.addSubview(tallyBottomView!)
+            }
+            tallyBottomView?.snp_remakeConstraints(closure: { (make) in
+                make.top.equalTo(lastTallyView!.snp_bottom)
+                make.bottom.equalTo(tallyView!)
+            })
         }
-        tallyBottomView?.snp_remakeConstraints(closure: { (make) in
-            make.top.equalTo(lastTallyView!.snp_bottom)
-            make.bottom.equalTo(tallyView!)
-        })
         
         let starLevelView = view!.viewWithTag(4001)
         for i in 0...4 {
