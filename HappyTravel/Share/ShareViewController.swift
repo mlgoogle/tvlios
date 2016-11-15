@@ -80,10 +80,10 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shareResult), name: NotifyDefine.WeChatShareResult, object: nil)
+        
         initView()
     }
     func initView() {
