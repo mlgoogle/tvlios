@@ -115,7 +115,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
-            timeLab?.text = "2016-11-11"
+//            timeLab?.text = "2016-11-11"
             timeLab?.font = UIFont.systemFontOfSize(S13)
             contentView.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
@@ -138,13 +138,22 @@ class CentrionCardConsumedCell: UITableViewCell {
         }
         
         if let costLab = contentView.viewWithTag(tags["costLab"]!) as? UILabel {
-            costLab.text = "\(info!.privilege_price_)￥"
+            costLab.text = "\(Double(info!.privilege_price_) / 100)￥"
         }
         
-        if let timeLab = contentView.viewWithTag(1005) as? UILabel {
+        if let subTitle = contentView.viewWithTag(tags["subTitle"]!) as? UILabel {
+            let formatter = NSNumberFormatter.init()
+            formatter.roundingMode = .RoundHalfDown
+            formatter.numberStyle = .SpellOutStyle
+            let lvNum = NSNumber.init(long: info!.privilege_lv_)
+            let lvStr = formatter.stringFromNumber(lvNum)
+            subTitle.text = "\(lvStr!)星黑卡消费"
+        }
+        
+        if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
             dateFormatter.dateStyle = .ShortStyle
             dateFormatter.timeStyle = .ShortStyle
-            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(1476955731)))
+            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.order_time_)))
         }
         
     }

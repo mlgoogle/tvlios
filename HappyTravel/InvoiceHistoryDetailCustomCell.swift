@@ -173,9 +173,9 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
         
         if infoLabel != nil {
             if isPrice {
-                
-                let attributeText = NSMutableAttributedString(string: text + " 元")
-                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
+                let textDoble = "\(Double(text)! / 100)"
+                let attributeText = NSMutableAttributedString(string: textDoble + "元")
+                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, textDoble.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
                 infoLabel?.attributedText = attributeText
                 
             } else {

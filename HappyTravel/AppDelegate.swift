@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
-        XCGLogger.info("\(token)")
+        XCGLogger.debug("\(token)")
         GeTuiSdk.registerDeviceToken(token)
         NSUserDefaults.standardUserDefaults().setObject(token, forKey: CommonDefine.DeviceToken)
         
@@ -182,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     //MARK: - GeTuiSdkDelegate
     func GeTuiSdkDidRegisterClient(clientId: String!) {
-        XCGLogger.info("CID:\(clientId)")
+        XCGLogger.debug("CID:\(clientId)")
     }
     
     func GeTuiSdkDidReceivePayloadData(payloadData: NSData!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {

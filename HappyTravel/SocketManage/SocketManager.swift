@@ -186,6 +186,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentServantRequest = 2021
         //预约导游服务返回
         case AppointmentServantReply = 2022
+        // 请求邀约、预约付款
+        case PayForInvitationRequest = 2017
+        // 邀约、雨夜付款返回
+        case PayForInvitationReply = 2018
 
     }
     
@@ -268,6 +272,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         if !sock!.socket!.isConnected {
             sock!.connectSock()
+            return true
         }
         let head = SockHead()
         head.opcode = opcode.rawValue
@@ -292,7 +297,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.debug(opcode)
+        XCGLogger.info("Send: \(opcode)")
         return true
         
     }
@@ -308,14 +313,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
+        XCGLogger.info("Recv: \(SockOpcode.init(rawValue: head!.opcode)!)")
+        
         var jsonBody:JSON?
         if body != nil && (body as! NSData).length > 0 {
             jsonBody = JSON.init(data: body as! NSData)
-            guard jsonBody?.dictionaryObject != nil else { return false }
+            guard jsonBody?.dictionaryObject != nil else {
+                XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
+                return false
+                }
             if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
                 XCGLogger.warning(err)
             }
-            
         }
         
         if jsonBody == nil {
@@ -416,6 +425,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AppointmentServantReply:
             appointmentServantReply(jsonBody)
             
+        case .PayForInvitationReply:
+            payForInvitationReply(jsonBody)
         default:
             break
         }
@@ -598,16 +609,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func drawBillReply(jsonBody: JSON?) {
-        var dict = ["invoice_status_": HodometerStatus.InvoiceMaking.rawValue]
-        let oidStr = jsonBody?.dictionaryObject!["oid_str_"] as? String
-        let oids = oidStr?.componentsSeparatedByString(",")
-        for oid in oids! {
-            if oid == "" {
-                continue
-            }
-            dict["order_id_"] = Int.init(oid)
-            DataManager.updateData(HodometerInfo.self, data: dict)
-        }
         postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -710,6 +711,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func checkUserCashReply(jsonBody: JSON?) {
+        if let cash = jsonBody?.dictionaryObject!["user_cash_"] as? Int {
+            DataManager.currentUser!.cash = cash
+        }
         postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -790,5 +794,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
        
      postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
+    
+    func payForInvitationReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
+    }
+    
 }
 

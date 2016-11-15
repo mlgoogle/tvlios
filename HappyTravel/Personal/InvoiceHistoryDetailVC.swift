@@ -166,7 +166,7 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
             } else {
                 switch indexPath.row {
                 case 0:
-                    if historyInfo?.invoice_type_ > 0 {
+                    if historyInfo?.invoice_type_ > 0  {
                         text = invoiceTypes[(historyInfo?.invoice_type_)!]!
                     }
                     break

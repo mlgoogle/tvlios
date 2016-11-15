@@ -177,7 +177,7 @@ class SingleServiceInfoCell: UITableViewCell {
             countLabel.text = String(count) + " 天"
         }
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-            priceLab.text = "\(service.service_price_ * count) 元"
+            priceLab.text = "\(Double(service.service_price_) / 100) 元"
         }
         
     }

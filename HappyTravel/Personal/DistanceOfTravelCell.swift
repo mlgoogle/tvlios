@@ -167,7 +167,7 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = "\((orderInfo?.service_price_)!)￥"
+            payLab.text = "\((Double((orderInfo?.service_price_)!)) / 100)￥"
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
@@ -206,7 +206,7 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = "\((hotometer?.order_price_)!)￥"
+            payLab.text = "\(Double((hotometer?.order_price_)!) / 100)￥"
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {

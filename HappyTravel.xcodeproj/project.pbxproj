@@ -258,6 +258,7 @@
 		BF77CEEF1DCED43100F20C6A /* YWFeedbackFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */; };
 		BF77CEF01DCED43200F20C6A /* YWHybridWebViewFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */; };
 		BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */; };
+		BFC492101DD9D2BF0056500D /* OpenTicketInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC4920F1DD9D2BF0056500D /* OpenTicketInfo.swift */; };
 		BFDB31B91DD32FAC0074C1B6 /* indirector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFDB31B81DD32FAC0074C1B6 /* indirector@2x.png */; };
 		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
@@ -558,6 +559,8 @@
 		BF77CEE71DCED43100F20C6A /* YWFeedbackFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWFeedbackFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
 		BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		BFC4920F1DD9D2BF0056500D /* OpenTicketInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenTicketInfo.swift; path = Data/OpenTicketInfo.swift; sourceTree = "<group>"; };
+
 		BFDB31B81DD32FAC0074C1B6 /* indirector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "indirector@2x.png"; sourceTree = "<group>"; };
 		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -898,6 +901,7 @@
 				6E10746B1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift */,
 				6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */,
 				6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */,
+				BFC4920F1DD9D2BF0056500D /* OpenTicketInfo.swift */,
 			);
 			name = Data;
 			path = ..;
@@ -1924,6 +1928,7 @@
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
 				2F337A851D9BC249003BAE20 /* Todo.swift in Sources */,
 				2FCB5D961DC093E6006DEB26 /* InvoiceInfo.swift in Sources */,
+				BFC492101DD9D2BF0056500D /* OpenTicketInfo.swift in Sources */,
 				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
@@ -2033,6 +2038,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
@@ -2075,6 +2081,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
@@ -2091,7 +2098,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yong ming lu (FD5S65ADL4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2123,7 +2130,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yong ming lu (FD5S65ADL4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -105,7 +105,7 @@ class InvoiceHistoryCell: UITableViewCell {
     func setupDatawith(info:InvoiceHistoryInfo?,last:Bool) {
         if priceLabel != nil {
 
-            priceLabel?.text = String(info!.invoice_price_) + "元"
+            priceLabel?.text = String(Double(info!.invoice_price_) / 100) + "元"
         }
         
         if dateLabel != nil {
