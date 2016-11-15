@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 
 class InvoiceServiceInfo: Object {
-    
     dynamic var service_id_    = 0
     dynamic var service_price_ = 0.00
     dynamic var order_time_    = 0
@@ -51,7 +50,15 @@ class InvoiceServiceInfo: Object {
         service_time_ =  info.valueForKey("service_time_") as? String
     }
     
-    override static func primaryKey() -> String?{
-        return "oid_str_"
+    func setInfo(info: InvoiceServiceInfo) {
+        service_id_ = info.service_id_
+        service_price_ = info.service_price_
+        order_time_ = info.order_time_
+        oid_str_ = info.oid_str_
+        service_type_ = info.service_type_
+        nick_name_ = info.nick_name_
+        service_name_ = info.service_name_
+        service_time_ = info.service_time_
+        
     }
 }

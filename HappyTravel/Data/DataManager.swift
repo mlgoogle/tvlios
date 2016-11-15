@@ -294,7 +294,7 @@ class DataManager: NSObject {
             if tempInfo == nil {
                 realm.add(info)
             } else {
-                realm.add(info, update: true)
+                tempInfo!.setInfo(info)
             }
         })
     }
