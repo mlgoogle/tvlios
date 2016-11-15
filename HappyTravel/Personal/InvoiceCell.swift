@@ -10,13 +10,43 @@ import Foundation
 
 class InvoiceCell: UITableViewCell {
     
-    var dateFormatter = NSDateFormatter()
     
-    var userInfo:UserInfo?
     
-    var msgInfo:PushMessage?
+    var info:OpenTicketInfo? {
+        didSet{
+            if info == nil {
+                return
+            }
+            if let nameLab = contentView.viewWithTag(tags["nameLab"]!) as? UILabel {
+                nameLab.text = info?.name
+            }
+            
+            if let titleLab = contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
+                titleLab.text = info?.content
+            }
+            
+            if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
+                typeLab.text = info?.content
+            }
+            
+            if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
+                priceLab.text = info?.price
+            }
+            
+            if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateStyle = .ShortStyle
+                dateFormatter.timeStyle = .ShortStyle
+                timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.time)))
+            }
+            
+            if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+                selectBtn.selected = info!.selected
+            }
+        }
+    }
     
-    var hodometerInfo:HodometerInfo?
+    
     
     let tags = ["selectBtn": 1001,
                 "nameLab": 1002,
@@ -143,50 +173,7 @@ class InvoiceCell: UITableViewCell {
         }
         
     }
-    
-    func setInfo(info: HodometerInfo?, selected: Bool, last: Bool) {
-        hodometerInfo = info
-        
-        if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-            selectBtn.selected = selected
-        }
-        
-        if let nameLab = contentView.viewWithTag(tags["nameLab"]!) as? UILabel {
-            nameLab.text = info!.to_name_!
-        }
-        
-        if let titleLab = contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
-            titleLab.text = info!.service_name_!
-        }
-        
-        if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-            priceLab.text = "\(info!.service_price_) 元"
-        }
-        
-        if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.start_)))
-        }
-        
-        if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
-            typeLab.text = info!.service_type_ == 0 ? "商务游" : "高端游"
-        }
-        
-        if let bottomLine = contentView.viewWithTag(tags["bottomLine"]!) {
-            bottomLine.hidden = last
-        }
-        
-    }
-    
-    func selectAction() -> Bool {
-        if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-            selectBtn.selected = !selectBtn.selected
-            return selectBtn.selected
-        }
-        return false
-    }
-    
+ 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

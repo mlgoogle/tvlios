@@ -8,11 +8,12 @@
 
 import Foundation
 import XCGLogger
+import RealmSwift
 import SVProgressHUD
 class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate {
     
     var table:UITableView?
-    var selectedOrderList:Dictionary<Int, HodometerInfo> = [:]
+    var selectedOrderList:Results<OpenTicketInfo>?
     var segmentIndex = 0
     var descLab:UILabel?
     var descLabText:String?
@@ -97,6 +98,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func drawBillReply(notification: NSNotification?) {
+        SVProgressHUD.dismiss()
         if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if let _ = dict["oid_str_"] as? String {
                 let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
@@ -538,12 +540,18 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         NSUserDefaults.standardUserDefaults().setValue(invoiceInfoDict, forKey:UserDefaultKeys.invoiceInfoDict)
         var oidStr = ""
-        for (index, orderInfo) in selectedOrderList.enumerate() {
-            oidStr += "\(orderInfo.0)"
-            if index < selectedOrderList.count - 1 {
+        for (index, orderInfo) in selectedOrderList!.enumerate() {
+            oidStr += "\(orderInfo.order_id_)"
+            if index < selectedOrderList!.count - 1 {
                 oidStr += ","
             }
+            let realm = try! Realm()
+            let object = realm.objects(OpenTicketInfo.self).filter("selected = true").first
+            try! realm.write({ 
+                realm.delete(object!)
+            })
         }
+        SVProgressHUD.showProgressMessage(ProgressMessage: "")
         invoiceInfoDict!["oid_str_"] = oidStr
         SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
     }

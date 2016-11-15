@@ -250,6 +250,47 @@ class DataManager: NSObject {
         
     }
     
+    static func insertOpenTicketWithHodometerInfo(info: HodometerInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let openInfo = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if openInfo == nil {
+                realm.add(info)
+            } else {
+                openInfo?.setInfoWithHodometer(info)
+            }
+        })
+    }
+    
+    static func insertOpenTicketWithConsumedInfo(info: CenturionCardConsumedInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let openInfo = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if openInfo == nil {
+                let tempInfo = OpenTicketInfo()
+                tempInfo.setInfoWithConsumedInfo(info)
+                realm.add(tempInfo)
+            } else {
+                openInfo?.setInfoWithConsumedInfo(info)
+            }
+        })
+    }
+
+    static func getOpenTicketsInfo() ->Results<OpenTicketInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        let infos = realm.objects(OpenTicketInfo.self).sorted("time", ascending: true)
+        return infos
+    }
+    
     static func getHodometerHistory() ->Results<HodometerInfo>? {
         if DataManager.initialized == false {
             return nil
@@ -257,6 +298,15 @@ class DataManager: NSObject {
         let realm = try! Realm()
         let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Paid.rawValue)")
         return hodometerInfos
+    }
+    
+    static func getCenturionCardConsumed() ->Results<CenturionCardConsumedInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = \(HodometerStatus.Paid.rawValue)")
+        return infos
     }
     
     // MARK: - CenturionCardServiceInfo
