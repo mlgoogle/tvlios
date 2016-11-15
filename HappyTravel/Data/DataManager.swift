@@ -497,6 +497,26 @@ class DataManager: NSObject {
         return false
     }
     
+    static func updateData<T: Object>(type: T.Type, dict: [String: AnyObject]) -> Bool {
+        guard DataManager.initialized != false else {return false}
+        
+        let realm = try! Realm()
+        switch type.className() {
+        case HodometerInfo.className():
+            let oid = dict["order_id_"] as! Int
+            let info = realm.objects(HodometerInfo.self).filter("order_id_ = \(oid)").first
+            try! realm.write({
+                if info != nil {
+                    for (key, value) in dict {
+                        info?.setValue(value, forKey: key)
+                    }
+                }
+            })
+        default:
+            break
+        }
+        return true
+    }
 
     // MARK: - InvoiceHistoryInfo
     /**

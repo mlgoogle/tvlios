@@ -205,7 +205,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
             XCGLogger.debug("zhongji")
         } else if selectedIndex == 2 {
-            let alert = UIAlertController.init(title: "提示", message: "抱歉，高级黑卡会员仅限内部邀请，暂时无法升级", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "提示", message: "购买失败，请先购买中级会员", preferredStyle: .Alert)
             let ensure = UIAlertAction.init(title: "好的", style: .Default, handler: { (action: UIAlertAction) in
                 
             })
@@ -217,11 +217,12 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareImage()-> UIImage  {
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(ScreenWidth, ScreenHeight), false, 0.0)
-        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let scrennImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return scrennImage
+        UIGraphicsBeginImageContext(view.frame.size)
+	    let context = UIGraphicsGetCurrentContext()
+	    view.layer.renderInContext(context!)
+	    let img = UIGraphicsGetImageFromCurrentImageContext()
+	    UIGraphicsEndImageContext()
+	    return img;
     }
     
 }
