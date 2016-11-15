@@ -11,8 +11,9 @@ import SideMenuController
 
 class ViewController: SideMenuController {
     
-    
+    // 初始化主界面
     func initMainInterface() {
+        
         let forthwithVC = ForthwithVC()
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
