@@ -12,6 +12,8 @@ import RealmSwift
 
 class AppointmentDetailVC: UIViewController {
     var commitBtn: UIButton?
+    var servantInfo:UserInfo?
+
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfo?
     lazy private var tableView:UITableView = {
@@ -34,6 +36,30 @@ class AppointmentDetailVC: UIViewController {
     }
     func registerNotification() {
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+
+    }
+    func servantDetailInfo(notification: NSNotification) {
+        
+        
+        let data = notification.userInfo!["data"]
+        if data!["error_"]! != nil {
+            return
+        }
+        
+        
+        
+        servantInfo =  DataManager.getUserInfo((appointmentInfo?.to_user_)!)
+        let realm = try! Realm()
+        try! realm.write({
+            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+            
+        })
+        
+        
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
     override func viewDidLoad() {
@@ -62,6 +88,7 @@ class AppointmentDetailVC: UIViewController {
             make.height.equalTo(60)
         }
         self.commitBtn = commitBtn
+        initData()
 //        initFooterView()
 //        if let infos = DataManager.getData(SkillInfo.self, filter: nil) as? Results<SkillInfo> {
 //            for info in infos {
@@ -82,6 +109,10 @@ class AppointmentDetailVC: UIViewController {
         
     }
 
+    func initData() {
+
+        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : 96, "order_type_":1])
+    }
     func cancelOrCommitButtonAction() {
         
         SVProgressHUD.showWainningMessage(WainningMessage: "还不能取消预约哦！", ForDuration: 1.5, completion: nil)
@@ -125,7 +156,9 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.section == 0 {
-          SVProgressHUD.showWainningMessage(WainningMessage: "还没为您分配V领队", ForDuration: 1.5, completion: nil)
+            let dict:Dictionary<String, AnyObject> = ["uid_": (appointmentInfo?.to_user_)!]
+            SocketManager.sendData(.GetServantDetailInfo, data:dict)
+            
         }
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -137,16 +170,16 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             
             switch indexPath.section {
             case 0:
-                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
-                
+                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
+                cell.setupDataWithInfo(DataManager.getUserInfo(appointmentInfo!.to_user_)!)
+                cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
                 
                 cell.setInfo(skills)
                 cell.contentView.backgroundColor = UIColor.whiteColor()
-//                 cell.style = .Normal
-//                cell.setInfo(skills)
+
                 return cell
                 
             case 2:
@@ -160,37 +193,24 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                 break
             }
             let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
-//            cell.setInfo(hodometerInfo)
-//            commonCell = cell
-//            if serviceScore != nil {
-//                cell.serviceSocre = serviceScore
-//                cell.userScore = userScore
-//                cell.remark = remark
-//            }
+
             return cell
             
         } else {
             switch indexPath.section {
             case 0:
-                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath)
-                
+                let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
+                let userInfo = DataManager.getUserInfo(appointmentInfo!.to_user_)
+                cell.setupDataWithInfo(DataManager.getUserInfo(appointmentInfo!.to_user_)!)
+                cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
                 
-                cell.setInfo(skills)
+//                cell.setInfo(skills)
                 cell.contentView.backgroundColor = UIColor.whiteColor()
-                //                 cell.style = .Normal
-                //                cell.setInfo(skills)
                 return cell
                 
-//            case 2:
-//                let cell = tableView.dequeueReusableCellWithIdentifier("normal", forIndexPath: indexPath)
-//                cell.selectionStyle = .None
-//                cell.textLabel?.font = UIFont.systemFontOfSize(S15)
-//                cell.textLabel?.textColor = colorWithHexString("#131f32")
-//                cell.textLabel?.text = "代订 : " + (appointmentInfo?.other_name_)! + " " + (appointmentInfo?.other_phone_)!
-//                return cell
             default:
                 break
             }
@@ -223,7 +243,12 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
-        return appointmentInfo?.is_other_ == 1 ? 4 : 3
+        if appointmentInfo?.status_ == 4 {
+            
+            return appointmentInfo?.is_other_ == 1 ? 4 : 3
+        }
+        
+        return appointmentInfo?.is_other_ == 1 ? 3 : 2
         
     }
     

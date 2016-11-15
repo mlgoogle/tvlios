@@ -92,6 +92,7 @@ class SingleServiceInfoCell: UITableViewCell {
                 make.left.equalTo((descLab?.snp_right)!)
                 make.right.equalTo((priceLab?.snp_left)!)
                 make.top.equalTo((descLab)!)
+                make.bottom.equalTo(descLab!)
             })
             
         }
@@ -103,15 +104,17 @@ class SingleServiceInfoCell: UITableViewCell {
             plusButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
             plusOrReduceView?.addSubview(plusButton!)
             plusButton?.backgroundColor = UIColor.clearColor()
-           
+            plusButton?.layer.borderWidth = 1
+            plusButton?.layer.cornerRadius = 15
+            plusButton?.layer.borderColor = UIColor.redColor().CGColor
             plusButton?.setTitle("+", forState: .Normal)
             plusButton?.addTarget(self, action: #selector(SingleServiceInfoCell.plus), forControlEvents: .TouchUpInside)
             plusButton!.snp_makeConstraints(closure: { (make) in
                 
                 make.right.equalTo((plusOrReduceView?.snp_right)!)
                 make.width.equalTo(30)
+                make.height.equalTo(30)
                 make.top.equalTo(plusOrReduceView!)
-                make.bottom.equalTo(plusOrReduceView!)
             })
             
             
@@ -141,35 +144,42 @@ class SingleServiceInfoCell: UITableViewCell {
             reduceButton?.tag = tags["reduceButton"]!
             reduceButton?.backgroundColor = UIColor.clearColor()
             reduceButton?.setTitle("-", forState: .Normal)
-
+            reduceButton?.layer.borderWidth = 1
+            reduceButton?.layer.cornerRadius = 15
+            reduceButton?.layer.borderColor = UIColor.redColor().CGColor
             reduceButton!.addTarget(self, action: #selector(SingleServiceInfoCell.reduce), forControlEvents: .TouchUpInside)
             reduceButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
             plusOrReduceView?.addSubview(reduceButton!)
             reduceButton!.snp_makeConstraints(closure: { (make) in
                 make.width.equalTo(30)
+                make.height.equalTo(30)
                 make.right.equalTo((countLabel?.snp_left)!).offset(-5)
                 make.top.equalTo(plusOrReduceView!)
-                make.bottom.equalTo(plusOrReduceView!)
             })
         }
     }
     
     
-    func setCounts(count:Int) {
+
+    func setupInfo(service:ServiceInfo,count:Int, isNormal:Bool) {
+        
+
+        if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
+            descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
+        }
+        guard isNormal else {
+            let plusOrReduceView = contentView.viewWithTag(tags["plusOrReduceView"]!)
+            
+            plusOrReduceView?.hidden = true
+            return
+        }
         if let countLabel  = contentView.viewWithTag(tags["countLabel"]!) as? UILabel {
             countLabel.text = String(count) + " 天"
         }
-        
-    }
-    func setupInfo(service:ServiceInfo) {
-        
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
             priceLab.text = "\(Double(service.service_price_) / 100) 元"
         }
         
-        if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
-            descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
-        }
     }
     
     

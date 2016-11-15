@@ -185,9 +185,13 @@ class DistanceOfTravelCell: UITableViewCell {
         curHodometerInfo = hotometer
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            headView.kf_setImageWithURL(NSURL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            
+            if hotometer?.to_head_ != nil {
                 
+                headView.kf_setImageWithURL(NSURL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                }
             }
+            
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {

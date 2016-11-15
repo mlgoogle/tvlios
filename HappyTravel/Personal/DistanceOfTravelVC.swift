@@ -302,6 +302,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 XCGLogger.error("注意: records数据是空的！")
                 return
             }
+            let object = records![indexPath.row]
             detailVC.appointmentInfo = records![indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
             break

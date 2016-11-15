@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AppointmentDetailCell: UITableViewCell {
     
@@ -128,7 +129,7 @@ class AppointmentDetailCell: UITableViewCell {
     
     
     /**
-     预约详情顶部处理
+     详情顶部处理
      */
     func hideCityInfo() {
 
@@ -150,6 +151,22 @@ class AppointmentDetailCell: UITableViewCell {
         
     }
     
+    func setApponimentInfo(info:AppointmentInfo) {
+        serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
+        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
+        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))
+        dateLabel.text = startTime + "-" + endTime
+        
+
+            
+            let results = DataManager.getData(CityInfo.self, filter: "cityCode = \(info.city_code_)") as! Results<CityInfo>
+            
+            if let cityInfo = results.first  {
+                cityLabel.text = cityInfo.cityName
+            }
+            
+    
+    }
     func setServiceInfo(info:HodometerInfo) {
         
         serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"

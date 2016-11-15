@@ -24,7 +24,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     var countsArray:Array<Int> = []
 
     var servantInfo:UserInfo?
-    
+    var isNormal = true
     let tags = ["selectBtn": 1001,
                 "priceLab": 1002,
                 "descLab": 1003,
@@ -128,7 +128,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
 
         let cell = tableView.dequeueReusableCellWithIdentifier("singleService", forIndexPath: indexPath) as! SingleServiceInfoCell
         let service = servantInfo?.serviceList[indexPath.row]
-        cell.setupInfo(service!)
+
         cell.delegate = self
         
         /**
@@ -137,11 +137,11 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         if countsArray.count < indexPath.row + 1 {
             countsArray.append(1)
         }
-        cell.setCounts(countsArray[indexPath.row])
-        
+//        cell.setCounts(countsArray[indexPath.row], isNormal: isNormal)
         /**
          *  防止cell重用刷新问题
          */
+        cell.setupInfo(service!, count: countsArray[indexPath.row], isNormal: isNormal)
         if selectedIndexPath != nil {
             
             if indexPath == selectedIndexPath {
@@ -152,7 +152,6 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
 
             }
         }
-    
     
        if let selectBtn = cell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
         selectBtn.selected = false

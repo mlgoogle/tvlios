@@ -90,4 +90,7 @@ class NotifyDefine: NSObject {
     
     static let PayForInvitationReply = "PayForInvitationReply"
 
+    static let AppointmentRecommendReply = "AppointmentRecommendReply"
+    
+    static let AppointmentServantReply = "AppointmentServantReply"
 }
