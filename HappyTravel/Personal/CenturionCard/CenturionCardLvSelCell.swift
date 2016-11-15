@@ -15,13 +15,45 @@ protocol CenturionCardLvSelCellDelegate : NSObjectProtocol {
     
 }
 
-class CenturionCardLvSelCell : UITableViewCell {
+class CenturionCardLVItem: UICollectionViewCell {
+    lazy var icon: UIImageView = {
+       let iconImage = UIImageView()
+        iconImage.userInteractionEnabled = true
+        return iconImage
+    }()
+    var titleLabel: UILabel = {
+       let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S12), textColor: colorWithHexString("#666666"))
+        return label
+    }()
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.addSubview(icon)
+        icon.snp_makeConstraints { (make) in
+            make.centerX.equalTo(contentView)
+            make.top.equalTo(AtapteWidthValue(10))
+            make.size.equalTo(CGSizeMake(AtapteWidthValue(30), AtapteWidthValue(30)))
+        }
+        
+        contentView.addSubview(titleLabel)
+        titleLabel.snp_makeConstraints { (make) in
+            make.centerX.equalTo(contentView)
+            make.top.equalTo(icon.snp_bottom).offset(AtapteWidthValue(4))
+            make.height.equalTo(S12)
+        }
+    }
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     weak var delegate:CenturionCardLvSelCellDelegate?
-    var indirector: UIImageView = UIImageView()
-    
-    let tags = ["lvBtn": 1001,
-                "servicesBGView": 1002]
+    var indirector: UIImageView = UIImageView.init(image: UIImage.init(named: "indirector"))
     
     let centurionCardTitle = [0: "一星会员",
                               1: "二星会员",
@@ -32,76 +64,60 @@ class CenturionCardLvSelCell : UITableViewCell {
                              1: [0: "middle-level-disable", 1: "middle-level"],
                              2: [0: "advanced-level-disable", 1: "advanced-level"],
                              3: [0: "advanced-level-disable", 1: "advanced-level"]]
+    let itemWidth: CGFloat = ScreenWidth / 4
     
-    let services = [0: []]
+    //collectionView
+    lazy var contentCollection: UICollectionView = {
+        let layout = UICollectionViewFlowLayout.init()
+        layout.scrollDirection = .Horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.itemSize = CGSizeMake(self.itemWidth, AtapteWidthValue(70))
+        let collectionView = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)
+        collectionView.backgroundColor = colorWithHexString("#f2f2f2")
+        collectionView.registerClass(CenturionCardLVItem.classForCoder(), forCellWithReuseIdentifier: "CenturionCardLVItem")
+        return collectionView
+    }()
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return centurionCardTitle.count
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let item: CenturionCardLVItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardLVItem", forIndexPath: indexPath) as! CenturionCardLVItem
+        item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![0]!)
+        item.titleLabel.text = centurionCardTitle[indexPath.row]
+        return item
+    }
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        delegate?.selectedAction(Int(indexPath.row))
+        let left = (itemWidth / 2.0 ) * (2.0 * CGFloat(indexPath.row) + 1)-10
+        
+        indirector.snp_remakeConstraints { (make) in
+            make.left.equalTo(left)
+            make.bottom.equalTo(2)
+        }
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
-        contentView.backgroundColor = UIColor.redColor()
-        backgroundColor = UIColor.redColor()
         
-        let lv = DataManager.currentUser?.centurionCardLv
-        var curSelBtn:UIButton?
-        for i in 0..<centurionCardIcon.count {
-            let buttonWidth:CGFloat = UIScreen.mainScreen().bounds.size.width / CGFloat(centurionCardIcon.count)
-            let buttonHeight:CGFloat = 70.0
-            let imageWidth:CGFloat = 28.0
-            var lvBtn = contentView.viewWithTag(tags["lvBtn"]! * 10 + i) as? UIButton
-            if lvBtn == nil {
-                lvBtn = UIButton()
-                lvBtn?.tag = tags["lvBtn"]! * 10 + i
-                lvBtn?.backgroundColor = UIColor.init(red: 241/255.0, green: 242/255.0, blue: 243/255.0, alpha: 1)
-                lvBtn?.setImage(UIImage.init(named: centurionCardIcon[i]![0]!), forState: .Normal)
-                lvBtn?.setTitle(centurionCardTitle[i]!, forState: .Normal)
-                lvBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
-                lvBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, buttonWidth/2.0-imageWidth/2.0, buttonHeight/7.0*2, buttonWidth/2.0-imageWidth/2.0)
-                lvBtn?.titleEdgeInsets = UIEdgeInsetsMake(buttonHeight/7.0*5-AtapteHeightValue(15), -buttonWidth/2.0, 0, -imageWidth/2.0)
-                lvBtn?.titleLabel?.font = UIFont.systemFontOfSize(S12)
-                lvBtn?.addTarget(self, action: #selector(CenturionCardLvSelCell.switchoverServicesView(_:)), forControlEvents: .TouchUpInside)
-                contentView.addSubview(lvBtn!)
-                lvBtn?.snp_makeConstraints(closure: { (make) in
-                    if i == 0 {
-                        make.left.equalTo(contentView)
-                    } else {
-                        if let preBtn = contentView.viewWithTag(tags["lvBtn"]! * 10 + i - 1) {
-                            if i == centurionCardTitle.count - 1 {
-                                make.right.equalTo(contentView)
-                            }
-                            make.left.equalTo(preBtn.snp_right)
-                        }
-                    }
-                    make.top.equalTo(contentView)
-                    make.height.equalTo(buttonHeight)
-                    make.width.equalTo(buttonWidth)
-                    make.bottom.equalTo(contentView)
-                })
-
-            }
-            lvBtn?.setImage(UIImage.init(named: i < lv ? centurionCardIcon[i]![1]! : centurionCardIcon[i]![0]!), forState: .Normal)
-            lvBtn?.setTitleColor(i < lv ? UIColor.blackColor() : UIColor.grayColor(), forState: .Normal)
-            if lv == i + 1 || (lv == 0 && i == 0) {
-                curSelBtn = lvBtn
-            }
+        contentCollection.delegate = self
+        contentCollection.dataSource = self
+        contentView.addSubview(contentCollection)
+        contentCollection.snp_makeConstraints { (make) in
+            make.edges.equalTo(contentView)
         }
         
-        indirector.image = UIImage.init(named: "indirector")
         contentView.addSubview(indirector)
-        indirector.snp_makeConstraints(closure: { (make) in
-            make.centerX.equalTo(curSelBtn!.snp_centerX)
-            make.bottom.equalTo(contentView).offset(2)
-        })
-    }
-    
-    func switchoverServicesView(sender: UIButton) {
-        self.indirector.snp_remakeConstraints(closure: { (make) in
-            make.centerX.equalTo(sender.snp_centerX)
-            make.bottom.equalTo(self.contentView).offset(2)
-        })
-        delegate?.selectedAction(sender.tag - tags["lvBtn"]! * 10)
+        indirector.snp_makeConstraints { (make) in
+            make.left.equalTo(ScreenWidth/(CGFloat(self.centurionCardTitle.count)*2)-10)
+            make.bottom.equalTo(2)
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }

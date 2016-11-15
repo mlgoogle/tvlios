@@ -30,6 +30,17 @@ class ServiceInfo: Object {
     dynamic var service_time_:String?
     
     dynamic var service_price_:Int = 0
+    
+//    var daysCount = 1
+//    
+//    /**
+//     
+//     设置忽略属性，不会存到数据库
+//     - returns:
+//     */
+//    override static func ignoredProperties() -> [String] {
+//      return ["daysCount"]
+//    }
 }
 
 class UserInfo: Object {

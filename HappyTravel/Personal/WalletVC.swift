@@ -222,8 +222,6 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             return
         }
         SVProgressHUD.dismiss()
-        let cash = data.valueForKey("user_cash_") as! Int
-        DataManager.currentUser!.cash = cash
         walletTable?.reloadData()
     }
     

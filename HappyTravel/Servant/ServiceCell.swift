@@ -171,9 +171,9 @@ public class ServiceCell : UITableViewCell {
                         timeLabel!.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
                         svcView!.addSubview(timeLabel!)
                         timeLabel!.snp_makeConstraints(closure: { (make) in
-                            make.left.equalTo(titleLabel!.snp_right).offset(10)
+                            make.left.equalTo(titleLabel!.snp_right).offset(0)
                             make.top.equalTo(svcView!)
-                            make.width.equalTo(150)
+//                            make.width.equalTo(150)
                             make.bottom.equalTo(svcView!)
                         })
                     }
@@ -185,11 +185,11 @@ public class ServiceCell : UITableViewCell {
                         payLabel!.font = UIFont.systemFontOfSize(S15)
                         payLabel!.userInteractionEnabled = true
                         payLabel!.backgroundColor = UIColor.clearColor()
-                        payLabel!.textAlignment = NSTextAlignment.Left
+                        payLabel!.textAlignment = NSTextAlignment.Right
                         payLabel!.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
                         svcView!.addSubview(payLabel!)
                         payLabel?.snp_makeConstraints(closure: { (make) in
-                            make.left.equalTo(timeLabel!.snp_right)
+//                            make.left.equalTo(timeLabel!.snp_right)
                             make.right.equalTo(svcView!).offset(-10)
                             make.top.equalTo(svcView!)
                             make.bottom.equalTo(svcView!)

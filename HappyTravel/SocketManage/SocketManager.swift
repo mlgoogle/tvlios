@@ -173,6 +173,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case CheckCommentDetail = 2015
         // 评价详情返回
         case CheckCommentDetailReplay = 2016
+        // 请求邀约、预约付款
+        case PayForInvitationRequest = 2017
+        // 邀约、雨夜付款返回
+        case PayForInvitationReply = 2018
 
     }
     
@@ -301,13 +305,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         var jsonBody:JSON?
         if body != nil && (body as! NSData).length > 0 {
             jsonBody = JSON.init(data: body as! NSData)
-            if jsonBody?.dictionaryObject != nil {
-                if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
-                    XCGLogger.warning(err)
-                }
-            } else {
+            guard jsonBody?.dictionaryObject != nil else {
                 XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
                 return false
+                }
+            if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
+                XCGLogger.warning(err)
             }
         }
         
@@ -394,6 +397,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             serversManInfoReply(jsonBody)
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
+        case .PayForInvitationReply:
+            payForInvitationReply(jsonBody)
         default:
             break
         }
@@ -565,6 +570,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = hodotemerInfo.order_id_
                 }
                 postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
             }
         }
     }
@@ -685,6 +692,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func checkUserCashReply(jsonBody: JSON?) {
+        if let cash = jsonBody?.dictionaryObject!["user_cash_"] as? Int {
+            DataManager.currentUser!.cash = cash
+        }
         postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -757,6 +767,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    
+    func payForInvitationReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
     }
     
 }

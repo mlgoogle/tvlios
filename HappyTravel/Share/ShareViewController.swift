@@ -109,7 +109,6 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
             make.right.equalTo(AtapteWidthValue(-10))
             make.height.equalTo(AtapteWidthValue(160))
         }
-        
     }
     /**
      初始化collection

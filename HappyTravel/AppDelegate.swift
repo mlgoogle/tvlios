@@ -150,14 +150,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         XCGLogger.debug("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)
-//        let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
-//        for vc in vcs! {
-//            if vc.isKindOfClass(ForthwithVC) {
-//                vc.navigationController?.popToRootViewControllerAnimated(false)
-//                (vc as! ForthwithVC).msgAction(nil)
-//                break
-//            }
-//        }
+        let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
+        for vc in vcs! {
+            if vc.isKindOfClass(ForthwithVC) {
+                vc.navigationController?.popToRootViewControllerAnimated(false)
+                (vc as! ForthwithVC).msgAction(nil)
+                break
+            }
+        }
     }
     
     //MARK: - GeTuiSdkDelegate
