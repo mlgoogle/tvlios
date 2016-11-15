@@ -298,6 +298,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         var jsonBody:JSON?
         if body != nil && (body as! NSData).length > 0 {
             jsonBody = JSON.init(data: body as! NSData)
+            guard jsonBody?.dictionaryObject != nil else { return false }
             if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
                 XCGLogger.warning(err)
             }
@@ -558,6 +559,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     lastOrderID = hodotemerInfo.order_id_
                 }
                 postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
+            } else {
+                postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
             }
         }
     }

@@ -202,7 +202,7 @@ class DistanceOfTravelCell: UITableViewCell {
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = "\((hotometer?.service_price_)!)￥"
+            payLab.text = "\((hotometer?.order_price_)!)￥"
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {

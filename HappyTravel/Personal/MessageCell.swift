@@ -13,6 +13,11 @@ class MessageCell: UITableViewCell {
     var userInfo:UserInfo?
     
     var msgInfo:PushMessage?
+    var showDetailInfo:UIImageView = {
+       let imageView = UIImageView()
+        imageView.image = UIImage(named: "appointment-detail")
+        return imageView
+    }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -122,10 +127,18 @@ class MessageCell: UITableViewCell {
             })
         }
         
+        view?.addSubview(showDetailInfo)
+        showDetailInfo.snp_makeConstraints { (make) in
+            make.top.equalTo((timeLab?.snp_bottom)!).offset(10)
+            make.right.equalTo(timeLab!)
+        }
     }
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
         msgInfo = message
+
+
+        showDetailInfo.hidden = msgInfo?.msg_type_ == 3 ? false : true
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             var uid = 0

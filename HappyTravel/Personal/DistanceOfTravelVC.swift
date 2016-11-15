@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 import MJRefresh
-
+import XCGLogger
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var segmentSC:UISegmentedControl?
@@ -298,6 +298,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             break
         case 1:
             let detailVC = AppointmentDetailVC()
+            guard  records?.count > 0 else {
+                XCGLogger.error("注意: records数据是空的！")
+                return
+            }
             detailVC.appointmentInfo = records![indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
             break
@@ -323,8 +327,18 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if footer.state == .Refreshing {
             footer.endRefreshing()
         }
-        timer?.invalidate()
-        timer = nil
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
     }
     
+    deinit {
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
+    }
 }
