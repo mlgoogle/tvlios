@@ -12,6 +12,8 @@ import XCGLogger
 import RealmSwift
 import Fabric
 import Crashlytics
+import SwiftyJSON
+
 //import YWFeedbackKit
 
 @UIApplicationMain
@@ -146,17 +148,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-       
-        XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
-        application.applicationIconBadgeNumber = 0
-        completionHandler(UIBackgroundFetchResult.NewData)
-        let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
-        for vc in vcs! {
-            if vc.isKindOfClass(ForthwithVC) {
-                vc.navigationController?.popToRootViewControllerAnimated(false)
-                (vc as! ForthwithVC).msgAction(nil)
-                break
+        if UIApplication.sharedApplication().applicationState == .Background {
+            XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
+            application.applicationIconBadgeNumber = 0
+            completionHandler(UIBackgroundFetchResult.NewData)
+            let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
+            for vc in vcs! {
+                if vc.isKindOfClass(ForthwithVC) {
+                    vc.navigationController?.popToRootViewControllerAnimated(false)
+                    (vc as! ForthwithVC).msgAction((userInfo["aps"]!["alert"] as! NSDictionary)["body"])
+                    break
+                }
             }
+        }
+        else
+        {
+            
+            let messageDict  = userInfo["aps"]!["alert"]!!["body"] as! String
+
+            var str = messageDict.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
+            str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
+            let data = str.dataUsingEncoding(NSUTF8StringEncoding)
+            
+            let jsonData = JSON.init(data: data!)
+            let pushMessage = PushMessage()
+
+            
+            pushMessage.setInfo(jsonData.dictionaryObject)
+            
+            DataManager.insertPushMessage(pushMessage)
         }
     }
     

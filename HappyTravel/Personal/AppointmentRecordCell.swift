@@ -11,6 +11,11 @@ import RealmSwift
 
 class AppointmentRecordCell: DistanceOfTravelCell {
 
+    var info = [0:"等待接受",
+                1:"预约失败",
+                2:"等待支付",
+                3:"预约取消",
+                4:"支付完成"]
 
     /**
      结束时间
@@ -139,7 +144,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = "待定"
+            payLab.text = recordInfo?.order_price_ == 0 ? "待定" : String((recordInfo?.order_price_)! / 100)
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
@@ -149,7 +154,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
-            statusLab.text = statusDict[OrderStatus(rawValue: (recordInfo?.status_)!)!]
+            statusLab.text = info[(recordInfo?.status_)!]
             statusLab.textColor = statusColor[OrderStatus(rawValue: (recordInfo?.status_)!)!]
         }
         /**

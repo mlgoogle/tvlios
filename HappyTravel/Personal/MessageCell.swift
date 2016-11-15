@@ -101,7 +101,7 @@ class MessageCell: UITableViewCell {
             unreadCntLab?.layer.masksToBounds = true
             view?.addSubview(unreadCntLab!)
             unreadCntLab?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(timeLab!)
+                make.right.equalTo((timeLab?.snp_right)!).offset(-20)
                 make.top.equalTo(timeLab!.snp_bottom).offset(10)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
@@ -136,9 +136,11 @@ class MessageCell: UITableViewCell {
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
         msgInfo = message
-
-
-        showDetailInfo.hidden = msgInfo?.msg_type_ == 3 ? false : true
+        if msgInfo?.msg_type_ == 2231 {
+            
+            showDetailInfo.hidden = false
+            setAppointmentInfo(message, unreadCnt: unreadCnt)
+        }
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             var uid = 0
@@ -176,6 +178,7 @@ class MessageCell: UITableViewCell {
             }
             
             if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
+                
                 if unreadCnt > 0 {
                     unreadCntLab.hidden = false
                     unreadCntLab.text = "\(unreadCnt)"
@@ -185,6 +188,40 @@ class MessageCell: UITableViewCell {
             }
             
         }
+        
+    }
+    
+    func setAppointmentInfo(message: PushMessage?, unreadCnt: Int) {
+        
+        let view = contentView.viewWithTag(101)
+        if let headView = view!.viewWithTag(1001) as? UIImageView {
+            headView.image = UIImage(named: "default-head")
+                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
+                    nickNameLab.text = "预约推荐"
+                }
+                if let msgLab = view!.viewWithTag(1004) as? UILabel {
+                    msgLab.text = message?.content_
+
+                }
+            }
+            
+            if let timeLab = view!.viewWithTag(1003) as? UILabel {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.timeStyle = .ShortStyle
+                dateFormatter.dateStyle = .ShortStyle
+                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+                timeLab.text = dateStr
+            }
+            
+            if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
+                if unreadCnt > 0 {
+                    unreadCntLab.hidden = false
+                    unreadCntLab.text = "\(unreadCnt)"
+                } else {
+                    unreadCntLab.hidden = true
+                }
+            }
+            
         
     }
     

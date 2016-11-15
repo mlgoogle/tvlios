@@ -139,9 +139,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentRecordRequest = 1069
         // 预约记录返回
         case AppointmentRecordReply = 1070
-
+        //请求预约推荐服务者
+        case AppointmentRecommendRequest = 1079
+        //预约推荐服务者返回
+        case AppointmentRecommendReply = 1080
         
-        // 请求邀请服务者
+        case  AppointmentDetailRequest = 1081
+        case AppointmentDetailReply = 1082
+         // 请求邀请服务者
         case AskInvitation = 2001
         // 邀请服务者返回
         case InvitationResult = 2002
@@ -173,6 +178,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case CheckCommentDetail = 2015
         // 评价详情返回
         case CheckCommentDetailReplay = 2016
+        // 测试推送
+        case TestPushNotification = 2019
+        case TestPushNotificationReply = 2020
+        
+        //预约导游服务
+        case AppointmentServantRequest = 2021
+        //预约导游服务返回
+        case AppointmentServantReply = 2022
 
     }
     
@@ -310,6 +323,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         switch SockOpcode(rawValue: head!.opcode)! {
+            
+        case .TestPushNotificationReply:
+
+            break
         case .Logined:
             logined(jsonBody)
         case .ServantInfo:
@@ -369,7 +386,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AppointmentRecordReply:
             appointmentRecordReply(jsonBody)
  
+        case .AppointmentRecommendReply:
             
+            appointmentRecommendReply(jsonBody)
+            
+        case .AppointmentDetailReply:
+            
+            
+            break
         // Opcode => 2000+
         
         case .InvitationResult:
@@ -388,6 +412,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             serversManInfoReply(jsonBody)
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
+            
+        case .AppointmentServantReply:
+            appointmentServantReply(jsonBody)
+            
         default:
             break
         }
@@ -629,7 +657,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func appointmentReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.AppointmentReply , object: nil, userInfo: nil)
+        guard let appointment_id_ = jsonBody?.dictionaryObject!["appointment_id_"] else {return}
+        postNotification(NotifyDefine.AppointmentReply , object: nil, userInfo: ["appointment_id_":appointment_id_])
     }
     
     func invoiceDetailReply(jsonBody: JSON?) {
@@ -695,6 +724,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         postNotification(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
     }
+    func appointmentRecommendReply(jsonBody:JSON?) {
+        postNotification(NotifyDefine.AppointmentRecommendReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
     
     // Opcode => 2000+
     
@@ -754,6 +786,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
-    
+    func appointmentServantReply(jsonBody:JSON?) {
+       
+     postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
 }
 

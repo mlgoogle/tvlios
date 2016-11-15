@@ -148,6 +148,52 @@ class DataManager: NSObject {
         
     }
     
+    /**
+     远程通知消息处理
+     
+     - parameter message:
+     */
+    static func insertPushMessage(message: PushMessage) {
+        if DataManager.initialized == false {
+            return
+        }
+        
+        
+        switch message.push_msg_type {
+        case 2004:
+            DataManager.insertMessage(message)
+            
+        case 2012:
+            XCGLogger.error("这里是邀约的回复处理")
+        case 2231:
+            let realm = try! Realm()
+           /**
+             预约通知消息 ID 暂用 -2
+             */
+            let uid = message.appointment_id_
+            var userPushMessage = realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
+            try! realm.write({
+                if userPushMessage == nil {
+                    userPushMessage = UserPushMessage()
+                    userPushMessage!.uid = uid
+                    userPushMessage!.msgList.append(message)
+                    realm.add(userPushMessage!)
+                } else {
+                    userPushMessage!.msgList.append(message)
+                }
+                if message.from_uid_ != DataManager.currentUser?.uid {
+                    userPushMessage!.unread += 1
+                }
+                
+            })
+        default:
+         
+            break
+        }
+        
+
+        
+    }
     static func readMessage(uid: Int) {
         if DataManager.initialized == false {
             return

@@ -13,11 +13,11 @@ import MJRefresh
 
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+    var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
     var table:UITableView?
-//    var messageInfo:Array<UserInfo>? = []
+    var servantsArray:Array<UserInfo>? = []
     var segmentIndex = 0
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
@@ -54,6 +54,31 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+    }
+    
+    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            servantsArray?.removeAll()
+        let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+            var uid_str = ""
+
+            for servant in servants! {
+                let servantInfo = UserInfo()
+                servantInfo.setInfo(.Servant, info: servant)
+                servantsArray?.append(servantInfo)
+                uid_str += "\(servantInfo.uid),"
+
+            }
+            let recommendVC = RecommendServantsVC()
+            recommendVC.isNormal = false
+            recommendVC.appointment_id_ = currentAppointmentId
+            recommendVC.servantsInfo = servantsArray
+            navigationController?.pushViewController(recommendVC, animated: true)
+            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+            SocketManager.sendData(.GetUserInfo, data: dict)
+        }
     }
     
     func obtainTripReply(notification: NSNotification) {
@@ -209,27 +234,14 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             let realm = try! Realm()
             let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
-//
-//            let vc = RecommendServantsVC()
-//            let results = DataManager.getData(UserInfo.self, filter: "userType = 1") as! Results<UserInfo>
-//            var array = Array<UserInfo>()
-//            for servantInfo in results {
-//                
-//                array.append(servantInfo)
-//            }
-//            vc.servantsInfo = array
-//            navigationController?.pushViewController(vc, animated: true)
-            if userPushMessage.msgList.last?.msg_type_ == 3 {
-                
-                let vc = RecommendServantsVC()
-                let results = DataManager.getData(UserInfo.self, filter: "userType = 1") as! Results<UserInfo>
-                var array = Array<UserInfo>()
-                for servantInfo in results {
-                    
-                    array.append(servantInfo)
-                }
-                vc.servantsInfo = array
-                navigationController?.pushViewController(vc, animated: true)
+
+            let message = userPushMessage.msgList.last
+            if message?.push_msg_type == 2231 {
+                let uid_str_ = message?.service_id_
+                currentAppointmentId = (message?.appointment_id_)!
+                SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                DataManager.readMessage(-2)
+
                 return
 
             }
