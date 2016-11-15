@@ -13,13 +13,17 @@ class CenturionCardConsumedInfo: Object {
     
     dynamic var order_id_ = 0
     
+    dynamic var order_time_ = 0
+    
     dynamic var privilege_name_:String?
     
     dynamic var privilege_pic_:String?
     
     dynamic var privilege_price_ = 0
     
-    dynamic var privilege_time_ = 0
+    dynamic var privilege_lv_ = 0
+    
+    dynamic var order_status_ = 0
     
     
     func setInfo(info: CenturionCardConsumedInfo) {
@@ -31,8 +35,11 @@ class CenturionCardConsumedInfo: Object {
         
         privilege_price_ = info.privilege_price_
         
-        privilege_time_ = info.privilege_time_
+        privilege_lv_ = info.privilege_lv_
         
+        order_time_ = info.order_time_
+        
+        order_status_ = info.order_status_
     }
     
 }

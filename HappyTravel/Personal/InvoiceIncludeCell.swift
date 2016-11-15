@@ -150,7 +150,7 @@ class InvoiceIncludeCell: UITableViewCell {
         }
         if serviceTypeLabel != nil {
             
-            serviceTypeLabel?.text = serviceTypes[info.service_type_]
+            serviceTypeLabel?.text = info.service_type_
         }
         if servicePriceLabel != nil {
             
