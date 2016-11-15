@@ -570,16 +570,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func drawBillReply(jsonBody: JSON?) {
-        var dict = ["invoice_status_": HodometerStatus.InvoiceMaking.rawValue]
-        let oidStr = jsonBody?.dictionaryObject!["oid_str_"] as? String
-        let oids = oidStr?.componentsSeparatedByString(",")
-        for oid in oids! {
-            if oid == "" {
-                continue
-            }
-            dict["order_id_"] = Int.init(oid)
-            DataManager.updateData(HodometerInfo.self, data: dict)
-        }
         postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
