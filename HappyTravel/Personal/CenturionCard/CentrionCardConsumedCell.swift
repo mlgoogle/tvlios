@@ -138,7 +138,7 @@ class CentrionCardConsumedCell: UITableViewCell {
         }
         
         if let costLab = contentView.viewWithTag(tags["costLab"]!) as? UILabel {
-            costLab.text = "\(info!.privilege_price_)￥"
+            costLab.text = "\(Double(info!.privilege_price_) / 100)￥"
         }
         
         if let subTitle = contentView.viewWithTag(tags["subTitle"]!) as? UILabel {

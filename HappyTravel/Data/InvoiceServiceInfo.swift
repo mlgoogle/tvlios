@@ -51,4 +51,7 @@ class InvoiceServiceInfo: Object {
         service_time_ =  info.valueForKey("service_time_") as? String
     }
     
+    override static func primaryKey() -> String?{
+        return "oid_str_"
+    }
 }
