@@ -160,7 +160,7 @@ class InvoiceCell: UITableViewCell {
         }
         
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-            priceLab.text = "\(info!.service_price_) 元"
+            priceLab.text = "\(info!.order_price_) 元"
         }
         
         if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {

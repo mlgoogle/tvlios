@@ -26,7 +26,7 @@ class HodometerInfo : Object {
     
     dynamic var service_id_ = 0
     
-    dynamic var service_price_ = 0
+    dynamic var order_price_ = 0
     
     dynamic var service_name_:String?
     
@@ -54,12 +54,17 @@ class HodometerInfo : Object {
     
     dynamic var is_asked_ = 0
     
+    dynamic var days_ = 0
+
+    dynamic var order_addr:String?
+    
+    
     func setInfo(info: HodometerInfo) {
         service_type_ = info.service_type_
         
         service_id_ = info.service_id_
         
-        service_price_ = info.service_price_
+        order_price_ = info.order_price_
         
         service_name_ = info.service_name_
         
@@ -80,12 +85,18 @@ class HodometerInfo : Object {
         to_name_ = info.to_name_
         
         from_uid_ = info.from_uid_
-        
-        from_head_ = info.from_head_
+        if from_head_ != nil {
+            from_head_ = info.from_head_
+        }
         
         from_name_ = info.from_name_
         
+        
         is_asked_ = info.is_asked_
+        
+        days_ = info.days_
+        
+        order_addr = info.order_addr
     }
     
 }

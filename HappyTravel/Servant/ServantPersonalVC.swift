@@ -159,13 +159,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(service: ServiceInfo?) {
+    func sureAction(service: ServiceInfo?, daysCount: Int?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
         
         SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                                                       "to_uid_": personalInfo!.uid,
-                                                      "service_id_": service!.service_id_])
-
+                                                      "service_id_": service!.service_id_,
+                                                      "day_count_":daysCount!])
     }
     
     func back() {

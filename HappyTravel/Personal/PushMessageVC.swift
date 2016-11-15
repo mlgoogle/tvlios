@@ -209,7 +209,16 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             let realm = try! Realm()
             let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
-            
+//
+//            let vc = RecommendServantsVC()
+//            let results = DataManager.getData(UserInfo.self, filter: "userType = 1") as! Results<UserInfo>
+//            var array = Array<UserInfo>()
+//            for servantInfo in results {
+//                
+//                array.append(servantInfo)
+//            }
+//            vc.servantsInfo = array
+//            navigationController?.pushViewController(vc, animated: true)
             if userPushMessage.msgList.last?.msg_type_ == 3 {
                 
                 let vc = RecommendServantsVC()
