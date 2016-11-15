@@ -25,7 +25,7 @@ class OpenTicketInfo: Object {
         dateFormatter.dateStyle = .ShortStyle
         dateFormatter.timeStyle = .ShortStyle
         time = info.start_
-        price = "\(info.order_price_) 元"
+        price = "\(Double(info.order_price_) / 100) 元"
         type = info.service_type_ == 0 ? "商务游" : "高端游"
         
     }
@@ -43,7 +43,7 @@ class OpenTicketInfo: Object {
         
         type = "黑卡消费"
         
-        price = "\(info.privilege_price_) 元"
+        price = "\(Double(info.privilege_price_) / 100) 元"
         
         time = info.order_time_
         

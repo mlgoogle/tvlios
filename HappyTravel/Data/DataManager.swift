@@ -289,12 +289,12 @@ class DataManager: NSObject {
             return
         }
         let realm = try! Realm()
-        var tempInfo = realm.objects(InvoiceServiceInfo.self).filter("service_id_ = \(info.service_id_)").first
+        let tempInfo = realm.objects(InvoiceServiceInfo.self).filter("service_id_ = \(info.service_id_)").first
         try! realm.write({
             if tempInfo == nil {
                 realm.add(info)
             } else {
-                tempInfo = info
+                tempInfo!.setInfo(info)
             }
         })
     }

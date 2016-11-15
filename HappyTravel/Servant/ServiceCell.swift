@@ -117,7 +117,7 @@ public class ServiceCell : UITableViewCell {
                 for (index, service) in services!.enumerate() {
                     let titleStr = service.service_name_
                     let timeStr = service.service_time_
-                    let payStr = "\(service.service_price_)元"
+                    let payStr = "\(Double(service.service_price_) / 100)元"
                     
                     var svcView = bgView.viewWithTag(tags["svcView"]! * 10 + index)
                     if svcView == nil {
