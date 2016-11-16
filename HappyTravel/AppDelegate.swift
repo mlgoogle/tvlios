@@ -152,14 +152,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         completionHandler(UIBackgroundFetchResult.NewData)
 
         if UIApplication.sharedApplication().applicationState == .Background {
-            XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
+//            XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
             application.applicationIconBadgeNumber = 0
             completionHandler(UIBackgroundFetchResult.NewData)
             let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
             for vc in vcs! {
                 if vc.isKindOfClass(ForthwithVC) {
                     vc.navigationController?.popToRootViewControllerAnimated(false)
-                    (vc as! ForthwithVC).msgAction((userInfo["aps"]!["alert"] as! NSDictionary)["body"])
+                    (vc as! ForthwithVC).msgAction((userInfo["aps"]!["alert"] as! [String: AnyObject])["body"])
                     break
                 }
             }

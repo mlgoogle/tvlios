@@ -63,19 +63,15 @@ class AppointmentDetailVC: UIViewController {
     }
     
     func servantDetailInfo(notification: NSNotification) {
-        
-        
-        let data = notification.userInfo!["data"]
-        if data!["error_"]! != nil {
+        let data = notification.userInfo!["data"] as? [String: AnyObject]
+        if data!["error_"]! is Int {
             return
         }
-        
-        
         
         servantInfo =  DataManager.getUserInfo((appointmentInfo?.to_user_)!)
         let realm = try! Realm()
         try! realm.write({
-            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+            servantInfo!.setInfo(.Servant, info: data)
             
         })
         
@@ -223,7 +219,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
-        
+
                 cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:

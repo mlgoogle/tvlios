@@ -339,8 +339,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
         }
         appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
-        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
-        
+//        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
+        postNotifi()
     }
     func postNotifi()  {
 //        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
@@ -431,7 +431,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func serviceCitys(notification: NSNotification?) {
-        if let data = notification?.userInfo!["data"] {
+        
+        if let data = notification?.userInfo!["data"] as? [String: AnyObject] {
             if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
                 for city in citys {
                     let cityInfo = CityInfo()
