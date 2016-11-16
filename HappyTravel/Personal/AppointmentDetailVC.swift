@@ -9,7 +9,7 @@
 import Foundation
 import SVProgressHUD
 import RealmSwift
-
+import XCGLogger
 class AppointmentDetailVC: UIViewController {
     var commitBtn: UIButton?
     var servantInfo:UserInfo?
@@ -63,8 +63,11 @@ class AppointmentDetailVC: UIViewController {
     }
     
     func servantDetailInfo(notification: NSNotification) {
-        let data = notification.userInfo!["data"] as? [String: AnyObject]
-        if data!["error_"]! is Int {
+        
+
+        if let data = notification.userInfo!["data"] as? [String: AnyObject] {
+        if let error = data["error_"] {
+            XCGLogger.error(error)
             return
         }
         
@@ -77,9 +80,9 @@ class AppointmentDetailVC: UIViewController {
         
         
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
-        
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
