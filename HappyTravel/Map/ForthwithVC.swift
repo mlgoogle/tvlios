@@ -117,6 +117,26 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         appointmentView.nav = navigationController
+        checkLocationService()
+    }
+    
+    func checkLocationService() {
+        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() == .Denied {
+            let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许V领队使用定位服务", preferredStyle: .Alert)
+            let goto = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
+                if #available(iOS 10, *) {
+                    UIApplication.sharedApplication().openURL(NSURL.init(string: UIApplicationOpenSettingsURLString)!)
+                } else {
+                    UIApplication.sharedApplication().openURL(NSURL.init(string: "prefs:root=LOCATION_SERVICES")!)
+                }
+                
+            })
+            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: nil)
+            alert.addAction(goto)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
+            
+        }
     }
     
     func initView() {
@@ -290,6 +310,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func back2MyLocationAction(sender: UIButton) {
+        checkLocationService()
         if location != nil {
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
