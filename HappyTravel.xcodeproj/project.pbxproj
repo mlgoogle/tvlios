@@ -248,6 +248,7 @@
 		B341CE1A1DC2E97700DF93CB /* tianjia@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE181DC2E97700DF93CB /* tianjia@2x.png */; };
 		B341CE1C1DC2E98300DF93CB /* tianjia@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */; };
 		B341CE1E1DC322B200DF93CB /* nav_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = B341CE1D1DC322B200DF93CB /* nav_clear.png */; };
+		BF3483F31DDC0BB9005B08BF /* blackCardBg.png in Resources */ = {isa = PBXBuildFile; fileRef = BF3483F21DDC0BB9005B08BF /* blackCardBg.png */; };
 		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
 		BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */; };
 		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
@@ -548,6 +549,7 @@
 		B341CE1B1DC2E98300DF93CB /* tianjia@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tianjia@3x.png"; sourceTree = "<group>"; };
 		B341CE1D1DC322B200DF93CB /* nav_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_clear.png; sourceTree = "<group>"; };
 		B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF3483F21DDC0BB9005B08BF /* blackCardBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackCardBg.png; sourceTree = "<group>"; };
 		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVProgressHUDExt.swift; sourceTree = "<group>"; };
 		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
@@ -974,6 +976,7 @@
 		2FE7C3181D615AEF00994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BF3483F21DDC0BB9005B08BF /* blackCardBg.png */,
 				6E5E4E4F1DD4726C00368011 /* appointment-detail@2x.png */,
 				2FF578E51DD068C0009500D9 /* segment-bg@2x.png */,
 				2FF578E61DD068C0009500D9 /* segment-bg@3x.png */,
@@ -1333,6 +1336,7 @@
 				2FE7C34D1D62BFAF00994505 /* guide-zhima-auth@2x.png in Resources */,
 				2FF72B911DAF6217001EEED2 /* share@2x.png in Resources */,
 				2F9684401D7D22660028E3F2 /* star-common-fill@3x.png in Resources */,
+				BF3483F31DDC0BB9005B08BF /* blackCardBg.png in Resources */,
 				2FF72B7C1DAF6217001EEED2 /* middle-level-disable@3x.png in Resources */,
 				2F9684351D792C3E0028E3F2 /* pay-unselect@3x.png in Resources */,
 				2FE7C3631D62D09600994505 /* guide-detail-arrows@2x.png in Resources */,
@@ -2112,9 +2116,7 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
-
 				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
@@ -2146,9 +2148,7 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
-
 				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";

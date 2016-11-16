@@ -59,6 +59,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
     
     var services:Results<CenturionCardServiceInfo>?
     
+    
     //collectionView
     lazy var contentCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
@@ -69,7 +70,10 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         let collectionView = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.whiteColor()
         collectionView.registerClass(CenturionCardServerItem.classForCoder(), forCellWithReuseIdentifier: "CenturionCardServerItem")
+        collectionView.scrollEnabled = false
         collectionView.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footerView")
+        collectionView.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "cardFooterView")
+        collectionView.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "buyBtnFooterView")
         return collectionView
     }()
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -87,7 +91,12 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         delegate!.serviceTouched(services![indexPath.row])
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return DataManager.currentUser!.centurionCardLv <= 0 ? CGSize.init(width: ScreenWidth, height: 80) : CGSizeZero
+        if services == nil {
+            return CGSizeZero
+        }
+        
+        let service  = services![0]
+        return service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ?  CGSize.init(width: ScreenWidth, height: AtapteWidthValue(200)) : CGSize.init(width: ScreenWidth, height: 80)
     }
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
@@ -95,11 +104,27 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         }
         
         if services == nil || services?.count == 0 {
-            return collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "footerView", forIndexPath: indexPath)
+            let footerView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "footerView", forIndexPath: indexPath)
+            return footerView
+        }
+        let service  = services![indexPath.row]
+        if service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
+            
+            let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "cardFooterView", forIndexPath: indexPath)
+            
+            let blackCardImage = UIImageView.init(image: UIImage.init(named: "blackCardBg"))
+            sectionFooter.addSubview(blackCardImage)
+            blackCardImage.snp_makeConstraints(closure: { (make) in
+                make.bottom.equalTo(-10)
+                make.left.equalTo(AtapteWidthValue(20))
+                make.right.equalTo(-AtapteWidthValue(20))
+                make.height.equalTo(AtapteWidthValue(150))
+            })
+            sectionFooter.reloadInputViews()
+            return sectionFooter
         }
         
-        let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "footerView", forIndexPath: indexPath)
-        let service  = services![indexPath.row]
+        let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "buyBtnFooterView", forIndexPath: indexPath)
         let buyBtn: UIButton = UIButton.init(type: .Custom)
         buyBtn.addTarget(self, action: #selector(buyNowButtonAction(_:)), forControlEvents: .TouchUpInside)
         buyBtn.backgroundColor = UIColor.whiteColor()
@@ -133,7 +158,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         contentCollection.snp_makeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
-            make.right.equalTo(-10)
+            make.right.equalTo(0)
             make.bottom.equalTo(0)
         }
 

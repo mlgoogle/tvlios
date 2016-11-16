@@ -31,11 +31,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "黑卡会员"
         
-        var lv = DataManager.currentUser!.centurionCardLv
-        if lv == 0 {
-            lv += 1
-        }
-        services = DataManager.getCenturionCardServiceWithLV(lv)
+//        var lv = DataManager.currentUser!.centurionCardLv
+//        if lv == 0 {
+//            lv += 1
+//        }
+        services = DataManager.getCenturionCardServiceWithLV(1)
         
         initView()
     }
@@ -81,6 +81,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.delegate = self
         table?.dataSource = self
         table?.separatorStyle = .None
+        table?.contentInset = UIEdgeInsetsMake(0, 0, 64, 0)
         table?.registerClass(CenturionCardBaseInfoCell.self, forCellReuseIdentifier: "CenturionCardBaseInfoCell")
         table?.registerClass(CenturionCardServicesCell.self, forCellReuseIdentifier: "CenturionCardServicesCell")
         table?.registerClass(CenturionCardLvSelCell.self, forCellReuseIdentifier: "CenturionCardLvSelCell")
@@ -105,7 +106,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(callServantBtn!.snp_top)
+            make.bottom.equalTo(0)
         })
         
         
@@ -141,7 +142,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : ScreenHeight - AtapteWidthValue(279))
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : AtapteWidthValue(440))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -214,9 +215,12 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareImage()-> UIImage  {
-        UIGraphicsBeginImageContext(view.frame.size)
+        table!.frame =  CGRect.init(origin: CGPointMake(0, 0), size: table!.contentSize)
+        table!.reloadData()
+        UIGraphicsBeginImageContext(table!.contentSize)
+        UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)
 	    let context = UIGraphicsGetCurrentContext()
-	    view.layer.renderInContext(context!)
+	    table!.layer.renderInContext(context!)
 	    let img = UIGraphicsGetImageFromCurrentImageContext()
 	    UIGraphicsEndImageContext()
 	    return img;
