@@ -15,6 +15,7 @@ class InvoiceHistoryDetailVC: UIViewController {
     var headerView:InvouiceHistoryDetailHeader?
     var tableView:UITableView?
     var historyInfo:InvoiceHistoryInfo?
+    // 每个分区行数
     var rows:Array = [5, 3, 1]
     var titles =  [["发票抬头", "收件人", "联系电话", "所在区域", "收件地址"],
                    ["发票类型","发票金额","申请时间"]]

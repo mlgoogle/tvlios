@@ -10,7 +10,7 @@ import Foundation
 import XCGLogger
 
 class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, ServantIntroCellDelegate {
-    
+    //记录是邀约？预约？   ture为邀约  false 为预约
     var isNormal = true
     
     var servantsTable:UITableView?
@@ -105,7 +105,11 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         SocketManager.sendData(.GetServantDetailInfo, data:dict)
         self.servantInfo[(servantInfo?.uid)!] = servantInfo
     }
-    
+    /**
+     服务者详情回调
+     
+     - parameter notification:
+     */
     func servantDetailInfo(notification: NSNotification?) {
         
         let data = notification?.userInfo!["data"]

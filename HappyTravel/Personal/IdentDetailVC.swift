@@ -161,16 +161,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentDetailCell", forIndexPath: indexPath) as! AppointmentDetailCell
-            if let user = DataManager.getUserInfo(hodometerInfo!.to_uid_) {
-                cell.setupDataWithInfo(user)
-                cell.setServiceInfo(hodometerInfo!)
-                cell.hideCityInfo()
-            } else {
-                SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(hodometerInfo!.to_uid_)"])
-                let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)!]
-                SocketManager.sendData(.GetServantDetailInfo, data: dict)
-            }
-            
+            cell.setServiceInfo(hodometerInfo!)
+   
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
@@ -211,7 +203,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
                 strongSelf.userScore = data.valueForKey("user_score_") as? Int
                 strongSelf.remark = data.valueForKey("remarks_") as? String
-                strongSelf.commitBtn?.enabled = strongSelf.remark == nil
+                let isCommited = strongSelf.serviceScore != 0 && strongSelf.userScore != 0
+                strongSelf.commitBtn?.enabled = isCommited
                 SVProgressHUD.dismiss()
                 strongSelf.table?.reloadData()
             }
