@@ -74,7 +74,7 @@ class DataManager: NSObject {
                 userInfo.updateInfo(info)
                 realm.add(userInfo)
             } else {
-                user!.updateInfo(info)
+                user?.updateInfo(info)
             }
             
         })
@@ -134,14 +134,14 @@ class DataManager: NSObject {
         try! realm.write({
             if userPushMessage == nil {
                 userPushMessage = UserPushMessage()
-                userPushMessage!.uid = uid
-                userPushMessage!.msgList.append(message)
+                userPushMessage?.uid = uid
+                userPushMessage?.msgList.append(message)
                 realm.add(userPushMessage!)
             } else {
-                userPushMessage!.msgList.append(message)
+                userPushMessage?.msgList.append(message)
             }
             if message.from_uid_ != DataManager.currentUser?.uid {
-                userPushMessage!.unread += 1
+                userPushMessage?.unread += 1
             }
             
         })
@@ -175,14 +175,14 @@ class DataManager: NSObject {
             try! realm.write({
                 if userPushMessage == nil {
                     userPushMessage = UserPushMessage()
-                    userPushMessage!.uid = uid
-                    userPushMessage!.msgList.append(message)
+                    userPushMessage?.uid = uid
+                    userPushMessage?.msgList.append(message)
                     realm.add(userPushMessage!)
                 } else {
-                    userPushMessage!.msgList.append(message)
+                    userPushMessage?.msgList.append(message)
                 }
                 if message.from_uid_ != DataManager.currentUser?.uid {
-                    userPushMessage!.unread += 1
+                    userPushMessage?.unread += 1
                 }
                 
             })
@@ -340,7 +340,7 @@ class DataManager: NSObject {
             if tempInfo == nil {
                 realm.add(info)
             } else {
-                tempInfo!.setInfo(info)
+                tempInfo?.setInfo(info)
             }
         })
     }
@@ -617,7 +617,7 @@ class DataManager: NSObject {
                 historyInfo.setInfo(info)
                 realm.add(historyInfo)
             } else {
-                historyInfo!.refreshOtherInfo(info)
+                historyInfo?.refreshOtherInfo(info)
             }
             
         })
