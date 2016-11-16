@@ -196,6 +196,14 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
+    func setAppointmentInfo(info:AppointmentInfo?) {
+        let bgView = contentView.viewWithTag(tags["bgView"]!)
+        if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
+            lineTitleLab.text = "\(info!.service_name_!) 评价"
+        }
+        
+    }
+    
     func starAction(sender: UIButton) {
         XCGLogger.debug("\(sender.tag)")
         let tmp = sender.tag / ((tags["starBGView"]! * 10 + 1) * 10)
