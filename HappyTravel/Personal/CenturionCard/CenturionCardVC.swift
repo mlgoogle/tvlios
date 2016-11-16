@@ -114,6 +114,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareToOthers() {
+        if (DataManager.currentUser?.centurionCardLv)! == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "只有开通的帐号才能进行分享！！！", ForDuration: 1, completion: nil)
+            return
+        }
+        
         let shareController = ShareViewController()
         shareController.modalPresentationStyle = .Custom
         shareController.shareImage = shareImage()

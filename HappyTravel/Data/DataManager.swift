@@ -647,7 +647,7 @@ class DataManager: NSObject {
             if recordInfo == nil {
                 realm.add(info)
             } else {
-                recordInfo!.setInfo(info)
+                recordInfo?.setInfo(info)
             }
         })
         

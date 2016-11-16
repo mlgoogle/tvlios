@@ -251,6 +251,11 @@
 		BF3483F31DDC0BB9005B08BF /* blackCardBg.png in Resources */ = {isa = PBXBuildFile; fileRef = BF3483F21DDC0BB9005B08BF /* blackCardBg.png */; };
 		BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */; };
 		BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */; };
+		BF4CF6CA1DDC5EED007B3993 /* BlackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4CF6C91DDC5EED007B3993 /* BlackCardView.swift */; };
+		BF4CF6CD1DDC6CE4007B3993 /* blackCardFrontBg.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4CF6CB1DDC6CE4007B3993 /* blackCardFrontBg.png */; };
+		BF4CF6CE1DDC6CE4007B3993 /* blackCardIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4CF6CC1DDC6CE4007B3993 /* blackCardIcon.png */; };
+		BF4CF6D11DDC6CF6007B3993 /* whiteStart.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4CF6CF1DDC6CF6007B3993 /* whiteStart.png */; };
+		BF4CF6D21DDC6CF6007B3993 /* yellowStart.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4CF6D01DDC6CF6007B3993 /* yellowStart.png */; };
 		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
 		BF77CEEB1DCED43100F20C6A /* UTMini.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE31DCED43100F20C6A /* UTMini.framework */; };
 		BF77CEEC1DCED43100F20C6A /* WQConnectorBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */; };
@@ -552,6 +557,11 @@
 		BF3483F21DDC0BB9005B08BF /* blackCardBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackCardBg.png; sourceTree = "<group>"; };
 		BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVProgressHUDExt.swift; sourceTree = "<group>"; };
+		BF4CF6C91DDC5EED007B3993 /* BlackCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlackCardView.swift; path = Personal/CenturionCard/BlackCardView.swift; sourceTree = "<group>"; };
+		BF4CF6CB1DDC6CE4007B3993 /* blackCardFrontBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackCardFrontBg.png; sourceTree = "<group>"; };
+		BF4CF6CC1DDC6CE4007B3993 /* blackCardIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackCardIcon.png; sourceTree = "<group>"; };
+		BF4CF6CF1DDC6CF6007B3993 /* whiteStart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteStart.png; sourceTree = "<group>"; };
+		BF4CF6D01DDC6CF6007B3993 /* yellowStart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellowStart.png; sourceTree = "<group>"; };
 		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE21DCED43100F20C6A /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		BF77CEE31DCED43100F20C6A /* UTMini.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTMini.framework; sourceTree = "<group>"; };
@@ -1053,6 +1063,7 @@
 				2FF72BAA1DB8A0A2001EEED2 /* CenturionCardLvSelCell.swift */,
 				2FF72BAC1DB8B2DF001EEED2 /* CenturionCardDetailVC.swift */,
 				2FF72BAE1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift */,
+				BF4CF6C91DDC5EED007B3993 /* BlackCardView.swift */,
 			);
 			name = CenturionCard;
 			sourceTree = "<group>";
@@ -1060,6 +1071,10 @@
 		2FF72B401DAF6217001EEED2 /* CenturionCard */ = {
 			isa = PBXGroup;
 			children = (
+				BF4CF6CF1DDC6CF6007B3993 /* whiteStart.png */,
+				BF4CF6D01DDC6CF6007B3993 /* yellowStart.png */,
+				BF4CF6CB1DDC6CE4007B3993 /* blackCardFrontBg.png */,
+				BF4CF6CC1DDC6CE4007B3993 /* blackCardIcon.png */,
 				2FF72B411DAF6217001EEED2 /* advanced-level-disable@2x.png */,
 				2FF72B421DAF6217001EEED2 /* advanced-level-disable@3x.png */,
 				2FF72B431DAF6217001EEED2 /* advanced-level@2x.png */,
@@ -1378,6 +1393,7 @@
 				2FC25B2C1D6BFA2F00D48D6A /* invoice@3x.png in Resources */,
 				2FC25B341D6D416A00D48D6A /* limit@2x.png in Resources */,
 				2FE7C33F1D62B52C00994505 /* side-service@2x.png in Resources */,
+				BF4CF6CE1DDC6CE4007B3993 /* blackCardIcon.png in Resources */,
 				2F96843F1D7D22660028E3F2 /* star-common-fill@2x.png in Resources */,
 				2FF72B6C1DAF6217001EEED2 /* advanced-level-disable@2x.png in Resources */,
 				2FE7C3491D62BFAF00994505 /* guide-auth@2x.png in Resources */,
@@ -1429,6 +1445,7 @@
 				2F9684321D792C3E0028E3F2 /* pay-selected@2x.png in Resources */,
 				2F9C378C1DBF389100B163C5 /* LaunchScreen-512@2x.png in Resources */,
 				2FF72B781DAF6217001EEED2 /* meeting-disable@3x.png in Resources */,
+				BF4CF6D21DDC6CF6007B3993 /* yellowStart.png in Resources */,
 				2FE7C34E1D62BFAF00994505 /* guide-zhima-auth@3x.png in Resources */,
 				2FC25AFC1D6A972400D48D6A /* recommend@3x.png in Resources */,
 				2FF578DE1DD01671009500D9 /* icon180@3x.png in Resources */,
@@ -1440,6 +1457,7 @@
 				2F9684311D792C3E0028E3F2 /* alipay@3x.png in Resources */,
 				2F9684371D792C3E0028E3F2 /* wechat-pay@3x.png in Resources */,
 				2FF72B8E1DAF6217001EEED2 /* share-wechat@3x.png in Resources */,
+				BF4CF6CD1DDC6CE4007B3993 /* blackCardFrontBg.png in Resources */,
 				2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */,
 				2FF72B7E1DAF6217001EEED2 /* middle-level@3x.png in Resources */,
 				2FF72B721DAF6217001EEED2 /* centurion-card-tag@2x.png in Resources */,
@@ -1460,6 +1478,7 @@
 				2FF72B7D1DAF6217001EEED2 /* middle-level@2x.png in Resources */,
 				6E5E4E501DD4726C00368011 /* appointment-detail@2x.png in Resources */,
 				2FF72B8A1DAF6217001EEED2 /* service@3x.png in Resources */,
+				BF4CF6D11DDC6CF6007B3993 /* whiteStart.png in Resources */,
 				2FE7C3341D61ACFC00994505 /* nav-msg@2x.png in Resources */,
 				2FE7C3891D6413E300994505 /* my-star-hollow@3x.png in Resources */,
 				2FF578E41DD05E12009500D9 /* head-bg@3x.png in Resources */,
@@ -1892,6 +1911,7 @@
 				2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */,
 				2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */,
 				2F9684131D76D5250028E3F2 /* IdentCommentCell.swift in Sources */,
+				BF4CF6CA1DDC5EED007B3993 /* BlackCardView.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */,
 				2FF72BAF1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift in Sources */,

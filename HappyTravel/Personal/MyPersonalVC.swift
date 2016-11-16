@@ -122,8 +122,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         DataManager.currentUser!.login = true
         DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
         initPersonalView()
-        SocketManager.sendData(.GetServiceCity, data: nil)
         
+        SocketManager.sendData(.GetServiceCity, data: nil)
+        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
+                                                  "distance_": 20.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
                         "device_token_": dt]
