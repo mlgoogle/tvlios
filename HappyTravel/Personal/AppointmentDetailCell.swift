@@ -152,6 +152,10 @@ class AppointmentDetailCell: UITableViewCell {
     }
     
     func setApponimentInfo(info:AppointmentInfo) {
+        nicknameLabel.text = info.to_name_
+        iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+
+
         serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
         let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))

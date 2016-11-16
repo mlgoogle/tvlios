@@ -401,7 +401,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .AppointmentDetailReply:
             
-            
+            appointmentDetailReply(jsonBody)
             break
         // Opcode => 2000+
         
@@ -730,6 +730,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     func appointmentRecommendReply(jsonBody:JSON?) {
         postNotification(NotifyDefine.AppointmentRecommendReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+    }
+    func appointmentDetailReply(jsonBody:JSON?) {
+        postNotification(NotifyDefine.AppointmentDetailReply, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
     }
     
     // Opcode => 2000+
