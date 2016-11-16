@@ -64,7 +64,7 @@ class AppointmentDetailVC: UIViewController {
     
     func servantDetailInfo(notification: NSNotification) {
         let data = notification.userInfo!["data"] as? [String: AnyObject]
-        if data!["error_"]! is Int {
+        if data!["error_"] is Int {
             return
         }
         
