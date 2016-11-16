@@ -31,11 +31,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "黑卡会员"
         
-//        var lv = DataManager.currentUser!.centurionCardLv
-//        if lv == 0 {
-//            lv += 1
-//        }
-        services = DataManager.getCenturionCardServiceWithLV(1)
+        var lv = DataManager.currentUser!.centurionCardLv
+        if lv == 0 {
+            lv += 1
+        }
+        services = DataManager.getCenturionCardServiceWithLV(lv)
         
         initView()
     }

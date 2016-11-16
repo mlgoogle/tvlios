@@ -161,7 +161,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             make.right.equalTo(0)
             make.bottom.equalTo(0)
         }
-
+        
     }
     
     func setInfo(services: Results<CenturionCardServiceInfo>?) {

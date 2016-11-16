@@ -66,6 +66,9 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
                              3: [0: "advanced-level-disable", 1: "advanced-level"]]
     let itemWidth: CGFloat = ScreenWidth / 4
     
+    var selectIndex: NSInteger?
+    
+    
     //collectionView
     lazy var contentCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
@@ -83,14 +86,17 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let item: CenturionCardLVItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardLVItem", forIndexPath: indexPath) as! CenturionCardLVItem
-        item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![0]!)
+        let selector = Int(selectIndex == indexPath.row)
+        item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![selector]!)
         item.titleLabel.text = centurionCardTitle[indexPath.row]
         return item
     }
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         delegate?.selectedAction(Int(indexPath.row))
-        let left = (itemWidth / 2.0 ) * (2.0 * CGFloat(indexPath.row) + 1)-10
+        selectIndex = indexPath.row
+        collectionView.reloadData()
         
+        let left = (itemWidth / 2.0 ) * (2.0 * CGFloat(indexPath.row) + 1)-10
         indirector.snp_remakeConstraints { (make) in
             make.left.equalTo(left)
             make.bottom.equalTo(2)
@@ -114,6 +120,8 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
             make.bottom.equalTo(2)
         }
         
+        let indexPath = NSIndexPath.init(forRow: (DataManager.currentUser?.centurionCardLv)!-1, inSection: 0)
+        collectionView(contentCollection, didSelectItemAtIndexPath: indexPath)
     }
     
     required init?(coder aDecoder: NSCoder) {
