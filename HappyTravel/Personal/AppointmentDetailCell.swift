@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AppointmentDetailCell: UITableViewCell {
     
     
     var serviceTypes = [0:"未指定", 1:"高端游", 2:"商务游"]
 
-    lazy private var dateFomatter:NSDateFormatter = {
+    lazy private var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
         dateFomatter.dateFormat = "YYYY/MM/dd"
         
@@ -128,7 +129,7 @@ class AppointmentDetailCell: UITableViewCell {
     
     
     /**
-     预约详情顶部处理
+     详情顶部处理
      */
     func hideCityInfo() {
 
@@ -150,14 +151,31 @@ class AppointmentDetailCell: UITableViewCell {
         
     }
     
+    func setApponimentInfo(info:AppointmentInfo) {
+        serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
+        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
+        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))
+        dateLabel.text = startTime + "-" + endTime
+        
+
+            
+            let results = DataManager.getData(CityInfo.self, filter: "cityCode = \(info.city_code_)") as! Results<CityInfo>
+            
+            if let cityInfo = results.first  {
+                cityLabel.text = cityInfo.cityName
+            }
+            
+    
+    }
     func setServiceInfo(info:HodometerInfo) {
         
         serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"
-//        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.service_time_)))
-//        let endTime =
- 
-//        dateLabel.text = info.service_time_!
-        
+        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_)))
+        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))
+
+    
+        dateLabel.text = startTime + "-" + endTime
+        cityLabel.text = info.order_addr
     }
     /**
      预约详情顶部处理

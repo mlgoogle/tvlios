@@ -114,18 +114,6 @@ public class TallyCell : UITableViewCell {
                                 make.top.equalTo(previousView!)
                                 make.left.equalTo(previousView!.snp_right).offset(10)
                             }
-//                            if index / 3 > 0 {
-//                                if index % 3 == 0 {
-//                                    make.top.equalTo(previousView!.snp_bottom).offset(10)
-//                                    make.left.equalTo(self.contentView).offset(10)
-//                                } else {
-//                                    make.top.equalTo(previousView!.snp_top)
-//                                    make.left.equalTo(previousView!.snp_right).offset(10)
-//                                }
-//                            } else {
-//                                make.top.equalTo(previousView!)
-//                                make.left.equalTo(previousView!.snp_right).offset(10)
-//                            }
                         }
                         make.height.equalTo(25)
                         make.width.equalTo(tag.labelWidth)

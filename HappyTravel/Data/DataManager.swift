@@ -148,6 +148,52 @@ class DataManager: NSObject {
         
     }
     
+    /**
+     远程通知消息处理
+     
+     - parameter message:
+     */
+    static func insertPushMessage(message: PushMessage) {
+        if DataManager.initialized == false {
+            return
+        }
+        
+        
+        switch message.push_msg_type {
+        case 2004:
+            DataManager.insertMessage(message)
+            
+        case 2012:
+            XCGLogger.error("这里是邀约的回复处理")
+        case 2231:
+            let realm = try! Realm()
+           /**
+             预约通知消息 ID 暂用 -2
+             */
+            let uid = message.appointment_id_
+            var userPushMessage = realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
+            try! realm.write({
+                if userPushMessage == nil {
+                    userPushMessage = UserPushMessage()
+                    userPushMessage!.uid = uid
+                    userPushMessage!.msgList.append(message)
+                    realm.add(userPushMessage!)
+                } else {
+                    userPushMessage!.msgList.append(message)
+                }
+                if message.from_uid_ != DataManager.currentUser?.uid {
+                    userPushMessage!.unread += 1
+                }
+                
+            })
+        default:
+         
+            break
+        }
+        
+
+        
+    }
     static func readMessage(uid: Int) {
         if DataManager.initialized == false {
             return
@@ -250,6 +296,64 @@ class DataManager: NSObject {
         
     }
     
+    static func insertOpenTicketWithHodometerInfo(info: HodometerInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let openInfo = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if openInfo == nil {
+                let tempInfo = OpenTicketInfo()
+                tempInfo.setInfoWithHodometer(info)
+                realm.add(tempInfo)
+            } else {
+                openInfo?.setInfoWithHodometer(info)
+            }
+        })
+    }
+    
+    static func insertOpenTicketWithConsumedInfo(info: CenturionCardConsumedInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let openInfo = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(info.order_id_)").first
+        try! realm.write({
+            if openInfo == nil {
+                let tempInfo = OpenTicketInfo()
+                tempInfo.setInfoWithConsumedInfo(info)
+                realm.add(tempInfo)
+            } else {
+                openInfo?.setInfoWithConsumedInfo(info)
+            }
+        })
+    }
+    
+    static func insertInvoiceServiceInfo(info: InvoiceServiceInfo) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let tempInfo = realm.objects(InvoiceServiceInfo.self).filter("service_id_ = \(info.service_id_)").first
+        try! realm.write({
+            if tempInfo == nil {
+                realm.add(info)
+            } else {
+                tempInfo!.setInfo(info)
+            }
+        })
+    }
+
+    static func getOpenTicketsInfo() ->Results<OpenTicketInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        let infos = realm.objects(OpenTicketInfo.self).sorted("time", ascending: true)
+        return infos
+    }
+    
     static func getHodometerHistory() ->Results<HodometerInfo>? {
         if DataManager.initialized == false {
             return nil
@@ -257,6 +361,15 @@ class DataManager: NSObject {
         let realm = try! Realm()
         let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Paid.rawValue)")
         return hodometerInfos
+    }
+    
+    static func getCenturionCardConsumed() ->Results<CenturionCardConsumedInfo>? {
+        if DataManager.initialized == false {
+            return nil
+        }
+        let realm = try! Realm()
+        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = \(HodometerStatus.Paid.rawValue)")
+        return infos
     }
     
     // MARK: - CenturionCardServiceInfo
@@ -374,6 +487,14 @@ class DataManager: NSObject {
         
         let realm = try! Realm()
         switch type.className() {
+            
+        case UserInfo.className():
+            let objs = realm.objects(UserInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
         case SkillInfo.className():
             let objs = realm.objects(SkillInfo.self)
             if filter == nil {
@@ -422,6 +543,26 @@ class DataManager: NSObject {
         return false
     }
     
+    static func updateData<T: Object>(type: T.Type, dict: [String: AnyObject]) -> Bool {
+        guard DataManager.initialized != false else {return false}
+        
+        let realm = try! Realm()
+        switch type.className() {
+        case HodometerInfo.className():
+            let oid = dict["order_id_"] as! Int
+            let info = realm.objects(HodometerInfo.self).filter("order_id_ = \(oid)").first
+            try! realm.write({
+                if info != nil {
+                    for (key, value) in dict {
+                        info?.setValue(value, forKey: key)
+                    }
+                }
+            })
+        default:
+            break
+        }
+        return true
+    }
 
     // MARK: - InvoiceHistoryInfo
     /**

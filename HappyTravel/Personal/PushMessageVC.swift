@@ -13,11 +13,11 @@ import MJRefresh
 
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+    var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
     var table:UITableView?
-//    var messageInfo:Array<UserInfo>? = []
+    var servantsArray:Array<UserInfo>? = []
     var segmentIndex = 0
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
@@ -54,6 +54,58 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+    }
+    
+    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            servantsArray?.removeAll()
+        let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+            var uid_str = ""
+
+            for servant in servants! {
+                let servantInfo = UserInfo()
+                servantInfo.setInfo(.Servant, info: servant)
+                servantsArray?.append(servantInfo)
+                uid_str += "\(servantInfo.uid),"
+
+            }
+            let recommendVC = RecommendServantsVC()
+            recommendVC.isNormal = false
+            recommendVC.appointment_id_ = currentAppointmentId
+            recommendVC.servantsInfo = servantsArray
+            navigationController?.pushViewController(recommendVC, animated: true)
+            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+            SocketManager.sendData(.GetUserInfo, data: dict)
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+    }
+    
+    func payForInvitationReply(notification: NSNotification) {
+        let result = notification.userInfo!["result_"] as! Int
+        var msg = ""
+        switch result {
+        case 0:
+            msg = "预支付成功"
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                                                              "order_id_": 0,
+                                                              "count_": 10])
+        case -1:
+            msg = "密码错误"
+        case -2:
+            msg = "余额不足"
+            moneyIsTooLess()
+            return
+        default:
+            break
+        }
+        let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
+        let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
+        alert.addAction(sure)
+        presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func obtainTripReply(notification: NSNotification) {
@@ -207,22 +259,110 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if segmentIndex == 0 {
+            let realm = try! Realm()
+            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+
+            let message = userPushMessage.msgList.last
+            if message?.push_msg_type == 2231 {
+                let uid_str_ = message?.service_id_
+                currentAppointmentId = (message?.appointment_id_)!
+                SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                DataManager.readMessage(-2)
+
+                return
+
+            }
+
+            
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
                 chatVC.servantInfo = cell.userInfo
                 navigationController?.pushViewController(chatVC, animated: true)
+                
             }
         } else if segmentIndex == 1 {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
-                if cell.curHodometerInfo?.status_ != HodometerStatus.Paid.rawValue {
-                    return
+                let status = cell.curHodometerInfo?.status_
+                if status == HodometerStatus.Paid.rawValue {
+                    let identDetailVC = IdentDetailVC()
+                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
+                    navigationController?.pushViewController(identDetailVC, animated: true)
+                } else if status == HodometerStatus.WaittingPay.rawValue {
+                    SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                    payForInvitationRequest(cell.curHodometerInfo)
                 }
-                let identDetailVC = IdentDetailVC()
-                identDetailVC.hodometerInfo = cell.curHodometerInfo!
-                navigationController?.pushViewController(identDetailVC, animated: true)
+                
             }
         }
         
+    }
+    
+    func payForInvitationRequest(info: HodometerInfo?) {
+        guard info != nil else {return}
+        weak var weakSelf = self
+        let msg = "\n您即将预支付人民币:\((info?.order_price_)!)元"
+        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) in
+            textField.placeholder = "请输入密码"
+            textField.secureTextEntry = true
+        })
+        
+        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
+            var errMsg = ""
+            let passwd = alert.textFields?.first?.text
+            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
+                errMsg = "请输入密码"
+            } else if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
+                if passwd != localPasswd {
+                    errMsg = "密码输入错误，请重新输入"
+                }
+            }
+            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
+                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
+                        weakSelf!.payForInvitationRequest(info)
+                    })
+                })
+                warningAlert.addAction(sure)
+                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
+            } else {
+                if DataManager.currentUser?.cash < info?.order_price_ {
+                    weakSelf!.moneyIsTooLess()
+                } else {
+                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                        "order_id_": (info?.order_id_)!,
+                        "passwd_": passwd!]
+                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
+                }
+                
+            }
+            
+        })
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func moneyIsTooLess() {
+        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
+        
+        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
+            let rechargeVC = RechargeVC()
+            self.navigationController?.pushViewController(rechargeVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     deinit {
@@ -235,5 +375,4 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     
 }
-
 

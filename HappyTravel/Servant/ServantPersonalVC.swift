@@ -13,14 +13,14 @@ import XCGLogger
 import RealmSwift
 
 public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
-    
+    var isNormal = true 
     var personalInfo:UserInfo?
     var personalTable:UITableView?
     var bottomBar:UIImageView?
     var serviceSpread = true
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
-    
+    var appointment_id_ = 0
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -61,7 +61,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         }
         let invitationBtn = UIButton()
         invitationBtn.tag = 1002
-        invitationBtn.setTitle("发起邀约", forState: .Normal)
+        invitationBtn.setTitle( isNormal ? "发起邀约" : "发起预约", forState: .Normal)
         invitationBtn.backgroundColor = UIColor.clearColor()
         invitationBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         invitationBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), forControlEvents: .TouchUpInside)
@@ -139,6 +139,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = ServiceSheet()
             sheet.servantInfo = personalInfo
+            sheet.isNormal = isNormal
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -159,13 +160,21 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(service: ServiceInfo?) {
+    func sureAction(service: ServiceInfo?, daysCount: Int?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
         
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                      "to_uid_": personalInfo!.uid,
-                                                      "service_id_": service!.service_id_])
-
+        
+        if isNormal {
+            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                                            "to_uid_": personalInfo!.uid,
+                                                        "service_id_": service!.service_id_,
+                                                         "day_count_":daysCount!])
+        } else {
+            SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
+                                                                        "to_uid_": personalInfo!.uid,
+                                                                    "service_id_": service!.service_id_,
+                                                                "appointment_id_":appointment_id_])
+        }
     }
     
     func back() {
@@ -181,8 +190,24 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ServantPersonalVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ServantPersonalVC.receivedResults(_:)), name: NotifyDefine.AppointmentServantReply, object: nil)
+        
     }
     
+    func receivedResults(notifucation: NSNotification?) {
+        let  msg = "预约发起成功，等待对方接受邀请"
+        let alert = UIAlertController.init(title: "预约状态",
+                                           message: msg,
+                                           preferredStyle: .Alert)
+        
+
+        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+            
+        })
+        
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
     func invitationResult(notifucation: NSNotification?) {
         var msg = ""
         if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
@@ -224,6 +249,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         super.viewWillAppear(animated)
         registerNotify()
         
+        guard isNormal else { return }
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
             navigationItem.rightBarButtonItem = msgItem

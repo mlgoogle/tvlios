@@ -44,7 +44,6 @@ class CenturionCardServerItem: UICollectionViewCell {
             make.centerX.equalTo(contentView)
             make.top.equalTo(iconBtn.snp_bottom).offset(AtapteWidthValue(4))
             make.height.equalTo(S12)
-            make.bottom.equalTo(AtapteWidthValue(-12))
         }
     }
     
@@ -88,7 +87,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         delegate!.serviceTouched(services![indexPath.row])
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize.init(width: ScreenWidth, height: 80)
+        return DataManager.currentUser!.centurionCardLv <= 0 ? CGSize.init(width: ScreenWidth, height: 80) : CGSizeZero
     }
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {

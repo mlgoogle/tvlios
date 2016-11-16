@@ -9,6 +9,8 @@
 import Foundation
 import RealmSwift
 import MJRefresh
+import XCGLogger
+import SVProgressHUD
 
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -298,6 +300,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             break
         case 1:
             let detailVC = AppointmentDetailVC()
+            guard  records?.count > 0 else {
+                XCGLogger.error("注意: records数据是空的！")
+                return
+            }
+            
+            let object = records![indexPath.row]
+            guard object.status_ > 1  else {
+              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                return
+            }
             detailVC.appointmentInfo = records![indexPath.row]
             navigationController?.pushViewController(detailVC, animated: true)
             break
@@ -323,8 +335,18 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if footer.state == .Refreshing {
             footer.endRefreshing()
         }
-        timer?.invalidate()
-        timer = nil
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
     }
     
+    deinit {
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
+    }
 }

@@ -11,9 +11,11 @@ import XCGLogger
 
 class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, ServantIntroCellDelegate {
     
+    var isNormal = true
+    
     var servantsTable:UITableView?
     var servantsInfo:Array<UserInfo>? = []
-    
+    var appointment_id_ = 0
     
     var servantInfo:Dictionary<Int, UserInfo> = [:]
     
@@ -85,11 +87,6 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         cell.delegate = self
         let userInfo = servantsInfo![indexPath.row]
         cell.setInfo(userInfo)
-//        for (index, userInfo) in servantsInfo!.enumerate() {
-//            if indexPath.row == index {
-//                cell.setInfo(userInfo)
-//            }
-//        }
         return cell
         
     }
@@ -116,10 +113,13 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
             XCGLogger.error("Get UserInfo Error:\(data!["error"])")
             return
         }
+
         servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
         let user = servantInfo[data!["uid_"] as! Int]
         DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.isNormal = isNormal
+        servantPersonalVC.appointment_id_ = appointment_id_
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         

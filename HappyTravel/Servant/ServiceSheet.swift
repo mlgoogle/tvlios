@@ -7,28 +7,32 @@
 //
 
 import Foundation
-
+import SVProgressHUD
 protocol ServiceSheetDelegate : NSObjectProtocol {
     
     func cancelAction(sender: UIButton?)
     
-    func sureAction(service: ServiceInfo?)
+    func sureAction(service: ServiceInfo?, daysCount:Int?)
     
 }
 
-class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
+class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     
     weak var delegate:ServiceSheetDelegate?
-    
+    var count = 0
     var selectedIndexPath:NSIndexPath?
-    
+    var countsArray:Array<Int> = []
+
     var servantInfo:UserInfo?
-    
-    var table:UITableView?
-    
+    var isNormal = true
     let tags = ["selectBtn": 1001,
                 "priceLab": 1002,
-                "descLab": 1003]
+                "descLab": 1003,
+                "plusOrReduceView":1004,
+                "countLabel":1005,
+                "reduceButton":1006,
+                "plusButton":1007]
+    var table:UITableView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -93,6 +97,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
         table?.rowHeight = UITableViewAutomaticDimension
         table?.separatorStyle = .None
         table?.registerClass(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
+        table?.registerClass(SingleServiceInfoCell.self, forCellReuseIdentifier: "singleService")
         addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(self)
@@ -111,7 +116,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
         if selectedIndexPath == nil {
             return
         }
-        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row])
+        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row], daysCount: countsArray[(selectedIndexPath?.row)!])
     }
     
     // MARK: - UITableView
@@ -120,70 +125,39 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SettingCell")
-        if cell == nil {
-            cell = UITableViewCell()
-            cell?.selectionStyle = .None
-        }
-        
+
+        let cell = tableView.dequeueReusableCellWithIdentifier("singleService", forIndexPath: indexPath) as! SingleServiceInfoCell
         let service = servantInfo?.serviceList[indexPath.row]
+
+        cell.delegate = self
         
-        var selectBtn = cell?.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton
-        if selectBtn == nil {
-            selectBtn = UIButton()
-            selectBtn?.tag = tags["selectBtn"]!
-            selectBtn?.setBackgroundImage(UIImage.init(named: "service-unselect"), forState: .Normal)
-            selectBtn?.setBackgroundImage(UIImage.init(named: "service-selected"), forState: .Selected)
-            selectBtn?.backgroundColor = UIColor.clearColor()
-            cell?.contentView.addSubview(selectBtn!)
-            selectBtn?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(cell!.contentView).offset(15)
-                make.top.equalTo(cell!.contentView).offset(20)
-                make.width.equalTo(20)
-                make.bottom.equalTo(cell!.contentView).offset(-20)
-                
-            })
+        /**
+         *  判断是否有当前IndexPath的天数记录 没有就添加
+         */
+        if countsArray.count < indexPath.row + 1 {
+            countsArray.append(1)
         }
-        
-        var priceLab = cell?.contentView.viewWithTag(tags["priceLab"]!) as? UILabel
-        if priceLab == nil {
-            priceLab = UILabel()
-            priceLab?.tag = tags["priceLab"]!
-            priceLab?.backgroundColor = UIColor.clearColor()
-            priceLab?.textAlignment = .Right
-            priceLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            priceLab?.font = UIFont.systemFontOfSize(S15)
-            cell?.contentView.addSubview(priceLab!)
-            priceLab!.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(cell!.contentView).offset(-15)
-                make.top.equalTo(selectBtn!)
-                make.bottom.equalTo(selectBtn!)
-            })
+//        cell.setCounts(countsArray[indexPath.row], isNormal: isNormal)
+        /**
+         *  防止cell重用刷新问题
+         */
+        cell.setupInfo(service!, count: countsArray[indexPath.row], isNormal: isNormal)
+        if selectedIndexPath != nil {
+            
+            if indexPath == selectedIndexPath {
+                if let selectBtn = cell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+                    selectBtn.selected = true
+                }
+                return cell
+
+            }
         }
-        priceLab!.text = "\(service!.service_price_) 元"
-        
-        var descLab = cell?.contentView.viewWithTag(tags["descLab"]!) as? UILabel
-        if descLab == nil {
-            descLab = UILabel()
-            descLab?.tag = tags["descLab"]!
-            descLab?.backgroundColor = UIColor.clearColor()
-            descLab?.textAlignment = .Left
-            descLab?.numberOfLines = 0
-            descLab?.preferredMaxLayoutWidth = UIScreen.mainScreen().bounds.size.width / 5.0 * 3
-            descLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            descLab?.font = UIFont.systemFontOfSize(S15)
-            cell?.contentView.addSubview(descLab!)
-            descLab!.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(selectBtn!.snp_right).offset(15)
-                make.right.equalTo(priceLab!.snp_left)
-                make.top.equalTo(cell!.contentView).offset(10)
-                make.bottom.equalTo(cell!.contentView).offset(-10)
-            })
+    
+       if let selectBtn = cell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+        selectBtn.selected = false
         }
+        return cell
         
-        descLab!.text = "\(service!.service_name_!)    \(service!.service_time_!)"
-        
-        return cell!
         
     }
     
@@ -204,8 +178,44 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }
+
+extension ServiceSheet:DaysCountDelegate {
+    
+    func countsPlus(cell:SingleServiceInfoCell) {
+        
+        
+        let indexPath = (table?.indexPathForCell(cell))! as NSIndexPath
+        
+        countsArray[indexPath.row] += 1
+        table?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+    }
+    
+    func countsReduce(cell:SingleServiceInfoCell) {
+        let indexPath = (table?.indexPathForCell(cell))! as NSIndexPath
+        
+        if countsArray[indexPath.row] > 1 {
+            
+            countsArray[indexPath.row] -= 1
+            table?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        } else {
+            SVProgressHUD.showWainningMessage(WainningMessage: "不能再减了哦", ForDuration: 1.5, completion: nil)
+        }
+    }
+}
+

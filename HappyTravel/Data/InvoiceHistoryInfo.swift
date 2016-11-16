@@ -27,7 +27,8 @@ class InvoiceHistoryInfo: Object {
     dynamic var area_:String?
     dynamic var addr_detail_:String?
     
-       func setInfo(info: InvoiceHistoryInfo) {
+    func setInfo(info: InvoiceHistoryInfo) {
+        
         invoice_id_     = info.invoice_id_
         invoice_status_ = info.invoice_status_
         invoice_time_   = info.invoice_time_

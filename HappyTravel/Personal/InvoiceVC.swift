@@ -20,19 +20,26 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
-    
+    var consumes:Results<CenturionCardConsumedInfo>?
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
-    
-    var selectedOrderList:Dictionary<Int, HodometerInfo> = [:]
-    
+    var selectedOrderList:Results<OpenTicketInfo>?
+    var totalInfos:Results<OpenTicketInfo>? {
+        didSet{
+            if totalInfos == nil {
+                return
+            }
+            table?.mj_footer.hidden =  totalInfos!.count <= 10
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let path = NSHomeDirectory()
+        XCGLogger.debug(path)
         
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "按行程开票"
-        
         initView()
     }
     
@@ -51,7 +58,9 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
     }
     
     func obtainTripReply(notification: NSNotification) {
@@ -63,13 +72,25 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         hotometers = DataManager.getHodometerHistory()
-        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-        if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-            return
+        for info in hotometers! {
+            DataManager.insertOpenTicketWithHodometerInfo(info)
         }
-        orderID = lastOrderID
+        totalInfos = DataManager.getOpenTicketsInfo()
+        table?.reloadData()
+    }
+    
+    func centurionCardConsumedReply(notification: NSNotification)  {
+        if header.state == MJRefreshState.Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == MJRefreshState.Refreshing {
+            footer.endRefreshing()
+        }
+        consumes = DataManager.getCenturionCardConsumed()
+        for info in consumes! {
+            DataManager.insertOpenTicketWithConsumedInfo(info)
+        }
+        totalInfos = DataManager.getOpenTicketsInfo()
         table?.reloadData()
     }
     
@@ -114,18 +135,20 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": 0,
             "count_": 10])
-        
+        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func footerRefresh() {
         SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": orderID,
             "count_": 10])
+        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func commitAction(sender: UIButton) {
-        XCGLogger.debug("\(self.selectedOrderList.keys)")
-        if selectedOrderList.count == 0 {
+        let realm = try! Realm()
+        selectedOrderList = realm.objects(OpenTicketInfo.self).filter("selected = true")
+        if selectedOrderList!.count == 0 {
             SVProgressHUD.showWainningMessage(WainningMessage: "尚未选择开票行程", ForDuration: 1.5, completion: nil)
             return
         }
@@ -135,46 +158,32 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     // MARK: - UITableView
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let cnt = hotometers != nil ? hotometers!.count : 0
-        footer.hidden = cnt < 10 ? true : false
-        return cnt
+        let count = totalInfos != nil ?  totalInfos?.count :0
+        return count!
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("InvoiceCell", forIndexPath: indexPath) as! InvoiceCell
-        let hodometer = hotometers![indexPath.row]
-        let selectStatue = selectedOrderList.indexForKey(hodometer.order_id_) == nil ? false : true
-        let last = indexPath.row == self.hotometers!.count - 1 ? true : false
-        cell.setInfo(hodometer, selected: selectStatue, last: last)
+        let info = totalInfos![indexPath.row]
+        cell.info = info
         return cell
         
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? InvoiceCell {
-            if cell.selectAction() == true {
-                selectedOrderList[cell.hodometerInfo!.order_id_] = cell.hodometerInfo
-            } else {
-                selectedOrderList.removeValueForKey(cell.hodometerInfo!.order_id_)
-            }
-        }
+        let info = totalInfos![indexPath.row]
+        let realm = try! Realm()
+        try! realm.write({
+            info.selected = !info.selected
+        })
+        tableView.reloadData()
+        
     }
     
-//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "7月"
-//    }
-//    
-//    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 30
-//    }
-//    
-//    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 0.001
-//    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
     
 }

@@ -30,6 +30,7 @@ class AppointmentInfo: Object {
     dynamic var to_head_:String?
     dynamic var to_name_:String?
     dynamic var to_user_ = 0
+    dynamic var order_price_ = 0
     
     func setInfo(info:AppointmentInfo) {
         

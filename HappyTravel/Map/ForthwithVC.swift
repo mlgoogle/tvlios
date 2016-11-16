@@ -336,14 +336,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             weakSelf.navigationController?.pushViewController(vc, animated: true)
 
         }
-
-//        let alert = UIAlertController.init(title: "成功", message: "预约已成功，请保持开机！祝您生活愉快！谢谢！", preferredStyle: .Alert)
-//        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
-//            
-//        })
-//        alert.addAction(action)
-//        presentViewController(alert, animated: true, completion: nil)
-        
+        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+        let dict = ["servantID":"1,2,3", "appointment_id_" : appointment_id_]
+        SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
+                                                               "to_uid_" : 10,
+                                                             "msg_type_" : 2231,
+                                                             "msg_body_" : dict,
+                                                               "content_":"您好，为您刚才的预约推荐服务者"])
     }
     
     func keyboardWillShow(notification: NSNotification?) {
