@@ -13,7 +13,7 @@ import RealmSwift
 class AppointmentDetailVC: UIViewController {
     var commitBtn: UIButton?
     var servantInfo:UserInfo?
-
+    var skillsArray:Array<Dictionary<SkillInfo, Bool>> = Array()
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfo?
     lazy private var tableView:UITableView = {
@@ -37,8 +37,31 @@ class AppointmentDetailVC: UIViewController {
     func registerNotification() {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
 
     }
+    func receivedDetailInfo(notification: NSNotification) {
+        
+        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+ 
+            skillsArray.removeAll()
+            if data["skills_"] != nil {
+             let skillStr = data["skills_"] as? String
+             let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
+                for idString in idArray {
+                    let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(idString)") as! Results<SkillInfo>
+                    let skillInfo = results.first
+                    let dict = [skillInfo!:false] as Dictionary<SkillInfo, Bool>
+                    skillsArray.append(dict)
+                }
+                tableView.reloadData()
+            }
+
+            
+        }
+    }
+    
     func servantDetailInfo(notification: NSNotification) {
         let data = notification.userInfo!["data"] as? [String: AnyObject]
         if data!["error_"]! is Int {
@@ -62,7 +85,7 @@ class AppointmentDetailVC: UIViewController {
         super.viewDidLoad()
         title = "预约详情"
         view.addSubview(tableView)
-        tableView.registerClass(TallyCell.self, forCellReuseIdentifier: "TallyCell")
+        tableView.registerClass(SkillsCell.self, forCellReuseIdentifier: "TallyCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "normal")
         tableView.registerClass(AppointmentDetailCell.self, forCellReuseIdentifier: "detailCell")
         tableView.registerClass(IdentCommentCell.self, forCellReuseIdentifier: "CommentCell")
@@ -95,19 +118,19 @@ class AppointmentDetailVC: UIViewController {
 //            }
 //            
 //        }
-        for _ in 0...10 {
-            
-            let tally = Tally()
-            tally.tally = "标签"
-            tally.labelWidth = 60
-            skills.append(tally)
-        }
-        
+//        for _ in 0...10 {
+//            
+//            let tally = Tally()
+//            tally.tally = "标签"
+//            tally.labelWidth = 60
+//            skills.append(tally)
+//        }
+//        
     }
 
     func initData() {
 
-        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : 96, "order_type_":1])
+        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
     }
     func cancelOrCommitButtonAction() {
         
@@ -171,9 +194,9 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                 cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! SkillsCell
+                cell.setInfo(skillsArray)
                 
-                cell.setInfo(skills)
                 cell.contentView.backgroundColor = UIColor.whiteColor()
 
                 return cell
@@ -196,16 +219,15 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
-                if let userInfo = DataManager.getUserInfo(appointmentInfo!.to_user_) {
-                    cell.setupDataWithInfo(userInfo)
-                }
+
                 cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! SkillsCell
+                cell.setInfo(skillsArray)
                 
-//                cell.setInfo(skills)
                 cell.contentView.backgroundColor = UIColor.whiteColor()
+                
                 return cell
                 
             default:

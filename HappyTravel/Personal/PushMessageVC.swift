@@ -59,11 +59,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+        
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
-        let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+        
+            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+           
             var uid_str = ""
-
             for servant in servants! {
                 let servantInfo = UserInfo()
                 servantInfo.setInfo(.Servant, info: servant)
@@ -267,7 +269,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let uid_str_ = message?.service_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
-                DataManager.readMessage(-2)
+                DataManager.readMessage(currentAppointmentId)
 
                 return
 

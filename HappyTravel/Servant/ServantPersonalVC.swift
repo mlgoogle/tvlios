@@ -195,7 +195,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func receivedResults(notifucation: NSNotification?) {
-        let  msg = "预约发起成功，等待对方接受邀请"
+        
+         let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
+        
+        var msg = "预约发起成功，等待对方接受邀请"
+        if dict!["is_asked_"] as! Int == 0 {
+            msg = "预约失败，您已经预约过对方"
+
+        }
+        
         let alert = UIAlertController.init(title: "预约状态",
                                            message: msg,
                                            preferredStyle: .Alert)

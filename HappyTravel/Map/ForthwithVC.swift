@@ -35,6 +35,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     let bottomSelector = UISlider()
     let appointmentView = AppointmentView()
     var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
+    //延时测试用
+    var appointment_id_ = 0
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -336,15 +338,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             weakSelf.navigationController?.pushViewController(vc, animated: true)
 
         }
-        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+        appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+//        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
+        postNotifi()
+    }
+    func postNotifi()  {
+//        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
         let dict = ["servantID":"1,2,3", "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-                                                               "to_uid_" : 10,
-                                                             "msg_type_" : 2231,
-                                                             "msg_body_" : dict,
-                                                               "content_":"您好，为您刚才的预约推荐服务者"])
+            "to_uid_" : 10,
+            "msg_type_" : 2231,
+            "msg_body_" : dict,
+            "content_":"您好，为您刚才的预约推荐服务者"])
+
     }
-    
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
