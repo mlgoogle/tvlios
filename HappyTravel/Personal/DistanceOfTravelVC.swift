@@ -92,7 +92,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
             alert.addAction(sure)
             presentViewController(alert, animated: true, completion: nil)
-        } else if let code = notification.userInfo!["result_"] as? Int {
+        } else if let code = notification.userInfo!["code"] as? Int {
             /**
              code = 0 需问下服务端 2016年11月16日20:29:22
              */
