@@ -204,7 +204,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 strongSelf.userScore = data.valueForKey("user_score_") as? Int
                 strongSelf.remark = data.valueForKey("remarks_") as? String
                 let isCommited = strongSelf.serviceScore != 0 && strongSelf.userScore != 0
-                strongSelf.commitBtn?.enabled = isCommited
+                strongSelf.commitBtn?.enabled = !isCommited
                 SVProgressHUD.dismiss()
                 strongSelf.table?.reloadData()
             }
