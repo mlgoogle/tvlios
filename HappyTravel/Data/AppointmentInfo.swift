@@ -31,10 +31,11 @@ class AppointmentInfo: Object {
     dynamic var to_name_:String?
     dynamic var to_user_ = 0
     dynamic var order_price_ = 0
+    dynamic var order_id_ = 0
     
     func setInfo(info:AppointmentInfo) {
         
-        appointment_id_ = info.appointment_id_
+//        appointment_id_ = info.appointment_id_
         user_id_ = info.user_id_
         city_code_ = info.city_code_
         start_time_  = info.start_time_
