@@ -56,7 +56,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
+        // 父类UI检测 
         guard let view = contentView.viewWithTag(101) else { return }
         guard let timeLab = view.viewWithTag(1005) as? UILabel else { return }
         guard let nickNameLab = view.viewWithTag(1002) as? UILabel else { return }

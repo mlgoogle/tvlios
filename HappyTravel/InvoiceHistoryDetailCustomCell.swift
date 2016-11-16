@@ -130,7 +130,7 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
     
     
 
-    
+
     /**
      添加约束
      */

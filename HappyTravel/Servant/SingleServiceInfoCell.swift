@@ -170,7 +170,11 @@ class SingleServiceInfoCell: UITableViewCell {
         if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
             descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
         }
+        /**
+         *  如果是邀约 继续执行  如果是预约 则 直接return
+         */
         guard isNormal else {
+            
             let plusOrReduceView = contentView.viewWithTag(tags["plusOrReduceView"]!)
             
             plusOrReduceView?.hidden = true
@@ -180,7 +184,7 @@ class SingleServiceInfoCell: UITableViewCell {
             countLabel.text = String(count) + " 天"
         }
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-            priceLab.text = "\(Double(service.service_price_) / 100) 元"
+            priceLab.text = "\(Double(service.service_price_ * count) / 100) 元"
         }
         
     }
