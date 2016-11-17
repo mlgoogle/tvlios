@@ -149,6 +149,22 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             make.height.equalTo(45)
         }
         
+        let cancelBtn = UIButton()
+        cancelBtn.tag = tags["sureBtn"]!
+        cancelBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
+        cancelBtn.setTitle("上一步", forState: .Normal)
+        cancelBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        cancelBtn.layer.cornerRadius = 45 / 2.0
+        cancelBtn.layer.masksToBounds = true
+        cancelBtn.addTarget(self, action: #selector(lastStep), forControlEvents: .TouchUpInside)
+        view.addSubview(cancelBtn)
+        cancelBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(passwdField)
+            make.right.equalTo(passwdField)
+            make.top.equalTo(sureBtn.snp_bottom).offset(10)
+            make.height.equalTo(45)
+        }
+        
     }
     
     func registerNotify() {
@@ -187,12 +203,12 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func sureAction(sender: UIButton?) {
-        if passwd?.characters.count == 0 {
+        if  passwd == nil || passwd?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
             return
         }
         
-        if repasswd?.characters.count == 0 {
+        if  repasswd == nil || repasswd?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请重新输入密码", ForDuration: 1, completion: nil)
             return
         }
@@ -206,9 +222,13 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                                                    "user_type_": 1,
                                                    "timestamp_": verifyCodeTime,
                                                    "verify_code_": verifyCode,
-                                                   "token_": token!]
+                                                   "token_": token == nil ? "" : token!]
         SocketManager.sendData(.RegisterAccountRequest, data: dict)
     
+    }
+    
+    func lastStep() {
+        dismissViewControllerAnimated(false, completion: nil)
     }
     
     //MARK: - UITextField
