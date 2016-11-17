@@ -220,7 +220,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareImage()-> UIImage  {
-        table!.frame =  CGRect.init(origin: CGPointMake(table!.mj_x, table!.mj_y), size: table!.contentSize)
+        table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
+        table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
         UIGraphicsBeginImageContext(table!.contentSize)
         UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)
