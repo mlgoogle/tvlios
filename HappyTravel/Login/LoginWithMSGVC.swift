@@ -315,7 +315,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
         }
-        if verifyCode?.characters.count == 0 {
+        if verifyCode == nil || verifyCode?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入验证码", ForDuration: 1.5, completion: nil)
             return
         }

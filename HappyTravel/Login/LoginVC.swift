@@ -104,8 +104,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
-//        usernameField.text = "15157109258"
-        username = usernameField.text
+
         
         let passwdField = UITextField()
         passwdField.tag = tags["passwdField"]!
@@ -124,8 +123,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.right.equalTo(usernameField)
             make.height.equalTo(35)
         })
-//        passwdField.text = "223456"
-        passwd = passwdField.text
         
         for i in 0...2 {
             let fieldUnderLine = UIView()
@@ -212,24 +209,45 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     func login(sender: UIButton?) {
         var dict:Dictionary<String, AnyObject>?
-        
-        if sender?.tag == tags["loginBtn"]! {
-            dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
-        } else if sender?.tag == 20001 {
+        if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]
-        } else if sender?.tag == tags["loginWithMSGBtn"]! {
+            SocketManager.sendData(.Login, data: dict)
+            return
+        }
+        
+        if sender?.tag == tags["loginWithMSGBtn"]! {
             loginWithMSGVC = LoginWithMSGVC()
             presentViewController(loginWithMSGVC!, animated: false, completion: nil)
             return
         }
         
+        if username == nil || username?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入手机号码", ForDuration: 1, completion: nil)
+            return
+        }
+        
+        
+        let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
+        if predicate.evaluateWithObject(username) == false {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
+            return
+        }
+        
+        
+        if passwd == nil || (passwd?.characters.count)! == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+            return
+        }
+        
+        
+        
+        if sender?.tag == tags["loginBtn"]! {
+            dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
+        }
         NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
         NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
-        
         SocketManager.sendData(.Login, data: dict)
-        
-        
     }
     
     func randomSmallCaseString(length: Int) -> String {
@@ -263,7 +281,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["usernameField"]!:
-            username = textField.text
+            username = ""
+            break
+        case tags["passwdField"]!:
+            passwd = ""
             break
         default:
             break
@@ -277,9 +298,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         }
         
         if textField.tag == tags["usernameField"]! {
-            username = textField.text! + string
+            username = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         } else if textField.tag == tags["passwdField"]! {
-            passwd = textField.text! + string
+            passwd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
             
         }
         
