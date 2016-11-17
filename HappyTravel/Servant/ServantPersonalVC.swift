@@ -214,10 +214,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func receivedResults(notifucation: NSNotification?) {
         
-         let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
+        let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
         
         var msg = "预约发起成功，等待对方接受邀请"
-        if dict!["is_asked_"] as! Int == 0 {
+        if dict!["is_asked_"] as! Int == 1 {
             msg = "预约失败，您已经预约过对方"
 
         }
