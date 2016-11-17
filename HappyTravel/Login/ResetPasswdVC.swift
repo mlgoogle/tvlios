@@ -149,6 +149,22 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             make.height.equalTo(45)
         }
         
+        let cancelBtn = UIButton()
+        cancelBtn.tag = tags["sureBtn"]!
+        cancelBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
+        cancelBtn.setTitle("上一步", forState: .Normal)
+        cancelBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        cancelBtn.layer.cornerRadius = 45 / 2.0
+        cancelBtn.layer.masksToBounds = true
+        cancelBtn.addTarget(self, action: #selector(lastStep), forControlEvents: .TouchUpInside)
+        view.addSubview(cancelBtn)
+        cancelBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(passwdField)
+            make.right.equalTo(passwdField)
+            make.top.equalTo(sureBtn.snp_bottom).offset(10)
+            make.height.equalTo(45)
+        }
+        
     }
     
     func registerNotify() {
@@ -160,10 +176,9 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     func registerAccountReply(notification: NSNotification) {
         if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if let err = dict["error_"] {
-                SVProgressHUD.showErrorWithStatus("\(err) : （忘了啥错误了，方磊要看下代码）")
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                    SVProgressHUD.dismiss()
-                })
+                let errorCode = dict["error_"] as! Int
+                let errorMsg = CommonDefine.errorMsgs[errorCode]
+                SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
                 return
             }
             let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
@@ -188,11 +203,18 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func sureAction(sender: UIButton?) {
+        if  passwd == nil || passwd?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+            return
+        }
+        
+        if  repasswd == nil || repasswd?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请重新输入密码", ForDuration: 1, completion: nil)
+            return
+        }
+        
         if passwd != repasswd {
-            SVProgressHUD.showErrorWithStatus("两次输入密码不一致")
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64 (1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
-                SVProgressHUD.dismiss()
-            })
+            SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
             return
         }
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
@@ -200,19 +222,23 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                                                    "user_type_": 1,
                                                    "timestamp_": verifyCodeTime,
                                                    "verify_code_": verifyCode,
-                                                   "token_": token!]
+                                                   "token_": token == nil ? "" : token!]
         SocketManager.sendData(.RegisterAccountRequest, data: dict)
     
+    }
+    
+    func lastStep() {
+        dismissViewControllerAnimated(false, completion: nil)
     }
     
     //MARK: - UITextField
     func textFieldShouldClear(textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["passwdField"]!:
-            passwd = textField.text
+            passwd = ""
             break
         case tags["reInPasswdField"]!:
-            repasswd = textField.text
+            repasswd = ""
             break
         default:
             break
@@ -224,11 +250,10 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         if range.location > 15 {
             return false
         }
-        
         if textField.tag == tags["reInPasswdField"]! {
-            repasswd = textField.text! + string
+            repasswd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         } else if textField.tag == tags["passwdField"]! {
-            passwd = textField.text! + string
+            passwd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
             
         }
         

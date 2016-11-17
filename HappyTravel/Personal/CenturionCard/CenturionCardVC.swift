@@ -98,7 +98,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
-            make.height.equalTo(DataManager.currentUser!.centurionCardLv > 0 ? 65 : 0.01)
+            make.height.equalTo(65)
             
         })
     
@@ -177,13 +177,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
-        callServantBtn?.snp_remakeConstraints(closure: { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.bottom.equalTo(view)
-            make.height.equalTo(index < DataManager.currentUser!.centurionCardLv ? 65 : 0.01)
-            
-        })
+        callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
     }
     
     // MARK: - CenturionCardServicesCellDelegate
