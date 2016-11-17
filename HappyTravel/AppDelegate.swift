@@ -160,12 +160,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         completionHandler(UIBackgroundFetchResult.NewData)
 
 
-        let messageDict  = userInfo["aps"]!["alert"]!!["body"] as! String
+        let messageDict  = userInfo["aps"]!["category"] as? String
         
-        var str = messageDict.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
+        var str = messageDict!.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
         str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
         let data = str.dataUsingEncoding(NSUTF8StringEncoding)
-        
         let jsonData = JSON.init(data: data!)
         let pushMessage = PushMessage()
         pushMessage.setInfo(jsonData.dictionaryObject)
