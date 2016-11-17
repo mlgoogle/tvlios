@@ -203,6 +203,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
                 strongSelf.userScore = data.valueForKey("user_score_") as? Int
                 strongSelf.remark = data.valueForKey("remarks_") as? String
+                // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0 则可继续提交评论
                 let isCommited = strongSelf.serviceScore != 0 && strongSelf.userScore != 0
                 strongSelf.commitBtn?.enabled = !isCommited
                 SVProgressHUD.dismiss()
