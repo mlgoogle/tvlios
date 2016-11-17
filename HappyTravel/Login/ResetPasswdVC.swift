@@ -161,7 +161,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(passwdField)
             make.right.equalTo(passwdField)
-            make.top.equalTo(sureBtn.snp_bottom).offset(10)
+            make.top.equalTo(sureBtn.snp_bottom).offset(25)
             make.height.equalTo(45)
         }
         
