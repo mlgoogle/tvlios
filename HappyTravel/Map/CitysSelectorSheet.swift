@@ -7,13 +7,16 @@
 //
 
 import Foundation
+import XCGLogger
 
-protocol CitysSelectorSheetDelegate : NSObjectProtocol {
+@objc protocol CitysSelectorSheetDelegate : NSObjectProtocol {
     
-    func cancelAction(sender: UIButton?)
+    optional  func cancelAction(sender: UIButton?)
     
-    func sureAction(sender: UIButton?, targetCity: CityInfo?)
     
+    optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
+    optional  func daysSureAction(sender:UIButton?, targetDays: Int)
+    optional  func daysCancelAction(sender:UIButton?)
 }
 
 class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -23,7 +26,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     var targetCity:CityInfo?
     
     let pickView = UIPickerView()
-    
+    var daysList:Array<Int>?
+    var targetDays:Int = 0
     override init(frame: CGRect) {
         super.init(frame: frame)
         initView()
@@ -117,31 +121,65 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return citysList!.count
+        
+        let count = citysList == nil ? daysList?.count : citysList?.count
+        return count!
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let cityInfo = citysList![row]
+      
+        if daysList?.count == 0 {
+            
+            let cityInfo = citysList![row]
+            
+            return cityInfo.cityName
+        }
+        let daysCount = daysList![row]
         
-        return cityInfo.cityName
-        
+        return String(daysCount) + "天"
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        for (index, city) in citysList!.enumerate() {
-            if index == row {
-                targetCity = city
-                return
+        
+        if daysList?.count == 0 {
+            
+            for (index, city) in citysList!.enumerate() {
+                if index == row {
+                    targetCity = city
+                    return
+                }
             }
+        } else {
+            targetDays = daysList![row]
         }
     }
     
     func cancelAction(sender: UIButton?) {
-        delegate?.cancelAction(sender)
+        guard delegate != nil else {
+            XCGLogger.error("delegate 为空")
+            return
+        }
+        if daysList?.count == 0 {
+            delegate?.cancelAction!(sender)
+        }else {
+            delegate?.daysCancelAction!(sender)
+        }
     }
     
     func sureAction(sender: UIButton?) {
-        delegate?.sureAction(sender, targetCity: targetCity == nil ? self.citysList![0] : targetCity)
+        guard delegate != nil else {
+            XCGLogger.error("delegate 为空")
+            return
+        }
+        if daysList?.count == 0 {
+
+            
+            delegate?.sureAction!(sender, targetCity: targetCity == nil ? self.citysList![0] : targetCity)
+        } else {
+        
+            
+            delegate?.daysSureAction!(sender, targetDays: targetDays)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

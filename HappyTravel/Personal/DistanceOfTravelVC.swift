@@ -371,6 +371,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
               SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 return
             }
+            guard object.status_ != 3  else {
+                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
+                return
+            }
             /**
              *  未支付状态去支付
              */
