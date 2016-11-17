@@ -151,6 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     /**
      
      远程通知 回调处理 iOS10 以下有效？？2016年11月16日19:44:54
+     iOS10也有效了。。2016年11月17日17:05:20
      - parameter application:
      - parameter userInfo:
      - parameter completionHandler:
