@@ -13,7 +13,9 @@ import XCGLogger
 import RealmSwift
 
 public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
-    var isNormal = true 
+    //记录是邀约？预约？   ture为邀约  false 为预约
+    var isNormal = true
+    
     var personalInfo:UserInfo?
     var personalTable:UITableView?
     var bottomBar:UIImageView?
@@ -96,6 +98,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+     下面沟通 或者 邀约操作
+     
+     - parameter sender:
+     */
     func bottomBarAction(sender: UIButton?) {
         if DataManager.currentUser?.cash == 0 {
             let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
@@ -160,6 +167,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    /**
+     邀约或者预约确定
+     
+     - parameter service:
+     - parameter daysCount:
+     */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
         alertController?.dismissViewControllerAnimated(true, completion: nil)
         
@@ -194,6 +207,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+     预约回调
+     
+     - parameter notifucation:
+     */
     func receivedResults(notifucation: NSNotification?) {
         
          let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
@@ -214,8 +232,19 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         })
         
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+
+        presentViewController(alert, animated: true) {
+            /**
+             预约完成 删除 推送的预约消息 测试状态 暂时不删
+             */
+//            DataManager.deletePushMessage(appointment_id_)
+        }
     }
+    /**
+     邀约回调
+     
+     - parameter notifucation:
+     */
     func invitationResult(notifucation: NSNotification?) {
         var msg = ""
         if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
@@ -270,6 +299,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+    push to 聊天页面
+     - parameter sender:
+     */
     func msgAction(sender: AnyObject?) {
         let msgVC = PushMessageVC()
 //        msgVC.messageInfo = recommendServants

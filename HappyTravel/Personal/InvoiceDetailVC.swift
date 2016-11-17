@@ -96,7 +96,12 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
-    
+   
+    /**
+     发票请求回调
+     
+     - parameter notification: 
+     */
     func drawBillReply(notification: NSNotification?) {
         SVProgressHUD.dismiss()
         if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
