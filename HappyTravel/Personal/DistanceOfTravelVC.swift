@@ -429,7 +429,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             price =  (selectedHodometerInfo?.order_price_)!
             order_id_ = (selectedHodometerInfo?.order_id_)!
         }
-        let msg = "\n您即将预支付人民币:\((price / 100))元"
+        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in

@@ -217,6 +217,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
             return
         }
+        
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
                                                    "passwd_": passwd!,
                                                    "user_type_": 1,
