@@ -32,6 +32,7 @@ extension SVProgressHUD{
     public class func showProgressMessage(ProgressMessage message: String){
         initStyle()
         SVProgressHUD.showWithStatus(message)
+        SVProgressHUD.dismissWithDuration(Duration: 15, completion: nil)
     }
 
     public class func initStyle(){

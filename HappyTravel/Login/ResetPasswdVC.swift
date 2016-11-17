@@ -161,7 +161,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(passwdField)
             make.right.equalTo(passwdField)
-            make.top.equalTo(sureBtn.snp_bottom).offset(10)
+            make.top.equalTo(sureBtn.snp_bottom).offset(25)
             make.height.equalTo(45)
         }
         
@@ -217,6 +217,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
             return
         }
+        
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
                                                    "passwd_": passwd!,
                                                    "user_type_": 1,
