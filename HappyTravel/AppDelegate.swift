@@ -142,6 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+
         XCGLogger.debug("\(token)")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
             GeTuiSdk.registerDeviceToken(token)

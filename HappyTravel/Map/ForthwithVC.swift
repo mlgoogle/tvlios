@@ -62,11 +62,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
-                                                         name: NotifyDefine.ServantDetailInfo,
-                                                         object: nil)
+
+        XCGLogger.debug(navigationController?.navigationBar.frame)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
             msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
@@ -525,8 +524,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             point.title = "\(servantInfo.uid)"
             annotations.append(point)
         }
+        if mapView!.annotations.count > 0{
+            mapView?.removeAnnotations(mapView!.annotations)
+        }
         mapView!.addAnnotations(annotations)
         mapView!.showAnnotations(annotations, animated: true)
+        
         
     }
     
