@@ -95,7 +95,7 @@ class ServantIntroCell: UITableViewCell {
                 make.height.equalTo(AtapteHeightValue(20))
             })
         }
-        officialAuth?.image = UIImage.init(named: "guide-auth")
+        officialAuth?.image = UIImage.init(named: "renzheng")
         
         var zhimaAuth = personalView?.viewWithTag(10004) as? UIImageView
         if zhimaAuth == nil {
@@ -277,13 +277,13 @@ class ServantIntroCell: UITableViewCell {
         if let bigBGPhotoUrl = userInfo?.bigBGPhotoUrl {
             
             let photoUrl = NSURL(string: (bigBGPhotoUrl))
-            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "defaultBg1"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
             
         }
         let headUrl = NSURL(string: userInfo!.headUrl!)
         let headView = imageView.viewWithTag(10001) as! UIImageView
-        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             
         }
         

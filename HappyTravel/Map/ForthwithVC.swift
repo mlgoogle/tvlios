@@ -275,7 +275,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let recommendBtn = UIButton()
         recommendBtn.tag = 2001
         recommendBtn.backgroundColor = .clearColor()
-        recommendBtn.setImage(UIImage.init(named: "recommend"), forState: .Normal)
+        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
         recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
         mapView?.addSubview(recommendBtn)
         recommendBtn.snp_makeConstraints { (make) in

@@ -544,7 +544,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         NSUserDefaults.standardUserDefaults().setValue(invoiceInfoDict, forKey:UserDefaultKeys.invoiceInfoDict)
-        var oidStr = ""
+        var oidStr = "" 
         for (index, orderInfo) in selectedOrderList!.enumerate() {
             oidStr += "\(orderInfo.order_id_)"
             if index < selectedOrderList!.count - 1 {
