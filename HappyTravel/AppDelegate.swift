@@ -110,7 +110,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        XCGLogger.debug(application.keyWindow?.rootViewController)
         GeTuiSdk.destroy()
     }
     

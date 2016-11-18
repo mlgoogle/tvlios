@@ -247,7 +247,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     func verifyCodeInfoNotify(notification: NSNotification?) {
         SVProgressHUD.dismiss()
         if let data = notification?.userInfo!["data"] {
-            setupCountdown()
             verifyCodeTime = (data["timestamp_"] as? Int)!
             token = data["token_"] as? String
         }else{
@@ -303,6 +302,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         let dict  = ["verify_type_": 1, "phone_num_": username!]
         SocketManager.sendData(.SendMessageVerify, data: dict)
         sender.userInteractionEnabled = false
+        setupCountdown()
     }
     
     func nextAction(sender: UIButton?) {

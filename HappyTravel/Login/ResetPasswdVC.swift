@@ -34,8 +34,8 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         registerNotify()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -174,6 +174,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerAccountReply(notification: NSNotification) {
+        
         if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if let err = dict["error_"] {
                 let errorCode = dict["error_"] as! Int
@@ -181,6 +182,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                 SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
                 return
             }
+            SVProgressHUD.dismiss()
             let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
             SocketManager.sendData(.Login, data: loginDict)
             
@@ -218,6 +220,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             return
         }
         
+        SVProgressHUD.showProgressMessage(ProgressMessage: "")
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
                                                    "passwd_": passwd!,
                                                    "user_type_": 1,
