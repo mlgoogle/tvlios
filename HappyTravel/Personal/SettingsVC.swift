@@ -107,7 +107,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         case AuthUser = "个人认证"
         case SesameCredit = "芝麻信用"
         case NoLeft = "阅后即焚"
-        case ClearCache = "清楚缓存"
+        case ClearCache = "清除缓存"
         case UpdateVerison = "更新版本"
         case AboutUs = "关于我们"
         case LogoutUser = "退出当前帐号"
@@ -275,7 +275,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
         settingOptingValue = [[number, "", autoStatus, ""],
-                              [String(format: "%.2fM",calculateCacle()), "已是更新版本", ""],
+                              [String(format: "%.2fM",calculateCacle()), "已是最新版本", ""],
                               [""]]
     }
     

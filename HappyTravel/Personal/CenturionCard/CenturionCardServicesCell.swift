@@ -91,12 +91,13 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         delegate!.serviceTouched(services![indexPath.row])
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        if services == nil {
+
+        if services == nil || services?.count == 0 {
             return CGSizeZero
         }
         
         let service  = services![0]
-        return service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ?  CGSize.init(width: ScreenWidth, height: AtapteWidthValue(200)) : CGSize.init(width: ScreenWidth, height: 80)
+        return service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ?  CGSize.init(width: ScreenWidth, height: AtapteWidthValue(250)) : CGSize.init(width: ScreenWidth, height: 80)
     }
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
@@ -112,13 +113,14 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             
             let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "cardFooterView", forIndexPath: indexPath)
             
-            let blackCardImage = UIImageView.init(image: UIImage.init(named: "blackCardBg"))
+            let blackCardImage = BlackCardView.init(frame: CGRectZero) 
+            blackCardImage.stars = DataManager.currentUser!.centurionCardLv
             sectionFooter.addSubview(blackCardImage)
             blackCardImage.snp_makeConstraints(closure: { (make) in
                 make.bottom.equalTo(-10)
                 make.left.equalTo(AtapteWidthValue(20))
                 make.right.equalTo(-AtapteWidthValue(20))
-                make.height.equalTo(AtapteWidthValue(150))
+                make.height.equalTo(AtapteWidthValue(200))
             })
             sectionFooter.reloadInputViews()
             return sectionFooter

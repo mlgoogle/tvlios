@@ -56,7 +56,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
+        // 父类UI检测 
         guard let view = contentView.viewWithTag(101) else { return }
         guard let timeLab = view.viewWithTag(1005) as? UILabel else { return }
         guard let nickNameLab = view.viewWithTag(1002) as? UILabel else { return }
@@ -121,12 +121,26 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     func setRecordInfo(recordInfo: AppointmentInfo?) {
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            headView.image = UIImage(named: "default-head")
+            if recordInfo?.to_head_ != nil {
+                
+                headView.kf_setImageWithURL(NSURL(string: (recordInfo?.to_head_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+                    
+                })
+
+            } else {
+                
+                headView.image = UIImage(named: "touxiang_women")
+            }
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
             
-            nickNameLab.text = DataManager.currentUser?.nickname
+            if recordInfo?.status_ == 2 || recordInfo?.status_ == 4 {
+                nickNameLab.text = recordInfo?.service_name_
+            } else {
+                
+                nickNameLab.text = DataManager.currentUser?.nickname
+            }
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {

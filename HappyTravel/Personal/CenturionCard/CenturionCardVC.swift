@@ -98,7 +98,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
-            make.height.equalTo(DataManager.currentUser!.centurionCardLv > 0 ? 65 : 0.01)
+            make.height.equalTo(65)
             
         })
     
@@ -114,6 +114,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareToOthers() {
+        if (DataManager.currentUser?.centurionCardLv)! == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "只有开通的帐号才能进行分享！！！", ForDuration: 1, completion: nil)
+            return
+        }
+        
         let shareController = ShareViewController()
         shareController.modalPresentationStyle = .Custom
         shareController.shareImage = shareImage()
@@ -172,13 +177,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
-        callServantBtn?.snp_remakeConstraints(closure: { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.bottom.equalTo(view)
-            make.height.equalTo(index < DataManager.currentUser!.centurionCardLv ? 65 : 0.01)
-            
-        })
+        callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
     }
     
     // MARK: - CenturionCardServicesCellDelegate
@@ -215,7 +214,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareImage()-> UIImage  {
-        table!.frame =  CGRect.init(origin: CGPointMake(table!.mj_x, table!.mj_y), size: table!.contentSize)
+        table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
+        table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
         UIGraphicsBeginImageContext(table!.contentSize)
         UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)

@@ -17,9 +17,9 @@ class CenturionCardBaseInfoCell : UITableViewCell {
                 "nicknameLabel": 1004]
     
     let centurionCardLv = [0: "未开通",
-                           1: "初级黑卡会员",
-                           2: "中级黑卡会员",
-                           3: "高级黑卡会员"]
+                           1: "一星黑卡会员",
+                           2: "二星黑卡会员",
+                           3: "三星黑卡会员"]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -576,6 +576,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     
     // MARK: - Appointment
     func appointment() {
+        
         var alright = true
         var errMsg = ""
         if startDate == nil {

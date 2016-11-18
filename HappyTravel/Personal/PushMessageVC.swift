@@ -302,7 +302,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func payForInvitationRequest(info: HodometerInfo?) {
         guard info != nil else {return}
         weak var weakSelf = self
-        let msg = "\n您即将预支付人民币:\((info?.order_price_)!)元"
+        let msg = "\n您即将预支付人民币:\(Double((info?.order_price_)!) / 100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in

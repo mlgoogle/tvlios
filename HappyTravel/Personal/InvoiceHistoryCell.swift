@@ -101,7 +101,12 @@ class InvoiceHistoryCell: UITableViewCell {
     
     
     
-    
+    /**
+     
+     数据填充
+     - parameter info:
+     - parameter last: 最后一个需隐藏
+     */
     func setupDatawith(info:InvoiceHistoryInfo?,last:Bool) {
         if priceLabel != nil {
 
