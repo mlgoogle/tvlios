@@ -9,7 +9,7 @@
 import Foundation
 
 class BMB2Object : NSObject {
-    /// Binary Memory Block To Object
+    /// Binary Memory Block <=> Object
     
     static var size:Int {
         get {
