@@ -175,7 +175,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     
     func registerAccountReply(notification: NSNotification) {
         if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if let err = dict["error_"] {
+            if dict["error_"] != nil {
                 let errorCode = dict["error_"] as! Int
                 let errorMsg = CommonDefine.errorMsgs[errorCode]
                 SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)

@@ -627,7 +627,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         
-        if firstLanch || latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+        if  latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
             
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
@@ -781,7 +781,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         switch error.code {
         case 1:
-            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
+            checkLocationService()
+//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
             firstLanch = true
             break
         case 4:
