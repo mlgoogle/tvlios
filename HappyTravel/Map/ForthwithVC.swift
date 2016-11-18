@@ -616,8 +616,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     // MARK MAP
     public func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-     
-        
         var latDiffValue = Double(0)
         var lonDiffvalue = Double(0)
         if location == nil {
