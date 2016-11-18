@@ -62,8 +62,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+
         XCGLogger.debug(navigationController?.navigationBar.frame)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
             msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
@@ -250,7 +252,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.bottom.equalTo(bottomView)
         }
         
-        AMapServices.sharedServices().apiKey = "50bb1e806f1d2c1a797e6e789563e334"
         mapView = MAMapView()
         mapView!.tag = 1002
         mapView!.delegate = self
@@ -325,20 +326,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
     }
     
     func hideKeyboard() {
@@ -618,8 +619,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     // MARK MAP
     public func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-     
-        
         var latDiffValue = Double(0)
         var lonDiffvalue = Double(0)
         if location == nil {
@@ -630,7 +629,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
         }
         
-        if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+        
+        if  latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+            
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
@@ -783,7 +784,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         switch error.code {
         case 1:
-            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
+            checkLocationService()
+//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
             firstLanch = true
             break
         case 4:

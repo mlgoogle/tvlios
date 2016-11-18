@@ -164,7 +164,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentDetailCell", forIndexPath: indexPath) as! AppointmentDetailCell
             cell.setServiceInfo(hodometerInfo!)
-   
+
+            cell.hideCityInfo()
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
