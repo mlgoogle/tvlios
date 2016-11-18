@@ -167,9 +167,7 @@ class DataManager: NSObject {
             XCGLogger.error("这里是邀约的回复处理")
         case 2231:
             let realm = try! Realm()
-           /**
-             预约通知消息 ID 暂用 -2
-             */
+
             let uid = message.appointment_id_
             var userPushMessage = realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
             try! realm.write({
@@ -194,6 +192,19 @@ class DataManager: NSObject {
 
         
     }
+    
+    static func deletePushMessage(uid:Int) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let results = realm.objects(UserPushMessage.self).filter("uid = \(uid)")
+        try! realm.write({ 
+            realm.delete(results.first!)
+        })
+        
+    }
+    
     static func readMessage(uid: Int) {
         if DataManager.initialized == false {
             return
@@ -636,7 +647,7 @@ class DataManager: NSObject {
             if recordInfo == nil {
                 realm.add(info)
             } else {
-                recordInfo!.setInfo(info)
+                recordInfo?.setInfo(info)
             }
         })
         

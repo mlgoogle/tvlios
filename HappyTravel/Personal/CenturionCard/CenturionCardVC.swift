@@ -81,6 +81,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.delegate = self
         table?.dataSource = self
         table?.separatorStyle = .None
+        table?.contentInset = UIEdgeInsetsMake(0, 0, 64, 0)
         table?.registerClass(CenturionCardBaseInfoCell.self, forCellReuseIdentifier: "CenturionCardBaseInfoCell")
         table?.registerClass(CenturionCardServicesCell.self, forCellReuseIdentifier: "CenturionCardServicesCell")
         table?.registerClass(CenturionCardLvSelCell.self, forCellReuseIdentifier: "CenturionCardLvSelCell")
@@ -97,7 +98,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
-            make.height.equalTo(DataManager.currentUser!.centurionCardLv > 0 ? 65 : 0.01)
+            make.height.equalTo(65)
             
         })
     
@@ -105,7 +106,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(callServantBtn!.snp_top)
+            make.bottom.equalTo(0)
         })
         
         
@@ -113,6 +114,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareToOthers() {
+        if (DataManager.currentUser?.centurionCardLv)! == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "只有开通的帐号才能进行分享！！！", ForDuration: 1, completion: nil)
+            return
+        }
+        
         let shareController = ShareViewController()
         shareController.modalPresentationStyle = .Custom
         shareController.shareImage = shareImage()
@@ -141,7 +147,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : ScreenHeight - AtapteWidthValue(279))
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : AtapteWidthValue(440))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -171,13 +177,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
-        callServantBtn?.snp_remakeConstraints(closure: { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.bottom.equalTo(view)
-            make.height.equalTo(index < DataManager.currentUser!.centurionCardLv ? 65 : 0.01)
-            
-        })
+        callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
     }
     
     // MARK: - CenturionCardServicesCellDelegate
@@ -214,9 +214,13 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareImage()-> UIImage  {
-        UIGraphicsBeginImageContext(view.frame.size)
+        table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
+        table!.setContentOffset(CGPointZero, animated: false)
+        table!.reloadData()
+        UIGraphicsBeginImageContext(table!.contentSize)
+        UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)
 	    let context = UIGraphicsGetCurrentContext()
-	    view.layer.renderInContext(context!)
+	    table!.layer.renderInContext(context!)
 	    let img = UIGraphicsGetImageFromCurrentImageContext()
 	    UIGraphicsEndImageContext()
 	    return img;

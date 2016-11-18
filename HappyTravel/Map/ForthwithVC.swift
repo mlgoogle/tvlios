@@ -35,6 +35,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     let bottomSelector = UISlider()
     let appointmentView = AppointmentView()
     var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
+    //延时测试用
+    var appointment_id_ = 0
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -115,6 +117,26 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         appointmentView.nav = navigationController
+        checkLocationService()
+    }
+    
+    func checkLocationService() {
+        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() == .Denied {
+            let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许V领队使用定位服务", preferredStyle: .Alert)
+            let goto = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
+                if #available(iOS 10, *) {
+                    UIApplication.sharedApplication().openURL(NSURL.init(string: UIApplicationOpenSettingsURLString)!)
+                } else {
+                    UIApplication.sharedApplication().openURL(NSURL.init(string: "prefs:root=LOCATION_SERVICES")!)
+                }
+                
+            })
+            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: nil)
+            alert.addAction(goto)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
+            
+        }
     }
     
     func initView() {
@@ -288,6 +310,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func back2MyLocationAction(sender: UIButton) {
+        checkLocationService()
+        firstLanch = true
         if location != nil {
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
@@ -329,6 +353,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func appointmentReply(notification: NSNotification) {
+        
+
         unowned let weakSelf = self
         SVProgressHUD.showSuccessMessage(SuccessMessage: "预约已成功，请保持开机！祝您生活愉快！谢谢！", ForDuration: 1.5) {
             let vc = DistanceOfTravelVC()
@@ -336,15 +362,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             weakSelf.navigationController?.pushViewController(vc, animated: true)
 
         }
-        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
-        let dict = ["servantID":"1,2,3", "appointment_id_" : appointment_id_]
+        appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
+//        postNotifi()
+    }
+    func postNotifi()  {
+//        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+        let dict = ["servantID":"1,2,3,4,5,6", "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-                                                               "to_uid_" : 10,
+                                                               "to_uid_" : DataManager.currentUser!.uid,
                                                              "msg_type_" : 2231,
                                                              "msg_body_" : dict,
                                                                "content_":"您好，为您刚才的预约推荐服务者"])
+
     }
-    
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
@@ -606,10 +637,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
                         DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
-                        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                  "distance_": 20.1]
-                        SocketManager.sendData(.GetServantInfo, data: dict)
+
+                        if DataManager.currentUser!.login {
+                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
+                                                                      "distance_": 20.1]
+                            SocketManager.sendData(.GetServantInfo, data: dict)
+                        }
                     }
                 }
             }

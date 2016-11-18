@@ -13,7 +13,9 @@ import XCGLogger
 import RealmSwift
 
 public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
-    var isNormal = true 
+    //记录是邀约？预约？   ture为邀约  false 为预约
+    var isNormal = true
+    
     var personalInfo:UserInfo?
     var personalTable:UITableView?
     var bottomBar:UIImageView?
@@ -21,6 +23,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
     var appointment_id_ = 0
+    
+    var daysAlertController:UIAlertController?
+    
+    var selectedServcie:ServiceInfo?
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -96,6 +102,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+     下面沟通 或者 邀约操作
+     
+     - parameter sender:
+     */
     func bottomBarAction(sender: UIButton?) {
         if DataManager.currentUser?.cash == 0 {
             let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
@@ -160,23 +171,56 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         alertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    /**
+     邀约或者预约确定
+     
+     - parameter service:
+     - parameter daysCount:
+     */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        alertController?.dismissViewControllerAnimated(true, completion: nil)
-        
-        
-        if isNormal {
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                            "to_uid_": personalInfo!.uid,
-                                                        "service_id_": service!.service_id_,
-                                                         "day_count_":daysCount!])
-        } else {
+    
+        if !isNormal {
+            
+            alertController?.dismissViewControllerAnimated(true, completion: nil)
             SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                                        "to_uid_": personalInfo!.uid,
-                                                                    "service_id_": service!.service_id_,
-                                                                "appointment_id_":appointment_id_])
+                "to_uid_": personalInfo!.uid,
+                "service_id_": service!.service_id_,
+                "appointment_id_":appointment_id_])
+
+        } else {
+            unowned let weakSelf = self
+            weakSelf.selectedServcie = service
+
+            alertController?.dismissViewControllerAnimated(true, completion: {
+                
+                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+                
+                
+            })
         }
+
     }
     
+
+    func inviteAction() {
+        unowned let weakSelf = self
+        if daysAlertController == nil {
+            daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            let sheet = CitysSelectorSheet()
+            let days = [1, 2, 3, 4, 5, 6, 7]
+           sheet.daysList = days
+            sheet.delegate = self
+            daysAlertController!.view.addSubview(sheet)
+            sheet.snp_makeConstraints { (make) in
+                make.left.equalTo(weakSelf.daysAlertController!.view).offset(-10)
+                make.right.equalTo(weakSelf.daysAlertController!.view).offset(10)
+                make.bottom.equalTo(weakSelf.daysAlertController!.view).offset(10)
+                make.top.equalTo(weakSelf.daysAlertController!.view)
+            }
+        }
+        
+        presentViewController(weakSelf.daysAlertController!, animated: true, completion: nil)
+    }
     func back() {
         navigationController?.popViewControllerAnimated(true)
     }
@@ -194,8 +238,21 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+     预约回调
+     
+     - parameter notifucation:
+     */
     func receivedResults(notifucation: NSNotification?) {
-        let  msg = "预约发起成功，等待对方接受邀请"
+        
+        let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
+        
+        var msg = "预约发起成功，等待对方接受邀请"
+        if dict!["is_asked_"] as! Int == 1 {
+            msg = "预约失败，您已经预约过对方"
+
+        }
+        
         let alert = UIAlertController.init(title: "预约状态",
                                            message: msg,
                                            preferredStyle: .Alert)
@@ -206,8 +263,19 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         })
         
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+
+        presentViewController(alert, animated: true) {
+            /**
+             预约完成 删除 推送的预约消息 测试状态 暂时不删
+             */
+//            DataManager.deletePushMessage(appointment_id_)
+        }
     }
+    /**
+     邀约回调
+     
+     - parameter notifucation:
+     */
     func invitationResult(notifucation: NSNotification?) {
         var msg = ""
         if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
@@ -262,6 +330,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    /**
+    push to 聊天页面
+     - parameter sender:
+     */
     func msgAction(sender: AnyObject?) {
         let msgVC = PushMessageVC()
 //        msgVC.messageInfo = recommendServants
@@ -329,4 +401,20 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
 }
 
+
+extension ServantPersonalVC:CitysSelectorSheetDelegate {
+    func daysSureAction(sender: UIButton?, targetDays: Int) {
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                          "to_uid_": personalInfo!.uid,
+                                      "service_id_": selectedServcie!.service_id_,
+                                    "day_count_":targetDays])
+    }
+    
+    func daysCancelAction(sender: UIButton?) {
+        
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
 

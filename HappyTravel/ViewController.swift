@@ -47,9 +47,12 @@ class ViewController: SideMenuController {
         
         initMainInterface()
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
         startSockThread()
-        
-        
     }
     
     func startSockThread() {

@@ -24,6 +24,8 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     var countsArray:Array<Int> = []
 
     var servantInfo:UserInfo?
+    
+    //记录是邀约？预约？   ture为邀约  false 为预约
     var isNormal = true
     let tags = ["selectBtn": 1001,
                 "priceLab": 1002,

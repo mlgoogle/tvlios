@@ -87,7 +87,9 @@ class AppointmentDetailCell: UITableViewCell {
         addSubviewContraints()
     }
     
-    
+    /**
+     添加约束
+     */
     func addSubviewContraints() {
         iconImageView.snp_makeConstraints { (make) in
             make.top.equalTo(contentView).offset(AtapteHeightValue(13))
@@ -129,7 +131,9 @@ class AppointmentDetailCell: UITableViewCell {
     
     
     /**
-     详情顶部处理
+     详情顶部处理  
+     
+     之前逻辑有问题 弃用 2016年11月16日19:41:43
      */
     func hideCityInfo() {
 
@@ -140,9 +144,11 @@ class AppointmentDetailCell: UITableViewCell {
             make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
             make.bottom.equalTo(contentView).offset(AtapteHeightValue(-10))
         }
-//        cityImageView.hidden = true
-//        cityLabel.hidden = true
     }
+    /**
+     之前逻辑有问题 弃用 2016年11月16日19:41:52
+     - parameter info:
+     */
     func setupDataWithInfo(info:UserInfo) {
         
 
@@ -151,7 +157,17 @@ class AppointmentDetailCell: UITableViewCell {
         
     }
     
+    
+    /**
+     
+     预约界面使用时 数据填充
+     - parameter info:
+     */
     func setApponimentInfo(info:AppointmentInfo) {
+        nicknameLabel.text = info.to_name_
+        iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+
+
         serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
         let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))
@@ -167,8 +183,17 @@ class AppointmentDetailCell: UITableViewCell {
             
     
     }
+    
+    
+    /**
+     
+     邀约界面使用时 数据填充
+     - parameter info:
+     */
     func setServiceInfo(info:HodometerInfo) {
         
+        nicknameLabel.text = info.to_name_
+        iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_)))
         let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))
@@ -177,36 +202,6 @@ class AppointmentDetailCell: UITableViewCell {
         dateLabel.text = startTime + "-" + endTime
         cityLabel.text = info.order_addr
     }
-    /**
-     预约详情顶部处理
-     */
-    
-    
-    
-    
-    
-    
-    
-    /**
-     
-     
-     */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

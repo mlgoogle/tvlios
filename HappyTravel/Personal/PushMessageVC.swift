@@ -55,14 +55,17 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
     
     func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+        
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
-        let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+        
+            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+           
             var uid_str = ""
-
             for servant in servants! {
                 let servantInfo = UserInfo()
                 servantInfo.setInfo(.Servant, info: servant)
@@ -80,7 +83,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             SocketManager.sendData(.GetUserInfo, data: dict)
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
     
     func payForInvitationReply(notification: NSNotification) {
@@ -267,7 +269,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let uid_str_ = message?.service_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
-                DataManager.readMessage(-2)
+                DataManager.readMessage(currentAppointmentId)
 
                 return
 
@@ -300,7 +302,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func payForInvitationRequest(info: HodometerInfo?) {
         guard info != nil else {return}
         weak var weakSelf = self
-        let msg = "\n您即将预支付人民币:\((info?.order_price_)!)元"
+        let msg = "\n您即将预支付人民币:\(Double((info?.order_price_)!))元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in

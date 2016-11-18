@@ -84,6 +84,30 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func sureAction(sender: UIButton) {
+        
+        
+        guard headImageName != nil && headImagePath != nil else {
+           
+            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
+            return
+        }
+        let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
+        guard nicknameField?.text?.characters.count > 0 else {
+            
+            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有填写用户名哦", ForDuration: 1.5, completion: nil)
+            return
+        }
+        let sexLab = self.cells[2]?.contentView.viewWithTag(self.tags["selectedRetLab"]!) as? UILabel
+        guard sexLab?.text?.characters.count > 0 else {
+            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有选择性别呢", ForDuration: 1.5, completion: nil)
+
+            return
+        }
+        guard address?.characters.count > 0 else {
+            
+            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有选择常住地哦", ForDuration: 1.5, completion: nil)
+            return
+        }
         let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
