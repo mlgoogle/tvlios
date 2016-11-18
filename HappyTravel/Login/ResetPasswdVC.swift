@@ -93,7 +93,8 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         passwdField.clearButtonMode = .WhileEditing
         passwdField.backgroundColor = UIColor.clearColor()
         passwdField.textAlignment = .Left
-        passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+        passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码",
+                                                                    attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
         view.addSubview(passwdField)
         passwdField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view).offset(60)
@@ -111,7 +112,8 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         reInPasswdField.clearButtonMode = .WhileEditing
         reInPasswdField.backgroundColor = UIColor.clearColor()
         reInPasswdField.textAlignment = .Left
-        reInPasswdField.attributedPlaceholder = NSAttributedString.init(string: "请重新输入密码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+        reInPasswdField.attributedPlaceholder = NSAttributedString.init(string: "请重新输入密码",
+                                                                        attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
         view.addSubview(reInPasswdField)
         reInPasswdField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(passwdField)
@@ -168,9 +170,18 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ResetPasswdVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ResetPasswdVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ResetPasswdVC.registerAccountReply(_:)), name: NotifyDefine.RegisterAccountReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ResetPasswdVC.keyboardWillShow(_:)),
+                                                         name: UIKeyboardWillShowNotification,
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ResetPasswdVC.keyboardWillHide(_:)),
+                                                         name: UIKeyboardWillHideNotification,
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ResetPasswdVC.registerAccountReply(_:)),
+                                                         name: NotifyDefine.RegisterAccountReply,
+                                                         object: nil)
     }
     
     func registerAccountReply(notification: NSNotification) {

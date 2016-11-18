@@ -18,7 +18,7 @@ target 'HappyTravel' do
     pod 'SnapKit', '~> 0.22.0'
     pod 'AMap2DMap', '~> 4.2.0'
     pod 'Kingfisher', '~> 2.5.0'
-    pod 'CocoaAsyncSocket', '~> 7.5.0'
+    pod 'CocoaAsyncSocket', '~> 7.5.1'
     pod 'RealmSwift', '~> 1.0.2'
     # Mob产品公共库
     pod 'MOBFoundation_IDFA', '~> 2.0.10'
@@ -32,7 +32,8 @@ target 'HappyTravel' do
     
     pod 'Qiniu', '~> 7.1'
     pod 'Fabric'
-    pod 'Crashlytics'    
+    pod 'Crashlytics'
+    
     target 'HappyTravelTests' do
         inherit! :search_paths
         # Pods for testing
