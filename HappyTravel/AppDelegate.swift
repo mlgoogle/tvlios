@@ -110,6 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
+        XCGLogger.debug(application.keyWindow?.rootViewController)
         GeTuiSdk.destroy()
     }
     
@@ -119,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
-        XCGLogger.debug("\(token)")
+XCGLogger.debug("\(token)")
         GeTuiSdk.registerDeviceToken(token)
         NSUserDefaults.standardUserDefaults().setObject(token, forKey: CommonDefine.DeviceToken)
         

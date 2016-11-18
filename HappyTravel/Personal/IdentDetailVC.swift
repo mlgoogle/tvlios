@@ -108,12 +108,14 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             return
         }
         servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-        let realm = try! Realm()
-        try! realm.write({
-            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-            
-        })
-        
+        if servantInfo != nil {
+            let realm = try! Realm()
+            try! realm.write({
+                
+                servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+                
+            })
+        }
         
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
@@ -200,11 +202,17 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)
                     return
                 }
+                
+                if let errorCode = data.valueForKey("error_"){
+                    let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
+                    SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
+                    return
+                }
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
                 strongSelf.userScore = data.valueForKey("user_score_") as? Int
                 strongSelf.remark = data.valueForKey("remarks_") as? String
                 // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0 则可继续提交评论
-                let isCommited = strongSelf.serviceScore != 0 && strongSelf.userScore != 0
+                let isCommited = strongSelf.serviceScore != 0 || strongSelf.userScore != 0
                 strongSelf.commitBtn?.enabled = !isCommited
                 SVProgressHUD.dismiss()
                 strongSelf.table?.reloadData()

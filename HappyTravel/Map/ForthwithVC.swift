@@ -523,8 +523,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             point.title = "\(servantInfo.uid)"
             annotations.append(point)
         }
+        if mapView!.annotations.count > 0{
+            mapView?.removeAnnotations(mapView!.annotations)
+        }
         mapView!.addAnnotations(annotations)
         mapView!.showAnnotations(annotations, animated: true)
+        
         
     }
     

@@ -551,7 +551,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 oidStr += ","
             }
             let realm = try! Realm()
-            let object = realm.objects(OpenTicketInfo.self).filter("selected = true").first
+            let object = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(orderInfo.order_id_)").first
             try! realm.write({ 
                 realm.delete(object!)
             })

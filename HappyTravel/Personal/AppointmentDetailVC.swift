@@ -78,7 +78,7 @@ class AppointmentDetailVC: UIViewController {
             remarks_ = data["remarks_"] as? String
          
             // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0
-            let isCommited = user_score_ != 0 && service_score_ != 0
+            let isCommited = user_score_ != 0 || service_score_ != 0
             commitBtn?.enabled = !isCommited
             commitBtn?.setTitle("发表评论", forState: .Normal)
             tableView.reloadData()
