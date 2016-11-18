@@ -63,7 +63,7 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     let centurionCardIcon = [0: [0: "primary-level-disable", 1: "primary-level"],
                              1: [0: "middle-level-disable", 1: "middle-level"],
                              2: [0: "advanced-level-disable", 1: "advanced-level"],
-                             3: [0: "advanced-level-disable", 1: "advanced-level"]]
+                             3: [0: "dingji-level-disable", 1: "dingji-level"]]
     let itemWidth: CGFloat = ScreenWidth / 4
     
     var selectIndex: NSInteger?
