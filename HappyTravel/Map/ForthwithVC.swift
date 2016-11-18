@@ -626,7 +626,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
         }
         
-        if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+        
+        if firstLanch || latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+            
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
