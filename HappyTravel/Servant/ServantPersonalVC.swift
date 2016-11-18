@@ -23,6 +23,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
     var appointment_id_ = 0
+    
+    var daysAlertController:UIAlertController?
+    
+    var selectedServcie:ServiceInfo?
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -174,22 +178,49 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter daysCount:
      */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        alertController?.dismissViewControllerAnimated(true, completion: nil)
-        
-        
-        if isNormal {
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                            "to_uid_": personalInfo!.uid,
-                                                        "service_id_": service!.service_id_,
-                                                         "day_count_":daysCount!])
-        } else {
+    
+        if !isNormal {
+            
+            alertController?.dismissViewControllerAnimated(true, completion: nil)
             SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
-                                                                        "to_uid_": personalInfo!.uid,
-                                                                    "service_id_": service!.service_id_,
-                                                                "appointment_id_":appointment_id_])
+                "to_uid_": personalInfo!.uid,
+                "service_id_": service!.service_id_,
+                "appointment_id_":appointment_id_])
+
+        } else {
+            unowned let weakSelf = self
+            weakSelf.selectedServcie = service
+
+            alertController?.dismissViewControllerAnimated(true, completion: {
+                
+                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+                
+                
+            })
         }
+
     }
     
+
+    func inviteAction() {
+        unowned let weakSelf = self
+        if daysAlertController == nil {
+            daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            let sheet = CitysSelectorSheet()
+            let days = [1, 2, 3, 4, 5, 6, 7]
+           sheet.daysList = days
+            sheet.delegate = self
+            daysAlertController!.view.addSubview(sheet)
+            sheet.snp_makeConstraints { (make) in
+                make.left.equalTo(weakSelf.daysAlertController!.view).offset(-10)
+                make.right.equalTo(weakSelf.daysAlertController!.view).offset(10)
+                make.bottom.equalTo(weakSelf.daysAlertController!.view).offset(10)
+                make.top.equalTo(weakSelf.daysAlertController!.view)
+            }
+        }
+        
+        presentViewController(weakSelf.daysAlertController!, animated: true, completion: nil)
+    }
     func back() {
         navigationController?.popViewControllerAnimated(true)
     }
@@ -370,4 +401,20 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
 }
 
+
+extension ServantPersonalVC:CitysSelectorSheetDelegate {
+    func daysSureAction(sender: UIButton?, targetDays: Int) {
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                          "to_uid_": personalInfo!.uid,
+                                      "service_id_": selectedServcie!.service_id_,
+                                    "day_count_":targetDays])
+    }
+    
+    func daysCancelAction(sender: UIButton?) {
+        
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
 
