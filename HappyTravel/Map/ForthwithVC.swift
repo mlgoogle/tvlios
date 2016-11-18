@@ -637,10 +637,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
                         DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
-                        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                  "distance_": 20.1]
-                        SocketManager.sendData(.GetServantInfo, data: dict)
+
+                        if DataManager.currentUser!.login {
+                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
+                                                                      "distance_": 20.1]
+                            SocketManager.sendData(.GetServantInfo, data: dict)
+                        }
                     }
                 }
             }

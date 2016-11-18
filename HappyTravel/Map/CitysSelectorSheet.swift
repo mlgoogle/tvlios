@@ -128,7 +128,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
       
-        if daysList?.count == 0 {
+        if daysList == nil {
             
             let cityInfo = citysList![row]
             
@@ -141,7 +141,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        if daysList?.count == 0 {
+        if daysList == nil  {
             
             for (index, city) in citysList!.enumerate() {
                 if index == row {
@@ -159,7 +159,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             XCGLogger.error("delegate 为空")
             return
         }
-        if daysList?.count == 0 {
+        if daysList == nil  {
             delegate?.cancelAction!(sender)
         }else {
             delegate?.daysCancelAction!(sender)
@@ -171,7 +171,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             XCGLogger.error("delegate 为空")
             return
         }
-        if daysList?.count == 0 {
+        if daysList == nil {
 
             
             delegate?.sureAction!(sender, targetCity: targetCity == nil ? self.citysList![0] : targetCity)
