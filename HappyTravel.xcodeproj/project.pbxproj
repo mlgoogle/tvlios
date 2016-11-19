@@ -146,11 +146,10 @@
 		BF8838531DDEA03E000FEB95 /* icon58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837AC1DDEA03D000FEB95 /* icon58@2x.png */; };
 		BF8838541DDEA03E000FEB95 /* icon80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837AD1DDEA03D000FEB95 /* icon80@2x.png */; };
 		BF8838551DDEA03E000FEB95 /* icon87@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837AE1DDEA03D000FEB95 /* icon87@3x.png */; };
-		BF8838561DDEA03E000FEB95 /* LanchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837AF1DDEA03D000FEB95 /* LanchScreen@2x.png */; };
-		BF8838571DDEA03E000FEB95 /* LaunchScreen-480@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B01DDEA03D000FEB95 /* LaunchScreen-480@2x.png */; };
-		BF8838581DDEA03E000FEB95 /* LaunchScreen-512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B11DDEA03D000FEB95 /* LaunchScreen-512@2x.png */; };
-		BF8838591DDEA03E000FEB95 /* LaunchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B21DDEA03D000FEB95 /* LaunchScreen@2x.png */; };
-		BF88385A1DDEA03E000FEB95 /* LaunchScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B31DDEA03D000FEB95 /* LaunchScreen@3x.png */; };
+		BF8838571DDEA03E000FEB95 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B01DDEA03D000FEB95 /* Default@2x.png */; };
+		BF8838581DDEA03E000FEB95 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B11DDEA03D000FEB95 /* Default-568h@2x.png */; };
+		BF8838591DDEA03E000FEB95 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B21DDEA03D000FEB95 /* Default-667h@2x.png */; };
+		BF88385A1DDEA03E000FEB95 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B31DDEA03D000FEB95 /* Default-736h@3x.png */; };
 		BF88385B1DDEA03E000FEB95 /* segment-bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B41DDEA03D000FEB95 /* segment-bg@2x.png */; };
 		BF88385C1DDEA03E000FEB95 /* segment-bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B51DDEA03D000FEB95 /* segment-bg@3x.png */; };
 		BF88385D1DDEA03E000FEB95 /* address-selector-normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8837B71DDEA03D000FEB95 /* address-selector-normal@2x.png */; };
@@ -481,11 +480,10 @@
 		BF8837AC1DDEA03D000FEB95 /* icon58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon58@2x.png"; sourceTree = "<group>"; };
 		BF8837AD1DDEA03D000FEB95 /* icon80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon80@2x.png"; sourceTree = "<group>"; };
 		BF8837AE1DDEA03D000FEB95 /* icon87@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon87@3x.png"; sourceTree = "<group>"; };
-		BF8837AF1DDEA03D000FEB95 /* LanchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LanchScreen@2x.png"; sourceTree = "<group>"; };
-		BF8837B01DDEA03D000FEB95 /* LaunchScreen-480@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen-480@2x.png"; sourceTree = "<group>"; };
-		BF8837B11DDEA03D000FEB95 /* LaunchScreen-512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen-512@2x.png"; sourceTree = "<group>"; };
-		BF8837B21DDEA03D000FEB95 /* LaunchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@2x.png"; sourceTree = "<group>"; };
-		BF8837B31DDEA03D000FEB95 /* LaunchScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@3x.png"; sourceTree = "<group>"; };
+		BF8837B01DDEA03D000FEB95 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BF8837B11DDEA03D000FEB95 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BF8837B21DDEA03D000FEB95 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
+		BF8837B31DDEA03D000FEB95 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		BF8837B41DDEA03D000FEB95 /* segment-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-bg@2x.png"; sourceTree = "<group>"; };
 		BF8837B51DDEA03D000FEB95 /* segment-bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-bg@3x.png"; sourceTree = "<group>"; };
 		BF8837B71DDEA03D000FEB95 /* address-selector-normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "address-selector-normal@2x.png"; sourceTree = "<group>"; };
@@ -1050,11 +1048,10 @@
 				BF8837AC1DDEA03D000FEB95 /* icon58@2x.png */,
 				BF8837AD1DDEA03D000FEB95 /* icon80@2x.png */,
 				BF8837AE1DDEA03D000FEB95 /* icon87@3x.png */,
-				BF8837AF1DDEA03D000FEB95 /* LanchScreen@2x.png */,
-				BF8837B01DDEA03D000FEB95 /* LaunchScreen-480@2x.png */,
-				BF8837B11DDEA03D000FEB95 /* LaunchScreen-512@2x.png */,
-				BF8837B21DDEA03D000FEB95 /* LaunchScreen@2x.png */,
-				BF8837B31DDEA03D000FEB95 /* LaunchScreen@3x.png */,
+				BF8837B01DDEA03D000FEB95 /* Default@2x.png */,
+				BF8837B11DDEA03D000FEB95 /* Default-568h@2x.png */,
+				BF8837B21DDEA03D000FEB95 /* Default-667h@2x.png */,
+				BF8837B31DDEA03D000FEB95 /* Default-736h@3x.png */,
 				BF8837B41DDEA03D000FEB95 /* segment-bg@2x.png */,
 				BF8837B51DDEA03D000FEB95 /* segment-bg@3x.png */,
 			);
@@ -1420,7 +1417,7 @@
 				BF88385E1DDEA03E000FEB95 /* address-selector-selected@2x.png in Resources */,
 				BF8838BD1DDEA03E000FEB95 /* invoice@3x.png in Resources */,
 				BF8838981DDEA03E000FEB95 /* service-disable@2x.png in Resources */,
-				BF8838571DDEA03E000FEB95 /* LaunchScreen-480@2x.png in Resources */,
+				BF8838571DDEA03E000FEB95 /* Default@2x.png in Resources */,
 				BF77CEED1DCED43100F20C6A /* yw_1222.jpg in Resources */,
 				BF8838E41DDEA03E000FEB95 /* wechat-pay@2x.png in Resources */,
 				BF8838801DDEA03E000FEB95 /* dingji-level-disable@3x.png in Resources */,
@@ -1430,8 +1427,8 @@
 				BF8838D21DDEA03E000FEB95 /* side-bg@2x.png in Resources */,
 				BF8838741DDEA03E000FEB95 /* cash@2x.png in Resources */,
 				BF88386F1DDEA03E000FEB95 /* nav-msg@2x.png in Resources */,
+				BF88385A1DDEA03E000FEB95 /* Default-736h@3x.png in Resources */,
 				8F14A2791DE0020B00BC4A59 /* lv1@2x.png in Resources */,
-				BF88385A1DDEA03E000FEB95 /* LaunchScreen@3x.png in Resources */,
 				BF8838A91DDEA03E000FEB95 /* yellowStart.png in Resources */,
 				BF8838721DDEA03E000FEB95 /* alipay@2x.png in Resources */,
 				BF8838791DDEA03E000FEB95 /* advanced-level@3x.png in Resources */,
@@ -1452,7 +1449,7 @@
 				BF8838C91DDEA03E000FEB95 /* pay-selected@3x.png in Resources */,
 				BF8838E01DDEA03E000FEB95 /* touxiang_women@2x.png in Resources */,
 				BF8838DC1DDEA03E000FEB95 /* tianjia@2x.png in Resources */,
-				BF8838591DDEA03E000FEB95 /* LaunchScreen@2x.png in Resources */,
+				BF8838591DDEA03E000FEB95 /* Default-667h@2x.png in Resources */,
 				BF8838931DDEA03E000FEB95 /* primary-levle@2x.png in Resources */,
 				BF8838CD1DDEA03E000FEB95 /* renzheng@3x.png in Resources */,
 				BF8838D11DDEA03E000FEB95 /* service-unselect@2x.png in Resources */,
@@ -1485,7 +1482,7 @@
 				BF8838E31DDEA03E000FEB95 /* tuijian@3x.png in Resources */,
 				BF8838A41DDEA03E000FEB95 /* vipper-rest-disable@2x.png in Resources */,
 				BF8838511DDEA03E000FEB95 /* icon120@3x.png in Resources */,
-				BF8838581DDEA03E000FEB95 /* LaunchScreen-512@2x.png in Resources */,
+				BF8838581DDEA03E000FEB95 /* Default-568h@2x.png in Resources */,
 				BF8838AC1DDEA03E000FEB95 /* default-head@2x.png in Resources */,
 				BF8838DF1DDEA03E000FEB95 /* touxiang_men@3x.png in Resources */,
 				BF88387D1DDEA03E000FEB95 /* blackCardIcon.png in Resources */,
@@ -1516,7 +1513,6 @@
 				BF8838C31DDEA03E000FEB95 /* logo@3x.png in Resources */,
 				8F14A27A1DE0020B00BC4A59 /* lv1@3x.png in Resources */,
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
-				BF8838561DDEA03E000FEB95 /* LanchScreen@2x.png in Resources */,
 				BF8838D01DDEA03E000FEB95 /* service-selected@2x.png in Resources */,
 				BF88387C1DDEA03E000FEB95 /* blackCardFrontBg.png in Resources */,
 				BF8838CF1DDEA03E000FEB95 /* search@3x.png in Resources */,

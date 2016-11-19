@@ -448,41 +448,47 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func updateHeadImage() {
-        let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
-        let qnManager = QNUploadManager()
-        SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
-        
-        qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
+        if token != nil {
+            let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
+            let qnManager = QNUploadManager()
+            SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
             
-            if info.statusCode != 200 || resp == nil {
-                self.navigationItem.rightBarButtonItem?.enabled = true
-                SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
-                return
-            }
-            
-            if (info.statusCode == 200 ){
-                let respDic: NSDictionary? = resp
-                let value:String? = respDic!.valueForKey("key") as? String
-                let url = qiniuHost + value!
+            qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
                 
-                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-                Alamofire.request(.GET, addr).responseJSON() { response in
-                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-                    XCGLogger.debug("\(location)")
-                    
-                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                        "nickname_": (DataManager.currentUser?.nickname)!,
-                        "gender_": (DataManager.currentUser?.gender)!,
-                        "head_url_": url,
-                        "address_": (DataManager.currentUser?.address)!,
-                        "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-                        "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
-                    SocketManager.sendData(.SendImproveData, data: dict)
+                if info.statusCode != 200 || resp == nil {
+                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
+                    return
                 }
-            }
-            
-        }, option: nil)
+                
+                if (info.statusCode == 200 ){
+                    let respDic: NSDictionary? = resp
+                    let value:String? = respDic!.valueForKey("key") as? String
+                    let url = qiniuHost + value!
+                    
+                    let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+                    Alamofire.request(.GET, addr).responseJSON() { response in
+                        let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+                        let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+                        XCGLogger.debug("\(location)")
+                        
+                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+                            "nickname_": (DataManager.currentUser?.nickname)!,
+                            "gender_": (DataManager.currentUser?.gender)!,
+                            "head_url_": url,
+                            "address_": (DataManager.currentUser?.address)!,
+                            "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
+                            "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
+                        SocketManager.sendData(.SendImproveData, data: dict)
+                    }
+                }
+                
+            }, option: nil)
+        } else {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法提交，请稍后再试", ForDuration: 1, completion: {
+                SocketManager.sendData(.UploadImageToken, data: nil)
+            })
+        }
         
     }
     //MARK: --
