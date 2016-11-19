@@ -251,36 +251,54 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.left.equalTo(nameLabel!)
                 make.top.equalTo(nameLabel!.snp_bottom).offset(10)
                 make.right.equalTo(personalView!)
-                make.height.equalTo(20)
+                make.height.equalTo(AtapteWidthValue(24))
             }
         }
         
-        for i in 0...4 {
-            var star = starView!.viewWithTag(10003*10 + i) as? UIImageView
-            if star == nil {
-                star = UIImageView()
-                star!.backgroundColor = .clearColor()
-                star!.tag = 10003*10 + i
-                star!.contentMode = .ScaleAspectFit
-                starView!.addSubview(star!)
-                star!.snp_makeConstraints(closure: { (make) in
-                    if i == 0 {
-                        make.left.equalTo(starView!)
-                    } else {
-                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
-                    }
-                    make.top.equalTo(starView!)
-                    make.bottom.equalTo(starView!)
-                    make.width.equalTo(17)
-                })
-            }
-            if DataManager.currentUser!.level / Float(i) >= 1 {
-                star!.image = UIImage.init(named: "my-star-fill")
-            } else {
-                star!.image = UIImage.init(named: "my-star-hollow")
-            }
-            
+//        for i in 0...4 {
+//            var star = starView!.viewWithTag(10003*10 + i) as? UIImageView
+//            if star == nil {
+//                star = UIImageView()
+//                star!.backgroundColor = .clearColor()
+//                star!.tag = 10003*10 + i
+//                star!.contentMode = .ScaleAspectFit
+//                starView!.addSubview(star!)
+//                star!.snp_makeConstraints(closure: { (make) in
+//                    if i == 0 {
+//                        make.left.equalTo(starView!)
+//                    } else {
+//                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
+//                    }
+//                    make.top.equalTo(starView!)
+//                    make.bottom.equalTo(starView!)
+//                    make.width.equalTo(17)
+//                })
+//            }
+//            if DataManager.currentUser!.level / Float(i) >= 1 {
+//                star!.image = UIImage.init(named: "my-star-fill")
+//            } else {
+//                star!.image = UIImage.init(named: "my-star-hollow")
+//            }
+//            
+//        }
+        var levelIcon = starView!.viewWithTag(100030) as? UIImageView
+        if levelIcon == nil {
+            levelIcon = UIImageView()
+            levelIcon!.backgroundColor = UIColor.clearColor()
+            levelIcon!.tag = 100030
+            levelIcon?.contentMode = .ScaleAspectFit
+            starView!.addSubview(levelIcon!)
+            levelIcon?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(starView!)
+                make.top.equalTo(starView!)
+                make.bottom.equalTo(starView!)
+                make.width.equalTo(AtapteWidthValue(24))
+            })
         }
+        
+        let imageName = "lv" + "\(Int(DataManager.currentUser!.level + 2))"
+        levelIcon!.image = UIImage.init(named:imageName)
+        
     }
     
     func initImportantNav() {
@@ -431,41 +449,47 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func updateHeadImage() {
-        let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
-        let qnManager = QNUploadManager()
-        SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
-        
-        qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
+        if token != nil {
+            let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
+            let qnManager = QNUploadManager()
+            SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
             
-            if info.statusCode != 200 || resp == nil {
-                self.navigationItem.rightBarButtonItem?.enabled = true
-                SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
-                return
-            }
-            
-            if (info.statusCode == 200 ){
-                let respDic: NSDictionary? = resp
-                let value:String? = respDic!.valueForKey("key") as? String
-                let url = qiniuHost + value!
+            qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
                 
-                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-                Alamofire.request(.GET, addr).responseJSON() { response in
-                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-                    XCGLogger.debug("\(location)")
-                    
-                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                        "nickname_": (DataManager.currentUser?.nickname)!,
-                        "gender_": (DataManager.currentUser?.gender)!,
-                        "head_url_": url,
-                        "address_": (DataManager.currentUser?.address)!,
-                        "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-                        "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
-                    SocketManager.sendData(.SendImproveData, data: dict)
+                if info.statusCode != 200 || resp == nil {
+                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
+                    return
                 }
-            }
-            
-        }, option: nil)
+                
+                if (info.statusCode == 200 ){
+                    let respDic: NSDictionary? = resp
+                    let value:String? = respDic!.valueForKey("key") as? String
+                    let url = qiniuHost + value!
+                    
+                    let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+                    Alamofire.request(.GET, addr).responseJSON() { response in
+                        let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+                        let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+                        XCGLogger.debug("\(location)")
+                        
+                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+                            "nickname_": (DataManager.currentUser?.nickname)!,
+                            "gender_": (DataManager.currentUser?.gender)!,
+                            "head_url_": url,
+                            "address_": (DataManager.currentUser?.address)!,
+                            "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
+                            "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
+                        SocketManager.sendData(.SendImproveData, data: dict)
+                    }
+                }
+                
+            }, option: nil)
+        } else {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法提交，请稍后再试", ForDuration: 1, completion: {
+                SocketManager.sendData(.UploadImageToken, data: nil)
+            })
+        }
         
     }
     //MARK: --
