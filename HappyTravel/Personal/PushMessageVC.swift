@@ -248,7 +248,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
             let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread)
             return cell
         } else {
@@ -262,7 +262,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if segmentIndex == 0 {
             let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self)[indexPath.row]
+            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
 
             let message = userPushMessage.msgList.last
             if message?.push_msg_type == 2231 {

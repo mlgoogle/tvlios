@@ -136,6 +136,7 @@ class DataManager: NSObject {
                 userPushMessage = UserPushMessage()
                 userPushMessage!.uid = uid
                 userPushMessage!.msgList.append(message)
+                userPushMessage!.msg_time_ = message.msg_time_
                 realm.add(userPushMessage!)
             } else {
                 userPushMessage!.msgList.append(message)
@@ -175,6 +176,7 @@ class DataManager: NSObject {
                     userPushMessage = UserPushMessage()
                     userPushMessage!.uid = uid
                     userPushMessage!.msgList.append(message)
+                    userPushMessage!.msg_time_ = message.msg_time_
                     realm.add(userPushMessage!)
                 } else {
                     userPushMessage!.msgList.append(message)

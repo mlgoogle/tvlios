@@ -79,6 +79,7 @@ class PushMessage: Object {
 
 class UserPushMessage: Object {
     
+    dynamic var msg_time_:Int64 = 0
     dynamic var uid = 0
     
     dynamic var unread = 0
