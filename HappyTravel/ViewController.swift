@@ -9,6 +9,8 @@
 import UIKit
 import SideMenuController
 
+
+
 class ViewController: SideMenuController {
     
     // 初始化主界面
@@ -19,6 +21,7 @@ class ViewController: SideMenuController {
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
         forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
         forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
+        
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]
         
@@ -47,11 +50,13 @@ class ViewController: SideMenuController {
         
         initMainInterface()
         
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+    
         startSockThread()
     }
     

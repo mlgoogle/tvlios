@@ -105,6 +105,17 @@
 		6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */; };
 		6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */; };
 		6EED9AD91DCDD5E500A701DD /* SingleSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */; };
+		8F14A2791DE0020B00BC4A59 /* lv1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A26F1DE0020B00BC4A59 /* lv1@2x.png */; };
+		8F14A27A1DE0020B00BC4A59 /* lv1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2701DE0020B00BC4A59 /* lv1@3x.png */; };
+		8F14A27B1DE0020B00BC4A59 /* lv2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2711DE0020B00BC4A59 /* lv2@2x.png */; };
+		8F14A27C1DE0020B00BC4A59 /* lv2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2721DE0020B00BC4A59 /* lv2@3x.png */; };
+		8F14A27D1DE0020B00BC4A59 /* lv3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2731DE0020B00BC4A59 /* lv3@2x.png */; };
+		8F14A27E1DE0020B00BC4A59 /* lv3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2741DE0020B00BC4A59 /* lv3@3x.png */; };
+		8F14A27F1DE0020B00BC4A59 /* lv4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2751DE0020B00BC4A59 /* lv4@2x.png */; };
+		8F14A2801DE0020B00BC4A59 /* lv4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2761DE0020B00BC4A59 /* lv4@3x.png */; };
+		8F14A2811DE0020B00BC4A59 /* lv5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2771DE0020B00BC4A59 /* lv5@2x.png */; };
+		8F14A2821DE0020B00BC4A59 /* lv5@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2781DE0020B00BC4A59 /* lv5@3x.png */; };
+		8F14A2841DE009B300BC4A59 /* lv0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F14A2831DE009B300BC4A59 /* lv0.png */; };
 		B0CD9100C5B300D6D25A2150 /* Pods_HappyTravelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */; };
 		B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE111DC2E6F800DF93CB /* LabelEx.swift */; };
 		B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE121DC2E6F800DF93CB /* UIImageExt.swift */; };
@@ -425,6 +436,17 @@
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillWidthLayout.swift; path = Map/Appointment/SkillWidthLayout.swift; sourceTree = "<group>"; };
 		6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleSkillCell.swift; path = Map/Appointment/SingleSkillCell.swift; sourceTree = "<group>"; };
+		8F14A26F1DE0020B00BC4A59 /* lv1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv1@2x.png"; sourceTree = "<group>"; };
+		8F14A2701DE0020B00BC4A59 /* lv1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv1@3x.png"; sourceTree = "<group>"; };
+		8F14A2711DE0020B00BC4A59 /* lv2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv2@2x.png"; sourceTree = "<group>"; };
+		8F14A2721DE0020B00BC4A59 /* lv2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv2@3x.png"; sourceTree = "<group>"; };
+		8F14A2731DE0020B00BC4A59 /* lv3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv3@2x.png"; sourceTree = "<group>"; };
+		8F14A2741DE0020B00BC4A59 /* lv3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv3@3x.png"; sourceTree = "<group>"; };
+		8F14A2751DE0020B00BC4A59 /* lv4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv4@2x.png"; sourceTree = "<group>"; };
+		8F14A2761DE0020B00BC4A59 /* lv4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv4@3x.png"; sourceTree = "<group>"; };
+		8F14A2771DE0020B00BC4A59 /* lv5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv5@2x.png"; sourceTree = "<group>"; };
+		8F14A2781DE0020B00BC4A59 /* lv5@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lv5@3x.png"; sourceTree = "<group>"; };
+		8F14A2831DE009B300BC4A59 /* lv0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lv0.png; sourceTree = "<group>"; };
 		92713384FC5A0EBCE69AE0F3 /* Pods-HappyTravelTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests.release.xcconfig"; sourceTree = "<group>"; };
 		9D637B89497F7B8043559D5E /* Pods_HappyTravelUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravelUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A027C59BB562F1117446D0F2 /* Pods-HappyTravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1077,6 +1099,17 @@
 		BF8837CD1DDEA03D000FEB95 /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				8F14A2831DE009B300BC4A59 /* lv0.png */,
+				8F14A26F1DE0020B00BC4A59 /* lv1@2x.png */,
+				8F14A2701DE0020B00BC4A59 /* lv1@3x.png */,
+				8F14A2711DE0020B00BC4A59 /* lv2@2x.png */,
+				8F14A2721DE0020B00BC4A59 /* lv2@3x.png */,
+				8F14A2731DE0020B00BC4A59 /* lv3@2x.png */,
+				8F14A2741DE0020B00BC4A59 /* lv3@3x.png */,
+				8F14A2751DE0020B00BC4A59 /* lv4@2x.png */,
+				8F14A2761DE0020B00BC4A59 /* lv4@3x.png */,
+				8F14A2771DE0020B00BC4A59 /* lv5@2x.png */,
+				8F14A2781DE0020B00BC4A59 /* lv5@3x.png */,
 				BF8837CE1DDEA03D000FEB95 /* alipay@2x.png */,
 				BF8837CF1DDEA03D000FEB95 /* alipay@3x.png */,
 				BF8837D01DDEA03D000FEB95 /* cash@2x.png */,
@@ -1397,6 +1430,7 @@
 				BF8838D21DDEA03E000FEB95 /* side-bg@2x.png in Resources */,
 				BF8838741DDEA03E000FEB95 /* cash@2x.png in Resources */,
 				BF88386F1DDEA03E000FEB95 /* nav-msg@2x.png in Resources */,
+				8F14A2791DE0020B00BC4A59 /* lv1@2x.png in Resources */,
 				BF88385A1DDEA03E000FEB95 /* LaunchScreen@3x.png in Resources */,
 				BF8838A91DDEA03E000FEB95 /* yellowStart.png in Resources */,
 				BF8838721DDEA03E000FEB95 /* alipay@2x.png in Resources */,
@@ -1405,6 +1439,7 @@
 				BF88387E1DDEA03E000FEB95 /* centurion-card-tag@2x.png in Resources */,
 				BF88389F1DDEA03E000FEB95 /* share-wechat@3x.png in Resources */,
 				BF8838891DDEA03E000FEB95 /* meeting-disable@3x.png in Resources */,
+				8F14A2841DE009B300BC4A59 /* lv0.png in Resources */,
 				BF8838B01DDEA03E000FEB95 /* guide-auth@2x.png in Resources */,
 				BF8838AD1DDEA03E000FEB95 /* default-head@3x.png in Resources */,
 				BF8838AE1DDEA03E000FEB95 /* defaultBg1.png in Resources */,
@@ -1413,6 +1448,7 @@
 				BF8838711DDEA03E000FEB95 /* nav_clear.png in Resources */,
 				BF8838BA1DDEA03E000FEB95 /* invoice-history@2x.png in Resources */,
 				BF88384E1DDEA03E000FEB95 /* head-bg@2x.png in Resources */,
+				8F14A2801DE0020B00BC4A59 /* lv4@3x.png in Resources */,
 				BF8838C91DDEA03E000FEB95 /* pay-selected@3x.png in Resources */,
 				BF8838E01DDEA03E000FEB95 /* touxiang_women@2x.png in Resources */,
 				BF8838DC1DDEA03E000FEB95 /* tianjia@2x.png in Resources */,
@@ -1439,6 +1475,7 @@
 				BF8838501DDEA03E000FEB95 /* icon120@2x.png in Resources */,
 				BF8838A71DDEA03E000FEB95 /* vipper-rest@3x.png in Resources */,
 				BF8838A61DDEA03E000FEB95 /* vipper-rest@2x.png in Resources */,
+				8F14A2821DE0020B00BC4A59 /* lv5@3x.png in Resources */,
 				BF8838901DDEA03E000FEB95 /* primary-level-disable@2x.png in Resources */,
 				BF88384D1DDEA03E000FEB95 /* blackCardBg.png in Resources */,
 				BF88384F1DDEA03E000FEB95 /* head-bg@3x.png in Resources */,
@@ -1456,12 +1493,15 @@
 				BF8838C51DDEA03E000FEB95 /* my-star-fill@3x.png in Resources */,
 				BF88384C1DDEA03E000FEB95 /* appointment-detail@2x.png in Resources */,
 				BF8838AB1DDEA03E000FEB95 /* default-big-photo.png in Resources */,
+				8F14A27E1DE0020B00BC4A59 /* lv3@3x.png in Resources */,
 				BF8838521DDEA03E000FEB95 /* icon180@3x.png in Resources */,
 				BF8838911DDEA03E000FEB95 /* primary-level-disable@3x.png in Resources */,
 				BF88384B1DDEA03E000FEB95 /* msg-bubble@2x.png in Resources */,
+				8F14A27C1DE0020B00BC4A59 /* lv2@3x.png in Resources */,
 				BF88389A1DDEA03E000FEB95 /* service@2x.png in Resources */,
 				BF8838CA1DDEA03E000FEB95 /* pay-unselect@2x.png in Resources */,
 				BF8838611DDEA03E000FEB95 /* city.plist in Resources */,
+				8F14A27F1DE0020B00BC4A59 /* lv4@2x.png in Resources */,
 				BF8838D51DDEA03E000FEB95 /* side-settings@2x.png in Resources */,
 				BF88388F1DDEA03E000FEB95 /* middle-level@3x.png in Resources */,
 				BF8838A81DDEA03E000FEB95 /* whiteStart.png in Resources */,
@@ -1474,6 +1514,7 @@
 				BF8838E61DDEA03E000FEB95 /* segment-left@2x.png in Resources */,
 				BF88388A1DDEA03E000FEB95 /* meeting@2x.png in Resources */,
 				BF8838C31DDEA03E000FEB95 /* logo@3x.png in Resources */,
+				8F14A27A1DE0020B00BC4A59 /* lv1@3x.png in Resources */,
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				BF8838561DDEA03E000FEB95 /* LanchScreen@2x.png in Resources */,
 				BF8838D01DDEA03E000FEB95 /* service-selected@2x.png in Resources */,
@@ -1498,6 +1539,7 @@
 				BF8838881DDEA03E000FEB95 /* meeting-disable@2x.png in Resources */,
 				BF8838D41DDEA03E000FEB95 /* side-service@2x.png in Resources */,
 				BF8838A21DDEA03E000FEB95 /* share@2x.png in Resources */,
+				8F14A2811DE0020B00BC4A59 /* lv5@2x.png in Resources */,
 				BF8838821DDEA03E000FEB95 /* dingji-level@3x.png in Resources */,
 				BF8838461DDEA03E000FEB95 /* bottom-selector-bg@2x.png in Resources */,
 				BF8838DE1DDEA03E000FEB95 /* touxiang_men@2x.png in Resources */,
@@ -1505,11 +1547,13 @@
 				2F9684181D77D1200028E3F2 /* AlipaySDK.bundle in Resources */,
 				BF8838E71DDEA03E000FEB95 /* segment-right@2x.png in Resources */,
 				BF8838C21DDEA03E000FEB95 /* logo@2x.png in Resources */,
+				8F14A27B1DE0020B00BC4A59 /* lv2@2x.png in Resources */,
 				BF88389E1DDEA03E000FEB95 /* share-wechat@2x.png in Resources */,
 				BF88386A1DDEA03E000FEB95 /* meet-tips@2x.png in Resources */,
 				BF8838A11DDEA03E000FEB95 /* share-weibo@3x.png in Resources */,
 				BF8838851DDEA03E000FEB95 /* hotel@2x.png in Resources */,
 				BF8838771DDEA03E000FEB95 /* advanced-level-disable@3x.png in Resources */,
+				8F14A27D1DE0020B00BC4A59 /* lv3@2x.png in Resources */,
 				BF88386B1DDEA03E000FEB95 /* mine_location@2x.png in Resources */,
 				BF8838551DDEA03E000FEB95 /* icon87@3x.png in Resources */,
 				BF8838BF1DDEA03E000FEB95 /* localaddress@2x.png in Resources */,
@@ -2188,7 +2232,10 @@
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+
 				DEBUG_INFORMATION_FORMAT = dwarf;
+
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/Alipay",
