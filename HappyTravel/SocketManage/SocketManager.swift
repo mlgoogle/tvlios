@@ -143,8 +143,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentRecommendRequest = 1079
         //预约推荐服务者返回
         case AppointmentRecommendReply = 1080
-        
+        // 请求预约 、邀约详情
         case  AppointmentDetailRequest = 1081
+        // 预约详情、邀约返回
         case AppointmentDetailReply = 1082
          // 请求邀请服务者
         case AskInvitation = 2001
@@ -573,6 +574,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             user.setInfo(.Other, info: info.1.dictionaryObject!)
             DataManager.updateUserInfo(user)
         }
+        postNotification(NotifyDefine.UserBaseInfoReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+
     }
     
     func messageVerifyReply(jsonBody: JSON?) {
