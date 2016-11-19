@@ -29,7 +29,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
-        navigationItem.title = "黑卡会员"
+        navigationItem.title = "星级会员"
         
         var lv = DataManager.currentUser!.centurionCardLv
         if lv == 0 {
@@ -218,7 +218,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             if pay*100 > DataManager.currentUser?.cash {
                 moneyIsTooLess()
             } else {
-                let msg = "您的当前黑卡等级为：\(curLv!)星，\(selectedIndex+1)星会员的年费为：\(cost[selectedIndex])元／年，您购买 \(selectedIndex + 1)星会员需支付\(pay)元"
+                let msg = "您的当前等级为：\(curLv!)星，\(selectedIndex+1)星会员的年费为：\(cost[selectedIndex])元／年，您购买 \(selectedIndex + 1)星会员需支付\(pay)元"
                 let alert = UIAlertController.init(title: "购买提示", message: msg, preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "确定购买", style: .Default, handler: { (action: UIAlertAction) in
