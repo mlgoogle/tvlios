@@ -62,11 +62,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
-                                                         name: NotifyDefine.ServantDetailInfo,
-                                                         object: nil)
+
+        XCGLogger.debug(navigationController?.navigationBar.frame)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
             msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
@@ -525,8 +524,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             point.title = "\(servantInfo.uid)"
             annotations.append(point)
         }
+        if mapView!.annotations.count > 0{
+            mapView?.removeAnnotations(mapView!.annotations)
+        }
         mapView!.addAnnotations(annotations)
         mapView!.showAnnotations(annotations, animated: true)
+        
         
     }
     
@@ -626,7 +629,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
         }
         
-        if latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+        
+        if  latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
+            
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
@@ -779,7 +784,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         switch error.code {
         case 1:
-            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
+            checkLocationService()
+//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
             firstLanch = true
             break
         case 4:

@@ -41,10 +41,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         registerNotify()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        SVProgressHUD.dismiss()
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        
     }
     
     func touchWhiteSpace() {
@@ -240,7 +240,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         }
         
         
-        
+        SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         if sender?.tag == tags["loginBtn"]! {
             dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
         }
@@ -262,17 +262,14 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func loginResult(notification: NSNotification?) {
+        
         let data = notification?.userInfo!["data"]
-        let err = data!.allKeys!.contains({ (key) -> Bool in
-            return key as! String == "error_" ? true : false
-        })
-        if err {
-            XCGLogger.error("err:\(data!["error_"] as! Int)")
-            SVProgressHUD.showErrorMessage(ErrorMessage: "手机号或密码错误", ForDuration: 1.5, completion: nil)
+        if let errorCode = data?.valueForKey("error_") {
+            let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
+            SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1.5, completion: nil)
             return
         }
-        XCGLogger.debug("\(data!)")
-    
+        SVProgressHUD.dismiss()
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
         
     }

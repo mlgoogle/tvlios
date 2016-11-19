@@ -132,8 +132,6 @@ class AppointmentDetailCell: UITableViewCell {
     
     /**
      详情顶部处理  
-     
-     之前逻辑有问题 弃用 2016年11月16日19:41:43
      */
     func hideCityInfo() {
 
