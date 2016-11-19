@@ -134,7 +134,8 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
                 make.width.height.equalTo(210)
             })
         }
-        headView?.kf_setImageWithURL(NSURL(string: service?.privilege_bg_! == nil ? "" : service!.privilege_bg_!), placeholderImage: UIImage.init(named: "bg-card-detail"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        headView?.image = UIImage.init(named: "bg-card-detail")
+//        headView?.kf_setImageWithURL(NSURL(string: service?.privilege_bg_! == nil ? "" : service!.privilege_bg_!), placeholderImage: UIImage.init(named: "bg-card-detail"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         return cell!
     }
