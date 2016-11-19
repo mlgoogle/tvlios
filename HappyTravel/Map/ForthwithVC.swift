@@ -120,8 +120,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        XCGLogger.debug(navigationController?.navigationBar.subviews)
-        navigationController
         appointmentView.nav = navigationController
         checkLocationService()
     }
