@@ -29,7 +29,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
-        navigationItem.title = "星级会员"
+        navigationItem.title = "黑卡会员"
         
         var lv = DataManager.currentUser!.centurionCardLv
         if lv == 0 {
