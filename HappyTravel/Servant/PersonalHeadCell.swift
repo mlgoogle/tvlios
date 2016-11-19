@@ -197,7 +197,7 @@ class PersonalHeadCell : UITableViewCell {
     func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
         let view = contentView.viewWithTag(tags["view"]!)
         
-        if let personalView: UIImageView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
+        if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
 //            if userInfo?.bigBGPhotoUrl != nil {                
 //                let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl!)!)
 //                personalView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in

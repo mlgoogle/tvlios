@@ -71,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         let bar = UINavigationBar.appearance()
         bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
         bar.tintColor = UIColor.whiteColor()
+        
         let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         bar.titleTextAttributes = attr
         bar.translucent = false
