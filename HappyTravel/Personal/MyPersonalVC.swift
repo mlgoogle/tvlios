@@ -137,8 +137,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
         SocketManager.sendData(.SkillsInfoRequest, data: nil)
         SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
-        
+        SocketManager.sendData(.CheckUserCash, data:["uid_": DataManager.currentUser!.uid])
     }
+    
     
     func setHeadImage() {
         SocketManager.sendData(.UploadImageToken, data: nil)

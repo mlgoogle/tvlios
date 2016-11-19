@@ -124,7 +124,7 @@ class PersonalHeadCell : UITableViewCell {
                 make.height.equalTo(AtapteHeightValue(20))
             })
         }
-        officialAuth?.image = UIImage.init(named: "guide-auth")
+        officialAuth?.image = UIImage.init(named: "renzheng")
         
         var zhimaAuth = personalView?.viewWithTag(tags["zhimaAuth"]!) as? UIImageView
         if zhimaAuth == nil {
