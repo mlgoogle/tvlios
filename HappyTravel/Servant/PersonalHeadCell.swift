@@ -141,6 +141,7 @@ class PersonalHeadCell : UITableViewCell {
             })
         }
         zhimaAuth?.image = UIImage.init(named: "guide-zhima-auth")
+        zhimaAuth?.hidden = true
         
         var authTips = personalView?.viewWithTag(tags["authTips"]!) as? UILabel
         if authTips == nil {

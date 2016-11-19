@@ -99,7 +99,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             subTitleLab?.textAlignment = .Left
             subTitleLab?.textColor = UIColor.grayColor()
             subTitleLab?.font = UIFont.systemFontOfSize(S13)
-            subTitleLab?.text = "中级黑卡"
+            subTitleLab?.text = "二星会员"
             contentView.addSubview(subTitleLab!)
             subTitleLab?.snp_makeConstraints(closure: { (make) in
                 make.top.equalTo(serviceTitleLab!.snp_bottom).offset(8)
