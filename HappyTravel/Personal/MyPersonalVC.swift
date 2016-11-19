@@ -295,7 +295,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             })
         }
         
-        let imageName = "lv" + "\(Int(DataManager.currentUser!.level + 2))"
+        let imageName = "lv" + "\(Int(DataManager.currentUser!.level))"
         levelIcon!.image = UIImage.init(named:imageName)
         
     }
