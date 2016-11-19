@@ -238,6 +238,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             }
         }
         nameLabel?.setTitle(DataManager.currentUser!.nickname!, forState: .Normal)
+        nickName = DataManager.currentUser?.nickname
         
         var starView = personalView!.viewWithTag(10003)
         if starView == nil {
@@ -443,7 +444,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         //得到选择后沙盒中图片的完整路径
         let filePath: String = String(format: "%@%@", documentPath, fileName)
         headImagePath = filePath
-        
         updateHeadImage()
     }
     

@@ -57,6 +57,7 @@ class PersonalHeadCell : UITableViewCell {
                 make.height.equalTo(AtapteWidthValue(width) / 3.0 * 2.0)
                 make.bottom.equalTo(view!)
             }
+            personalView?.image = UIImage.init(named: "defaultBg1")
         }
         
         var headImageView = personalView?.viewWithTag(tags["headImageView"]!) as? UIImageView
@@ -196,13 +197,13 @@ class PersonalHeadCell : UITableViewCell {
     func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
         let view = contentView.viewWithTag(tags["view"]!)
         
-        if let personalView: UIImageView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
-            if userInfo?.bigBGPhotoUrl != nil {                
-                let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl!)!)
-                personalView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
-                }
-            }
+        if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
+//            if userInfo?.bigBGPhotoUrl != nil {                
+//                let photoUrl = NSURL(string: (userInfo?.bigBGPhotoUrl!)!)
+//                personalView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                    
+//                }
+//            }
             
             if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
                 let headUrl = NSURL(string: userInfo!.headUrl!)

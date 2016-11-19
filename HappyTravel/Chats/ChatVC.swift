@@ -12,7 +12,8 @@ import RealmSwift
 import MJRefresh
 
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate {
-    
+    var daysAlertController:UIAlertController?
+
     var dateFormatter = NSDateFormatter()
     var messages:Array<Message> = []
     var chatTable:UITableView?
@@ -23,10 +24,16 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var rotating = false
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
+    
     var servantInfo:UserInfo?
+    
     var msgList:List<PushMessage>?
+    
+    
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     
+    var selectedServcie:ServiceInfo?
+
     override public var inputAccessoryView: UIView! {
         get {
             if toolBar == nil {
@@ -96,6 +103,11 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
 
+        if servantInfo == nil {
+           navigationController?.popViewControllerAnimated(true)
+            return
+        }
+        
         msgList = DataManager.getMessage(servantInfo!.uid)?.msgList
         
         initView()
@@ -223,15 +235,38 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        alertController?.dismissViewControllerAnimated(true, completion: nil)
         
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-            "to_uid_": servantInfo!.uid,
-            "service_id_": service!.service_id_,
-            "day_count_":daysCount!])
+        unowned let weakSelf = self
+
+        selectedServcie = service
+
+        alertController?.dismissViewControllerAnimated(true, completion: {
+            
+            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+            
+            
+        })
+        
     }
 
-    
+    func inviteAction() {
+        if daysAlertController == nil {
+            daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            let sheet = CitysSelectorSheet()
+            let days = [1, 2, 3, 4, 5, 6, 7]
+            sheet.daysList = days
+            sheet.delegate = self
+            daysAlertController!.view.addSubview(sheet)
+            sheet.snp_makeConstraints { (make) in
+                make.left.equalTo(daysAlertController!.view).offset(-10)
+                make.right.equalTo(daysAlertController!.view).offset(10)
+                make.bottom.equalTo(daysAlertController!.view).offset(10)
+                make.top.equalTo(daysAlertController!.view)
+            }
+        }
+        
+        presentViewController(daysAlertController!, animated: true, completion: nil)
+    }
     public func textViewDidChange(textView: UITextView) {
         sendButton.enabled = textView.hasText()
     }
@@ -380,3 +415,22 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
 }
+
+
+
+extension ChatVC:CitysSelectorSheetDelegate {
+    func daysSureAction(sender: UIButton?, targetDays: Int) {
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+            "to_uid_": servantInfo!.uid,
+            "service_id_": selectedServcie!.service_id_,
+            "day_count_":targetDays])
+    }
+    
+    func daysCancelAction(sender: UIButton?) {
+        
+        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+

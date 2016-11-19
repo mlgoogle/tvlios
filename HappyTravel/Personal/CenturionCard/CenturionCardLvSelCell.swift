@@ -86,7 +86,7 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let item: CenturionCardLVItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardLVItem", forIndexPath: indexPath) as! CenturionCardLVItem
-        let selector = Int((DataManager.currentUser?.centurionCardLv)!-1 == indexPath.row)
+        let selector = Int((DataManager.currentUser?.centurionCardLv)! > indexPath.row)
         item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![selector]!)
         item.titleLabel.text = centurionCardTitle[indexPath.row]
         return item

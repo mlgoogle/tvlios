@@ -37,20 +37,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
         ]
         
-//        WXApi.registerApp("wxb4ba3c02aa476ea1", withDescription: "vLeader-1.0(alpha)") // test
-        WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")
-        Fabric.with([Crashlytics.self])
         commonViewSet()
+        
+        initPlugins()
         
         pushMessageRegister()
         
         return true
     }
     
+    func initPlugins() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+            WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")
+            
+            Fabric.with([Crashlytics.self])
+            
+        })
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+            var key = ""
+            if let id = NSBundle.mainBundle().bundleIdentifier {
+                if id == "com.yundian.enterprise.trip" {
+                    key = "11feec2b7ad127ae156d72aa08f2342e"
+                } else if id == "com.yundian.trip" {
+                    key = "50bb1e806f1d2c1a797e6e789563e334"
+                }
+            }
+            AMapServices.sharedServices().apiKey = key
+        })
+        
+    }
+    
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
         bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
         bar.tintColor = UIColor.whiteColor()
+        
         let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         bar.titleTextAttributes = attr
         bar.translucent = false
@@ -76,11 +97,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func pushMessageRegister() {
         //注册消息推送
-        GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+            GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
         
-        let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+            let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+
+        })
     }
 
     //MARK: - OpenURL
@@ -119,8 +143,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
         token = token.stringByReplacingOccurrencesOfString("<", withString: "")
         token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+
         XCGLogger.debug("\(token)")
-        GeTuiSdk.registerDeviceToken(token)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+            GeTuiSdk.registerDeviceToken(token)
+        })
         NSUserDefaults.standardUserDefaults().setObject(token, forKey: CommonDefine.DeviceToken)
         
     }
