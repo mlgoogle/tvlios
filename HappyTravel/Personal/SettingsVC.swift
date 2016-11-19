@@ -105,7 +105,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         case UserNum = "当前帐号"
         case ChangPwd = "密码修改"
         case AuthUser = "个人认证"
-        case SesameCredit = "芝麻信用"
         case NoLeft = "阅后即焚"
         case ClearCache = "清除缓存"
         case UpdateVerison = "更新版本"
@@ -271,10 +270,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let endIndex = ".......".endIndex
         number.replaceRange(startIndex..<endIndex, with: "****")
     
-        settingOption = [[.UserNum, .ChangPwd, .AuthUser, .SesameCredit],
+        settingOption = [[.UserNum, .ChangPwd, .AuthUser ],
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
-        settingOptingValue = [[number, "", autoStatus, ""],
+        settingOptingValue = [[number, "", autoStatus],
                               [String(format: "%.2fM",calculateCacle()), "已是最新版本", ""],
                               [""]]
     }
