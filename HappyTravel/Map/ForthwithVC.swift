@@ -63,8 +63,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        XCGLogger.debug(navigationController?.navigationBar.frame)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
+                                                         name: NotifyDefine.ServantDetailInfo,
+                                                         object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
@@ -118,8 +120,19 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        XCGLogger.debug(navigationController?.navigationBar.subviews)
+        navigationController
         appointmentView.nav = navigationController
         checkLocationService()
+        callGoFront()
+    }
+    
+    func callGoFront() {
+        let appDelegate = AppDelegate()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
+            appDelegate.applicationDidEnterBackground(UIApplication.sharedApplication())
+//            appDelegate.applicationDidBecomeActive(UIApplication.sharedApplication())
+        }
     }
     
     func checkLocationService() {
