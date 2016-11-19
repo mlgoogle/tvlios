@@ -63,8 +63,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        XCGLogger.debug(navigationController?.navigationBar.frame)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
+                                                         name: NotifyDefine.ServantDetailInfo,
+                                                         object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
