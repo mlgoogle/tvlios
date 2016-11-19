@@ -235,9 +235,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     return
                 }
                 
-                if let errorCode = data.valueForKey("error_"){
-                    let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
-                    SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
+                if data.valueForKey("error_") != nil{
                     return
                 }
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int

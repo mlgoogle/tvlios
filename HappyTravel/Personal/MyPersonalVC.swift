@@ -137,7 +137,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
         SocketManager.sendData(.SkillsInfoRequest, data: nil)
         SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
-        
+        SocketManager.sendData(.CheckUserCash, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func setHeadImage() {
@@ -295,7 +295,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             })
         }
         
-        let imageName = "lv" + "\(Int(DataManager.currentUser!.level + 2))"
+        let imageName = "lv" + "\(Int(DataManager.currentUser!.level))"
         levelIcon!.image = UIImage.init(named:imageName)
         
     }
