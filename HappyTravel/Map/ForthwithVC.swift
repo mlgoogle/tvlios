@@ -124,15 +124,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         navigationController
         appointmentView.nav = navigationController
         checkLocationService()
-        callGoFront()
-    }
-    
-    func callGoFront() {
-        let appDelegate = AppDelegate()
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
-            appDelegate.applicationDidEnterBackground(UIApplication.sharedApplication())
-//            appDelegate.applicationDidBecomeActive(UIApplication.sharedApplication())
-        }
     }
     
     func checkLocationService() {
