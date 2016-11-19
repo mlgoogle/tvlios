@@ -249,36 +249,54 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.left.equalTo(nameLabel!)
                 make.top.equalTo(nameLabel!.snp_bottom).offset(10)
                 make.right.equalTo(personalView!)
-                make.height.equalTo(20)
+                make.height.equalTo(AtapteWidthValue(24))
             }
         }
         
-        for i in 0...4 {
-            var star = starView!.viewWithTag(10003*10 + i) as? UIImageView
-            if star == nil {
-                star = UIImageView()
-                star!.backgroundColor = .clearColor()
-                star!.tag = 10003*10 + i
-                star!.contentMode = .ScaleAspectFit
-                starView!.addSubview(star!)
-                star!.snp_makeConstraints(closure: { (make) in
-                    if i == 0 {
-                        make.left.equalTo(starView!)
-                    } else {
-                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
-                    }
-                    make.top.equalTo(starView!)
-                    make.bottom.equalTo(starView!)
-                    make.width.equalTo(17)
-                })
-            }
-            if DataManager.currentUser!.level / Float(i) >= 1 {
-                star!.image = UIImage.init(named: "my-star-fill")
-            } else {
-                star!.image = UIImage.init(named: "my-star-hollow")
-            }
-            
+//        for i in 0...4 {
+//            var star = starView!.viewWithTag(10003*10 + i) as? UIImageView
+//            if star == nil {
+//                star = UIImageView()
+//                star!.backgroundColor = .clearColor()
+//                star!.tag = 10003*10 + i
+//                star!.contentMode = .ScaleAspectFit
+//                starView!.addSubview(star!)
+//                star!.snp_makeConstraints(closure: { (make) in
+//                    if i == 0 {
+//                        make.left.equalTo(starView!)
+//                    } else {
+//                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
+//                    }
+//                    make.top.equalTo(starView!)
+//                    make.bottom.equalTo(starView!)
+//                    make.width.equalTo(17)
+//                })
+//            }
+//            if DataManager.currentUser!.level / Float(i) >= 1 {
+//                star!.image = UIImage.init(named: "my-star-fill")
+//            } else {
+//                star!.image = UIImage.init(named: "my-star-hollow")
+//            }
+//            
+//        }
+        var levelIcon = starView!.viewWithTag(100030) as? UIImageView
+        if levelIcon == nil {
+            levelIcon = UIImageView()
+            levelIcon!.backgroundColor = UIColor.clearColor()
+            levelIcon!.tag = 100030
+            levelIcon?.contentMode = .ScaleAspectFit
+            starView!.addSubview(levelIcon!)
+            levelIcon?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(starView!)
+                make.top.equalTo(starView!)
+                make.bottom.equalTo(starView!)
+                make.width.equalTo(AtapteWidthValue(24))
+            })
         }
+        
+        let imageName = "lv" + "\(Int(DataManager.currentUser!.level + 2))"
+        levelIcon!.image = UIImage.init(named:imageName)
+        
     }
     
     func initImportantNav() {
