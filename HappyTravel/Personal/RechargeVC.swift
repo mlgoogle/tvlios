@@ -425,9 +425,9 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func rechargeWithWX() {
-        let dict = ["uid_": DataManager.currentUser!.uid,
-                    "title_": "V领队-余额充值",
-                    "price_": 1]
+        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+                                        "title_": "V领队-余额充值",
+                                        "price_": Int(amount!)! * 100]
         SocketManager.sendData(.WXPlaceOrderRequest, data: dict)
     
     }

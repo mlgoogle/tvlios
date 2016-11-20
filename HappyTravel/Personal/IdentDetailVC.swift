@@ -23,7 +23,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var remark:String?
     var commitBtn: UIButton?
     
-    
+    var servantDict:Dictionary<String, AnyObject>?
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
@@ -99,23 +99,35 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
     }
     
+    
     func servantDetailInfo(notification: NSNotification) {
+
+
         let data = notification.userInfo!["data"]
         if data!["error_"]! != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error"])")
             return
         }
         servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-        if servantInfo != nil {
-            let realm = try! Realm()
-            try! realm.write({
-                
-                servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-                
-            })
+        guard servantInfo != nil else {
+            
+            servantDict = data as? Dictionary<String, AnyObject>
+//            servantInfo = UserInfo()
+//            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+            getServantBaseInfo()
+            
+            return
         }
+        
+        let realm = try! Realm()
+        try! realm.write({
+                
+          servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+                
+        })
         
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
@@ -123,6 +135,25 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
        
     }
     
+    func getServantBaseInfo() {
+        
+        let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
+        SocketManager.sendData(.GetUserInfo, data: dic)
+        
+    }
+    func servantBaseInfoReply(notification: NSNotification) {
+        
+        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+        let realm = try! Realm()
+        try! realm.write({
+            
+            servantInfo!.setInfo(.Servant, info: servantDict)
+            
+        })
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = servantInfo
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
+    }
     
     func evaluatetripReply(notification: NSNotification) {
         SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
@@ -204,9 +235,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     return
                 }
                 
-                if let errorCode = data.valueForKey("error_"){
-                    let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
-                    SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
+                if data.valueForKey("error_") != nil{
                     return
                 }
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
