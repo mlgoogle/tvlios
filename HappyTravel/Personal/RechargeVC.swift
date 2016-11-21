@@ -33,7 +33,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var selectedIcon:UIImageView?
     var amount:String?
     var rechageID:String?
-    public var chargeNumber:Double?
+    var chargeNumber:Int?
     
     let tags = ["amountLab": 1001,
                 "amountTextField": 1002,

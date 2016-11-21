@@ -56,7 +56,6 @@ class ViewController: SideMenuController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
         startSockThread()
     }
     

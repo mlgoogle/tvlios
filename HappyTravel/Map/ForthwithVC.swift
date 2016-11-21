@@ -372,8 +372,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     func postNotifi()  {
 //        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
+        
         let dict = ["servantID":"1,2,3,4,5,6", "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
+                                                             "msg_time_" : NSDate().timeIntervalSince1970,
                                                                "to_uid_" : DataManager.currentUser!.uid,
                                                              "msg_type_" : 2231,
                                                              "msg_body_" : dict,
@@ -496,7 +498,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
-        
+        completeBaseInfoVC.cityName = locality
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
     }

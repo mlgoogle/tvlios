@@ -19,6 +19,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     var table:UITableView?
     
     var token:String?
+    var cityName: String?
     
     var headView:UIImageView?
     
@@ -419,9 +420,13 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 sex = (userInfo?.gender)!
                 selectedRetLab?.text = userInfo?.gender == 0 ? "女" : "男"
             } else if indexPath.row == 3 {
-                
-                address = userInfo?.address
-                selectedRetLab?.text = userInfo?.address
+                if cityName != nil {
+                    address = cityName
+                    selectedRetLab?.text = cityName
+                }else{
+                    address = userInfo?.address
+                    selectedRetLab?.text = userInfo?.address
+                }
             }
             
             return cell!

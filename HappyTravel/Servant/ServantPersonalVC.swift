@@ -24,7 +24,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var alertController:UIAlertController?
     var appointment_id_ = 0
     
-    var service_price_oneday:Double?
+    var service_price_oneday:Int?
     
     var daysAlertController:UIAlertController?
     
@@ -110,31 +110,32 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter sender:
      */
     func bottomBarAction(sender: UIButton?) {
-//        if DataManager.currentUser?.cash == 0 {
-//            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
-//            
-//            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-//                XCGLogger.debug("去充值")
-//                
-//                let rechargeVC = RechargeVC()
-//                self.navigationController?.pushViewController(rechargeVC, animated: true)
-//                DataManager.currentUser?.cash = 10
-//                
-//            })
-//            
-//            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-//                
-//            })
-//            
-//            alert.addAction(ok)
-//            alert.addAction(cancel)
-//            
-//            presentViewController(alert, animated: true, completion: { 
-//                
-//            })
-//            
-//            return
-//        }
+        if DataManager.currentUser?.has_recharged_ == 0 {
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
+            
+            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                XCGLogger.debug("去充值")
+                
+                let rechargeVC = RechargeVC()
+                self.navigationController?.pushViewController(rechargeVC, animated: true)
+                DataManager.currentUser?.cash = 10
+                
+            })
+            
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            
+            presentViewController(alert, animated: true, completion: { 
+                
+            })
+            
+            return
+        }
+
         if sender?.tag == 1001 {
             XCGLogger.debug("Chats")
             let chatVC = ChatVC()
@@ -181,7 +182,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
         
-        service_price_oneday = Double((service?.service_price_)!) / 100.0
+        service_price_oneday = service?.service_price_
         
         
     
@@ -196,8 +197,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             let dayNum:Double = Double(((appointmentInfo?.end_time_)! - (appointmentInfo?.start_time_)!) / (24 * 60 * 60))
             
             // 预约总金额
-            let totalMoney = service_price_oneday! * Double(dayNum)
-            let currentCash = Double((DataManager.currentUser?.cash)!)
+            let totalMoney = service_price_oneday! * Int(dayNum)
+            let currentCash = DataManager.currentUser?.cash
             
             
             if currentCash >= totalMoney { // 余额充足
@@ -208,13 +209,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                     "appointment_id_":appointment_id_])
                 
             }else{
-                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\(totalMoney - currentCash)元", preferredStyle: .Alert)
+                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
                     XCGLogger.debug("去充值")
                     
                     let rechargeVC = RechargeVC()
-                    rechargeVC.chargeNumber = totalMoney - currentCash
+                    rechargeVC.chargeNumber = totalMoney - currentCash!
                     self.navigationController?.pushViewController(rechargeVC, animated: true)
                     
                 })
@@ -492,7 +493,10 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             
         }
 
-        
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                          "to_uid_": personalInfo!.uid,
+                                      "service_id_": selectedServcie!.service_id_,
+                                       "day_count_":targetDays])
     }
     
     func daysCancelAction(sender: UIButton?) {
