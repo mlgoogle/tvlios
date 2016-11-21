@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AppointmentRemarksCell: UITableViewCell {
+class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
 
     var titleLabel:UILabel = {
        
@@ -26,7 +26,7 @@ class AppointmentRemarksCell: UITableViewCell {
         textView.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
         textView.layer.cornerRadius = 5
         textView.layer.masksToBounds = true
-
+        textView.returnKeyType = .Done
         return textView
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -35,6 +35,7 @@ class AppointmentRemarksCell: UITableViewCell {
         
         contentView.addSubview(titleLabel)
         contentView.addSubview(remarksTextView)
+        remarksTextView.delegate = self
         addSubviewContrains()
     }
     
@@ -60,7 +61,15 @@ class AppointmentRemarksCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n")
+        {
+            textView.endEditing(true)
+            return false;
+        }
+        
+        return true;
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -83,6 +83,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             return agent ? 4 : 1
         } else if section == 3 {
             return 1
+        } else if section == 4 {
+            return 1
         }
         return 0
     }
@@ -154,6 +156,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             }
         } else if indexPath.section == 3 {
             cell = tableView.dequeueReusableCellWithIdentifier("remarksCell", forIndexPath: indexPath) as! AppointmentRemarksCell
+            line = false
             
         }else if indexPath.section == 4 {
             line = false
