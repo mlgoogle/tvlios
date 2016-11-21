@@ -50,8 +50,6 @@ class ViewController: SideMenuController {
         
         initMainInterface()
         
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
