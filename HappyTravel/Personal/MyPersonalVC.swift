@@ -57,7 +57,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
         
-        initImagePick()
+//        initImagePick()
     }
     
     public override func viewDidLoad() {
@@ -112,7 +112,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func updateUserInfo() {
         SVProgressHUD.dismiss()
-        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
+//        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
+        
+        headImageView?.kf_setImageWithURL(NSURL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
         nameLabel?.setTitle(DataManager.currentUser?.nickname, forState: .Normal)
     }
     
@@ -143,48 +145,55 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     
     func setHeadImage() {
-        SocketManager.sendData(.UploadImageToken, data: nil)
         
-        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
-        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
-            
-        }
-        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
-            self.imagePicker?.sourceType = .Camera
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }
-        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
-            self.imagePicker?.sourceType = .PhotoLibrary
-            
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-        }
-        sheetController.addAction(cancelAction)
-        sheetController.addAction(cameraAction)
-        sheetController.addAction(labAction)
-        presentViewController(sheetController, animated: true, completion: nil)
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
+        sideMenuController?.toggle()
+//        SocketManager.sendData(.UploadImageToken, data: nil)
+//        
+//        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
+//        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
+//            
+//        }
+//        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
+//            self.imagePicker?.sourceType = .Camera
+//            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+//        }
+//        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
+//            self.imagePicker?.sourceType = .PhotoLibrary
+//            
+//            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+//        }
+//        sheetController.addAction(cancelAction)
+//        sheetController.addAction(cameraAction)
+//        sheetController.addAction(labAction)
+//        presentViewController(sheetController, animated: true, completion: nil)
     }
     
     func setNickName() {
-        let alert = UIAlertController.init(title: "修改昵称", message: nil, preferredStyle: .Alert)
-        alert.addTextFieldWithConfigurationHandler({ (textField) in
-            textField.text = (DataManager.currentUser?.nickname)!
-        })
-        let ok = UIAlertAction.init(title: "修改", style: .Default, handler: { (action) in
-            SVProgressHUD.displayDurationForString("提交修改中，请稍后！")
-            self.nickName = (alert.textFields?.first?.text)!
-            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                "nickname_": self.nickName!,
-                "gender_": (DataManager.currentUser?.gender)!,
-                "head_url_": (DataManager.currentUser?.headUrl)!,
-                "address_": (DataManager.currentUser?.address)!,
-                "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-                "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
-            SocketManager.sendData(.SendImproveData, data: dict)
-        })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-        alert.addAction(ok)
-        alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
+        sideMenuController?.toggle()
+//        let alert = UIAlertController.init(title: "修改昵称", message: nil, preferredStyle: .Alert)
+//        alert.addTextFieldWithConfigurationHandler({ (textField) in
+//            textField.text = (DataManager.currentUser?.nickname)!
+//        })
+//        let ok = UIAlertAction.init(title: "修改", style: .Default, handler: { (action) in
+//            SVProgressHUD.displayDurationForString("提交修改中，请稍后！")
+//            self.nickName = (alert.textFields?.first?.text)!
+//            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+//                "nickname_": self.nickName!,
+//                "gender_": (DataManager.currentUser?.gender)!,
+//                "head_url_": (DataManager.currentUser?.headUrl)!,
+//                "address_": (DataManager.currentUser?.address)!,
+//                "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
+//                "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
+//            SocketManager.sendData(.SendImproveData, data: dict)
+//        })
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+//        alert.addAction(ok)
+//        alert.addAction(cancel)
+//        presentViewController(alert, animated: true, completion: nil)
     }
     
     func initPersonalView() {

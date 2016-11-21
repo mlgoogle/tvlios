@@ -14,6 +14,8 @@ import Qiniu
 
 class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, AddressSelVCDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    
+    var headerUrl:String?
     var table:UITableView?
     
     var token:String?
@@ -42,6 +44,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var imagePicker:UIImagePickerController? = nil
     
+    var userInfo:UserInfo?
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -50,7 +53,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         navigationItem.title = "完善基本资料"
-        
+        userInfo = DataManager.currentUser
         initView()
         
     }
@@ -59,6 +62,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         registerNotify()
         initImagePick()
+        
+        
         
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
@@ -86,7 +91,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func sureAction(sender: UIButton) {
         
         
-        guard headImageName != nil && headImagePath != nil else {
+        guard headImageName != nil || DataManager.currentUser?.headUrl != nil else {
            
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
@@ -108,10 +113,17 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有选择常住地哦", ForDuration: 1.5, completion: nil)
             return
         }
+        
+        
+        guard headImagePath != nil else {
+            updateBaseInfo((userInfo?.headUrl)!)
+            
+            return
+        }
         let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
-        
+        unowned let weakSelf = self
         qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
             
             if info.statusCode != 200 || resp == nil {
@@ -124,28 +136,57 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 let respDic: NSDictionary? = resp
                 let value:String? = respDic!.valueForKey("key") as? String
                 let url = qiniuHost + value!
-                
-                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-                Alamofire.request(.GET, addr).responseJSON() { response in
-                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-                    XCGLogger.debug("\(location)")
-                    
-                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
-                    self.nickname = nicknameField?.text
-                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                        "nickname_": self.nickname!,
-                        "gender_": self.sex,
-                        "head_url_": url,
-                        "address_": self.address!,
-                        "longitude_": Float.init(location[0])!,
-                        "latitude_": Float.init(location[1])!]
-                    SocketManager.sendData(.SendImproveData, data: dict)
-                }
+                weakSelf.updateBaseInfo(url)
+//                
+//                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+//                Alamofire.request(.GET, addr).responseJSON() { response in
+//                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+//                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+//                    XCGLogger.debug("\(location)")
+//                    
+//                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
+//                    self.nickname = nicknameField?.text
+//                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+//                        "nickname_": self.nickname!,
+//                        "gender_": self.sex,
+//                        "head_url_": url,
+//                        "address_": self.address!,
+//                        "longitude_": Float.init(location[0])!,
+//                        "latitude_": Float.init(location[1])!]
+//                    self.headerUrl = url
+//                    SocketManager.sendData(.SendImproveData, data: dict)
+//                }
             }
             
         }, option: nil)
         
+    }
+    
+    /**
+     
+     上面太长且重用 提取出来
+     - parameter url:
+     */
+    func updateBaseInfo(url:String) {
+        
+        let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+        Alamofire.request(.GET, addr).responseJSON() { response in
+            let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+            let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+            XCGLogger.debug("\(location)")
+            
+            let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
+            self.nickname = nicknameField?.text
+            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+                "nickname_": self.nickname!,
+                "gender_": self.sex,
+                "head_url_": url,
+                "address_": self.address!,
+                "longitude_": Float.init(location[0])!,
+                "latitude_": Float.init(location[1])!]
+            self.headerUrl = url
+            SocketManager.sendData(.SendImproveData, data: dict)
+        }
     }
     
     func initView() {
@@ -200,8 +241,10 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func improveDataSuccessed(notification: NSNotification?) {
         SVProgressHUD.dismiss()
         navigationController?.popViewControllerAnimated(true)
-        DataManager.currentUser?.headUrl = headImagePath
+        DataManager.currentUser?.headUrl = headerUrl
         DataManager.currentUser?.nickname = nickname
+        DataManager.currentUser?.gender = sex
+        DataManager.currentUser?.address = address
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     
@@ -252,10 +295,35 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     make.width.equalTo(100)
                     make.height.equalTo(100)
                 })
-                self.headView = headView
+                
+            }
+            self.headView = headView
+            cells[indexPath.row] = cell!
+            
+            guard headImageName == nil else {
+                return cell!
             }
             
-            cells[indexPath.row] = cell!
+            guard userInfo != nil else {
+                return cell!
+            }
+            guard userInfo?.headUrl != nil else {
+                return cell!
+            }
+            
+            
+            if userInfo!.headUrl!.hasPrefix("http"){
+                
+                let headUrl = NSURL(string: userInfo!.headUrl!)
+                headView?.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                    
+                }
+            } else if userInfo!.headUrl!.hasPrefix("var"){
+                let headerUrl = NSURL(fileURLWithPath: userInfo!.headUrl!)
+                headView?.kf_setImageWithURL(headerUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                    
+                }
+            }
             return cell!
         } else {
             var cell = tableView.dequeueReusableCellWithIdentifier("BaseInfoCell")
@@ -336,6 +404,26 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             cells[indexPath.row] = cell!
+            
+            
+            guard userInfo != nil else {
+                return cell!
+            }
+            
+            if userInfo?.nickname != nil {
+                nicknameField?.text = userInfo?.nickname
+                nickname = userInfo?.nickname
+            }
+            
+            if indexPath.row == 2 {
+                sex = (userInfo?.gender)!
+                selectedRetLab?.text = userInfo?.gender == 0 ? "女" : "男"
+            } else if indexPath.row == 3 {
+                
+                address = userInfo?.address
+                selectedRetLab?.text = userInfo?.address
+            }
+            
             return cell!
         }
 
