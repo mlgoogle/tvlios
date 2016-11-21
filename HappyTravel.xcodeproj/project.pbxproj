@@ -274,6 +274,7 @@
 		BF6E9AB81DE295F900F32CCE /* wechat-pay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9A151DE295F900F32CCE /* wechat-pay@3x.png */; };
 		BF6E9AB91DE295F900F32CCE /* segment-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9A171DE295F900F32CCE /* segment-left@2x.png */; };
 		BF6E9ABA1DE295F900F32CCE /* segment-right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9A181DE295F900F32CCE /* segment-right@2x.png */; };
+		BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E9AF61DE2D86300F32CCE /* NSDateExt.swift */; };
 		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
 		BF77CEEB1DCED43100F20C6A /* UTMini.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE31DCED43100F20C6A /* UTMini.framework */; };
 		BF77CEEC1DCED43100F20C6A /* WQConnectorBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */; };
@@ -597,6 +598,7 @@
 		BF6E9A151DE295F900F32CCE /* wechat-pay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-pay@3x.png"; sourceTree = "<group>"; };
 		BF6E9A171DE295F900F32CCE /* segment-left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-left@2x.png"; sourceTree = "<group>"; };
 		BF6E9A181DE295F900F32CCE /* segment-right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-right@2x.png"; sourceTree = "<group>"; };
+		BF6E9AF61DE2D86300F32CCE /* NSDateExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSDateExt.swift; path = Common/NSDateExt.swift; sourceTree = "<group>"; };
 		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE21DCED43100F20C6A /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		BF77CEE31DCED43100F20C6A /* UTMini.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTMini.framework; sourceTree = "<group>"; };
@@ -910,15 +912,11 @@
 		2FE7C38D1D64469100994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				B341CE111DC2E6F800DF93CB /* LabelEx.swift */,
-				B341CE121DC2E6F800DF93CB /* UIImageExt.swift */,
-				2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */,
+				BF6E9AF51DE2D7AB00F32CCE /* Extension */,
 				2FDAFCF01D65698E00FD28CB /* NotifyDefine.swift */,
 				2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */,
 				2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */,
-				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
 				BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */,
-				BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */,
 				2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */,
 			);
 			name = Common;
@@ -1196,6 +1194,19 @@
 				BF6E9A181DE295F900F32CCE /* segment-right@2x.png */,
 			);
 			path = Segment;
+			sourceTree = "<group>";
+		};
+		BF6E9AF51DE2D7AB00F32CCE /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
+				BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */,
+				B341CE111DC2E6F800DF93CB /* LabelEx.swift */,
+				B341CE121DC2E6F800DF93CB /* UIImageExt.swift */,
+				2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */,
+				BF6E9AF61DE2D86300F32CCE /* NSDateExt.swift */,
+			);
+			name = Extension;
 			sourceTree = "<group>";
 		};
 		BF77CEE01DCED43100F20C6A /* BCFeedback */ = {
@@ -1994,6 +2005,7 @@
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
+				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,

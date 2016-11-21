@@ -75,6 +75,7 @@ func isTelNumber(num:NSString)->Bool
 }
 
 
+
 class CommonDefine: NSObject {
     
     static let DeviceToken = "deviceToken"
