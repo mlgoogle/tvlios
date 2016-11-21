@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class BlackCardView: UIView {
 
     lazy var bgImage: UIImageView = {
@@ -26,12 +27,15 @@ class BlackCardView: UIView {
     }()
     
     lazy var nameLabel: UILabel = {
-        let label = UILabel.init(text: "NAME", font: UIFont.boldSystemFontOfSize(S12), textColor: colorWithHexString("#dfd1ad"))
+        let label = UILabel.init(text: "NAME" , font: UIFont.boldSystemFontOfSize(S12), textColor: colorWithHexString("#dfd1ad"))
         return label
     }()
     
     lazy var dateLabel: UILabel = {
-        let label = UILabel.init(text: "10/20", font: UIFont.boldSystemFontOfSize(AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))
+        let fromDate: NSDate = NSDate().dateByAddingTimeInterval(Double((DataManager.currentUser!.centurionCardStartTime)))
+        let moneth = fromDate.yt_month() > 9 ? "\(fromDate.yt_month())" : "0\(fromDate.yt_month())"
+        let day = fromDate.yt_day() > 9 ? "\(fromDate.yt_day())" : "0\(fromDate.yt_day())"
+        let label = UILabel.init(text: "\(moneth)/\(day)", font: UIFont.boldSystemFontOfSize(AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))
         label.textAlignment = .Center
         return label
     }()
@@ -84,7 +88,6 @@ class BlackCardView: UIView {
         for i in 0...4 {
             let startImage = UIImageView.init(image: UIImage.init(named:"whiteStart"))
             startImage.tag = 100 + i
-//            startImage.contentModel = .ScaleAspectFit
             contentView.addSubview(startImage)
             startImage.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(-16*i)
@@ -98,6 +101,8 @@ class BlackCardView: UIView {
             make.bottom.equalTo(contentView)
             make.left.equalTo(contentView)
         }
+        let name = pinyin(DataManager.currentUser?.centurionCardName == nil ? "" : (DataManager.currentUser?.centurionCardName)!)
+        nameLabel.text = name.uppercaseString
         
         contentView.addSubview(dateLabel)
         dateLabel.snp_makeConstraints { (make) in
@@ -118,23 +123,45 @@ class BlackCardView: UIView {
         contentView.addSubview(iconImage)
         iconImage.snp_makeConstraints { (make) in
             make.center.equalTo(contentView)
-            make.size.equalTo(CGSizeMake(AtapteWidthValue(66), AtapteWidthValue(66)))
+            make.size.equalTo(CGSizeMake(AtapteWidthValue(50), AtapteWidthValue(50)))
         }
+    
+        var blackCardNum = "\(DataManager.currentUser!.centurionCardId)" as NSString
+        if blackCardNum.length < 8 {
+            for _ in 0...(8-blackCardNum.length) {
+                blackCardNum = "0\(blackCardNum)"
+            }
+        }
+        let frontNum = blackCardNum.substringToIndex(4)
+        let backNum = blackCardNum.substringWithRange(NSRange.init(location: 5, length: 4))
         
         contentView.addSubview(leftNumberLabel)
         leftNumberLabel.snp_makeConstraints { (make) in
             make.centerY.equalTo(contentView)
             make.right.equalTo(iconImage.snp_left).offset(-AtapteWidthValue(10))
         }
+        leftNumberLabel.text = frontNum
         
         contentView.addSubview(rightNmberLabel)
         rightNmberLabel.snp_makeConstraints { (make) in
             make.centerY.equalTo(contentView)
             make.left.equalTo(iconImage.snp_right).offset(AtapteWidthValue(10))
         }
+        rightNmberLabel.text = backNum
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func pinyin(str: String) -> String {
+        
+        let chinese = NSMutableString(string: str) as CFMutableString
+        if CFStringTransform(chinese, nil, kCFStringTransformToLatin, false) {
+            if CFStringTransform(chinese, nil, kCFStringTransformStripDiacritics, false){
+                
+            }
+        }
+        return chinese as String
     }
 }

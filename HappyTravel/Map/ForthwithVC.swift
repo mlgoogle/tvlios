@@ -332,6 +332,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
@@ -492,6 +493,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func jumpToWalletVC() {
         let walletVC = WalletVC()
         navigationController?.pushViewController(walletVC, animated: true)
+    }
+    func jumpToCompeleteBaseInfoVC() {
+        let completeBaseInfoVC = CompleteBaseInfoVC()
+        
+        navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+
     }
     
     func jumpToDistanceOfTravelVC() {
@@ -749,7 +756,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
-            if DataManager.currentUser?.cash == 0 {
+            if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in

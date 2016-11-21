@@ -30,6 +30,8 @@ class NotifyDefine: NSObject {
     
     static let JumpToSettingsVC = "JumpToSettingsVC"
     
+    static let JumpToCompeleteBaseInfoVC = "JumpToCompeleteBaseInfoVC"
+    
     static let VerifyCodeInfo = "VerifyCodeInfo"
     
     static let ImproveDataSuccessed = "ImproveDataSuccessed"

@@ -211,31 +211,68 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             presentViewController(alert, animated: true, completion: nil)
             return
         }
+        
         let curLv = DataManager.currentUser?.centurionCardLv
-        if curLv > 0 {
-            let cost = [998, 2998, 5998]
-            let pay = cost[selectedIndex]-cost[selectedIndex-1]
-            if pay*100 > DataManager.currentUser?.cash {
-                moneyIsTooLess()
-            } else {
-                let msg = "您的当前等级为：\(curLv!)星，\(selectedIndex+1)星会员的年费为：\(cost[selectedIndex])元／年，您购买 \(selectedIndex + 1)星会员需支付\(pay)元"
-                let alert = UIAlertController.init(title: "购买提示", message: msg, preferredStyle: .Alert)
-                
-                let ok = UIAlertAction.init(title: "确定购买", style: .Default, handler: { (action: UIAlertAction) in
-                    // 发送购买协议等
-                    XCGLogger.debug("购买黑卡")
-                })
-                
-                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-                
-                alert.addAction(ok)
-                alert.addAction(cancel)
-                
-                presentViewController(alert, animated: true, completion: nil)
-            }
-            
-        } else {
+        if curLv <= 0 {
             UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
+            return
+        }
+        
+        if curLv > 0 {
+            let price = 1000
+            let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
+            let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+            
+            alert.addTextFieldWithConfigurationHandler({ (textField) in
+                textField.placeholder = "请输入密码"
+                textField.secureTextEntry = true
+            })
+            
+            let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { [weak self] (action) in
+                let weakSelf = self
+                let passwd = alert.textFields?.first?.text
+                /**
+                 *  密码为空
+                 */
+                if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+                    return
+                }
+                /**
+                 *  密码错误
+                 */
+                if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
+                    if passwd != localPasswd {
+                        SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 1, completion: nil)
+                        return
+                    }
+                    
+                }
+                /**
+                 *  余额不足
+                 */
+                if DataManager.currentUser?.cash < price {
+                    weakSelf!.moneyIsTooLess()
+                    return
+                }
+                /**
+                 *  请求购买
+                 */
+                let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                    "order_id_": "",
+                    "passwd_": passwd!]
+                SocketManager.sendData(.UpCenturionCardLvRequest, data: dict, result: { (result) in
+                    weakSelf!.viewDidLoad()
+                })
+        
+                
+            })
+            
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+            
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
         }
     }
     
