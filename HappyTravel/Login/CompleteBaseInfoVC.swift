@@ -420,12 +420,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 sex = (userInfo?.gender)!
                 selectedRetLab?.text = userInfo?.gender == 0 ? "女" : "男"
             } else if indexPath.row == 3 {
-                if cityName != nil {
-                    address = cityName
-                    selectedRetLab?.text = cityName
-                }else{
+                if cityName == nil {
                     address = userInfo?.address
                     selectedRetLab?.text = userInfo?.address
+                }else{
+                    address = cityName
+                    selectedRetLab?.text = cityName
                 }
             }
             
