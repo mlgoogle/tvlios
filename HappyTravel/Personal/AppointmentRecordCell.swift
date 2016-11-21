@@ -158,7 +158,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
-            payLab.text = recordInfo?.order_price_ == 0 ? "待定" : String((recordInfo?.order_price_)! / 100)
+            payLab.text = recordInfo?.order_price_ == -1 ? "待定" : String(Double((recordInfo?.order_price_)!) / 100)
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
