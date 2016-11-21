@@ -108,7 +108,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter sender:
      */
     func bottomBarAction(sender: UIButton?) {
-        if DataManager.currentUser?.cash == 0 {
+        if DataManager.currentUser?.has_recharged_ == 0 {
             let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
             
             let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
