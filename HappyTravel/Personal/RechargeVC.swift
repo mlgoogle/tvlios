@@ -33,6 +33,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var selectedIcon:UIImageView?
     var amount:String?
     var rechageID:String?
+    public var chargeNumber:Double?
     
     let tags = ["amountLab": 1001,
                 "amountTextField": 1002,
@@ -220,7 +221,12 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 amountTextField?.delegate = self
                 amountTextField?.tag = tags["amountTextField"]!
                 amountTextField?.backgroundColor = UIColor.clearColor()
-                amountTextField?.placeholder = "请输入充值金额"
+                if let chargeNum = chargeNumber {
+                    amountTextField?.text = "\(chargeNum)"
+                }else{
+                    amountTextField?.placeholder = "请输入充值金额"
+                }
+                
                 amountTextField?.rightViewMode = .WhileEditing
                 amountTextField?.keyboardType = .NumberPad
                 amountTextField?.clearButtonMode = .WhileEditing
@@ -330,7 +336,6 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 payBtn = UIButton()
                 payBtn?.tag = tags["payBtn"]!
                 payBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
-                payBtn?.enabled = false
                 payBtn?.setTitle("确认充值", forState: .Normal)
                 payBtn?.layer.cornerRadius = 5
                 payBtn?.layer.masksToBounds = true
@@ -344,6 +349,15 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     make.height.equalTo(40)
                 })
                 self.payBtn = payBtn
+                
+            }
+            
+            if chargeNumber != nil {
+                payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+                payBtn?.enabled = true
+            }else{
+                payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+                payBtn?.enabled = false
             }
             
             return cell!
