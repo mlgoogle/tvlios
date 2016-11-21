@@ -496,7 +496,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
-        
+        completeBaseInfoVC.cityName = locality
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
     }
