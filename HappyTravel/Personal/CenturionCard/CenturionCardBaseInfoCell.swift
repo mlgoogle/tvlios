@@ -49,7 +49,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             headView?.layer.cornerRadius = 80 / 2.0
             headView?.layer.masksToBounds = true
             headView?.layer.borderWidth = 1
-            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+            headView?.layer.borderColor = UIColor.init(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 1).CGColor
             headView!.userInteractionEnabled = true
             headView!.backgroundColor = UIColor.clearColor()
             bgView!.addSubview(headView!)

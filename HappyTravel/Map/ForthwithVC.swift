@@ -758,6 +758,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
+            DataManager.currentUser?.has_recharged_ = 1 // MARK:测试后去掉
             if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
                 

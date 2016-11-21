@@ -24,6 +24,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var alertController:UIAlertController?
     var appointment_id_ = 0
     
+    var service_price_oneday:Int?
+    
     var daysAlertController:UIAlertController?
     
     var selectedServcie:ServiceInfo?
@@ -133,6 +135,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             
             return
         }
+
         if sender?.tag == 1001 {
             XCGLogger.debug("Chats")
             let chatVC = ChatVC()
@@ -178,16 +181,62 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter daysCount:
      */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
+        
+        service_price_oneday = service?.service_price_
+        
+        
     
-        if !isNormal {
+        if !isNormal { // 预约
             
             alertController?.dismissViewControllerAnimated(true, completion: nil)
-            SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
-                "to_uid_": personalInfo!.uid,
-                "service_id_": service!.service_id_,
-                "appointment_id_":appointment_id_])
+            
+            let arrry = DataManager.getAppointmentRecordInfos(appointment_id_)
+            let appointmentInfo:AppointmentInfo? = arrry?.first
+            
+            // 预约天数
+            let dayNum:Double = Double(((appointmentInfo?.end_time_)! - (appointmentInfo?.start_time_)!) / (24 * 60 * 60))
+            
+            // 预约总金额
+            let totalMoney = service_price_oneday! * Int(dayNum)
+            let currentCash = DataManager.currentUser?.cash
+            
+            
+            if currentCash >= totalMoney { // 余额充足
+                
+                SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
+                    "to_uid_": personalInfo!.uid,
+                    "service_id_": service!.service_id_,
+                    "appointment_id_":appointment_id_])
+                
+            }else{
+                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
+                
+                let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
+                    XCGLogger.debug("去充值")
+                    
+                    let rechargeVC = RechargeVC()
+                    rechargeVC.chargeNumber = totalMoney - currentCash!
+                    self.navigationController?.pushViewController(rechargeVC, animated: true)
+                    
+                })
+                
+                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                    
+                })
+                
+                alert.addAction(ok)
+                alert.addAction(cancel)
+                
+                presentViewController(alert, animated: true, completion: {
+                    
+                })
+            }
+            
+            
+            
+            
 
-        } else {
+        } else { // 邀约
             unowned let weakSelf = self
             weakSelf.selectedServcie = service
 
@@ -405,6 +454,44 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
 extension ServantPersonalVC:CitysSelectorSheetDelegate {
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        let totalMoney = Double(targetDays) * service_price_oneday!  // 总价格
+        let currentCash = Double((DataManager.currentUser?.cash)!)      // 当前余额
+        
+        if currentCash >= totalMoney {
+            
+            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                "to_uid_": personalInfo!.uid,
+                "service_id_": selectedServcie!.service_id_,
+                "day_count_":targetDays])
+        }else{
+
+   
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\(totalMoney - currentCash)元", preferredStyle: .Alert)
+
+            let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
+                XCGLogger.debug("去充值")
+
+                let rechargeVC = RechargeVC()
+                rechargeVC.chargeNumber = totalMoney - currentCash
+                self.navigationController?.pushViewController(rechargeVC, animated: true)
+
+            })
+
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+
+            })
+
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            
+            presentViewController(alert, animated: true, completion: { 
+                
+            })
+            
+            return
+            
+        }
 
         SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                                           "to_uid_": personalInfo!.uid,
