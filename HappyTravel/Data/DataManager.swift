@@ -134,8 +134,9 @@ class DataManager: NSObject {
         try! realm.write({
             if userPushMessage == nil {
                 userPushMessage = UserPushMessage()
-                userPushMessage?.uid = uid
-                userPushMessage?.msgList.append(message)
+                userPushMessage!.uid = uid
+                userPushMessage!.msgList.append(message)
+                userPushMessage!.msg_time_ = message.msg_time_
                 realm.add(userPushMessage!)
             } else {
                 userPushMessage?.msgList.append(message)
@@ -173,8 +174,9 @@ class DataManager: NSObject {
             try! realm.write({
                 if userPushMessage == nil {
                     userPushMessage = UserPushMessage()
-                    userPushMessage?.uid = uid
-                    userPushMessage?.msgList.append(message)
+                    userPushMessage!.uid = uid
+                    userPushMessage!.msgList.append(message)
+                    userPushMessage!.msg_time_ = message.msg_time_
                     realm.add(userPushMessage!)
                 } else {
                     userPushMessage?.msgList.append(message)

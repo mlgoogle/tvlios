@@ -23,7 +23,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var remark:String?
     var commitBtn: UIButton?
     
-    
+    var servantDict:Dictionary<String, AnyObject>?
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
@@ -99,21 +99,35 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
     }
     
+    
     func servantDetailInfo(notification: NSNotification) {
+
+
         let data = notification.userInfo!["data"]
         if data!["error_"]! != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error"])")
             return
         }
         servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+        guard servantInfo != nil else {
+            
+            servantDict = data as? Dictionary<String, AnyObject>
+//            servantInfo = UserInfo()
+//            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+            getServantBaseInfo()
+            
+            return
+        }
+        
         let realm = try! Realm()
         try! realm.write({
-            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-            
+                
+          servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+                
         })
-        
         
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
@@ -121,6 +135,25 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
        
     }
     
+    func getServantBaseInfo() {
+        
+        let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
+        SocketManager.sendData(.GetUserInfo, data: dic)
+        
+    }
+    func servantBaseInfoReply(notification: NSNotification) {
+        
+        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+        let realm = try! Realm()
+        try! realm.write({
+            
+            servantInfo!.setInfo(.Servant, info: servantDict)
+            
+        })
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = servantInfo
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
+    }
     
     func evaluatetripReply(notification: NSNotification) {
         SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
@@ -162,7 +195,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentDetailCell", forIndexPath: indexPath) as! AppointmentDetailCell
             cell.setServiceInfo(hodometerInfo!)
-   
+
+            cell.hideCityInfo()
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
@@ -200,10 +234,15 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)
                     return
                 }
+                
+                if data.valueForKey("error_") != nil{
+                    return
+                }
                 strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
                 strongSelf.userScore = data.valueForKey("user_score_") as? Int
                 strongSelf.remark = data.valueForKey("remarks_") as? String
-                let isCommited = strongSelf.serviceScore != 0 && strongSelf.userScore != 0
+                // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0 则可继续提交评论
+                let isCommited = strongSelf.serviceScore != 0 || strongSelf.userScore != 0
                 strongSelf.commitBtn?.enabled = !isCommited
                 SVProgressHUD.dismiss()
                 strongSelf.table?.reloadData()

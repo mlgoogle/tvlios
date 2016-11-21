@@ -143,8 +143,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentRecommendRequest = 1079
         //预约推荐服务者返回
         case AppointmentRecommendReply = 1080
-        
+        // 请求预约 、邀约详情
         case  AppointmentDetailRequest = 1081
+        // 预约详情、邀约返回
         case AppointmentDetailReply = 1082
          // 请求邀请服务者
         case AskInvitation = 2001
@@ -220,7 +221,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         socket = GCDAsyncSocket.init(delegate: self, delegateQueue: dispatch_get_main_queue())
         connectSock()
-        
+
     }
     
     func connectSock() {
@@ -250,6 +251,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         DataManager.currentUser?.login = false
         sock?.socket?.disconnect()
         SocketManager.shareInstance.buffer = NSMutableData()
+        SocketManager.shareInstance.connectSock()
     }
     
     static func getErrorCode(dict: [String: AnyObject]) -> SockErrCode? {
@@ -445,7 +447,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     // MARK: - GCDAsyncSocketDelegate
     func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         XCGLogger.info("didConnectToHost:\(host)  \(port)")
-        SocketManager.isLogout = false
         
         sock.performBlock({() -> Void in
             sock.enableBackgroundingOnSocket()
@@ -459,10 +460,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             userType = Int.init(type)
         }
         
-        if username != nil && passwd != nil && userType != nil {
+        if username != nil && passwd != nil && userType != nil && SocketManager.isLogout == false {
             let dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": userType!]
             SocketManager.sendData(.Login, data: dict)
         }
+        SocketManager.isLogout = false
         
 //        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
     }
@@ -572,6 +574,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             user.setInfo(.Other, info: info.1.dictionaryObject!)
             DataManager.updateUserInfo(user)
         }
+        postNotification(NotifyDefine.UserBaseInfoReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+
     }
     
     func messageVerifyReply(jsonBody: JSON?) {

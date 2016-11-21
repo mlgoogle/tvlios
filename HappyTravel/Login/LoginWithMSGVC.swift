@@ -20,7 +20,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     
     var username:String?
     var passwd:String?
-    var verifyCode = 0
+    var verifyCode:String?
     var verifyCodeTime = 0
     var token:String?
     var timer:NSTimer?
@@ -245,10 +245,12 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func verifyCodeInfoNotify(notification: NSNotification?) {
-        
+        SVProgressHUD.dismiss()
         if let data = notification?.userInfo!["data"] {
             verifyCodeTime = (data["timestamp_"] as? Int)!
             token = data["token_"] as? String
+        }else{
+            SVProgressHUD.showErrorMessage(ErrorMessage: "发送验证码失败，请稍后再试！", ForDuration: 1, completion: nil)
         }
     }
     
@@ -291,36 +293,30 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
      - parameter sender:
      */
     func getVerifyCodeAction(sender: UIButton) {
-        
-        
-        let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
-        if predicate.evaluateWithObject(username) {
-            let dict  = ["verify_type_": 1, "phone_num_": username!]
-            SocketManager.sendData(.SendMessageVerify, data: dict)
-            sender.userInteractionEnabled = false
-            setupCountdown()
-            
-        } else {
-            
-            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
-
-        }
-    }
-    
-    func nextAction(sender: UIButton?) {
-        
-        
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
         if predicate.evaluateWithObject(username) == false {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
-        } else if (token == nil || verifyCodeTime == 0) {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "请先获取验证码", ForDuration: 1.5, completion: nil)
-
+        }
+        SVProgressHUD.showProgressMessage(ProgressMessage: "")
+        let dict  = ["verify_type_": 1, "phone_num_": username!]
+        SocketManager.sendData(.SendMessageVerify, data: dict)
+        sender.userInteractionEnabled = false
+        setupCountdown()
+    }
+    
+    func nextAction(sender: UIButton?) {
+        if username?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入手机号", ForDuration: 1, completion: nil)
             return
-        } else if (verifyCode == 0) {
+        }
+        let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
+        if predicate.evaluateWithObject(username) == false {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
+            return
+        }
+        if verifyCode == nil || verifyCode?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入验证码", ForDuration: 1.5, completion: nil)
-
             return
         }
         
@@ -328,7 +324,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         resetPasswdVC!.verifyCodeTime = verifyCodeTime
         resetPasswdVC!.token = token
         resetPasswdVC?.username = username
-        resetPasswdVC?.verifyCode = verifyCode
+        resetPasswdVC?.verifyCode = Int(verifyCode!)!
         presentViewController(resetPasswdVC!, animated: false, completion: nil)
     }
     
@@ -336,10 +332,10 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["usernameField"]!:
-            username = textField.text
+            username = ""
             break
         case tags["verifyCodeField"]!:
-            verifyCode = Int.init(textField.text!)!
+            verifyCode = ""
         default:
             break
         }
@@ -354,8 +350,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         if textField.tag == tags["usernameField"]! {
             username = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         } else if textField.tag == tags["verifyCodeField"]! {
-            verifyCode = Int.init((textField.text!) + string)!
-            
+            verifyCode = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         }
         
         return true

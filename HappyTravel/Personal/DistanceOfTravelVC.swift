@@ -63,7 +63,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
-    
+    /**
+     支付回调
+     
+     - parameter notification: 
+     */
     func payForInvitationReply(notification: NSNotification) {
         if let result = notification.userInfo!["result_"] as? Int {
             var msg = ""
@@ -92,11 +96,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
             alert.addAction(sure)
             presentViewController(alert, animated: true, completion: nil)
-        } else if let code = notification.userInfo!["code"] as? Int {
-            /**
-             code = 0 需问下服务端 2016年11月16日20:29:22
-             */
         }
+        
         
     }
     /**
@@ -347,6 +348,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     let identDetailVC = IdentDetailVC()
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
+                    /**
+                     *  未支付状态去支付
+                     */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
                     SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
                     selectedHodometerInfo = cell.curHodometerInfo
@@ -367,6 +371,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
               SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 return
             }
+            guard object.status_ != 3  else {
+                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
+                return
+            }
+            /**
+             *  未支付状态去支付
+             */
             if object.status_ == 2 {
                 selectedAppointmentInfo = records![indexPath.row]
                 payForInvitationRequest()
@@ -374,7 +385,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             } else {
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)
-            }
+            }      
             break
         case 2:
             break
@@ -404,7 +415,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             timer = nil
         }
     }
-    
+    /**
+     支付操作
+     */
     func payForInvitationRequest() {
 //        guard info != nil else {return}
         guard segmentIndex != 2 else { return }
@@ -420,7 +433,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             price =  (selectedHodometerInfo?.order_price_)!
             order_id_ = (selectedHodometerInfo?.order_id_)!
         }
-        let msg = "\n您即将预支付人民币:\((price / 100))元"
+        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in
@@ -452,8 +465,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     weakSelf!.moneyIsTooLess()
                 } else {
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                        "order_id_": order_id_,
-                        "passwd_": passwd!]
+                                               "order_id_": order_id_,
+                                                 "passwd_": passwd!]
                     SocketManager.sendData(.PayForInvitationRequest, data: dict)
                 }
                 
@@ -468,7 +481,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         
         presentViewController(alert, animated: true, completion: nil)
     }
-    
+    /**
+     余额不足操作
+     */
     func moneyIsTooLess() {
         let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
         
@@ -486,8 +501,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     deinit {
+        
         if timer != nil {
-            
             timer?.invalidate()
             timer = nil
         }

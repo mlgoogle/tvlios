@@ -91,7 +91,8 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         delegate!.serviceTouched(services![indexPath.row])
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        if services == nil {
+
+        if services == nil || services?.count == 0 {
             return CGSizeZero
         }
         

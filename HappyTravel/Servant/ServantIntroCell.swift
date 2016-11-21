@@ -60,6 +60,7 @@ class ServantIntroCell: UITableViewCell {
                 make.width.equalTo(width)
                 make.height.equalTo(AtapteHeightValue(width / 3.0 * 2.0 - 60))
             }
+            personalView?.image = UIImage.init(named: "defaultBg1")
         }
         
         var headImageView = personalView?.viewWithTag(10001) as? UIImageView
@@ -95,7 +96,7 @@ class ServantIntroCell: UITableViewCell {
                 make.height.equalTo(AtapteHeightValue(20))
             })
         }
-        officialAuth?.image = UIImage.init(named: "guide-auth")
+        officialAuth?.image = UIImage.init(named: "renzheng")
         
         var zhimaAuth = personalView?.viewWithTag(10004) as? UIImageView
         if zhimaAuth == nil {
@@ -274,16 +275,16 @@ class ServantIntroCell: UITableViewCell {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
-        if let bigBGPhotoUrl = userInfo?.bigBGPhotoUrl {
-            
-            let photoUrl = NSURL(string: (bigBGPhotoUrl))
-            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-big-photo"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-            }
-            
-        }
+//        if let bigBGPhotoUrl = userInfo?.bigBGPhotoUrl {
+//            
+//            let photoUrl = NSURL(string: (bigBGPhotoUrl))
+//            imageView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "defaultBg1"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//            }
+//            
+//        }
         let headUrl = NSURL(string: userInfo!.headUrl!)
         let headView = imageView.viewWithTag(10001) as! UIImageView
-        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             
         }
         

@@ -98,7 +98,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
-            make.height.equalTo(DataManager.currentUser!.centurionCardLv > 0 ? 65 : 0.01)
+            make.height.equalTo(65)
             
         })
     
@@ -147,7 +147,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : AtapteWidthValue(440))
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : AtapteWidthValue(500))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -177,13 +177,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
-        callServantBtn?.snp_remakeConstraints(closure: { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.bottom.equalTo(view)
-            make.height.equalTo(index < DataManager.currentUser!.centurionCardLv ? 65 : 0.01)
-            
-        })
+        callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
     }
     
     // MARK: - CenturionCardServicesCellDelegate
@@ -193,34 +187,61 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    func buyNowButtonTouched() {
-        if selectedIndex == 0 {
-            UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
-        } else if selectedIndex == 1 {
-            if (DataManager.currentUser?.centurionCardLv)! < 1 {
-                let alert = UIAlertController.init(title: "提示", message: "购买失败，请先购买初级会员", preferredStyle: .Alert)
-                let ensure = UIAlertAction.init(title: "好的", style: .Default, handler: { (action: UIAlertAction) in
-                    
-                })
-                alert.addAction(ensure)
-                presentViewController(alert, animated: true, completion: nil)
-                return
-            }
-            XCGLogger.debug("zhongji")
-        } else if selectedIndex == 2 {
-            let alert = UIAlertController.init(title: "提示", message: "购买失败，请先购买中级会员", preferredStyle: .Alert)
-            let ensure = UIAlertAction.init(title: "好的", style: .Default, handler: { (action: UIAlertAction) in
-                
-            })
-            alert.addAction(ensure)
-            presentViewController(alert, animated: true, completion: nil)
-
-        }
+    func moneyIsTooLess() {
+        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
         
+        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
+            let rechargeVC = RechargeVC()
+            self.navigationController?.pushViewController(rechargeVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func buyNowButtonTouched() {
+        if selectedIndex == 3 {
+            let alert = UIAlertController.init(title: "购买提示", message: "对不起，四星会员仅支持内部邀请！", preferredStyle: .Alert)
+            let ok = UIAlertAction.init(title: "好的", style: .Default, handler: nil)
+            alert.addAction(ok)
+            presentViewController(alert, animated: true, completion: nil)
+            return
+        }
+        let curLv = DataManager.currentUser?.centurionCardLv
+        if curLv > 0 {
+            let cost = [998, 2998, 5998]
+            let pay = cost[selectedIndex]-cost[selectedIndex-1]
+            if pay*100 > DataManager.currentUser?.cash {
+                moneyIsTooLess()
+            } else {
+                let msg = "您的当前等级为：\(curLv!)星，\(selectedIndex+1)星会员的年费为：\(cost[selectedIndex])元／年，您购买 \(selectedIndex + 1)星会员需支付\(pay)元"
+                let alert = UIAlertController.init(title: "购买提示", message: msg, preferredStyle: .Alert)
+                
+                let ok = UIAlertAction.init(title: "确定购买", style: .Default, handler: { (action: UIAlertAction) in
+                    // 发送购买协议等
+                    XCGLogger.debug("购买黑卡")
+                })
+                
+                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+                
+                alert.addAction(ok)
+                alert.addAction(cancel)
+                
+                presentViewController(alert, animated: true, completion: nil)
+            }
+            
+        } else {
+            UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
+        }
     }
     
     func shareImage()-> UIImage  {
-        table!.frame =  CGRect.init(origin: CGPointMake(table!.mj_x, table!.mj_y), size: table!.contentSize)
+        table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
+        table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
         UIGraphicsBeginImageContext(table!.contentSize)
         UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)

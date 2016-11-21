@@ -15,6 +15,8 @@ class GuideTagCell: MAAnnotationView {
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         initView()
+        centerOffset.y = 5
+        
     }
     
     override init(frame: CGRect) {
@@ -26,12 +28,12 @@ class GuideTagCell: MAAnnotationView {
         if headView == nil {
             headView = UIImageView()
             headView?.tag = 1001
-            headView?.layer.cornerRadius = 25
-            headView?.layer.masksToBounds = true
-//            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            headView?.layer.borderColor = UIColor.whiteColor().CGColor
-            headView?.layer.borderWidth = 1
-            headView?.backgroundColor = UIColor.grayColor()
+//            headView?.layer.cornerRadius = 25
+//            headView?.layer.masksToBounds = true
+////            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+//            headView?.layer.borderColor = UIColor.whiteColor().CGColor
+//            headView?.layer.borderWidth = 1
+//            headView?.backgroundColor = UIColor.grayColor()
             addSubview(headView!)
             headView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)
@@ -40,7 +42,7 @@ class GuideTagCell: MAAnnotationView {
                 make.height.equalTo(50)
             })
             headView?.image = UIImage.init(named: "default-head")
-            image = UIImage.init(named: "location")
+            image = UIImage.init(named: "")
         }
         
         var guideTipsView = viewWithTag(1002) as? UIImageView
@@ -58,7 +60,7 @@ class GuideTagCell: MAAnnotationView {
                 make.height.equalTo(41)
             })
             guideTipsView?.image = UIImage.init(named: "guide-tips")
-            image = UIImage.init(named: "map_meet")
+            image = UIImage.init(named: "")
         }
         
         var guideTipsLab = viewWithTag(10021) as? UILabel
@@ -84,12 +86,7 @@ class GuideTagCell: MAAnnotationView {
     func setInfo(info: UserInfo?) {
         userInfo = info
         if let headView = viewWithTag(1001) as? UIImageView {
-            if DataManager.currentUser?.authentication == 1 {
-                headView.kf_setImageWithURL(NSURL(string: (info?.headUrl == nil ? "http://" : info?.headUrl)!), placeholderImage: UIImage.init(named: userInfo?.gender == 1 ? "map-head-male" : "map-head-female"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
-            } else {
-                headView.image = UIImage.init(named: userInfo?.gender == 1 ? "map-head-male" : "map-head-female")
-            }
-            
+            headView.image = UIImage.init(named: userInfo?.gender == 1 ? "map-head-male" : "map-head-female")
         }
         
     }
@@ -98,4 +95,14 @@ class GuideTagCell: MAAnnotationView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let headView = viewWithTag(1001) as? UIImageView
+        if CGRectContainsPoint((headView?.frame)!, point) {
+           
+            return self
+            
+        }
+        return super.hitTest(point, withEvent: event)
+    }
 }

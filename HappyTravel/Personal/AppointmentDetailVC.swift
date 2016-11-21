@@ -17,6 +17,7 @@ class AppointmentDetailVC: UIViewController {
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfo?
     var commonCell:IdentCommentCell?
+    var servantDict:Dictionary<String, AnyObject>?
 
     
     var user_score_ = 0
@@ -52,6 +53,7 @@ class AppointmentDetailVC: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
 
     }
     
@@ -76,7 +78,9 @@ class AppointmentDetailVC: UIViewController {
             user_score_ = data["user_score_"] as! Int
             service_score_ = data["service_score_"] as! Int
             remarks_ = data["remarks_"] as? String
-            let isCommited = user_score_ != 0 && service_score_ != 0
+         
+            // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0
+            let isCommited = user_score_ != 0 || service_score_ != 0
             commitBtn?.enabled = !isCommited
             commitBtn?.setTitle("发表评论", forState: .Normal)
             tableView.reloadData()
@@ -114,25 +118,50 @@ class AppointmentDetailVC: UIViewController {
      */
     func servantDetailInfo(notification: NSNotification) {
         
-
         if let data = notification.userInfo!["data"] as? [String: AnyObject] {
-        if let error = data["error_"] {
-            XCGLogger.error(error)
+        if data["error_"] != nil {
+            XCGLogger.error("Get UserInfo Error:\(data["error"])")
+            return
+        }
+        servantInfo =  DataManager.getUserInfo(data["uid_"] as! Int )
+        guard servantInfo != nil else {
+            
+            servantDict = data
+            getServantBaseInfo()
+            
             return
         }
         
-        servantInfo =  DataManager.getUserInfo((appointmentInfo?.to_user_)!)
         let realm = try! Realm()
         try! realm.write({
+            
             servantInfo!.setInfo(.Servant, info: data)
             
         })
-        
         
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         }
+    }
+    func getServantBaseInfo() {
+        
+        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
+        SocketManager.sendData(.GetUserInfo, data: dic)
+        
+    }
+    func servantBaseInfoReply(notification: NSNotification) {
+        
+        servantInfo =  DataManager.getUserInfo(servantDict!["uid_"] as! Int)
+        let realm = try! Realm()
+        try! realm.write({
+            
+            servantInfo!.setInfo(.Servant, info: servantDict)
+            
+        })
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = servantInfo
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
     
     override func viewDidLoad() {
