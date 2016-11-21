@@ -455,8 +455,8 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         
-        let totalMoney = Double(targetDays) * service_price_oneday!  // 总价格
-        let currentCash = Double((DataManager.currentUser?.cash)!)      // 当前余额
+        let totalMoney = targetDays * service_price_oneday!  // 总价格
+        let currentCash = DataManager.currentUser?.cash      // 当前余额
         
         if currentCash >= totalMoney {
             
@@ -467,13 +467,13 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
         }else{
 
    
-            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\(totalMoney - currentCash)元", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
 
             let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
                 XCGLogger.debug("去充值")
 
                 let rechargeVC = RechargeVC()
-                rechargeVC.chargeNumber = totalMoney - currentCash
+                rechargeVC.chargeNumber = totalMoney - currentCash!
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
 
             })
