@@ -99,10 +99,17 @@ class UserInfo: Object {
     dynamic var centurionCardLv = 0
     
     dynamic var centurionCardValid = 0
+    
+    dynamic var centurionCardId = 0
+    
+    dynamic var centurionCardName: String?
+    
     // 认证状态==> -1 : 未认证 | 0 : 认证中 | 1 : 认证成功 | 2 : 认证失败
     dynamic var authentication = -1
     // 是否充值过==> 0 ：未充值过 | 1 ：已充值过
     dynamic var has_recharged_ = 0
+    
+    
     let businessTags:List<Tally> = List<Tally>()
     
     let photoUrlList:List<PhotoUrl> = List<PhotoUrl>()
@@ -232,6 +239,12 @@ class UserInfo: Object {
             case "has_recharged_":
                 has_recharged_ = value as! Int
                 break
+            case "blackcard_id_":
+                centurionCardId = value as! Int
+                break
+            case "name_":
+                centurionCardName = value as? String
+                break
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")
                 break
@@ -285,6 +298,10 @@ class UserInfo: Object {
         centurionCardLv = info.centurionCardLv
         
         centurionCardValid = info.centurionCardValid
+        
+        centurionCardId = info.centurionCardId
+        
+        centurionCardName = info.centurionCardName
         
         authentication = info.authentication
         
