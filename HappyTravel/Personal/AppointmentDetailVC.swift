@@ -74,7 +74,7 @@ class AppointmentDetailVC: UIViewController {
      */
     func reveicedCommentInfo(notification: NSNotification) {
         if let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            
+            guard data["error_"] == nil  else { return }
             user_score_ = data["user_score_"] as! Int
             service_score_ = data["service_score_"] as! Int
             remarks_ = data["remarks_"] as? String

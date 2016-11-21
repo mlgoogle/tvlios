@@ -60,6 +60,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 60
+        table?.registerClass(AppointmentRemarksCell.self, forCellReuseIdentifier: "remarksCell")
         table?.rowHeight = UITableViewAutomaticDimension
         table?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         table?.separatorStyle = .None
@@ -82,12 +83,14 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             return agent ? 4 : 1
         } else if section == 3 {
             return 1
+        } else if section == 4 {
+            return 1
         }
         return 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -152,6 +155,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 line = false
             }
         } else if indexPath.section == 3 {
+            cell = tableView.dequeueReusableCellWithIdentifier("remarksCell", forIndexPath: indexPath) as! AppointmentRemarksCell
+            line = false
+            
+        }else if indexPath.section == 4 {
             line = false
             cell = tableView.dequeueReusableCellWithIdentifier("AppointmentCell")
             if cell == nil {

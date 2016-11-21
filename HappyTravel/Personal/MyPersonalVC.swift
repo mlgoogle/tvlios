@@ -491,6 +491,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                             "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
                             "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
                         SocketManager.sendData(.SendImproveData, data: dict)
+                        
+                        
                     }
                 }
                 

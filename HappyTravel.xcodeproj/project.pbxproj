@@ -103,6 +103,7 @@
 		6E5E4E4E1DD45A3100368011 /* AppointmentDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */; };
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
 		6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */; };
+		6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */; };
 		6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */; };
 		6EED9AD91DCDD5E500A701DD /* SingleSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */; };
 		B0CD9100C5B300D6D25A2150 /* Pods_HappyTravelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */; };
@@ -423,6 +424,7 @@
 		6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailCell.swift; path = Personal/AppointmentDetailCell.swift; sourceTree = "<group>"; };
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
 		6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleServiceInfoCell.swift; path = Servant/SingleServiceInfoCell.swift; sourceTree = "<group>"; };
+		6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRemarksCell.swift; path = Map/Appointment/AppointmentRemarksCell.swift; sourceTree = "<group>"; };
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillWidthLayout.swift; path = Map/Appointment/SkillWidthLayout.swift; sourceTree = "<group>"; };
 		6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleSkillCell.swift; path = Map/Appointment/SingleSkillCell.swift; sourceTree = "<group>"; };
@@ -946,6 +948,7 @@
 				2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */,
 				6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */,
 				6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */,
+				6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */,
 			);
 			name = Appointment;
 			sourceTree = "<group>";
@@ -2008,6 +2011,7 @@
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
+				6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
@@ -2214,9 +2218,9 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "4721b350-f2df-4f1b-8d5e-999163f391a0";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2231,7 +2235,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2247,7 +2251,7 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
