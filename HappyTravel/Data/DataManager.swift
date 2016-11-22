@@ -159,7 +159,7 @@ class DataManager: NSObject {
             return
         }
         
-        
+        message.msg_time_ = Int64(NSDate().timeIntervalSince1970)
         switch message.push_msg_type {
         case 2004:
             DataManager.insertMessage(message)

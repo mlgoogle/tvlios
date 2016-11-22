@@ -155,7 +155,7 @@ public class ServiceCell : UITableViewCell {
                         titleLabel!.snp_makeConstraints(closure: { (make) in
                             make.left.equalTo(svcView!)
                             make.top.equalTo(svcView!)
-                            make.width.equalTo(100)
+                            make.width.equalTo(AtapteWidthValue(100))
                             make.bottom.equalTo(svcView!)
                         })
                     }

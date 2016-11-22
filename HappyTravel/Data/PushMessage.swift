@@ -74,6 +74,12 @@ class PushMessage: Object {
         if body["appointment_id_"]  != nil {
             appointment_id_ = body["appointment_id_"] as! Int
         }
+//        if body["msg_time_"] != nil {
+//            
+//            let time = body["msg_time_"] as! Int64
+//            
+//            msg_time_ = time
+//        }
     }
 }
 
