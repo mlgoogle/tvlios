@@ -276,6 +276,7 @@
 		BF6E9D8F1DE2FD4500F32CCE /* wechat-pay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CEC1DE2FD4500F32CCE /* wechat-pay@3x.png */; };
 		BF6E9D901DE2FD4500F32CCE /* segment-left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CEE1DE2FD4500F32CCE /* segment-left@2x.png */; };
 		BF6E9D911DE2FD4500F32CCE /* segment-right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CEF1DE2FD4500F32CCE /* segment-right@2x.png */; };
+		BF6E9D931DE3E62300F32CCE /* CentuionCardPriceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E9D921DE3E62300F32CCE /* CentuionCardPriceInfo.swift */; };
 		BF77CEE91DCED43100F20C6A /* AmrCodecFMWK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */; };
 		BF77CEEB1DCED43100F20C6A /* UTMini.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE31DCED43100F20C6A /* UTMini.framework */; };
 		BF77CEEC1DCED43100F20C6A /* WQConnectorBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF77CEE41DCED43100F20C6A /* WQConnectorBundle.framework */; };
@@ -601,6 +602,7 @@
 		BF6E9CEC1DE2FD4500F32CCE /* wechat-pay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wechat-pay@3x.png"; sourceTree = "<group>"; };
 		BF6E9CEE1DE2FD4500F32CCE /* segment-left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-left@2x.png"; sourceTree = "<group>"; };
 		BF6E9CEF1DE2FD4500F32CCE /* segment-right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segment-right@2x.png"; sourceTree = "<group>"; };
+		BF6E9D921DE3E62300F32CCE /* CentuionCardPriceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CentuionCardPriceInfo.swift; path = Data/CentuionCardPriceInfo.swift; sourceTree = "<group>"; };
 		BF77CEE11DCED43100F20C6A /* AmrCodecFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AmrCodecFMWK.framework; sourceTree = "<group>"; };
 		BF77CEE21DCED43100F20C6A /* UTDID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTDID.framework; sourceTree = "<group>"; };
 		BF77CEE31DCED43100F20C6A /* UTMini.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UTMini.framework; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 				6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */,
 				6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */,
 				BFC4920F1DD9D2BF0056500D /* OpenTicketInfo.swift */,
+				BF6E9D921DE3E62300F32CCE /* CentuionCardPriceInfo.swift */,
 			);
 			name = Data;
 			path = ..;
@@ -1959,6 +1962,7 @@
 				2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
+				BF6E9D931DE3E62300F32CCE /* CentuionCardPriceInfo.swift in Sources */,
 				2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */,
 				2F337A831D9BC1FB003BAE20 /* HodometerInfo.swift in Sources */,
 				2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */,

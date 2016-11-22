@@ -50,7 +50,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         super.viewDidLoad()
         view.userInteractionEnabled = true
         firstLanch = true
-        
+        let path = NSHomeDirectory()
         initView()
         
         registerNotify()
