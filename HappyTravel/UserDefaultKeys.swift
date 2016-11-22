@@ -11,4 +11,5 @@ import UIKit
 class UserDefaultKeys: NSObject {
     static let authUserCard = "authUserCard"
     static let invoiceInfoDict = "invoiceInfoDict"
+    static let homeLocation = "homeLocation"
 }
