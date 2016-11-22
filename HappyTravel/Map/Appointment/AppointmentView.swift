@@ -24,7 +24,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var gender = false
     var name:String?
     var tel:String?
-    
+    weak var remarksTextView:UITextView?
     var nav:UINavigationController?
     
     var skills:Array<Dictionary<SkillInfo, Bool>> = []
@@ -156,6 +156,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             }
         } else if indexPath.section == 3 {
             cell = tableView.dequeueReusableCellWithIdentifier("remarksCell", forIndexPath: indexPath) as! AppointmentRemarksCell
+            remarksTextView = cell?.valueForKey("remarksTextView") as? UITextView
             line = false
             
         }else if indexPath.section == 4 {
@@ -642,6 +643,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,
+                                        "remarks_": (remarksTextView?.text == nil ? "" : remarksTextView?.text)!,
                                         "is_other_": agent == false ? 0 : 1,
                                         "other_name_": agent == true ? name! : "",
                                         "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
