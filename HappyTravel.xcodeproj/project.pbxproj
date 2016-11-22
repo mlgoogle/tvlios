@@ -1345,6 +1345,7 @@
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 96YGS7NXK5;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2202,7 +2203,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yong ming lu (FD5S65ADL4)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2217,9 +2218,9 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "b9a9d55b-910b-490c-bf8b-99dab99803a2";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2234,7 +2235,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2250,9 +2251,9 @@
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "b9a9d55b-910b-490c-bf8b-99dab99803a2";
+				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
