@@ -11,15 +11,15 @@ target 'HappyTravel' do
     # Pods for HappyTravel
     
     use_frameworks! # Add this if you are targeting iOS 8+ or using Swift
-    pod 'Alamofire', '~> 3.4.2'
-    pod 'SwiftyJSON', '~> 2.3.2'
-    pod 'XCGLogger', '~> 3.5.1'
-    pod 'SideMenuController', '~> 0.1.6'
-    pod 'SnapKit', '~> 0.22.0'
+    pod 'Alamofire', '~> 4.0'
+    pod 'SwiftyJSON', '~> 3.1.3'
+    pod 'XCGLogger', '~> 4.0.0'
+    pod 'SideMenuController', '~> 0.2.1'
+    pod 'SnapKit', '~> 3.0.2'
     pod 'AMap2DMap', '~> 4.2.0'
-    pod 'Kingfisher', '~> 2.5.0'
+    pod 'Kingfisher', '~> 3.2.1'
     pod 'CocoaAsyncSocket', '~> 7.5.1'
-    pod 'RealmSwift', '~> 1.0.2'
+    pod 'RealmSwift', '~> 2.1.0'
     # Mob产品公共库
     pod 'MOBFoundation_IDFA', '~> 2.0.10'
     #pod 'YWFeedbackFMWK', ‘~> 2.0.1.1’

@@ -11,12 +11,12 @@ import XCGLogger
 
 @objc protocol CitysSelectorSheetDelegate : NSObjectProtocol {
     
-    optional  func cancelAction(sender: UIButton?)
+    @objc optional  func cancelAction(sender: UIButton?)
     
     
-    optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
-    optional  func daysSureAction(sender:UIButton?, targetDays: Int)
-    optional  func daysCancelAction(sender:UIButton?)
+    @objc optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
+    @objc optional  func daysSureAction(sender:UIButton?, targetDays: Int)
+    @objc optional  func daysCancelAction(sender:UIButton?)
 }
 
 class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -35,8 +35,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func initView() {
         let bgView = UIImageView()
-        bgView.backgroundColor = UIColor.whiteColor()
-        bgView.userInteractionEnabled = true
+        bgView.backgroundColor = UIColor.white
+        bgView.isUserInteractionEnabled = true
         addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
             make.left.equalTo(self).offset(-10)
@@ -47,7 +47,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         let head = UIView()
         head.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-        head.userInteractionEnabled = true
+        head.isUserInteractionEnabled = true
         addSubview(head)
         head.snp_makeConstraints { (make) in
             make.left.equalTo(bgView)
@@ -57,10 +57,11 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         let cancelBtn = UIButton()
-        cancelBtn.setTitle("取消", forState: .Normal)
-        cancelBtn.backgroundColor = UIColor.clearColor()
-        cancelBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), forControlEvents: .TouchUpInside)
+        cancelBtn.setTitle("取消", for: .normal)
+        cancelBtn.backgroundColor = UIColor.clear
+        cancelBtn.setTitleColor(UIColor.
+            , for: .normal)
+        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .TouchUpInside)
         head.addSubview(cancelBtn)
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(head)
@@ -70,10 +71,10 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         let sureBtn = UIButton()
-        sureBtn.setTitle("确定", forState: .Normal)
-        sureBtn.backgroundColor = UIColor.clearColor()
-        sureBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), forControlEvents: .TouchUpInside)
+        sureBtn.setTitle("确定", for: .normal)
+        sureBtn.backgroundColor = UIColor.clear
+        sureBtn.setTitleColor(UIColor.blackColor, for: .normal)
+        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .TouchUpInside)
         head.addSubview(sureBtn)
         sureBtn.snp_makeConstraints { (make) in
             make.right.equalTo(head)
