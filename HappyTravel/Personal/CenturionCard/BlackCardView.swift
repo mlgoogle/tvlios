@@ -32,7 +32,7 @@ class BlackCardView: UIView {
     }()
     
     lazy var dateLabel: UILabel = {
-        let fromDate: NSDate = NSDate().dateByAddingTimeInterval(Double((DataManager.currentUser!.centurionCardStartTime)))
+        let fromDate: NSDate = NSDate.init(timeIntervalSince1970: NSTimeInterval(DataManager.currentUser!.centurionCardStartTime))
         let moneth = fromDate.yt_month() > 9 ? "\(fromDate.yt_month())" : "0\(fromDate.yt_month())"
         let day = fromDate.yt_day() > 9 ? "\(fromDate.yt_day())" : "0\(fromDate.yt_day())"
         let label = UILabel.init(text: "\(moneth)/\(day)", font: UIFont.boldSystemFontOfSize(AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))

@@ -191,8 +191,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PayForInvitationRequest = 2017
         // 邀约、雨夜付款返回
         case PayForInvitationReply = 2018
-        // 黑卡等级升级
-        case UpCenturionCardLvRequest = 0000
+
+        // 获取黑卡等级升级
+        case getUpCenturionCardOriderRequest = 1085
+        // 获取黑卡等级下单
+        case getUpCenturionCardOriderReply = 1086
+        // 黑卡VIP价格
+        case CenturionVIPPriceRequest = 1083
+        // 黑卡VIP价格
+        case CenturionVIPPriceReply = 1084
 
     }
     
@@ -423,14 +430,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .ServersManInfoReply:
             serversManInfoReply(jsonBody)
+            break
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
-            
+            break
         case .AppointmentServantReply:
             appointmentServantReply(jsonBody)
-            
+            break
         case .PayForInvitationReply:
             payForInvitationReply(jsonBody)
+            break
+        case .CenturionVIPPriceReply:
+            saveTheCenturionCardVIPPrice(jsonBody)
+            break
         default:
             break
         }
@@ -808,5 +820,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
     }
     
+    func saveTheCenturionCardVIPPrice(jsonBody:JSON?) {
+        if let dataList = jsonBody?.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>>{
+            for data in dataList {
+                let price = CentuionCardPriceInfo(value: data)
+                DataManager.insertCenturionCardVIPPriceInfo(price)
+            }
+        }
+    }
 }
 
