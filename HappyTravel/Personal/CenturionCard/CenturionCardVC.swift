@@ -301,17 +301,29 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
                 "order_id_": record.valueForKey("order_id_")!,
                 "passwd_": passwd!]
-                SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
-                let data = result as NSDictionary
+            SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
+                let data = result["data"] as! NSDictionary
                 if let errorCord = data.valueForKey("error_"){
                     let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 3, completion: nil)
+                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
                     return
                 }
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功！！！", ForDuration: 2, completion: {
-                    DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
-                    weakSelf!.viewDidLoad()
-                })
+                    
+                let orderStatus = data.valueForKey("result_") as? Int
+                if orderStatus == -1 {
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+                }
+                if orderStatus == -2 {
+                    weakSelf!.moneyIsTooLess()
+                }
+                if orderStatus == 0 {
+                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
+                        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+                        DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
+                        weakSelf!.viewDidLoad()
+                    })
+                }
+
             })
             
             
