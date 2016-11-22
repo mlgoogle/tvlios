@@ -128,7 +128,7 @@ class BlackCardView: UIView {
     
         var blackCardNum = "\(DataManager.currentUser!.centurionCardId)" as NSString
         if blackCardNum.length < 8 {
-            for i in 0...(8-blackCardNum.length) {
+            for _ in 0...(8-blackCardNum.length) {
                 blackCardNum = "0\(blackCardNum)"
             }
         }

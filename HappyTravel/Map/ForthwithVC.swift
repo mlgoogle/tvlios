@@ -125,7 +125,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func checkLocationService() {
-        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() == .Denied {
+        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
             let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许V领队使用定位服务", preferredStyle: .Alert)
             let goto = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
                 if #available(iOS 10, *) {
@@ -373,9 +373,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func postNotifi()  {
 //        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
         
-        let dict = ["servantID":"1,2,3,4,5,6", "appointment_id_" : appointment_id_]
+        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-                                                             "msg_time_" : NSDate().timeIntervalSince1970,
                                                                "to_uid_" : DataManager.currentUser!.uid,
                                                              "msg_type_" : 2231,
                                                              "msg_body_" : dict,
@@ -758,7 +757,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
-            DataManager.currentUser?.has_recharged_ = 1 // MARK:测试后去掉
+//            DataManager.currentUser?.has_recharged_ = 1 // MARK:测试后去掉
             if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
                 
