@@ -113,7 +113,9 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             
             let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "cardFooterView", forIndexPath: indexPath)
             
-            let blackCardImage = BlackCardView.init(frame: CGRectZero) 
+            let blackCardImage = BlackCardView.init(frame: CGRectZero)
+            blackCardImage.layer.cornerRadius = 8
+            blackCardImage.layer.masksToBounds = true
             blackCardImage.stars = DataManager.currentUser!.centurionCardLv
             sectionFooter.addSubview(blackCardImage)
             blackCardImage.snp_makeConstraints(closure: { (make) in
