@@ -19,7 +19,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     var table:UITableView?
     
     var token:String?
-    var cityName: String?
+    
+    var cityName: String = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.homeLocation) as! String
     
     var headView:UIImageView?
     
@@ -420,12 +421,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 sex = (userInfo?.gender)!
                 selectedRetLab?.text = userInfo?.gender == 0 ? "女" : "男"
             } else if indexPath.row == 3 {
-                if cityName != nil {
-                    address = cityName
-                    selectedRetLab?.text = cityName
-                }else{
+                if userInfo?.address != nil && userInfo?.address?.characters.count > 0 {
                     address = userInfo?.address
                     selectedRetLab?.text = userInfo?.address
+                }else{
+                    address = cityName
+                    selectedRetLab?.text = cityName
                 }
             }
             
@@ -572,9 +573,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let data = notice?.userInfo!["data"] as! NSDictionary
         let code = data.valueForKey("code")
         if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewControllerAnimated(true)
-            })
             return
         }
         SVProgressHUD.dismiss()

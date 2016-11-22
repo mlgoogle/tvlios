@@ -498,7 +498,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
-        completeBaseInfoVC.cityName = locality
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
     }
@@ -682,6 +681,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
             
             if firstLanch {
+                NSUserDefaults.standardUserDefaults().setValue(locality == nil ? "" : locality, forKey: UserDefaultKeys.homeLocation)
                 mapView!.centerCoordinate = location!.coordinate
                 firstLanch = false
             }
