@@ -193,9 +193,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PayForInvitationReply = 2018
 
         // 获取黑卡等级升级
-        case getUpCenturionCardOriderRequest = 0001
-        // 黑卡等级升级
-        case UpCenturionCardLvRequest = 0000
+        case getUpCenturionCardOriderRequest = 1085
+        // 获取黑卡等级下单
+        case getUpCenturionCardOriderReply = 1086
         // 黑卡VIP价格
         case CenturionVIPPriceRequest = 1083
         // 黑卡VIP价格

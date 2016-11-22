@@ -239,10 +239,12 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         
+        let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                                        "wanted_lv_": selectedIndex+1]
         SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
-        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: nil) { [weak self](result) in
+        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
             
-            let data = result as NSDictionary
+            let data = result["data"] as! NSDictionary
             if let errorCord = data.valueForKey("error_"){
                 let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
                 SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 1, completion: nil)
@@ -256,7 +258,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func upCenturionCardLv(record: NSDictionary) {
-        let price = record.valueForKey("")?.integerValue
+        let price = record.valueForKey("order_price_")?.integerValue
         let msg = "\n您即将预支付人民币:\(Double(price!)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
@@ -280,7 +282,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              */
             if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
                 if passwd != localPasswd {
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 1, completion: nil)
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 2, completion: nil)
                     return
                 }
                 
@@ -297,18 +299,19 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              */
             SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                "order_id_": record.valueForKey("order_id")!,
+                "order_id_": record.valueForKey("order_id_")!,
                 "passwd_": passwd!]
-                SocketManager.sendData(.UpCenturionCardLvRequest, data: dict, result: { (result) in
+                SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
                 let data = result as NSDictionary
                 if let errorCord = data.valueForKey("error_"){
                     let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 1, completion: nil)
+                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 3, completion: nil)
                     return
                 }
-                SVProgressHUD.dismiss()
-                DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex
-                weakSelf!.viewDidLoad()
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功！！！", ForDuration: 2, completion: {
+                    DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
+                    weakSelf!.viewDidLoad()
+                })
             })
             
             
