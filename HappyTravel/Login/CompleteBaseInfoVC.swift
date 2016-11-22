@@ -20,7 +20,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var token:String?
     
-    var cityName: String = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.homeLocation) as! String
+    var cityName: String? = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.homeLocation) as? String
     
     var headView:UIImageView?
     
@@ -63,7 +63,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        initImagePick()
         
         
         
@@ -436,6 +435,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func setHeadImage() {
+        initImagePick()
+
         let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
         let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
             
