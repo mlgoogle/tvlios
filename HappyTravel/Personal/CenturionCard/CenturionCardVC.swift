@@ -56,6 +56,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        SVProgressHUD.dismiss()
+    }
+    
     func receivedData(notifation:NSNotification) {
         let dict = notifation.userInfo!["data"] as? [String: AnyObject]
 
@@ -223,62 +228,112 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         
-        if curLv > 0 {
-            let price = 1000
-            let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
-            let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
-            
-            alert.addTextFieldWithConfigurationHandler({ (textField) in
-                textField.placeholder = "请输入密码"
-                textField.secureTextEntry = true
-            })
-            
-            let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { [weak self] (action) in
-                let weakSelf = self
-                let passwd = alert.textFields?.first?.text
-                /**
-                 *  密码为空
-                 */
-                if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
-                    return
-                }
-                /**
-                 *  密码错误
-                 */
-                if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
-                    if passwd != localPasswd {
-                        SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 1, completion: nil)
-                        return
-                    }
-                    
-                }
-                /**
-                 *  余额不足
-                 */
-                if DataManager.currentUser?.cash < price {
-                    weakSelf!.moneyIsTooLess()
-                    return
-                }
-                /**
-                 *  请求购买
-                 */
-                let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                    "order_id_": "",
-                    "passwd_": passwd!]
-                SocketManager.sendData(.UpCenturionCardLvRequest, data: dict, result: { (result) in
-                    weakSelf!.viewDidLoad()
-                })
+        let realm = try! Realm()
+        let price: CentuionCardPriceInfo? = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(selectedIndex)").first
         
+        if price?.blackcard_price_ != nil &&
+            price?.blackcard_price_ > 0 &&
+            price?.blackcard_price_ > DataManager.currentUser?.cash{
+            
+            moneyIsTooLess()
+            return
+        }
+        
+        let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                                        "wanted_lv_": selectedIndex+1]
+        SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
+        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
+            
+            let data = result["data"] as! NSDictionary
+            if let errorCord = data.valueForKey("error_"){
+                let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
+                SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 1, completion: nil)
+                return
+            }
+            if let strongSelf = self {
+                strongSelf.upCenturionCardLv(data)
+                SVProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    func upCenturionCardLv(record: NSDictionary) {
+        let price = record.valueForKey("order_price_")?.integerValue
+        let msg = "\n您即将预支付人民币:\(Double(price!)/100)元"
+        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) in
+            textField.placeholder = "请输入密码"
+            textField.secureTextEntry = true
+        })
+        
+        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { [weak self] (action) in
+            let weakSelf = self
+            let passwd = alert.textFields?.first?.text
+            /**
+             *  密码为空
+             */
+            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
+                SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+                return
+            }
+            /**
+             *  密码错误
+             */
+            if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
+                if passwd != localPasswd {
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 2, completion: nil)
+                    return
+                }
                 
+            }
+            /**
+             *  余额不足
+             */
+            if DataManager.currentUser?.cash < price {
+                weakSelf!.moneyIsTooLess()
+                return
+            }
+            /**
+             *  请求购买
+             */
+            SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
+            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                "order_id_": record.valueForKey("order_id_")!,
+                "passwd_": passwd!]
+            SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
+                let data = result["data"] as! NSDictionary
+                if let errorCord = data.valueForKey("error_"){
+                    let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
+                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
+                    return
+                }
+                    
+                let orderStatus = data.valueForKey("result_") as? Int
+                if orderStatus == -1 {
+                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+                }
+                if orderStatus == -2 {
+                    weakSelf!.moneyIsTooLess()
+                }
+                if orderStatus == 0 {
+                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
+                        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+                        DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
+                        weakSelf!.viewDidLoad()
+                    })
+                }
+
             })
             
-            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
             
-            alert.addAction(ok)
-            alert.addAction(cancel)
-            presentViewController(alert, animated: true, completion: nil)
-        }
+        })
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alert.addAction(ok)
+        alert.addAction(cancel)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func shareImage()-> UIImage  {

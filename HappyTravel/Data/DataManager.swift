@@ -422,6 +422,22 @@ class DataManager: NSObject {
         
     }
     
+    static func insertCenturionCardVIPPriceInfo(info: CentuionCardPriceInfo){
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        let price = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(info.blackcard_lv_)").first
+        try! realm.write({ 
+            if price == nil{
+                realm.add(info)
+            }else{
+                price?.setInfo(info)
+            }
+        })
+        
+    }
+    
     // MARK: - CerturionCardConsumedInfo
     static func getCerturionCardConsumedInfo(oid: Int) -> CenturionCardConsumedInfo? {
         if DataManager.initialized == false {
