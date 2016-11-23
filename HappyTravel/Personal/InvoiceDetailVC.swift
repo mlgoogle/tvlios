@@ -546,10 +546,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         NSUserDefaults.standardUserDefaults().setValue(invoiceInfoDict, forKey:UserDefaultKeys.invoiceInfoDict)
         var oidStr = "" 
         for (index, orderInfo) in selectedOrderList!.enumerate() {
-            oidStr += "\(orderInfo.order_id_)"
-            if index < selectedOrderList!.count - 1 {
-                oidStr += ","
-            }
+            oidStr +=  index == 0 ? "\(orderInfo.order_id_)" : ",\(orderInfo.order_id_)"
             let realm = try! Realm()
             let object = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(orderInfo.order_id_)").first
             try! realm.write({ 
