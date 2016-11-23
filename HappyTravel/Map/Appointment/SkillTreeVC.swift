@@ -12,7 +12,7 @@ import RealmSwift
 
 protocol SkillTreeVCDelegate : NSObjectProtocol {
     
-    func endEdit(skills: Array<Dictionary<SkillInfo, Bool>>)
+    func endEdit(_ skills: Array<Dictionary<SkillInfo, Bool>>)
     
 }
 
@@ -59,17 +59,17 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Grouped)
+        table = UITableView(frame: CGRect.zero, style: .grouped)
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
-        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 256
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.separatorStyle = .None
-        table?.registerClass(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")
+        table?.separatorStyle = .none
+        table?.register(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp_makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
@@ -88,49 +88,49 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     
     
     // MARK: - UITableView
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("SkillsCell", forIndexPath: indexPath) as? SkillsCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SkillsCell", for: indexPath) as? SkillsCell
             cell?.delegate = self
-            cell?.style = .Delete
+            cell?.style = .delete
             cell?.setInfo(selectedSkills)
             return cell!
         } else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("SkillsCell", forIndexPath: indexPath) as? SkillsCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SkillsCell", for: indexPath) as? SkillsCell
             cell?.delegate = self
-            cell?.style = .Select
+            cell?.style = .select
             cell?.setInfo(skills)
             return cell!
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("OKCell")
+            var cell = tableView.dequeueReusableCell(withIdentifier: "OKCell")
             if cell == nil {
-                cell = UITableViewCell.init(style: .Default, reuseIdentifier: "OKCell")
-                cell?.selectionStyle = .None
-                cell?.backgroundColor = UIColor.clearColor()
-                cell?.contentView.backgroundColor = UIColor.clearColor()
+                cell = UITableViewCell.init(style: .default, reuseIdentifier: "OKCell")
+                cell?.selectionStyle = .none
+                cell?.backgroundColor = UIColor.clear
+                cell?.contentView.backgroundColor = UIColor.clear
             }
             
             var ok = cell?.contentView.viewWithTag(1001) as? UIButton
             if ok == nil {
                 ok = UIButton()
                 ok?.tag = 1001
-                ok?.setTitle("确定", forState: .Normal)
+                ok?.setTitle("确定", for: UIControlState())
                 ok?.backgroundColor = UIColor.init(red: 30/255.0, green: 40/255.0, blue: 60/255.0, alpha: 1)
-                ok?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                ok?.setTitleColor(UIColor.white, for: UIControlState())
                 ok?.layer.cornerRadius = 5
                 ok?.layer.masksToBounds = true
-                ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), forControlEvents: .TouchUpInside)
+                ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), for: .touchUpInside)
                 cell?.contentView.addSubview(ok!)
-                ok?.snp_makeConstraints(closure: { (make) in
+                ok?.snp_makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(40)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView).offset(-40)
@@ -144,15 +144,15 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
 
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 40
         } else if section == 1 {
@@ -163,15 +163,15 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.001
     }
     
     // MARK: - TallysCellDelegate
-    func selectedAction(info: Dictionary<SkillInfo, Bool>) {
+    func selectedAction(_ info: Dictionary<SkillInfo, Bool>) {
         selectedSkills.append(info)
-        table?.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: .None)
-        for (index, skillInfo) in skills.enumerate() {
+        table?.reloadSections(IndexSet.init(integer: 0), with: .none)
+        for (index, skillInfo) in skills.enumerated() {
             for (skill, _) in skillInfo {
                 if skill.skill_id_ == info.keys.first?.skill_id_ {
                     skills[index][skill] = true
@@ -182,10 +182,10 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
     }
     
-    func deleteAction(index: Int, info: Dictionary<SkillInfo, Bool>) {
-        selectedSkills.removeAtIndex(index)
+    func deleteAction(_ index: Int, info: Dictionary<SkillInfo, Bool>) {
+        selectedSkills.remove(at: index)
         
-        for (_index, skillInfo) in skills.enumerate() {
+        for (_index, skillInfo) in skills.enumerated() {
             for (skill, _) in skillInfo {
                 if skill.skill_id_ == info.keys.first?.skill_id_ {
                     skills[_index][skill] = false
@@ -194,14 +194,14 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             }
             
         }
-        table?.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: .None)
-        table?.reloadSections(NSIndexSet.init(index: 1), withRowAnimation: .None)
+        table?.reloadSections(IndexSet.init(integer: 0), with: .none)
+        table?.reloadSections(IndexSet.init(integer: 1), with: .none)
     }
     
     // MARK: - DoneAction
-    func doneAction(sender: UIButton) {
+    func doneAction(_ sender: UIButton) {
         delegate?.endEdit(selectedSkills)
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
 }
 

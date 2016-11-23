@@ -11,33 +11,33 @@ import RealmSwift
 import XCGLogger
 
 enum HodometerType : Int {
-    case All
-    case Business
-    case Highend
+    case all
+    case business
+    case highend
 }
 
 class DataManager: NSObject {
     
     enum OrderType : Int {
-        case All
-        case Business
-        case Highend
+        case all
+        case business
+        case highend
     }
     
     static var initialized = false
     
-    static func setDefaultRealmForUID(uid: Int) {
+    static func setDefaultRealmForUID(_ uid: Int) {
         var config = Realm.Configuration()
         
         var path:NSString = (config.fileURL?.absoluteString)!
-        path = path.stringByDeletingLastPathComponent
-        path = path.stringByAppendingPathComponent("\(uid)")
-        path = path.stringByAppendingPathExtension("realm")!
-        config.fileURL = NSURL(string: path as String)
+        path = path.deletingLastPathComponent as NSString
+        path = path.appendingPathComponent("\(uid)") as NSString
+        path = path.appendingPathExtension("realm")! as NSString
+        config.fileURL = URL(string: path as String)
         config.schemaVersion = 1
         config.migrationBlock = {migration, oldSchemaVersion in
             if oldSchemaVersion < 1 {
-                migration.enumerate(OrderInfo.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: OrderInfo.className()) { oldObject, newObject in
                     newObject!["start_time_"] = 123
                 }
             }
@@ -50,7 +50,7 @@ class DataManager: NSObject {
     //MARK: - UserInfo
     static let currentUser:UserInfo? = UserInfo()
     
-    static func getUserInfo(uid: Int) -> UserInfo? {
+    static func getUserInfo(_ uid: Int) -> UserInfo? {
         if DataManager.initialized == false {
             return nil
         }
@@ -62,7 +62,7 @@ class DataManager: NSObject {
         return realm.objects(UserInfo.self).filter("uid = \(uid)").first
     }
     
-    static func updateUserInfo(info: UserInfo) {
+    static func updateUserInfo(_ info: UserInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -81,7 +81,7 @@ class DataManager: NSObject {
     }
     
     //MARK: - PushMessage
-    static func getMessageCount(uid: Int) -> Int {
+    static func getMessageCount(_ uid: Int) -> Int {
         if DataManager.initialized == false {
             return 0
         }
@@ -92,7 +92,7 @@ class DataManager: NSObject {
         return (realm.objects(UserPushMessage.self).filter("uid = \(uid)").first?.msgList.count)!
     }
     
-    static func getUnreadMsgCnt(uid: Int) -> Int {
+    static func getUnreadMsgCnt(_ uid: Int) -> Int {
         if DataManager.initialized == false {
             return 0
         }
@@ -111,7 +111,7 @@ class DataManager: NSObject {
         return realm.objects(UserPushMessage.self).filter("uid = \(uid)").count
     }
     
-    static func getMessage(uid: Int) -> UserPushMessage? {
+    static func getMessage(_ uid: Int) -> UserPushMessage? {
         if DataManager.initialized == false {
             return nil
         }
@@ -119,7 +119,7 @@ class DataManager: NSObject {
         return realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
     }
     
-    static func insertMessage(message: PushMessage) {
+    static func insertMessage(_ message: PushMessage) {
         if DataManager.initialized == false {
             return
         }
@@ -154,12 +154,12 @@ class DataManager: NSObject {
      
      - parameter message:
      */
-    static func insertPushMessage(message: PushMessage) {
+    static func insertPushMessage(_ message: PushMessage) {
         if DataManager.initialized == false {
             return
         }
         
-        message.msg_time_ = Int64(NSDate().timeIntervalSince1970)
+        message.msg_time_ = Int64(Date().timeIntervalSince1970)
         switch message.push_msg_type {
         case 2004:
             DataManager.insertMessage(message)
@@ -195,7 +195,7 @@ class DataManager: NSObject {
         
     }
     
-    static func deletePushMessage(uid:Int) {
+    static func deletePushMessage(_ uid:Int) {
         if DataManager.initialized == false {
             return
         }
@@ -207,7 +207,7 @@ class DataManager: NSObject {
         
     }
     
-    static func readMessage(uid: Int) {
+    static func readMessage(_ uid: Int) {
         if DataManager.initialized == false {
             return
         }
@@ -220,7 +220,7 @@ class DataManager: NSObject {
     }
     
     //MARK: - OrderInfo
-    static func getOrderInfo(oid: Int) -> OrderInfo? {
+    static func getOrderInfo(_ oid: Int) -> OrderInfo? {
         if DataManager.initialized == false {
             return nil
         }
@@ -228,20 +228,20 @@ class DataManager: NSObject {
         return realm.objects(OrderInfo.self).filter("oid_ = \(oid)").first
     }
     
-    static func getOrderCount(type: OrderType) -> Int {
+    static func getOrderCount(_ type: OrderType) -> Int {
         if DataManager.initialized == false {
             return 0
         }
         let realm = try! Realm()
-        if type == .All {
+        if type == .all {
             return realm.objects(OrderInfo.self).count
-        } else if type == .Business {
+        } else if type == .business {
             return 0
         }
         return 0
     }
     
-    static func insertOrderInfo(info: OrderInfo) {
+    static func insertOrderInfo(_ info: OrderInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -256,7 +256,7 @@ class DataManager: NSObject {
         
     }
     
-    static func updateOrderStatus(info: OrderInfo) {
+    static func updateOrderStatus(_ info: OrderInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -272,7 +272,7 @@ class DataManager: NSObject {
     }
     
     //MARK: - HodometerInfo
-    static func getHodometerInfo(oid: Int) -> HodometerInfo? {
+    static func getHodometerInfo(_ oid: Int) -> HodometerInfo? {
         if DataManager.initialized == false {
             return nil
         }
@@ -280,20 +280,20 @@ class DataManager: NSObject {
         return realm.objects(HodometerInfo.self).filter("order_id_ = \(oid)").first
     }
     
-    static func getHodometerCount(type: HodometerType) -> Int {
+    static func getHodometerCount(_ type: HodometerType) -> Int {
         if DataManager.initialized == false {
             return 0
         }
         let realm = try! Realm()
-        if type == .All {
+        if type == .all {
             return realm.objects(HodometerInfo.self).count
-        } else if type == .Business {
+        } else if type == .business {
             return 0
         }
         return 0
     }
     
-    static func insertHodometerInfo(info: HodometerInfo) {
+    static func insertHodometerInfo(_ info: HodometerInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -309,7 +309,7 @@ class DataManager: NSObject {
         
     }
     
-    static func insertOpenTicketWithHodometerInfo(info: HodometerInfo) {
+    static func insertOpenTicketWithHodometerInfo(_ info: HodometerInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -326,7 +326,7 @@ class DataManager: NSObject {
         })
     }
     
-    static func insertOpenTicketWithConsumedInfo(info: CenturionCardConsumedInfo) {
+    static func insertOpenTicketWithConsumedInfo(_ info: CenturionCardConsumedInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -343,7 +343,7 @@ class DataManager: NSObject {
         })
     }
     
-    static func insertInvoiceServiceInfo(info: InvoiceServiceInfo) {
+    static func insertInvoiceServiceInfo(_ info: InvoiceServiceInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -363,7 +363,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let infos = realm.objects(OpenTicketInfo.self).sorted("time", ascending: true)
+        let infos = realm.objects(OpenTicketInfo.self).sorted(byProperty: "time", ascending: true)
         return infos
     }
     
@@ -386,7 +386,7 @@ class DataManager: NSObject {
     }
     
     // MARK: - CenturionCardServiceInfo
-    static func getCenturionCardServiceWithID(id: Int) ->Results<CenturionCardServiceInfo>? {
+    static func getCenturionCardServiceWithID(_ id: Int) ->Results<CenturionCardServiceInfo>? {
         if DataManager.initialized == false {
             return nil
         }
@@ -396,7 +396,7 @@ class DataManager: NSObject {
         return centurionCardServiceInfos
     }
     
-    static func getCenturionCardServiceWithLV(lv: Int) ->Results<CenturionCardServiceInfo>? {
+    static func getCenturionCardServiceWithLV(_ lv: Int) ->Results<CenturionCardServiceInfo>? {
         if DataManager.initialized == false {
             return nil
         }
@@ -406,7 +406,7 @@ class DataManager: NSObject {
         return centurionCardServiceInfos
     }
     
-    static func insertCenturionCardServiceInfo(info: CenturionCardServiceInfo) {
+    static func insertCenturionCardServiceInfo(_ info: CenturionCardServiceInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -423,7 +423,7 @@ class DataManager: NSObject {
     }
     
     // MARK: - CerturionCardConsumedInfo
-    static func getCerturionCardConsumedInfo(oid: Int) -> CenturionCardConsumedInfo? {
+    static func getCerturionCardConsumedInfo(_ oid: Int) -> CenturionCardConsumedInfo? {
         if DataManager.initialized == false {
             return nil
         }
@@ -433,7 +433,7 @@ class DataManager: NSObject {
         return centurionCardConsumedInfo
     }
     
-    static func getCerturionCardConsumedInfos(lv: Int) -> Results<CenturionCardConsumedInfo>? {
+    static func getCerturionCardConsumedInfos(_ lv: Int) -> Results<CenturionCardConsumedInfo>? {
         if DataManager.initialized == false {
             return nil
         }
@@ -443,7 +443,7 @@ class DataManager: NSObject {
         return centurionCardConsumedInfos
     }
     
-    static func insertCerturionCardConsumedInfo(info: CenturionCardConsumedInfo) {
+    static func insertCerturionCardConsumedInfo(_ info: CenturionCardConsumedInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -459,7 +459,7 @@ class DataManager: NSObject {
         
     }
     
-    static func insertData<T: Object>(type: T.Type, data: AnyObject) {
+    static func insertData<T: Object>(_ type: T.Type, data: AnyObject) {
         if DataManager.initialized == false {
             return
         }
@@ -493,7 +493,7 @@ class DataManager: NSObject {
         
     }
     
-    static func getData<T: Object>(type: T.Type, filter: String?) -> AnyObject? {
+    static func getData<T: Object>(_ type: T.Type, filter: String?) -> AnyObject? {
         if DataManager.initialized == false {
             return nil
         }
@@ -531,7 +531,7 @@ class DataManager: NSObject {
         return nil
     }
     
-    static func updateData<T: Object>(type: T.Type, data: AnyObject) -> Bool {
+    static func updateData<T: Object>(_ type: T.Type, data: AnyObject) -> Bool {
         if DataManager.initialized == false {
             return false
         }
@@ -556,7 +556,7 @@ class DataManager: NSObject {
         return false
     }
     
-    static func updateData<T: Object>(type: T.Type, dict: [String: AnyObject]) -> Bool {
+    static func updateData<T: Object>(_ type: T.Type, dict: [String: AnyObject]) -> Bool {
         guard DataManager.initialized != false else {return false}
         
         let realm = try! Realm()
@@ -583,7 +583,7 @@ class DataManager: NSObject {
      - parameter info:
      */
 
-    static func insertInvoiceHistotyInfo(info: InvoiceHistoryInfo) {
+    static func insertInvoiceHistotyInfo(_ info: InvoiceHistoryInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -598,7 +598,7 @@ class DataManager: NSObject {
         })
         
     }
-    static func getInvoiceHistoryInfo(invoice_id_: Int) -> InvoiceHistoryInfo? {
+    static func getInvoiceHistoryInfo(_ invoice_id_: Int) -> InvoiceHistoryInfo? {
         if DataManager.initialized == false {
             return nil
         }
@@ -608,7 +608,7 @@ class DataManager: NSObject {
         return histroyInfo
     }
     
-    static func getInvoiceHistoryInfos(lv: Int) -> Results<InvoiceHistoryInfo>? {
+    static func getInvoiceHistoryInfos(_ lv: Int) -> Results<InvoiceHistoryInfo>? {
         if DataManager.initialized == false {
             return nil
         }
@@ -618,7 +618,7 @@ class DataManager: NSObject {
         return histroyInfo
     }
     
-    static func updateInvoiceHistoryInfo(info:InvoiceHistoryInfo) {
+    static func updateInvoiceHistoryInfo(_ info:InvoiceHistoryInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -639,7 +639,7 @@ class DataManager: NSObject {
     
     //MARK: - 预约记录
     
-    static func insertAppointmentRecordInfo(info: AppointmentInfo) {
+    static func insertAppointmentRecordInfo(_ info: AppointmentInfo) {
         if DataManager.initialized == false {
             return
         }
@@ -654,7 +654,7 @@ class DataManager: NSObject {
         })
         
     }
-    static func getAppointmentRecordInfos(lv: Int) -> Results<AppointmentInfo>? {
+    static func getAppointmentRecordInfos(_ lv: Int) -> Results<AppointmentInfo>? {
         if DataManager.initialized == false {
             return nil
         }

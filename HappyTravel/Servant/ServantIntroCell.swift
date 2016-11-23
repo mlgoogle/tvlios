@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 protocol ServantIntroCellDelegate : NSObjectProtocol {
     
-    func chatAction(servantInfo: UserInfo?)
+    func chatAction(_ servantInfo: UserInfo?)
     
 }
 
@@ -24,22 +24,22 @@ class ServantIntroCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
-        backgroundColor = UIColor.clearColor()
-        contentView.userInteractionEnabled = true
-        userInteractionEnabled = true
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
+        contentView.isUserInteractionEnabled = true
+        isUserInteractionEnabled = true
         
-        let width = UIScreen.mainScreen().bounds.size.width
+        let width = UIScreen.main.bounds.size.width
         
         var view = contentView.viewWithTag(101)
         if view == nil {
             view = UIView()
             view!.tag = 101
-            view?.backgroundColor = UIColor.whiteColor()
-            view?.userInteractionEnabled = true
+            view?.backgroundColor = UIColor.white
+            view?.isUserInteractionEnabled = true
             contentView.addSubview(view!)
-            view?.snp_makeConstraints(closure: { (make) in
+            view?.snp_makeConstraints({ (make) in
                 make.left.equalTo(contentView)
                 make.top.equalTo(contentView)
                 make.right.equalTo(contentView)
@@ -52,7 +52,7 @@ class ServantIntroCell: UITableViewCell {
             personalView = UIImageView()
             personalView!.tag = 1001
 //            personalView!.backgroundColor = UIColor.redColor()
-            personalView!.userInteractionEnabled = true
+            personalView!.isUserInteractionEnabled = true
             view!.addSubview(personalView!)
             personalView!.snp_makeConstraints { (make) in
                 make.top.equalTo(view!)
@@ -70,9 +70,9 @@ class ServantIntroCell: UITableViewCell {
             headImageView?.layer.cornerRadius = AtapteWidthValue(80) / 2
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
-            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            headImageView!.userInteractionEnabled = true
-            headImageView!.backgroundColor = UIColor.clearColor()
+            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
+            headImageView!.isUserInteractionEnabled = true
+            headImageView!.backgroundColor = UIColor.clear
             personalView!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(25))
@@ -86,10 +86,10 @@ class ServantIntroCell: UITableViewCell {
         if officialAuth == nil {
             officialAuth = UIImageView()
             officialAuth?.tag = 10003
-            officialAuth?.backgroundColor = UIColor.clearColor()
-            officialAuth?.contentMode = .ScaleAspectFit
+            officialAuth?.backgroundColor = UIColor.clear
+            officialAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(officialAuth!)
-            officialAuth?.snp_makeConstraints(closure: { (make) in
+            officialAuth?.snp_makeConstraints({ (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(20))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.width.equalTo(AtapteWidthValue(20))
@@ -102,10 +102,10 @@ class ServantIntroCell: UITableViewCell {
         if zhimaAuth == nil {
             zhimaAuth = UIImageView()
             zhimaAuth?.tag = 10004
-            zhimaAuth?.backgroundColor = UIColor.clearColor()
-            zhimaAuth?.contentMode = .ScaleAspectFit
+            zhimaAuth?.backgroundColor = UIColor.clear
+            zhimaAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(zhimaAuth!)
-            zhimaAuth?.snp_makeConstraints(closure: { (make) in
+            zhimaAuth?.snp_makeConstraints({ (make) in
                 make.left.equalTo(officialAuth!.snp_right).offset(AtapteWidthValue(10))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.width.equalTo(AtapteWidthValue(20))
@@ -118,12 +118,12 @@ class ServantIntroCell: UITableViewCell {
         if authTips == nil {
             authTips = UILabel()
             authTips?.tag = 10005
-            authTips?.backgroundColor = UIColor.clearColor()
-            authTips?.textAlignment = .Right
+            authTips?.backgroundColor = UIColor.clear
+            authTips?.textAlignment = .right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
-            authTips?.font = UIFont.boldSystemFontOfSize(S15)
+            authTips?.font = UIFont.boldSystemFont(ofSize: S15)
             personalView?.addSubview(authTips!)
-            authTips?.snp_makeConstraints(closure: { (make) in
+            authTips?.snp_makeConstraints({ (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -135,12 +135,12 @@ class ServantIntroCell: UITableViewCell {
         if limitLab == nil {
             limitLab = UILabel()
             limitLab?.tag = 10006
-            limitLab?.backgroundColor = UIColor.clearColor()
-            limitLab?.textAlignment = .Right
-            limitLab?.textColor = .whiteColor()
-            limitLab?.font = UIFont.boldSystemFontOfSize(S15)
+            limitLab?.backgroundColor = UIColor.clear
+            limitLab?.textAlignment = .right
+            limitLab?.textColor = .white
+            limitLab?.font = UIFont.boldSystemFont(ofSize: S15)
             personalView?.addSubview(limitLab!)
-            limitLab?.snp_makeConstraints(closure: { (make) in
+            limitLab?.snp_makeConstraints({ (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
                 make.bottom.equalTo(personalView!).offset(AtapteHeightValue(-20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -152,10 +152,10 @@ class ServantIntroCell: UITableViewCell {
         if limitIcon == nil {
             limitIcon = UIImageView()
             limitIcon?.tag = 10007
-            limitIcon?.backgroundColor = UIColor.clearColor()
-            limitIcon?.contentMode = .ScaleAspectFit
+            limitIcon?.backgroundColor = UIColor.clear
+            limitIcon?.contentMode = .scaleAspectFit
             personalView?.addSubview(limitIcon!)
-            limitIcon?.snp_makeConstraints(closure: { (make) in
+            limitIcon?.snp_makeConstraints({ (make) in
                 make.right.equalTo(limitLab!.snp_left).offset(AtapteWidthValue(-5))
                 make.bottom.equalTo(limitLab!)
                 make.width.equalTo(AtapteWidthValue(20))
@@ -168,12 +168,12 @@ class ServantIntroCell: UITableViewCell {
         if nickNameLab == nil {
             nickNameLab = UILabel()
             nickNameLab?.tag = 2001
-            nickNameLab?.backgroundColor = UIColor.clearColor()
-            nickNameLab?.textAlignment = .Left
-            nickNameLab?.textColor = .blackColor()
-            nickNameLab?.font = UIFont.boldSystemFontOfSize(S15)
+            nickNameLab?.backgroundColor = UIColor.clear
+            nickNameLab?.textAlignment = .left
+            nickNameLab?.textColor = .black
+            nickNameLab?.font = UIFont.boldSystemFont(ofSize: S15)
             view?.addSubview(nickNameLab!)
-            nickNameLab?.snp_makeConstraints(closure: { (make) in
+            nickNameLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(view!).offset(AtapteWidthValue(20))
                 make.right.equalTo(view!)
                 make.top.equalTo(personalView!.snp_bottom).offset(AtapteHeightValue(10))
@@ -185,7 +185,7 @@ class ServantIntroCell: UITableViewCell {
         if tallyView == nil {
             tallyView = UIView()
             tallyView?.tag = 3001
-            tallyView?.backgroundColor = UIColor.whiteColor()
+            tallyView?.backgroundColor = UIColor.white
             view!.addSubview(tallyView!)
             
         }
@@ -194,7 +194,7 @@ class ServantIntroCell: UITableViewCell {
         if starLevelView == nil {
             starLevelView = UIView()
             starLevelView!.tag = 4001   
-            starLevelView?.backgroundColor = UIColor.clearColor()
+            starLevelView?.backgroundColor = UIColor.clear
             view!.addSubview(starLevelView!)
             
             for i in 0...4 {
@@ -202,9 +202,9 @@ class ServantIntroCell: UITableViewCell {
                 if star == nil {
                     star = UIImageView()
                     star?.tag = starLevelView!.tag * 10 + i
-                    star?.backgroundColor = UIColor.clearColor()
+                    star?.backgroundColor = UIColor.clear
                     starLevelView?.addSubview(star!)
-                    star?.snp_makeConstraints(closure: { (make) in
+                    star?.snp_makeConstraints({ (make) in
                         make.left.equalTo(starLevelView!.snp_left).offset(AtapteWidthValue(((width / 3.0 + 20) / 5.0) * CGFloat(i)))
                         make.centerY.equalTo(starLevelView!)
                         make.width.equalTo(AtapteWidthValue(20))
@@ -216,7 +216,7 @@ class ServantIntroCell: UITableViewCell {
             }
         }
 
-        tallyView?.snp_makeConstraints(closure: { (make) in
+        tallyView?.snp_makeConstraints({ (make) in
             make.left.equalTo(view!).offset(AtapteWidthValue(20))
             make.right.equalTo(view!)
             make.top.equalTo(nickNameLab!.snp_bottom)
@@ -230,11 +230,11 @@ class ServantIntroCell: UITableViewCell {
             chatBtn?.backgroundColor = UIColor.init(decR: 20, decG: 31, decB: 49, a: 1)
             chatBtn?.layer.cornerRadius = 5
             chatBtn?.layer.masksToBounds = true
-            chatBtn?.setTitle("开始沟通", forState: .Normal)
-            chatBtn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            chatBtn?.addTarget(self, action: #selector(ServantIntroCell.chatAction(_:)), forControlEvents: .TouchUpInside)
+            chatBtn?.setTitle("开始沟通", for: UIControlState())
+            chatBtn?.setTitleColor(UIColor.white, for: UIControlState())
+            chatBtn?.addTarget(self, action: #selector(ServantIntroCell.chatAction(_:)), for: .touchUpInside)
             view?.addSubview(chatBtn!)
-            chatBtn?.snp_makeConstraints(closure: { (make) in
+            chatBtn?.snp_makeConstraints({ (make) in
                 make.right.equalTo(view!).offset(AtapteWidthValue(-10))
                 make.centerY.equalTo(starLevelView!)
                 make.width.equalTo(AtapteWidthValue(100))
@@ -242,7 +242,7 @@ class ServantIntroCell: UITableViewCell {
             })
         }
         
-        starLevelView?.snp_makeConstraints(closure: { (make) in
+        starLevelView?.snp_makeConstraints({ (make) in
             make.top.equalTo(tallyView!.snp_bottom)
             make.left.equalTo(view!).offset(AtapteWidthValue(20))
             make.right.equalTo(chatBtn!.snp_left)
@@ -255,9 +255,9 @@ class ServantIntroCell: UITableViewCell {
         if bottomControl == nil {
             bottomControl = UIView()
             bottomControl!.tag = 10010
-            bottomControl!.backgroundColor = UIColor.clearColor()
+            bottomControl!.backgroundColor = UIColor.clear
             view?.addSubview(bottomControl!)
-            bottomControl?.snp_makeConstraints(closure: { (make) in
+            bottomControl?.snp_makeConstraints({ (make) in
                 make.top.equalTo(starLevelView!.snp_bottom)
                 make.bottom.equalTo(view!)
                 make.left.equalTo(view!)
@@ -267,11 +267,11 @@ class ServantIntroCell: UITableViewCell {
         
     }
     
-    func chatAction(sender: UIButton?) {
+    func chatAction(_ sender: UIButton?) {
         delegate?.chatAction(servantInfo)
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setInfo(_ userInfo: UserInfo?) {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
@@ -282,7 +282,7 @@ class ServantIntroCell: UITableViewCell {
 //            }
 //            
 //        }
-        let headUrl = NSURL(string: userInfo!.headUrl!)
+        let headUrl = URL(string: userInfo!.headUrl!)
         let headView = imageView.viewWithTag(10001) as! UIImageView
         headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             
@@ -300,16 +300,16 @@ class ServantIntroCell: UITableViewCell {
             subview.removeFromSuperview()
         }
         allLabelWidth = 0.0
-        for (index, tag) in tags.enumerate() {
+        for (index, tag) in tags.enumerated() {
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
                 tallyItemView = UIView()
                 tallyItemView!.tag = 1001 + index
-                tallyItemView!.userInteractionEnabled = true
-                tallyItemView!.backgroundColor = UIColor.clearColor()
+                tallyItemView!.isUserInteractionEnabled = true
+                tallyItemView!.backgroundColor = UIColor.clear
                 tallyItemView!.layer.cornerRadius = 25 / 2.0
                 tallyItemView?.layer.masksToBounds = true
-                tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+                tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
                 tallyItemView?.layer.borderWidth = 1
                 tallyView!.addSubview(tallyItemView!)
                 tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
@@ -345,10 +345,10 @@ class ServantIntroCell: UITableViewCell {
             if tallyLabel == nil {
                 tallyLabel = UILabel(frame: CGRectZero)
                 tallyLabel!.tag = tallyItemView!.tag * 100 + 1
-                tallyLabel!.font = UIFont.systemFontOfSize(S12)
-                tallyLabel!.userInteractionEnabled = false
-                tallyLabel!.backgroundColor = UIColor.clearColor()
-                tallyLabel?.textAlignment = .Center
+                tallyLabel!.font = UIFont.systemFont(ofSize: S12)
+                tallyLabel!.isUserInteractionEnabled = false
+                tallyLabel!.backgroundColor = UIColor.clear
+                tallyLabel?.textAlignment = .center
                 tallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                 tallyItemView!.addSubview(tallyLabel!)
                 tallyLabel!.snp_makeConstraints { (make) in
@@ -366,10 +366,10 @@ class ServantIntroCell: UITableViewCell {
             if tallyBottomView == nil {
                 tallyBottomView = UIView()
                 tallyBottomView?.tag = 3001*10+1
-                tallyBottomView?.backgroundColor = UIColor.clearColor()
+                tallyBottomView?.backgroundColor = UIColor.clear
                 tallyView?.addSubview(tallyBottomView!)
             }
-            tallyBottomView?.snp_remakeConstraints(closure: { (make) in
+            tallyBottomView?.snp_remakeConstraints({ (make) in
                 make.top.equalTo(lastTallyView!.snp_bottom)
                 make.bottom.equalTo(tallyView!)
             })
@@ -384,7 +384,7 @@ class ServantIntroCell: UITableViewCell {
         }
         
         if let officialAuth = imageView.viewWithTag(10003) as? UIImageView {
-            officialAuth.hidden = !(userInfo?.certification)!
+            officialAuth.isHidden = !(userInfo?.certification)!
         }
         
         if let limitLab = imageView.viewWithTag(10006) as? UILabel {
@@ -397,11 +397,11 @@ class ServantIntroCell: UITableViewCell {
         
     }
     
-    func Angle2Radian(angle: Double) ->Double {
+    func Angle2Radian(_ angle: Double) ->Double {
         return angle * ServantIntroCell.PI / 180.0;
     }
     
-    func CalcDistance(lon1: Double, lat1: Double, lon2: Double, lat2: Double) ->Double {
+    func CalcDistance(_ lon1: Double, lat1: Double, lon2: Double, lat2: Double) ->Double {
         let lat_a:Double = Angle2Radian(lat1)
         let lon_a:Double = Angle2Radian(lon1)
         let lat_b:Double = Angle2Radian(lat2)

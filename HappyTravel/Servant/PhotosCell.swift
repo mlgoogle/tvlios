@@ -12,11 +12,11 @@ import RealmSwift
 
 protocol PhotosCellDelegate : NSObjectProtocol {
     
-    func spreadAction(sender: AnyObject?)
+    func spreadAction(_ sender: AnyObject?)
     
 }
 
-public class PhotosCell : UITableViewCell {
+open class PhotosCell : UITableViewCell {
     
     var spread = false
     var photosInfo:AnyObject?
@@ -24,18 +24,18 @@ public class PhotosCell : UITableViewCell {
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        backgroundColor = UIColor.clearColor()
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
         
         var view = viewWithTag(101)
         if view == nil {
             view = UIView()
             view!.tag = 101
-            view?.backgroundColor = UIColor.clearColor()
-            view?.userInteractionEnabled = true
+            view?.backgroundColor = UIColor.clear
+            view?.isUserInteractionEnabled = true
             contentView.addSubview(view!)
-            view?.snp_makeConstraints(closure: { (make) in
+            view?.snp_makeConstraints({ (make) in
                 make.left.equalTo(self.contentView).offset(10)
                 make.top.equalTo(self.contentView).offset(10)
                 make.right.equalTo(self.contentView).offset(-10)
@@ -45,13 +45,13 @@ public class PhotosCell : UITableViewCell {
         
         var moreBtn = contentView.viewWithTag(1002) as? UIButton
         if moreBtn == nil {
-            moreBtn = UIButton(frame: CGRectZero)
+            moreBtn = UIButton(frame: CGRect.zero)
             moreBtn?.tag = 1002
-            moreBtn?.contentMode = UIViewContentMode.ScaleAspectFit
-            moreBtn!.addTarget(self, action: #selector(PhotosCell.moreAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            moreBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), forState: .Normal)
+            moreBtn?.contentMode = UIViewContentMode.scaleAspectFit
+            moreBtn!.addTarget(self, action: #selector(PhotosCell.moreAction(_:)), for: UIControlEvents.touchUpInside)
+            moreBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), for: UIControlState())
             view!.addSubview(moreBtn!)
-            moreBtn!.snp_makeConstraints(closure: { (make) in
+            moreBtn!.snp_makeConstraints({ (make) in
                 make.bottom.equalTo(view!)
                 make.height.equalTo(7)
                 make.width.equalTo(14)
@@ -63,13 +63,13 @@ public class PhotosCell : UITableViewCell {
         if nonePhotosLabel == nil {
             nonePhotosLabel = UILabel()
             nonePhotosLabel?.tag = 1003
-            nonePhotosLabel!.font = UIFont.systemFontOfSize(AtapteWidthValue(24))
-            nonePhotosLabel?.textAlignment = .Center
+            nonePhotosLabel!.font = UIFont.systemFont(ofSize: AtapteWidthValue(24))
+            nonePhotosLabel?.textAlignment = .center
             nonePhotosLabel!.text = "无照片"
-            nonePhotosLabel!.textColor = UIColor.grayColor()
-            nonePhotosLabel!.backgroundColor = UIColor.clearColor()
+            nonePhotosLabel!.textColor = UIColor.gray
+            nonePhotosLabel!.backgroundColor = UIColor.clear
             view!.addSubview(nonePhotosLabel!)
-            nonePhotosLabel?.snp_makeConstraints(closure: { (make) in
+            nonePhotosLabel?.snp_makeConstraints({ (make) in
                 make.top.equalTo(view!).offset(10)
                 make.left.equalTo(view!)
                 make.right.equalTo(view!)
@@ -79,16 +79,16 @@ public class PhotosCell : UITableViewCell {
         
     }
     
-    func setInfo(photos: List<PhotoUrl>?, setSpread spd: Bool) {
+    func setInfo(_ photos: List<PhotoUrl>?, setSpread spd: Bool) {
         let view = contentView.viewWithTag(101)
         let nonePhotosLabel = view!.viewWithTag(1003) as? UILabel
         if photos!.count != 0 {
-            nonePhotosLabel?.hidden = true
-            for (index, photoURL) in photos!.enumerate() {
+            nonePhotosLabel?.isHidden = true
+            for (index, photoURL) in photos!.enumerated() {
                 var photoView = nonePhotosLabel?.viewWithTag(1003 * 10 + index) as? UIImageView
                 if photoView == nil {
                     photoView = UIImageView()
-                    photoView?.backgroundColor = UIColor.clearColor()
+                    photoView?.backgroundColor = UIColor.clear
                     photoView?.tag = 1003 * 10 + index
                     view?.addSubview(photoView!)
                 }
@@ -101,7 +101,7 @@ public class PhotosCell : UITableViewCell {
                 if index != 0 {
                     previousView = view?.viewWithTag(1003 * 10 + index - 1) as? UIImageView
                 }
-                photoView?.snp_makeConstraints(closure: { (make) in
+                photoView?.snp_makeConstraints({ (make) in
                     if col == 0 {
                         make.left.equalTo(nonePhotosLabel!)
                     } else {
@@ -112,12 +112,12 @@ public class PhotosCell : UITableViewCell {
                     } else {
                         make.top.equalTo(previousView!.snp_bottom).offset(10)
                     }
-                    let photoWidth = (UIScreen.mainScreen().bounds.size.width - 50) / 4.0
+                    let photoWidth = (UIScreen.main.bounds.size.width - 50) / 4.0
                     make.width.equalTo(photoWidth)
                     make.height.equalTo(photoWidth)
                     if index + 1 == photos?.count {
                         let moreBtn = contentView.viewWithTag(1002) as? UIButton
-                        moreBtn?.snp_remakeConstraints(closure: { (make) in
+                        moreBtn?.snp_remakeConstraints({ (make) in
                             make.top.equalTo(photoView!.snp_bottom).offset(10)
                             make.bottom.equalTo(view!)
                             make.width.equalTo(40)
@@ -128,16 +128,16 @@ public class PhotosCell : UITableViewCell {
                 
             }
         } else {
-            nonePhotosLabel?.hidden = false
+            nonePhotosLabel?.isHidden = false
         }
         
     }
     
-    func moreAction(sender: AnyObject?) {
+    func moreAction(_ sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("detailAction")
     }
     
-    func selectAction(sender: AnyObject?) {
+    func selectAction(_ sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
     }
     

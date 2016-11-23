@@ -16,7 +16,7 @@ extension UIButton {
     }
     
     //imageView在上,label在下
-    func setImageAndTitleLeft(spacing:CGFloat){
+    func setImageAndTitleLeft(_ spacing:CGFloat){
         let imageSize =  imageView?.frame.size
         let titleSize = titleLabel?.frame.size;
         

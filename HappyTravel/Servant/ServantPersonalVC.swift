@@ -11,8 +11,32 @@ import UIKit
 import Kingfisher
 import XCGLogger
 import RealmSwift
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+
+open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, ServiceCellDelegate, PhotosCellDelegate, ServiceSheetDelegate {
     //记录是邀约？预约？   ture为邀约  false 为预约
     var isNormal = true
     
@@ -34,7 +58,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
@@ -44,10 +68,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         title = personalInfo?.nickname
         
         bottomBar = UIImageView()
-        bottomBar?.userInteractionEnabled = true
+        bottomBar?.isUserInteractionEnabled = true
         bottomBar?.image = UIImage.init(named: "bottom-selector-bg")
         view.addSubview(bottomBar!)
-        bottomBar?.snp_makeConstraints(closure: { (make) in
+        bottomBar?.snp_makeConstraints({ (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
@@ -56,10 +80,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
         let chatBtn = UIButton()
         chatBtn.tag = 1001
-        chatBtn.setTitle("开始聊天", forState: .Normal)
-        chatBtn.backgroundColor = UIColor.clearColor()
-        chatBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        chatBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), forControlEvents: .TouchUpInside)
+        chatBtn.setTitle("开始聊天", for: UIControlState())
+        chatBtn.backgroundColor = UIColor.clear
+        chatBtn.setTitleColor(UIColor.white, for: UIControlState())
+        chatBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), for: .touchUpInside)
         bottomBar?.addSubview(chatBtn)
         chatBtn.snp_makeConstraints { (make) in
             make.left.equalTo(bottomBar!)
@@ -69,10 +93,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         }
         let invitationBtn = UIButton()
         invitationBtn.tag = 1002
-        invitationBtn.setTitle( isNormal ? "发起邀约" : "发起预约", forState: .Normal)
-        invitationBtn.backgroundColor = UIColor.clearColor()
-        invitationBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        invitationBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), forControlEvents: .TouchUpInside)
+        invitationBtn.setTitle( isNormal ? "发起邀约" : "发起预约", for: UIControlState())
+        invitationBtn.backgroundColor = UIColor.clear
+        invitationBtn.setTitleColor(UIColor.white, for: UIControlState())
+        invitationBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), for: .touchUpInside)
         bottomBar?.addSubview(invitationBtn)
         invitationBtn.snp_makeConstraints { (make) in
             make.right.equalTo(bottomBar!)
@@ -81,18 +105,18 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             make.left.equalTo(bottomBar!.snp_centerX)
         }
         
-        personalTable = UITableView(frame: CGRectZero, style: .Plain)
-        personalTable!.registerClass(PersonalHeadCell.self, forCellReuseIdentifier: "PersonalHeadCell")
-        personalTable!.registerClass(TallyCell.self, forCellReuseIdentifier: "TallyCell")
-        personalTable!.registerClass(ServiceCell.self, forCellReuseIdentifier: "ServiceCell")
-        personalTable!.registerClass(PhotosCell.self, forCellReuseIdentifier: "PhotosCell")
+        personalTable = UITableView(frame: CGRect.zero, style: .plain)
+        personalTable!.register(PersonalHeadCell.self, forCellReuseIdentifier: "PersonalHeadCell")
+        personalTable!.register(TallyCell.self, forCellReuseIdentifier: "TallyCell")
+        personalTable!.register(ServiceCell.self, forCellReuseIdentifier: "ServiceCell")
+        personalTable!.register(PhotosCell.self, forCellReuseIdentifier: "PhotosCell")
         personalTable!.tag = 1001
-        personalTable!.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        personalTable!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         personalTable!.dataSource = self
         personalTable!.delegate = self
         personalTable!.estimatedRowHeight = 400
         personalTable!.rowHeight = UITableViewAutomaticDimension
-        personalTable!.separatorStyle = .None
+        personalTable!.separatorStyle = .none
         personalTable!.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         view.addSubview(personalTable!)
         personalTable!.snp_makeConstraints { (make) in
@@ -109,11 +133,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      
      - parameter sender:
      */
-    func bottomBarAction(sender: UIButton?) {
+    func bottomBarAction(_ sender: UIButton?) {
         if DataManager.currentUser?.has_recharged_ == 0 {
-            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .alert)
             
-            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+            let ok = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
                 XCGLogger.debug("去充值")
                 
                 let rechargeVC = RechargeVC()
@@ -122,14 +146,14 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 
             })
             
-            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+            let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (action: UIAlertAction) in
                 
             })
             
             alert.addAction(ok)
             alert.addAction(cancel)
             
-            presentViewController(alert, animated: true, completion: { 
+            present(alert, animated: true, completion: { 
                 
             })
             
@@ -150,7 +174,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     func invitation() {
         if alertController == nil {
-            alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
             let sheet = ServiceSheet()
             sheet.servantInfo = personalInfo
             sheet.isNormal = isNormal
@@ -164,14 +188,14 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             }
         }
         
-        presentViewController(alertController!, animated: true, completion: nil)
+        present(alertController!, animated: true, completion: nil)
         
         
     }
     
     // MARK: - ServiceSheetDelegate
-    func cancelAction(sender: UIButton?) {
-        alertController?.dismissViewControllerAnimated(true, completion: nil)
+    func cancelAction(_ sender: UIButton?) {
+        alertController?.dismiss(animated: true, completion: nil)
     }
     
     /**
@@ -180,7 +204,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter service:
      - parameter daysCount:
      */
-    func sureAction(service: ServiceInfo?, daysCount: Int?) {
+    func sureAction(_ service: ServiceInfo?, daysCount: Int?) {
         
         service_price_oneday = service?.service_price_
         
@@ -188,7 +212,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
         if !isNormal { // 预约
             
-            alertController?.dismissViewControllerAnimated(true, completion: nil)
+            alertController?.dismiss(animated: true, completion: nil)
             
             let arrry = DataManager.getAppointmentRecordInfos(appointment_id_)
             let appointmentInfo:AppointmentInfo? = arrry?.first
@@ -203,15 +227,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             
             if currentCash >= totalMoney { // 余额充足
                 
-                SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
+                SocketManager.sendData(.appointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
                     "to_uid_": personalInfo!.uid,
                     "service_id_": service!.service_id_,
                     "appointment_id_":appointment_id_])
                 
             }else{
-                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
+                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .alert)
                 
-                let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
+                let ok = UIAlertAction.init(title: "去充值", style: .default, handler: { (action: UIAlertAction) in
                     XCGLogger.debug("去充值")
                     
                     let rechargeVC = RechargeVC()
@@ -220,14 +244,14 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                     
                 })
                 
-                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (action: UIAlertAction) in
                     
                 })
                 
                 alert.addAction(ok)
                 alert.addAction(cancel)
                 
-                presentViewController(alert, animated: true, completion: {
+                present(alert, animated: true, completion: {
                     
                 })
             }
@@ -240,9 +264,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             unowned let weakSelf = self
             weakSelf.selectedServcie = service
 
-            alertController?.dismissViewControllerAnimated(true, completion: {
+            alertController?.dismiss(animated: true, completion: {
                 
-                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+                weakSelf.perform(#selector(ServantPersonalVC.inviteAction), with: nil, afterDelay: 0.2)
                 
                 
             })
@@ -254,7 +278,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     func inviteAction() {
         unowned let weakSelf = self
         if daysAlertController == nil {
-            daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+            daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
             let sheet = CitysSelectorSheet()
             let days = [1, 2, 3, 4, 5, 6, 7]
            sheet.daysList = days
@@ -268,13 +292,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             }
         }
         
-        presentViewController(weakSelf.daysAlertController!, animated: true, completion: nil)
+        present(weakSelf.daysAlertController!, animated: true, completion: nil)
     }
     func back() {
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
@@ -282,8 +306,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ServantPersonalVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ServantPersonalVC.receivedResults(_:)), name: NotifyDefine.AppointmentServantReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ServantPersonalVC.invitationResult(_:)), name: NSNotification.Name(rawValue: NotifyDefine.AskInvitationResult), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ServantPersonalVC.receivedResults(_:)), name: NSNotification.Name(rawValue: NotifyDefine.AppointmentServantReply), object: nil)
         
     }
     
@@ -292,7 +316,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      
      - parameter notifucation:
      */
-    func receivedResults(notifucation: NSNotification?) {
+    func receivedResults(_ notifucation: Notification?) {
         
         let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
         
@@ -304,16 +328,16 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
         let alert = UIAlertController.init(title: "预约状态",
                                            message: msg,
-                                           preferredStyle: .Alert)
+                                           preferredStyle: .alert)
         
 
-        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+        let action = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
             
         })
         
         alert.addAction(action)
 
-        presentViewController(alert, animated: true) {
+        present(alert, animated: true) {
             /**
              预约完成 删除 推送的预约消息 测试状态 暂时不删
              */
@@ -325,11 +349,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      
      - parameter notifucation:
      */
-    func invitationResult(notifucation: NSNotification?) {
+    func invitationResult(_ notifucation: Notification?) {
         var msg = ""
         if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
             switch err {
-            case .NoOrder:
+            case .noOrder:
                 msg = "邀约失败，订单异常"
                 break
             default:
@@ -345,37 +369,37 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             }
             let alert = UIAlertController.init(title: "邀约状态",
                                                message: msg,
-                                               preferredStyle: .Alert)
+                                               preferredStyle: .alert)
             
-            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+            let action = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
                 
             })
             
             alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
             
         }
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         personalTable!.reloadData()
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
         
         guard isNormal else { return }
         if navigationItem.rightBarButtonItem == nil {
-            let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
+            let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
     }
     
-    public override func viewWillDisappear(animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
@@ -383,16 +407,16 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     push to 聊天页面
      - parameter sender:
      */
-    func msgAction(sender: AnyObject?) {
+    func msgAction(_ sender: AnyObject?) {
         let msgVC = PushMessageVC()
 //        msgVC.messageInfo = recommendServants
         
-        if sender?.isKindOfClass(UIButton) == false {
+        if sender?.isKind(of: UIButton) == false {
             navigationController?.pushViewController(msgVC, animated: false)
-            if let userInfo = sender as? [NSObject: AnyObject] {
+            if let userInfo = sender as? [AnyHashable: Any] {
                 let type = userInfo["type"] as? Int
-                if type == PushMessage.MessageType.Chat.rawValue {
-                    performSelector(#selector(ForthwithVC.postPushMessageNotify(_:)), withObject: userInfo["data"], afterDelay: 0.5)
+                if type == PushMessage.MessageType.chat.rawValue {
+                    perform(#selector(ForthwithVC.postPushMessageNotify(_:)), with: userInfo["data"], afterDelay: 0.5)
                 }
             }
             
@@ -403,21 +427,21 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK -- UITableViewDelegate & UITableViewDataSource
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("PersonalHeadCell", forIndexPath: indexPath) as! PersonalHeadCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PersonalHeadCell", for: indexPath) as! PersonalHeadCell
             cell.setInfo(personalInfo, detailInfo: nil)
             return cell
         } else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TallyCell", for: indexPath) as! TallyCell
             let tallys = List<Tally>()
             for businessTag in personalInfo!.businessTags {
                 tallys.append(businessTag)
@@ -428,12 +452,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             cell.setInfo(tallys)
             return cell
         } else if indexPath.section == 2 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath) as! ServiceCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ServiceCell", for: indexPath) as! ServiceCell
             cell.delegate = self
             cell.setInfo(personalInfo!.serviceList, setSpread: serviceSpread)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("PhotosCell", forIndexPath: indexPath) as! PhotosCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PhotosCell", for: indexPath) as! PhotosCell
             cell.delegate = self
             cell.setInfo(personalInfo!.photoUrlList, setSpread: serviceSpread)
             return cell
@@ -442,34 +466,34 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK ServiceCellDelegate
-    func spreadAction(sender: AnyObject?) {
+    func spreadAction(_ sender: AnyObject?) {
         let cell =  sender as! ServiceCell
-        let indexPath = personalTable?.indexPathForCell(cell)
+        let indexPath = personalTable?.indexPath(for: cell)
         serviceSpread = !cell.spread
-        personalTable?.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+        personalTable?.reloadRows(at: [indexPath!], with: UITableViewRowAnimation.fade)
     }
 }
 
 
 extension ServantPersonalVC:CitysSelectorSheetDelegate {
-    func daysSureAction(sender: UIButton?, targetDays: Int) {
-        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+    func daysSureAction(_ sender: UIButton?, targetDays: Int) {
+        daysAlertController?.dismiss(animated: true, completion: nil)
         
         let totalMoney = targetDays * service_price_oneday!  // 总价格
         let currentCash = DataManager.currentUser?.cash      // 当前余额
         
         if currentCash >= totalMoney {
             
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                 "to_uid_": personalInfo!.uid,
                 "service_id_": selectedServcie!.service_id_,
                 "day_count_":targetDays])
         }else{
 
    
-            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .alert)
 
-            let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
+            let ok = UIAlertAction.init(title: "去充值", style: .default, handler: { (action: UIAlertAction) in
                 XCGLogger.debug("去充值")
 
                 let rechargeVC = RechargeVC()
@@ -478,14 +502,14 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
 
             })
 
-            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+            let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (action: UIAlertAction) in
 
             })
 
             alert.addAction(ok)
             alert.addAction(cancel)
             
-            presentViewController(alert, animated: true, completion: { 
+            present(alert, animated: true, completion: { 
                 
             })
             
@@ -493,15 +517,15 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             
         }
 
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                                           "to_uid_": personalInfo!.uid,
                                       "service_id_": selectedServcie!.service_id_,
                                        "day_count_":targetDays])
     }
     
-    func daysCancelAction(sender: UIButton?) {
+    func daysCancelAction(_ sender: UIButton?) {
         
-        daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
+        daysAlertController?.dismiss(animated: true, completion: nil)
     }
 }
 

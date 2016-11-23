@@ -26,13 +26,13 @@ class InvoiceHistoryVC:UIViewController {
     
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
 
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     override func viewDidLoad() {
@@ -47,7 +47,7 @@ class InvoiceHistoryVC:UIViewController {
      */
     func registerNotify() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceHistoryVC.receivedData), name: NotifyDefine.InvoiceInfoReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InvoiceHistoryVC.receivedData), name: NSNotification.Name(rawValue: NotifyDefine.InvoiceInfoReply), object: nil)
     }
     
     /**
@@ -55,24 +55,24 @@ class InvoiceHistoryVC:UIViewController {
      回调
      - parameter notify:
      */
-    func receivedData(notify:NSNotification) {
+    func receivedData(_ notify:Notification) {
         
         
-        if header.state == MJRefreshState.Refreshing {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
     
         let realm = try! Realm()
-        historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
+        historyData = realm.objects(InvoiceHistoryInfo.self).sorted(byProperty: "invoice_time_", ascending: false)
 
         
         let lastOrderID = notify.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            footer.state = .noMoreData
+            footer.setTitle("多乎哉 不多矣", for: .noMoreData)
             return
         }
         last_invoice_id_ = lastOrderID
@@ -88,16 +88,16 @@ class InvoiceHistoryVC:UIViewController {
      */
     func initView() {
         
-        tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
         automaticallyAdjustsScrollViewInsets = false
         tableView?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.rowHeight = 60
-        tableView?.separatorStyle = .None
-        tableView?.registerClass(InvoiceHistoryCell.self, forCellReuseIdentifier: "InvoiceHistory")
+        tableView?.separatorStyle = .none
+        tableView?.register(InvoiceHistoryCell.self, forCellReuseIdentifier: "InvoiceHistory")
         view.addSubview(tableView!)
-        tableView?.snp_makeConstraints(closure: { (make) in
+        tableView?.snp_makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -113,7 +113,7 @@ class InvoiceHistoryVC:UIViewController {
     
     
     func headerRefresh() {
-        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
                                                         "count_" : 10,
                                               "last_invoice_id_" : 0])
         
@@ -121,7 +121,7 @@ class InvoiceHistoryVC:UIViewController {
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
                                                         "count_" : 10,
                                               "last_invoice_id_" : last_invoice_id_])
 
@@ -137,29 +137,29 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
 
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let histroyDetailVC = InvoiceHistoryDetailVC()
         let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
         histroyDetailVC.invoice_id_ = invoiceInfo.invoice_id_
         navigationController?.pushViewController(histroyDetailVC, animated: true)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
         let count = historyData != nil ? historyData?.count : 0
-        footer.hidden = count < 10 ? true : false
+        footer.isHidden = count! < 10 ? true : false
         return count!
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        let cell = tableView.dequeueReusableCellWithIdentifier("InvoiceHistory", forIndexPath: indexPath) as! InvoiceHistoryCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InvoiceHistory", for: indexPath) as! InvoiceHistoryCell
         let last = indexPath.row == historyData!.count - 1 ? true : false
 
         cell.setupDatawith(historyData![indexPath.row], last: last)

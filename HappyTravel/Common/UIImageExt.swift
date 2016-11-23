@@ -14,11 +14,11 @@ extension UIImage {
     /**
      *  重设图片大小
      */
-    func reSizeImage(reSize:CGSize)->UIImage {
+    func reSizeImage(_ reSize:CGSize)->UIImage {
         //UIGraphicsBeginImageContext(reSize);
-        UIGraphicsBeginImageContextWithOptions(reSize,false,UIScreen.mainScreen().scale);
-        self.drawInRect(CGRectMake(0, 0, reSize.width, reSize.height));
-        let reSizeImage:UIImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsBeginImageContextWithOptions(reSize,false,UIScreen.main.scale);
+        self.draw(in: CGRect(x: 0, y: 0, width: reSize.width, height: reSize.height));
+        let reSizeImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!;
         UIGraphicsEndImageContext();
         return reSizeImage;
     }
@@ -26,8 +26,8 @@ extension UIImage {
     /**
      *  等比率缩放
      */
-    func scaleImage(scaleSize:CGFloat)->UIImage {
-        let reSize = CGSizeMake(self.size.width * scaleSize, self.size.height * scaleSize)
+    func scaleImage(_ scaleSize:CGFloat)->UIImage {
+        let reSize = CGSize(width: self.size.width * scaleSize, height: self.size.height * scaleSize)
         return reSizeImage(reSize)
     }
 }

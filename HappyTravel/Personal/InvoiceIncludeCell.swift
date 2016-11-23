@@ -19,18 +19,18 @@ class InvoiceIncludeCell: UITableViewCell {
     var bottomLine:UIView?
 
     var serviceTypes = [0:"未指定", 1:"高端游", 2:"商务游"]
-     var dateFormatter = NSDateFormatter()
+     var dateFormatter = DateFormatter()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectionStyle = .None
+        selectionStyle = .none
         
         if nicknameLabel == nil {
             nicknameLabel = UILabel()
-            nicknameLabel?.backgroundColor = UIColor.clearColor()
-            nicknameLabel?.textAlignment = .Left
-            nicknameLabel?.font = UIFont.systemFontOfSize(S15)
+            nicknameLabel?.backgroundColor = UIColor.clear
+            nicknameLabel?.textAlignment = .left
+            nicknameLabel?.font = UIFont.systemFont(ofSize: S15)
             nicknameLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
 
@@ -39,9 +39,9 @@ class InvoiceIncludeCell: UITableViewCell {
         
         if serviceNameLabel == nil {
             serviceNameLabel = UILabel()
-            serviceNameLabel?.backgroundColor = UIColor.clearColor()
-            serviceNameLabel?.textAlignment = .Left
-            serviceNameLabel?.font = UIFont.systemFontOfSize(S15)
+            serviceNameLabel?.backgroundColor = UIColor.clear
+            serviceNameLabel?.textAlignment = .left
+            serviceNameLabel?.font = UIFont.systemFont(ofSize: S15)
             serviceNameLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
 
@@ -49,18 +49,18 @@ class InvoiceIncludeCell: UITableViewCell {
         
         if servicePriceLabel == nil {
             servicePriceLabel = UILabel()
-            servicePriceLabel?.backgroundColor = UIColor.clearColor()
-            servicePriceLabel?.textAlignment = .Left
-            servicePriceLabel?.font = UIFont.systemFontOfSize(S15)
+            servicePriceLabel?.backgroundColor = UIColor.clear
+            servicePriceLabel?.textAlignment = .left
+            servicePriceLabel?.font = UIFont.systemFont(ofSize: S15)
             servicePriceLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         }
         servicePriceLabel?.text = "120.00元"
         
         if serviceDateLabel == nil {
             serviceDateLabel = UILabel()
-            serviceDateLabel?.backgroundColor = UIColor.clearColor()
-            serviceDateLabel?.textAlignment = .Right
-            serviceDateLabel?.font = UIFont.systemFontOfSize(S12)
+            serviceDateLabel?.backgroundColor = UIColor.clear
+            serviceDateLabel?.textAlignment = .right
+            serviceDateLabel?.font = UIFont.systemFont(ofSize: S12)
             serviceDateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
         }
         serviceDateLabel?.text = "10月28日 周六 21：25"
@@ -68,9 +68,9 @@ class InvoiceIncludeCell: UITableViewCell {
         if serviceTypeLabel == nil {
             
             serviceTypeLabel = UILabel()
-            serviceTypeLabel?.backgroundColor = UIColor.clearColor()
-            serviceTypeLabel?.textAlignment = .Right
-            serviceTypeLabel?.font = UIFont.systemFontOfSize(S12)
+            serviceTypeLabel?.backgroundColor = UIColor.clear
+            serviceTypeLabel?.textAlignment = .right
+            serviceTypeLabel?.font = UIFont.systemFont(ofSize: S12)
             serviceTypeLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
             
         }
@@ -97,31 +97,31 @@ class InvoiceIncludeCell: UITableViewCell {
      添加约束
      */
     func addSubViewConstraints() {
-        nicknameLabel?.snp_makeConstraints(closure: { (make) in
+        nicknameLabel?.snp_makeConstraints({ (make) in
             make.left.equalTo(contentView).offset(10)
             make.top.equalTo(contentView).offset(13)
             
         })
         
-        serviceNameLabel?.snp_makeConstraints(closure: { (make) in
+        serviceNameLabel?.snp_makeConstraints({ (make) in
             make.left.equalTo(nicknameLabel!.snp_right).offset(10)
             make.centerY.equalTo(nicknameLabel!)
         })
         
-        serviceDateLabel?.snp_makeConstraints(closure: { (make) in
+        serviceDateLabel?.snp_makeConstraints({ (make) in
             make.left.equalTo(nicknameLabel!)
             make.bottom.equalTo(contentView).offset(-10)
         })
         
-        servicePriceLabel?.snp_makeConstraints(closure: { (make) in
+        servicePriceLabel?.snp_makeConstraints({ (make) in
             make.centerY.equalTo(nicknameLabel!)
             make.right.equalTo(contentView).offset(-10)
         })
-        serviceTypeLabel?.snp_makeConstraints(closure: { (make) in
+        serviceTypeLabel?.snp_makeConstraints({ (make) in
             make.right.equalTo(servicePriceLabel!)
             make.centerY.equalTo(serviceDateLabel!)
         })
-        bottomLine?.snp_makeConstraints(closure: { (make) in
+        bottomLine?.snp_makeConstraints({ (make) in
             make.left.equalTo(nicknameLabel!)
             make.bottom.equalTo(contentView)
             make.right.equalTo(contentView)
@@ -139,7 +139,7 @@ class InvoiceIncludeCell: UITableViewCell {
      - parameter info:
      - parameter isLast: 最后一个需要隐藏分割线
      */
-    func setupData(info:InvoiceServiceInfo, isLast:Bool) {
+    func setupData(_ info:InvoiceServiceInfo, isLast:Bool) {
         if nicknameLabel != nil {
             
             nicknameLabel?.text = info.nick_name_
@@ -157,12 +157,12 @@ class InvoiceIncludeCell: UITableViewCell {
             servicePriceLabel?.text = String(info.service_price_) + "元"
         }
         if serviceDateLabel != nil {
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            serviceDateLabel?.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.order_time_)))
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
+            serviceDateLabel?.text = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.order_time_)))
         }
         if bottomLine != nil {
-            bottomLine?.hidden = isLast
+            bottomLine?.isHidden = isLast
         }
     }
     
@@ -174,7 +174,7 @@ class InvoiceIncludeCell: UITableViewCell {
     
     
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

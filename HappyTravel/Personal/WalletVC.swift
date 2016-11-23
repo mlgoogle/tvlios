@@ -13,16 +13,16 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var walletTable:UITableView?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         walletTable?.reloadData()
         SVProgressHUD.showProgressMessage(ProgressMessage: "初始化钱包环境...")
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NotifyDefine.CheckUserCashResult, object: nil)
-        SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+        NotificationCenter.default.addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.CheckUserCashResult), object: nil)
+        SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
     }
     
     override func viewDidLoad() {
@@ -32,22 +32,22 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         initView()
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         SVProgressHUD.dismiss()
     }
     
     func initView() {
-        walletTable = UITableView(frame: CGRectZero, style: .Grouped)
+        walletTable = UITableView(frame: CGRect.zero, style: .grouped)
         walletTable?.delegate = self
         walletTable?.dataSource = self
         walletTable?.estimatedRowHeight = 60
         walletTable?.rowHeight = UITableViewAutomaticDimension
-        walletTable?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        walletTable?.separatorStyle = .None
+        walletTable?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        walletTable?.separatorStyle = .none
         view.addSubview(walletTable!)
-        walletTable?.snp_makeConstraints(closure: { (make) in
+        walletTable?.snp_makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
     }
@@ -57,7 +57,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -66,11 +66,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return 0
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 10
         } else {
@@ -78,21 +78,21 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = UIView()
-            view.backgroundColor = .clearColor()
+            view.backgroundColor = .clear
             let label = UILabel()
-            label.backgroundColor = .clearColor()
+            label.backgroundColor = .clear
             label.text = "发票管理"
-            label.font = .systemFontOfSize(S15)
-            label.textColor = UIColor.grayColor()
+            label.font = .systemFont(ofSize: S15)
+            label.textColor = UIColor.gray
             view.addSubview(label)
-            label.snp_makeConstraints(closure: { (make) in
+            label.snp_makeConstraints({ (make) in
                 make.left.equalTo(view).offset(AtapteWidthValue(20))
                 make.top.equalTo(view)
                 make.right.equalTo(view)
@@ -103,20 +103,20 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return nil
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("WalletCell")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "WalletCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.accessoryType = .DisclosureIndicator
-            cell?.selectionStyle = .None
+            cell?.accessoryType = .disclosureIndicator
+            cell?.selectionStyle = .none
         }
         
         var icon = cell?.contentView.viewWithTag(1001) as? UIImageView
         if icon == nil {
             icon = UIImageView()
-            icon?.backgroundColor = UIColor.clearColor()
+            icon?.backgroundColor = UIColor.clear
             cell?.contentView.addSubview(icon!)
-            icon?.snp_makeConstraints(closure: { (make) in
+            icon?.snp_makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -128,11 +128,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if title == nil {
             title = UILabel()
             title?.tag = 1002
-            title?.backgroundColor = UIColor.clearColor()
-            title?.textColor = UIColor.blackColor()
-            title?.font = UIFont.systemFontOfSize(15)
+            title?.backgroundColor = UIColor.clear
+            title?.textColor = UIColor.black
+            title?.font = UIFont.systemFont(ofSize: 15)
             cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
+            title?.snp_makeConstraints({ (make) in
                 make.left.equalTo(icon!.snp_right).offset(10)
                 make.top.equalTo(icon!)
                 make.bottom.equalTo(icon!)
@@ -146,29 +146,29 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             separateLine?.tag = 1003
             separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
             cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
+            separateLine?.snp_makeConstraints({ (make) in
                 make.left.equalTo(icon!)
                 make.right.equalTo(cell!.contentView).offset(40)
                 make.bottom.equalTo(cell!.contentView).offset(0.5)
                 make.height.equalTo(1)
             })
         }
-        separateLine?.hidden = true
+        separateLine?.isHidden = true
         
         var subTitleLabel = cell?.contentView.viewWithTag(1004) as? UILabel
         if subTitleLabel == nil {
             subTitleLabel = UILabel()
             subTitleLabel?.tag = 1004
-            subTitleLabel?.backgroundColor = UIColor.clearColor()
-            subTitleLabel?.textColor = UIColor.blackColor()
-            subTitleLabel?.font = UIFont.systemFontOfSize(15)
+            subTitleLabel?.backgroundColor = UIColor.clear
+            subTitleLabel?.textColor = UIColor.black
+            subTitleLabel?.font = UIFont.systemFont(ofSize: 15)
             cell?.contentView.addSubview(subTitleLabel!)
-            subTitleLabel?.snp_makeConstraints(closure: { (make) in
+            subTitleLabel?.snp_makeConstraints({ (make) in
                 make.centerY.equalTo(cell!.contentView.snp_centerY)
                 make.right.equalTo(0)
             })
         }
-        subTitleLabel?.hidden = indexPath.section != 0
+        subTitleLabel?.isHidden = indexPath.section != 0
         
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -181,7 +181,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 icon?.image = UIImage.init(named: "invoice")
                 title?.text = "按行程开票"
-                separateLine?.hidden = false
+                separateLine?.isHidden = false
             } else if indexPath.row == 1 {
                 icon?.image = UIImage.init(named: "invoice-history")
                 title?.text = "开票记录"
@@ -191,7 +191,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 XCGLogger.debug("余额")
@@ -209,15 +209,15 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(invoiceHistotyVC, animated: true)
             }
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func checkUserResultReply(notice: NSNotification) {
+    func checkUserResultReply(_ notice: Notification) {
         let data = notice.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
+        let code = data.value(forKey: "code")
+        if (code as AnyObject).int32Value == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             })
             return
         }

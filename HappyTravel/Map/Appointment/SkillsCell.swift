@@ -10,20 +10,20 @@ import Foundation
 import RealmSwift
 
 enum SkillsCellStyle : Int {
-    case Normal = 0
-    case AddNew = 1
-    case Select = 2
-    case Delete = 3
-    case Other = 4
+    case normal = 0
+    case addNew = 1
+    case select = 2
+    case delete = 3
+    case other = 4
 }
 
 @objc protocol SkillsCellDelegate : NSObjectProtocol {
     
-    optional func selectedAction(info: Dictionary<SkillInfo, Bool>)
+    @objc optional func selectedAction(_ info: Dictionary<SkillInfo, Bool>)
     
-    optional func addNewAction()
+    @objc optional func addNewAction()
     
-    optional func deleteAction(index: Int, info: Dictionary<SkillInfo, Bool>)
+    @objc optional func deleteAction(_ index: Int, info: Dictionary<SkillInfo, Bool>)
     
 }
 
@@ -31,7 +31,7 @@ class SkillsCell : UITableViewCell {
     
     weak var delegate:SkillsCellDelegate?
     
-    var style:SkillsCellStyle = .Normal
+    var style:SkillsCellStyle = .normal
     var allButtonWidth:Float = 20.0
     var skills:Array<Dictionary<SkillInfo, Bool>>?
     var collectionView:UICollectionView?
@@ -44,11 +44,11 @@ class SkillsCell : UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.whiteColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.white
 
         
-        contentView.userInteractionEnabled = true
+        contentView.isUserInteractionEnabled = true
 //        let layout = SkillWidthLayout.init()
 //        layout.delegate = self
 //        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
@@ -65,17 +65,17 @@ class SkillsCell : UITableViewCell {
 //        })
         var noTallyLabel = contentView.viewWithTag(tags["noTallyLabel"]!) as? UILabel
         if noTallyLabel == nil {
-            noTallyLabel = UILabel(frame: CGRectZero)
+            noTallyLabel = UILabel(frame: CGRect.zero)
             noTallyLabel!.tag = tags["noTallyLabel"]!
-            noTallyLabel!.font = UIFont.systemFontOfSize(S12)
+            noTallyLabel!.font = UIFont.systemFont(ofSize: S12)
             noTallyLabel!.numberOfLines = 0
             noTallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-            noTallyLabel?.textAlignment = .Center
+            noTallyLabel?.textAlignment = .center
             noTallyLabel!.layer.cornerRadius = 30 / 2.0
             noTallyLabel?.layer.masksToBounds = true
-            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+            noTallyLabel?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
             noTallyLabel?.layer.borderWidth = 1
-            noTallyLabel!.backgroundColor = UIColor.whiteColor()
+            noTallyLabel!.backgroundColor = UIColor.white
             contentView.addSubview(noTallyLabel!)
             noTallyLabel!.snp_makeConstraints { (make) in
                 make.top.equalTo(contentView).offset(20)
@@ -85,23 +85,23 @@ class SkillsCell : UITableViewCell {
                 make.width.equalTo(30)
             }
         }
-        noTallyLabel?.hidden = false
+        noTallyLabel?.isHidden = false
         noTallyLabel!.text = "无"
         
         var addnewBtn = contentView.viewWithTag(tags["addnewBtn"]!) as? UIButton
         if addnewBtn == nil {
             addnewBtn = UIButton()
             addnewBtn?.tag = tags["addnewBtn"]!
-            addnewBtn?.backgroundColor = UIColor.whiteColor()
+            addnewBtn?.backgroundColor = UIColor.white
             addnewBtn?.layer.cornerRadius = 30 / 2.0
             addnewBtn?.layer.masksToBounds = true
-            addnewBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+            addnewBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
             addnewBtn?.layer.borderWidth = 1
-            addnewBtn?.setTitle("+", forState: .Normal)
-            addnewBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
-            addnewBtn?.addTarget(self, action: #selector(SkillsCell.addNewAction(_:)), forControlEvents: .TouchUpInside)
+            addnewBtn?.setTitle("+", for: UIControlState())
+            addnewBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: UIControlState())
+            addnewBtn?.addTarget(self, action: #selector(SkillsCell.addNewAction(_:)), for: .touchUpInside)
             contentView.addSubview(addnewBtn!)
-            addnewBtn?.snp_makeConstraints(closure: { (make) in
+            addnewBtn?.snp_makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(20)
                 make.bottom.equalTo(contentView).offset(-20)
@@ -111,7 +111,7 @@ class SkillsCell : UITableViewCell {
         }
     }
     
-    func setInfo(skills: Array<Dictionary<SkillInfo, Bool>>?) {
+    func setInfo(_ skills: Array<Dictionary<SkillInfo, Bool>>?) {
         self.skills = skills
         
         
@@ -124,22 +124,22 @@ class SkillsCell : UITableViewCell {
         allButtonWidth = 20.0
         var lastTallyItemView:UIButton?
         if skills?.count != 0 {
-            for (index, value) in skills!.enumerate() {
+            for (index, value) in skills!.enumerated() {
                 for (skill, selected) in value {
                     var tallyBtn = contentView.viewWithTag(self.tags["tallyBtn"]! * 10 + index) as? UIButton
                     if tallyBtn == nil {
                         tallyBtn = UIButton()
                         tallyBtn!.tag = self.tags["tallyBtn"]! * 10 + index
-                        tallyBtn!.backgroundColor = UIColor.whiteColor()
+                        tallyBtn!.backgroundColor = UIColor.white
                         tallyBtn?.titleEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 0)
                         tallyBtn?.layer.cornerRadius = 30 / 2.0
                         tallyBtn?.layer.masksToBounds = true
                         tallyBtn?.layer.borderWidth = 1
-                        tallyBtn?.titleLabel?.font = UIFont.systemFontOfSize(S12)
+                        tallyBtn?.titleLabel?.font = UIFont.systemFont(ofSize: S12)
                         
-                        tallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
-                        tallyBtn?.setTitleColor(UIColor.grayColor(), forState: .Disabled)
-                        tallyBtn?.addTarget(self, action: #selector(SkillsCell.selectAction(_:)), forControlEvents: .TouchUpInside)
+                        tallyBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: .normal)
+                        tallyBtn?.setTitleColor(UIColor.gray, for: .disabled)
+                        tallyBtn?.addTarget(self, action: #selector(SkillsCell.selectAction(_:)), for: .touchUpInside)
                         contentView.addSubview(tallyBtn!)
                         /**
                          *  记录宽度
@@ -172,22 +172,22 @@ class SkillsCell : UITableViewCell {
                             make.width.equalTo(skill.labelWidth)
                         }
                     }
-                    tallyBtn!.setTitle("    \(skill.skill_name_!)    ", forState: .Normal)
-                    tallyBtn?.enabled = !selected
-                    tallyBtn?.layer.borderColor = selected == false ? UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor : UIColor.grayColor().CGColor
+                    tallyBtn!.setTitle("    \(skill.skill_name_!)    ", for: .normal)
+                    tallyBtn?.isEnabled = !selected
+                    tallyBtn?.layer.borderColor = selected == false ? UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor : UIColor.gray.cgColor
                     
                     var deleteIcon = contentView.viewWithTag(self.tags["deleteIcon"]!) as? UILabel
                     if deleteIcon == nil {
                         deleteIcon = UILabel()
-                        deleteIcon?.backgroundColor = UIColor.whiteColor()
+                        deleteIcon?.backgroundColor = UIColor.white
                         deleteIcon?.layer.masksToBounds = true
                         deleteIcon?.layer.cornerRadius = 20 / 2.0
-                        deleteIcon?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+                        deleteIcon?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
                         deleteIcon?.layer.borderWidth = 1
                         deleteIcon?.text = " - "
                         deleteIcon?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                         contentView.addSubview(deleteIcon!)
-                        deleteIcon?.snp_makeConstraints(closure: { (make) in
+                        deleteIcon?.snp_makeConstraints({ (make) in
                             make.right.equalTo(tallyBtn!.snp_right).offset(5)
                             make.top.equalTo(tallyBtn!).offset(-5)
                             make.width.equalTo(20)
@@ -195,7 +195,7 @@ class SkillsCell : UITableViewCell {
                         })
                     }
                     if style != .Delete {
-                        deleteIcon?.hidden = true
+                        deleteIcon?.isHidden = true
                     }
 //                    allButtonWidth = 20.0
                     lastTallyItemView = tallyBtn
@@ -205,7 +205,7 @@ class SkillsCell : UITableViewCell {
             
             if let noTallyLabel = contentView.viewWithTag(self.tags["noTallyLabel"]!) as? UILabel {
                 noTallyLabel.snp_removeConstraints()
-                noTallyLabel.hidden = true
+                noTallyLabel.isHidden = true
             }
          
         } else {
@@ -217,14 +217,14 @@ class SkillsCell : UITableViewCell {
                     make.height.equalTo(30)
                     make.width.equalTo(30)
                 }
-                noTallyLabel.hidden = false
+                noTallyLabel.isHidden = false
             }
         }
 
         if let addnewBtn = contentView.viewWithTag(self.tags["addnewBtn"]!) as? UIButton {
-            addnewBtn.hidden = style == .AddNew ? false : true
+            addnewBtn.isHidden = style == .addNew ? false : true
             if lastTallyItemView != nil {
-                addnewBtn.snp_remakeConstraints(closure: { (make) in
+                addnewBtn.snp_remakeConstraints({ (make) in
                     if  allButtonWidth + 50 > Float(ScreenWidth) {
                         make.left.equalTo(contentView).offset(20)
                         make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
@@ -240,20 +240,20 @@ class SkillsCell : UITableViewCell {
         }
     }
     
-    func selectAction(sender: UIButton) {
+    func selectAction(_ sender: UIButton) {
         let tag = sender.tag - self.tags["tallyBtn"]! * 10
-        if style == .Select {
-            sender.enabled = false
-            sender.layer.borderColor = UIColor.grayColor().CGColor
+        if style == .select {
+            sender.isEnabled = false
+            sender.layer.borderColor = UIColor.gray.cgColor
             delegate?.selectedAction!(skills![tag])
-        } else if style == .Delete {
+        } else if style == .delete {
             delegate?.deleteAction!(tag, info: skills![tag])
         }
         
     }
     
-    func addNewAction(sender: UIButton) {
-        if style == .AddNew {
+    func addNewAction(_ sender: UIButton) {
+        if style == .addNew {
             delegate?.addNewAction!()
             
         }
@@ -267,7 +267,7 @@ class SkillsCell : UITableViewCell {
 
 extension SkillsCell:SkillWidthLayoutDelegate {
     
-    func  autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->Float {
+    func  autoLayout(_ layout:SkillWidthLayout, atIndexPath:IndexPath)->Float {
         
         let skillInfoDict = skills![atIndexPath.item]
         let skillInfo = skillInfoDict.keys.first! as SkillInfo
@@ -278,44 +278,44 @@ extension SkillsCell:SkillWidthLayoutDelegate {
 //MARK: - UICollectionView
 extension SkillsCell:UICollectionViewDelegate, UICollectionViewDataSource{
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         delegate?.addNewAction!()
 
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         let count = skills == nil ? 0 : skills?.count
         
         return count!
     }
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
      
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("skillCell", forIndexPath: indexPath) as! SingleSkillCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "skillCell", for: indexPath) as! SingleSkillCell
         let skillInfoDict = skills![indexPath.item]
         let skillInfo = skillInfoDict.keys.first! as SkillInfo
-        var cellStyle = SkillsCellStyle.Normal
+        var cellStyle = SkillsCellStyle.normal
         switch style {
-        case .Select:
+        case .select:
             if skillInfoDict[skillInfo] == true {
-                cellStyle = .Select
+                cellStyle = .select
             } else {
-                cellStyle = .Normal
+                cellStyle = .normal
             }
             break
-        case .Normal:
+        case .normal:
             
-            cellStyle = .Normal
+            cellStyle = .normal
             break
-        case .Delete:
-            cellStyle = .Delete
+        case .delete:
+            cellStyle = .delete
             break
-        case .AddNew:
-            cellStyle = .AddNew
+        case .addNew:
+            cellStyle = .addNew
             break
         default:
             break

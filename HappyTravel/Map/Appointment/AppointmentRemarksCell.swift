@@ -13,7 +13,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
     var titleLabel:UILabel = {
        
         let label = UILabel()
-        label.font = UIFont.systemFontOfSize(S15)
+        label.font = UIFont.systemFont(ofSize: S15)
         label.text = "备注信息"
         return label
     }()
@@ -21,12 +21,12 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
     
     var remarksTextView:UITextView = {
         let textView = UITextView()
-        textView.font = UIFont.systemFontOfSize(S15)
+        textView.font = UIFont.systemFont(ofSize: S15)
         textView.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         textView.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
         textView.layer.cornerRadius = 5
         textView.layer.masksToBounds = true
-        textView.returnKeyType = .Done
+        textView.returnKeyType = .done
         return textView
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -61,7 +61,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n")
         {
             textView.endEditing(true)
@@ -75,7 +75,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

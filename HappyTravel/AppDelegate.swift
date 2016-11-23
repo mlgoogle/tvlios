@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     var rootVC:UIViewController?
     
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
         
         XCGLogger.defaultInstance().xcodeColorsEnabled = true
@@ -47,125 +47,125 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func initPlugins() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () in
             WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")
             
             Fabric.with([Crashlytics.self])
             
         })
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () in
             var key = ""
-            if let id = NSBundle.mainBundle().bundleIdentifier {
+            if let id = Bundle.main.bundleIdentifier {
                 if id == "com.yundian.enterprise.trip" {
                     key = "11feec2b7ad127ae156d72aa08f2342e"
                 } else if id == "com.yundian.trip" {
                     key = "50bb1e806f1d2c1a797e6e789563e334"
                 }
             }
-            AMapServices.sharedServices().apiKey = key
+            AMapServices.shared().apiKey = key
         })
         
     }
     
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
-        bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
-        bar.tintColor = UIColor.whiteColor()
+        bar.setBackgroundImage(UIImage.init(named: "head-bg"), for: .default)
+        bar.tintColor = UIColor.white
         
-        let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.white]
         bar.titleTextAttributes = attr
-        bar.translucent = false
+        bar.isTranslucent = false
         bar.shadowImage = UIImage()
         bar.layer.masksToBounds = true
         
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         
         let tabbar = UITabBar.appearance()
         tabbar.barTintColor = UIColor.init(red: 33/255.0, green: 59/255.0, blue: 76/255.0, alpha: 1)
-        tabbar.hidden = true
+        tabbar.isHidden = true
         
-        var attrTabbarItem = [NSFontAttributeName: UIFont.systemFontOfSize(20),
+        var attrTabbarItem = [NSFontAttributeName: UIFont.systemFont(ofSize: 20),
                               NSForegroundColorAttributeName: UIColor.init(red: 33/255.0, green: 235/255.0, blue: 233/255.0, alpha: 1)]
         let tabbarItem = UITabBarItem.appearance()
         tabbarItem.titlePositionAdjustment = UIOffsetMake(CGFloat(-10),CGFloat(-10))
-        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Selected)
-        attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
-        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
+        tabbarItem.setTitleTextAttributes(attrTabbarItem, for: UIControlState.selected)
+        attrTabbarItem[NSForegroundColorAttributeName] = UIColor.gray
+        tabbarItem.setTitleTextAttributes(attrTabbarItem, for: UIControlState())
         
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,for: .default)
     }
     
     func pushMessageRegister() {
         //注册消息推送
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
-            GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () in
+            GeTuiSdk.start(withAppId: "d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
         
-            let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
+            let notifySettings = UIUserNotificationSettings.init(types: [.alert, .badge, .sound], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(notifySettings)
+            UIApplication.shared.registerForRemoteNotifications()
 
         })
     }
 
     //MARK: - OpenURL
-    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
 //        AlipaySDK.defaultService().processOrderWithPaymentResult(url) { (data: [NSObject : AnyObject]!) in
 //            XCGLogger.debug("\(data)")
 //        }
         
-        return WXApi.handleOpenURL(url, delegate: self)
+        return WXApi.handleOpen(url, delegate: self)
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
         
-        return WXApi.handleOpenURL(url, delegate: self)
+        return WXApi.handleOpen(url, delegate: self)
     }
 
-    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         
-        return WXApi.handleOpenURL(url, delegate: self)
+        return WXApi.handleOpen(url, delegate: self)
     }
     
     //MARK: - BG FG
-    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         GeTuiSdk.resume()
-        completionHandler(UIBackgroundFetchResult.NewData)
+        completionHandler(UIBackgroundFetchResult.newData)
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         GeTuiSdk.destroy()
     }
     
     //MARK: - Notify
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         var token = deviceToken.description
-        token = token.stringByReplacingOccurrencesOfString(" ", withString: "")
-        token = token.stringByReplacingOccurrencesOfString("<", withString: "")
-        token = token.stringByReplacingOccurrencesOfString(">", withString: "")
+        token = token.replacingOccurrences(of: " ", with: "")
+        token = token.replacingOccurrences(of: "<", with: "")
+        token = token.replacingOccurrences(of: ">", with: "")
 
         XCGLogger.debug("\(token)")
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: { () in
             GeTuiSdk.registerDeviceToken(token)
         })
-        NSUserDefaults.standardUserDefaults().setObject(token, forKey: CommonDefine.DeviceToken)
+        UserDefaults.standard.set(token, forKey: CommonDefine.DeviceToken)
         
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         XCGLogger.error("\(error)")
     }
 
     
 
     
-    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
         for vc in vcs! {
-            if vc.isKindOfClass(ForthwithVC) {
+            if vc.isKind(of: ForthwithVC.self) {
                 if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-                    vc.navigationController?.popToRootViewControllerAnimated(false)
-                    (vc as! ForthwithVC).msgAction(notification.userInfo)
+                    vc.navigationController?.popToRootViewController(animated: false)
+                    (vc as! ForthwithVC).msgAction(notification.userInfo as AnyObject?)
                     
                 }
                 
@@ -183,16 +183,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
      - parameter userInfo:
      - parameter completionHandler:
      */
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         application.applicationIconBadgeNumber = 0
-        completionHandler(UIBackgroundFetchResult.NewData)
+        completionHandler(UIBackgroundFetchResult.newData)
 
 
         let messageDict  = userInfo["aps"]!["category"] as? String
         
-        var str = messageDict!.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
-        str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
-        let data = str.dataUsingEncoding(NSUTF8StringEncoding)
+        var str = messageDict!.replacingOccurrences(of: "\n", with: "", options: .literal, range: nil)
+        str = str.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
+        let data = str.data(using: String.Encoding.utf8)
         let jsonData = JSON.init(data: data!)
         let pushMessage = PushMessage()
         pushMessage.setInfo(jsonData.dictionaryObject)
@@ -231,43 +231,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     //MARK: - GeTuiSdkDelegate
-    func GeTuiSdkDidRegisterClient(clientId: String!) {
+    func geTuiSdkDidRegisterClient(_ clientId: String!) {
         XCGLogger.debug("CID:\(clientId)")
     }
     
-    func GeTuiSdkDidReceivePayloadData(payloadData: NSData!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {
+    func geTuiSdkDidReceivePayloadData(_ payloadData: Data!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {
         GeTuiSdk.resetBadge()
-        XCGLogger.debug("\(payloadData.length)")
-        XCGLogger.debug("\(String.init(data: payloadData, encoding: NSUTF8StringEncoding))")
+        XCGLogger.debug("\(payloadData.count)")
+        XCGLogger.debug("\(String.init(data: payloadData, encoding: String.Encoding.utf8))")
     }
     
-    func GeTuiSdkDidSendMessage(messageId: String!, result: Int32) {
+    func geTuiSdkDidSendMessage(_ messageId: String!, result: Int32) {
         
     }
     
-    func GeTuiSdkDidOccurError(error: NSError!) {
+    func geTuiSdkDidOccurError(_ error: NSError!) {
         
     }
     
-    func GeTuiSDkDidNotifySdkState(aStatus: SdkStatus) {
+    func geTuiSDkDidNotifySdkState(_ aStatus: SdkStatus) {
         
     }
     
-    func GeTuiSdkDidSetPushMode(isModeOff: Bool, error: NSError!) {
+    func geTuiSdkDidSetPushMode(_ isModeOff: Bool, error: NSError!) {
         
     }
     
     // WXApiDelegate
-    func onReq(req: BaseReq!) {
+    func onReq(_ req: BaseReq!) {
         XCGLogger.debug("s")
     }
     
-    func onResp(resp: BaseResp!) {
+    func onResp(_ resp: BaseResp!) {
         var strMsg = "(resp.errCode)"
-        if resp.isKindOfClass(PayResp) {
+        if resp.isKind(of: PayResp.self) {
             switch resp.errCode {
             case 0 :
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatPaySuccessed, object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.WeChatPaySuccessed), object: nil)
             default:
                 strMsg = "支付失败，请您重新支付!"
                 print("retcode = \(resp.errCode), retstr = \(resp.errStr)")
@@ -276,9 +276,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             }
         }
         XCGLogger.debug(resp)
-        if resp.isKindOfClass(SendMessageToWXResp) {
+        if resp.isKind(of: SendMessageToWXResp.self) {
             let message = resp.errCode == 0 ? "分享成功":"分享失败"
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatShareResult, object: ["result":message])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.WeChatShareResult), object: ["result":message])
             
         }
         

@@ -27,7 +27,7 @@ class InvoiceHistoryInfo: Object {
     dynamic var area_:String?
     dynamic var addr_detail_:String?
     
-    func setInfo(info: InvoiceHistoryInfo) {
+    func setInfo(_ info: InvoiceHistoryInfo) {
         
         invoice_id_     = info.invoice_id_
         invoice_status_ = info.invoice_status_
@@ -45,7 +45,7 @@ class InvoiceHistoryInfo: Object {
         first_time_     = info.first_time_
         final_time_     = info.final_time_
     }
-    func refreshOtherInfo(info:InvoiceHistoryInfo) {
+    func refreshOtherInfo(_ info:InvoiceHistoryInfo) {
    
         title_          = info.title_
         user_name_      = info.user_name_

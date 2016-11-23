@@ -10,25 +10,25 @@ import UIKit
 
 class SingleSkillCell: UICollectionViewCell {
     
-    private lazy var deleteButton:UIButton = {
+    fileprivate lazy var deleteButton:UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor.clearColor()
-        button.setTitle("-", forState: .Normal)
-        button.layer.borderColor =  UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-        button.setTitleColor( UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
+        button.backgroundColor = UIColor.clear
+        button.setTitle("-", for: UIControlState())
+        button.layer.borderColor =  UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
+        button.setTitleColor( UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: UIControlState())
         return button
     }()
     
-    private lazy var titleLabel:UILabel = {
+    fileprivate lazy var titleLabel:UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.clearColor()
+        label.backgroundColor = UIColor.clear
         label.layer.cornerRadius = 5
         label.layer.masksToBounds = true
-        label.textAlignment = .Center
-        label.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+        label.textAlignment = .center
+        label.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
         label.layer.borderWidth = 1.0
         label.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-        label.font = UIFont.systemFontOfSize(S18)
+        label.font = UIFont.systemFont(ofSize: S18)
         return label
     }()
     
@@ -55,23 +55,23 @@ class SingleSkillCell: UICollectionViewCell {
      - parameter name:
      - parameter style:
      */
-    func setupDataWith(name:String, style:SkillsCellStyle) {
+    func setupDataWith(_ name:String, style:SkillsCellStyle) {
         
         titleLabel.text = name
         
         switch style {
-        case .Normal :
+        case .normal :
 
-            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor, cornerRadius: 12.0, isDelete: false)
+            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor, cornerRadius: 12.0, isDelete: false)
             break
-        case .AddNew :
-            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor, cornerRadius:  12.0 ,isDelete: false)
+        case .addNew :
+            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor, cornerRadius:  12.0 ,isDelete: false)
             break
-        case .Select :
-            setUpWith(UIColor.grayColor(), borderColor: UIColor.grayColor().CGColor, cornerRadius:  12.0, isDelete: false)
+        case .select :
+            setUpWith(UIColor.gray, borderColor: UIColor.gray.cgColor, cornerRadius:  12.0, isDelete: false)
             break
-        case .Delete :
-            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor, cornerRadius:  12.0, isDelete: true)
+        case .delete :
+            setUpWith(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), borderColor: UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor, cornerRadius:  12.0, isDelete: true)
 
             break
         default:
@@ -88,12 +88,12 @@ class SingleSkillCell: UICollectionViewCell {
      - parameter cornerRadius:
      - parameter isDelete:
      */
-    private func  setUpWith(textColor:UIColor, borderColor:CGColor, cornerRadius:CGFloat, isDelete:Bool) {
+    fileprivate func  setUpWith(_ textColor:UIColor, borderColor:CGColor, cornerRadius:CGFloat, isDelete:Bool) {
         titleLabel.textColor = textColor
         titleLabel.layer.borderColor = borderColor
         titleLabel.layer.cornerRadius = cornerRadius
 
-        deleteButton.hidden = !isDelete
+        deleteButton.isHidden = !isDelete
     }
     
     

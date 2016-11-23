@@ -8,6 +8,30 @@
 
 import Foundation
 import XCGLogger
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -18,7 +42,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     var newPasswd:String? = ""
     var verifyPasswd:String? = ""
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -32,22 +56,22 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.modifyPasswordSucceed), name: NotifyDefine.ModifyPasswordSucceed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ModifyPasswordVC.modifyPasswordSucceed), name: NSNotification.Name(rawValue: NotifyDefine.ModifyPasswordSucceed), object: nil)
 
     }
     /**
@@ -56,37 +80,37 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func modifyPasswordSucceed() {
         
         SocketManager.logoutCurrentAccount()
-        navigationController?.popToRootViewControllerAnimated(true)
+        navigationController?.popToRootViewController(animated: true)
     }
     /**
      
      键盘弹出监听
      - parameter notification:
      */
-    func keyboardWillShow(notification: NSNotification?) {
-        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
-        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+    func keyboardWillShow(_ notification: Notification?) {
+        let frame = (notification!.userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
+        let inset = UIEdgeInsetsMake(0, 0, (frame?.size.height)!, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets = inset
     }
     
-    func keyboardWillHide(notification: NSNotification?) {
+    func keyboardWillHide(_ notification: Notification?) {
         let inset = UIEdgeInsetsMake(0, 0, 0, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets = inset
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Grouped)
+        table = UITableView(frame: CGRect.zero, style: .grouped)
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 60
         table?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        table?.separatorStyle = .None
+        table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        table?.separatorStyle = .none
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp_makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -105,15 +129,15 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableOption![section].count
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tableOption!.count
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section < 2 {
             return 10
         } else {
@@ -121,28 +145,28 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("SettingCell")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.accessoryType = .None
-            cell?.contentView.userInteractionEnabled = true
-            cell?.userInteractionEnabled = true
-            cell?.selectionStyle = .None
+            cell?.accessoryType = .none
+            cell?.contentView.isUserInteractionEnabled = true
+            cell?.isUserInteractionEnabled = true
+            cell?.selectionStyle = .none
         }
         
         var title = cell?.contentView.viewWithTag(1001) as? UILabel
         if title == nil {
             title = UILabel()
             title?.tag = 1001
-            title?.backgroundColor = UIColor.clearColor()
-            title?.font = UIFont.systemFontOfSize(S15)
+            title?.backgroundColor = UIColor.clear
+            title?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
+            title?.snp_makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -154,12 +178,12 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         if inputView == nil {
             inputView = UITextField()
             inputView?.tag = 1002 + indexPath.row + indexPath.section
-            inputView?.secureTextEntry = true
+            inputView?.isSecureTextEntry = true
             inputView?.delegate = self
-            inputView?.rightViewMode = .WhileEditing
-            inputView?.clearButtonMode = .WhileEditing
+            inputView?.rightViewMode = .whileEditing
+            inputView?.clearButtonMode = .whileEditing
             cell?.contentView.addSubview(inputView!)
-            inputView?.snp_makeConstraints(closure: { (make) in
+            inputView?.snp_makeConstraints({ (make) in
                 make.left.equalTo(title!.snp_right).offset(10)
                 make.top.equalTo(title!)
                 make.bottom.equalTo(title!)
@@ -174,31 +198,31 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             sureBtn?.tag = 2001
             sureBtn?.layer.cornerRadius = 5
             sureBtn?.layer.masksToBounds = true
-            sureBtn?.setTitle(tableOption?[indexPath.section][indexPath.row][0], forState: .Normal)
-            sureBtn?.addTarget(self, action: #selector(ModifyPasswordVC.modifyPwd(_:)), forControlEvents: .TouchUpInside)
-            sureBtn?.enabled = false
+            sureBtn?.setTitle(tableOption?[indexPath.section][indexPath.row][0], for: UIControlState())
+            sureBtn?.addTarget(self, action: #selector(ModifyPasswordVC.modifyPwd(_:)), for: .touchUpInside)
+            sureBtn?.isEnabled = false
             cell?.contentView.addSubview(sureBtn!)
-            sureBtn?.snp_makeConstraints(closure: { (make) in
+            sureBtn?.snp_makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView)
-                make.width.equalTo(UIScreen.mainScreen().bounds.size.width-40)
+                make.width.equalTo(UIScreen.main.bounds.size.width-40)
                 make.height.equalTo(35)
             })
         }
         if indexPath.section == 2 {
-            title?.hidden = true
-            sureBtn?.hidden = false
-            inputView?.hidden = true
-            cell?.backgroundColor = UIColor.clearColor()
-            cell?.contentView.backgroundColor = UIColor.clearColor()
+            title?.isHidden = true
+            sureBtn?.isHidden = false
+            inputView?.isHidden = true
+            cell?.backgroundColor = UIColor.clear
+            cell?.contentView.backgroundColor = UIColor.clear
         } else {
-            title?.hidden = false
-            inputView?.hidden = false
+            title?.isHidden = false
+            inputView?.isHidden = false
             inputView?.placeholder = tableOption?[indexPath.section][indexPath.row][1]
             title?.text = tableOption?[indexPath.section][indexPath.row][0]
-            sureBtn?.hidden = true
-            cell?.backgroundColor = UIColor.whiteColor()
-            cell?.contentView.backgroundColor = UIColor.whiteColor()
+            sureBtn?.isHidden = true
+            cell?.backgroundColor = UIColor.white
+            cell?.contentView.backgroundColor = UIColor.white
         }
         
         var separateLine = cell?.contentView.viewWithTag(1003)
@@ -206,22 +230,22 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             separateLine = UIView()
             separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
             cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
+            separateLine?.snp_makeConstraints({ (make) in
                 make.left.equalTo(title!)
                 make.right.equalTo(cell!.contentView).offset(40)
                 make.bottom.equalTo(cell!.contentView).offset(0.5)
                 make.height.equalTo(1)
             })
         }
-        separateLine?.hidden = true
+        separateLine?.isHidden = true
         if ((tableOption?[indexPath.section].count)! > indexPath.row) && (((tableOption?[indexPath.section].count)! - 1) != indexPath.row) {
-            separateLine?.hidden = false
+            separateLine?.isHidden = false
         }
         
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 XCGLogger.debug("余额")
@@ -235,22 +259,22 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func modifyPwd(sender: UIButton?) {
-        let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
-        SocketManager.sendData(.ModifyPassword, data: dict)
+    func modifyPwd(_ sender: UIButton?) {
+        let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"] as [String : Any]
+        SocketManager.sendData(.modifyPassword, data: dict as AnyObject?)
         XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }
     
     //MARK: - UITextField
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
 
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         switch textField.tag {
         case 1002:
             oldPasswd = ""
@@ -267,37 +291,37 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if range.location > 15 {
             return false
         }
         
-        sureBtn?.enabled = false
+        sureBtn?.isEnabled = false
         sureBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
         if textField.tag == 1002 {
             oldPasswd = textField.text! + string
         } else if textField.tag == 1003 {
             newPasswd = textField.text! + string
-            if oldPasswd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                sureBtn?.setTitle("旧密码不能为空", forState: .Disabled)
+            if oldPasswd?.lengthOfBytes(using: String.Encoding.utf8) == 0 {
+                sureBtn?.setTitle("旧密码不能为空", for: .disabled)
             }
         } else if textField.tag == 1004 {
             verifyPasswd = textField.text! + string
-            if oldPasswd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                sureBtn?.setTitle("旧密码不能为空", forState: .Disabled)
+            if oldPasswd?.lengthOfBytes(using: String.Encoding.utf8) == 0 {
+                sureBtn?.setTitle("旧密码不能为空", for: .disabled)
             } else {
-                if newPasswd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                    sureBtn?.setTitle("新密码不能为空", forState: .Disabled)
+                if newPasswd?.lengthOfBytes(using: String.Encoding.utf8) == 0 {
+                    sureBtn?.setTitle("新密码不能为空", for: .disabled)
                 } else {
-                    if verifyPasswd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) >= newPasswd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) {
+                    if verifyPasswd?.lengthOfBytes(using: String.Encoding.utf8) >= newPasswd?.lengthOfBytes(using: String.Encoding.utf8) {
                         if verifyPasswd! != newPasswd! {
-                            sureBtn?.setTitle("新密码不一致", forState: .Disabled)
+                            sureBtn?.setTitle("新密码不一致", for: .disabled)
                         } else {
                             sureBtn?.backgroundColor = UIColor.init(decR: 10, decG: 20, decB: 40, a: 1)
-                            sureBtn?.enabled = true
+                            sureBtn?.isEnabled = true
                         }
                     } else {
-                        sureBtn?.setTitle("确认", forState: .Disabled)
+                        sureBtn?.setTitle("确认", for: .disabled)
                     }
                 }
             }
@@ -312,7 +336,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

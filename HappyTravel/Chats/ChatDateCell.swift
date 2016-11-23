@@ -14,22 +14,22 @@ class ChatDateCell: UITableViewCell {
     let sentDateLabel: UILabel
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        sentDateLabel = UILabel(frame: CGRectZero)
-        sentDateLabel.backgroundColor = .clearColor()
-        sentDateLabel.font = UIFont.systemFontOfSize(S10)
-        sentDateLabel.textAlignment = .Center
+        sentDateLabel = UILabel(frame: CGRect.zero)
+        sentDateLabel.backgroundColor = .clear
+        sentDateLabel.font = UIFont.systemFont(ofSize: S10)
+        sentDateLabel.textAlignment = .center
         sentDateLabel.textColor = UIColor(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        backgroundColor = UIColor.clearColor()
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
         contentView.addSubview(sentDateLabel)
         
         sentDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .CenterX, relatedBy: .Equal, toItem: contentView, attribute: .CenterX, multiplier: 1, constant: 0))
-        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .Top, relatedBy: .Equal, toItem: contentView, attribute: .Top, multiplier: 1, constant: 13))
-        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .Bottom, relatedBy: .Equal, toItem: contentView, attribute: .Bottom, multiplier: 1, constant: -4.5))
+        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .top, relatedBy: .equal, toItem: contentView, attribute: .top, multiplier: 1, constant: 13))
+        contentView.addConstraint(NSLayoutConstraint(item: sentDateLabel, attribute: .bottom, relatedBy: .equal, toItem: contentView, attribute: .bottom, multiplier: 1, constant: -4.5))
     }
     
     required init?(coder aDecoder: NSCoder) {

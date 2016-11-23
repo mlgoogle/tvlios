@@ -11,7 +11,7 @@ import Foundation
 
 class CentrionCardConsumedCell: UITableViewCell {
     
-    var dateFormatter = NSDateFormatter()
+    var dateFormatter = DateFormatter()
     
     let tags = ["headImageView": 1001,
                 "serviceTitleLab": 1002,
@@ -22,19 +22,19 @@ class CentrionCardConsumedCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
-        backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
         
         var bgView = contentView.viewWithTag(tags["bgView"]!)
         if bgView == nil {
             bgView = UIView()
             bgView!.tag = tags["bgView"]!
-            bgView?.backgroundColor = UIColor.whiteColor()
+            bgView?.backgroundColor = UIColor.white
             bgView?.layer.cornerRadius = 5
             bgView?.layer.masksToBounds = true
             contentView.addSubview(bgView!)
-            bgView?.snp_makeConstraints(closure: { (make) in
+            bgView?.snp_makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.right.equalTo(contentView).offset(-10)
@@ -49,9 +49,9 @@ class CentrionCardConsumedCell: UITableViewCell {
             headImageView?.layer.cornerRadius = 45 / 2.0
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
-            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            headImageView!.userInteractionEnabled = true
-            headImageView!.backgroundColor = UIColor.clearColor()
+            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
+            headImageView!.isUserInteractionEnabled = true
+            headImageView!.backgroundColor = UIColor.clear
             contentView.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.left.equalTo(bgView!).offset(14)
@@ -65,12 +65,12 @@ class CentrionCardConsumedCell: UITableViewCell {
         if serviceTitleLab == nil {
             serviceTitleLab = UILabel()
             serviceTitleLab?.tag = tags["serviceTitleLab"]!
-            serviceTitleLab?.backgroundColor = UIColor.clearColor()
-            serviceTitleLab?.textAlignment = .Left
-            serviceTitleLab?.textColor = UIColor.blackColor()
-            serviceTitleLab?.font = UIFont.systemFontOfSize(S15)
+            serviceTitleLab?.backgroundColor = UIColor.clear
+            serviceTitleLab?.textAlignment = .left
+            serviceTitleLab?.textColor = UIColor.black
+            serviceTitleLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(serviceTitleLab!)
-            serviceTitleLab?.snp_makeConstraints(closure: { (make) in
+            serviceTitleLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
                 make.top.equalTo(headImageView!)
             })
@@ -80,12 +80,12 @@ class CentrionCardConsumedCell: UITableViewCell {
         if costLab == nil {
             costLab = UILabel()
             costLab?.tag = tags["costLab"]!
-            costLab?.backgroundColor = UIColor.clearColor()
-            costLab?.textAlignment = .Right
+            costLab?.backgroundColor = UIColor.clear
+            costLab?.textAlignment = .right
             costLab?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-            costLab?.font = UIFont.systemFontOfSize(S15)
+            costLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(costLab!)
-            costLab?.snp_makeConstraints(closure: { (make) in
+            costLab?.snp_makeConstraints({ (make) in
                 make.right.equalTo(contentView).offset(-14)
                 make.center.equalTo(contentView)
             })
@@ -95,13 +95,13 @@ class CentrionCardConsumedCell: UITableViewCell {
         if subTitleLab == nil {
             subTitleLab = UILabel()
             subTitleLab?.tag = tags["subTitle"]!
-            subTitleLab?.backgroundColor = UIColor.clearColor()
-            subTitleLab?.textAlignment = .Left
-            subTitleLab?.textColor = UIColor.grayColor()
-            subTitleLab?.font = UIFont.systemFontOfSize(S13)
+            subTitleLab?.backgroundColor = UIColor.clear
+            subTitleLab?.textAlignment = .left
+            subTitleLab?.textColor = UIColor.gray
+            subTitleLab?.font = UIFont.systemFont(ofSize: S13)
             subTitleLab?.text = "二星会员"
             contentView.addSubview(subTitleLab!)
-            subTitleLab?.snp_makeConstraints(closure: { (make) in
+            subTitleLab?.snp_makeConstraints({ (make) in
                 make.top.equalTo(serviceTitleLab!.snp_bottom).offset(8)
                 make.left.equalTo(serviceTitleLab!)
                 make.height.equalTo(S13)
@@ -112,13 +112,13 @@ class CentrionCardConsumedCell: UITableViewCell {
         if timeLab == nil {
             timeLab = UILabel()
             timeLab?.tag = tags["timeLab"]!
-            timeLab?.backgroundColor = UIColor.clearColor()
-            timeLab?.textAlignment = .Left
-            timeLab?.textColor = UIColor.grayColor()
+            timeLab?.backgroundColor = UIColor.clear
+            timeLab?.textAlignment = .left
+            timeLab?.textColor = UIColor.gray
 //            timeLab?.text = "2016-11-11"
-            timeLab?.font = UIFont.systemFontOfSize(S13)
+            timeLab?.font = UIFont.systemFont(ofSize: S13)
             contentView.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp_makeConstraints({ (make) in
                 make.top.equalTo(subTitleLab!.snp_bottom).offset(4)
                 make.left.equalTo(serviceTitleLab!)
                 make.bottom.equalTo(bgView!).offset(-14)
@@ -127,9 +127,9 @@ class CentrionCardConsumedCell: UITableViewCell {
         
     }
     
-    func setCenturionCardConsumedInfo(info: CenturionCardConsumedInfo?) {
+    func setCenturionCardConsumedInfo(_ info: CenturionCardConsumedInfo?) {
         if let headImageView = contentView.viewWithTag(tags["headImageView"]!) as? UIImageView {
-            headImageView.kf_setImageWithURL(NSURL(string:  info!.privilege_pic_!), placeholderImage: UIImage.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+            headImageView.kf_setImageWithURL(URL(string:  info!.privilege_pic_!), placeholderImage: UIImage.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
             
         }
         
@@ -142,18 +142,18 @@ class CentrionCardConsumedCell: UITableViewCell {
         }
         
         if let subTitle = contentView.viewWithTag(tags["subTitle"]!) as? UILabel {
-            let formatter = NSNumberFormatter.init()
-            formatter.roundingMode = .RoundHalfDown
-            formatter.numberStyle = .SpellOutStyle
-            let lvNum = NSNumber.init(long: info!.privilege_lv_)
-            let lvStr = formatter.stringFromNumber(lvNum)
+            let formatter = NumberFormatter.init()
+            formatter.roundingMode = .halfDown
+            formatter.numberStyle = .spellOut
+            let lvNum = NSNumber.init(value: info!.privilege_lv_ as Int)
+            let lvStr = formatter.string(from: lvNum)
             subTitle.text = "\(lvStr!)星黑卡消费"
         }
         
         if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
-            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.order_time_)))
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
+            timeLab.text = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info!.order_time_)))
         }
         
     }

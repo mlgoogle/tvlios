@@ -8,28 +8,28 @@
 
 import Foundation
 //MARK: -- 颜色全局方法
-func colorWithHexString(hex: String) -> UIColor {
-    var cString:String = hex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercaseString
+func colorWithHexString(_ hex: String) -> UIColor {
+    var cString:String = hex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercased()
     
     if (cString.hasPrefix("#")) {
-        cString = (cString as NSString).substringFromIndex(1)
+        cString = (cString as NSString).substring(from: 1)
     }
     
-    let rString = (cString as NSString).substringToIndex(2)
-    let gString = ((cString as NSString).substringFromIndex(2) as NSString).substringToIndex(2)
-    let bString = ((cString as NSString).substringFromIndex(4) as NSString).substringToIndex(2)
+    let rString = (cString as NSString).substring(to: 2)
+    let gString = ((cString as NSString).substring(from: 2) as NSString).substring(to: 2)
+    let bString = ((cString as NSString).substring(from: 4) as NSString).substring(to: 2)
     
     var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
-    NSScanner(string: rString).scanHexInt(&r)
-    NSScanner(string: gString).scanHexInt(&g)
-    NSScanner(string: bString).scanHexInt(&b)
+    Scanner(string: rString).scanHexInt32(&r)
+    Scanner(string: gString).scanHexInt32(&g)
+    Scanner(string: bString).scanHexInt32(&b)
     
     return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
 }
 //MARK: -- 字体大小全局变量
-let ScreenWidth = UIScreen.mainScreen().bounds.size.width
-let ScreenHeight = UIScreen.mainScreen().bounds.size.height
-let Timestamp = NSDate().timeIntervalSince1970
+let ScreenWidth = UIScreen.main.bounds.size.width
+let ScreenHeight = UIScreen.main.bounds.size.height
+let Timestamp = Date().timeIntervalSince1970
 let S18 = AtapteWidthValue(18)
 let S15 = AtapteWidthValue(15)
 let S13 = AtapteWidthValue(13)          
@@ -38,20 +38,20 @@ let S10 = AtapteWidthValue(10)
 
 
 
-func  AtapteWidthValue(value: CGFloat) -> CGFloat {
+func  AtapteWidthValue(_ value: CGFloat) -> CGFloat {
     let mate = ScreenWidth/375.0
     let atapteValue = value*mate
     return atapteValue
 }
 
-func  AtapteHeightValue(value: CGFloat) -> CGFloat {
+func  AtapteHeightValue(_ value: CGFloat) -> CGFloat {
     let mate = ScreenHeight/667.0
     let atapteValue = value*mate
     return atapteValue
 }
 
 //MARK: --正则表达
-func isTelNumber(num:NSString)->Bool
+func isTelNumber(_ num:NSString)->Bool
 {
     let mobile = "^1(3[0-9]|5[0-35-9]|8[025-9])\\d{8}$"
     let  CM = "^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\\d)\\d{7}$"
@@ -61,10 +61,10 @@ func isTelNumber(num:NSString)->Bool
     let regextestcm = NSPredicate(format: "SELF MATCHES %@",CM )
     let regextestcu = NSPredicate(format: "SELF MATCHES %@" ,CU)
     let regextestct = NSPredicate(format: "SELF MATCHES %@" ,CT)
-    if ((regextestmobile.evaluateWithObject(num) == true)
-        || (regextestcm.evaluateWithObject(num)  == true)
-        || (regextestct.evaluateWithObject(num) == true)
-        || (regextestcu.evaluateWithObject(num) == true))
+    if ((regextestmobile.evaluate(with: num) == true)
+        || (regextestcm.evaluate(with: num)  == true)
+        || (regextestct.evaluate(with: num) == true)
+        || (regextestcu.evaluate(with: num) == true))
     {
         return true
     }

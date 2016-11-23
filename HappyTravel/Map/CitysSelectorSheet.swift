@@ -11,12 +11,12 @@ import XCGLogger
 
 @objc protocol CitysSelectorSheetDelegate : NSObjectProtocol {
     
-    @objc optional  func cancelAction(sender: UIButton?)
+    @objc optional  func cancelAction(_ sender: UIButton?)
     
     
-    @objc optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
-    @objc optional  func daysSureAction(sender:UIButton?, targetDays: Int)
-    @objc optional  func daysCancelAction(sender:UIButton?)
+    @objc optional  func sureAction(_ sender: UIButton?, targetCity: CityInfo?)
+    @objc optional  func daysSureAction(_ sender:UIButton?, targetDays: Int)
+    @objc optional  func daysCancelAction(_ sender:UIButton?)
 }
 
 class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
@@ -61,7 +61,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         cancelBtn.backgroundColor = UIColor.clear
         cancelBtn.setTitleColor(UIColor.
             , for: .normal)
-        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .TouchUpInside)
+        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .touchUpInside)
         head.addSubview(cancelBtn)
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(head)
@@ -73,8 +73,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         let sureBtn = UIButton()
         sureBtn.setTitle("确定", for: .normal)
         sureBtn.backgroundColor = UIColor.clear
-        sureBtn.setTitleColor(UIColor.blackColor, for: .normal)
-        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .TouchUpInside)
+        sureBtn.setTitleColor(UIColor.black, for: .normal)
+        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .touchUpInside)
         head.addSubview(sureBtn)
         sureBtn.snp_makeConstraints { (make) in
             make.right.equalTo(head)
@@ -84,8 +84,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         let body = UIView()
-        body.backgroundColor = UIColor.clearColor()
-        body.userInteractionEnabled = true
+        body.backgroundColor = UIColor.clear
+        body.isUserInteractionEnabled = true
         addSubview(body)
         body.snp_makeConstraints { (make) in
             make.left.equalTo(bgView).offset(48)
@@ -96,7 +96,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         pickView.delegate = self
         pickView.dataSource = self
-        pickView.backgroundColor = UIColor.clearColor()
+        pickView.backgroundColor = UIColor.clear
         body.addSubview(pickView)
         pickView.snp_makeConstraints { (make) in
             make.left.equalTo(body)
@@ -106,7 +106,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         let bottomView = UIView()
-        bottomView.backgroundColor = UIColor.clearColor()
+        bottomView.backgroundColor = UIColor.clear
         body.addSubview(bottomView)
         bottomView.snp_makeConstraints { (make) in
             make.left.equalTo(body)
@@ -117,17 +117,17 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     //MARK: - UIPickerView
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         let count = citysList == nil ? daysList?.count : citysList?.count
         return count!
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
       
         if daysList == nil {
             
@@ -140,11 +140,11 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         return String(daysCount) + "天"
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         if daysList == nil  {
             
-            for (index, city) in citysList!.enumerate() {
+            for (index, city) in citysList!.enumerated() {
                 if index == row {
                     targetCity = city
                     return
@@ -155,7 +155,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
     
-    func cancelAction(sender: UIButton?) {
+    func cancelAction(_ sender: UIButton?) {
         guard delegate != nil else {
             XCGLogger.error("delegate 为空")
             return
@@ -167,7 +167,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
     
-    func sureAction(sender: UIButton?) {
+    func sureAction(_ sender: UIButton?) {
         guard delegate != nil else {
             XCGLogger.error("delegate 为空")
             return

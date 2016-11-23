@@ -34,14 +34,14 @@ class InvoiceCell: UITableViewCell {
             }
             
             if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateStyle = .ShortStyle
-                dateFormatter.timeStyle = .ShortStyle
-                timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.time)))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                timeLab.text = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info!.time)))
             }
             
             if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-                selectBtn.selected = info!.selected
+                selectBtn.isSelected = info!.selected
             }
         }
     }
@@ -58,19 +58,19 @@ class InvoiceCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.whiteColor()
-        backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.white
+        backgroundColor = UIColor.clear
         
         var selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton
         if selectBtn == nil {
             selectBtn = UIButton()
             selectBtn?.tag = tags["selectBtn"]!
-            selectBtn?.backgroundColor = UIColor.clearColor()
-            selectBtn?.setImage(UIImage.init(named: "service-unselect"), forState: .Normal)
-            selectBtn?.setImage(UIImage.init(named: "service-selected"), forState: .Selected)
+            selectBtn?.backgroundColor = UIColor.clear
+            selectBtn?.setImage(UIImage.init(named: "service-unselect"), for: UIControlState())
+            selectBtn?.setImage(UIImage.init(named: "service-selected"), for: .selected)
             contentView.addSubview(selectBtn!)
-            selectBtn?.snp_makeConstraints(closure: { (make) in
+            selectBtn?.snp_makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(10)
                 make.width.equalTo(20)
@@ -82,11 +82,11 @@ class InvoiceCell: UITableViewCell {
         if nameLab == nil {
             nameLab = UILabel()
             nameLab?.tag = tags["nameLab"]!
-            nameLab?.backgroundColor = UIColor.clearColor()
-            nameLab?.textAlignment = .Left
-            nameLab?.font = UIFont.systemFontOfSize(S15)
+            nameLab?.backgroundColor = UIColor.clear
+            nameLab?.textAlignment = .left
+            nameLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(nameLab!)
-            nameLab?.snp_makeConstraints(closure: { (make) in
+            nameLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(selectBtn!.snp_right).offset(10)
                 make.centerY.equalTo(selectBtn!.snp_centerY)
             })
@@ -97,11 +97,11 @@ class InvoiceCell: UITableViewCell {
         if titleLab == nil {
             titleLab = UILabel()
             titleLab?.tag = tags["titleLab"]!
-            titleLab?.backgroundColor = UIColor.clearColor()
-            titleLab?.textAlignment = .Left
-            titleLab?.font = UIFont.systemFontOfSize(S15)
+            titleLab?.backgroundColor = UIColor.clear
+            titleLab?.textAlignment = .left
+            titleLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(titleLab!)
-            titleLab?.snp_makeConstraints(closure: { (make) in
+            titleLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(nameLab!.snp_right).offset(10)
                 make.centerY.equalTo(selectBtn!.snp_centerY)
             })
@@ -112,11 +112,11 @@ class InvoiceCell: UITableViewCell {
         if priceLab == nil {
             priceLab = UILabel()
             priceLab?.tag = tags["priceLab"]!
-            priceLab?.backgroundColor = UIColor.clearColor()
-            priceLab?.textAlignment = .Right
-            priceLab?.font = UIFont.systemFontOfSize(S15)
+            priceLab?.backgroundColor = UIColor.clear
+            priceLab?.textAlignment = .right
+            priceLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(priceLab!)
-            priceLab?.snp_makeConstraints(closure: { (make) in
+            priceLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(titleLab!.snp_right).offset(10)
                 make.right.equalTo(contentView).offset(-20)
                 make.centerY.equalTo(selectBtn!.snp_centerY)
@@ -128,12 +128,12 @@ class InvoiceCell: UITableViewCell {
         if timeLab == nil {
             timeLab = UILabel()
             timeLab?.tag = tags["timeLab"]!
-            timeLab?.backgroundColor = UIColor.clearColor()
-            timeLab?.textAlignment = .Left
-            timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(S13)
+            timeLab?.backgroundColor = UIColor.clear
+            timeLab?.textAlignment = .left
+            timeLab?.textColor = UIColor.gray
+            timeLab?.font = UIFont.systemFont(ofSize: S13)
             contentView.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(nameLab!)
                 make.top.equalTo(nameLab!.snp_bottom).offset(10)
                 make.bottom.equalTo(contentView).offset(-10)
@@ -145,12 +145,12 @@ class InvoiceCell: UITableViewCell {
         if typeLab == nil {
             typeLab = UILabel()
             typeLab?.tag = tags["typeLab"]!
-            typeLab?.backgroundColor = UIColor.clearColor()
-            typeLab?.textAlignment = .Right
-            typeLab?.textColor = UIColor.grayColor()
-            typeLab?.font = UIFont.systemFontOfSize(S13)
+            typeLab?.backgroundColor = UIColor.clear
+            typeLab?.textAlignment = .right
+            typeLab?.textColor = UIColor.gray
+            typeLab?.font = UIFont.systemFont(ofSize: S13)
             contentView.addSubview(typeLab!)
-            typeLab?.snp_makeConstraints(closure: { (make) in
+            typeLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(timeLab!.snp_right)
                 make.right.equalTo(priceLab!)
                 make.centerY.equalTo(timeLab!)
@@ -164,7 +164,7 @@ class InvoiceCell: UITableViewCell {
             bottomLine?.tag = tags["bottomLine"]!
             bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
             contentView.addSubview(bottomLine!)
-            bottomLine?.snp_makeConstraints(closure: { (make) in
+            bottomLine?.snp_makeConstraints({ (make) in
                 make.left.equalTo(selectBtn!)
                 make.bottom.equalTo(contentView)
                 make.right.equalTo(contentView)

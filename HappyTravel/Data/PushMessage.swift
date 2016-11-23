@@ -18,15 +18,15 @@ class PushMessage: Object {
 //  }
     
     enum MessageType : Int {
-        case Chat = 2004
-        case System = 1
-        case Date
-        case Appointment = 2231
+        case chat = 2004
+        case system = 1
+        case date
+        case appointment = 2231
     }
     
-    dynamic var push_msg_type = MessageType.Chat.rawValue
+    dynamic var push_msg_type = MessageType.chat.rawValue
     
-    dynamic var msg_type_ = MessageType.Chat.rawValue
+    dynamic var msg_type_ = MessageType.chat.rawValue
     
     dynamic var from_uid_ = 0
     
@@ -41,7 +41,7 @@ class PushMessage: Object {
     dynamic var service_id_:String?
     
     
-    func setInfo(messageInfo:Dictionary<String,AnyObject>?) {
+    func setInfo(_ messageInfo:Dictionary<String,AnyObject>?) {
         
         if messageInfo!["from_uid_"] != nil {
          from_uid_ = messageInfo!["from_uid_"] as! Int
@@ -66,7 +66,7 @@ class PushMessage: Object {
         
     }
     
-    func setBody(body:Dictionary<String, AnyObject>) {
+    func setBody(_ body:Dictionary<String, AnyObject>) {
         
         if body["servantID"] != nil {
             service_id_ = body["servantID"] as? String
