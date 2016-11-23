@@ -51,7 +51,6 @@ class InvoiceHistoryVC:UIViewController {
     }
     
     /**
-     
      回调
      - parameter notify:
      */

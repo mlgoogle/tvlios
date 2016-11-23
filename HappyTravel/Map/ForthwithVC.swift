@@ -34,6 +34,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var firstLanch = true
     let bottomSelector = UISlider()
     let appointmentView = AppointmentView()
+    var lastMapCenter: CLLocationCoordinate2D?
     var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
     //延时测试用
     var appointment_id_ = 0
@@ -517,9 +518,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         if err {
             XCGLogger.error("err:\(data!["error_"] as! Int)")
+            let errorCord = data!["error_"] as! Int
+            SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
         let servants = data!["result"] as! Array<Dictionary<String, AnyObject>>
+        annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
@@ -536,8 +540,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             mapView?.removeAnnotations(mapView!.annotations)
         }
         mapView!.addAnnotations(annotations)
-        mapView!.showAnnotations(annotations, animated: true)
-        
         
     }
     
@@ -664,6 +666,31 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
     }
+    
+    public func mapView(mapView: MAMapView!, mapDidMoveByUser wasUserAction: Bool) {
+        if wasUserAction == false {
+            return
+        }
+        
+        if lastMapCenter != nil {
+            if double2((lastMapCenter?.latitude)!) == double2(mapView.centerCoordinate.latitude) &&
+                double2((lastMapCenter?.longitude)!) == double2(mapView.centerCoordinate.longitude) &&
+                firstLanch == false {
+                return
+            }
+        }
+        let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
+                                                  "longitude_": mapView.centerCoordinate.longitude,
+                                                  "distance_": 20.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
+        lastMapCenter = mapView.centerCoordinate
+    }
+    
+    func double2(let value:Double) -> Double {
+        let valueStr = String(format: "%.4f",value)
+        return Double(valueStr)!
+    }
+
     
     func sendLocality() {
         mapView!.setZoomLevel(11, animated: true)
