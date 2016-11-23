@@ -12,21 +12,24 @@ import RealmSwift
 class DistanceOfTravelCell: UITableViewCell {
     
     var dateFormatter = NSDateFormatter()
-    
-    let statusDict:Dictionary<OrderStatus, String> = [.WaittingAccept: "等待接受",
-                                                      .Reject: "已拒绝",
-                                                      .Accept: "已接受",
-                                                      .WaittingPay: "等待支付",
-                                                      .Paid: "支付完成",
-                                                      .Cancel: "已取消",
-                                                      .InvoiceMaking: "开票中",
-                                                      .InvoiceMaked: "已开票"]
+    let statusDict:Dictionary<OrderStatus, String> = [.WaittingAccept: "等待接受",//等待服务者接受
+                                                              .Reject: "已拒绝",//服务者拒绝
+                                                              .Accept: "已接受",//服务者接受
+                                                         .WaittingPay: "等待支付",//等待消费者支付
+                                                                .Paid: "支付完成",//已经支付
+                                                              .Cancel: "已取消",//取消
+                                                             .OnGoing: "进行中",//订单进行中
+                                                           .Completed: "已完成",//服务者确定完成
+                                                       .InvoiceMaking: "开票中",
+                                                        .InvoiceMaked: "已开票"]
     let statusColor:Dictionary<OrderStatus, UIColor> = [.WaittingAccept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .Reject: UIColor.redColor(),
                                                         .Accept: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .WaittingPay: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .Paid: UIColor.greenColor(),
                                                         .Cancel: UIColor.grayColor(),
+                                                        .OnGoing:  UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),//订单进行中
+                                                        .Completed:  UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .InvoiceMaking: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .InvoiceMaked: UIColor.greenColor()]
     

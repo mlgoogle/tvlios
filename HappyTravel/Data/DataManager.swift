@@ -372,7 +372,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Paid.rawValue)")
+        let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Completed.rawValue)")
         return hodometerInfos
     }
     
