@@ -9,6 +9,30 @@
 import Foundation
 import XCGLogger
 import SVProgressHUD
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var table:UITableView?
@@ -22,7 +46,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     
     var service:CenturionCardServiceInfo?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -35,18 +59,18 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
-    func receivedData(notifation:NSNotification) {
+    func receivedData(_ notifation:Notification) {
         
         let dict = notifation.userInfo!["data"]
         
@@ -56,7 +80,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             let userInfo = UserInfo()
             
-            userInfo.setInfo(.Other, info: dict as? Dictionary<String, AnyObject>)
+            userInfo.setInfo(.other, info: dict as? Dictionary<String, AnyObject>)
             
             DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
@@ -69,18 +93,18 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     func registerNotify() {
     
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CenturionCardDetailVC.receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CenturionCardDetailVC.receivedData), name: NSNotification.Name(rawValue: NotifyDefine.ServersManInfoReply), object: nil)
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Grouped)
+        table = UITableView(frame: CGRect.zero, style: .grouped)
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 60
         table?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        table?.separatorStyle = .None
+        table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        table?.separatorStyle = .none
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
@@ -89,23 +113,23 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.01
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 15
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             return headViewCell(tableView, indexPath: indexPath)
         } else if indexPath.section == 1 || indexPath.section == 2 {
@@ -117,11 +141,11 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         return UITableViewCell()
     }
     
-    func headViewCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("HeadViewCell")
+    func headViewCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "HeadViewCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
         }
         
         var headView = cell?.contentView.viewWithTag(tags["headView"]!) as? UIImageView
@@ -140,20 +164,20 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
-    func descCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("DescCell")
+    func descCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "DescCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
         }
         
         var title = cell?.contentView.viewWithTag(tags["titleLab"]!) as? UILabel
         if title == nil {
             title = UILabel()
             title?.tag = tags["titleLab"]!
-            title?.backgroundColor = UIColor.clearColor()
-            title?.font = UIFont.systemFontOfSize(S15)
-            title?.textColor = UIColor.blackColor()
+            title?.backgroundColor = UIColor.clear
+            title?.font = UIFont.systemFont(ofSize: S15)
+            title?.textColor = UIColor.black
             cell?.contentView.addSubview(title!)
             title?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
@@ -167,9 +191,9 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         if descLab == nil {
             descLab = UILabel()
             descLab?.tag = tags["descLab"]!
-            descLab?.backgroundColor = UIColor.clearColor()
-            descLab?.font = UIFont.systemFontOfSize(S13)
-            descLab?.textColor = UIColor.grayColor()
+            descLab?.backgroundColor = UIColor.clear
+            descLab?.font = UIFont.systemFont(ofSize: S13)
+            descLab?.textColor = UIColor.gray
             descLab?.numberOfLines = 0
             cell?.contentView.addSubview(descLab!)
             descLab?.snp_makeConstraints(closure: { (make) in
@@ -184,13 +208,13 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
-    func callServantCell(tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("DescCell")
+    func callServantCell(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "DescCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.selectionStyle = .None
-            cell?.backgroundColor = UIColor.clearColor()
-            cell?.contentView.backgroundColor = UIColor.clearColor()
+            cell?.selectionStyle = .none
+            cell?.backgroundColor = UIColor.clear
+            cell?.contentView.backgroundColor = UIColor.clear
         }
         
         let title = service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? "联系服务管家" : "购买此服务"
@@ -198,14 +222,14 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         if callServantBtn == nil {
             callServantBtn = UIButton()
             callServantBtn?.tag = tags["callServantBtn"]!
-            callServantBtn?.backgroundColor = UIColor.whiteColor()
-            callServantBtn?.setTitle(title, forState: .Normal)
-            callServantBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), forState: .Normal)
+            callServantBtn?.backgroundColor = UIColor.white
+            callServantBtn?.setTitle(title, for: UIControlState())
+            callServantBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: UIControlState())
             callServantBtn?.layer.masksToBounds = true
             callServantBtn?.layer.cornerRadius = 5
-            callServantBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+            callServantBtn?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
             callServantBtn?.layer.borderWidth = 1
-            callServantBtn?.addTarget(self, action: #selector(CenturionCardDetailVC.callSrevant), forControlEvents: .TouchUpInside)
+            callServantBtn?.addTarget(self, action: #selector(CenturionCardDetailVC.callSrevant), for: .touchUpInside)
             cell?.contentView.addSubview(callServantBtn!)
             callServantBtn?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(cell!.contentView)
@@ -222,21 +246,21 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     
     func callSrevant() {
         if service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
-            SocketManager.sendData(.ServersManInfoRequest, data: nil)
+            SocketManager.sendData(.serversManInfoRequest, data: nil)
 
             
         } else {
             
-            let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-            let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+            let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .alert)
+            let ensure = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
+                UIApplication.shared.openURL(URL(string: "tel://\(self.serviceTel)")!)
             })
-            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+            let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (action: UIAlertAction) in
                 
             })
             alert.addAction(ensure)
             alert.addAction(cancel)
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
         
     }
@@ -246,7 +270,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

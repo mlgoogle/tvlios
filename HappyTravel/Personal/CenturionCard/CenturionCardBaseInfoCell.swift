@@ -23,15 +23,15 @@ class CenturionCardBaseInfoCell : UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
         
         var bgView = contentView.viewWithTag(tags["bgView"]!) as? UIImageView
         if bgView == nil {
             bgView = UIImageView()
             bgView!.tag = tags["bgView"]!
-            bgView!.backgroundColor = UIColor.clearColor()
-            bgView!.userInteractionEnabled = true
+            bgView!.backgroundColor = UIColor.clear
+            bgView!.isUserInteractionEnabled = true
             bgView!.image = UIImage.init(named: "bg-baseinfo")
             contentView.addSubview(bgView!)
             bgView!.snp_makeConstraints { (make) in
@@ -49,9 +49,9 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             headView?.layer.cornerRadius = AtapteWidthValue(80) / 2.0
             headView?.layer.masksToBounds = true
             headView?.layer.borderWidth = 1
-            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 43/255.0, blue: 30/255.0, alpha: 1).CGColor
-            headView!.userInteractionEnabled = true
-            headView!.backgroundColor = UIColor.clearColor()
+            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 43/255.0, blue: 30/255.0, alpha: 1).cgColor
+            headView!.isUserInteractionEnabled = true
+            headView!.backgroundColor = UIColor.clear
             bgView!.addSubview(headView!)
             headView!.snp_makeConstraints { (make) in
                 make.top.equalTo(bgView!).offset(AtapteWidthValue(36))
@@ -66,10 +66,10 @@ class CenturionCardBaseInfoCell : UITableViewCell {
         if levelLabel == nil {
             levelLabel = UILabel()
             levelLabel?.tag = tags["levelLabel"]!
-            levelLabel?.backgroundColor = UIColor.clearColor()
-            levelLabel?.textAlignment = .Center
-            levelLabel?.textColor = UIColor.whiteColor()
-            levelLabel?.font = UIFont.boldSystemFontOfSize(S15)
+            levelLabel?.backgroundColor = UIColor.clear
+            levelLabel?.textAlignment = .center
+            levelLabel?.textColor = UIColor.white
+            levelLabel?.font = UIFont.boldSystemFont(ofSize: S15)
             bgView?.addSubview(levelLabel!)
             levelLabel?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(bgView!)
@@ -82,10 +82,10 @@ class CenturionCardBaseInfoCell : UITableViewCell {
         if nicknameLabel == nil {
             nicknameLabel = UILabel()
             nicknameLabel?.tag = tags["nicknameLabel"]!
-            nicknameLabel?.backgroundColor = UIColor.clearColor()
-            nicknameLabel?.textAlignment = .Center
-            nicknameLabel?.textColor = .whiteColor()
-            nicknameLabel?.font = UIFont.boldSystemFontOfSize(S15)
+            nicknameLabel?.backgroundColor = UIColor.clear
+            nicknameLabel?.textAlignment = .center
+            nicknameLabel?.textColor = .white
+            nicknameLabel?.font = UIFont.boldSystemFont(ofSize: S15)
             bgView?.addSubview(nicknameLabel!)
             nicknameLabel?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(bgView!)
@@ -96,10 +96,10 @@ class CenturionCardBaseInfoCell : UITableViewCell {
         
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setInfo(_ userInfo: UserInfo?) {
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
             if let headView: UIImageView = bgView.viewWithTag(tags["headView"]!) as? UIImageView {
-                if let photoUrl = NSURL(string: (userInfo?.headUrl!)! == nil ? "" : (userInfo?.headUrl!)!) {
+                if let photoUrl = URL(string: (userInfo?.headUrl!)! == nil ? "" : (userInfo?.headUrl!)!) {
                     headView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                         
                     }

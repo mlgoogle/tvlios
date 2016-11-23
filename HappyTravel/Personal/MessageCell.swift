@@ -21,15 +21,15 @@ class MessageCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
-        backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
         
         var view = contentView.viewWithTag(101)
         if view == nil {
             view = UIView()
             view!.tag = 101
-            view?.backgroundColor = UIColor.whiteColor()
+            view?.backgroundColor = UIColor.white
             view?.layer.cornerRadius = 5
             view?.layer.masksToBounds = true
             contentView.addSubview(view!)
@@ -48,9 +48,9 @@ class MessageCell: UITableViewCell {
             headImageView?.layer.cornerRadius = 45 / 2.0
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
-            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            headImageView!.userInteractionEnabled = true
-            headImageView!.backgroundColor = UIColor.clearColor()
+            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
+            headImageView!.isUserInteractionEnabled = true
+            headImageView!.backgroundColor = UIColor.clear
             view!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.left.equalTo(view!).offset(14)
@@ -64,9 +64,9 @@ class MessageCell: UITableViewCell {
         if nickNameLab == nil {
             nickNameLab = UILabel()
             nickNameLab?.tag = 1002
-            nickNameLab?.backgroundColor = UIColor.clearColor()
-            nickNameLab?.textAlignment = .Left
-            nickNameLab?.font = UIFont.systemFontOfSize(S15)
+            nickNameLab?.backgroundColor = UIColor.clear
+            nickNameLab?.textAlignment = .left
+            nickNameLab?.font = UIFont.systemFont(ofSize: S15)
             view?.addSubview(nickNameLab!)
             nickNameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -78,10 +78,10 @@ class MessageCell: UITableViewCell {
         if timeLab == nil {
             timeLab = UILabel()
             timeLab?.tag = 1003
-            timeLab?.backgroundColor = UIColor.clearColor()
-            timeLab?.textAlignment = .Left
-            timeLab?.textColor = UIColor.grayColor()
-            timeLab?.font = UIFont.systemFontOfSize(S13)
+            timeLab?.backgroundColor = UIColor.clear
+            timeLab?.textAlignment = .left
+            timeLab?.textColor = UIColor.gray
+            timeLab?.font = UIFont.systemFont(ofSize: S13)
             view?.addSubview(timeLab!)
             timeLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(view!).offset(-14)
@@ -93,10 +93,10 @@ class MessageCell: UITableViewCell {
         if unreadCntLab == nil {
             unreadCntLab = UILabel()
             unreadCntLab?.tag = 1103
-            unreadCntLab?.backgroundColor = UIColor.redColor()
-            unreadCntLab?.textAlignment = .Center
-            unreadCntLab?.textColor = UIColor.whiteColor()
-            unreadCntLab?.font = UIFont.systemFontOfSize(S10)
+            unreadCntLab?.backgroundColor = UIColor.red
+            unreadCntLab?.textAlignment = .center
+            unreadCntLab?.textColor = UIColor.white
+            unreadCntLab?.font = UIFont.systemFont(ofSize: S10)
             unreadCntLab?.layer.cornerRadius = 18 / 2.0
             unreadCntLab?.layer.masksToBounds = true
             view?.addSubview(unreadCntLab!)
@@ -106,17 +106,17 @@ class MessageCell: UITableViewCell {
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })
-            unreadCntLab?.hidden = true
+            unreadCntLab?.isHidden = true
         }
         
         var msgLab = view?.viewWithTag(1004) as? UILabel
         if msgLab == nil {
             msgLab = UILabel()
             msgLab?.tag = 1004
-            msgLab?.backgroundColor = UIColor.clearColor()
-            msgLab?.textAlignment = .Left
-            msgLab?.font = UIFont.systemFontOfSize(S13)
-            msgLab?.textColor = UIColor.grayColor()
+            msgLab?.backgroundColor = UIColor.clear
+            msgLab?.textAlignment = .left
+            msgLab?.font = UIFont.systemFont(ofSize: S13)
+            msgLab?.textColor = UIColor.gray
             msgLab?.numberOfLines = 0
             view?.addSubview(msgLab!)
             msgLab?.snp_makeConstraints(closure: { (make) in
@@ -134,14 +134,14 @@ class MessageCell: UITableViewCell {
         }
     }
     
-    func setInfo(message: PushMessage?, unreadCnt: Int) {
+    func setInfo(_ message: PushMessage?, unreadCnt: Int) {
         msgInfo = message
         if msgInfo?.msg_type_ == 2231 {
             
-            showDetailInfo.hidden = false
+            showDetailInfo.isHidden = false
             setAppointmentInfo(message, unreadCnt: unreadCnt)
         }else {
-            showDetailInfo.hidden = true
+            showDetailInfo.isHidden = true
             let view = contentView.viewWithTag(101)
             if let headView = view!.viewWithTag(1001) as? UIImageView {
                 var uid = 0
@@ -152,7 +152,7 @@ class MessageCell: UITableViewCell {
                 }
                 if let user = DataManager.getUserInfo(uid) {
                     userInfo = user
-                    headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                    headView.kf_setImageWithURL(URL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                         
                     }
                     if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
@@ -171,20 +171,20 @@ class MessageCell: UITableViewCell {
                 }
                 
                 if let timeLab = view!.viewWithTag(1003) as? UILabel {
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.timeStyle = .ShortStyle
-                    dateFormatter.dateStyle = .ShortStyle
-                    let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.timeStyle = .short
+                    dateFormatter.dateStyle = .short
+                    let dateStr = dateFormatter.string(from: Date(timeIntervalSince1970: NSNumber.init(value: message!.msg_time_ as Int64).doubleValue))
                     timeLab.text = dateStr
                 }
                 
                 if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
                     
                     if unreadCnt > 0 {
-                        unreadCntLab.hidden = false
+                        unreadCntLab.isHidden = false
                         unreadCntLab.text = "\(unreadCnt)"
                     } else {
-                        unreadCntLab.hidden = true
+                        unreadCntLab.isHidden = true
                     }
                 }
                 
@@ -193,7 +193,7 @@ class MessageCell: UITableViewCell {
         
     }
     
-    func setAppointmentInfo(message: PushMessage?, unreadCnt: Int) {
+    func setAppointmentInfo(_ message: PushMessage?, unreadCnt: Int) {
         
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
@@ -208,19 +208,19 @@ class MessageCell: UITableViewCell {
             }
             
             if let timeLab = view!.viewWithTag(1003) as? UILabel {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.timeStyle = .ShortStyle
-                dateFormatter.dateStyle = .ShortStyle
-                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = .short
+                dateFormatter.dateStyle = .short
+                let dateStr = dateFormatter.string(from: Date(timeIntervalSince1970: NSNumber.init(value: message!.msg_time_ as Int64).doubleValue))
                 timeLab.text = dateStr
             }
             
             if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
                 if unreadCnt > 0 {
-                    unreadCntLab.hidden = false
+                    unreadCntLab.isHidden = false
                     unreadCntLab.text = "\(unreadCnt)"
                 } else {
-                    unreadCntLab.hidden = true
+                    unreadCntLab.isHidden = true
                 }
             }
             

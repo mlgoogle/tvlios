@@ -46,10 +46,10 @@ class ServiceInfo: Object {
 class UserInfo: Object {
 
     enum UserType : Int {
-        case CurrentUser
-        case Servant
-        case MeetLocation
-        case Other
+        case currentUser
+        case servant
+        case meetLocation
+        case other
     }
     
     dynamic var login:Bool = false
@@ -74,7 +74,7 @@ class UserInfo: Object {
     
     dynamic var gpsLocationLon:Double = 0
     
-    dynamic var userType:Int = UserType.Servant.rawValue
+    dynamic var userType:Int = UserType.servant.rawValue
     
     dynamic var businessLv:Float = 0
     
@@ -119,7 +119,7 @@ class UserInfo: Object {
     let travalTags:List<Tally> = List<Tally>()
     
 
-    func setInfo(type: UserType, info: Dictionary<String, AnyObject>?) {
+    func setInfo(_ type: UserType, info: Dictionary<String, AnyObject>?) {
         userType = type.rawValue
 
         if info == nil {
@@ -159,13 +159,13 @@ class UserInfo: Object {
                 break
             case "business_tag_":
                 businessTags.removeAll()
-                let tags = (value as! String).componentsSeparatedByString(",")
+                let tags = (value as! String).components(separatedBy: ",")
                 for tag in tags {
                     let tally = Tally()
                     tally.tally = tag
-                    let string:NSString = tag
-                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                    let rect = string.boundingRectWithSize(CGSizeMake(0, 20), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(AtapteWidthValue(12))], context: nil)
+                    let string:NSString = tag as NSString
+                    let options:NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
+                    let rect = string.boundingRect(with: CGSize(width: 0, height: 20), options: options, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: AtapteWidthValue(12))], context: nil)
                     tally.labelWidth = Float(rect.size.width) + 24
                     businessTags.append(tally)
                 }
@@ -177,7 +177,7 @@ class UserInfo: Object {
                 certification = value as! Bool
                 break
             case "photo_list_":
-                let urls = (value as! String).componentsSeparatedByString(",")
+                let urls = (value as! String).components(separatedBy: ",")
                 photoUrlList.removeAll()
                 for url in urls {
                     let photoUrl = PhotoUrl()
@@ -195,13 +195,13 @@ class UserInfo: Object {
                 break
             case "traval_tag_":
                 travalTags.removeAll()
-                let tags = (value as! String).componentsSeparatedByString(",")
+                let tags = (value as! String).components(separatedBy: ",")
                 for tag in tags {
                     let tally = Tally()
                     tally.tally = tag
-                    let string:NSString = tag
-                    let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                    let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(AtapteWidthValue(12))], context: nil)
+                    let string:NSString = tag as NSString
+                    let options:NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
+                    let rect = string.boundingRect(with: CGSize(width: 0, height: 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: AtapteWidthValue(12))], context: nil)
                     tally.labelWidth = Float(rect.size.width) + 24
                     travalTags.append(tally)
                 }
@@ -222,10 +222,10 @@ class UserInfo: Object {
                 cashLv = value as! Int
                 break
             case "start_time_":
-                centurionCardStartTime = (value as! NSNumber).longValue
+                centurionCardStartTime = (value as! NSNumber).intValue
                 break
             case "end_time_":
-                centurionCardEndTime = (value as! NSNumber).longValue
+                centurionCardEndTime = (value as! NSNumber).intValue
                 break
             case "blackcard_lv_":
                 centurionCardLv = value as! Int
@@ -252,7 +252,7 @@ class UserInfo: Object {
         }
     }
     
-    func updateInfo(info: UserInfo) {
+    func updateInfo(_ info: UserInfo) {
         login = info.login
         
         nickname = info.nickname

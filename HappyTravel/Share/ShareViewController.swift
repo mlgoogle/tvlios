@@ -13,18 +13,18 @@ class ShareItem: UICollectionViewCell {
    
     lazy var shareIcon: UIImageView = {
        let icon = UIImageView.init()
-        icon.contentMode = .ScaleAspectFill
+        icon.contentMode = .scaleAspectFill
         return icon
     }()
     
     lazy var shareTitle: UILabel = {
-       let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S15), textColor: colorWithHexString("#666666"))
+       let label = UILabel.init(text: "", font: UIFont.systemFont(ofSize: S15), textColor: colorWithHexString("#666666"))
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = UIColor.whiteColor()
+        contentView.backgroundColor = UIColor.white
         contentView.addSubview(shareIcon)
         shareIcon.snp_makeConstraints { (make) in
             make.centerX.equalTo(contentView)
@@ -57,38 +57,38 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
        layout.itemSize = CGSize.init(width: ScreenWidth / 2 - 20, height: AtapteWidthValue(102))
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-       let collection = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)
+       let collection = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         collection.layer.cornerRadius = 8
-        collection.backgroundColor = UIColor.whiteColor()
-        collection.registerClass(ShareItem.classForCoder(), forCellWithReuseIdentifier: "ShareItem")
-        collection.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
+        collection.backgroundColor = UIColor.white
+        collection.register(ShareItem.classForCoder(), forCellWithReuseIdentifier: "ShareItem")
+        collection.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
         return collection
     }()
     //取消按钮
     lazy var cancelBtn: UIButton = {
-        let btn = UIButton.init(type: .Custom)
-        btn.setTitle("取消", forState: .Normal)
+        let btn = UIButton.init(type: .custom)
+        btn.setTitle("取消", for: UIControlState())
         btn.layer.cornerRadius = 8
-        btn.titleLabel?.font = UIFont.systemFontOfSize(S18)
-        btn.setTitleColor(colorWithHexString("#666666"), forState: .Normal)
-        btn.backgroundColor = UIColor.whiteColor()
-        btn.addTarget(self, action: #selector(cancelBtnTapped), forControlEvents: .TouchUpInside)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: S18)
+        btn.setTitleColor(colorWithHexString("#666666"), for: UIControlState())
+        btn.backgroundColor = UIColor.white
+        btn.addTarget(self, action: #selector(cancelBtnTapped), for: .touchUpInside)
         return btn
     }()
     func cancelBtnTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shareResult), name: NotifyDefine.WeChatShareResult, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shareResult), name: NSNotification.Name(rawValue: NotifyDefine.WeChatShareResult), object: nil)
         
         initView()
     }
     func initView() {
         let bgView = UIView.init(frame: view.bounds)
-        bgView.backgroundColor = UIColor.blackColor()
+        bgView.backgroundColor = UIColor.black
         bgView.alpha = 0.5
         view.addSubview(bgView)
         
@@ -117,29 +117,29 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         shareCollection.delegate = self
         shareCollection.dataSource = self
     }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return shareTitles.count
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize.init(width: ScreenWidth, height: 50)
     }
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
       
-        let sectionHeader: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath)
-        let headerLabel = UILabel.init(text: "分享到", font: UIFont.systemFontOfSize(S18), textColor: colorWithHexString("#666666"))
-        headerLabel.textAlignment = .Center
+        let sectionHeader: UICollectionReusableView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", for: indexPath)
+        let headerLabel = UILabel.init(text: "分享到", font: UIFont.systemFont(ofSize: S18), textColor: colorWithHexString("#666666"))
+        headerLabel.textAlignment = .center
         headerLabel.frame = CGRect.init(x: 0, y: 0, width: ScreenWidth, height: AtapteWidthValue(50))
         sectionHeader.addSubview(headerLabel)
         return sectionHeader
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let item: ShareItem = collectionView.dequeueReusableCellWithReuseIdentifier("ShareItem", forIndexPath: indexPath) as! ShareItem
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item: ShareItem = collectionView.dequeueReusableCell(withReuseIdentifier: "ShareItem", for: indexPath) as! ShareItem
         item.shareIcon.image = UIImage.init(named: shareImageNames[indexPath.row])
         item.shareTitle.text = shareTitles[indexPath.row]
         return item
         
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let message: WXMediaMessage = WXMediaMessage.init()
         message.setThumbImage(shareImage)
         let imageObject: WXImageObject = WXImageObject.init()
@@ -150,9 +150,9 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         req.bText = false
         req.message = message
         req.scene = Int32(indexPath.row)
-        WXApi.sendReq(req)
+        WXApi.send(req)
     }
-    func shareResult(notice: NSNotification) {
+    func shareResult(_ notice: Notification) {
         let dic = notice.object
         if dic == nil {
             return
@@ -160,11 +160,11 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         let message: String = dic!["result"] as! String
         if message == "分享成功" {
             SVProgressHUD.showSuccessMessage(SuccessMessage: "分享成功", ForDuration: 1, completion: { () in
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             })
         }else{
             SVProgressHUD.showErrorMessage(ErrorMessage: "分享失败！", ForDuration: 1, completion:  { () in
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             })
         }
     }

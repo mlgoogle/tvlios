@@ -20,37 +20,37 @@ class InvoiceServiceInfo: Object {
     dynamic var service_name_:String?
     dynamic var service_time_:String?
     
-    func setInfoWithCommenInvoice(info: NSDictionary) {
-        oid_str_ = (info.valueForKey("oid_str_") as? String)!
-        service_id_ = (info.valueForKey("service_id_")?.integerValue)!
-        service_price_ = (info.valueForKey("service_price_")?.doubleValue)!/100
-        order_time_ = (info.valueForKey("order_time_")?.integerValue)!
-        service_type_ = info.valueForKey("service_type_")!.integerValue == 1 ? "高端游":"商务游"
-        nick_name_ = info.valueForKey("nick_name_") as? String
-        service_name_ = info.valueForKey("service_name_") as? String
-        service_time_ =  info.valueForKey("service_time_") as? String
+    func setInfoWithCommenInvoice(_ info: NSDictionary) {
+        oid_str_ = (info.value(forKey: "oid_str_") as? String)!
+        service_id_ = ((info.value(forKey: "service_id_") as AnyObject).intValue)!
+        service_price_ = ((info.value(forKey: "service_price_") as AnyObject).doubleValue)!/100
+        order_time_ = ((info.value(forKey: "order_time_") as AnyObject).intValue)!
+        service_type_ = (info.value(forKey: "service_type_")! as AnyObject).intValue == 1 ? "高端游":"商务游"
+        nick_name_ = info.value(forKey: "nick_name_") as? String
+        service_name_ = info.value(forKey: "service_name_") as? String
+        service_time_ =  info.value(forKey: "service_time_") as? String
         
     }
     
-    func setInfoWithBlackCardInvoice(info: NSDictionary) {
-        oid_str_ = (info.valueForKey("oid_str_") as? String)!
-        service_id_ = (info.valueForKey("order_id_")?.integerValue)!
-        service_price_ = (info.valueForKey("privilege_price_")?.doubleValue)!/100
-        order_time_ = (info.valueForKey("order_time_")?.integerValue)!
+    func setInfoWithBlackCardInvoice(_ info: NSDictionary) {
+        oid_str_ = (info.value(forKey: "oid_str_") as? String)!
+        service_id_ = ((info.value(forKey: "order_id_") as AnyObject).intValue)!
+        service_price_ = ((info.value(forKey: "privilege_price_") as AnyObject).doubleValue)!/100
+        order_time_ = ((info.value(forKey: "order_time_") as AnyObject).intValue)!
         service_type_ = "黑卡消费"
         
-        let formatter = NSNumberFormatter.init()
-        formatter.roundingMode = .RoundHalfDown
-        formatter.numberStyle = .SpellOutStyle
-        let lvNum = NSNumber.init(long: (info.valueForKey("privilege_lv_")?.integerValue)!)
-        let lvStr = formatter.stringFromNumber(lvNum)
+        let formatter = NumberFormatter.init()
+        formatter.roundingMode = .halfDown
+        formatter.numberStyle = .spellOut
+        let lvNum = NSNumber.init(value: ((info.value(forKey: "privilege_lv_") as AnyObject).intValue)! as Int)
+        let lvStr = formatter.string(from: lvNum)
         nick_name_ = "\(lvStr!)星黑卡消费"
         
-        service_name_ = info.valueForKey("privilege_name_") as? String
-        service_time_ =  info.valueForKey("service_time_") as? String
+        service_name_ = info.value(forKey: "privilege_name_") as? String
+        service_time_ =  info.value(forKey: "service_time_") as? String
     }
     
-    func setInfo(info: InvoiceServiceInfo) {
+    func setInfo(_ info: InvoiceServiceInfo) {
         service_id_ = info.service_id_
         service_price_ = info.service_price_
         order_time_ = info.order_time_

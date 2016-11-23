@@ -12,11 +12,11 @@ import RealmSwift
 
 protocol ServiceCellDelegate : NSObjectProtocol {
     
-    func spreadAction(sender: AnyObject?)
+    func spreadAction(_ sender: AnyObject?)
     
 }
 
-public class ServiceCell : UITableViewCell {
+open class ServiceCell : UITableViewCell {
     
     let tags = ["view": 1001,
                 "serviceLabel": 1002,
@@ -30,14 +30,14 @@ public class ServiceCell : UITableViewCell {
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
         
         var view = contentView.viewWithTag(tags["view"]!)
         if view == nil {
             view = UIView()
             view!.tag = tags["view"]!
-            view!.userInteractionEnabled = true
+            view!.isUserInteractionEnabled = true
             contentView.addSubview(view!)
             view!.snp_makeConstraints { (make) in
                 make.top.equalTo(self.contentView)
@@ -50,7 +50,7 @@ public class ServiceCell : UITableViewCell {
         var serviceLabel = view!.viewWithTag(tags["serviceLabel"]!) as? UILabel
         if serviceLabel == nil {
             let line = UIView()
-            line.backgroundColor = UIColor.blackColor()
+            line.backgroundColor = UIColor.black
             view!.addSubview(line)
             line.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(view!).offset(15)
@@ -59,11 +59,11 @@ public class ServiceCell : UITableViewCell {
                 make.height.equalTo(25)
             })
             
-            serviceLabel = UILabel(frame: CGRectZero)
+            serviceLabel = UILabel(frame: CGRect.zero)
             serviceLabel!.tag = tags["serviceLabel"]!
-            serviceLabel!.font = UIFont.systemFontOfSize(S18)
-            serviceLabel!.userInteractionEnabled = true
-            serviceLabel!.backgroundColor = UIColor.whiteColor()
+            serviceLabel!.font = UIFont.systemFont(ofSize: S18)
+            serviceLabel!.isUserInteractionEnabled = true
+            serviceLabel!.backgroundColor = UIColor.white
             view!.addSubview(serviceLabel!)
             serviceLabel!.snp_remakeConstraints { (make) in
                 make.top.equalTo(view!).offset(10)
@@ -76,13 +76,13 @@ public class ServiceCell : UITableViewCell {
         
         var detailBtn = view?.viewWithTag(tags["detailBtn"]!) as? UIButton
         if detailBtn == nil {
-            detailBtn = UIButton(frame: CGRectZero)
+            detailBtn = UIButton(frame: CGRect.zero)
             detailBtn?.tag = tags["detailBtn"]!
-            detailBtn!.backgroundColor = UIColor.clearColor()
-            detailBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), forState: .Normal)
-            detailBtn!.setImage(UIImage.init(named: "guide-detail-arrows-up"), forState: .Selected)
-            detailBtn?.contentMode = .ScaleAspectFit
-            detailBtn!.addTarget(self, action: #selector(ServiceCell.detailAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            detailBtn!.backgroundColor = UIColor.clear
+            detailBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), for: UIControlState())
+            detailBtn!.setImage(UIImage.init(named: "guide-detail-arrows-up"), for: .selected)
+            detailBtn?.contentMode = .scaleAspectFit
+            detailBtn!.addTarget(self, action: #selector(ServiceCell.detailAction(_:)), for: UIControlEvents.touchUpInside)
             view!.addSubview(detailBtn!)
             detailBtn!.snp_remakeConstraints { (make) in
                 make.centerY.equalTo(serviceLabel!)
@@ -96,7 +96,7 @@ public class ServiceCell : UITableViewCell {
         if bottomControl == nil {
             bottomControl = UIView()
             bottomControl!.tag = tags["bottomControl"]!
-            bottomControl!.backgroundColor = UIColor.clearColor()
+            bottomControl!.backgroundColor = UIColor.clear
             view!.addSubview(bottomControl!)
             bottomControl?.snp_makeConstraints(closure: { (make) in
                 make.top.equalTo(serviceLabel!.snp_bottom)
@@ -108,7 +108,7 @@ public class ServiceCell : UITableViewCell {
 
     }
     
-    func setInfo(services: List<ServiceInfo>?, setSpread spd: Bool) {
+    func setInfo(_ services: List<ServiceInfo>?, setSpread spd: Bool) {
         if services!.count != 0 {
             spread = spd
             servicesInfo = services
@@ -221,12 +221,12 @@ public class ServiceCell : UITableViewCell {
         }
     }
     
-    func showSubView(show: Bool) {
+    func showSubView(_ show: Bool) {
         let bgView = contentView.viewWithTag(tags["view"]!)
         let serviceLabel = bgView?.viewWithTag(tags["serviceLabel"]!) as? UILabel
         let bottomControl = bgView?.viewWithTag(tags["bottomControl"]!)
         let detailBtn = bgView?.viewWithTag(tags["detailBtn"]!) as? UIButton
-        detailBtn?.selected = spread
+        detailBtn?.isSelected = spread
         for (index, _) in servicesInfo!.enumerate() {
             if let svcView = bgView?.viewWithTag(tags["svcView"]! * 10 + index) {
                 if let bottomLine = svcView.viewWithTag(tags["svcView"]! * 13 + index) {
@@ -260,7 +260,7 @@ public class ServiceCell : UITableViewCell {
         
     }
     
-    func detailAction(sender: UIButton?) {
+    func detailAction(_ sender: UIButton?) {
         XCGLogger.defaultInstance().debug("detailAction")
         spreadAction()
     }
@@ -270,7 +270,7 @@ public class ServiceCell : UITableViewCell {
         
     }
     
-    func selectAction(sender: AnyObject?) {
+    func selectAction(_ sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
     }
     

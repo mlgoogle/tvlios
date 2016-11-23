@@ -18,7 +18,7 @@ class RegOrLoginSelVC: UIViewController {
     
     var isShow:Bool = false
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
@@ -29,19 +29,19 @@ class RegOrLoginSelVC: UIViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isShow = true
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         isShow = false
     }
 
     func initView() {
         let bgView = UIImageView()
-        bgView.userInteractionEnabled = true
+        bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
@@ -51,11 +51,11 @@ class RegOrLoginSelVC: UIViewController {
         let loginBtn = UIButton()
         loginBtn.tag = tags["loginBtn"]!
         loginBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
-        loginBtn.setTitle("登录", forState: .Normal)
-        loginBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        loginBtn.setTitle("登录", for: UIControlState())
+        loginBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
         loginBtn.layer.cornerRadius = 30 / 2.0
         loginBtn.layer.masksToBounds = true
-        loginBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
+        loginBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), for: .touchUpInside)
         view.addSubview(loginBtn)
         loginBtn.snp_makeConstraints { (make) in
             make.left.equalTo(view).offset(45)
@@ -67,11 +67,11 @@ class RegOrLoginSelVC: UIViewController {
         let regBtn = UIButton()
         regBtn.tag = tags["regBtn"]!
         regBtn.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 49/255.0, alpha: 1)
-        regBtn.setTitle("注册", forState: .Normal)
-        regBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        regBtn.setTitle("注册", for: UIControlState())
+        regBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
         regBtn.layer.cornerRadius = 30 / 2.0
         regBtn.layer.masksToBounds = true
-        regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
+        regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), for: .touchUpInside)
         view.addSubview(regBtn)
         regBtn.snp_makeConstraints { (make) in
             make.right.equalTo(view).offset(-45)
@@ -82,13 +82,13 @@ class RegOrLoginSelVC: UIViewController {
         
     }
     
-    func regOrLoginSelAction(sender: UIButton) {
+    func regOrLoginSelAction(_ sender: UIButton) {
         if sender.tag == tags["loginBtn"]! {
             loginVC = LoginVC()
-            presentViewController(loginVC!, animated: false, completion: nil)
+            present(loginVC!, animated: false, completion: nil)
         } else if sender.tag == tags["regBtn"]! {
             let regVC = LoginWithMSGVC()
-            presentViewController(regVC, animated: false, completion: nil)
+            present(regVC, animated: false, completion: nil)
 //            let dict  = ["verify_type_": 0, "phone_num_": "15157109258"]
 //            SocketManager.sendData(.SendMessageVerify, data: dict)
         }
@@ -99,7 +99,7 @@ class RegOrLoginSelVC: UIViewController {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

@@ -11,18 +11,18 @@ import Foundation
 extension ForthwithVC{
     func jumpToFeedBackVC() {
         feedBack.hideContactInfoView = true
-        feedBack.makeFeedbackViewControllerWithCompletionBlock { (feedBackController, error) in
+        feedBack.makeFeedbackViewController { (feedBackController, error) in
             if feedBackController != nil{
-                feedBackController.title = "用户反馈"
-                let nav = UINavigationController.init(rootViewController: feedBackController)
-                feedBackController.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "关闭", style: .Plain, target: self, action: #selector(self.dismissFeedBack))
-                self.presentViewController(nav, animated: true, completion: nil)
+                feedBackController?.title = "用户反馈"
+                let nav = UINavigationController.init(rootViewController: feedBackController!)
+                feedBackController?.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "关闭", style: .plain, target: self, action: #selector(self.dismissFeedBack))
+                self.present(nav, animated: true, completion: nil)
                 
             }
         }
     }
     
     func dismissFeedBack()  {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }
