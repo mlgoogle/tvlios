@@ -17,16 +17,16 @@ class BMB2Object : NSObject {
             var cnt:UInt32 = 0
             let memberList = class_copyPropertyList(self.classForCoder(), &cnt)
             for i in 0..<cnt {
-                let item = memberList[Int(i)]
+                let item = memberList?[Int(i)]
                 var cnt2:UInt32 = 0
                 let prList = property_copyAttributeList(item, &cnt2)
                 
                 var type = ""
                 for j in 0..<cnt2 {
-                    let property = prList[Int(j)]
-                    let propertyName = String.fromCString(property.name)
+                    let property = prList?[Int(j)]
+                    let propertyName = String(cString: (property?.name)!)
                     if propertyName == "T" {
-                        type = String.fromCString(property.value)!
+                        type = String(cString: (property?.value)!)
                     }
                 }
                 tmpSize += getMemSizeWith(type)
@@ -36,16 +36,16 @@ class BMB2Object : NSObject {
         }
     }
     
-    static func getMemSizeWith(type: String) -> Int {
+    static func getMemSizeWith(_ type: String) -> Int {
         switch type {
         case "c", "C":
-            return sizeof(Int8)
+            return MemoryLayout<Int8>.size
         case "s", "S":
-            return sizeof(Int16)
+            return MemoryLayout<Int16>.size
         case "i", "I":
-            return sizeof(Int32)
+            return MemoryLayout<Int32>.size
         case "q", "Q":
-            return sizeof(Int64)
+            return MemoryLayout<Int64>.size
         default:
             return 0
         }
@@ -55,30 +55,30 @@ class BMB2Object : NSObject {
         super.init()
     }
     
-    init(data: NSData) {
+    init(data: Data) {
         super.init()
         
         unpack(data)
     }
     
-    func unpack(data: NSData) {
+    func unpack(_ data: Data) {
         var tmpData = data
         var cnt:UInt32 = 0
         let memberList = class_copyPropertyList(self.classForCoder, &cnt)
         for i in 0..<cnt {
-            let item = memberList[Int(i)]
+            let item = memberList?[Int(i)]
             var cnt2:UInt32 = 0
             let prList = property_copyAttributeList(item, &cnt2)
             
             var type = ""
             var valueName = ""
             for j in 0..<cnt2 {
-                let property = prList[Int(j)]
-                let propertyName = String.fromCString(property.name)
+                let property = prList?[Int(j)]
+                let propertyName = String(cString: (property?.name)!)
                 if propertyName == "T" {
-                    type = String.fromCString(property.value)!
+                    type = String(cString: (property?.value)!)
                 } else if propertyName == "V" {
-                    valueName = String.fromCString(property.value)!
+                    valueName = String(cString: (property?.value)!)
                 }
                 
             }
@@ -86,89 +86,89 @@ class BMB2Object : NSObject {
             switch type {
             case "c":
                 var buf = Int8(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "s":
                 var buf = Int16(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "S":
                 var buf = UInt16(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "i":
                 var buf = Int32(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "I":
                 var buf = UInt32(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "q":
                 var buf = Int64(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             case "Q":
                 var buf = UInt64(0)
-                tmpData.getBytes(&buf, length: size)
+                (tmpData as NSData).getBytes(&buf, length: size)
                 setValue(buf.hashValue, forKey: valueName)
             default:
                 break
             }
-            tmpData = tmpData.subdataWithRange(NSMakeRange(size, tmpData.length-size))
+            tmpData = tmpData.subdata(in: NSMakeRange(size, tmpData.count-size))
         }
         
     }
     
-    func pack() -> NSData? {
+    func pack() -> Data? {
         var cnt:UInt32 = 0
         let data = NSMutableData()
         let memberList = class_copyPropertyList(self.classForCoder, &cnt)
         for i in 0..<cnt {
-            let item = memberList[Int(i)]
+            let item = memberList?[Int(i)]
             var cnt2:UInt32 = 0
             let prList = property_copyAttributeList(item, &cnt2)
             
             var type = ""
             var valueName = ""
             for j in 0..<cnt2 {
-                let property = prList[Int(j)]
-                let propertyName = String.fromCString(property.name)
+                let property = prList?[Int(j)]
+                let propertyName = String(cString: (property?.name)!)
                 if propertyName == "T" {
-                    type = String.fromCString(property.value)!
+                    type = String(cString: (property?.value)!)
                 } else if propertyName == "V" {
-                    valueName = String.fromCString(property.value)!
+                    valueName = String(cString: (property?.value)!)
                 }
             }
             
-            let value = valueForKey(valueName) as? NSNumber
+            let value = self.value(forKey: valueName) as? NSNumber
             let size = BMB2Object.getMemSizeWith(type)
             
             switch type {
             case "c":
-                var buf = value?.charValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.int8Value
+                data.append(&buf, length: size)
             case "C":
-                var buf = value?.unsignedCharValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.uint8Value
+                data.append(&buf, length: size)
             case "s":
-                var buf = value?.shortValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.int16Value
+                data.append(&buf, length: size)
             case "S":
-                var buf = value?.unsignedShortValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.uint16Value
+                data.append(&buf, length: size)
             case "i":
-                var buf = value?.intValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.int32Value
+                data.append(&buf, length: size)
             case "I":
-                var buf = value?.unsignedIntValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.uint32Value
+                data.append(&buf, length: size)
             case "q":
-                var buf = value?.longLongValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.int64Value
+                data.append(&buf, length: size)
             case "Q":
-                var buf = value?.unsignedLongLongValue
-                data.appendBytes(&buf, length: size)
+                var buf = value?.uint64Value
+                data.append(&buf, length: size)
             default:
                 break
             }

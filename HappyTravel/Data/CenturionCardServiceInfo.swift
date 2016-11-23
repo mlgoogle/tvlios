@@ -28,7 +28,7 @@ class CenturionCardServiceInfo: Object {
     dynamic var privilege_summary_:String?
     
     
-    func setInfo(info: CenturionCardServiceInfo) {
+    func setInfo(_ info: CenturionCardServiceInfo) {
         privilege_bg_ = info.privilege_bg_
         
         privilege_details_ = info.privilege_details_

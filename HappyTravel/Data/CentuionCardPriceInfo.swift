@@ -13,7 +13,7 @@ class CentuionCardPriceInfo: Object {
     dynamic var blackcard_lv_: Int = 0
     dynamic var blackcard_price_: Int = 0
     
-    func setInfo(info: CentuionCardPriceInfo) {
+    func setInfo(_ info: CentuionCardPriceInfo) {
         blackcard_lv_ = info.blackcard_lv_
         blackcard_price_ = info.blackcard_price_
     }

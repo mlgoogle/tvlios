@@ -13,8 +13,8 @@ class InvouiceHistoryDetailHeader: UIView {
     var statusLabel:UILabel?
     var sendOutTimeLabel:UILabel?
     
-    var dateFormatter:NSDateFormatter = {
-        var dateFomatter = NSDateFormatter()
+    var dateFormatter:DateFormatter = {
+        var dateFomatter = DateFormatter()
         dateFomatter.dateFormat = "YYYY.MM.dd"
         return dateFomatter
     }()
@@ -24,19 +24,19 @@ class InvouiceHistoryDetailHeader: UIView {
         backgroundColor = UIColor(red: 255 / 255.0, green: 247 / 255.0, blue: 228 / 255.0, alpha: 1.0)
         if statusLabel == nil {
             statusLabel = UILabel()
-            statusLabel?.backgroundColor = UIColor.clearColor()
+            statusLabel?.backgroundColor = UIColor.clear
             statusLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
-            statusLabel?.font = UIFont.systemFontOfSize(S15)
-            statusLabel?.textAlignment = .Center
+            statusLabel?.font = UIFont.systemFont(ofSize: S15)
+            statusLabel?.textAlignment = .center
             addSubview(statusLabel!)
             
             statusLabel?.text = "待开票"
             if sendOutTimeLabel == nil {
                 sendOutTimeLabel = UILabel()
                 sendOutTimeLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
-                sendOutTimeLabel?.backgroundColor = UIColor.clearColor()
-                sendOutTimeLabel?.font = UIFont.systemFontOfSize(S12)
-                sendOutTimeLabel?.textAlignment = .Center
+                sendOutTimeLabel?.backgroundColor = UIColor.clear
+                sendOutTimeLabel?.font = UIFont.systemFont(ofSize: S12)
+                sendOutTimeLabel?.textAlignment = .center
                 addSubview(sendOutTimeLabel!)
             }
             sendOutTimeLabel?.text = "预计最晚发出时间：2016.10.28 后一个工作日"
@@ -60,14 +60,14 @@ class InvouiceHistoryDetailHeader: UIView {
         
     }
     
-    func setupInfo(date:Int, invoiceSatus:Int) {
+    func setupInfo(_ date:Int, invoiceSatus:Int) {
         if statusLabel != nil {
             
             statusLabel?.text = invoiceSatus == 0 ? "待开票" : "已开票"
         }
         if sendOutTimeLabel != nil {
             
-            let dateStrig = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(date)))
+            let dateStrig = dateFormatter.string(from: Date(timeIntervalSince1970: Double(date)))
             sendOutTimeLabel?.text = "预计最晚发出时间：\(dateStrig) 后一个工作日"
         }
     }

@@ -51,7 +51,7 @@ class GuideTagCell: MAAnnotationView {
             guideTipsView?.tag = 1002
             guideTipsView?.layer.cornerRadius = 5
             guideTipsView?.layer.masksToBounds = true
-            guideTipsView?.backgroundColor = UIColor.clearColor()
+            guideTipsView?.backgroundColor = UIColor.clear
             addSubview(guideTipsView!)
             guideTipsView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)
@@ -67,10 +67,10 @@ class GuideTagCell: MAAnnotationView {
         if guideTipsLab == nil {
             guideTipsLab = UILabel()
             guideTipsLab?.tag = 10021
-            guideTipsLab?.font = UIFont.systemFontOfSize(S15)
-            guideTipsLab?.textColor = UIColor.whiteColor()
-            guideTipsLab?.textAlignment = NSTextAlignment.Center
-            guideTipsLab?.backgroundColor = UIColor.clearColor()
+            guideTipsLab?.font = UIFont.systemFont(ofSize: S15)
+            guideTipsLab?.textColor = UIColor.white
+            guideTipsLab?.textAlignment = NSTextAlignment.center
+            guideTipsLab?.backgroundColor = UIColor.clear
             guideTipsView?.addSubview(guideTipsLab!)
             guideTipsLab?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(guideTipsView!)
@@ -80,10 +80,10 @@ class GuideTagCell: MAAnnotationView {
             })
         }
         guideTipsLab?.text = "最低服务200元"
-        guideTipsView?.hidden = true
+        guideTipsView?.isHidden = true
     }
     
-    func setInfo(info: UserInfo?) {
+    func setInfo(_ info: UserInfo?) {
         userInfo = info
         if let headView = viewWithTag(1001) as? UIImageView {
             headView.image = UIImage.init(named: userInfo?.gender == 1 ? "map-head-male" : "map-head-female")
@@ -96,13 +96,13 @@ class GuideTagCell: MAAnnotationView {
     }
     
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let headView = viewWithTag(1001) as? UIImageView
-        if CGRectContainsPoint((headView?.frame)!, point) {
+        if (headView?.frame)!.contains(point) {
            
             return self
             
         }
-        return super.hitTest(point, withEvent: event)
+        return super.hitTest(point, with: event)
     }
 }

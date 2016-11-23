@@ -10,16 +10,16 @@ import Foundation
 import RealmSwift
 
 enum OrderStatus : Int {
-    case WaittingAccept = 0
-    case Reject = 1
-    case Accept = 2
-    case WaittingPay = 3
-    case Paid = 4
-    case Cancel = 5
-    case OnGoing = 6
-    case Completed = 7
-    case InvoiceMaking = 8
-    case InvoiceMaked = 9
+    case waittingAccept = 0
+    case reject = 1
+    case accept = 2
+    case waittingPay = 3
+    case paid = 4
+    case cancel = 5
+    case onGoing = 6
+    case completed = 7
+    case invoiceMaking = 8
+    case invoiceMaked = 9
 }
 
 class OrderInfo: Object {

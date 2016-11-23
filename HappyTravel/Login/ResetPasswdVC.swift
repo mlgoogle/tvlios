@@ -24,19 +24,19 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     var verifyCode = 0
     var username:String?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
@@ -51,7 +51,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     
     func initView() {
         let bgView = UIImageView()
-        bgView.userInteractionEnabled = true
+        bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
@@ -63,16 +63,16 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         touch.cancelsTouchesInView = false
         bgView.addGestureRecognizer(touch)
         
-        let blurEffect = UIBlurEffect(style: .Dark)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         bgView.addSubview(blurView)
         blurView.snp_makeConstraints { (make) in
             make.edges.equalTo(bgView)
         }
         
-        let width = UIScreen.mainScreen().bounds.size.width / 3.0
+        let width = UIScreen.main.bounds.size.width / 3.0
         let logo = UIImageView()
-        logo.backgroundColor = UIColor.grayColor()
+        logo.backgroundColor = UIColor.gray
         logo.layer.cornerRadius = width / 2.0
         logo.layer.masksToBounds = true
         logo.image = UIImage.init(named: "logo")
@@ -86,15 +86,15 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         
         let passwdField = UITextField()
         passwdField.tag = tags["passwdField"]!
-        passwdField.secureTextEntry = true
+        passwdField.isSecureTextEntry = true
         passwdField.delegate = self
-        passwdField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        passwdField.rightViewMode = .WhileEditing
-        passwdField.clearButtonMode = .WhileEditing
-        passwdField.backgroundColor = UIColor.clearColor()
-        passwdField.textAlignment = .Left
+        passwdField.textColor = UIColor.white.withAlphaComponent(0.5)
+        passwdField.rightViewMode = .whileEditing
+        passwdField.clearButtonMode = .whileEditing
+        passwdField.backgroundColor = UIColor.clear
+        passwdField.textAlignment = .left
         passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码",
-                                                                    attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+                                                                    attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(passwdField)
         passwdField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view).offset(60)
@@ -105,15 +105,15 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         
         let reInPasswdField = UITextField()
         reInPasswdField.tag = tags["reInPasswdField"]!
-        reInPasswdField.secureTextEntry = true
+        reInPasswdField.isSecureTextEntry = true
         reInPasswdField.delegate = self
-        reInPasswdField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        reInPasswdField.rightViewMode = .WhileEditing
-        reInPasswdField.clearButtonMode = .WhileEditing
-        reInPasswdField.backgroundColor = UIColor.clearColor()
-        reInPasswdField.textAlignment = .Left
+        reInPasswdField.textColor = UIColor.white.withAlphaComponent(0.5)
+        reInPasswdField.rightViewMode = .whileEditing
+        reInPasswdField.clearButtonMode = .whileEditing
+        reInPasswdField.backgroundColor = UIColor.clear
+        reInPasswdField.textAlignment = .left
         reInPasswdField.attributedPlaceholder = NSAttributedString.init(string: "请重新输入密码",
-                                                                        attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+                                                                        attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(reInPasswdField)
         reInPasswdField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(passwdField)
@@ -125,7 +125,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         for i in 0...2 {
             let fieldUnderLine = UIView()
             fieldUnderLine.tag = tags["fieldUnderLine"]! + i
-            fieldUnderLine.backgroundColor = UIColor.grayColor()
+            fieldUnderLine.backgroundColor = UIColor.gray
             view.addSubview(fieldUnderLine)
             fieldUnderLine.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(passwdField)
@@ -138,11 +138,11 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         let sureBtn = UIButton()
         sureBtn.tag = tags["sureBtn"]!
         sureBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
-        sureBtn.setTitle("确认", forState: .Normal)
-        sureBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        sureBtn.setTitle("确认", for: UIControlState())
+        sureBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
         sureBtn.layer.cornerRadius = 45 / 2.0
         sureBtn.layer.masksToBounds = true
-        sureBtn.addTarget(self, action: #selector(ResetPasswdVC.sureAction(_:)), forControlEvents: .TouchUpInside)
+        sureBtn.addTarget(self, action: #selector(ResetPasswdVC.sureAction(_:)), for: .touchUpInside)
         view.addSubview(sureBtn)
         sureBtn.snp_makeConstraints { (make) in
             make.left.equalTo(passwdField)
@@ -154,11 +154,11 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         let cancelBtn = UIButton()
         cancelBtn.tag = tags["sureBtn"]!
         cancelBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
-        cancelBtn.setTitle("上一步", forState: .Normal)
-        cancelBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        cancelBtn.setTitle("上一步", for: UIControlState())
+        cancelBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
         cancelBtn.layer.cornerRadius = 45 / 2.0
         cancelBtn.layer.masksToBounds = true
-        cancelBtn.addTarget(self, action: #selector(lastStep), forControlEvents: .TouchUpInside)
+        cancelBtn.addTarget(self, action: #selector(lastStep), for: .touchUpInside)
         view.addSubview(cancelBtn)
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(passwdField)
@@ -170,21 +170,21 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ResetPasswdVC.keyboardWillShow(_:)),
-                                                         name: UIKeyboardWillShowNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillShow,
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ResetPasswdVC.keyboardWillHide(_:)),
-                                                         name: UIKeyboardWillHideNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillHide,
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(ResetPasswdVC.registerAccountReply(_:)),
-                                                         name: NotifyDefine.RegisterAccountReply,
+                                                         name: NSNotification.Name(rawValue: NotifyDefine.RegisterAccountReply),
                                                          object: nil)
     }
     
-    func registerAccountReply(notification: NSNotification) {
+    func registerAccountReply(_ notification: Notification) {
         
         if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if dict["error_"] != nil {
@@ -194,28 +194,28 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                 return
             }
             SVProgressHUD.dismiss()
-            let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
-            SocketManager.sendData(.Login, data: loginDict)
+            let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1] as [String : Any]
+            SocketManager.sendData(.login, data: loginDict)
             
         }
     }
     
-    func keyboardWillShow(notification: NSNotification?) {
-        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+    func keyboardWillShow(_ notification: Notification?) {
+        let frame = (notification!.userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
         var vFrame = view.frame
         if vFrame.origin.y == 0 {
-            vFrame.origin.y -= frame.size.height
+            vFrame.origin.y -= (frame?.size.height)!
             view.frame = vFrame
         }
     }
     
-    func keyboardWillHide(notification: NSNotification?) {
+    func keyboardWillHide(_ notification: Notification?) {
         var vFrame = view.frame
         vFrame.origin.y = 0
         view.frame = vFrame
     }
     
-    func sureAction(sender: UIButton?) {
+    func sureAction(_ sender: UIButton?) {
         if  passwd == nil || passwd?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
             return
@@ -232,22 +232,22 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
-        let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
-                                                   "passwd_": passwd!,
-                                                   "user_type_": 1,
-                                                   "timestamp_": verifyCodeTime,
-                                                   "verify_code_": verifyCode,
-                                                   "token_": token == nil ? "" : token!]
-        SocketManager.sendData(.RegisterAccountRequest, data: dict)
+        let dict:Dictionary<String, AnyObject>? = ["phone_num_": username! as AnyObject,
+                                                   "passwd_": passwd! as AnyObject,
+                                                   "user_type_": 1 as AnyObject,
+                                                   "timestamp_": verifyCodeTime as AnyObject,
+                                                   "verify_code_": verifyCode as AnyObject,
+                                                   "token_": token == nil ? "" : token! as AnyObject]
+        SocketManager.sendData(.registerAccountRequest, data: dict)
     
     }
     
     func lastStep() {
-        dismissViewControllerAnimated(false, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
     
     //MARK: - UITextField
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["passwdField"]!:
             passwd = ""
@@ -261,14 +261,14 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if range.location > 15 {
             return false
         }
         if textField.tag == tags["reInPasswdField"]! {
-            repasswd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            repasswd = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         } else if textField.tag == tags["passwdField"]! {
-            passwd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            passwd = (textField.text! as NSString).replacingCharacters(in: range, with: string)
             
         }
         
@@ -280,7 +280,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     

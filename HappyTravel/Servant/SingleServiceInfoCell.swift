@@ -12,8 +12,8 @@ import XCGLogger
 
 protocol DaysCountDelegate:NSObjectProtocol {
     
-    func countsPlus(cell:SingleServiceInfoCell)
-    func countsReduce(cell:SingleServiceInfoCell)
+    func countsPlus(_ cell:SingleServiceInfoCell)
+    func countsReduce(_ cell:SingleServiceInfoCell)
 }
 
 class SingleServiceInfoCell: UITableViewCell {
@@ -29,14 +29,14 @@ class SingleServiceInfoCell: UITableViewCell {
     weak var delegate:DaysCountDelegate?
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
+        selectionStyle = .none
         var selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton
         if selectBtn == nil {
             selectBtn = UIButton()
             selectBtn?.tag = tags["selectBtn"]!
-            selectBtn?.setBackgroundImage(UIImage.init(named: "service-unselect"), forState: .Normal)
-            selectBtn?.setBackgroundImage(UIImage.init(named: "service-selected"), forState: .Selected)
-            selectBtn?.backgroundColor = UIColor.clearColor()
+            selectBtn?.setBackgroundImage(UIImage.init(named: "service-unselect"), for: UIControlState())
+            selectBtn?.setBackgroundImage(UIImage.init(named: "service-selected"), for: .selected)
+            selectBtn?.backgroundColor = UIColor.clear
             contentView.addSubview(selectBtn!)
             selectBtn?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(contentView).offset(15)
@@ -51,10 +51,10 @@ class SingleServiceInfoCell: UITableViewCell {
         if priceLab == nil {
             priceLab = UILabel()
             priceLab?.tag = tags["priceLab"]!
-            priceLab?.backgroundColor = UIColor.clearColor()
-            priceLab?.textAlignment = .Right
+            priceLab?.backgroundColor = UIColor.clear
+            priceLab?.textAlignment = .right
             priceLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            priceLab?.font = UIFont.systemFontOfSize(S15)
+            priceLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(priceLab!)
             priceLab!.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(contentView).offset(-15)
@@ -68,12 +68,12 @@ class SingleServiceInfoCell: UITableViewCell {
         if descLab == nil {
             descLab = UILabel()
             descLab?.tag = tags["descLab"]!
-            descLab?.backgroundColor = UIColor.clearColor()
-            descLab?.textAlignment = .Left
+            descLab?.backgroundColor = UIColor.clear
+            descLab?.textAlignment = .left
             descLab?.numberOfLines = 0
-            descLab?.preferredMaxLayoutWidth = UIScreen.mainScreen().bounds.size.width / 5.0 * 3
+            descLab?.preferredMaxLayoutWidth = UIScreen.main.bounds.size.width / 5.0 * 3
             descLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-            descLab?.font = UIFont.systemFontOfSize(S15)
+            descLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(descLab!)
             descLab!.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(selectBtn!.snp_right).offset(15)
@@ -161,7 +161,7 @@ class SingleServiceInfoCell: UITableViewCell {
     
     
 
-    func setupInfo(service:ServiceInfo,count:Int, isNormal:Bool) {
+    func setupInfo(_ service:ServiceInfo,count:Int, isNormal:Bool) {
         
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
             priceLab.text = "\(Double(service.service_price_) / 100) 元"
@@ -217,7 +217,7 @@ class SingleServiceInfoCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
