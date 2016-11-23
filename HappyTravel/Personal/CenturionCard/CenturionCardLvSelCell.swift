@@ -11,18 +11,18 @@ import XCGLogger
 
 protocol CenturionCardLvSelCellDelegate : NSObjectProtocol {
     
-    func selectedAction(index: Int)
+    func selectedAction(_ index: Int)
     
 }
 
 class CenturionCardLVItem: UICollectionViewCell {
     lazy var icon: UIImageView = {
        let iconImage = UIImageView()
-        iconImage.userInteractionEnabled = true
+        iconImage.isUserInteractionEnabled = true
         return iconImage
     }()
     var titleLabel: UILabel = {
-       let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S12), textColor: colorWithHexString("#666666"))
+       let label = UILabel.init(text: "", font: UIFont.systemFont(ofSize: S12), textColor: colorWithHexString("#666666"))
         return label
     }()
     
@@ -72,26 +72,26 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     //collectionView
     lazy var contentCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout.init()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSizeMake(self.itemWidth, AtapteWidthValue(70))
-        let collectionView = UICollectionView.init(frame: CGRectZero, collectionViewLayout: layout)
+        layout.itemSize = CGSize(width: self.itemWidth, height: AtapteWidthValue(70))
+        let collectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         collectionView.backgroundColor = colorWithHexString("#f2f2f2")
-        collectionView.registerClass(CenturionCardLVItem.classForCoder(), forCellWithReuseIdentifier: "CenturionCardLVItem")
+        collectionView.register(CenturionCardLVItem.classForCoder(), forCellWithReuseIdentifier: "CenturionCardLVItem")
         return collectionView
     }()
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return centurionCardTitle.count
     }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let item: CenturionCardLVItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardLVItem", forIndexPath: indexPath) as! CenturionCardLVItem
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item: CenturionCardLVItem = collectionView.dequeueReusableCell(withReuseIdentifier: "CenturionCardLVItem", for: indexPath) as! CenturionCardLVItem
         let selector = Int((DataManager.currentUser?.centurionCardLv)! > indexPath.row)
         item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![selector]!)
         item.titleLabel.text = centurionCardTitle[indexPath.row]
         return item
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.selectedAction(Int(indexPath.row))
         
         collectionView.reloadData()
@@ -105,7 +105,7 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
+        selectionStyle = .none
         
         contentCollection.delegate = self
         contentCollection.dataSource = self
@@ -120,8 +120,8 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
             make.bottom.equalTo(2)
         }
         
-        let indexPath = NSIndexPath.init(forRow: (DataManager.currentUser?.centurionCardLv)!-1, inSection: 0)
-        collectionView(contentCollection, didSelectItemAtIndexPath: indexPath)
+        let indexPath = IndexPath.init(row: (DataManager.currentUser?.centurionCardLv)!-1, section: 0)
+        collectionView(contentCollection, didSelectItemAt: indexPath)
     }
     
     required init?(coder aDecoder: NSCoder) {

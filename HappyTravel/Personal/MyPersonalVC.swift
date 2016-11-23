@@ -16,7 +16,7 @@ import Qiniu
 import SVProgressHUD
 import Alamofire
 
-public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var headImageView:UIButton?
 
@@ -47,12 +47,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         initPersonalView()
@@ -60,7 +60,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //        initImagePick()
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
@@ -75,20 +75,20 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyPersonalVC.loginSuccessed(_:)), name: NSNotification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyPersonalVC.improveDataSuccessed(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ImproveDataSuccessed), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MyPersonalVC.uploadImageToken(_:)), name: NSNotification.Name(rawValue: NotifyDefine.UpLoadImageToken), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUserInfo), name: NSNotification.Name(rawValue: NotifyDefine.ImproveDataNoticeToOthers), object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkAuthResult(_:)), name: NSNotification.Name(rawValue: NotifyDefine.CheckAuthenticateResult), object: nil)
     }
     
     //查询认证状态
-    func checkAuthResult(notice: NSNotification) {
+    func checkAuthResult(_ notice: Notification) {
         let data = notice.userInfo!["data"] as! NSDictionary
         let failedReson = data["failed_reason_"] as? NSString
-        let reviewStatus = data.valueForKey("review_status_")?.integerValue
+        let reviewStatus = (data.value(forKey: "review_status_")? as AnyObject).intValue
         if reviewStatus == -1 {
             return
         }
@@ -98,14 +98,14 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         DataManager.currentUser?.authentication = reviewStatus!
     }
     
-    func improveDataSuccessed(notification: NSNotification) {
+    func improveDataSuccessed(_ notification: Notification) {
         SVProgressHUD.dismiss()
         if headImagePath != nil {
-            headImageView?.setImage(UIImage.init(contentsOfFile: headImagePath!), forState: .Normal)
+            headImageView?.setImage(UIImage.init(contentsOfFile: headImagePath!), for: UIControlState())
             DataManager.currentUser?.headUrl = headImagePath
         }
         if nickName != nil {
-            nameLabel?.setTitle(nickName!, forState: .Normal)
+            nameLabel?.setTitle(nickName!, for: UIControlState())
             DataManager.currentUser?.nickname = nickName
         }
     }
@@ -114,32 +114,33 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SVProgressHUD.dismiss()
 //        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
         
-        headImageView?.kf_setImageWithURL(NSURL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
-        nameLabel?.setTitle(DataManager.currentUser?.nickname, forState: .Normal)
+        headImageView?.kf_setImageWithURL(URL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
+        nameLabel?.setTitle(DataManager.currentUser?.nickname, for: UIControlState())
     }
     
-    func loginSuccessed(notification: NSNotification?) {
+    func loginSuccessed(_ notification: Notification?) {
         let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        DataManager.currentUser!.setInfo(.CurrentUser, info: data)
+        DataManager.currentUser!.setInfo(.currentUser, info: data)
         DataManager.currentUser!.login = true
         DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
         initPersonalView()
         
-        SocketManager.sendData(.GetServiceCity, data: nil)
-        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                  "distance_": 20.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
-        if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
+        SocketManager.sendData(.getServiceCity, data: nil)
+        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat as AnyObject,
+                                                  "longitude_": DataManager.currentUser!.gpsLocationLon as AnyObject,
+                                                  "distance_": 20.1 as AnyObject]
+        SocketManager.sendData(.getServantInfo, data: dict)
+        if let dt = UserDefaults.standard.object(forKey: CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
-                        "device_token_": dt]
-            SocketManager.sendData(.PutDeviceToken, data: dict)
+                        "device_token_": dt] as [String : Any]
+            SocketManager.sendData(.putDeviceToken, data: dict)
         }
-        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
-        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.SkillsInfoRequest, data: nil)
-        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.CheckUserCash, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.centurionCardInfoRequest, data: nil)
+        SocketManager.sendData(.centurionVIPPriceRequest, data: nil)
+        SocketManager.sendData(.userCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.skillsInfoRequest, data: nil)
+        SocketManager.sendData(.checkAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.checkUserCash, data: ["uid_": DataManager.currentUser!.uid])
 
     }
     
@@ -147,7 +148,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     func setHeadImage() {
         
         
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToCompeleteBaseInfoVC), object: nil, userInfo: nil)
         sideMenuController?.toggle()
 //        SocketManager.sendData(.UploadImageToken, data: nil)
 //        
@@ -172,7 +173,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func setNickName() {
         
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToCompeleteBaseInfoVC), object: nil, userInfo: nil)
         sideMenuController?.toggle()
 //        let alert = UIAlertController.init(title: "修改昵称", message: nil, preferredStyle: .Alert)
 //        alert.addTextFieldWithConfigurationHandler({ (textField) in
@@ -202,7 +203,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             personalView = UIView()
             personalView!.tag = 1001
             personalView!.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 51/255.0, alpha: 1)
-            personalView!.userInteractionEnabled = true
+            personalView!.isUserInteractionEnabled = true
             view.addSubview(personalView!)
             personalView!.snp_makeConstraints { (make) in
                 make.top.equalTo(view)
@@ -215,12 +216,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         if headImageView == nil {
             headImageView = UIButton()
             headImageView!.tag = 10001
-            headImageView!.backgroundColor = .clearColor()
+            headImageView!.backgroundColor = .clear
             headImageView!.layer.masksToBounds = true
             headImageView!.layer.cornerRadius = 40
-            headImageView!.layer.borderColor = UIColor.whiteColor().CGColor
+            headImageView!.layer.borderColor = UIColor.white.cgColor
             headImageView!.layer.borderWidth = 1
-            headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
+            headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), for: .touchUpInside)
             personalView!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.centerY.equalTo(personalView!.snp_centerY)
@@ -229,17 +230,17 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.width.equalTo(80)
             }
         }
-        let url = NSURL(string: DataManager.currentUser!.headUrl == nil ? "https://" : DataManager.currentUser!.headUrl!)
+        let url = URL(string: DataManager.currentUser!.headUrl == nil ? "https://" : DataManager.currentUser!.headUrl!)
         headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {
             nameLabel = UIButton()
             nameLabel!.tag = 10002
-            nameLabel!.backgroundColor = .clearColor()
-            nameLabel!.titleLabel?.textAlignment = .Left
-            nameLabel!.titleLabel?.textColor = .whiteColor()
-            nameLabel!.titleLabel?.font = .systemFontOfSize(AtapteWidthValue(20))
-            nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), forControlEvents: .TouchUpInside)
+            nameLabel!.backgroundColor = .clear
+            nameLabel!.titleLabel?.textAlignment = .left
+            nameLabel!.titleLabel?.textColor = .white
+            nameLabel!.titleLabel?.font = .systemFont(ofSize: AtapteWidthValue(20))
+            nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), for: .touchUpInside)
             personalView!.addSubview(nameLabel!)
             nameLabel!.snp_makeConstraints { (make) in
                 make.bottom.equalTo(headImageView!.snp_centerY).offset(-2.5)
@@ -248,14 +249,14 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //                make.right.equalTo(personalView!.snp_right)
             }
         }
-        nameLabel?.setTitle(DataManager.currentUser!.nickname!, forState: .Normal)
+        nameLabel?.setTitle(DataManager.currentUser!.nickname!, for: UIControlState())
         nickName = DataManager.currentUser?.nickname
         
         var starView = personalView!.viewWithTag(10003)
         if starView == nil {
             starView = UIView()
             starView!.tag = 10003
-            starView!.backgroundColor = .clearColor()
+            starView!.backgroundColor = .clear
             personalView!.addSubview(starView!)
             starView!.snp_makeConstraints { (make) in
                 make.left.equalTo(nameLabel!)
@@ -294,9 +295,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         var levelIcon = starView!.viewWithTag(100030) as? UIImageView
         if levelIcon == nil {
             levelIcon = UIImageView()
-            levelIcon!.backgroundColor = UIColor.clearColor()
+            levelIcon!.backgroundColor = UIColor.clear
             levelIcon!.tag = 100030
-            levelIcon?.contentMode = .ScaleAspectFit
+            levelIcon?.contentMode = .scaleAspectFit
             starView!.addSubview(levelIcon!)
             levelIcon?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(starView!)
@@ -316,7 +317,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         let importantNavVew = UIImageView()
         importantNavVew.tag = 1002
-        importantNavVew.userInteractionEnabled = true
+        importantNavVew.isUserInteractionEnabled = true
         importantNavVew.image = UIImage.init(named: "side-bg")
         view.addSubview(importantNavVew)
         importantNavVew.snp_makeConstraints { (make) in
@@ -331,14 +332,14 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         for index in 0...itemsTitle.count - 1 {
             let itemBtn = UIButton()
             itemBtn.tag = 10000 + index
-            itemBtn.backgroundColor = UIColor.clearColor()
-            itemBtn.setImage(UIImage.init(named: itemsIcon[index]), forState: UIControlState.Normal)
-            itemBtn.setTitle(itemsTitle[index], forState: UIControlState.Normal)
-            itemBtn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            itemBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
-            itemBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+            itemBtn.backgroundColor = UIColor.clear
+            itemBtn.setImage(UIImage.init(named: itemsIcon[index]), for: UIControlState())
+            itemBtn.setTitle(itemsTitle[index], for: UIControlState())
+            itemBtn.setTitleColor(UIColor.white, for: UIControlState())
+            itemBtn.setTitleColor(UIColor.gray, for: UIControlState.highlighted)
+            itemBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
             itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
-            itemBtn.addTarget(self, action: #selector(MyPersonalVC.importantOptAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            itemBtn.addTarget(self, action: #selector(MyPersonalVC.importantOptAction(_:)), for: UIControlEvents.touchUpInside)
             importantNavVew.addSubview(itemBtn)
             itemBtn.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(importantNavVew.snp_left).offset(35)
@@ -351,14 +352,14 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         let feedbackBtn = UIButton()
         feedbackBtn.tag = 10011
-        feedbackBtn.backgroundColor = UIColor.clearColor()
-        feedbackBtn.setImage(UIImage.init(named: "side-complain"), forState: UIControlState.Normal)
-        feedbackBtn.setTitle("无情吐槽", forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
-        feedbackBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        feedbackBtn.backgroundColor = UIColor.clear
+        feedbackBtn.setImage(UIImage.init(named: "side-complain"), for: UIControlState())
+        feedbackBtn.setTitle("无情吐槽", for: UIControlState())
+        feedbackBtn.setTitleColor(UIColor.white, for: UIControlState())
+        feedbackBtn.setTitleColor(UIColor.gray, for: UIControlState.highlighted)
+        feedbackBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
         feedbackBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
-        feedbackBtn.addTarget(self, action: #selector(MyPersonalVC.feedbackAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        feedbackBtn.addTarget(self, action: #selector(MyPersonalVC.feedbackAction(_:)), for: UIControlEvents.touchUpInside)
         importantNavVew.addSubview(feedbackBtn)
         feedbackBtn.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(importantNavVew.snp_left).offset(35)
@@ -369,26 +370,26 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-    func importantOptAction(sender: UIButton?) {
+    func importantOptAction(_ sender: UIButton?) {
         switch sender!.tag {
         case 10000:
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCenturionCardCenter, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToCenturionCardCenter), object: nil, userInfo: nil)
             sideMenuController?.toggle()
 
         case 10001:
             XCGLogger.defaultInstance().debug("钱包")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToWalletVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10002:
             XCGLogger.defaultInstance().debug("我的行程")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToDistanceOfTravelVC, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToDistanceOfTravelVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10003:
             XCGLogger.defaultInstance().debug("客服")
             callSrevant()
         case 10004:
             XCGLogger.defaultInstance().debug("设置")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToSettingsVC, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToSettingsVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         default:
             break
@@ -396,21 +397,21 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func callSrevant() {
-        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .alert)
+        let ensure = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
+            UIApplication.shared.openURL(URL(string: "tel://\(self.serviceTel)")!)
         })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+        let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (action: UIAlertAction) in
             
         })
         alert.addAction(ensure)
         alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
         
     }
     
-    func feedbackAction(sender: UIButton?) {
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.FeedBackNoticeReply, object: nil, userInfo: nil)
+    func feedbackAction(_ sender: UIButton?) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.FeedBackNoticeReply), object: nil, userInfo: nil)
         sideMenuController?.toggle()
         XCGLogger.debug("无情吐槽")
     }
@@ -426,10 +427,10 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
     }
     
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        headImageView?.setImage(image.reSizeImage(CGSizeMake(100, 100)), forState: .Normal)
+    open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        headImageView?.setImage(image.reSizeImage(CGSize(width: 100, height: 100)), for: UIControlState())
         
-        imagePicker?.dismissViewControllerAnimated(true, completion: nil)
+        imagePicker?.dismiss(animated: true, completion: nil)
         
         //先把图片转成NSData
         let data = UIImageJPEGRepresentation(image, 0.5)
@@ -440,18 +441,18 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         let homeDirectory = NSHomeDirectory()
         let documentPath = homeDirectory + "/Documents"
         //文件管理器
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        let fileManager: FileManager = FileManager.default
         //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
         do {
-            try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: documentPath, withIntermediateDirectories: true, attributes: nil)
             
         }
         catch _ {
         }
-        let timestemp:Int = Int(NSDate().timeIntervalSince1970)
+        let timestemp:Int = Int(Date().timeIntervalSince1970)
         let fileName = "/\(DataManager.currentUser!.uid)_\(timestemp).png"
         headImageName = fileName
-        fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
+        fileManager.createFile(atPath: documentPath + fileName, contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
         let filePath: String = String(format: "%@%@", documentPath, fileName)
         headImagePath = filePath
@@ -464,17 +465,17 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             let qnManager = QNUploadManager()
             SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
             
-            qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
+            qnManager?.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
                 
-                if info.statusCode != 200 || resp == nil {
-                    self.navigationItem.rightBarButtonItem?.enabled = true
+                if info?.statusCode != 200 || resp == nil {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = true
                     SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
                     return
                 }
                 
-                if (info.statusCode == 200 ){
-                    let respDic: NSDictionary? = resp
-                    let value:String? = respDic!.valueForKey("key") as? String
+                if (info?.statusCode == 200 ){
+                    let respDic: NSDictionary? = resp as NSDictionary?
+                    let value:String? = respDic!.value(forKey: "key") as? String
                     let url = qiniuHost + value!
                     
                     let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
@@ -499,7 +500,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             }, option: nil)
         } else {
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法提交，请稍后再试", ForDuration: 1, completion: {
-                SocketManager.sendData(.UploadImageToken, data: nil)
+                SocketManager.sendData(.uploadImageToken, data: nil)
             })
         }
         
@@ -507,21 +508,21 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     //MARK: --
     
     //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
+    func uploadImageToken(_ notice: Notification?) {
         let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
+        let code = data.value(forKey: "code")
+        if (code as AnyObject).int32Value == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             })
             return
         }
 
-        token = data.valueForKey("img_token_") as? String
+        token = data.value(forKey: "img_token_") as? String
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

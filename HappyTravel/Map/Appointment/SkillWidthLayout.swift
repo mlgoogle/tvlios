@@ -9,7 +9,7 @@
 import UIKit
 protocol SkillWidthLayoutDelegate : NSObjectProtocol {
 
-    func autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->Float
+    func autoLayout(_ layout:SkillWidthLayout, atIndexPath:IndexPath)->Float
 }
 
 class SkillWidthLayout: UICollectionViewFlowLayout {
@@ -29,10 +29,10 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
     weak var delegate:SkillWidthLayoutDelegate?
 
     
-   private var currentX:Float = 0.0
-   private var currentY:Float = 0.0
-   private var currentMaxX:Float = 0.0
-   private var attributedAry:Array<UICollectionViewLayoutAttributes>?
+   fileprivate var currentX:Float = 0.0
+   fileprivate var currentY:Float = 0.0
+   fileprivate var currentMaxX:Float = 0.0
+   fileprivate var attributedAry:Array<UICollectionViewLayoutAttributes>?
     
     
     
@@ -58,14 +58,14 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      */
     
     
-    override func prepareLayout() {
+    override func prepare() {
         currentX = Float(skillSectionInset.left)
         currentY = Float(skillSectionInset.top)
         currentMaxX = currentX
         attributedAry?.removeAll()
-        if let count = collectionView?.numberOfItemsInSection(0) {
+        if let count = collectionView?.numberOfItems(inSection: 0) {
             for index in 0..<count {
-                let atr = layoutAttributesForItemAtIndexPath(NSIndexPath(forItem: index, inSection: 0))
+                let atr = layoutAttributesForItem(at: IndexPath(item: index, section: 0))
                 
                 attributedAry?.append(atr!)
                 
@@ -81,10 +81,10 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      
      - returns:
      */
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
 
         let oldBounds = collectionView?.bounds
-        if CGRectGetWidth(oldBounds!) != CGRectGetWidth(newBounds) {
+        if oldBounds!.width != newBounds.width {
             
             return true
         } else {
@@ -97,15 +97,15 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      
      - returns:
      */
-    override func collectionViewContentSize() -> CGSize {
+    override var collectionViewContentSize : CGSize {
         
         if let atr = attributedAry?.last {
             
             let frame = atr.frame
-            let height = CGRectGetMaxY(frame) + skillSectionInset.bottom
-            return CGSizeMake(0, height)
+            let height = frame.maxY + skillSectionInset.bottom
+            return CGSize(width: 0, height: height)
         }
-        return CGSizeMake(0, 0)
+        return CGSize(width: 0, height: 0)
     }
     /**
      
@@ -114,20 +114,20 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      
      - returns:
      */
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let maxWidth = collectionView?.frame.size.width
         
         
         let itemW = delegate!.autoLayout(self, atIndexPath:indexPath)
         
-        let atr = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+        let atr = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         
-        atr.frame = CGRectMake(CGFloat(currentX), CGFloat(currentY), CGFloat(itemW), itemHeight)
+        atr.frame = CGRect(x: CGFloat(currentX), y: CGFloat(currentY), width: CGFloat(itemW), height: itemHeight)
         currentMaxX = currentX + itemW + Float(skillSectionInset.right)
         if currentMaxX - Float(maxWidth!) > 0 {
             currentX = Float(skillSectionInset.left)
             currentY = currentY + Float(itemHeight) + Float(rowMargin)
-            atr.frame = CGRectMake(CGFloat(currentX), CGFloat(currentY), CGFloat(itemW), itemHeight)
+            atr.frame = CGRect(x: CGFloat(currentX), y: CGFloat(currentY), width: CGFloat(itemW), height: itemHeight)
             currentX = currentX + itemW + Float(columnMargin)
         } else {
             currentX = currentX + itemW + Float(columnMargin)
@@ -142,7 +142,7 @@ class SkillWidthLayout: UICollectionViewFlowLayout {
      
      - returns:
      */
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return attributedAry
     }
     

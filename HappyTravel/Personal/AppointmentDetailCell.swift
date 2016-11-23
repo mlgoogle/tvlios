@@ -14,14 +14,14 @@ class AppointmentDetailCell: UITableViewCell {
     
     var serviceTypes = [0:"未指定", 1:"高端游", 2:"商务游"]
 
-    lazy private var dateFormatter:NSDateFormatter = {
-        var dateFomatter = NSDateFormatter()
+    lazy fileprivate var dateFormatter:DateFormatter = {
+        var dateFomatter = DateFormatter()
         dateFomatter.dateFormat = "YYYY/MM/dd"
         
         return dateFomatter
     }()
     
-    lazy private var iconImageView:UIImageView = {
+    lazy fileprivate var iconImageView:UIImageView = {
        let imageView = UIImageView()
         imageView.layer.cornerRadius = AtapteWidthValue(45) / 2
         imageView.layer.masksToBounds = true
@@ -31,8 +31,8 @@ class AppointmentDetailCell: UITableViewCell {
     var nicknameLabel:UILabel = {
        let label = UILabel()
         label.text = "二郎神"
-        label.font = UIFont.systemFontOfSize(S15)
-        label.backgroundColor = UIColor.clearColor()
+        label.font = UIFont.systemFont(ofSize: S15)
+        label.backgroundColor = UIColor.clear
         label.textColor = colorWithHexString("#131f32")
         return label
     }()
@@ -40,23 +40,23 @@ class AppointmentDetailCell: UITableViewCell {
        
         let label = UILabel()
         label.text = "【二郎神】"
-        label.font = UIFont.systemFontOfSize(S15)
-        label.backgroundColor = UIColor.clearColor()
+        label.font = UIFont.systemFont(ofSize: S15)
+        label.backgroundColor = UIColor.clear
         label.textColor = colorWithHexString("#131f32")
         return label
     }()
     var dateLabel:UILabel = {
        let label = UILabel()
                 label.text = "2016/03/04 - 2016/03/04"
-        label.font = UIFont.systemFontOfSize(S15)
-        label.backgroundColor = UIColor.clearColor()
+        label.font = UIFont.systemFont(ofSize: S15)
+        label.backgroundColor = UIColor.clear
         label.textColor = colorWithHexString("#131f32")
         return label
     }()
     var cityLabel:UILabel = {
         let label = UILabel()
         label.text = "杭州"
-        label.font = UIFont.systemFontOfSize(S12)
+        label.font = UIFont.systemFont(ofSize: S12)
         label.textColor = colorWithHexString("#999999")
         return label
     }()
@@ -76,7 +76,7 @@ class AppointmentDetailCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectionStyle = .None
+        selectionStyle = .none
         contentView.addSubview(iconImageView)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(serviceTypeLabel)
@@ -147,10 +147,10 @@ class AppointmentDetailCell: UITableViewCell {
      之前逻辑有问题 弃用 2016年11月16日19:41:52
      - parameter info:
      */
-    func setupDataWithInfo(info:UserInfo) {
+    func setupDataWithInfo(_ info:UserInfo) {
         
 
-        iconImageView.kf_setImageWithURL(NSURL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        iconImageView.kf_setImageWithURL(URL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         nicknameLabel.text = info.nickname
         
     }
@@ -161,14 +161,14 @@ class AppointmentDetailCell: UITableViewCell {
      预约界面使用时 数据填充
      - parameter info:
      */
-    func setApponimentInfo(info:AppointmentInfo) {
+    func setApponimentInfo(_ info:AppointmentInfo) {
         nicknameLabel.text = info.to_name_
-        iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
 
 
         serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
-        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
-        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))
+        let startTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.start_time_)))
+        let endTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.end_time_)))
         dateLabel.text = startTime + "-" + endTime
         
 
@@ -188,13 +188,13 @@ class AppointmentDetailCell: UITableViewCell {
      邀约界面使用时 数据填充
      - parameter info:
      */
-    func setServiceInfo(info:HodometerInfo) {
+    func setServiceInfo(_ info:HodometerInfo) {
         
         nicknameLabel.text = info.to_name_
-        iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"
-        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_)))
-        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))
+        let startTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.start_)))
+        let endTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))
 
     
         dateLabel.text = startTime + "-" + endTime
@@ -205,7 +205,7 @@ class AppointmentDetailCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

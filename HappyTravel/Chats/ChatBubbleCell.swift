@@ -20,15 +20,15 @@ class ChatBubbleCell: UITableViewCell {
     
     static let bubbleImage: (incoming: UIImage, incomingHighlighed: UIImage, outgoing: UIImage, outgoingHighlighed: UIImage) = {
         let maskOutgoing = UIImage(named: "msg-bubble")!
-        let maskIncoming = UIImage(CGImage: maskOutgoing.CGImage!, scale: 2, orientation: .UpMirrored)
+        let maskIncoming = UIImage(cgImage: maskOutgoing.cgImage!, scale: 2, orientation: .upMirrored)
         
         let capInsetsIncoming = UIEdgeInsets(top: 17, left: 26.5, bottom: 17.5, right: 21)
         let capInsetsOutgoing = UIEdgeInsets(top: 17, left: 21, bottom: 17.5, right: 26.5)
         
-        let incoming = maskIncoming.imageWithRed(20/255, green: 31/255, blue: 49/255, alpha: 1).resizableImageWithCapInsets(capInsetsIncoming)
-        let incomingHighlighted = maskIncoming.imageWithRed(40/255, green: 60/255, blue: 90/255, alpha: 1).resizableImageWithCapInsets(capInsetsIncoming)
-        let outgoing = maskOutgoing.imageWithRed(255/255, green: 255/255, blue: 255/255, alpha: 1).resizableImageWithCapInsets(capInsetsOutgoing)
-        let outgoingHighlighted = maskOutgoing.imageWithRed(240/255, green: 240/255, blue: 240/255, alpha: 1).resizableImageWithCapInsets(capInsetsOutgoing)
+        let incoming = maskIncoming.imageWithRed(20/255, green: 31/255, blue: 49/255, alpha: 1).resizableImage(withCapInsets: capInsetsIncoming)
+        let incomingHighlighted = maskIncoming.imageWithRed(40/255, green: 60/255, blue: 90/255, alpha: 1).resizableImage(withCapInsets: capInsetsIncoming)
+        let outgoing = maskOutgoing.imageWithRed(255/255, green: 255/255, blue: 255/255, alpha: 1).resizableImage(withCapInsets: capInsetsOutgoing)
+        let outgoingHighlighted = maskOutgoing.imageWithRed(240/255, green: 240/255, blue: 240/255, alpha: 1).resizableImage(withCapInsets: capInsetsOutgoing)
         
         return (incoming, incomingHighlighted, outgoing, outgoingHighlighted)
     }()
@@ -37,18 +37,18 @@ class ChatBubbleCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         bubbleImageView = UIImageView(image: ChatBubbleCell.bubbleImage.incoming, highlightedImage: ChatBubbleCell.bubbleImage.incomingHighlighed)
         bubbleImageView.tag = bubbleTag
-        bubbleImageView.userInteractionEnabled = true // #CopyMesage
+        bubbleImageView.isUserInteractionEnabled = true // #CopyMesage
         
-        messageLabel = UILabel(frame: CGRectZero)
-        messageLabel.font = UIFont.systemFontOfSize(S15)
+        messageLabel = UILabel(frame: CGRect.zero)
+        messageLabel.font = UIFont.systemFont(ofSize: S15)
         messageLabel.numberOfLines = 0
-        messageLabel.userInteractionEnabled = false   // #CopyMessage
+        messageLabel.isUserInteractionEnabled = false   // #CopyMessage
         messageLabel.preferredMaxLayoutWidth = 218
         
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        backgroundColor = UIColor.clearColor()
-        contentView.backgroundColor = UIColor.clearColor()
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
         
         contentView.addSubview(bubbleImageView)
         bubbleImageView.addSubview(messageLabel)
@@ -74,10 +74,10 @@ class ChatBubbleCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureWithMessage(message: Message) {
+    func configureWithMessage(_ message: Message) {
         messageLabel.text = message.text
         if message.incoming {
-            messageLabel.textColor = .whiteColor()
+            messageLabel.textColor = .white
         }
         
         if message.incoming != (tag == incomingTag) {
@@ -88,48 +88,48 @@ class ChatBubbleCell: UITableViewCell {
                 tag = incomingTag
                 bubbleImageView.image = ChatBubbleCell.bubbleImage.incoming
                 bubbleImageView.highlightedImage = ChatBubbleCell.bubbleImage.incomingHighlighed
-                messageLabel.textColor = .whiteColor()
-                layoutAttribute = .Left
+                messageLabel.textColor = .white
+                layoutAttribute = .left
                 layoutConstant = 10
             } else { // outgoing
                 tag = outgoingTag
                 bubbleImageView.image = ChatBubbleCell.bubbleImage.outgoing
                 bubbleImageView.highlightedImage = ChatBubbleCell.bubbleImage.outgoingHighlighed
-                messageLabel.textColor = .blackColor()
-                layoutAttribute = .Right
+                messageLabel.textColor = .black
+                layoutAttribute = .right
                 layoutConstant = -10
             }
             
             let layoutConstraint: NSLayoutConstraint = bubbleImageView.constraints[1] // `messageLabel` CenterX
             layoutConstraint.constant = -layoutConstraint.constant
             
-            let constraints: NSArray = contentView.constraints
-            let indexOfConstraint = constraints.indexOfObjectPassingTest { constraint, idx, stop in
-                return (constraint.firstItem as! UIView).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.Left || constraint.firstAttribute == NSLayoutAttribute.Right)
-            }
+            let constraints: NSArray = contentView.constraints as NSArray
+            let indexOfConstraint = constraints.indexOfObject (passingTest: { constraint, idx, stop in
+                return (constraint.firstItem ).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.left || constraint.firstAttribute == NSLayoutAttribute.right)
+            })
             contentView.removeConstraint(constraints[indexOfConstraint] as! NSLayoutConstraint)
-            contentView.addConstraint(NSLayoutConstraint(item: bubbleImageView, attribute: layoutAttribute, relatedBy: .Equal, toItem: contentView, attribute: layoutAttribute, multiplier: 1, constant: layoutConstant))
+            contentView.addConstraint(NSLayoutConstraint(item: bubbleImageView, attribute: layoutAttribute, relatedBy: .equal, toItem: contentView, attribute: layoutAttribute, multiplier: 1, constant: layoutConstant))
         }
     }
     
     // Highlight cell #CopyMessage
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        bubbleImageView.highlighted = selected
+        bubbleImageView.isHighlighted = selected
     }
 }
 
 extension UIImage {
-    func imageWithRed(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIImage {
-        let rect = CGRect(origin: CGPointZero, size: self.size)
+    func imageWithRed(_ red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) -> UIImage {
+        let rect = CGRect(origin: CGPoint.zero, size: self.size)
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         let context = UIGraphicsGetCurrentContext()
-        self.drawInRect(rect)
-        CGContextSetRGBFillColor(context, red, green, blue, alpha)
-        CGContextSetBlendMode(context, CGBlendMode.SourceAtop)
-        CGContextFillRect(context, rect)
+        self.draw(in: rect)
+        context?.setFillColor(red: red, green: green, blue: blue, alpha: alpha)
+        context?.setBlendMode(CGBlendMode.sourceAtop)
+        context?.fill(rect)
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return result
+        return result!
     }
 }

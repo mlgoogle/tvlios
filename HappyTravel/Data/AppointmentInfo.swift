@@ -33,7 +33,7 @@ class AppointmentInfo: Object {
     dynamic var order_price_ = 0
     dynamic var order_id_ = 0
     
-    func setInfo(info:AppointmentInfo) {
+    func setInfo(_ info:AppointmentInfo) {
         
 //        appointment_id_ = info.appointment_id_
         user_id_ = info.user_id_

@@ -17,26 +17,26 @@ class OpenTicketInfo: Object {
     dynamic var price: String?
     dynamic var type: String?
     dynamic var selected: Bool = false
-    func setInfoWithHodometer(info: HodometerInfo) {
+    func setInfoWithHodometer(_ info: HodometerInfo) {
         order_id_ = info.order_id_
         name = info.to_name_
         content = info.service_name_
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
         time = info.start_
         price = "\(Double(info.order_price_) / 100) 元"
         type = info.service_type_ == 0 ? "商务游" : "高端游"
         
     }
     
-    func setInfoWithConsumedInfo(info: CenturionCardConsumedInfo) {
+    func setInfoWithConsumedInfo(_ info: CenturionCardConsumedInfo) {
         order_id_ = info.order_id_
-        let formatter = NSNumberFormatter.init()
-        formatter.roundingMode = .RoundHalfDown
-        formatter.numberStyle = .SpellOutStyle
-        let lvNum = NSNumber.init(long: info.privilege_lv_)
-        let lvStr = formatter.stringFromNumber(lvNum)
+        let formatter = NumberFormatter.init()
+        formatter.roundingMode = .halfDown
+        formatter.numberStyle = .spellOut
+        let lvNum = NSNumber.init(value: info.privilege_lv_ as Int)
+        let lvStr = formatter.string(from: lvNum)
         name = "\(lvStr!)星黑卡消费"
         
         content = info.privilege_name_
