@@ -176,7 +176,7 @@ class AppointmentDetailVC: UIViewController {
 
         let commitBtn = UIButton()
         commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
-        commitBtn.setTitle("取消预约", forState: .Normal)
+        commitBtn.setTitle("发表评论", forState: .Normal)
         commitBtn.addTarget(self, action: #selector(AppointmentDetailVC.cancelOrCommitButtonAction), forControlEvents: .TouchUpInside)
         view.addSubview(commitBtn)
         commitBtn.snp_makeConstraints { (make) in
@@ -256,11 +256,15 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             }
             let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
             commonCell = cell
-
+            cell.setAppointmentInfo(appointmentInfo)
+            
+            guard service_score_  != 0 || user_score_ != 0 else {
+                return cell
+            }
             cell.serviceSocre = service_score_
             cell.userScore = user_score_
             cell.remark = remarks_
-            cell.setAppointmentInfo(appointmentInfo)
+
 
             return cell
             
@@ -284,10 +288,14 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             }
             let cell = tableView.dequeueReusableCellWithIdentifier("CommentCell", forIndexPath: indexPath) as! IdentCommentCell
             commonCell = cell
+            cell.setAppointmentInfo(appointmentInfo)
+
+            guard service_score_  != 0 || user_score_ != 0 else {
+                return cell
+            }
             cell.serviceSocre = service_score_
             cell.userScore = user_score_
             cell.remark = remarks_
-            cell.setAppointmentInfo(appointmentInfo)
 
             return cell
         }
@@ -299,21 +307,25 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
-        /**
-         *  status_ = 7代表可以评价 所以显示评论cell
-         */
-        if appointmentInfo?.status_ == 7 {
-            /**
-             如果是代订 则多显示一区
-             - returns:
-             */
-            return appointmentInfo?.is_other_ == 1 ? 4 : 3
-        }
-        /**
-         如果是代订 则多显示一区
-         - returns:
-         */
-        return appointmentInfo?.is_other_ == 1 ? 3 : 2
+        
+        
+        return appointmentInfo?.is_other_ == 1 ? 4 : 3
+
+//        /**
+//         *  status_ = 7代表可以评价 所以显示评论cell
+//         */
+//        if appointmentInfo?.status_ == 7 {
+//            /**
+//             如果是代订 则多显示一区
+//             - returns:
+//             */
+//            return appointmentInfo?.is_other_ == 1 ? 4 : 3
+//        }
+//        /**
+//         如果是代订 则多显示一区
+//         - returns:
+//         */
+//        return appointmentInfo?.is_other_ == 1 ? 3 : 2
         
     }
     
