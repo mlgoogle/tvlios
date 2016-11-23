@@ -300,9 +300,9 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
         /**
-         *  status_ = 4代表可以评价 所以显示评论cell
+         *  status_ = 7代表可以评价 所以显示评论cell
          */
-        if appointmentInfo?.status_ == 4 {
+        if appointmentInfo?.status_ == 7 {
             /**
              如果是代订 则多显示一区
              - returns:

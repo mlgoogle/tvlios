@@ -27,7 +27,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let pickView = UIPickerView()
     var daysList:Array<Int>?
-    var targetDays:Int = 0
+    var targetDays:Int = 1
     override init(frame: CGRect) {
         super.init(frame: frame)
         initView()

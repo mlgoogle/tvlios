@@ -16,8 +16,10 @@ enum HodometerStatus : Int {
     case WaittingPay = 3
     case Paid = 4
     case Cancel = 5
-    case InvoiceMaking = 6
-    case InvoiceMaked = 7
+    case OnGoing = 6
+    case Completed = 7
+    case InvoiceMaking = 8
+    case InvoiceMaked = 9
 }
 
 class HodometerInfo : Object {

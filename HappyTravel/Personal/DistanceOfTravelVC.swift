@@ -341,9 +341,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         switch segmentIndex {
         case 0:
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
-                if cell.curHodometerInfo?.status_ == HodometerStatus.Paid.rawValue ||
-                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
-                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue{
+                if  cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue{
                     
                     let identDetailVC = IdentDetailVC()
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
@@ -368,24 +368,44 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let object = records![indexPath.row]
             guard object.status_ > 1  else {
-              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 return
             }
-            guard object.status_ != 3  else {
-                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
-                return
-            }
-            /**
-             *  未支付状态去支付
-             */
-            if object.status_ == 2 {
-                selectedAppointmentInfo = records![indexPath.row]
-                payForInvitationRequest()
+            if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+                object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
+                object.status_ == HodometerStatus.Completed.rawValue{
                 
-            } else {
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)
-            }      
+                /**
+                 *  未支付状态去支付
+                 */
+            } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
+                SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                 selectedAppointmentInfo = records![indexPath.row]
+                payForInvitationRequest()
+                
+            }
+//            
+//            guard object.status_ > 1  else {
+//              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+//                return
+//            }
+//            guard object.status_ != 3  else {
+//                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
+//                return
+//            }
+//            /**
+//             *  未支付状态去支付
+//             */
+//            if object.status_ == 2 {
+//                selectedAppointmentInfo = records![indexPath.row]
+//                payForInvitationRequest()
+//                
+//            } else {
+//                detailVC.appointmentInfo = records![indexPath.row]
+//                navigationController?.pushViewController(detailVC, animated: true)
+//            }      
             break
         case 2:
             break
