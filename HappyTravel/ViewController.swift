@@ -41,11 +41,11 @@ class ViewController: SideMenuController {
         // Do any additional setup after loading the view, typically from a nib.
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
-        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
+        SideMenuController.preferences.drawing.sidePanelPosition = .underCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.main.bounds.size.width / 3.0 * 2
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
+        SideMenuController.preferences.animating.statusBarBehaviour = .horizontalPan
         SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
         
         initMainInterface()

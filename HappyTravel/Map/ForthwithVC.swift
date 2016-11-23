@@ -86,13 +86,12 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             msgCountLab!.layer.masksToBounds = true
             msgCountLab!.isHidden = true
             msgBtn.addSubview(msgCountLab!)
-            msgCountLab!.snp_makeConstraints(closure: { (make) in
+            msgCountLab!.snp.makeConstraints({ (make) in
                 make.right.equalTo(msgBtn).offset(5)
                 make.top.equalTo(msgBtn).offset(-2)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })
-            
         }
         
         if DataManager.getUnreadMsgCnt(-1) > 0 {
@@ -156,10 +155,10 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         titleLab?.textAlignment = .center
         titleLab?.isUserInteractionEnabled = true
         titleView.addSubview(titleLab!)
-        titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX).offset(-10)
-            make.centerY.equalTo(titleView.snp_centerY)
-        }
+        titleLab!.snp.makeConstraints({ (make) in
+            make.centerX.equalTo(titleView.snp.centerX).offset(-10)
+            make.centerY.equalTo(titleView.snp.centerY)
+        })
         titleLab?.text = "我的位置"
         
         titleBtn = UIButton()
@@ -168,10 +167,10 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), for: .selected)
         titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), for: .touchUpInside)
         titleView.addSubview(titleBtn!)
-        titleBtn!.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLab!.snp_right)
+        titleBtn!.snp.makeConstraints { (make) in
+            make.left.equalTo(titleLab!.snp.right)
             make.width.equalTo(20)
-            make.centerY.equalTo(titleLab!.snp_centerY)
+            make.centerY.equalTo(titleLab!.snp.centerY)
         }
         
 //        let segmentBGV = UIImageView()
@@ -200,7 +199,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         bottomView.isUserInteractionEnabled = true
         bottomView.image = UIImage.init(named: "bottom-selector-bg")
         view.addSubview(bottomView)
-        bottomView.snp_makeConstraints { (make) in
+        bottomView.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.bottom.equalTo(view)
             make.right.equalTo(view)
@@ -217,7 +216,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         bottomSelector.minimumTrackTintColor = UIColor.white
         bottomSelector.maximumTrackTintColor = UIColor.white
         bottomView.addSubview(bottomSelector)
-        bottomSelector.snp_makeConstraints { (make) in
+        bottomSelector.snp.makeConstraints { (make) in
             make.center.equalTo(bottomView)
             make.width.equalTo(ScreenWidth / 2.0)
             make.height.equalTo(65)
