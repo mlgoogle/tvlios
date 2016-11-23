@@ -285,7 +285,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else if segmentIndex == 1 {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
                 let status = cell.curHodometerInfo?.status_
-                if status == HodometerStatus.Paid.rawValue {
+                if cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue {
                     let identDetailVC = IdentDetailVC()
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
