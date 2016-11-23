@@ -1349,7 +1349,6 @@
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 96YGS7NXK5;
-						LastSwiftMigration = 0820;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
