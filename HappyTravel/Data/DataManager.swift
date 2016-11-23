@@ -381,7 +381,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = \(HodometerStatus.Paid.rawValue)")
+        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = \(HodometerStatus.Completed.rawValue)")
         return infos
     }
     
