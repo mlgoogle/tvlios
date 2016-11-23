@@ -22,31 +22,31 @@ class BlackCardView: UIView {
     }()
     
     lazy var yudianLabel: UILabel = {
-       let label = UILabel.init(text: "YUNDIAN BLACK CARD CLUB\n YUNDIAN MEMBERSHIP", font: UIFont.boldSystemFontOfSize(S12), textColor: colorWithHexString("#dfd1ad"))
+       let label = UILabel.init(text: "YUNDIAN BLACK CARD CLUB\n YUNDIAN MEMBERSHIP", font: UIFont.boldSystemFont(ofSize: S12), textColor: colorWithHexString("#dfd1ad"))
         return label
     }()
     
     lazy var nameLabel: UILabel = {
-        let label = UILabel.init(text: "NAME" , font: UIFont.boldSystemFontOfSize(S12), textColor: colorWithHexString("#dfd1ad"))
+        let label = UILabel.init(text: "NAME" , font: UIFont.boldSystemFont(ofSize: S12), textColor: colorWithHexString("#dfd1ad"))
         return label
     }()
     
     lazy var dateLabel: UILabel = {
-        let fromDate: NSDate = NSDate().dateByAddingTimeInterval(Double((DataManager.currentUser!.centurionCardStartTime)))
+        let fromDate: Date = Date.init(timeIntervalSince1970: TimeInterval(DataManager.currentUser!.centurionCardStartTime))
         let moneth = fromDate.yt_month() > 9 ? "\(fromDate.yt_month())" : "0\(fromDate.yt_month())"
         let day = fromDate.yt_day() > 9 ? "\(fromDate.yt_day())" : "0\(fromDate.yt_day())"
-        let label = UILabel.init(text: "\(moneth)/\(day)", font: UIFont.boldSystemFontOfSize(AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))
-        label.textAlignment = .Center
+        let label = UILabel.init(text: "\(moneth)/\(day)", font: UIFont.boldSystemFont(ofSize: AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))
+        label.textAlignment = .center
         return label
     }()
     
     lazy var rightNmberLabel : UILabel = {
-        let label = UILabel.init(text: "8888", font: UIFont.boldSystemFontOfSize(S18), textColor: colorWithHexString("#dfd1ad"))
+        let label = UILabel.init(text: "8888", font: UIFont.boldSystemFont(ofSize: S18), textColor: colorWithHexString("#dfd1ad"))
         return label
     }()
     
     lazy var leftNumberLabel : UILabel = {
-        let label = UILabel.init(text: "8888", font: UIFont.boldSystemFontOfSize(S18), textColor: colorWithHexString("#dfd1ad"))
+        let label = UILabel.init(text: "8888", font: UIFont.boldSystemFont(ofSize: S18), textColor: colorWithHexString("#dfd1ad"))
         return label
     }()
     
@@ -70,7 +70,7 @@ class BlackCardView: UIView {
         }
         
         let contentView = UIView()
-        contentView.backgroundColor = UIColor.clearColor()
+        contentView.backgroundColor = UIColor.clear
         bgImage.addSubview(contentView)
         contentView.snp_makeConstraints { (make) in
             make.top.equalTo(35)
@@ -102,7 +102,7 @@ class BlackCardView: UIView {
             make.left.equalTo(contentView)
         }
         let name = pinyin(DataManager.currentUser?.centurionCardName == nil ? "" : (DataManager.currentUser?.centurionCardName)!)
-        nameLabel.text = name.uppercaseString
+        nameLabel.text = name.uppercased()
         
         contentView.addSubview(dateLabel)
         dateLabel.snp_makeConstraints { (make) in
@@ -111,8 +111,8 @@ class BlackCardView: UIView {
             make.width.equalTo(88)
         }
         
-        let dateTitleLabel = UILabel.init(text: "MONTH/YEAR", font: UIFont.boldSystemFontOfSize(S10), textColor: colorWithHexString("#dfd1ad"))
-        dateTitleLabel.textAlignment = .Center
+        let dateTitleLabel = UILabel.init(text: "MONTH/YEAR", font: UIFont.boldSystemFont(ofSize: S10), textColor: colorWithHexString("#dfd1ad"))
+        dateTitleLabel.textAlignment = .center
         contentView.addSubview(dateTitleLabel)
         dateTitleLabel.snp_makeConstraints { (make) in
             make.bottom.equalTo(dateLabel.snp_top)
@@ -129,11 +129,11 @@ class BlackCardView: UIView {
         var blackCardNum = "\(DataManager.currentUser!.centurionCardId)" as NSString
         if blackCardNum.length < 8 {
             for _ in 0...(8-blackCardNum.length) {
-                blackCardNum = "0\(blackCardNum)"
+                blackCardNum = "0\(blackCardNum)" as NSString
             }
         }
-        let frontNum = blackCardNum.substringToIndex(4)
-        let backNum = blackCardNum.substringWithRange(NSRange.init(location: 5, length: 4))
+        let frontNum = blackCardNum.substring(to: 4)
+        let backNum = blackCardNum.substring(with: NSRange.init(location: 5, length: 4))
         
         contentView.addSubview(leftNumberLabel)
         leftNumberLabel.snp_makeConstraints { (make) in
@@ -154,7 +154,7 @@ class BlackCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func pinyin(str: String) -> String {
+    func pinyin(_ str: String) -> String {
         
         let chinese = NSMutableString(string: str) as CFMutableString
         if CFStringTransform(chinese, nil, kCFStringTransformToLatin, false) {

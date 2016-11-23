@@ -11,6 +11,19 @@ import RealmSwift
 import MJRefresh
 import XCGLogger
 import SVProgressHUD
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -18,7 +31,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var table:UITableView?
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
-    var timer:NSTimer?
+    var timer:Timer?
 
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
@@ -42,44 +55,44 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         initView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
+        header.perform(#selector(MJRefreshHeader.beginRefreshing), with: nil, afterDelay: 0.5)
 
     }
     
     func appearheaderRefresh() {
         header.beginRefreshing()
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ObtainTripReply), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.CenturionCardConsumedReply), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NSNotification.Name(rawValue: NotifyDefine.AppointmentRecordReply), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.PayForInvitationReply), object: nil)
     }
     /**
      支付回调
      
      - parameter notification: 
      */
-    func payForInvitationReply(notification: NSNotification) {
+    func payForInvitationReply(_ notification: Notification) {
         if let result = notification.userInfo!["result_"] as? Int {
             var msg = ""
             switch result {
             case 0:
                 msg = "预支付成功"
                 if segmentIndex == 0 {
-                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                         "order_id_": 0,
                         "count_": 10])
                 } else {
-                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                         "last_id_": 0,
                         "count_": 10])
                 }
@@ -92,10 +105,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             default:
                 break
             }
-            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
+            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .alert)
+            let sure = UIAlertAction.init(title: "好的", style: .cancel, handler: nil)
             alert.addAction(sure)
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
         
         
@@ -104,11 +117,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      邀约行程回调记录
      - parameter notification:
      */
-    func obtainTripReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
+    func obtainTripReply(_ notification: Notification) {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
         
@@ -117,8 +130,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            footer.state = .noMoreData
+            footer.setTitle("多乎哉 不多矣", for: .noMoreData)
             table?.reloadData()
             return
         }
@@ -132,11 +145,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      黑卡消费记录回调
      - parameter notification:
      */
-    func centurionCardConsumedReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
+    func centurionCardConsumedReply(_ notification: Notification) {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
         
@@ -145,8 +158,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            footer.state = .noMoreData
+            footer.setTitle("多乎哉 不多矣", for: .noMoreData)
             table?.reloadData()
             return
         }
@@ -162,20 +175,20 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      
      - parameter notification: 
      */
-    func receivedAppointmentInfos(notification:NSNotification) {
+    func receivedAppointmentInfos(_ notification:Notification) {
         
-        if header.state == MJRefreshState.Refreshing {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
         let realm = try! Realm()
         records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
         let lastID = notification.userInfo!["lastID"] as! Int
         if lastID == -9999 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            footer.state = .noMoreData
+            footer.setTitle("多乎哉 不多矣", for: .noMoreData)
             table?.reloadData()
             return
         }
@@ -200,13 +213,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         let segmentItems = ["商务游", "预约", "黑卡消费"]
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
-        segmentSC!.addTarget(self, action: #selector(DistanceOfTravelVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
+        segmentSC!.addTarget(self, action: #selector(DistanceOfTravelVC.segmentChange), for: UIControlEvents.valueChanged)
         segmentSC!.selectedSegmentIndex = segmentIndex
         segmentSC!.layer.masksToBounds = true
         segmentSC?.layer.cornerRadius = 5
-        segmentSC?.backgroundColor = UIColor.clearColor()
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
+        segmentSC?.backgroundColor = UIColor.clear
+        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState())
+        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
         view.addSubview(segmentSC!)
         segmentSC!.snp_makeConstraints { (make) in
@@ -215,17 +228,17 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
         }
         
-        table = UITableView(frame: CGRectZero, style: .Plain)
+        table = UITableView(frame: CGRect.zero, style: .plain)
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
-        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 256
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.separatorStyle = .None
-        table?.registerClass(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
-        table?.registerClass(CentrionCardConsumedCell.self, forCellReuseIdentifier: "CentrionCardConsumedCell")
-        table?.registerClass(AppointmentRecordCell.self, forCellReuseIdentifier: "AppointmentRecordCell")
+        table?.separatorStyle = .none
+        table?.register(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
+        table?.register(CentrionCardConsumedCell.self, forCellReuseIdentifier: "CentrionCardConsumedCell")
+        table?.register(AppointmentRecordCell.self, forCellReuseIdentifier: "AppointmentRecordCell")
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -244,42 +257,42 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": 0,
                 "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "last_id_": 0,
                 "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
             break
         default:
             break
         }
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(DistanceOfTravelVC.endRefresh), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(DistanceOfTravelVC.endRefresh), userInfo: nil, repeats: false)
         /**
          加入mainloop 防止滑动计时器停止
          */
-        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
     }
     
     func footerRefresh() {
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": orderID,
                 "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "last_id_": lastRecordId,
                 "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
             break
         default:
             break
@@ -288,7 +301,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     // MARK: - UITableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
         if segmentIndex == 0 {
             cnt = hotometers != nil ? hotometers!.count : 0
@@ -297,15 +310,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         } else {
             cnt = consumes != nil ? consumes!.count : 0
         }
-        footer.hidden = cnt < 10 ? true : false
+        footer.isHidden = cnt < 10 ? true : false
         return cnt
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         switch segmentIndex {
         case 0:
-            let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DistanceOfTravelCell", for: indexPath) as! DistanceOfTravelCell
             if hotometers?.count > 0 && indexPath.row < hotometers?.count {
                 cell.setHodometerInfo(hotometers![indexPath.row])
             }
@@ -313,7 +326,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return cell
 
         case 1:
-            let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentRecordCell", forIndexPath: indexPath) as! AppointmentRecordCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentRecordCell", for: indexPath) as! AppointmentRecordCell
             if records?.count > 0 && indexPath.row < records?.count {
                 cell.setRecordInfo(records![indexPath.row])
             }
@@ -321,7 +334,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             return cell
 
         case 2:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CentrionCardConsumedCell", for: indexPath) as! CentrionCardConsumedCell
             if consumes?.count > 0 && indexPath.row < consumes?.count {
                 cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
             }
@@ -336,14 +349,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         switch segmentIndex {
         case 0:
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
-                if cell.curHodometerInfo?.status_ == HodometerStatus.Paid.rawValue ||
-                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaking.rawValue ||
-                    cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue{
+            if let cell = tableView.cellForRow(at: indexPath) as? DistanceOfTravelCell {
+                if  cell.curHodometerInfo?.status_ == HodometerStatus.invoiceMaking.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.invoiceMaked.rawValue ||
+                    cell.curHodometerInfo?.status_ == HodometerStatus.completed.rawValue{
                     
                     let identDetailVC = IdentDetailVC()
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
@@ -351,8 +364,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     /**
                      *  未支付状态去支付
                      */
-                } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                } else if cell.curHodometerInfo?.status_ == HodometerStatus.waittingPay.rawValue {
+                    SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
@@ -368,24 +381,44 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let object = records![indexPath.row]
             guard object.status_ > 1  else {
-              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 return
             }
-            guard object.status_ != 3  else {
-                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
-                return
-            }
-            /**
-             *  未支付状态去支付
-             */
-            if object.status_ == 2 {
-                selectedAppointmentInfo = records![indexPath.row]
-                payForInvitationRequest()
+            if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
+                object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
+                object.status_ == HodometerStatus.Completed.rawValue{
                 
-            } else {
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)
-            }      
+                /**
+                 *  未支付状态去支付
+                 */
+            } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
+                SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                 selectedAppointmentInfo = records![indexPath.row]
+                payForInvitationRequest()
+                
+            }
+//            
+//            guard object.status_ > 1  else {
+//              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+//                return
+//            }
+//            guard object.status_ != 3  else {
+//                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
+//                return
+//            }
+//            /**
+//             *  未支付状态去支付
+//             */
+//            if object.status_ == 2 {
+//                selectedAppointmentInfo = records![indexPath.row]
+//                payForInvitationRequest()
+//                
+//            } else {
+//                detailVC.appointmentInfo = records![indexPath.row]
+//                navigationController?.pushViewController(detailVC, animated: true)
+//            }      
             break
         case 2:
             break
@@ -394,19 +427,19 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func segmentChange(sender: AnyObject?) {
+    func segmentChange(_ sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
-        if header.state == .Idle && (footer.state == .Idle || footer.state == .NoMoreData){
+        if header.state == .idle && (footer.state == .idle || footer.state == .noMoreData){
             header.beginRefreshing()
         }
 
     }
     func endRefresh() {
     
-        if header.state == .Refreshing {
+        if header.state == .refreshing {
             header.endRefreshing()
         }
-        if footer.state == .Refreshing {
+        if footer.state == .refreshing {
             footer.endRefreshing()
         }
         if timer != nil {
@@ -434,70 +467,70 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             order_id_ = (selectedHodometerInfo?.order_id_)!
         }
         let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
-        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .alert)
         
-        alert.addTextFieldWithConfigurationHandler({ (textField) in
+        alert.addTextField(configurationHandler: { (textField) in
             textField.placeholder = "请输入密码"
-            textField.secureTextEntry = true
+            textField.isSecureTextEntry = true
         })
         
-        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
+        let ok = UIAlertAction.init(title: "确认付款", style: .default, handler: { (action) in
             var errMsg = ""
             let passwd = alert.textFields?.first?.text
-            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
+            if passwd?.lengthOfBytes(using: String.Encoding.utf8) == 0 {
                 errMsg = "请输入密码"
-            } else if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
+            } else if let localPasswd = UserDefaults.standard.object(forKey: CommonDefine.Passwd) as? String {
                 if passwd != localPasswd {
                     errMsg = "密码输入错误，请重新输入"
                 }
             }
-            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
-                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
+            if errMsg.lengthOfBytes(using: String.Encoding.utf8) > 0 {
+                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .alert)
+                let sure = UIAlertAction.init(title: "好的", style: .cancel, handler: { (action) in
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC) * 0.15)) / Double(NSEC_PER_SEC), execute: { () in
                         weakSelf!.payForInvitationRequest()
                     })
                 })
                 warningAlert.addAction(sure)
-                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
+                weakSelf!.present(warningAlert, animated: true, completion: nil)
             } else {
                 if DataManager.currentUser?.cash < price {
                     weakSelf!.moneyIsTooLess()
                 } else {
-                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                                               "order_id_": order_id_,
-                                                 "passwd_": passwd!]
-                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
+                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
+                                               "order_id_": order_id_ as AnyObject,
+                                                 "passwd_": passwd! as AnyObject]
+                    SocketManager.sendData(.payForInvitationRequest, data: dict)
                 }
                 
             }
             
         })
         
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         
         alert.addAction(ok)
         alert.addAction(cancel)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     /**
      余额不足操作
      */
     func moneyIsTooLess() {
-        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
+        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .alert)
         
-        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
+        let ok = UIAlertAction.init(title: "前往充值", style: .default, handler: { (action: UIAlertAction) in
             let rechargeVC = RechargeVC()
             self.navigationController?.pushViewController(rechargeVC, animated: true)
         })
         
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: nil)
         
         alert.addAction(ok)
         alert.addAction(cancel)
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     deinit {

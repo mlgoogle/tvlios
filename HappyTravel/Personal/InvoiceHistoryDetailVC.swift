@@ -9,6 +9,30 @@
 import UIKit
 import RealmSwift
 import XCGLogger
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 class InvoiceHistoryDetailVC: UIViewController {
     
     var invoice_id_ = 0
@@ -25,22 +49,22 @@ class InvoiceHistoryDetailVC: UIViewController {
                         3 : "餐饮发票",
                         4 : "其他"]
 
-    lazy var dateFormatter:NSDateFormatter = {
-        var dateFomatter = NSDateFormatter()
+    lazy var dateFormatter:DateFormatter = {
+        var dateFomatter = DateFormatter()
         dateFomatter.dateFormat = "YYYY.MM.dd hh:mm"
         return dateFomatter
     }()
 
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         regitserNotification()
@@ -53,15 +77,15 @@ class InvoiceHistoryDetailVC: UIViewController {
         title = "开票详情"
         
         initViews()
-        SocketManager.sendData(.InvoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
+        SocketManager.sendData(.invoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
     }
     
     func initViews() {
-        tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         tableView?.delegate = self
         tableView?.dataSource = self
-        tableView?.separatorStyle = .None
+        tableView?.separatorStyle = .none
         tableView?.estimatedRowHeight = 70
         tableView?.rowHeight = UITableViewAutomaticDimension
         view.addSubview(tableView!)
@@ -69,21 +93,21 @@ class InvoiceHistoryDetailVC: UIViewController {
             make.edges.equalTo(view)
         })
         
-        headerView = InvouiceHistoryDetailHeader.init(frame: CGRectMake(0, 0,  UIScreen.mainScreen().bounds.size.width, 65))
+        headerView = InvouiceHistoryDetailHeader.init(frame: CGRect(x: 0, y: 0,  width: UIScreen.main.bounds.size.width, height: 65))
         tableView?.tableHeaderView = headerView
-        tableView?.registerClass(InvoiceHistoryDetailCustomCell.self, forCellReuseIdentifier: "detailCustomCell")
-        tableView?.registerClass(InvoiceHistoryDetailNormalCell.self, forCellReuseIdentifier: "detailNormalCell")
+        tableView?.register(InvoiceHistoryDetailCustomCell.self, forCellReuseIdentifier: "detailCustomCell")
+        tableView?.register(InvoiceHistoryDetailNormalCell.self, forCellReuseIdentifier: "detailNormalCell")
     }
     
     func regitserNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceHistoryDetailVC.receivedData(_:)), name: NotifyDefine.InvoiceDetailReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InvoiceHistoryDetailVC.receivedData(_:)), name: NSNotification.Name(rawValue: NotifyDefine.InvoiceDetailReply), object: nil)
     }
     
     /**
      回调
      - parameter notification:
      */
-    func receivedData(notification:NSNotification) {
+    func receivedData(_ notification:Notification) {
         
         if let dict = notification.userInfo!["data"] {
             let history = InvoiceHistoryInfo(value: dict)
@@ -100,39 +124,39 @@ class InvoiceHistoryDetailVC: UIViewController {
 
 extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows[section]
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 2 {
             return 70
         }
         
         return 44
     }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
     }
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.001
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 2 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("detailCustomCell", forIndexPath: indexPath) as! InvoiceHistoryDetailCustomCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "detailCustomCell", for: indexPath) as! InvoiceHistoryDetailCustomCell
             if historyInfo != nil {
                 cell.setupData((historyInfo?.order_num_)!, first_time_: (historyInfo?.final_time_)!, final_time_: (historyInfo?.final_time_)!)
             }
             return cell
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier("detailNormalCell", forIndexPath: indexPath) as! InvoiceHistoryDetailNormalCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailNormalCell", for: indexPath) as! InvoiceHistoryDetailNormalCell
         
         let last = indexPath.row == rows[indexPath.section] - 1 ? true : false
 
@@ -176,7 +200,7 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
                     isPrice = true
                     break
                 case 2:
-                    text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((historyInfo?.invoice_time_)!)))
+                    text = dateFormatter.string(from: Date(timeIntervalSince1970: Double((historyInfo?.invoice_time_)!)))
                     break
                 default:
                     break
@@ -204,7 +228,7 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
 //    }
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 2 {
 

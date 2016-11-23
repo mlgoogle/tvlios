@@ -11,25 +11,21 @@ import RealmSwift
 
 class AppointmentRecordCell: DistanceOfTravelCell {
 
-    var info = [0:"等待接受",
-                1:"预约失败",
-                2:"等待支付",
-                3:"预约取消",
-                4:"支付完成"]
+
 
     /**
      结束时间
      */
-    lazy private var endTimeLabel:UILabel = {
+    lazy fileprivate var endTimeLabel:UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.clearColor()
-        label.textAlignment = .Left
-        label.textColor = UIColor.grayColor()
-        label.font = UIFont.systemFontOfSize(AtapteWidthValue(13))
+        label.backgroundColor = UIColor.clear
+        label.textAlignment = .left
+        label.textColor = UIColor.gray
+        label.font = UIFont.systemFont(ofSize: AtapteWidthValue(13))
         return label
     }()
     
-    lazy private var lineView:UIView = {
+    lazy fileprivate var lineView:UIView = {
        
         let view = UIView()
         view.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
@@ -38,18 +34,18 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     /**
      代订信息
      */
-    lazy private var infoLabel:UILabel = {
+    lazy fileprivate var infoLabel:UILabel = {
         
         let label = UILabel()
-        label.backgroundColor = UIColor.clearColor()
-        label.font = UIFont.systemFontOfSize(AtapteWidthValue(15))
-        label.textAlignment = .Center
+        label.backgroundColor = UIColor.clear
+        label.font = UIFont.systemFont(ofSize: AtapteWidthValue(15))
+        label.textAlignment = .center
         label.textColor = UIColor.init(red: 245/255.0, green: 146/255.0, blue: 49/255.0, alpha: 1)
         return label
     }()
-    lazy private var infoView:UIView = {
+    lazy fileprivate var infoView:UIView = {
        let view = UIView()
-        view.backgroundColor = UIColor.clearColor()
+        view.backgroundColor = UIColor.clear
         return view
     }()
     
@@ -118,12 +114,12 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     }
     
     
-    func setRecordInfo(recordInfo: AppointmentInfo?) {
+    func setRecordInfo(_ recordInfo: AppointmentInfo?) {
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             if recordInfo?.to_head_ != nil {
                 
-                headView.kf_setImageWithURL(NSURL(string: (recordInfo?.to_head_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+                headView.kf_setImageWithURL(URL(string: (recordInfo?.to_head_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
                     
                 })
 
@@ -162,13 +158,13 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
-            dateFormatter.dateStyle = .ShortStyle
-            timeLab.text = "开始 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.start_time_)!))) + " 09:00-21:00"
-            endTimeLabel.text = "结束 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.end_time_)!))) + " 09:00-21:00"
+            dateFormatter.dateStyle = .short
+            timeLab.text = "开始 : " + dateFormatter.string(from: Date(timeIntervalSince1970: Double((recordInfo?.start_time_)!))) + " 09:00-21:00"
+            endTimeLabel.text = "结束 : " + dateFormatter.string(from: Date(timeIntervalSince1970: Double((recordInfo?.end_time_)!))) + " 09:00-21:00"
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
-            statusLab.text = info[(recordInfo?.status_)!]
+            statusLab.text = statusDict[OrderStatus(rawValue: (recordInfo?.status_)!)!]
             statusLab.textColor = statusColor[OrderStatus(rawValue: (recordInfo?.status_)!)!]
         }
         /**
@@ -182,10 +178,10 @@ class AppointmentRecordCell: DistanceOfTravelCell {
                 make.right.equalTo(view!)
                 make.bottom.equalTo(view!.snp_bottom)
             }
-            infoView.hidden = false
+            infoView.isHidden = false
             infoLabel.text = "代订 : " + (recordInfo?.other_name_)! + " " + (recordInfo?.other_phone_)!
         } else {
-            infoView.hidden = true
+            infoView.isHidden = true
             infoView.snp_remakeConstraints(closure: { (make) in
                 make.top.equalTo(endTimeLabel.snp_bottom).offset(AtapteHeightValue(10))
                 make.left.equalTo(view!)

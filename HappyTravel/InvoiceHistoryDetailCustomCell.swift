@@ -13,20 +13,20 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
     
     var titleLabel:UILabel?
     var dateLabel:UILabel?
-    var dateFormatter = NSDateFormatter()
+    var dateFormatter = DateFormatter()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        selectionStyle = .None
-        accessoryType = .DisclosureIndicator
+        selectionStyle = .none
+        accessoryType = .disclosureIndicator
         if titleLabel == nil {
             titleLabel = UILabel()
-            titleLabel?.font = UIFont.systemFontOfSize(S15)
+            titleLabel?.font = UIFont.systemFont(ofSize: S15)
             titleLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
         
-            titleLabel?.textAlignment = .Left
-            titleLabel?.backgroundColor = UIColor.clearColor()
+            titleLabel?.textAlignment = .left
+            titleLabel?.backgroundColor = UIColor.clear
            contentView.addSubview(titleLabel!)
         }
         titleLabel?.text = "所含服务（100）"
@@ -35,9 +35,9 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
         
         if dateLabel == nil {
             dateLabel = UILabel()
-            dateLabel?.font = UIFont.systemFontOfSize(S12)
-            dateLabel?.textAlignment = .Left
-            dateLabel?.backgroundColor = UIColor.clearColor()
+            dateLabel?.font = UIFont.systemFont(ofSize: S12)
+            dateLabel?.textAlignment = .left
+            dateLabel?.backgroundColor = UIColor.clear
             dateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
             contentView.addSubview(dateLabel!)
             
@@ -69,20 +69,20 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
      - parameter first_time_:
      - parameter final_time_: 
      */
-    func setupData(orderNum:Int, first_time_:Int, final_time_:Int) {
+    func setupData(_ orderNum:Int, first_time_:Int, final_time_:Int) {
         
         dateFormatter.dateFormat = "YYYY.MM.dd hh:mm"
 
         titleLabel?.text = "所含服务（\(orderNum))"
-        let firstTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(first_time_)))
-        let finalTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(final_time_)))
+        let firstTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(first_time_)))
+        let finalTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(final_time_)))
         dateLabel?.text = firstTime + "-" + finalTime
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -100,18 +100,18 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
+        selectionStyle = .none
         
         if titleLabel == nil {
             titleLabel = UILabel()
-            titleLabel?.backgroundColor = UIColor.clearColor()
-            titleLabel?.font = UIFont.systemFontOfSize(S15)
+            titleLabel?.backgroundColor = UIColor.clear
+            titleLabel?.font = UIFont.systemFont(ofSize: S15)
             titleLabel?.textColor =  UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
         }
         if infoLabel == nil {
             infoLabel = UILabel()
-            infoLabel?.backgroundColor = UIColor.clearColor()
-            infoLabel?.font = UIFont.systemFontOfSize(S15)
+            infoLabel?.backgroundColor = UIColor.clear
+            infoLabel?.font = UIFont.systemFont(ofSize: S15)
             infoLabel?.textColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0)
 
         }
@@ -159,23 +159,23 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
      - parameter text:
      - parameter isLast: 最后一个需要隐藏分割线
      */
-    func setTitleLabelText(text:String, isLast:Bool) {
+    func setTitleLabelText(_ text:String, isLast:Bool) {
         if titleLabel != nil {
             
             titleLabel?.text = text
         }
         if bottomLine != nil {
-            bottomLine?.hidden = isLast
+            bottomLine?.isHidden = isLast
         }
     }
     
-    func setInfoLabelText(text:String, isPrice:Bool) {
+    func setInfoLabelText(_ text:String, isPrice:Bool) {
         
         if infoLabel != nil {
             if isPrice {
                 let textDoble = "\(Double(text)! / 100)"
                 let attributeText = NSMutableAttributedString(string: textDoble + "元")
-                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, textDoble.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)))
+                attributeText.addAttributes([NSForegroundColorAttributeName : UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)], range: NSMakeRange(0, textDoble.lengthOfBytes(using: String.Encoding.utf8)))
                 infoLabel?.attributedText = attributeText
                 
             } else {

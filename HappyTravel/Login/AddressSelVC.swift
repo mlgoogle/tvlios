@@ -8,10 +8,23 @@
 
 import Foundation
 import XCGLogger
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 protocol AddressSelVCDelegate : NSObjectProtocol {
     
-    func addressSelected(address: String?)
+    func addressSelected(_ address: String?)
 }
 
 class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -34,7 +47,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 "headView": 1006,
                 "selectedIcon": 1007]
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -43,29 +56,29 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         navigationItem.title = "常住地址选择"
         
-        let path = NSBundle.mainBundle().pathForResource("city", ofType: "plist")
+        let path = Bundle.main.path(forResource: "city", ofType: "plist")
         cities = NSMutableDictionary.init(contentsOfFile: path!)
         
-        keys = cities?.allKeys.sort({ (obj1: AnyObject, obj2: AnyObject) -> Bool in
+        keys = cities?.allKeys.sorted(by: { (obj1: AnyObject, obj2: AnyObject) -> Bool in
             let str1 = obj1 as? String
             let str2 = obj2 as? String
             return str1?.compare(str2!).rawValue < 0
-        })
+        } as! (Any, Any) -> Bool) as [AnyObject]?
         cities?.setValue(["其它"], forKey: "其它")
-        keys?.append("其它")
+        keys?.append("其它" as AnyObject)
         
         initView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if navigationItem.rightBarButtonItem == nil {
-            let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
-            sureBtn.setTitle("确定", forState: .Normal)
-            sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            sureBtn.backgroundColor = UIColor.clearColor()
-            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), forControlEvents: .TouchUpInside)
+            let sureBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
+            sureBtn.setTitle("确定", for: UIControlState())
+            sureBtn.setTitleColor(UIColor.white, for: UIControlState())
+            sureBtn.backgroundColor = UIColor.clear
+            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), for: .touchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
             navigationItem.rightBarButtonItem = sureItem
@@ -73,21 +86,21 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    func sureAction(sender: UIButton) {
+    func sureAction(_ sender: UIButton) {
         if let titleLab = previousSelectedCell?.contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
             delegate?.addressSelected(titleLab.text)
         }
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Plain)
+        table = UITableView(frame: CGRect.zero, style: .plain)
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 60
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        table?.separatorStyle = .None
+        table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        table?.separatorStyle = .none
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
@@ -97,10 +110,10 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         for i in 0..<keys!.count {
             let indexBtn = UIButton()
             indexBtn.tag = tags["indexBtn"]! + i
-            indexBtn.backgroundColor = UIColor.clearColor()
-            indexBtn.setTitle(i != keys!.count - 1 ? keys![i] as? String : "#", forState: .Normal)
-            indexBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
-            indexBtn.addTarget(self, action: #selector(AddressSelVC.indexAction(_:)), forControlEvents: .TouchUpInside)
+            indexBtn.backgroundColor = UIColor.clear
+            indexBtn.setTitle(i != keys!.count - 1 ? keys![i] as? String : "#", for: UIControlState())
+            indexBtn.setTitleColor(UIColor.gray, for: UIControlState())
+            indexBtn.addTarget(self, action: #selector(AddressSelVC.indexAction(_:)), for: .touchUpInside)
             view.addSubview(indexBtn)
             indexBtn.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(view).offset(2)
@@ -112,50 +125,50 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
     }
     
-    func indexAction(sender: UIButton) {
+    func indexAction(_ sender: UIButton) {
         let index = sender.tag - tags["indexBtn"]!
         XCGLogger.debug("\(self.keys![index] as? String)")
-        table?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: 0, inSection: index), atScrollPosition: .Middle, animated: true)
+        table?.scrollToRow(at: IndexPath.init(row: 0, section: index), at: .middle, animated: true)
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (cities?.valueForKey((keys![section]) as! String)?.count)!
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return ((cities?.value(forKey: (keys![section]) as! String) as AnyObject).count)!
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return keys!.count
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.001
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return keys![section] as? String
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("AddressCell")
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "AddressCell")
         if cell == nil {
             cell = UITableViewCell()
-            cell?.accessoryType = .None
-            cell?.backgroundColor = UIColor.whiteColor()
-            cell?.contentView.backgroundColor = UIColor.whiteColor()
-            cell?.selectionStyle = .None
+            cell?.accessoryType = .none
+            cell?.backgroundColor = UIColor.white
+            cell?.contentView.backgroundColor = UIColor.white
+            cell?.selectionStyle = .none
         }
         
         var titleLab = cell?.contentView.viewWithTag(tags["titleLab"]!) as? UILabel
         if titleLab == nil {
             titleLab = UILabel()
             titleLab?.tag = tags["titleLab"]!
-            titleLab?.backgroundColor = UIColor.whiteColor()
-            titleLab?.textColor = UIColor.blackColor()
-            titleLab?.font = UIFont.systemFontOfSize(S15)
+            titleLab?.backgroundColor = UIColor.white
+            titleLab?.textColor = UIColor.black
+            titleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(titleLab!)
             titleLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
@@ -164,15 +177,15 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             })
         }
         let key = (keys![indexPath.section]) as! String
-        titleLab?.text = (cities?.valueForKey(key) as? NSArray)![indexPath.row] as? String
+        titleLab?.text = (cities?.value(forKey: key) as? NSArray)![indexPath.row] as? String
         
         var selectedIcon = cell?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIButton
         if selectedIcon == nil {
             selectedIcon = UIButton()
             selectedIcon?.tag = tags["selectedIcon"]!
-            selectedIcon?.backgroundColor = UIColor.clearColor()
-            selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-unselect"), forState: .Normal)
-            selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-selected"), forState: .Selected)
+            selectedIcon?.backgroundColor = UIColor.clear
+            selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-unselect"), for: UIControlState())
+            selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-selected"), for: .selected)
             cell?.contentView.addSubview(selectedIcon!)
             selectedIcon?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(titleLab!)
@@ -195,19 +208,19 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 make.height.equalTo(1)
             })
         }
-        separateLine?.hidden = (indexPath.row == (cities?.valueForKey((keys![indexPath.section]) as! String)!.count)!  - 1) ? true : false
+        separateLine?.isHidden = (indexPath.row == ((cities?.value(forKey: (keys![indexPath.section]) as! String)! as AnyObject).count)!  - 1) ? true : false
         
         return cell!
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedIcon = previousSelectedCell?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIButton {
-            selectedIcon.selected = false
+            selectedIcon.isSelected = false
         }
-        if let selectedIcon = tableView.cellForRowAtIndexPath(indexPath)?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIButton {
-            selectedIcon.selected = true
-            previousSelectedCell = tableView.cellForRowAtIndexPath(indexPath)
+        if let selectedIcon = tableView.cellForRow(at: indexPath)?.contentView.viewWithTag(tags["selectedIcon"]!) as? UIButton {
+            selectedIcon.isSelected = true
+            previousSelectedCell = tableView.cellForRow(at: indexPath)
         }
     }
     

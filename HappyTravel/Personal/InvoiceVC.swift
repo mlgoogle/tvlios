@@ -43,31 +43,31 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         initView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
         
-        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
+        header.perform(#selector(MJRefreshHeader.beginRefreshing), with: nil, afterDelay: 0.5)
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InvoiceVC.obtainTripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ObtainTripReply), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InvoiceVC.centurionCardConsumedReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.CenturionCardConsumedReply), object: nil)
     }
     
-    func obtainTripReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
+    func obtainTripReply(_ notification: Notification) {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
         
@@ -79,11 +79,11 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         table?.reloadData()
     }
     
-    func centurionCardConsumedReply(notification: NSNotification)  {
-        if header.state == MJRefreshState.Refreshing {
+    func centurionCardConsumedReply(_ notification: Notification)  {
+        if header.state == MJRefreshState.refreshing {
             header.endRefreshing()
         }
-        if footer.state == MJRefreshState.Refreshing {
+        if footer.state == MJRefreshState.refreshing {
             footer.endRefreshing()
         }
         consumes = DataManager.getCenturionCardConsumed()
@@ -95,21 +95,21 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Grouped)
+        table = UITableView(frame: CGRect.zero, style: .grouped)
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
-        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 256
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.separatorStyle = .None
-        table?.registerClass(InvoiceCell.self, forCellReuseIdentifier: "InvoiceCell")
+        table?.separatorStyle = .none
+        table?.register(InvoiceCell.self, forCellReuseIdentifier: "InvoiceCell")
         view.addSubview(table!)
         
         let commitBtn = UIButton()
-        commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
-        commitBtn.setTitle("提交", forState: .Normal)
-        commitBtn.addTarget(self, action: #selector(InvoiceVC.commitAction(_:)), forControlEvents: .TouchUpInside)
+        commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), for: UIControlState())
+        commitBtn.setTitle("提交", for: UIControlState())
+        commitBtn.addTarget(self, action: #selector(InvoiceVC.commitAction(_:)), for: .touchUpInside)
         view.addSubview(commitBtn)
         commitBtn.snp_makeConstraints { (make) in
             make.left.equalTo(view)
@@ -132,20 +132,20 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func headerRefresh() {
-        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": 0,
             "count_": 10])
-        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": orderID,
             "count_": 10])
-        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
-    func commitAction(sender: UIButton) {
+    func commitAction(_ sender: UIButton) {
         let realm = try! Realm()
         selectedOrderList = realm.objects(OpenTicketInfo.self).filter("selected = true")
         if selectedOrderList!.count == 0 {
@@ -158,24 +158,24 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     // MARK: - UITableView
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = totalInfos != nil ?  totalInfos?.count :0
         return count!
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("InvoiceCell", forIndexPath: indexPath) as! InvoiceCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InvoiceCell", for: indexPath) as! InvoiceCell
         let info = totalInfos![indexPath.row]
         cell.info = info
         return cell
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let info = totalInfos![indexPath.row]
         let realm = try! Realm()
         try! realm.write({

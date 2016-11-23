@@ -11,6 +11,30 @@ import XCGLogger
 import Alamofire
 import SVProgressHUD
 import Qiniu
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, AddressSelVCDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -20,7 +44,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var token:String?
     
-    var cityName: String = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.homeLocation) as! String
+    var cityName: String? = UserDefaults.standard.value(forKey: UserDefaultKeys.homeLocation) as? String
     
     var headView:UIImageView?
     
@@ -47,7 +71,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     var imagePicker:UIImagePickerController? = nil
     
     var userInfo:UserInfo?
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -60,19 +84,18 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        initImagePick()
         
         
         
         if navigationItem.rightBarButtonItem == nil {
-            let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
-            sureBtn.setTitle("完成", forState: .Normal)
-            sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            sureBtn.backgroundColor = UIColor.clearColor()
-            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), forControlEvents: .TouchUpInside)
+            let sureBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
+            sureBtn.setTitle("完成", for: UIControlState())
+            sureBtn.setTitleColor(UIColor.white, for: UIControlState())
+            sureBtn.backgroundColor = UIColor.clear
+            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), for: .touchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
             navigationItem.rightBarButtonItem = sureItem
@@ -80,17 +103,17 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
-        SocketManager.sendData(.UploadImageToken, data: nil)
+        SocketManager.sendData(.uploadImageToken, data: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         DataManager.currentUser?.registerSstatus = 1
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
-    func sureAction(sender: UIButton) {
+    func sureAction(_ sender: UIButton) {
         
         
         guard headImageName != nil || DataManager.currentUser?.headUrl != nil else {
@@ -126,17 +149,17 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
         unowned let weakSelf = self
-        qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
+        qnManager?.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
             
-            if info.statusCode != 200 || resp == nil {
-                self.navigationItem.rightBarButtonItem?.enabled = true
+            if info?.statusCode != 200 || resp == nil {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
                 SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
                 return
             }
             
-            if (info.statusCode == 200 ){
-                let respDic: NSDictionary? = resp
-                let value:String? = respDic!.valueForKey("key") as? String
+            if (info?.statusCode == 200 ){
+                let respDic: NSDictionary? = resp as NSDictionary?
+                let value:String? = respDic!.value(forKey: "key") as? String
                 let url = qiniuHost + value!
                 weakSelf.updateBaseInfo(url)
 //                
@@ -169,7 +192,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
      上面太长且重用 提取出来
      - parameter url:
      */
-    func updateBaseInfo(url:String) {
+    func updateBaseInfo(_ url:String) {
         
         let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
         Alamofire.request(.GET, addr).responseJSON() { response in
@@ -192,13 +215,13 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func initView() {
-        table = UITableView(frame: CGRectZero, style: .Plain)
+        table = UITableView(frame: CGRect.zero, style: .plain)
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 60
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        table?.separatorStyle = .None
+        table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        table?.separatorStyle = .none
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         view.addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
@@ -220,60 +243,60 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CompleteBaseInfoVC.improveDataSuccessed(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ImproveDataSuccessed), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CompleteBaseInfoVC.uploadImageToken(_:)), name: NSNotification.Name(rawValue: NotifyDefine.UpLoadImageToken), object: nil)
         
     }
     
-    func keyboardWillShow(notification: NSNotification?) {
-        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
-        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+    func keyboardWillShow(_ notification: Notification?) {
+        let frame = (notification!.userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
+        let inset = UIEdgeInsetsMake(0, 0, (frame?.size.height)!, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets = inset
     }
     
-    func keyboardWillHide(notification: NSNotification?) {
+    func keyboardWillHide(_ notification: Notification?) {
         let inset = UIEdgeInsetsMake(0, 0, 0, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets =  inset
     }
     
-    func improveDataSuccessed(notification: NSNotification?) {
+    func improveDataSuccessed(_ notification: Notification?) {
         SVProgressHUD.dismiss()
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
         DataManager.currentUser?.headUrl = headerUrl
         DataManager.currentUser?.nickname = nickname
         DataManager.currentUser?.gender = sex
         DataManager.currentUser?.address = address
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.ImproveDataNoticeToOthers), object: nil, userInfo: nil)
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier("BaseInfoHeadCell")
+            var cell = tableView.dequeueReusableCell(withIdentifier: "BaseInfoHeadCell")
             if cell == nil {
                 cell = UITableViewCell()
-                cell?.accessoryType = .None
-                cell?.backgroundColor = UIColor.clearColor()
-                cell?.contentView.backgroundColor = UIColor.clearColor()
-                cell?.selectionStyle = .None
+                cell?.accessoryType = .none
+                cell?.backgroundColor = UIColor.clear
+                cell?.contentView.backgroundColor = UIColor.clear
+                cell?.selectionStyle = .none
             }
             
             var bgView = cell?.contentView.viewWithTag(tags["headBG"]!)
             if bgView == nil {
                 bgView = UIView()
-                bgView?.backgroundColor = UIColor.clearColor()
+                bgView?.backgroundColor = UIColor.clear
                 cell?.contentView.addSubview(bgView!)
                 bgView?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView)
@@ -316,32 +339,32 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             
             if userInfo!.headUrl!.hasPrefix("http"){
                 
-                let headUrl = NSURL(string: userInfo!.headUrl!)
+                let headUrl = URL(string: userInfo!.headUrl!)
                 headView?.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
             } else if userInfo!.headUrl!.hasPrefix("var"){
-                let headerUrl = NSURL(fileURLWithPath: userInfo!.headUrl!)
+                let headerUrl = URL(fileURLWithPath: userInfo!.headUrl!)
                 headView?.kf_setImageWithURL(headerUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
             }
             return cell!
         } else {
-            var cell = tableView.dequeueReusableCellWithIdentifier("BaseInfoCell")
+            var cell = tableView.dequeueReusableCell(withIdentifier: "BaseInfoCell")
             if cell == nil {
                 cell = UITableViewCell()
-                cell?.selectionStyle = .None
+                cell?.selectionStyle = .none
             }
-            cell?.accessoryType = indexPath.row == 1 ? .None : .DisclosureIndicator
+            cell?.accessoryType = indexPath.row == 1 ? .none : .disclosureIndicator
             
             var titleLab = cell?.contentView.viewWithTag(tags["titleLab"]!) as? UILabel
             if titleLab == nil {
                 titleLab = UILabel()
                 titleLab?.tag = tags["titleLab"]!
-                titleLab?.backgroundColor = UIColor.clearColor()
-                titleLab?.textColor = UIColor.blackColor()
-                titleLab?.font = UIFont.systemFontOfSize(S15)
+                titleLab?.backgroundColor = UIColor.clear
+                titleLab?.textColor = UIColor.black
+                titleLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(titleLab!)
                 titleLab?.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
@@ -365,20 +388,20 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     make.height.equalTo(1)
                 })
             }
-            separateLine?.hidden = (indexPath.row == 0 || indexPath.row == 3) ? true : false
+            separateLine?.isHidden = (indexPath.row == 0 || indexPath.row == 3) ? true : false
             
             var nicknameField = cell?.contentView.viewWithTag(tags["nicknameField"]!) as? UITextField
             if nicknameField == nil {
                 nicknameField = UITextField()
                 nicknameField!.tag = tags["nicknameField"]!
-                nicknameField!.secureTextEntry = false
+                nicknameField!.isSecureTextEntry = false
                 nicknameField!.delegate = self
-                nicknameField!.textColor = UIColor.blackColor()
-                nicknameField!.rightViewMode = .WhileEditing
-                nicknameField!.clearButtonMode = .WhileEditing
-                nicknameField!.backgroundColor = UIColor.clearColor()
-                nicknameField!.textAlignment = .Right
-                nicknameField!.attributedPlaceholder = NSAttributedString.init(string: "10个字符以内", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+                nicknameField!.textColor = UIColor.black
+                nicknameField!.rightViewMode = .whileEditing
+                nicknameField!.clearButtonMode = .whileEditing
+                nicknameField!.backgroundColor = UIColor.clear
+                nicknameField!.textAlignment = .right
+                nicknameField!.attributedPlaceholder = NSAttributedString.init(string: "10个字符以内", attributes: [NSForegroundColorAttributeName: UIColor.gray])
                 cell?.contentView.addSubview(nicknameField!)
                 nicknameField!.snp_makeConstraints(closure: { (make) in
                     make.left.equalTo(titleLab!)
@@ -388,16 +411,16 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     make.height.equalTo(25)
                 })
             }
-            nicknameField?.hidden = indexPath.row == 1 ? false : true
+            nicknameField?.isHidden = indexPath.row == 1 ? false : true
             
             var selectedRetLab = cell?.contentView.viewWithTag(tags["selectedRetLab"]!) as? UILabel
             if selectedRetLab == nil {
                 selectedRetLab = UILabel()
                 selectedRetLab?.tag = tags["selectedRetLab"]!
-                selectedRetLab?.backgroundColor = UIColor.clearColor()
-                selectedRetLab?.textColor = UIColor.grayColor()
-                selectedRetLab?.textAlignment = .Right
-                selectedRetLab?.font = UIFont.systemFontOfSize(S15)
+                selectedRetLab?.backgroundColor = UIColor.clear
+                selectedRetLab?.textColor = UIColor.gray
+                selectedRetLab?.textAlignment = .right
+                selectedRetLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(selectedRetLab!)
                 selectedRetLab?.snp_makeConstraints(closure: { (make) in
                     make.right.equalTo(cell!.contentView).offset(-10)
@@ -436,44 +459,46 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func setHeadImage() {
-        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
-        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
+        initImagePick()
+
+        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .actionSheet)
+        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .cancel) { action in
             
         }
-        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
-            self.imagePicker?.sourceType = .Camera
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .default) { action in
+            self.imagePicker?.sourceType = .camera
+            self.present(self.imagePicker!, animated: true, completion: nil)
         }
-        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
-            self.imagePicker?.sourceType = .PhotoLibrary
-            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .default) { action in
+            self.imagePicker?.sourceType = .photoLibrary
+            self.present(self.imagePicker!, animated: true, completion: nil)
         }
         sheetController.addAction(cancelAction)
         sheetController.addAction(cameraAction)
         sheetController.addAction(labAction)
-        presentViewController(sheetController, animated: true, completion: nil)
+        present(sheetController, animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             setHeadImage()
         } else if indexPath.row == 2 {
             XCGLogger.debug("性别选择")
-            let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+            let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             
-            let male = UIAlertAction.init(title: "男", style: .Default, handler: { (sender: UIAlertAction) in
+            let male = UIAlertAction.init(title: "男", style: .default, handler: { (sender: UIAlertAction) in
                 self.sex = 1
                 let sexLab = self.cells[2]?.contentView.viewWithTag(self.tags["selectedRetLab"]!) as? UILabel
                 sexLab?.text = "男"
             })
             
-            let female = UIAlertAction.init(title: "女", style: .Default, handler: { (sender: UIAlertAction) in
+            let female = UIAlertAction.init(title: "女", style: .default, handler: { (sender: UIAlertAction) in
                 self.sex = 0
                 let sexLab = self.cells[2]?.contentView.viewWithTag(self.tags["selectedRetLab"]!) as? UILabel
                 sexLab?.text = "女"
             })
             
-            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
+            let cancel = UIAlertAction.init(title: "取消", style: .cancel, handler: { (sender: UIAlertAction) in
                 
             })
             
@@ -481,7 +506,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             alertCtrl.addAction(female)
             alertCtrl.addAction(cancel)
             
-            presentViewController(alertCtrl, animated: true, completion: nil)
+            present(alertCtrl, animated: true, completion: nil)
             
         } else if indexPath.row == 3 {
             XCGLogger.debug("常住地选择")
@@ -492,7 +517,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //MARK: - UITextField
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["nicknameField"]!:
             nickname = textField.text
@@ -503,7 +528,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if range.location > 9 {
             return false
         }
@@ -515,7 +540,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     //MARK: - AddressSelVCDelegate
-    func addressSelected(address: String?) {
+    func addressSelected(_ address: String?) {
         self.address = address
         let addressLab = self.cells[3]?.contentView.viewWithTag(self.tags["selectedRetLab"]!) as? UILabel
         addressLab?.text = address!
@@ -536,10 +561,10 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        headView?.image = image.reSizeImage(CGSizeMake(100, 100))
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        headView?.image = image.reSizeImage(CGSize(width: 100, height: 100))
         
-        imagePicker?.dismissViewControllerAnimated(true, completion: nil)
+        imagePicker?.dismiss(animated: true, completion: nil)
         
         //先把图片转成NSData
         let data = UIImageJPEGRepresentation(image, 0.5)
@@ -550,18 +575,18 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let homeDirectory = NSHomeDirectory()
         let documentPath = homeDirectory + "/Documents"
         //文件管理器
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        let fileManager: FileManager = FileManager.default
         //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
         do {
-            try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: documentPath, withIntermediateDirectories: true, attributes: nil)
             
         }
         catch _ {
         }
-        let timestemp:Int = Int(NSDate().timeIntervalSince1970)
+        let timestemp:Int = Int(Date().timeIntervalSince1970)
         let fileName = "/\(DataManager.currentUser!.uid)_\(timestemp).png"
         headImageName = fileName
-        fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
+        fileManager.createFile(atPath: documentPath + fileName, contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
         let filePath: String = String(format: "%@%@", documentPath, fileName)
         headImagePath = filePath
@@ -569,14 +594,14 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: --
     
     //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
+    func uploadImageToken(_ notice: Notification?) {
         let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
+        let code = data.value(forKey: "code")
+        if (code as AnyObject).int32Value == 0 {
             return
         }
         SVProgressHUD.dismiss()
-        token = data.valueForKey("img_token_") as? String
+        token = data.value(forKey: "img_token_") as? String
     }
 }
 

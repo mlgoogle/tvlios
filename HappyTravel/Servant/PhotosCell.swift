@@ -12,11 +12,11 @@ import RealmSwift
 
 protocol PhotosCellDelegate : NSObjectProtocol {
     
-    func spreadAction(sender: AnyObject?)
+    func spreadAction(_ sender: AnyObject?)
     
 }
 
-public class PhotosCell : UITableViewCell {
+open class PhotosCell : UITableViewCell {
     
     var spread = false
     var photosInfo:AnyObject?
@@ -24,16 +24,16 @@ public class PhotosCell : UITableViewCell {
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        backgroundColor = UIColor.clearColor()
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
         
         var view = viewWithTag(101)
         if view == nil {
             view = UIView()
             view!.tag = 101
-            view?.backgroundColor = UIColor.clearColor()
-            view?.userInteractionEnabled = true
+            view?.backgroundColor = UIColor.clear
+            view?.isUserInteractionEnabled = true
             contentView.addSubview(view!)
             view?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(self.contentView).offset(10)
@@ -45,11 +45,11 @@ public class PhotosCell : UITableViewCell {
         
         var moreBtn = contentView.viewWithTag(1002) as? UIButton
         if moreBtn == nil {
-            moreBtn = UIButton(frame: CGRectZero)
+            moreBtn = UIButton(frame: CGRect.zero)
             moreBtn?.tag = 1002
-            moreBtn?.contentMode = UIViewContentMode.ScaleAspectFit
-            moreBtn!.addTarget(self, action: #selector(PhotosCell.moreAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            moreBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), forState: .Normal)
+            moreBtn?.contentMode = UIViewContentMode.scaleAspectFit
+            moreBtn!.addTarget(self, action: #selector(PhotosCell.moreAction(_:)), for: UIControlEvents.touchUpInside)
+            moreBtn!.setImage(UIImage.init(named: "guide-detail-arrows"), for: UIControlState())
             view!.addSubview(moreBtn!)
             moreBtn!.snp_makeConstraints(closure: { (make) in
                 make.bottom.equalTo(view!)
@@ -63,11 +63,11 @@ public class PhotosCell : UITableViewCell {
         if nonePhotosLabel == nil {
             nonePhotosLabel = UILabel()
             nonePhotosLabel?.tag = 1003
-            nonePhotosLabel!.font = UIFont.systemFontOfSize(AtapteWidthValue(24))
-            nonePhotosLabel?.textAlignment = .Center
+            nonePhotosLabel!.font = UIFont.systemFont(ofSize: AtapteWidthValue(24))
+            nonePhotosLabel?.textAlignment = .center
             nonePhotosLabel!.text = "无照片"
-            nonePhotosLabel!.textColor = UIColor.grayColor()
-            nonePhotosLabel!.backgroundColor = UIColor.clearColor()
+            nonePhotosLabel!.textColor = UIColor.gray
+            nonePhotosLabel!.backgroundColor = UIColor.clear
             view!.addSubview(nonePhotosLabel!)
             nonePhotosLabel?.snp_makeConstraints(closure: { (make) in
                 make.top.equalTo(view!).offset(10)
@@ -79,11 +79,11 @@ public class PhotosCell : UITableViewCell {
         
     }
     
-    func setInfo(photos: List<PhotoUrl>?, setSpread spd: Bool) {
+    func setInfo(_ photos: List<PhotoUrl>?, setSpread spd: Bool) {
         let view = contentView.viewWithTag(101)
         let nonePhotosLabel = view!.viewWithTag(1003) as? UILabel
         if photos!.count != 0 {
-            nonePhotosLabel?.hidden = true
+            nonePhotosLabel?.isHidden = true
             for (index, photoURL) in photos!.enumerate() {
                 var photoView = nonePhotosLabel?.viewWithTag(1003 * 10 + index) as? UIImageView
                 if photoView == nil {
@@ -128,16 +128,16 @@ public class PhotosCell : UITableViewCell {
                 
             }
         } else {
-            nonePhotosLabel?.hidden = false
+            nonePhotosLabel?.isHidden = false
         }
         
     }
     
-    func moreAction(sender: AnyObject?) {
+    func moreAction(_ sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("detailAction")
     }
     
-    func selectAction(sender: AnyObject?) {
+    func selectAction(_ sender: AnyObject?) {
         XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
     }
     
