@@ -31,11 +31,11 @@ class SettingCell: UITableViewCell{
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         if !self.isEqual(nil) {
-            self.selectionStyle = .None
-            titleLable?.backgroundColor = UIColor.clearColor()
-            titleLable?.font = UIFont.systemFontOfSize(S15)
-            titleLable?.textAlignment = .Left
-            titleLable?.textColor = UIColor.blackColor()
+            self.selectionStyle = .none
+            titleLable?.backgroundColor = UIColor.clear
+            titleLable?.font = UIFont.systemFont(ofSize: S15)
+            titleLable?.textAlignment = .left
+            titleLable?.textColor = UIColor.black
             contentView.addSubview(titleLable!)
             titleLable?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(contentView).offset(10)
@@ -44,10 +44,10 @@ class SettingCell: UITableViewCell{
                 make.right.equalTo(contentView).offset(-10)
             })
             
-            rightLabel?.backgroundColor = UIColor.clearColor()
-            rightLabel?.textAlignment = .Right
-            rightLabel?.textColor = UIColor.grayColor()
-            rightLabel?.font = UIFont.systemFontOfSize(S15)
+            rightLabel?.backgroundColor = UIColor.clear
+            rightLabel?.textAlignment = .right
+            rightLabel?.textColor = UIColor.gray
+            rightLabel?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(rightLabel!)
             rightLabel?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(titleLable!)
@@ -94,8 +94,8 @@ extension SettingCell{
         if isLogoutCell == false{
             return
         }
-        accessoryType = .None
-        titleLable!.textAlignment = .Center
+        accessoryType = .none
+        titleLable!.textAlignment = .center
         titleLable!.textColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
     }
 }
@@ -116,7 +116,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var settingOption:[[SettingItem]]?
     var settingOptingValue:[[String]]?
     let authUserCardCode = (DataManager.currentUser?.authentication)!
-    var selectIndex: NSIndexPath?
+    var selectIndex: IndexPath?
     var autoStatus: String {
         get{
             switch Int(authUserCardCode) {
@@ -135,7 +135,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -146,29 +146,29 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         initView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SVProgressHUD.dismiss()
     }
     
     func initView() {
-        settingsTable = UITableView(frame: CGRectZero, style: .Grouped)
+        settingsTable = UITableView(frame: CGRect.zero, style: .grouped)
         settingsTable?.delegate = self
         settingsTable?.dataSource = self
         settingsTable?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         settingsTable?.rowHeight = 45
-        settingsTable?.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        settingsTable?.separatorStyle = .None
-        settingsTable?.registerClass(SettingCell.classForCoder(), forCellReuseIdentifier: "SettingCell")
+        settingsTable?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        settingsTable?.separatorStyle = .none
+        settingsTable?.register(SettingCell.classForCoder(), forCellReuseIdentifier: "SettingCell")
         view.addSubview(settingsTable!)
         settingsTable?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
@@ -176,30 +176,30 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     //MARK: - TableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settingOption![section].count
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return settingOption!.count
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section < 2 ? 10:40
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: SettingCell = (tableView.dequeueReusableCellWithIdentifier("SettingCell") as? SettingCell)!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: SettingCell = (tableView.dequeueReusableCell(withIdentifier: "SettingCell") as? SettingCell)!
         let option = settingOption?[indexPath.section][indexPath.row]
         let value = settingOptingValue?[indexPath.section][indexPath.row]
         cell.titleLable?.text = option!.rawValue
         cell.rightLabel?.text = value
-        cell.accessoryType = (value?.characters.count == 0 || option == .ClearCache) ? .DisclosureIndicator:.None
+        cell.accessoryType = (value?.characters.count == 0 || option == .ClearCache) ? .disclosureIndicator:.none
         cell.isLogoutCell = option == .LogoutUser
-        cell.upLine.hidden = indexPath.row == 0
+        cell.upLine.isHidden = indexPath.row == 0
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectIndex = indexPath
         let selectOption: SettingItem = settingOption![indexPath.section][indexPath.row] 
         switch selectOption {
@@ -222,7 +222,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 break
             case .LogoutUser:
                 SocketManager.logoutCurrentAccount()
-                navigationController?.popViewControllerAnimated(false)
+                navigationController?.popViewController(animated: false)
                 break
             default:
             break
@@ -231,15 +231,15 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // 计算缓存
     func calculateCacle() ->Double {
-        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
-        let files = NSFileManager.defaultManager().subpathsAtPath(path!)
+        let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first
+        let files = FileManager.default.subpaths(atPath: path!)
         var size = 0.00
         for file in files! {
-            let filePath = path?.stringByAppendingString("/\(file)")
-            let fileAtrributes = try! NSFileManager.defaultManager().attributesOfItemAtPath(filePath!)
+            let filePath = (path)! + "/\(file)"
+            let fileAtrributes = try! FileManager.default.attributesOfItem(atPath: filePath)
             for (attrKey,attrVale) in fileAtrributes {
-                if attrKey == NSFileSize {
-                    size += attrVale.doubleValue
+                if attrKey == FileAttributeKey.size {
+                    size += (attrVale as AnyObject).doubleValue
                 }
             }
         }
@@ -247,15 +247,15 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return totalSize
     }
     // 清除缓存
-    func clearCacleSizeCompletion(completion: (()->Void)?) {
-        let path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
-        let files = NSFileManager.defaultManager().subpathsAtPath(path!)
+    func clearCacleSizeCompletion(_ completion: (()->Void)?) {
+        let path = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first
+        let files = FileManager.default.subpaths(atPath: path!)
         
         for file in files! {
-            let filePath = path?.stringByAppendingString("/\(file)")
-            if NSFileManager.defaultManager().fileExistsAtPath(filePath!) {
+            let filePath = (path)! + "/\(file)"
+            if FileManager.default.fileExists(atPath: filePath) {
                 do{
-                    try NSFileManager.defaultManager().removeItemAtPath(filePath!)
+                    try FileManager.default.removeItem(atPath: filePath)
                 }catch{
                     
                 }
@@ -268,7 +268,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var number = DataManager.currentUser!.phoneNumber == nil ? "***********" : DataManager.currentUser!.phoneNumber!
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex
-        number.replaceRange(startIndex..<endIndex, with: "****")
+        number.replaceSubrange(startIndex..<endIndex, with: "****")
     
         settingOption = [[.UserNum, .ChangPwd, .AuthUser ],
                          [.ClearCache, .UpdateVerison, .AboutUs],

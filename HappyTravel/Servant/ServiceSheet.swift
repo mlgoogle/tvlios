@@ -10,9 +10,9 @@ import Foundation
 import SVProgressHUD
 protocol ServiceSheetDelegate : NSObjectProtocol {
     
-    func cancelAction(sender: UIButton?)
+    func cancelAction(_ sender: UIButton?)
     
-    func sureAction(service: ServiceInfo?, daysCount:Int?)
+    func sureAction(_ service: ServiceInfo?, daysCount:Int?)
     
 }
 
@@ -20,7 +20,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     
     weak var delegate:ServiceSheetDelegate?
     var count = 0
-    var selectedIndexPath:NSIndexPath?
+    var selectedIndexPath:IndexPath?
     var countsArray:Array<Int> = []
 
     var servantInfo:UserInfo?
@@ -43,8 +43,8 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     
     func initView() {
         let bgView = UIView()
-        bgView.backgroundColor = UIColor.whiteColor()
-        bgView.userInteractionEnabled = true
+        bgView.backgroundColor = UIColor.white
+        bgView.isUserInteractionEnabled = true
         addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
             make.left.equalTo(self).offset(-10)
@@ -55,7 +55,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         
         let head = UIView()
         head.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-        head.userInteractionEnabled = true
+        head.isUserInteractionEnabled = true
         addSubview(head)
         head.snp_makeConstraints { (make) in
             make.left.equalTo(bgView)
@@ -65,10 +65,10 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         }
         
         let cancelBtn = UIButton()
-        cancelBtn.setTitle("取消", forState: .Normal)
-        cancelBtn.backgroundColor = UIColor.clearColor()
-        cancelBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), forControlEvents: .TouchUpInside)
+        cancelBtn.setTitle("取消", for: UIControlState())
+        cancelBtn.backgroundColor = UIColor.clear
+        cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
+        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .touchUpInside)
         head.addSubview(cancelBtn)
         cancelBtn.snp_makeConstraints { (make) in
             make.left.equalTo(head)
@@ -78,10 +78,10 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         }
         
         let sureBtn = UIButton()
-        sureBtn.setTitle("确定", forState: .Normal)
-        sureBtn.backgroundColor = UIColor.clearColor()
-        sureBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), forControlEvents: .TouchUpInside)
+        sureBtn.setTitle("确定", for: UIControlState())
+        sureBtn.backgroundColor = UIColor.clear
+        sureBtn.setTitleColor(UIColor.black, for: UIControlState())
+        sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .touchUpInside)
         head.addSubview(sureBtn)
         sureBtn.snp_makeConstraints { (make) in
             make.right.equalTo(head)
@@ -90,16 +90,16 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
             make.bottom.equalTo(head)
         }
         
-        table = UITableView(frame: CGRectZero, style: .Plain)
-        table?.backgroundColor = UIColor.clearColor()
-        table?.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        table = UITableView(frame: CGRect.zero, style: .plain)
+        table?.backgroundColor = UIColor.clear
+        table?.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         table?.delegate = self
         table?.dataSource = self
         table?.estimatedRowHeight = 256
         table?.rowHeight = UITableViewAutomaticDimension
-        table?.separatorStyle = .None
-        table?.registerClass(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
-        table?.registerClass(SingleServiceInfoCell.self, forCellReuseIdentifier: "singleService")
+        table?.separatorStyle = .none
+        table?.register(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
+        table?.register(SingleServiceInfoCell.self, forCellReuseIdentifier: "singleService")
         addSubview(table!)
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(self)
@@ -110,11 +110,11 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         })
     }
     
-    func cancelAction(sender: UIButton?) {
+    func cancelAction(_ sender: UIButton?) {
         delegate?.cancelAction(sender)
     }
     
-    func sureAction(sender: UIButton?) {
+    func sureAction(_ sender: UIButton?) {
         if selectedIndexPath == nil {
             return
         }
@@ -122,13 +122,13 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     }
     
     // MARK: - UITableView
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return servantInfo != nil ? servantInfo!.serviceList.count : 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCellWithIdentifier("singleService", forIndexPath: indexPath) as! SingleServiceInfoCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "singleService", for: indexPath) as! SingleServiceInfoCell
         let service = servantInfo?.serviceList[indexPath.row]
 
         cell.delegate = self
@@ -148,7 +148,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
             
             if indexPath == selectedIndexPath {
                 if let selectBtn = cell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-                    selectBtn.selected = true
+                    selectBtn.isSelected = true
                 }
                 return cell
 
@@ -156,24 +156,24 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         }
     
        if let selectBtn = cell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-        selectBtn.selected = false
+        selectBtn.isSelected = false
         }
         return cell
         
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if selectedIndexPath != nil {
-            let cell = tableView.cellForRowAtIndexPath(selectedIndexPath!)
+            let cell = tableView.cellForRow(at: selectedIndexPath!)
             if let selectBtn = cell?.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-                selectBtn.selected = false
+                selectBtn.isSelected = false
             }
         }
         
-        if let currentCell = tableView.cellForRowAtIndexPath(indexPath) {
+        if let currentCell = tableView.cellForRow(at: indexPath) {
             if let selectBtn = currentCell.contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-                selectBtn.selected = true
+                selectBtn.isSelected = true
                 selectedIndexPath = indexPath
             }
         }
@@ -199,22 +199,22 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
 
 extension ServiceSheet:DaysCountDelegate {
     
-    func countsPlus(cell:SingleServiceInfoCell) {
+    func countsPlus(_ cell:SingleServiceInfoCell) {
         
         
-        let indexPath = (table?.indexPathForCell(cell))! as NSIndexPath
+        let indexPath = (table?.indexPath(for: cell))! as IndexPath
         
         countsArray[indexPath.row] += 1
-        table?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        table?.reloadRows(at: [indexPath], with: .none)
     }
     
-    func countsReduce(cell:SingleServiceInfoCell) {
-        let indexPath = (table?.indexPathForCell(cell))! as NSIndexPath
+    func countsReduce(_ cell:SingleServiceInfoCell) {
+        let indexPath = (table?.indexPath(for: cell))! as IndexPath
         
         if countsArray[indexPath.row] > 1 {
             
             countsArray[indexPath.row] -= 1
-            table?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+            table?.reloadRows(at: [indexPath], with: .none)
         } else {
             SVProgressHUD.showWainningMessage(WainningMessage: "不能再减了哦", ForDuration: 1.5, completion: nil)
         }

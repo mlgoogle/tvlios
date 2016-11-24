@@ -34,8 +34,8 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         didSet{
             for i in 0...Int((serviceStars.count)-1){
                 let star = serviceStars[i]
-                star.selected = i <= serviceSocre! - 1
-                star.userInteractionEnabled = false
+                star.isSelected = i <= serviceSocre! - 1
+                star.isUserInteractionEnabled = false
             }
         }
     }
@@ -45,8 +45,8 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         didSet{
             for i in 0...Int((userStars.count)-1){
                 let star = userStars[i]
-                star.selected = i <= userScore! - 1
-                star.userInteractionEnabled = false
+                star.isSelected = i <= userScore! - 1
+                star.isUserInteractionEnabled = false
             }
         }
     }
@@ -55,24 +55,24 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         didSet{
             let textView = contentView.viewWithTag(tags["textView"]!) as! UITextView
             textView.text = remark
-            textView.userInteractionEnabled = false
+            textView.isUserInteractionEnabled = false
         }
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
-        backgroundColor = UIColor.clearColor()
-        contentView.userInteractionEnabled = true
-        userInteractionEnabled = true
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
+        contentView.isUserInteractionEnabled = true
+        isUserInteractionEnabled = true
         
         var bgView = contentView.viewWithTag(tags["bgView"]!)
         if bgView == nil {
             bgView = UIView()
             bgView!.tag = tags["bgView"]!
-            bgView?.backgroundColor = UIColor.whiteColor()
-            bgView?.userInteractionEnabled = true
+            bgView?.backgroundColor = UIColor.white
+            bgView?.isUserInteractionEnabled = true
             bgView?.layer.cornerRadius = 5
             bgView?.layer.masksToBounds = true
             contentView.addSubview(bgView!)
@@ -106,10 +106,10 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             if lineTitleLab == nil {
                 lineTitleLab = UILabel()
                 lineTitleLab?.tag = tags["lineTitleLab"]! * 10 + i
-                lineTitleLab?.backgroundColor = UIColor.whiteColor()
-                lineTitleLab?.textColor = UIColor.grayColor()
-                lineTitleLab?.textAlignment = .Center
-                lineTitleLab?.font = UIFont.systemFontOfSize(S15)
+                lineTitleLab?.backgroundColor = UIColor.white
+                lineTitleLab?.textColor = UIColor.gray
+                lineTitleLab?.textAlignment = .center
+                lineTitleLab?.font = UIFont.systemFont(ofSize: S15)
                 bgView?.addSubview(lineTitleLab!)
                 lineTitleLab?.snp_makeConstraints(closure: { (make) in
                     make.center.equalTo(lineView!)
@@ -122,8 +122,8 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                 if starBGView == nil {
                     starBGView = UIView()
                     starBGView?.tag = tags["starBGView"]! * 10 + i
-                    starBGView?.backgroundColor = UIColor.clearColor()
-                    starBGView?.userInteractionEnabled = true
+                    starBGView?.backgroundColor = UIColor.clear
+                    starBGView?.isUserInteractionEnabled = true
                     bgView?.addSubview(starBGView!)
                     starBGView?.snp_makeConstraints(closure: { (make) in
                         make.left.equalTo(bgView!).offset(60)
@@ -136,9 +136,9 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                     var star = starBGView!.viewWithTag(starBGView!.tag * 10 + j) as? UIButton
                     if star == nil {
                         star = UIButton()
-                        star!.backgroundColor = .clearColor()
+                        star!.backgroundColor = .clear
                         star!.tag = starBGView!.tag * 10 + j
-                        star?.addTarget(self, action: #selector(IdentCommentCell.starAction(_:)), forControlEvents: .TouchUpInside)
+                        star?.addTarget(self, action: #selector(IdentCommentCell.starAction(_:)), for: .touchUpInside)
                         starBGView!.addSubview(star!)
                         star!.snp_makeConstraints(closure: { (make) in
                             if j == 0 {
@@ -151,8 +151,8 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                             make.bottom.equalTo(starBGView!)
                         })
                     }
-                    star?.setImage(UIImage.init(named: "star-common-hollow"), forState: .Normal)
-                    star?.setImage(UIImage.init(named: "star-common-fill"), forState: .Selected)
+                    star?.setImage(UIImage.init(named: "star-common-hollow"), for: UIControlState())
+                    star?.setImage(UIImage.init(named: "star-common-fill"), for: .selected)
                     
                     if i == 0 {
                         serviceStars.append(star!)
@@ -169,12 +169,12 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             textView?.tag = tags["textView"]!
             textView?.delegate = self
             textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
-            textView?.textAlignment = .Left
+            textView?.textAlignment = .left
             textView?.textColor = UIColor.init(decR: 100, decG: 100, decB: 100, a: 1)
-            textView?.font = UIFont.systemFontOfSize(S15)
+            textView?.font = UIFont.systemFont(ofSize: S15)
             textView?.layer.cornerRadius = 5
             textView?.layer.masksToBounds = true
-            textView?.returnKeyType = .Done
+            textView?.returnKeyType = .done
             bgView?.addSubview(textView!)
             textView?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(bgView!).offset(10)
@@ -188,7 +188,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         
     }
     
-    func setInfo(info: HodometerInfo?) {
+    func setInfo(_ info: HodometerInfo?) {
         hodometerInfo = info
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
@@ -199,7 +199,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    func setAppointmentInfo(info:AppointmentInfo?) {
+    func setAppointmentInfo(_ info:AppointmentInfo?) {
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
             if info?.service_name_ != nil {
@@ -210,7 +210,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         
     }
     
-    func starAction(sender: UIButton) {
+    func starAction(_ sender: UIButton) {
         XCGLogger.debug("\(sender.tag)")
         let tmp = sender.tag / ((tags["starBGView"]! * 10 + 1) * 10)
         if tmp == 0 {
@@ -223,7 +223,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             if let starBGView = bgView.viewWithTag(tags["starBGView"]! * 10 + (tag < 10 ? 0 : 1)) {
                 for i in 0...4 {
                     if let star = starBGView.viewWithTag(starBGView.tag * 10 + i) as? UIButton {
-                        star.selected = star.tag <= sender.tag ? true : false
+                        star.isSelected = star.tag <= sender.tag ? true : false
                     }
                 }
             }
@@ -233,13 +233,13 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
     }
     
     //MARK: - TextViewDelegate
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == "来一两句吧......" {
             textView.text = ""
         }
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -251,7 +251,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         return true
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         comment = textView.text!
     }
     

@@ -22,18 +22,18 @@ class IdentBaseInfoCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
-        backgroundColor = UIColor.clearColor()
-        contentView.userInteractionEnabled = true
-        userInteractionEnabled = true
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
+        backgroundColor = UIColor.clear
+        contentView.isUserInteractionEnabled = true
+        isUserInteractionEnabled = true
         
         var bgView = contentView.viewWithTag(tags["bgView"]!)
         if bgView == nil {
             bgView = UIView()
             bgView!.tag = tags["bgView"]!
-            bgView?.backgroundColor = UIColor.whiteColor()
-            bgView?.userInteractionEnabled = true
+            bgView?.backgroundColor = UIColor.white
+            bgView?.isUserInteractionEnabled = true
             bgView?.layer.cornerRadius = 5
             bgView?.layer.masksToBounds = true
             contentView.addSubview(bgView!)
@@ -50,11 +50,11 @@ class IdentBaseInfoCell: UITableViewCell {
             headImageView = UIImageView()
             headImageView!.tag = tags["headImageView"]!
             headImageView!.backgroundColor = UIColor.init(decR: 230, decG: 230, decB: 230, a: 1)
-            headImageView!.userInteractionEnabled = true
+            headImageView!.isUserInteractionEnabled = true
             headImageView?.layer.cornerRadius = 80 / 2.0
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
-            headImageView?.layer.borderColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1).CGColor
+            headImageView?.layer.borderColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1).cgColor
             bgView!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.top.equalTo(bgView!).offset(20)
@@ -69,8 +69,8 @@ class IdentBaseInfoCell: UITableViewCell {
         if nicknameLab == nil {
             nicknameLab = UILabel()
             nicknameLab?.tag = tags["nicknameLab"]!
-            nicknameLab?.backgroundColor = UIColor.clearColor()
-            nicknameLab?.font = UIFont.systemFontOfSize(S15)
+            nicknameLab?.backgroundColor = UIColor.clear
+            nicknameLab?.font = UIFont.systemFont(ofSize: S15)
             bgView?.addSubview(nicknameLab!)
             nicknameLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(headImageView!.snp_right).offset(10)
@@ -83,7 +83,7 @@ class IdentBaseInfoCell: UITableViewCell {
         if starBGView == nil {
             starBGView = UIView()
             starBGView?.tag = tags["starBGView"]!
-            starBGView?.backgroundColor = UIColor.clearColor()
+            starBGView?.backgroundColor = UIColor.clear
             bgView?.addSubview(starBGView!)
             starBGView?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nicknameLab!)
@@ -95,9 +95,9 @@ class IdentBaseInfoCell: UITableViewCell {
                 var star = starBGView!.viewWithTag(starBGView!.tag * 10 + i) as? UIImageView
                 if star == nil {
                     star = UIImageView()
-                    star!.backgroundColor = .clearColor()
+                    star!.backgroundColor = .clear
                     star!.tag = starBGView!.tag * 10 + i
-                    star!.contentMode = .ScaleAspectFit
+                    star!.contentMode = .scaleAspectFit
                     starBGView!.addSubview(star!)
                     star!.snp_makeConstraints(closure: { (make) in
                         if i == 0 {
@@ -118,7 +118,7 @@ class IdentBaseInfoCell: UITableViewCell {
         if tallyBGView == nil {
             tallyBGView = UIView()
             tallyBGView?.tag = tags["tallyBGView"]!
-            tallyBGView?.backgroundColor = UIColor.clearColor()
+            tallyBGView?.backgroundColor = UIColor.clear
             bgView?.addSubview(tallyBGView!)
             tallyBGView?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nicknameLab!)
@@ -129,7 +129,7 @@ class IdentBaseInfoCell: UITableViewCell {
         }
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setInfo(_ userInfo: UserInfo?) {
         servantInfo = userInfo
         
         let tallys = List<Tally>()

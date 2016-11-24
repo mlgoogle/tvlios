@@ -20,7 +20,7 @@ class CityInfo : Object {
     
     dynamic var provinceCode:Int = 0
     
-    func setInfo(info: Dictionary<String, AnyObject>?) {
+    func setInfo(_ info: Dictionary<String, AnyObject>?) {
         for (key, value) in info! {
             switch key {
             case "city_name_":
@@ -41,7 +41,7 @@ class CityInfo : Object {
             }
         }
     }
-    func refreshInfo(info:CityInfo) {
+    func refreshInfo(_ info:CityInfo) {
         cityName = info.cityName
         cityCode = info.cityCode
         provinceCode = info.provinceCode

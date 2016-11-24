@@ -11,8 +11,8 @@ import RealmSwift
 
 enum SkillType : Int {
     
-    case Common = 1
-    case Business = 2
+    case common = 1
+    case business = 2
     
 }
 
@@ -22,11 +22,11 @@ class SkillInfo: Object {
     
     dynamic var skill_name_:String?
     
-    dynamic var skill_type = SkillType.Common.rawValue
+    dynamic var skill_type = SkillType.common.rawValue
     
     dynamic var labelWidth:Float = 0.0
     
-    func setInfo(info: SkillInfo) {
+    func setInfo(_ info: SkillInfo) {
         skill_id_ = info.skill_id_
         
         skill_name_ = info.skill_name_

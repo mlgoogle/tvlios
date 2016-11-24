@@ -25,10 +25,10 @@ class PersonalHeadCell : UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .None
-        contentView.backgroundColor = UIColor.clearColor()
+        selectionStyle = .none
+        contentView.backgroundColor = UIColor.clear
         
-        let width = UIScreen.mainScreen().bounds.size.width
+        let width = UIScreen.main.bounds.size.width
         
         var view = contentView.viewWithTag(tags["view"]!)
         if view == nil {
@@ -47,8 +47,8 @@ class PersonalHeadCell : UITableViewCell {
         if personalView == nil {
             personalView = UIImageView()
             personalView!.tag = tags["personalView"]!
-            personalView!.backgroundColor = UIColor.redColor()
-            personalView!.userInteractionEnabled = true
+            personalView!.backgroundColor = UIColor.red
+            personalView!.isUserInteractionEnabled = true
             view!.addSubview(personalView!)
             personalView!.snp_makeConstraints { (make) in
                 make.top.equalTo(view!)
@@ -67,9 +67,9 @@ class PersonalHeadCell : UITableViewCell {
             headImageView?.layer.cornerRadius = AtapteWidthValue(100) / 2
             headImageView?.layer.masksToBounds = true
             headImageView?.layer.borderWidth = 1
-            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-            headImageView!.userInteractionEnabled = true
-            headImageView!.backgroundColor = UIColor.clearColor()
+            headImageView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
+            headImageView!.isUserInteractionEnabled = true
+            headImageView!.backgroundColor = UIColor.clear
             personalView!.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(25))
@@ -83,7 +83,7 @@ class PersonalHeadCell : UITableViewCell {
         if starLevelView == nil {
             starLevelView = UIView()
             starLevelView!.tag = tags["starLevelView"]!
-            starLevelView?.backgroundColor = UIColor.clearColor()
+            starLevelView?.backgroundColor = UIColor.clear
             personalView!.addSubview(starLevelView!)
             starLevelView?.snp_makeConstraints(closure: { (make) in
                 make.bottom.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -96,7 +96,7 @@ class PersonalHeadCell : UITableViewCell {
                 if star == nil {
                     star = UIImageView()
                     star?.tag = starLevelView!.tag * 10 + i
-                    star?.backgroundColor = UIColor.clearColor()
+                    star?.backgroundColor = UIColor.clear
                     starLevelView?.addSubview(star!)
                     star?.snp_makeConstraints(closure: { (make) in
                         make.left.equalTo(starLevelView!.snp_left).offset(((width / 3.0 + 20) / 5.0) * CGFloat(i))
@@ -114,8 +114,8 @@ class PersonalHeadCell : UITableViewCell {
         if officialAuth == nil {
             officialAuth = UIImageView()
             officialAuth?.tag = tags["officialAuth"]!
-            officialAuth?.backgroundColor = UIColor.clearColor()
-            officialAuth?.contentMode = .ScaleAspectFit
+            officialAuth?.backgroundColor = UIColor.clear
+            officialAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(officialAuth!)
             officialAuth?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(20))
@@ -130,8 +130,8 @@ class PersonalHeadCell : UITableViewCell {
         if zhimaAuth == nil {
             zhimaAuth = UIImageView()
             zhimaAuth?.tag = tags["zhimaAuth"]!
-            zhimaAuth?.backgroundColor = UIColor.clearColor()
-            zhimaAuth?.contentMode = .ScaleAspectFit
+            zhimaAuth?.backgroundColor = UIColor.clear
+            zhimaAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(zhimaAuth!)
             zhimaAuth?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(officialAuth!.snp_right).offset(AtapteWidthValue(10))
@@ -141,16 +141,16 @@ class PersonalHeadCell : UITableViewCell {
             })
         }
         zhimaAuth?.image = UIImage.init(named: "guide-zhima-auth")
-        zhimaAuth?.hidden = true
+        zhimaAuth?.isHidden = true
         
         var authTips = personalView?.viewWithTag(tags["authTips"]!) as? UILabel
         if authTips == nil {
             authTips = UILabel()
             authTips?.tag = tags["authTips"]!
-            authTips?.backgroundColor = UIColor.clearColor()
-            authTips?.textAlignment = .Right
+            authTips?.backgroundColor = UIColor.clear
+            authTips?.textAlignment = .right
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
-            authTips?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(S15))
+            authTips?.font = UIFont.boldSystemFont(ofSize: AtapteWidthValue(S15))
             personalView?.addSubview(authTips!)
             authTips?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -164,10 +164,10 @@ class PersonalHeadCell : UITableViewCell {
         if limitLab == nil {
             limitLab = UILabel()
             limitLab?.tag = tags["limitLab"]!
-            limitLab?.backgroundColor = UIColor.clearColor()
-            limitLab?.textAlignment = .Right
-            limitLab?.textColor = .whiteColor()
-            limitLab?.font = UIFont.boldSystemFontOfSize(AtapteWidthValue(S15))
+            limitLab?.backgroundColor = UIColor.clear
+            limitLab?.textAlignment = .right
+            limitLab?.textColor = .white
+            limitLab?.font = UIFont.boldSystemFont(ofSize: AtapteWidthValue(S15))
             personalView?.addSubview(limitLab!)
             limitLab?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
@@ -181,8 +181,8 @@ class PersonalHeadCell : UITableViewCell {
         if limitIcon == nil {
             limitIcon = UIImageView()
             limitIcon?.tag = tags["limitIcon"]!
-            limitIcon?.backgroundColor = UIColor.clearColor()
-            limitIcon?.contentMode = .ScaleAspectFit
+            limitIcon?.backgroundColor = UIColor.clear
+            limitIcon?.contentMode = .scaleAspectFit
             personalView?.addSubview(limitIcon!)
             limitIcon?.snp_makeConstraints(closure: { (make) in
                 make.right.equalTo(limitLab!.snp_left).offset(AtapteWidthValue(-5))
@@ -195,7 +195,7 @@ class PersonalHeadCell : UITableViewCell {
 
     }
     
-    func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
+    func setInfo(_ userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
         let view = contentView.viewWithTag(tags["view"]!)
         
         if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
@@ -207,7 +207,7 @@ class PersonalHeadCell : UITableViewCell {
 //            }
             
             if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
-                let headUrl = NSURL(string: userInfo!.headUrl!)
+                let headUrl = URL(string: userInfo!.headUrl!)
                 headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
@@ -223,7 +223,7 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let officialAuth = personalView.viewWithTag(tags["officialAuth"]!) as? UIImageView {
-                officialAuth.hidden = !((userInfo?.certification)!)
+                officialAuth.isHidden = !((userInfo?.certification)!)
             }
             
             if let limitLab = personalView.viewWithTag(tags["limitLab"]!) as? UILabel {
@@ -238,11 +238,11 @@ class PersonalHeadCell : UITableViewCell {
         
     }
     
-    func Angle2Radian(angle: Double) ->Double {
+    func Angle2Radian(_ angle: Double) ->Double {
         return angle * PersonalHeadCell.PI / 180.0;
     }
     
-    func CalcDistance(lon1: Double, lat1: Double, lon2: Double, lat2: Double) ->Double {
+    func CalcDistance(_ lon1: Double, lat1: Double, lon2: Double, lat2: Double) ->Double {
         let lat_a:Double = Angle2Radian(lat1)
         let lon_a:Double = Angle2Radian(lon1)
         let lat_b:Double = Angle2Radian(lat2)

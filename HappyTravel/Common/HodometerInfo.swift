@@ -10,16 +10,16 @@ import Foundation
 import RealmSwift
 
 enum HodometerStatus : Int {
-    case WaittingAccept = 0
-    case Reject = 1
-    case Accept = 2
-    case WaittingPay = 3
-    case Paid = 4
-    case Cancel = 5
-    case OnGoing = 6
-    case Completed = 7
-    case InvoiceMaking = 8
-    case InvoiceMaked = 9
+    case waittingAccept = 0
+    case reject = 1
+    case accept = 2
+    case waittingPay = 3
+    case paid = 4
+    case cancel = 5
+    case onGoing = 6
+    case completed = 7
+    case invoiceMaking = 8
+    case invoiceMaked = 9
 }
 
 class HodometerInfo : Object {
@@ -61,7 +61,7 @@ class HodometerInfo : Object {
     dynamic var order_addr:String?
     
     
-    func setInfo(info: HodometerInfo) {
+    func setInfo(_ info: HodometerInfo) {
         service_type_ = info.service_type_
         
         service_id_ = info.service_id_

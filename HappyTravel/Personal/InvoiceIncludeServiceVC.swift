@@ -29,18 +29,18 @@ class InvoiceIncludeServiceVC: UIViewController {
 
     func initViews() {
         
-        tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.rowHeight = 60
-        tableView?.separatorStyle = .None
-        tableView?.registerClass(InvoiceIncludeCell.self, forCellReuseIdentifier: "includeCell")
+        tableView?.separatorStyle = .none
+        tableView?.register(InvoiceIncludeCell.self, forCellReuseIdentifier: "includeCell")
         view.addSubview(tableView!)
         tableView?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
 
-        SocketManager.sendData(.ServiceDetailRequest, data: ["oid_str_" : oid_str_]) { [weak self](result) in
+        SocketManager.sendData(.serviceDetailRequest, data: ["oid_str_" : oid_str_]) { [weak self](result) in
             if let strongSelf = self{
                 if  let dict = result["data"] {
                     if let serviceList  = dict["service_list"] as? Array<Dictionary<String, AnyObject>> {
@@ -76,14 +76,14 @@ class InvoiceIncludeServiceVC: UIViewController {
 }
 extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return services == nil ? 0 : services!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("includeCell", forIndexPath: indexPath) as! InvoiceIncludeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "includeCell", for: indexPath) as! InvoiceIncludeCell
         
         let last = indexPath.row == services!.count - 1 ? true : false
         cell.setupData(services![indexPath.row], isLast:last)
@@ -91,7 +91,7 @@ extension InvoiceIncludeServiceVC:UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         return 10
     }

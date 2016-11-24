@@ -17,9 +17,9 @@ class ViewController: SideMenuController {
     func initMainInterface() {
         
         let forthwithVC = ForthwithVC()
-        forthwithVC.view.backgroundColor = UIColor.whiteColor()
+        forthwithVC.view.backgroundColor = UIColor.white
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
-        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
+        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), for: .any, barMetrics: .default)
         forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
         
         let tabBarController = UITabBarController()
@@ -41,18 +41,18 @@ class ViewController: SideMenuController {
         // Do any additional setup after loading the view, typically from a nib.
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
-        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
+        SideMenuController.preferences.drawing.sidePanelPosition = .underCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.main.bounds.size.width / 3.0 * 2
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
+        SideMenuController.preferences.animating.statusBarBehaviour = .horizontalPan
         SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
         
         initMainInterface()
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startSockThread()
     }

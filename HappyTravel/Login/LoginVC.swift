@@ -22,7 +22,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     var loginWithMSGVC:LoginWithMSGVC?
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
     }
@@ -30,21 +30,21 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         
         initView()
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         SVProgressHUD.dismiss()
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     func touchWhiteSpace() {
@@ -53,7 +53,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     func initView() {
         let bgView = UIImageView()
-        bgView.userInteractionEnabled = true
+        bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
@@ -65,16 +65,16 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         touch.cancelsTouchesInView = false
         bgView.addGestureRecognizer(touch)
         
-        let blurEffect = UIBlurEffect(style: .Dark)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         bgView.addSubview(blurView)
         blurView.snp_makeConstraints { (make) in
             make.edges.equalTo(bgView)
         }
         
-        let width = UIScreen.mainScreen().bounds.size.width / 3.0
+        let width = UIScreen.main.bounds.size.width / 3.0
         let logo = UIImageView()
-        logo.backgroundColor = UIColor.grayColor()
+        logo.backgroundColor = UIColor.gray
         logo.layer.cornerRadius = width / 2.0
         logo.layer.masksToBounds = true
         logo.image = UIImage.init(named: "logo")
@@ -88,15 +88,15 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         let usernameField = UITextField()
         usernameField.tag = tags["usernameField"]!
-        usernameField.secureTextEntry = false
+        usernameField.isSecureTextEntry = false
         usernameField.delegate = self
-        usernameField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        usernameField.rightViewMode = .WhileEditing
-        usernameField.clearButtonMode = .WhileEditing
-        usernameField.backgroundColor = UIColor.clearColor()
-        usernameField.textAlignment = .Left
-        usernameField.keyboardType = .NumberPad
-        usernameField.attributedPlaceholder = NSAttributedString.init(string: "请输入手机号码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+        usernameField.textColor = UIColor.white.withAlphaComponent(0.5)
+        usernameField.rightViewMode = .whileEditing
+        usernameField.clearButtonMode = .whileEditing
+        usernameField.backgroundColor = UIColor.clear
+        usernameField.textAlignment = .left
+        usernameField.keyboardType = .numberPad
+        usernameField.attributedPlaceholder = NSAttributedString.init(string: "请输入手机号码", attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(usernameField)
         usernameField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view).offset(60)
@@ -108,14 +108,14 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         let passwdField = UITextField()
         passwdField.tag = tags["passwdField"]!
-        passwdField.secureTextEntry = true
+        passwdField.isSecureTextEntry = true
         passwdField.delegate = self
-        passwdField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        passwdField.rightViewMode = .WhileEditing
-        passwdField.clearButtonMode = .WhileEditing
-        passwdField.backgroundColor = UIColor.clearColor()
-        passwdField.textAlignment = .Left
-        passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
+        passwdField.textColor = UIColor.white.withAlphaComponent(0.5)
+        passwdField.rightViewMode = .whileEditing
+        passwdField.clearButtonMode = .whileEditing
+        passwdField.backgroundColor = UIColor.clear
+        passwdField.textAlignment = .left
+        passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码", attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(passwdField)
         passwdField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(usernameField)
@@ -127,7 +127,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         for i in 0...2 {
             let fieldUnderLine = UIView()
             fieldUnderLine.tag = tags["fieldUnderLine"]! + i
-            fieldUnderLine.backgroundColor = UIColor.grayColor()
+            fieldUnderLine.backgroundColor = UIColor.gray
             view.addSubview(fieldUnderLine)
             fieldUnderLine.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(usernameField)
@@ -140,11 +140,11 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         let loginBtn = UIButton()
         loginBtn.tag = tags["loginBtn"]!
         loginBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
-        loginBtn.setTitle("登录", forState: .Normal)
-        loginBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        loginBtn.setTitle("登录", for: UIControlState())
+        loginBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
         loginBtn.layer.cornerRadius = 45 / 2.0
         loginBtn.layer.masksToBounds = true
-        loginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
+        loginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), for: .touchUpInside)
         view.addSubview(loginBtn)
         loginBtn.snp_makeConstraints { (make) in
             make.left.equalTo(usernameField)
@@ -173,10 +173,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         let loginWithMSGBtn = UIButton()
         loginWithMSGBtn.tag = tags["loginWithMSGBtn"]!
-        loginWithMSGBtn.backgroundColor = .clearColor()
-        loginWithMSGBtn.setTitle("使用手机短信登录", forState: .Normal)
-        loginWithMSGBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
-        loginWithMSGBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
+        loginWithMSGBtn.backgroundColor = .clear
+        loginWithMSGBtn.setTitle("使用手机短信登录", for: UIControlState())
+        loginWithMSGBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), for: UIControlState())
+        loginWithMSGBtn.addTarget(self, action: #selector(LoginVC.login(_:)), for: .touchUpInside)
         view.addSubview(loginWithMSGBtn)
         loginWithMSGBtn.snp_makeConstraints { (make) in
             make.centerX.equalTo(view)
@@ -186,38 +186,38 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginVC.loginResult(_:)), name: NSNotification.Name(rawValue: NotifyDefine.LoginResult), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginVC.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginVC.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification?) {
-        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+    func keyboardWillShow(_ notification: Notification?) {
+        let frame = (notification!.userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
         var vFrame = view.frame
         if vFrame.origin.y == 0 {
-            vFrame.origin.y -= frame.size.height
+            vFrame.origin.y -= (frame?.size.height)!
             view.frame = vFrame
         }
         
     }
     
-    func keyboardWillHide(notification: NSNotification?) {
+    func keyboardWillHide(_ notification: Notification?) {
         var vFrame = view.frame
         vFrame.origin.y = 0
         view.frame = vFrame
     }
     
-    func login(sender: UIButton?) {
+    func login(_ sender: UIButton?) {
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
-            dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]
-            SocketManager.sendData(.Login, data: dict)
+            dict = ["phone_num_": "15158110001" as AnyObject, "passwd_": "123456" as AnyObject, "user_type_": 2 as AnyObject]
+            SocketManager.sendData(.login, data: dict)
             return
         }
         
         if sender?.tag == tags["loginWithMSGBtn"]! {
             loginWithMSGVC = LoginWithMSGVC()
-            presentViewController(loginWithMSGVC!, animated: false, completion: nil)
+            present(loginWithMSGVC!, animated: false, completion: nil)
             return
         }
         
@@ -228,7 +228,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
-        if predicate.evaluateWithObject(username) == false {
+        if predicate.evaluate(with: username) == false {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
         }
@@ -242,40 +242,40 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         if sender?.tag == tags["loginBtn"]! {
-            dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
+            dict = ["phone_num_": username! as AnyObject, "passwd_": passwd! as AnyObject, "user_type_": 1 as AnyObject]
         }
-        NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
-        NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
-        NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
-        SocketManager.sendData(.Login, data: dict)
+        UserDefaults.standard.set(username, forKey: CommonDefine.UserName)
+        UserDefaults.standard.set(passwd, forKey: CommonDefine.Passwd)
+        UserDefaults.standard.set("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
+        SocketManager.sendData(.login, data: dict)
     }
     
-    func randomSmallCaseString(length: Int) -> String {
+    func randomSmallCaseString(_ length: Int) -> String {
         var output = ""
         
         for _ in 0..<length {
             let randomNumber = arc4random() % 26 + 97
-            let randomChar = Character(UnicodeScalar(randomNumber))
+            let randomChar = Character(UnicodeScalar(randomNumber)!)
             output.append(randomChar)
         }
         return output
     }
     
-    func loginResult(notification: NSNotification?) {
+    func loginResult(_ notification: Notification?) {
         
         let data = notification?.userInfo!["data"]
-        if let errorCode = data?.valueForKey("error_") {
-            let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
+        if let errorCode = (data as AnyObject).value(forKey: "error_") {
+            let errorMsg = CommonDefine.errorMsgs[(errorCode as AnyObject).intValue]
             SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1.5, completion: nil)
             return
         }
         SVProgressHUD.dismiss()
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil, userInfo: ["data": data!])
         
     }
     
     //MARK: - UITextField
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         switch textField.tag {
         case tags["usernameField"]!:
             username = ""
@@ -289,15 +289,15 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if range.location > 15 {
             return false
         }
         
         if textField.tag == tags["usernameField"]! {
-            username = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            username = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         } else if textField.tag == tags["passwdField"]! {
-            passwd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            passwd = (textField.text! as NSString).replacingCharacters(in: range, with: string)
             
         }
         
@@ -311,7 +311,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     

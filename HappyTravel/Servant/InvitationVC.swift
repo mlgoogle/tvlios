@@ -17,14 +17,14 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.userInteractionEnabled = true
-        view.frame = UIScreen.mainScreen().bounds
+        view.isUserInteractionEnabled = true
+        view.frame = UIScreen.main.bounds
         
         initView()
     }
@@ -35,10 +35,10 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         creatTimer()
         
         let tipsLabel = UILabel()
-        tipsLabel.font = UIFont.systemFontOfSize(S18)
-        tipsLabel.textAlignment = NSTextAlignment.Center
-        tipsLabel.backgroundColor = UIColor.clearColor()
-        tipsLabel.textColor = UIColor.whiteColor()
+        tipsLabel.font = UIFont.systemFont(ofSize: S18)
+        tipsLabel.textAlignment = NSTextAlignment.center
+        tipsLabel.backgroundColor = UIColor.clear
+        tipsLabel.textColor = UIColor.white
         tipsLabel.text = "等待对方同意邀约"
         view.addSubview(tipsLabel)
         tipsLabel.snp_makeConstraints { (make) in
@@ -49,14 +49,14 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         }
         
         let cancelBtn = UIButton()
-        cancelBtn.setTitle("取消邀约", forState: UIControlState.Normal)
-        cancelBtn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        cancelBtn.backgroundColor = UIColor.clearColor()
-        cancelBtn.layer.borderColor = UIColor.whiteColor().CGColor
+        cancelBtn.setTitle("取消邀约", for: UIControlState())
+        cancelBtn.setTitleColor(UIColor.white, for: UIControlState())
+        cancelBtn.backgroundColor = UIColor.clear
+        cancelBtn.layer.borderColor = UIColor.white.cgColor
         cancelBtn.layer.borderWidth = 1
         cancelBtn.layer.cornerRadius = 5
         cancelBtn.layer.masksToBounds = true
-        cancelBtn.addTarget(self, action: #selector(cancel(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cancelBtn.addTarget(self, action: #selector(cancel(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(cancelBtn)
         cancelBtn.snp_makeConstraints { (make) in
             make.centerX.equalTo(self.view)
@@ -80,17 +80,17 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
     }
     
     func start() {
-        XCGLogger.defaultInstance().debug("\(NSDate.init().timeIntervalSince1970)")
+        XCGLogger.defaultInstance().debug("\(Date.init().timeIntervalSince1970)")
         annularProgressView?.startAnimation()
     }
     
-    func cancel(sender: AnyObject?) {
+    func cancel(_ sender: AnyObject?) {
         view.removeFromSuperview()
     }
 
     // MARK: - AnnularProgressViewDelegate
     func timeout() {
-        XCGLogger.defaultInstance().debug("\(NSDate.init().timeIntervalSince1970)")
+        XCGLogger.defaultInstance().debug("\(Date.init().timeIntervalSince1970)")
         view.removeFromSuperview()
     }
 }
@@ -124,8 +124,8 @@ class AnnularProgressView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        opaque = false
-        backgroundColor = UIColor.whiteColor()
+        isOpaque = false
+        backgroundColor = UIColor.white
         layer.cornerRadius = 150 / 2
         layer.masksToBounds = true
         initView()
@@ -133,9 +133,9 @@ class AnnularProgressView: UIView {
     
     func initView() {
         timeLabel = UILabel()
-        timeLabel?.backgroundColor = UIColor.clearColor()
-        timeLabel?.font = UIFont.systemFontOfSize(AtapteWidthValue(22))
-        timeLabel?.textAlignment = NSTextAlignment.Center
+        timeLabel?.backgroundColor = UIColor.clear
+        timeLabel?.font = UIFont.systemFont(ofSize: AtapteWidthValue(22))
+        timeLabel?.textAlignment = NSTextAlignment.center
         addSubview(timeLabel!)
         timeLabel?.snp_makeConstraints(closure: { (make) in
             make.center.equalTo(self)
@@ -151,27 +151,27 @@ class AnnularProgressView: UIView {
             delegate?.timeout()
             return
         }
-        performSelector(#selector(AnnularProgressView.startAnimation), withObject: self, afterDelay: 0.1)
+        perform(#selector(AnnularProgressView.startAnimation), with: self, afterDelay: 0.1)
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         let lineWidth: CGFloat = 4.0
-        let radius = CGRectGetWidth(rect) / 2.0 - lineWidth
-        let centerX = CGRectGetMidX(rect)
-        let centerY = CGRectGetMidY(rect)
+        let radius = rect.width / 2.0 - lineWidth
+        let centerX = rect.midX
+        let centerY = rect.midY
         let startAngle = CGFloat(-90 * M_PI / 180)
         let endAngle = CGFloat(((self.value / self.maximumValue) * 360 - 90) ) * CGFloat(M_PI) / 180
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetStrokeColorWithColor(context, UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1).CGColor)
-        CGContextSetLineWidth(context, lineWidth)
+        context?.setStrokeColor(UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1).cgColor)
+        context?.setLineWidth(lineWidth)
         CGContextAddArc(context, centerX, centerY, radius, startAngle, endAngle, 0)
-        CGContextStrokePath(context)
-        CGContextSetStrokeColorWithColor(context, UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor)
+        context?.strokePath()
+        context?.setStrokeColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor)
         CGContextAddArc(context, centerX, centerY, radius, startAngle, endAngle, 1)
-        CGContextStrokePath(context)
+        context?.strokePath()
         
     }
     
