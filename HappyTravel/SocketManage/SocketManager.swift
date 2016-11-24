@@ -314,7 +314,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     static func sendData(_ opcode: SockOpcode, data: Any?, result: recevieDataBlock?) {
-        SocketManager.sendData(opcode, data: data)
+        _ = SocketManager.sendData(opcode, data: data)
         if result != nil {
             completationsDic[opcode.rawValue+1] = result
         }
@@ -476,7 +476,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         if username != nil && passwd != nil && userType != nil && SocketManager.isLogout == false {
             let dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": userType!] as [String : Any]
-            SocketManager.sendData(.login, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.login, data: dict as AnyObject?)
         }
         SocketManager.isLogout = false
         
@@ -484,7 +484,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func sendHeart() {
-        SocketManager.sendData(.heart, data: nil)
+        _ = SocketManager.sendData(.heart, data: nil)
         perform(#selector(SocketManager.sendHeart), with: nil, afterDelay: 10)
     }
     
@@ -511,7 +511,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 let bodyLen = Int(head.bodyLen)
                 let bodyData = buffer.subdata(with: NSMakeRange(headLen, bodyLen))
                 buffer.setData(buffer.subdata(with: NSMakeRange(packageLen, buffer.length - packageLen)))
-                recvData(head, body: bodyData as AnyObject?)
+                _ = recvData(head, body: bodyData as AnyObject?)
             } else {
                 break
             }
@@ -585,7 +585,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func userInfoReply(_ jsonBody: JSON?) {
         for info in jsonBody!["userinfo_list"] {
             let user = UserInfo()
-            user.setInfo(.Other, info: info.1.dictionaryObject!)
+            user.setInfo(.other, info: info.1.dictionaryObject! as Dictionary<String, AnyObject>?)
             DataManager.updateUserInfo(user)
         }
         postNotification(NotifyDefine.UserBaseInfoReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
@@ -640,7 +640,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func userCenturionCardInfoReply(_ jsonBody: JSON?) {
-        DataManager.currentUser?.setInfo(.CurrentUser, info: (jsonBody?.dictionaryObject)!)
+        DataManager.currentUser?.setInfo(.currentUser, info: (jsonBody?.dictionaryObject)! as Dictionary<String, AnyObject>?)
     }
     
     func centurionCardConsumedReply(_ jsonBody: JSON?) {
@@ -665,10 +665,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func skillsInfoReply(_ jsonBody: JSON?) {
         if let skillList = jsonBody?.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
             for skill in skillList {
+               
                 let info = SkillInfo(value: skill)
                 let string:NSString = info.skill_name_! as NSString
                 let options:NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
-                let rect = string.boundingRect(with: CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: AtapteWidthValue(12))], context: nil)
+                let rect = string.boundingRect(with:  CGSize(width: 0, height: 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: AtapteWidthValue(12))], context: nil)
                 info.labelWidth = Float(rect.size.width) + 30
                 DataManager.insertData(SkillInfo.self, data: info)
             }

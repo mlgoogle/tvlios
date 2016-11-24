@@ -668,24 +668,6 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
                         }
                     }
                 })
-//                geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
-//                    if placeMarks?.count == 1 {
-//                        self.locality = (placeMarks?[0])!.locality
-//                        self.titleLab?.text = self.locality
-//                        XCGLogger.debug("Update locality: \(self.locality!)")
-//                        DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
-//                        DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
-//                        self.perform(#selector(ForthwithVC.sendLocality), with: nil, afterDelay: 1)
-//
-//                        if DataManager.currentUser!.login {
-//                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-//                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
-//                                                                      "distance_": 20.1]
-//                            SocketManager.sendData(.getServantInfo, data: dict)
-//                        }
-//                    }
-//                } as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler
-
             }
             
         }
@@ -849,7 +831,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         switch error.code {
         case 1:
             checkLocationService()
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
+
             firstLanch = true
             break
         case 4:

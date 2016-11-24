@@ -204,7 +204,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             self.nickname = nicknameField?.text
             let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                 "nickname_": self.nickname! as AnyObject,
-                "gender_": self.sex,
+                "gender_": self.sex as AnyObject,
                 "head_url_": url,
                 "address_": self.address!,
                 "longitude_": Float.init(location[0])!,
