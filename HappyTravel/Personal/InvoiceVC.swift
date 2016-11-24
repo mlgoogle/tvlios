@@ -46,11 +46,13 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        
-        header.perform(#selector(MJRefreshHeader.beginRefreshing), with: nil, afterDelay: 0.5)
+        perform(#selector(InvoiceVC.headerBeginRefresh), with: nil, afterDelay: 0.5)
         
     }
     
+    func headerBeginRefresh() {
+        header.beginRefreshing()
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)

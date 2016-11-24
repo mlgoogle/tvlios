@@ -129,7 +129,11 @@ class CentrionCardConsumedCell: UITableViewCell {
     
     func setCenturionCardConsumedInfo(_ info: CenturionCardConsumedInfo?) {
         if let headImageView = contentView.viewWithTag(tags["headImageView"]!) as? UIImageView {
-            headImageView.kf_setImageWithURL(URL(string:  info!.privilege_pic_!), placeholderImage: UIImage.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+
+            if info?.privilege_pic_ != nil {
+                headImageView.kf.setImage(with: URL(string:  info!.privilege_pic_!), placeholder: UIImage.init(named: "default-head"), options: nil, progressBlock: nil, completionHandler: nil)
+            }
+//            headImageView.kf_setImageWithURL(URL(string:  info!.privilege_pic_!), placeholderImage: UIImage.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
             
         }
         

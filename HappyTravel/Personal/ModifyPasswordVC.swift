@@ -80,7 +80,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func modifyPasswordSucceed() {
         
         SocketManager.logoutCurrentAccount()
-        navigationController?.popToRootViewController(animated: true)
+        _ = navigationController?.popToRootViewController(animated: true)
     }
     /**
      
@@ -261,7 +261,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func modifyPwd(_ sender: UIButton?) {
         let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"] as [String : Any]
-        SocketManager.sendData(.modifyPassword, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.modifyPassword, data: dict as AnyObject?)
         XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }
     

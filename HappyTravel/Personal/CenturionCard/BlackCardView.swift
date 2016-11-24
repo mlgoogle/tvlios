@@ -123,7 +123,8 @@ class BlackCardView: UIView {
         contentView.addSubview(iconImage)
         iconImage.snp.makeConstraints { (make) in
             make.center.equalTo(contentView)
-            make.size.equalTo(CGSizeMake(AtapteWidthValue(50), AtapteWidthValue(50)))
+            
+            make.size.equalTo(CGSize(width: AtapteWidthValue(50), height: AtapteWidthValue(50)))
         }
     
         var blackCardNum = "\(DataManager.currentUser!.centurionCardId)" as NSString

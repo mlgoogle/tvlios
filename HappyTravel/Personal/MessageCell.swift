@@ -152,11 +152,12 @@ class MessageCell: UITableViewCell {
                 }
                 if let user = DataManager.getUserInfo(uid) {
                     userInfo = user
-                    headView.kf_setImageWithURL(URL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                        
+                    if userInfo?.headUrl != nil {
+                        headView.kf.setImage(with: URL(string: userInfo!.headUrl!), placeholder: UIImage(named: "touxiang_women"), options: nil, progressBlock: nil, completionHandler: nil)
                     }
+
                     if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                        nickNameLab.text = userInfo!.nickname!
+                        nickNameLab.text = userInfo!.nickname
                     }
                     
                     if let msgLab = view!.viewWithTag(1004) as? UILabel {

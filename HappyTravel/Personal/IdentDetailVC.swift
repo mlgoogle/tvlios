@@ -106,15 +106,15 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func servantDetailInfo(_ notification: Notification) {
 
 
-        let data = notification.userInfo!["data"]
-        if data!["error_"]! != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error"])")
+        let data = notification.userInfo!["data"] as! [String : Any]
+        if data["error_"]! != nil {
+            XCGLogger.error("Get UserInfo Error:\(data["error"])")
             return
         }
         servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
         guard servantInfo != nil else {
             
-            servantDict = data as? Dictionary<String, AnyObject>
+            servantDict = data
 //            servantInfo = UserInfo()
 //            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
             getServantBaseInfo()
@@ -125,12 +125,12 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let realm = try! Realm()
         try! realm.write({
                 
-          servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+          servantInfo!.setInfo(.servant, info: data)
                 
         })
         
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
        
     }
@@ -138,7 +138,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func getServantBaseInfo() {
         
         let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
-        SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
+        _ = SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
         
     }
     func servantBaseInfoReply(_ notification: Notification) {
@@ -147,7 +147,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let realm = try! Realm()
         try! realm.write({
             
-            servantInfo!.setInfo(.Servant, info: servantDict)
+            servantInfo!.setInfo(.servant, info: servantDict)
             
         })
         let servantPersonalVC = ServantPersonalVC()
@@ -156,8 +156,10 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func evaluatetripReply(_ notification: Notification) {
+     
+        unowned let weakSelf = self
         SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-            self.navigationController?.popViewController(animated: true)
+            _ = weakSelf.navigationController?.popViewController(animated: true)
         })
     }
     
@@ -183,7 +185,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                                                   "service_score_": (self.commonCell?.serviceStar)! as AnyObject,
                                                   "user_score_": (self.commonCell?.servantStar)! as AnyObject,
                                                   "remarks_": self.commonCell!.comment as AnyObject]
-        SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
     }
     
     // MARK: - UITableView
@@ -214,7 +216,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)! as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
+            _ = SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
            
         }
     }
