@@ -308,7 +308,9 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
      
         
-        
+        /**
+         *  进入逻辑已修改
+         */
         return appointmentInfo?.is_other_ == 1 ? 4 : 3
 
 //        /**
