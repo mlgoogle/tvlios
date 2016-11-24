@@ -38,7 +38,7 @@ class InvoiceHistoryCell: UITableViewCell {
             priceLabel?.textColor = UIColor(red: 184 / 255.0, green: 37 / 255.0, blue: 37 / 255.0, alpha: 1.0)
             priceLabel?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(priceLabel!)
-            priceLabel?.snp_makeConstraints(closure: { (make) in
+            priceLabel?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(13)
             })
@@ -52,7 +52,7 @@ class InvoiceHistoryCell: UITableViewCell {
             dateLabel?.textColor = UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
             dateLabel?.font = UIFont.systemFont(ofSize: S12)
             contentView.addSubview(dateLabel!)
-            dateLabel?.snp_makeConstraints(closure: { (make) in
+            dateLabel?.snp.makeConstraints({ (make) in
                 make.left.equalTo(priceLabel!)
                 make.bottom.equalTo(contentView).offset(-10)
             })
@@ -71,7 +71,7 @@ class InvoiceHistoryCell: UITableViewCell {
             statusLabel?.layer.borderColor = UIColor(red: 19 / 255.0, green: 31 / 255.0, blue: 50 / 255.0, alpha: 1.0).cgColor
             statusLabel?.layer.cornerRadius = 12
             contentView.addSubview(statusLabel!)
-            statusLabel?.snp_makeConstraints(closure: { (make) in
+            statusLabel?.snp.makeConstraints({ (make) in
                 make.right.equalTo(contentView).offset(-10)
                 make.centerY.equalTo(contentView)
                 make.width.equalTo(60)
@@ -86,7 +86,7 @@ class InvoiceHistoryCell: UITableViewCell {
             bottomLine = UIView()
             bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
             contentView.addSubview(bottomLine!)
-            bottomLine?.snp_makeConstraints(closure: { (make) in
+            bottomLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(priceLabel!)
                 make.bottom.equalTo(contentView)
                 make.right.equalTo(contentView)

@@ -132,7 +132,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
                                         "recharge_id_": Int(rechageID!)!,
                                         "pay_result_": 1]
-        SocketManager.sendData(.clientWXPayStatusRequest, data: dict)
+        SocketManager.sendData(.clientWXPayStatusRequest, data: dict as AnyObject?)
         
     }
     
@@ -159,7 +159,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table?.separatorStyle = .none
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -231,7 +231,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 amountLab?.text = "金额"
                 amountLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(amountLab!)
-                amountLab?.snp_makeConstraints(closure: { (make) in
+                amountLab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -255,8 +255,8 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 amountTextField?.keyboardType = .numberPad
                 amountTextField?.clearButtonMode = .whileEditing
                 cell?.contentView.addSubview(amountTextField!)
-                amountTextField?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(amountLab!.snp_right).offset(10)
+                amountTextField?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(amountLab!.snp.right).offset(10)
                     make.top.equalTo(amountLab!)
                     make.bottom.equalTo(amountLab!)
                     make.right.equalTo(cell!.contentView).offset(-20)
@@ -278,7 +278,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 channelIcon?.tag = tags["channelIcon"]!
                 channelIcon?.backgroundColor = UIColor.clear
                 cell?.contentView.addSubview(channelIcon!)
-                channelIcon?.snp_makeConstraints(closure: { (make) in
+                channelIcon?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.top.equalTo(cell!.contentView).offset(10)
                     make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -294,8 +294,8 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 channelLab?.backgroundColor = UIColor.clear
                 channelLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(channelLab!)
-                channelLab?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(channelIcon!.snp_right).offset(10)
+                channelLab?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(channelIcon!.snp.right).offset(10)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
                 })
@@ -307,7 +307,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 selectedIcon?.tag = tags["selectedIcon"]!
                 selectedIcon?.backgroundColor = UIColor.clear
                 cell?.contentView.addSubview(selectedIcon!)
-                selectedIcon?.snp_makeConstraints(closure: { (make) in
+                selectedIcon?.snp.makeConstraints({ (make) in
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.centerY.equalTo(channelLab!)
                     make.width.equalTo(20)
@@ -333,7 +333,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 separateLine?.tag = tags["separateLine"]!
                 separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
                 cell?.contentView.addSubview(separateLine!)
-                separateLine?.snp_makeConstraints(closure: { (make) in
+                separateLine?.snp.makeConstraints({ (make) in
                     make.left.equalTo(channelIcon!)
                     make.right.equalTo(cell!.contentView).offset(40)
                     make.bottom.equalTo(cell!.contentView).offset(0.5)
@@ -365,7 +365,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 payBtn?.layer.masksToBounds = true
                 payBtn?.addTarget(self, action: #selector(RechargeVC.payAction(_:)), for: .touchUpInside)
                 cell?.contentView.addSubview(payBtn!)
-                payBtn?.snp_makeConstraints(closure: { (make) in
+                payBtn?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(10)
                     make.right.equalTo(cell!.contentView).offset(-15)
@@ -468,7 +468,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
                                         "title_": "V领队-余额充值" as AnyObject,
                                         "price_": Int(amount!)! * 100]
-        SocketManager.sendData(.wxPlaceOrderRequest, data: dict)
+        SocketManager.sendData(.wxPlaceOrderRequest, data: dict as AnyObject?)
     
     }
     

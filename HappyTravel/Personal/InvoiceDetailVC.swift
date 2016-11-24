@@ -94,7 +94,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.separatorStyle = .none
         table?.register(InvoiceCell.self, forCellReuseIdentifier: "InvoiceCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
@@ -197,7 +197,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 commitBtn?.layer.masksToBounds = true
                 commitBtn?.addTarget(self, action: #selector(InvoiceDetailVC.commit), for: .touchUpInside)
                 cell?.contentView.addSubview(commitBtn!)
-                commitBtn?.snp_makeConstraints(closure: { (make) in
+                commitBtn?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.top.equalTo(cell!.contentView)
@@ -211,7 +211,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 bottomLine?.tag = tags["bottomLine"]!
                 bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
                 cell?.contentView.addSubview(bottomLine!)
-                bottomLine?.snp_makeConstraints(closure: { (make) in
+                bottomLine?.snp.makeConstraints({ (make) in
                     make.left.equalTo(commitBtn!)
                     make.bottom.equalTo(cell!.contentView)
                     make.right.equalTo(cell!.contentView)
@@ -244,7 +244,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             titleLab?.textAlignment = .right
             titleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(titleLab!)
-            titleLab?.snp_makeConstraints(closure: { (make) in
+            titleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -264,8 +264,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 descLab?.textColor = UIColor.init(decR: 200, decG: 200, decB: 200, a: 1)
                 descLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(descLab!)
-                descLab?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(titleLab!.snp_right).offset(10)
+                descLab?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(titleLab!.snp.right).offset(10)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.top.equalTo(titleLab!)
                     make.bottom.equalTo(titleLab!)
@@ -285,8 +285,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.clearButtonMode = .whileEditing
                 textField?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(textField!)
-                textField?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(titleLab!.snp_right).offset(10)
+                textField?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(titleLab!.snp.right).offset(10)
                     make.top.equalTo(cell!.contentView).offset(10)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -317,7 +317,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             bottomLine?.tag = tags["bottomLine"]!
             bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
             cell?.contentView.addSubview(bottomLine!)
-            bottomLine?.snp_makeConstraints(closure: { (make) in
+            bottomLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(titleLab!)
                 make.bottom.equalTo(cell!.contentView)
                 make.right.equalTo(cell!.contentView)
@@ -347,7 +347,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             titleLab?.textAlignment = .right
             titleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(titleLab!)
-            titleLab?.snp_makeConstraints(closure: { (make) in
+            titleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.width.equalTo(AtapteWidthValue(65))
@@ -361,7 +361,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             bottomLine?.tag = tags["bottomLine"]!
             bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
             cell?.contentView.addSubview(bottomLine!)
-            bottomLine?.snp_makeConstraints(closure: { (make) in
+            bottomLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(titleLab!)
                 make.bottom.equalTo(cell!.contentView)
                 make.right.equalTo(cell!.contentView)
@@ -383,20 +383,20 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textView?.layer.cornerRadius = 5
                 textView?.layer.masksToBounds = true
                 cell?.contentView.addSubview(textView!)
-                textView?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(titleLab!.snp_right).offset(10)
+                textView?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(titleLab!.snp.right).offset(10)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.top.equalTo(titleLab!)
                     make.height.equalTo(80)
                 })
             }
             
-            bottomLine?.snp_remakeConstraints(closure: { (make) in
+            bottomLine?.snp.remakeConstraints({ (make) in
                 make.left.equalTo(titleLab!)
                 make.bottom.equalTo(cell!.contentView)
                 make.right.equalTo(cell!.contentView)
                 make.height.equalTo(1)
-                make.top.equalTo(textView!.snp_bottom).offset(10)
+                make.top.equalTo(textView!.snp.bottom).offset(10)
             })
             
             textView?.text = invoiceInfoDict!["remark_"] as? String
@@ -416,8 +416,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 textField?.clearButtonMode = .whileEditing
                 textField?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(textField!)
-                textField?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(titleLab!.snp_right).offset(10)
+                textField?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(titleLab!.snp.right).offset(10)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView).offset(-20)
                     make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -425,7 +425,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
             textField?.placeholder = personalInfo[indexPath.row]
             
-            bottomLine?.snp_remakeConstraints(closure: { (make) in
+            bottomLine?.snp.remakeConstraints({ (make) in
                 make.left.equalTo(titleLab!)
                 make.bottom.equalTo(cell!.contentView)
                 make.right.equalTo(cell!.contentView)
@@ -569,7 +569,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         UserDefaults.standard.setValue(invoiceInfoDict, forKey:UserDefaultKeys.invoiceInfoDict)
         var oidStr = "" 
-        for (index, orderInfo) in selectedOrderList!.enumerate() {
+        for (index, orderInfo) in selectedOrderList!.enumerated() {
             oidStr +=  index == 0 ? "\(orderInfo.order_id_)" : ",\(orderInfo.order_id_)"
             let realm = try! Realm()
             let object = realm.objects(OpenTicketInfo.self).filter("order_id_ = \(orderInfo.order_id_)").first
@@ -579,7 +579,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
         invoiceInfoDict!["oid_str_"] = oidStr as AnyObject?
-        SocketManager.sendData(.drawBillRequest, data: invoiceInfoDict)
+        SocketManager.sendData(.drawBillRequest, data: invoiceInfoDict as AnyObject?)
     }
     
     //MARK: -- DATA
@@ -596,10 +596,10 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                                 "invoice_type_": 0 as AnyObject,
                                 "user_name_": "" as AnyObject,
                                 "user_mobile_": "" as AnyObject,
-                                "area_": "",
-                                "addr_detail_": "",
-                                "remarks_": "",
-                                "uid_": DataManager.currentUser!.uid]
+                                "area_": "" as AnyObject,
+                                "addr_detail_": "" as AnyObject,
+                                "remarks_": "" as AnyObject,
+                                "uid_": DataManager.currentUser!.uid as AnyObject]
 
         }
         

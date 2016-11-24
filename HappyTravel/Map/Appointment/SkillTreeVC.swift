@@ -69,7 +69,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         table?.separatorStyle = .none
         table?.register(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
@@ -130,7 +130,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 ok?.layer.masksToBounds = true
                 ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), for: .touchUpInside)
                 cell?.contentView.addSubview(ok!)
-                ok?.snp_makeConstraints(closure: { (make) in
+                ok?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(40)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView).offset(-40)
@@ -171,7 +171,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func selectedAction(_ info: Dictionary<SkillInfo, Bool>) {
         selectedSkills.append(info)
         table?.reloadSections(IndexSet.init(integer: 0), with: .none)
-        for (index, skillInfo) in skills.enumerate() {
+        for (index, skillInfo) in skills.enumerated() {
             for (skill, _) in skillInfo {
                 if skill.skill_id_ == info.keys.first?.skill_id_ {
                     skills[index][skill] = true
@@ -183,9 +183,9 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func deleteAction(_ index: Int, info: Dictionary<SkillInfo, Bool>) {
-        selectedSkills.removeAtIndex(index)
+        selectedSkills.remove(at: index)
         
-        for (_index, skillInfo) in skills.enumerate() {
+        for (_index, skillInfo) in skills.enumerated() {
             for (skill, _) in skillInfo {
                 if skill.skill_id_ == info.keys.first?.skill_id_ {
                     skills[_index][skill] = false

@@ -97,31 +97,31 @@ class InvoiceIncludeCell: UITableViewCell {
      添加约束
      */
     func addSubViewConstraints() {
-        nicknameLabel?.snp_makeConstraints(closure: { (make) in
+        nicknameLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(contentView).offset(10)
             make.top.equalTo(contentView).offset(13)
             
         })
         
-        serviceNameLabel?.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(nicknameLabel!.snp_right).offset(10)
+        serviceNameLabel?.snp.makeConstraints({ (make) in
+            make.left.equalTo(nicknameLabel!.snp.right).offset(10)
             make.centerY.equalTo(nicknameLabel!)
         })
         
-        serviceDateLabel?.snp_makeConstraints(closure: { (make) in
+        serviceDateLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(nicknameLabel!)
             make.bottom.equalTo(contentView).offset(-10)
         })
         
-        servicePriceLabel?.snp_makeConstraints(closure: { (make) in
+        servicePriceLabel?.snp.makeConstraints({ (make) in
             make.centerY.equalTo(nicknameLabel!)
             make.right.equalTo(contentView).offset(-10)
         })
-        serviceTypeLabel?.snp_makeConstraints(closure: { (make) in
+        serviceTypeLabel?.snp.makeConstraints({ (make) in
             make.right.equalTo(servicePriceLabel!)
             make.centerY.equalTo(serviceDateLabel!)
         })
-        bottomLine?.snp_makeConstraints(closure: { (make) in
+        bottomLine?.snp.makeConstraints({ (make) in
             make.left.equalTo(nicknameLabel!)
             make.bottom.equalTo(contentView)
             make.right.equalTo(contentView)

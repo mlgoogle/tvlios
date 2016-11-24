@@ -195,22 +195,22 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func updateBaseInfo(_ url:String) {
         
         let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-        Alamofire.request(.GET, addr).responseJSON() { response in
+        Alamofire.request(addr).responseJSON() { response in
             let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-            let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+            let location = (geocodes!["location"] as! String).components(separatedBy: ",")
             XCGLogger.debug("\(location)")
             
             let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
             self.nickname = nicknameField?.text
-            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                "nickname_": self.nickname!,
+            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
+                "nickname_": self.nickname! as AnyObject,
                 "gender_": self.sex,
                 "head_url_": url,
                 "address_": self.address!,
                 "longitude_": Float.init(location[0])!,
                 "latitude_": Float.init(location[1])!]
             self.headerUrl = url
-            SocketManager.sendData(.SendImproveData, data: dict)
+            SocketManager.sendData(.sendImproveData, data: dict)
         }
     }
     
@@ -224,7 +224,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         table?.separatorStyle = .none
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -298,12 +298,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 bgView = UIView()
                 bgView?.backgroundColor = UIColor.clear
                 cell?.contentView.addSubview(bgView!)
-                bgView?.snp_makeConstraints(closure: { (make) in
+                bgView?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView)
                     make.right.equalTo(cell!.contentView)
                     make.top.equalTo(cell!.contentView)
                     make.bottom.equalTo(cell!.contentView)
-                    make.height.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+                    make.height.equalTo(UIScreen.main.bounds.size.width / 2.0)
                 })
             }
             
@@ -315,7 +315,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 headView?.layer.masksToBounds = true
                 headView?.image = UIImage.init(named: "default-head")
                 cell?.contentView.addSubview(headView!)
-                headView?.snp_makeConstraints(closure: { (make) in
+                headView?.snp.makeConstraints({ (make) in
                     make.center.equalTo(bgView!)
                     make.width.equalTo(100)
                     make.height.equalTo(100)
@@ -366,7 +366,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 titleLab?.textColor = UIColor.black
                 titleLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(titleLab!)
-                titleLab?.snp_makeConstraints(closure: { (make) in
+                titleLab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.centerY.equalTo(cell!.contentView)
                     make.width.equalTo(100)
@@ -381,7 +381,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 separateLine?.tag = tags["separateLine"]!
                 separateLine?.backgroundColor = UIColor.init(red: 241/255.0, green: 242/255.0, blue: 243/255.0, alpha: 1)
                 cell?.contentView.addSubview(separateLine!)
-                separateLine?.snp_makeConstraints(closure: { (make) in
+                separateLine?.snp.makeConstraints({ (make) in
                     make.left.equalTo(titleLab!)
                     make.right.equalTo(cell!.contentView).offset(40)
                     make.bottom.equalTo(cell!.contentView).offset(0.5)
@@ -403,7 +403,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 nicknameField!.textAlignment = .right
                 nicknameField!.attributedPlaceholder = NSAttributedString.init(string: "10个字符以内", attributes: [NSForegroundColorAttributeName: UIColor.gray])
                 cell?.contentView.addSubview(nicknameField!)
-                nicknameField!.snp_makeConstraints(closure: { (make) in
+                nicknameField!.snp.makeConstraints({ (make) in
                     make.left.equalTo(titleLab!)
                     make.top.equalTo(cell!.contentView).offset(10)
                     make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -422,7 +422,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 selectedRetLab?.textAlignment = .right
                 selectedRetLab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(selectedRetLab!)
-                selectedRetLab?.snp_makeConstraints(closure: { (make) in
+                selectedRetLab?.snp.makeConstraints({ (make) in
                     make.right.equalTo(cell!.contentView).offset(-10)
                     make.centerY.equalTo(titleLab!)
                 })

@@ -66,7 +66,7 @@ class InvoiceHistoryVC:UIViewController {
         }
     
         let realm = try! Realm()
-        historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
+        historyData = realm.objects(InvoiceHistoryInfo.self).sorted(byProperty: "invoice_time_", ascending: false)
 
         
         let lastOrderID = notify.userInfo!["lastOrderID"] as! Int
@@ -97,7 +97,7 @@ class InvoiceHistoryVC:UIViewController {
         tableView?.separatorStyle = .none
         tableView?.register(InvoiceHistoryCell.self, forCellReuseIdentifier: "InvoiceHistory")
         view.addSubview(tableView!)
-        tableView?.snp_makeConstraints(closure: { (make) in
+        tableView?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -150,7 +150,7 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
         let count = historyData != nil ? historyData?.count : 0
-        footer.hidden = count < 10 ? true : false
+        footer.isHidden = count! < 10 ? true : false
         return count!
     }
     

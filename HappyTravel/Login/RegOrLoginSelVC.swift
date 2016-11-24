@@ -44,7 +44,7 @@ class RegOrLoginSelVC: UIViewController {
         bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
         }
         
@@ -57,7 +57,7 @@ class RegOrLoginSelVC: UIViewController {
         loginBtn.layer.masksToBounds = true
         loginBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), for: .touchUpInside)
         view.addSubview(loginBtn)
-        loginBtn.snp_makeConstraints { (make) in
+        loginBtn.snp.makeConstraints { (make) in
             make.left.equalTo(view).offset(45)
             make.width.equalTo(90)
             make.bottom.equalTo(view).offset(-80)
@@ -73,7 +73,7 @@ class RegOrLoginSelVC: UIViewController {
         regBtn.layer.masksToBounds = true
         regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), for: .touchUpInside)
         view.addSubview(regBtn)
-        regBtn.snp_makeConstraints { (make) in
+        regBtn.snp.makeConstraints { (make) in
             make.right.equalTo(view).offset(-45)
             make.width.equalTo(90)
             make.bottom.equalTo(view).offset(-80)

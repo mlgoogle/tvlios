@@ -40,7 +40,7 @@ class SingleSkillCell: UICollectionViewCell {
     
     }
     override func layoutSubviews() {
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.edges.equalTo(contentView)
         }
     }

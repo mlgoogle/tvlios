@@ -65,14 +65,14 @@ class BlackCardView: UIView {
         super.init(frame: frame)
         
         self.addSubview(bgImage)
-        bgImage.snp_makeConstraints { (make) in
+        bgImage.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
         
         let contentView = UIView()
         contentView.backgroundColor = UIColor.clear
         bgImage.addSubview(contentView)
-        contentView.snp_makeConstraints { (make) in
+        contentView.snp.makeConstraints { (make) in
             make.top.equalTo(35)
             make.left.equalTo(AtapteWidthValue(50))
             make.right.equalTo(-AtapteWidthValue(45))
@@ -80,7 +80,7 @@ class BlackCardView: UIView {
         }
         
         contentView.addSubview(yudianLabel)
-        yudianLabel.snp_makeConstraints { (make) in
+        yudianLabel.snp.makeConstraints { (make) in
             make.left.equalTo(contentView)
             make.top.equalTo(contentView)
         }
@@ -89,15 +89,15 @@ class BlackCardView: UIView {
             let startImage = UIImageView.init(image: UIImage.init(named:"whiteStart"))
             startImage.tag = 100 + i
             contentView.addSubview(startImage)
-            startImage.snp_makeConstraints(closure: { (make) in
+            startImage.snp.makeConstraints({ (make) in
                 make.right.equalTo(-16*i)
-                make.bottom.equalTo(yudianLabel.snp_bottom).offset(-2)
+                make.bottom.equalTo(yudianLabel.snp.bottom).offset(-2)
                 make.size.equalTo(CGSize.init(width: 12, height: 12))
             })
         }
         
         contentView.addSubview(nameLabel)
-        nameLabel.snp_makeConstraints { (make) in
+        nameLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(contentView)
             make.left.equalTo(contentView)
         }
@@ -105,7 +105,7 @@ class BlackCardView: UIView {
         nameLabel.text = name.uppercased()
         
         contentView.addSubview(dateLabel)
-        dateLabel.snp_makeConstraints { (make) in
+        dateLabel.snp.makeConstraints { (make) in
             make.right.equalTo(contentView)
             make.bottom.equalTo(contentView)
             make.width.equalTo(88)
@@ -114,14 +114,14 @@ class BlackCardView: UIView {
         let dateTitleLabel = UILabel.init(text: "MONTH/YEAR", font: UIFont.boldSystemFont(ofSize: S10), textColor: colorWithHexString("#dfd1ad"))
         dateTitleLabel.textAlignment = .center
         contentView.addSubview(dateTitleLabel)
-        dateTitleLabel.snp_makeConstraints { (make) in
-            make.bottom.equalTo(dateLabel.snp_top)
+        dateTitleLabel.snp.makeConstraints { (make) in
+            make.bottom.equalTo(dateLabel.snp.top)
             make.width.equalTo(88)
             make.left.equalTo(dateLabel)
         }
         
         contentView.addSubview(iconImage)
-        iconImage.snp_makeConstraints { (make) in
+        iconImage.snp.makeConstraints { (make) in
             make.center.equalTo(contentView)
             make.size.equalTo(CGSizeMake(AtapteWidthValue(50), AtapteWidthValue(50)))
         }
@@ -136,16 +136,16 @@ class BlackCardView: UIView {
         let backNum = blackCardNum.substring(with: NSRange.init(location: 5, length: 4))
         
         contentView.addSubview(leftNumberLabel)
-        leftNumberLabel.snp_makeConstraints { (make) in
+        leftNumberLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(contentView)
-            make.right.equalTo(iconImage.snp_left).offset(-AtapteWidthValue(10))
+            make.right.equalTo(iconImage.snp.left).offset(-AtapteWidthValue(10))
         }
         leftNumberLabel.text = frontNum
         
         contentView.addSubview(rightNmberLabel)
-        rightNmberLabel.snp_makeConstraints { (make) in
+        rightNmberLabel.snp.makeConstraints { (make) in
             make.centerY.equalTo(contentView)
-            make.left.equalTo(iconImage.snp_right).offset(AtapteWidthValue(10))
+            make.left.equalTo(iconImage.snp.right).offset(AtapteWidthValue(10))
         }
         rightNmberLabel.text = backNum
     }

@@ -103,7 +103,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         table?.separatorStyle = .none
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -115,7 +115,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             indexBtn.setTitleColor(UIColor.gray, for: UIControlState())
             indexBtn.addTarget(self, action: #selector(AddressSelVC.indexAction(_:)), for: .touchUpInside)
             view.addSubview(indexBtn)
-            indexBtn.snp_makeConstraints(closure: { (make) in
+            indexBtn.snp.makeConstraints({ (make) in
                 make.right.equalTo(view).offset(2)
                 let space = (view.bounds.size.height - 14 * CGFloat(keys!.count) - 60 - 90) / CGFloat(keys!.count)
                 make.top.equalTo(view).offset(45 + (space + 14) * CGFloat(i))
@@ -170,7 +170,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             titleLab?.textColor = UIColor.black
             titleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(titleLab!)
-            titleLab?.snp_makeConstraints(closure: { (make) in
+            titleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.centerY.equalTo(cell!.contentView)
                 make.right.equalTo(-25)
@@ -187,7 +187,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-unselect"), for: UIControlState())
             selectedIcon?.setBackgroundImage(UIImage.init(named: "pay-selected"), for: .selected)
             cell?.contentView.addSubview(selectedIcon!)
-            selectedIcon?.snp_makeConstraints(closure: { (make) in
+            selectedIcon?.snp.makeConstraints({ (make) in
                 make.right.equalTo(titleLab!)
                 make.centerY.equalTo(titleLab!)
                 make.width.equalTo(20)
@@ -201,7 +201,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             separateLine?.tag = tags["separateLine"]!
             separateLine?.backgroundColor = UIColor.init(red: 241/255.0, green: 242/255.0, blue: 243/255.0, alpha: 1)
             cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
+            separateLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(titleLab!)
                 make.right.equalTo(titleLab!)
                 make.bottom.equalTo(cell!.contentView).offset(0.5)

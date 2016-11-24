@@ -28,9 +28,9 @@ class MeetTagCell: MAAnnotationView {
             meetTipsView?.layer.masksToBounds = true
             meetTipsView?.backgroundColor = UIColor.clear
             addSubview(meetTipsView!)
-            meetTipsView?.snp_makeConstraints(closure: { (make) in
+            meetTipsView?.snp.makeConstraints({ (make) in
                 make.centerX.equalTo(self)
-                make.bottom.equalTo(self.snp_top).offset(-5)
+                make.bottom.equalTo(self.snp.top).offset(-5)
                 make.width.equalTo(120)
                 make.height.equalTo(30)
             })
@@ -47,7 +47,7 @@ class MeetTagCell: MAAnnotationView {
             timeLab?.textAlignment = NSTextAlignment.center
             timeLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(meetTipsView!)
                 make.top.equalTo(meetTipsView!)
                 make.width.equalTo(35)
@@ -65,10 +65,10 @@ class MeetTagCell: MAAnnotationView {
             timeUnitLab?.textAlignment = NSTextAlignment.center
             timeUnitLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(timeUnitLab!)
-            timeUnitLab?.snp_makeConstraints(closure: { (make) in
+            timeUnitLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(timeLab!)
-                make.top.equalTo(timeLab!.snp_bottom)
-                make.width.equalTo(timeLab!.snp_width)
+                make.top.equalTo(timeLab!.snp.bottom)
+                make.width.equalTo(timeLab!.snp.width)
                 make.bottom.equalTo(meetTipsView!).offset(-2)
             })
         }
@@ -84,8 +84,8 @@ class MeetTagCell: MAAnnotationView {
             tipsLab?.textAlignment = NSTextAlignment.center
             tipsLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(tipsLab!)
-            tipsLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(timeLab!.snp_right)
+            tipsLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(timeLab!.snp.right)
                 make.top.equalTo(meetTipsView!)
                 make.right.equalTo(meetTipsView!)
                 make.bottom.equalTo(meetTipsView!)

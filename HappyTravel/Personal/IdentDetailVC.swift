@@ -65,7 +65,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         commitBtn.setTitle("发表评论", for: UIControlState())
         commitBtn.addTarget(self, action: #selector(IdentDetailVC.commitAction(_:)), for: .touchUpInside)
         view.addSubview(commitBtn)
-        commitBtn.snp_makeConstraints { (make) in
+        commitBtn.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
@@ -73,11 +73,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         self.commitBtn = commitBtn
         
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(commitBtn.snp_top)
+            make.bottom.equalTo(commitBtn.snp.top)
         })
         
         hideKeyboard()
@@ -138,7 +138,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func getServantBaseInfo() {
         
         let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
-        SocketManager.sendData(.getUserInfo, data: dic)
+        SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
         
     }
     func servantBaseInfoReply(_ notification: Notification) {
@@ -183,7 +183,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                                                   "service_score_": (self.commonCell?.serviceStar)! as AnyObject,
                                                   "user_score_": (self.commonCell?.servantStar)! as AnyObject,
                                                   "remarks_": self.commonCell!.comment as AnyObject]
-        SocketManager.sendData(.evaluateTripRequest, data: dict)
+        SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
     }
     
     // MARK: - UITableView
@@ -214,7 +214,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)! as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data:dict)
+            SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
            
         }
     }
@@ -226,11 +226,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // MARK: - DATA
     func initData() {
         let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)! as AnyObject]
-        SocketManager.sendData(.checkCommentDetail, data: param) { [weak self](body) in
+        SocketManager.sendData(.checkCommentDetail, data: param as AnyObject?) { [weak self](body) in
             if let strongSelf = self{
                 let data = body["data"] as! NSDictionary
                 let code = data.value(forKey: "code")
-                if code?.int32Value == 0 {
+                if (code as AnyObject).int32Value == 0 {
                     SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)
                     return
                 }

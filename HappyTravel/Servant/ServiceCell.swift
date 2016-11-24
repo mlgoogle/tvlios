@@ -39,7 +39,7 @@ open class ServiceCell : UITableViewCell {
             view!.tag = tags["view"]!
             view!.isUserInteractionEnabled = true
             contentView.addSubview(view!)
-            view!.snp_makeConstraints { (make) in
+            view!.snp.makeConstraints { (make) in
                 make.top.equalTo(self.contentView)
                 make.left.equalTo(self.contentView)
                 make.right.equalTo(self.contentView)
@@ -52,7 +52,7 @@ open class ServiceCell : UITableViewCell {
             let line = UIView()
             line.backgroundColor = UIColor.black
             view!.addSubview(line)
-            line.snp_makeConstraints(closure: { (make) in
+            line.snp.makeConstraints({ (make) in
                 make.left.equalTo(view!).offset(15)
                 make.top.equalTo(view!).offset(10)
                 make.width.equalTo(2)
@@ -65,7 +65,7 @@ open class ServiceCell : UITableViewCell {
             serviceLabel!.isUserInteractionEnabled = true
             serviceLabel!.backgroundColor = UIColor.white
             view!.addSubview(serviceLabel!)
-            serviceLabel!.snp_remakeConstraints { (make) in
+            serviceLabel!.snp.remakeConstraints { (make) in
                 make.top.equalTo(view!).offset(10)
                 make.left.equalTo(line).offset(12)
                 make.right.equalTo(view!).offset(-60)
@@ -84,7 +84,7 @@ open class ServiceCell : UITableViewCell {
             detailBtn?.contentMode = .scaleAspectFit
             detailBtn!.addTarget(self, action: #selector(ServiceCell.detailAction(_:)), for: UIControlEvents.touchUpInside)
             view!.addSubview(detailBtn!)
-            detailBtn!.snp_remakeConstraints { (make) in
+            detailBtn!.snp.remakeConstraints { (make) in
                 make.centerY.equalTo(serviceLabel!)
                 make.right.equalTo(view!).offset(-15)
                 make.height.equalTo(25)
@@ -98,8 +98,8 @@ open class ServiceCell : UITableViewCell {
             bottomControl!.tag = tags["bottomControl"]!
             bottomControl!.backgroundColor = UIColor.clear
             view!.addSubview(bottomControl!)
-            bottomControl?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(serviceLabel!.snp_bottom)
+            bottomControl?.snp.makeConstraints({ (make) in
+                make.top.equalTo(serviceLabel!.snp.bottom)
                 make.bottom.equalTo(view!).offset(-10)
                 make.left.equalTo(view!)
                 make.right.equalTo(view!)
@@ -114,7 +114,7 @@ open class ServiceCell : UITableViewCell {
             servicesInfo = services
             if let bgView = contentView.viewWithTag(tags["view"]!) {
                 let serviceLabel = bgView.viewWithTag(tags["serviceLabel"]!) as? UILabel
-                for (index, service) in services!.enumerate() {
+                for (index, service) in services!.enumerated() {
                     let titleStr = service.service_name_
                     let timeStr = service.service_time_
                     let payStr = "\(Double(service.service_price_) / 100)元"
@@ -123,16 +123,16 @@ open class ServiceCell : UITableViewCell {
                     if svcView == nil {
                         svcView = UIView()
                         svcView!.tag = tags["svcView"]! * 10 + index
-                        svcView!.userInteractionEnabled = true
-                        svcView!.backgroundColor = UIColor.clearColor()
+                        svcView!.isUserInteractionEnabled = true
+                        svcView!.backgroundColor = UIColor.clear
                         bgView.addSubview(svcView!)
-                        svcView?.snp_makeConstraints(closure: { (make) in
+                        svcView?.snp.makeConstraints({ (make) in
                             make.left.equalTo(serviceLabel!)
                             if index != 0 {
                                 let preView = bgView.viewWithTag(svcView!.tag - 1)!
-                                make.top.equalTo(preView.snp_bottom).offset(5)
+                                make.top.equalTo(preView.snp.bottom).offset(5)
                             } else {
-                                make.top.equalTo(serviceLabel!.snp_bottom).offset(12.5)
+                                make.top.equalTo(serviceLabel!.snp.bottom).offset(12.5)
                             }
                             make.right.equalTo(bgView).offset(-10)
                             make.height.equalTo(40)
@@ -146,13 +146,13 @@ open class ServiceCell : UITableViewCell {
                     if titleLabel == nil {
                         titleLabel = UILabel()
                         titleLabel!.tag = svcView!.tag * 10 + index
-                        titleLabel!.font = UIFont.systemFontOfSize(S15)
-                        titleLabel!.userInteractionEnabled = true
-                        titleLabel!.backgroundColor = UIColor.clearColor()
-                        titleLabel!.textAlignment = NSTextAlignment.Left
+                        titleLabel!.font = UIFont.systemFont(ofSize: S15)
+                        titleLabel!.isUserInteractionEnabled = true
+                        titleLabel!.backgroundColor = UIColor.clear
+                        titleLabel!.textAlignment = NSTextAlignment.left
                         titleLabel!.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
                         svcView!.addSubview(titleLabel!)
-                        titleLabel!.snp_makeConstraints(closure: { (make) in
+                        titleLabel!.snp.makeConstraints({ (make) in
                             make.left.equalTo(svcView!)
                             make.top.equalTo(svcView!)
                             make.width.equalTo(AtapteWidthValue(100))
@@ -164,14 +164,14 @@ open class ServiceCell : UITableViewCell {
                     if timeLabel == nil {
                         timeLabel = UILabel()
                         timeLabel!.tag = svcView!.tag * 11 + index
-                        timeLabel!.font = UIFont.systemFontOfSize(S15)
-                        timeLabel!.userInteractionEnabled = true
-                        timeLabel!.backgroundColor = UIColor.clearColor()
-                        timeLabel!.textAlignment = NSTextAlignment.Left
+                        timeLabel!.font = UIFont.systemFont(ofSize: S15)
+                        timeLabel!.isUserInteractionEnabled = true
+                        timeLabel!.backgroundColor = UIColor.clear
+                        timeLabel!.textAlignment = NSTextAlignment.left
                         timeLabel!.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
                         svcView!.addSubview(timeLabel!)
-                        timeLabel!.snp_makeConstraints(closure: { (make) in
-                            make.left.equalTo(titleLabel!.snp_right).offset(0)
+                        timeLabel!.snp.makeConstraints({ (make) in
+                            make.left.equalTo(titleLabel!.snp.right).offset(0)
                             make.top.equalTo(svcView!)
 //                            make.width.equalTo(150)
                             make.bottom.equalTo(svcView!)
@@ -182,14 +182,14 @@ open class ServiceCell : UITableViewCell {
                     if payLabel == nil {
                         payLabel = UILabel()
                         payLabel!.tag = svcView!.tag * 12 + index
-                        payLabel!.font = UIFont.systemFontOfSize(S15)
-                        payLabel!.userInteractionEnabled = true
-                        payLabel!.backgroundColor = UIColor.clearColor()
-                        payLabel!.textAlignment = NSTextAlignment.Right
+                        payLabel!.font = UIFont.systemFont(ofSize: S15)
+                        payLabel!.isUserInteractionEnabled = true
+                        payLabel!.backgroundColor = UIColor.clear
+                        payLabel!.textAlignment = NSTextAlignment.right
                         payLabel!.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
                         svcView!.addSubview(payLabel!)
-                        payLabel?.snp_makeConstraints(closure: { (make) in
-//                            make.left.equalTo(timeLabel!.snp_right)
+                        payLabel?.snp.makeConstraints({ (make) in
+//                            make.left.equalTo(timeLabel!.snp.right)
                             make.right.equalTo(svcView!).offset(-10)
                             make.top.equalTo(svcView!)
                             make.bottom.equalTo(svcView!)
@@ -204,7 +204,7 @@ open class ServiceCell : UITableViewCell {
                             bottomLine?.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
                             bottomLine?.tag = svcView!.tag * 13 + index
                             svcView?.addSubview(bottomLine!)
-                            bottomLine?.snp_makeConstraints(closure: { (make) in
+                            bottomLine?.snp.makeConstraints({ (make) in
                                 make.left.equalTo(svcView!).offset(-5)
                                 make.right.equalTo(self.contentView)
                                 make.bottom.equalTo(svcView!)
@@ -227,26 +227,26 @@ open class ServiceCell : UITableViewCell {
         let bottomControl = bgView?.viewWithTag(tags["bottomControl"]!)
         let detailBtn = bgView?.viewWithTag(tags["detailBtn"]!) as? UIButton
         detailBtn?.isSelected = spread
-        for (index, _) in servicesInfo!.enumerate() {
+        for (index, _) in servicesInfo!.enumerated() {
             if let svcView = bgView?.viewWithTag(tags["svcView"]! * 10 + index) {
                 if let bottomLine = svcView.viewWithTag(tags["svcView"]! * 13 + index) {
-                    bottomLine.snp_updateConstraints(closure: { (make) in
+                    bottomLine.snp.updateConstraints({ (make) in
                         make.height.equalTo(spread ? 1 : 0)
                     })
                 }
-                svcView.snp_updateConstraints(closure: { (make) in
+                svcView.snp.updateConstraints({ (make) in
                     make.height.equalTo(spread ? 40 : 0)
                     if index == servicesInfo!.count - 1 {
                         if spread {
-                            bottomControl?.snp_remakeConstraints(closure: { (make) in
-                                make.top.equalTo(svcView.snp_bottom)
+                            bottomControl?.snp.remakeConstraints({ (make) in
+                                make.top.equalTo(svcView.snp.bottom)
                                 make.bottom.equalTo(bgView!).offset(-2.5)
                                 make.left.equalTo(bgView!)
                                 make.right.equalTo(bgView!)
                             })
                         } else {
-                            bottomControl?.snp_remakeConstraints(closure: { (make) in
-                                make.top.equalTo(serviceLabel!.snp_bottom)
+                            bottomControl?.snp.remakeConstraints({ (make) in
+                                make.top.equalTo(serviceLabel!.snp.bottom)
                                 make.bottom.equalTo(bgView!).offset(-10)
                                 make.left.equalTo(bgView!)
                                 make.right.equalTo(bgView!)
@@ -261,7 +261,7 @@ open class ServiceCell : UITableViewCell {
     }
     
     func detailAction(_ sender: UIButton?) {
-        XCGLogger.defaultInstance().debug("detailAction")
+        XCGLogger.debug("detailAction")
         spreadAction()
     }
     
@@ -271,7 +271,7 @@ open class ServiceCell : UITableViewCell {
     }
     
     func selectAction(_ sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
+        XCGLogger.debug("selectAction:\(sender!.tag)")
     }
     
     required public init?(coder aDecoder: NSCoder) {

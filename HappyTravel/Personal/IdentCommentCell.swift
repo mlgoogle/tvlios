@@ -76,7 +76,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             bgView?.layer.cornerRadius = 5
             bgView?.layer.masksToBounds = true
             contentView.addSubview(bgView!)
-            bgView?.snp_makeConstraints(closure: { (make) in
+            bgView?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.right.equalTo(contentView).offset(-10)
@@ -93,7 +93,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                 lineView?.tag = tags["lineView"]! * 10 + i
                 lineView?.backgroundColor = UIColor.init(decR: 230, decG: 230, decB: 230, a: 1)
                 bgView?.addSubview(lineView!)
-                lineView?.snp_makeConstraints(closure: { (make) in
+                lineView?.snp.makeConstraints({ (make) in
                     make.top.equalTo(bgView!).offset(25 + 90 * i)
                     make.left.equalTo(bgView!).offset(40)
                     make.right.equalTo(bgView!).offset(-40)
@@ -111,7 +111,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                 lineTitleLab?.textAlignment = .center
                 lineTitleLab?.font = UIFont.systemFont(ofSize: S15)
                 bgView?.addSubview(lineTitleLab!)
-                lineTitleLab?.snp_makeConstraints(closure: { (make) in
+                lineTitleLab?.snp.makeConstraints({ (make) in
                     make.center.equalTo(lineView!)
                 })
             }
@@ -125,10 +125,10 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                     starBGView?.backgroundColor = UIColor.clear
                     starBGView?.isUserInteractionEnabled = true
                     bgView?.addSubview(starBGView!)
-                    starBGView?.snp_makeConstraints(closure: { (make) in
+                    starBGView?.snp.makeConstraints({ (make) in
                         make.left.equalTo(bgView!).offset(60)
                         make.right.equalTo(bgView!).offset(-60)
-                        make.top.equalTo(lineTitleLab!.snp_bottom).offset(16)
+                        make.top.equalTo(lineTitleLab!.snp.bottom).offset(16)
                         make.height.equalTo(25)
                     })
                 }
@@ -140,12 +140,12 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
                         star!.tag = starBGView!.tag * 10 + j
                         star?.addTarget(self, action: #selector(IdentCommentCell.starAction(_:)), for: .touchUpInside)
                         starBGView!.addSubview(star!)
-                        star!.snp_makeConstraints(closure: { (make) in
+                        star!.snp.makeConstraints({ (make) in
                             if j == 0 {
                                 make.left.equalTo(starBGView!)
                             } else {
-                                let width = UIScreen.mainScreen().bounds.size.width - 120 - 20
-                                make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + j - 1) as? UIButton)!.snp_right).offset((width - 25*5) / 4.0)
+                                let width = UIScreen.main.bounds.size.width - 120 - 20
+                                make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + j - 1) as? UIButton)!.snp.right).offset((width - 25*5) / 4.0)
                             }
                             make.top.equalTo(starBGView!)
                             make.bottom.equalTo(starBGView!)
@@ -176,10 +176,10 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
             textView?.layer.masksToBounds = true
             textView?.returnKeyType = .done
             bgView?.addSubview(textView!)
-            textView?.snp_makeConstraints(closure: { (make) in
+            textView?.snp.makeConstraints({ (make) in
                 make.left.equalTo(bgView!).offset(10)
                 make.right.equalTo(bgView!).offset(-10)
-                make.top.equalTo(lastLineView!.snp_bottom).offset(25)
+                make.top.equalTo(lastLineView!.snp.bottom).offset(25)
                 make.height.equalTo(90)
                 make.bottom.equalTo(bgView!).offset(-25)
             })

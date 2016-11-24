@@ -165,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             if vc.isKind(of: ForthwithVC.self) {
                 if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
                     vc.navigationController?.popToRootViewController(animated: false)
-                    (vc as! ForthwithVC).msgAction(notification.userInfo)
+                    (vc as! ForthwithVC).msgAction(notification.userInfo as AnyObject?)
                     
                 }
                 
@@ -237,7 +237,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func geTuiSdkDidReceivePayloadData(_ payloadData: Data!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {
         GeTuiSdk.resetBadge()
-        XCGLogger.debug("\(payloadData.length)")
+        XCGLogger.debug("\(payloadData.count)")
         XCGLogger.debug("\(String.init(data: payloadData, encoding: String.Encoding.utf8))")
     }
     

@@ -126,7 +126,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).sorted("start_", ascending: false)
+        hotometers = realm.objects(HodometerInfo.self).sorted(byProperty: "start_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
@@ -154,7 +154,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let realm = try! Realm()
-        consumes = realm.objects(CenturionCardConsumedInfo.self).sorted("order_id_", ascending: false)
+        consumes = realm.objects(CenturionCardConsumedInfo.self).sorted(byProperty: "order_id_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
@@ -184,7 +184,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             footer.endRefreshing()
         }
         let realm = try! Realm()
-        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
+        records = realm.objects(AppointmentInfo.self).sorted(byProperty: "appointment_id_", ascending: false)
         let lastID = notification.userInfo!["lastID"] as! Int
         if lastID == -9999 {
             footer.state = .noMoreData
@@ -203,7 +203,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "segment-bg")
         view.addSubview(segmentBGV)
-        segmentBGV.snp_makeConstraints { (make) in
+        segmentBGV.snp.makeConstraints { (make) in
             make.top.equalTo(view)
             make.left.equalTo(view)
             make.right.equalTo(view)
@@ -222,10 +222,10 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
         view.addSubview(segmentSC!)
-        segmentSC!.snp_makeConstraints { (make) in
+        segmentSC!.snp.makeConstraints { (make) in
             make.center.equalTo(segmentBGV)
             make.height.equalTo(30)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+            make.width.equalTo(UIScreen.main.bounds.size.width / 2.0)
         }
         
         table = UITableView(frame: CGRect.zero, style: .plain)
@@ -240,9 +240,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         table?.register(CentrionCardConsumedCell.self, forCellReuseIdentifier: "CentrionCardConsumedCell")
         table?.register(AppointmentRecordCell.self, forCellReuseIdentifier: "AppointmentRecordCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
-            make.top.equalTo(segmentBGV.snp_bottom)
+            make.top.equalTo(segmentBGV.snp.bottom)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
         })
@@ -319,7 +319,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         switch segmentIndex {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DistanceOfTravelCell", for: indexPath) as! DistanceOfTravelCell
-            if hotometers?.count > 0 && indexPath.row < hotometers?.count {
+            if (hotometers?.count)! > 0 && indexPath.row < (hotometers?.count)! {
                 cell.setHodometerInfo(hotometers![indexPath.row])
             }
             
@@ -327,7 +327,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentRecordCell", for: indexPath) as! AppointmentRecordCell
-            if records?.count > 0 && indexPath.row < records?.count {
+            if (records?.count)! > 0 && indexPath.row < (records?.count)! {
                 cell.setRecordInfo(records![indexPath.row])
             }
             
@@ -335,7 +335,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CentrionCardConsumedCell", for: indexPath) as! CentrionCardConsumedCell
-            if consumes?.count > 0 && indexPath.row < consumes?.count {
+            if (consumes?.count)! > 0 && indexPath.row < (consumes?.count)! {
                 cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
             }
             
@@ -374,7 +374,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             break
         case 1:
             let detailVC = AppointmentDetailVC()
-            guard  records?.count > 0 else {
+            guard  (records?.count)! > 0 else {
                 XCGLogger.error("注意: records数据是空的！")
                 return
             }
@@ -500,7 +500,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                                                "order_id_": order_id_ as AnyObject,
                                                  "passwd_": passwd! as AnyObject]
-                    SocketManager.sendData(.payForInvitationRequest, data: dict)
+                    SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
                 }
                 
             }

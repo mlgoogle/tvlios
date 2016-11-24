@@ -71,7 +71,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         bottomBar?.isUserInteractionEnabled = true
         bottomBar?.image = UIImage.init(named: "bottom-selector-bg")
         view.addSubview(bottomBar!)
-        bottomBar?.snp_makeConstraints(closure: { (make) in
+        bottomBar?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
@@ -85,11 +85,11 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         chatBtn.setTitleColor(UIColor.white, for: UIControlState())
         chatBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), for: .touchUpInside)
         bottomBar?.addSubview(chatBtn)
-        chatBtn.snp_makeConstraints { (make) in
+        chatBtn.snp.makeConstraints { (make) in
             make.left.equalTo(bottomBar!)
             make.top.equalTo(bottomBar!)
             make.bottom.equalTo(bottomBar!)
-            make.right.equalTo(bottomBar!.snp_centerX)
+            make.right.equalTo(bottomBar!.snp.centerX)
         }
         let invitationBtn = UIButton()
         invitationBtn.tag = 1002
@@ -98,11 +98,11 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         invitationBtn.setTitleColor(UIColor.white, for: UIControlState())
         invitationBtn.addTarget(self, action: #selector(ServantPersonalVC.bottomBarAction(_:)), for: .touchUpInside)
         bottomBar?.addSubview(invitationBtn)
-        invitationBtn.snp_makeConstraints { (make) in
+        invitationBtn.snp.makeConstraints { (make) in
             make.right.equalTo(bottomBar!)
             make.top.equalTo(bottomBar!)
             make.bottom.equalTo(bottomBar!)
-            make.left.equalTo(bottomBar!.snp_centerX)
+            make.left.equalTo(bottomBar!.snp.centerX)
         }
         
         personalTable = UITableView(frame: CGRect.zero, style: .plain)
@@ -119,11 +119,11 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         personalTable!.separatorStyle = .none
         personalTable!.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         view.addSubview(personalTable!)
-        personalTable!.snp_makeConstraints { (make) in
+        personalTable!.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.top.equalTo(view)
-            make.bottom.equalTo(bottomBar!.snp_top)
+            make.bottom.equalTo(bottomBar!.snp.top)
         }
         
     }
@@ -180,7 +180,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
             sheet.isNormal = isNormal
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
+            sheet.snp.makeConstraints { (make) in
                 make.left.equalTo(alertController!.view).offset(-10)
                 make.right.equalTo(alertController!.view).offset(10)
                 make.bottom.equalTo(alertController!.view).offset(10)
@@ -284,7 +284,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
            sheet.daysList = days
             sheet.delegate = self
             daysAlertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
+            sheet.snp.makeConstraints { (make) in
                 make.left.equalTo(weakSelf.daysAlertController!.view).offset(-10)
                 make.right.equalTo(weakSelf.daysAlertController!.view).offset(10)
                 make.bottom.equalTo(weakSelf.daysAlertController!.view).offset(10)
@@ -411,7 +411,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         let msgVC = PushMessageVC()
 //        msgVC.messageInfo = recommendServants
         
-        if sender?.isKind(of: UIButton) == false {
+        if sender?.isKind(of: UIButton.classForCoder()) == false {
             navigationController?.pushViewController(msgVC, animated: false)
             if let userInfo = sender as? [AnyHashable: Any] {
                 let type = userInfo["type"] as? Int

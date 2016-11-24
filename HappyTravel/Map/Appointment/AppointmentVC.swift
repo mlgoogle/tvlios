@@ -135,18 +135,18 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         commitBtn.layer.masksToBounds = true
         commitBtn.addTarget(self, action: #selector(AppointmentVC.appointment), for: .touchUpInside)
         view.addSubview(commitBtn)
-        commitBtn.snp_makeConstraints(closure: { (make) in
+        commitBtn.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
             make.height.equalTo(65)
         })
         
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(commitBtn.snp_top)
+            make.bottom.equalTo(commitBtn.snp.top)
         })
     }
     
@@ -188,7 +188,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             label.font = .systemFont(ofSize: AtapteWidthValue(S15))
             label.textColor = UIColor.gray
             view.addSubview(label)
-            label.snp_makeConstraints(closure: { (make) in
+            label.snp.makeConstraints({ (make) in
                 make.left.equalTo(view).offset(20)
                 make.top.equalTo(view)
                 make.right.equalTo(view)
@@ -230,7 +230,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 separatorLine = UIView()
                 separatorLine?.backgroundColor = UIColor.init(red: 221/255.0, green: 222/255.0, blue: 222/255.0, alpha: 1)
                 cell?.contentView.addSubview(separatorLine!)
-                separatorLine?.snp_makeConstraints(closure: { (make) in
+                separatorLine?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView)
                     make.bottom.equalTo(cell!.contentView).offset(-0.5)
@@ -257,7 +257,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             citySelectorLab?.textColor = UIColor.black
             citySelectorLab?.font = UIFont.systemFont(ofSize: AtapteWidthValue(S15))
             cell?.contentView.addSubview(citySelectorLab!)
-            citySelectorLab?.snp_makeConstraints(closure: { (make) in
+            citySelectorLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -275,8 +275,8 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             cityLab?.font = UIFont.systemFont(ofSize: S15)
             cityLab?.textColor = UIColor.gray
             cell?.contentView.addSubview(cityLab!)
-            cityLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(citySelectorLab!.snp_right).offset(10)
+            cityLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(citySelectorLab!.snp.right).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
@@ -291,7 +291,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             citySelector?.backgroundColor = UIColor.clear
             citySelector?.image = UIImage.init(named: "city-selector")
             cityLab?.addSubview(citySelector!)
-            citySelector?.snp_makeConstraints(closure: { (make) in
+            citySelector?.snp.makeConstraints({ (make) in
                 make.right.equalTo(cityLab!)
                 make.top.equalTo(cityLab!)
                 make.bottom.equalTo(cityLab!)
@@ -317,7 +317,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             dateTitleLab?.textColor = UIColor.black
             dateTitleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(dateTitleLab!)
-            dateTitleLab?.snp_makeConstraints(closure: { (make) in
+            dateTitleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -334,8 +334,8 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             dateLab?.font = UIFont.systemFont(ofSize: S15)
             dateLab?.textColor = UIColor.black
             cell?.contentView.addSubview(dateLab!)
-            dateLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(dateTitleLab!.snp_right).offset(10)
+            dateLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(dateTitleLab!.snp.right).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
@@ -366,7 +366,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 agentSelectorLab?.font = UIFont.systemFont(ofSize: S15)
                 agentSelectorLab?.text = "代订"
                 cell?.contentView.addSubview(agentSelectorLab!)
-                agentSelectorLab?.snp_makeConstraints(closure: { (make) in
+                agentSelectorLab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -381,7 +381,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 agentSelector?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
                 agentSelector?.addTarget(self, action: #selector(AppointmentVC.agentSwitch(_:)), for: .valueChanged)
                 cell?.contentView.addSubview(agentSelector!)
-                agentSelector?.snp_makeConstraints(closure: { (make) in
+                agentSelector?.snp.makeConstraints({ (make) in
                     make.right.equalTo(cell!.contentView).offset(-15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -403,7 +403,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 lab?.backgroundColor = UIColor.clear
                 lab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(lab!)
-                lab?.snp_makeConstraints(closure: { (make) in
+                lab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -423,8 +423,8 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 textField?.backgroundColor = UIColor.clear
                 textField?.textAlignment = .left
                 cell?.contentView.addSubview(textField!)
-                textField?.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(lab!.snp_right).offset(10)
+                textField?.snp.makeConstraints({ (make) in
+                    make.left.equalTo(lab!.snp.right).offset(10)
                     make.top.equalTo(lab!).offset(-5)
                     make.right.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(lab!).offset(5)
@@ -447,7 +447,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 lab?.font = UIFont.systemFont(ofSize: S15)
                 lab?.text = "性别"
                 cell?.contentView.addSubview(lab!)
-                lab?.snp_makeConstraints(closure: { (make) in
+                lab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.bottom.equalTo(cell!.contentView).offset(-15)
@@ -466,12 +466,12 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     btn?.setTitleColor(UIColor.black, for: UIControlState())
                     btn?.addTarget(self, action: #selector(AppointmentVC.genderSelectAction(_:)), for: .touchUpInside)
                     cell?.contentView.addSubview(btn!)
-                    btn?.snp_makeConstraints(closure: { (make) in
+                    btn?.snp.makeConstraints({ (make) in
                         make.top.equalTo(lab!).offset(-5)
                         make.bottom.equalTo(lab!).offset(5)
                         make.width.equalTo(60)
                         if i == 0 {
-                            make.left.equalTo(lab!.snp_right).offset(10)
+                            make.left.equalTo(lab!.snp.right).offset(10)
                         } else {
                             make.right.equalTo(cell!.contentView).offset(-45)
                         }
@@ -499,7 +499,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     sheet.citysList = citys.allValues as? Array<CityInfo>
                     sheet.delegate = self
                     citysAlertController!.view.addSubview(sheet)
-                    sheet.snp_makeConstraints { (make) in
+                    sheet.snp.makeConstraints { (make) in
                         make.left.equalTo(citysAlertController!.view).offset(-10)
                         make.right.equalTo(citysAlertController!.view).offset(10)
                         make.bottom.equalTo(citysAlertController!.view).offset(10)
@@ -513,7 +513,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     let sheet = DateSelectorSheet()
                     sheet.delegate = self
                     dateAlertController!.view.addSubview(sheet)
-                    sheet.snp_makeConstraints { (make) in
+                    sheet.snp.makeConstraints { (make) in
                         make.left.equalTo(dateAlertController!.view).offset(-10)
                         make.right.equalTo(dateAlertController!.view).offset(10)
                         make.bottom.equalTo(dateAlertController!.view).offset(10)
@@ -652,15 +652,15 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
             
         }
-        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
-                                        "city_code_": cityInfo!.cityCode as AnyObject,
-                                        "start_time_": startDate!.timeIntervalSince1970 as AnyObject,
-                                        "end_time_": endDate!.timeIntervalSince1970 as AnyObject,
-                                        "skills_": skillStr as AnyObject,
-                                        "is_other_": agent == false ? 0 : 1 as AnyObject,
-                                        "other_name_": agent == true ? name! : "",
-                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
-                                        "other_phone_": agent == true ? tel! : ""]
+        let dict:[String: Any] = ["uid_": DataManager.currentUser!.uid,
+                                  "city_code_": cityInfo!.cityCode,
+                                  "start_time_": startDate!.timeIntervalSince1970,
+                                  "end_time_": endDate!.timeIntervalSince1970,
+                                  "skills_": skillStr,
+                                  "is_other_": agent == false ? 0 : 1,
+                                  "other_name_": agent == true ? name! : "",
+                                  "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
+                                  "other_phone_": agent == true ? tel! : ""]
         SocketManager.sendData(.appointmentRequest, data: dict)
     
     }

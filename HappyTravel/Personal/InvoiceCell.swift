@@ -70,7 +70,7 @@ class InvoiceCell: UITableViewCell {
             selectBtn?.setImage(UIImage.init(named: "service-unselect"), for: UIControlState())
             selectBtn?.setImage(UIImage.init(named: "service-selected"), for: .selected)
             contentView.addSubview(selectBtn!)
-            selectBtn?.snp_makeConstraints(closure: { (make) in
+            selectBtn?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(10)
                 make.width.equalTo(20)
@@ -86,9 +86,9 @@ class InvoiceCell: UITableViewCell {
             nameLab?.textAlignment = .left
             nameLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(nameLab!)
-            nameLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(selectBtn!.snp_right).offset(10)
-                make.centerY.equalTo(selectBtn!.snp_centerY)
+            nameLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(selectBtn!.snp.right).offset(10)
+                make.centerY.equalTo(selectBtn!.snp.centerY)
             })
         }
         nameLab?.text = "PAPI酱"
@@ -101,9 +101,9 @@ class InvoiceCell: UITableViewCell {
             titleLab?.textAlignment = .left
             titleLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(titleLab!)
-            titleLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(nameLab!.snp_right).offset(10)
-                make.centerY.equalTo(selectBtn!.snp_centerY)
+            titleLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(nameLab!.snp.right).offset(10)
+                make.centerY.equalTo(selectBtn!.snp.centerY)
             })
         }
         titleLab?.text = "全天服务"
@@ -116,10 +116,10 @@ class InvoiceCell: UITableViewCell {
             priceLab?.textAlignment = .right
             priceLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(priceLab!)
-            priceLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(titleLab!.snp_right).offset(10)
+            priceLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(titleLab!.snp.right).offset(10)
                 make.right.equalTo(contentView).offset(-20)
-                make.centerY.equalTo(selectBtn!.snp_centerY)
+                make.centerY.equalTo(selectBtn!.snp.centerY)
             })
         }
         priceLab?.text = "1200元"
@@ -133,9 +133,9 @@ class InvoiceCell: UITableViewCell {
             timeLab?.textColor = UIColor.gray
             timeLab?.font = UIFont.systemFont(ofSize: S13)
             contentView.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(nameLab!)
-                make.top.equalTo(nameLab!.snp_bottom).offset(10)
+                make.top.equalTo(nameLab!.snp.bottom).offset(10)
                 make.bottom.equalTo(contentView).offset(-10)
             })
         }
@@ -150,8 +150,8 @@ class InvoiceCell: UITableViewCell {
             typeLab?.textColor = UIColor.gray
             typeLab?.font = UIFont.systemFont(ofSize: S13)
             contentView.addSubview(typeLab!)
-            typeLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(timeLab!.snp_right)
+            typeLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(timeLab!.snp.right)
                 make.right.equalTo(priceLab!)
                 make.centerY.equalTo(timeLab!)
             })
@@ -164,7 +164,7 @@ class InvoiceCell: UITableViewCell {
             bottomLine?.tag = tags["bottomLine"]!
             bottomLine?.backgroundColor = UIColor.init(decR: 231, decG: 231, decB: 231, a: 1)
             contentView.addSubview(bottomLine!)
-            bottomLine?.snp_makeConstraints(closure: { (make) in
+            bottomLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(selectBtn!)
                 make.bottom.equalTo(contentView)
                 make.right.equalTo(contentView)

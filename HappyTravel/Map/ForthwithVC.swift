@@ -189,7 +189,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
 //        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
 //        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
 //        view.addSubview(segmentSC!)
-//        segmentSC!.snp_makeConstraints { (make) in
+//        segmentSC!.snp.makeConstraints { (make) in
 //            make.center.equalTo(segmentBGV)
 //            make.height.equalTo(30)
 //            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
@@ -230,9 +230,9 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         leftTips.font = UIFont.systemFont(ofSize: S13)
         leftTips.textColor = UIColor.white
         bottomView.addSubview(leftTips)
-        leftTips.snp_makeConstraints { (make) in
+        leftTips.snp.makeConstraints { (make) in
             make.left.equalTo(bottomView)
-            make.right.equalTo(bottomSelector.snp_left).offset(-10)
+            make.right.equalTo(bottomSelector.snp.left).offset(-10)
             make.top.equalTo(bottomView)
             make.bottom.equalTo(bottomView)
         }
@@ -245,8 +245,8 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         rightTips.font = UIFont.systemFont(ofSize: S13)
         rightTips.textColor = UIColor.white
         bottomView.addSubview(rightTips)
-        rightTips.snp_makeConstraints { (make) in
-            make.left.equalTo(bottomSelector.snp_right).offset(10)
+        rightTips.snp.makeConstraints { (make) in
+            make.left.equalTo(bottomSelector.snp.right).offset(10)
             make.right.equalTo(bottomView)
             make.top.equalTo(bottomView)
             make.bottom.equalTo(bottomView)
@@ -260,13 +260,13 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         mapView!.isShowsUserLocation = true
         mapView!.showsCompass = true
         view.addSubview(mapView!)
-        mapView!.snp_makeConstraints { (make) in
+        mapView!.snp.makeConstraints { (make) in
             make.top.equalTo(view)
             make.left.equalTo(view).offset(0.5)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            make.bottom.equalTo(bottomView.snp_top)
+            make.width.equalTo(UIScreen.main.bounds.size.width - 1)
+            make.bottom.equalTo(bottomView.snp.top)
         }
-//        segmentBGV.snp_makeConstraints { (make) in
+//        segmentBGV.snp.makeConstraints { (make) in
 //            make.top.equalTo(view)
 //            make.left.equalTo(view)
 //            make.right.equalTo(mapView!).offset(0.5)
@@ -279,7 +279,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         recommendBtn.setImage(UIImage.init(named: "tuijian"), for: UIControlState())
         recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), for: .touchUpInside)
         mapView?.addSubview(recommendBtn)
-        recommendBtn.snp_makeConstraints { (make) in
+        recommendBtn.snp.makeConstraints { (make) in
             make.left.equalTo(mapView!).offset(20)
             make.top.equalTo(mapView!).offset(20)
             make.width.equalTo(30)
@@ -288,11 +288,11 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         recommendBtn.isEnabled = false
         
         view.addSubview(appointmentView)
-        appointmentView.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(mapView!.snp_right).offset(0.5)
+        appointmentView.snp.makeConstraints({ (make) in
+            make.left.equalTo(mapView!.snp.right).offset(0.5)
             make.top.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            make.bottom.equalTo(bottomView.snp_top)
+            make.width.equalTo(UIScreen.main.bounds.size.width - 1)
+            make.bottom.equalTo(bottomView.snp.top)
         })
         
         let back2MyLocationBtn = UIButton()
@@ -300,7 +300,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         back2MyLocationBtn.setImage(UIImage.init(named: "mine_location"), for: UIControlState())
         back2MyLocationBtn.addTarget(self, action: #selector(ForthwithVC.back2MyLocationAction(_:)), for: .touchUpInside)
         mapView?.addSubview(back2MyLocationBtn)
-        back2MyLocationBtn.snp_makeConstraints { (make) in
+        back2MyLocationBtn.snp.makeConstraints { (make) in
             make.left.equalTo(mapView!).offset(20)
             make.bottom.equalTo(mapView!).offset(-20)
             make.width.equalTo(30)
@@ -452,7 +452,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             }
             uid_str.remove(at: uid_str.characters.index(before: uid_str.endIndex))
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str as AnyObject]
-            SocketManager.sendData(.getUserInfo, data: dict)
+            SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
         }
         
     }
@@ -541,7 +541,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     }
     
     func servantDetailInfo(_ notification: Notification?) {
-        let data = notification?.userInfo!["data"]
+        let data = notification?.userInfo!["data"] as? [String: Any]
         if data!["error_"]! != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
             return
@@ -565,7 +565,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             sheet.citysList = citys.allValues as? Array<CityInfo>
             sheet.delegate = self
             citysAlertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
+            sheet.snp.makeConstraints { (make) in
                 make.left.equalTo(citysAlertController!.view).offset(-10)
                 make.right.equalTo(citysAlertController!.view).offset(10)
                 make.bottom.equalTo(citysAlertController!.view).offset(10)
@@ -602,14 +602,14 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         let bottomSelector = sender as! UISlider
         if bottomSelector.value > 0.5 {
             bottomSelector.setValue(1, animated: true)
-            mapView!.snp_updateConstraints { (make) in
+            mapView!.snp.updateConstraints { (make) in
                 make.width.equalTo(0)
             }
 
         } else {
             bottomSelector.setValue(0, animated: false)
-            mapView!.snp_updateConstraints { (make) in
-                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            mapView!.snp.updateConstraints { (make) in
+                make.width.equalTo(UIScreen.main.bounds.size.width - 1)
             }
         }
         XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
@@ -657,7 +657,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
                             SocketManager.sendData(.getServantInfo, data: dict)
                         }
                     }
-                } as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler
+                } as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler
             }
             
         }
@@ -670,9 +670,9 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             for (cityCode, cityInfo) in serviceCitys {
                 if (locality! as NSString).range(of: cityInfo.cityName!).length > 0 {
                     var dict = ["city_code_": cityCode, "recommend_type_": 1]
-                    SocketManager.sendData(.getRecommendServants, data: dict)
+                    SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
                     dict["recommend_type_"] = 2
-                    SocketManager.sendData(.getRecommendServants, data: dict)
+                    SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
                     return
                 }
             }
@@ -783,7 +783,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             }
 
             let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data: dict)
+            SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
             
         }
                 
@@ -817,18 +817,18 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         recommendServants.removeAll()
         citysAlertController?.dismiss(animated: true, completion: nil)
         let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)! as AnyObject, "recommend_type_": 1 as AnyObject]
-        SocketManager.sendData(.getRecommendServants, data: dict)
+        SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
     }
     
     func headerRefresh() {
         let dict = ["city_code_": cityCode, "recommend_type_": 2]
-        SocketManager.sendData(.getRecommendServants, data: dict)
+        SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
     }
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(_ servantInfo: UserInfo?) {
         let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid as AnyObject]
-        SocketManager.sendData(.getServantDetailInfo, data: dict)
+        SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
 
     }
     

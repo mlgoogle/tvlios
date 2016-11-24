@@ -33,7 +33,7 @@ class MessageCell: UITableViewCell {
             view?.layer.cornerRadius = 5
             view?.layer.masksToBounds = true
             contentView.addSubview(view!)
-            view?.snp_makeConstraints(closure: { (make) in
+            view?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.right.equalTo(contentView).offset(-10)
@@ -52,7 +52,7 @@ class MessageCell: UITableViewCell {
             headImageView!.isUserInteractionEnabled = true
             headImageView!.backgroundColor = UIColor.clear
             view!.addSubview(headImageView!)
-            headImageView!.snp_makeConstraints { (make) in
+            headImageView!.snp.makeConstraints { (make) in
                 make.left.equalTo(view!).offset(14)
                 make.top.equalTo(view!).offset(13)
                 make.height.equalTo(45)
@@ -68,8 +68,8 @@ class MessageCell: UITableViewCell {
             nickNameLab?.textAlignment = .left
             nickNameLab?.font = UIFont.systemFont(ofSize: S15)
             view?.addSubview(nickNameLab!)
-            nickNameLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(headImageView!.snp_right).offset(10)
+            nickNameLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(headImageView!.snp.right).offset(10)
                 make.top.equalTo(view!).offset(16)
             })
         }
@@ -83,7 +83,7 @@ class MessageCell: UITableViewCell {
             timeLab?.textColor = UIColor.gray
             timeLab?.font = UIFont.systemFont(ofSize: S13)
             view?.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp.makeConstraints({ (make) in
                 make.right.equalTo(view!).offset(-14)
                 make.bottom.equalTo(nickNameLab!)
             })
@@ -100,9 +100,9 @@ class MessageCell: UITableViewCell {
             unreadCntLab?.layer.cornerRadius = 18 / 2.0
             unreadCntLab?.layer.masksToBounds = true
             view?.addSubview(unreadCntLab!)
-            unreadCntLab?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo((timeLab?.snp_right)!).offset(-20)
-                make.top.equalTo(timeLab!.snp_bottom).offset(10)
+            unreadCntLab?.snp.makeConstraints({ (make) in
+                make.right.equalTo((timeLab?.snp.right)!).offset(-20)
+                make.top.equalTo(timeLab!.snp.bottom).offset(10)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })
@@ -119,17 +119,17 @@ class MessageCell: UITableViewCell {
             msgLab?.textColor = UIColor.gray
             msgLab?.numberOfLines = 0
             view?.addSubview(msgLab!)
-            msgLab?.snp_makeConstraints(closure: { (make) in
+            msgLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(nickNameLab!)
-                make.top.equalTo(nickNameLab!.snp_bottom).offset(12)
+                make.top.equalTo(nickNameLab!.snp.bottom).offset(12)
                 make.right.equalTo(timeLab!)
                 make.bottom.equalTo(view!).offset(-13)
             })
         }
         
         view?.addSubview(showDetailInfo)
-        showDetailInfo.snp_makeConstraints { (make) in
-            make.top.equalTo((timeLab?.snp_bottom)!).offset(10)
+        showDetailInfo.snp.makeConstraints { (make) in
+            make.top.equalTo((timeLab?.snp.bottom)!).offset(10)
             make.right.equalTo(timeLab!)
         }
     }

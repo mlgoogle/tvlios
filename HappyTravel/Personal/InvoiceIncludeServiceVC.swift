@@ -36,7 +36,7 @@ class InvoiceIncludeServiceVC: UIViewController {
         tableView?.separatorStyle = .none
         tableView?.register(InvoiceIncludeCell.self, forCellReuseIdentifier: "includeCell")
         view.addSubview(tableView!)
-        tableView?.snp_makeConstraints(closure: { (make) in
+        tableView?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
 

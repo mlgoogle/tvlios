@@ -47,7 +47,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         walletTable?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         walletTable?.separatorStyle = .none
         view.addSubview(walletTable!)
-        walletTable?.snp_makeConstraints(closure: { (make) in
+        walletTable?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
     }
@@ -92,7 +92,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             label.font = .systemFont(ofSize: S15)
             label.textColor = UIColor.gray
             view.addSubview(label)
-            label.snp_makeConstraints(closure: { (make) in
+            label.snp.makeConstraints({ (make) in
                 make.left.equalTo(view).offset(AtapteWidthValue(20))
                 make.top.equalTo(view)
                 make.right.equalTo(view)
@@ -116,7 +116,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             icon = UIImageView()
             icon?.backgroundColor = UIColor.clear
             cell?.contentView.addSubview(icon!)
-            icon?.snp_makeConstraints(closure: { (make) in
+            icon?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -132,8 +132,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             title?.textColor = UIColor.black
             title?.font = UIFont.systemFont(ofSize: 15)
             cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(icon!.snp_right).offset(10)
+            title?.snp.makeConstraints({ (make) in
+                make.left.equalTo(icon!.snp.right).offset(10)
                 make.top.equalTo(icon!)
                 make.bottom.equalTo(icon!)
                 make.right.equalTo(cell!.contentView)
@@ -146,7 +146,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             separateLine?.tag = 1003
             separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
             cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
+            separateLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(icon!)
                 make.right.equalTo(cell!.contentView).offset(40)
                 make.bottom.equalTo(cell!.contentView).offset(0.5)
@@ -163,8 +163,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             subTitleLabel?.textColor = UIColor.black
             subTitleLabel?.font = UIFont.systemFont(ofSize: 15)
             cell?.contentView.addSubview(subTitleLabel!)
-            subTitleLabel?.snp_makeConstraints(closure: { (make) in
-                make.centerY.equalTo(cell!.contentView.snp_centerY)
+            subTitleLabel?.snp.makeConstraints({ (make) in
+                make.centerY.equalTo(cell!.contentView.snp.centerY)
                 make.right.equalTo(0)
             })
         }

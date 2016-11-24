@@ -48,7 +48,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         servantsTable?.separatorStyle = .none
         servantsTable?.register(ServantIntroCell.self, forCellReuseIdentifier: "ServantIntroCell")
         view.addSubview(servantsTable!)
-        servantsTable?.snp_makeConstraints(closure: { (make) in
+        servantsTable?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -102,7 +102,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     //MARK: - ServantIntroCellDeleagte
     func chatAction(_ servantInfo: UserInfo?) {
         let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid as AnyObject]
-        SocketManager.sendData(.getServantDetailInfo, data:dict)
+        SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
         self.servantInfo[(servantInfo?.uid)!] = servantInfo
     }
     /**
@@ -112,7 +112,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
      */
     func servantDetailInfo(_ notification: Notification?) {
         
-        let data = notification?.userInfo!["data"]
+        let data = notification?.userInfo!["data"] as? [String: Any]
         if data!["error_"]! != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error"])")
             return

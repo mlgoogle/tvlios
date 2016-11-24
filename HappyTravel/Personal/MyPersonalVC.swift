@@ -129,11 +129,11 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
         let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat as AnyObject,
                                                   "longitude_": DataManager.currentUser!.gpsLocationLon as AnyObject,
                                                   "distance_": 20.1 as AnyObject]
-        SocketManager.sendData(.getServantInfo, data: dict)
+        SocketManager.sendData(.getServantInfo, data: dict as AnyObject?)
         if let dt = UserDefaults.standard.object(forKey: CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
                         "device_token_": dt] as [String : Any]
-            SocketManager.sendData(.putDeviceToken, data: dict)
+            SocketManager.sendData(.putDeviceToken, data: dict as AnyObject?)
         }
         SocketManager.sendData(.centurionCardInfoRequest, data: nil)
         SocketManager.sendData(.centurionVIPPriceRequest, data: nil)
@@ -205,7 +205,7 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             personalView!.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 51/255.0, alpha: 1)
             personalView!.isUserInteractionEnabled = true
             view.addSubview(personalView!)
-            personalView!.snp_makeConstraints { (make) in
+            personalView!.snp.makeConstraints { (make) in
                 make.top.equalTo(view)
                 make.left.equalTo(view)
                 make.right.equalTo(view)
@@ -223,9 +223,9 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), for: .touchUpInside)
             personalView!.addSubview(headImageView!)
-            headImageView!.snp_makeConstraints { (make) in
-                make.centerY.equalTo(personalView!.snp_centerY)
-                make.left.equalTo(personalView!.snp_left).offset(33)
+            headImageView!.snp.makeConstraints { (make) in
+                make.centerY.equalTo(personalView!.snp.centerY)
+                make.left.equalTo(personalView!.snp.left).offset(33)
                 make.height.equalTo(80)
                 make.width.equalTo(80)
             }
@@ -242,11 +242,11 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             nameLabel!.titleLabel?.font = .systemFont(ofSize: AtapteWidthValue(20))
             nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), for: .touchUpInside)
             personalView!.addSubview(nameLabel!)
-            nameLabel!.snp_makeConstraints { (make) in
-                make.bottom.equalTo(headImageView!.snp_centerY).offset(-2.5)
+            nameLabel!.snp.makeConstraints { (make) in
+                make.bottom.equalTo(headImageView!.snp.centerY).offset(-2.5)
                 make.height.equalTo(20)
-                make.left.equalTo(headImageView!.snp_right).offset(15)
-//                make.right.equalTo(personalView!.snp_right)
+                make.left.equalTo(headImageView!.snp.right).offset(15)
+//                make.right.equalTo(personalView!.snp.right)
             }
         }
         nameLabel?.setTitle(DataManager.currentUser!.nickname!, for: UIControlState())
@@ -258,9 +258,9 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             starView!.tag = 10003
             starView!.backgroundColor = .clear
             personalView!.addSubview(starView!)
-            starView!.snp_makeConstraints { (make) in
+            starView!.snp.makeConstraints { (make) in
                 make.left.equalTo(nameLabel!)
-                make.top.equalTo(nameLabel!.snp_bottom).offset(10)
+                make.top.equalTo(nameLabel!.snp.bottom).offset(10)
                 make.right.equalTo(personalView!)
                 make.height.equalTo(AtapteWidthValue(24))
             }
@@ -274,11 +274,11 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
 //                star!.tag = 10003*10 + i
 //                star!.contentMode = .ScaleAspectFit
 //                starView!.addSubview(star!)
-//                star!.snp_makeConstraints(closure: { (make) in
+//                star!.snp.makeConstraints(closure: { (make) in
 //                    if i == 0 {
 //                        make.left.equalTo(starView!)
 //                    } else {
-//                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
+//                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp.right).offset(10)
 //                    }
 //                    make.top.equalTo(starView!)
 //                    make.bottom.equalTo(starView!)
@@ -299,7 +299,7 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             levelIcon!.tag = 100030
             levelIcon?.contentMode = .scaleAspectFit
             starView!.addSubview(levelIcon!)
-            levelIcon?.snp_makeConstraints(closure: { (make) in
+            levelIcon?.snp.makeConstraints({ (make) in
                 make.left.equalTo(starView!)
                 make.top.equalTo(starView!)
                 make.bottom.equalTo(starView!)
@@ -320,10 +320,10 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
         importantNavVew.isUserInteractionEnabled = true
         importantNavVew.image = UIImage.init(named: "side-bg")
         view.addSubview(importantNavVew)
-        importantNavVew.snp_makeConstraints { (make) in
-            make.left.equalTo((personalView?.snp_left)!)
-            make.right.equalTo((personalView?.snp_right)!)
-            make.top.equalTo((personalView?.snp_bottom)!)
+        importantNavVew.snp.makeConstraints { (make) in
+            make.left.equalTo((personalView?.snp.left)!)
+            make.right.equalTo((personalView?.snp.right)!)
+            make.top.equalTo((personalView?.snp.bottom)!)
             make.bottom.equalTo(view)
         }
         
@@ -341,10 +341,10 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
             itemBtn.addTarget(self, action: #selector(MyPersonalVC.importantOptAction(_:)), for: UIControlEvents.touchUpInside)
             importantNavVew.addSubview(itemBtn)
-            itemBtn.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(importantNavVew.snp_left).offset(35)
-                make.right.equalTo(importantNavVew.snp_right)
-                make.top.equalTo(importantNavVew.snp_top).offset(25 + 50 * index)
+            itemBtn.snp.makeConstraints({ (make) in
+                make.left.equalTo(importantNavVew.snp.left).offset(35)
+                make.right.equalTo(importantNavVew.snp.right)
+                make.top.equalTo(importantNavVew.snp.top).offset(25 + 50 * index)
                 make.height.equalTo(25)
             })
 
@@ -361,10 +361,10 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
         feedbackBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
         feedbackBtn.addTarget(self, action: #selector(MyPersonalVC.feedbackAction(_:)), for: UIControlEvents.touchUpInside)
         importantNavVew.addSubview(feedbackBtn)
-        feedbackBtn.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(importantNavVew.snp_left).offset(35)
-            make.right.equalTo(importantNavVew.snp_right)
-            make.bottom.equalTo(importantNavVew.snp_bottom).offset(-10)
+        feedbackBtn.snp.makeConstraints({ (make) in
+            make.left.equalTo(importantNavVew.snp.left).offset(35)
+            make.right.equalTo(importantNavVew.snp.right)
+            make.bottom.equalTo(importantNavVew.snp.bottom).offset(-10)
             make.height.equalTo(20)
         })
         

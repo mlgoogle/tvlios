@@ -91,38 +91,38 @@ class AppointmentDetailCell: UITableViewCell {
      添加约束
      */
     func addSubviewContraints() {
-        iconImageView.snp_makeConstraints { (make) in
+        iconImageView.snp.makeConstraints { (make) in
             make.top.equalTo(contentView).offset(AtapteHeightValue(13))
             make.left.equalTo(contentView).offset(AtapteWidthValue(15))
             make.height.equalTo(AtapteWidthValue(45))
             make.width.equalTo(AtapteHeightValue(45))
         }
-        nicknameLabel.snp_makeConstraints { (make) in
+        nicknameLabel.snp.makeConstraints { (make) in
             make.top.equalTo(contentView).offset(AtapteHeightValue(24))
-            make.left.equalTo(iconImageView.snp_right).offset(AtapteWidthValue(20))
+            make.left.equalTo(iconImageView.snp.right).offset(AtapteWidthValue(20))
         }
-        serviceTypeLabel.snp_makeConstraints { (make) in
-            make.left.equalTo(nicknameLabel.snp_left).offset(-7)
-            make.top.equalTo(nicknameLabel.snp_bottom).offset(AtapteHeightValue(9))
+        serviceTypeLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(nicknameLabel.snp.left).offset(-7)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(AtapteHeightValue(9))
         }
-        dateLabel.snp_makeConstraints { (make) in
+        dateLabel.snp.makeConstraints { (make) in
             make.left.equalTo(nicknameLabel)
-            make.top.equalTo(serviceTypeLabel.snp_bottom).offset(AtapteHeightValue(13))
+            make.top.equalTo(serviceTypeLabel.snp.bottom).offset(AtapteHeightValue(13))
         }
-        cityImageView.snp_makeConstraints { (make) in
+        cityImageView.snp.makeConstraints { (make) in
             make.left.equalTo(dateLabel)
             make.width.equalTo(22 / 1.5)
             make.height.equalTo(30 / 1.5)
-            make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
+            make.top.equalTo(dateLabel.snp.bottom).offset(AtapteHeightValue(17))
             make.bottom.equalTo(contentView).offset(AtapteHeightValue(0))
         }
-        cityLabel.snp_makeConstraints { (make) in
-            make.left.equalTo(cityImageView.snp_right).offset(10)
+        cityLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(cityImageView.snp.right).offset(10)
             make.centerY.equalTo(cityImageView)
         }
-        detailIconImageView.snp_makeConstraints { (make) in
+        detailIconImageView.snp.makeConstraints { (make) in
             make.top.equalTo(nicknameLabel)
-            make.right.equalTo(contentView.snp_right).offset(AtapteWidthValue(-15))
+            make.right.equalTo(contentView.snp.right).offset(AtapteWidthValue(-15))
         }
         
     }
@@ -135,11 +135,11 @@ class AppointmentDetailCell: UITableViewCell {
      */
     func hideCityInfo() {
 
-        cityImageView.snp_remakeConstraints { (make) in
+        cityImageView.snp.remakeConstraints { (make) in
             make.left.equalTo(dateLabel)
             make.width.equalTo(22 / 1.5)
             make.height.equalTo(30 / 1.5)
-            make.top.equalTo(dateLabel.snp_bottom).offset(AtapteHeightValue(17))
+            make.top.equalTo(dateLabel.snp.bottom).offset(AtapteHeightValue(17))
             make.bottom.equalTo(contentView).offset(AtapteHeightValue(-10))
         }
     }

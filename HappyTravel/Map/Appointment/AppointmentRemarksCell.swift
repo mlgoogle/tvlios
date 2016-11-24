@@ -42,14 +42,14 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
     
     func addSubviewContrains() {
         
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             
             make.left.equalTo(15)
             make.width.equalTo(80)
             make.top.equalTo(15)
         }
-        remarksTextView.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLabel.snp_right).offset(15)
+        remarksTextView.snp.makeConstraints { (make) in
+            make.left.equalTo(titleLabel.snp.right).offset(15)
             make.top.equalTo(15)
             make.bottom.equalTo(-23)
             make.right.equalTo(-15)
