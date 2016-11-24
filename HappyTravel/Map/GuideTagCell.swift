@@ -35,7 +35,7 @@ class GuideTagCell: MAAnnotationView {
 //            headView?.layer.borderWidth = 1
 //            headView?.backgroundColor = UIColor.grayColor()
             addSubview(headView!)
-            headView?.snp_makeConstraints(closure: { (make) in
+            headView?.snp_makeConstraints({ (make) in
                 make.centerX.equalTo(self)
                 make.top.equalTo(self)
                 make.width.equalTo(50)
@@ -53,7 +53,7 @@ class GuideTagCell: MAAnnotationView {
             guideTipsView?.layer.masksToBounds = true
             guideTipsView?.backgroundColor = UIColor.clear
             addSubview(guideTipsView!)
-            guideTipsView?.snp_makeConstraints(closure: { (make) in
+            guideTipsView?.snp_makeConstraints({ (make) in
                 make.centerX.equalTo(self)
                 make.bottom.equalTo(headView!.snp_top).offset(-2)
                 make.width.equalTo(120)
@@ -72,7 +72,7 @@ class GuideTagCell: MAAnnotationView {
             guideTipsLab?.textAlignment = NSTextAlignment.center
             guideTipsLab?.backgroundColor = UIColor.clear
             guideTipsView?.addSubview(guideTipsLab!)
-            guideTipsLab?.snp_makeConstraints(closure: { (make) in
+            guideTipsLab?.snp_makeConstraints({ (make) in
                 make.centerX.equalTo(guideTipsView!)
                 make.top.equalTo(guideTipsView!)
                 make.height.equalTo(30)

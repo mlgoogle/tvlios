@@ -27,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
         
-        XCGLogger.defaultInstance().xcodeColorsEnabled = true
-        XCGLogger.defaultInstance().xcodeColors = [
+        XCGLogger.default.xcodeColorsEnabled = true
+        XCGLogger.default.xcodeColors = [
             .Verbose: .lightGrey,
             .Debug: .darkGrey,
             .Info: .green,
@@ -164,8 +164,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         for vc in vcs! {
             if vc.isKind(of: ForthwithVC.self) {
                 if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-                    vc.navigationController?.popToRootViewController(animated: false)
-                    (vc as! ForthwithVC).msgAction(notification.userInfo)
+                    _ = vc.navigationController?.popToRootViewController(animated: false)
+                    (vc as! ForthwithVC).msgAction(notification.userInfo as AnyObject?)
                     
                 }
                 
@@ -188,14 +188,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         completionHandler(UIBackgroundFetchResult.newData)
 
 
-        let messageDict  = userInfo["aps"]!["category"] as? String
+        let dict = userInfo["aps"] as! [String : Any]
+        let messageDict  = dict["category"] as? String
         
         var str = messageDict!.replacingOccurrences(of: "\n", with: "", options: .literal, range: nil)
         str = str.replacingOccurrences(of: " ", with: "", options: .literal, range: nil)
         let data = str.data(using: String.Encoding.utf8)
         let jsonData = JSON.init(data: data!)
         let pushMessage = PushMessage()
-        pushMessage.setInfo(jsonData.dictionaryObject)
+        pushMessage.setInfo(jsonData.dictionaryObject as Dictionary<String, AnyObject>?)
         
         DataManager.insertPushMessage(pushMessage)
 //        if UIApplication.sharedApplication().applicationState == .Background {
@@ -237,7 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func geTuiSdkDidReceivePayloadData(_ payloadData: Data!, andTaskId taskId: String!, andMsgId msgId: String!, andOffLine offLine: Bool, fromGtAppId appId: String!) {
         GeTuiSdk.resetBadge()
-        XCGLogger.debug("\(payloadData.length)")
+        XCGLogger.debug("\(payloadData.count)")
         XCGLogger.debug("\(String.init(data: payloadData, encoding: String.Encoding.utf8))")
     }
     
@@ -245,7 +246,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
     }
     
-    func geTuiSdkDidOccurError(_ error: NSError!) {
+    func geTuiSdkDidOccurError(_ error: Error!) {
         
     }
     
@@ -253,7 +254,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
     }
     
-    func geTuiSdkDidSetPushMode(_ isModeOff: Bool, error: NSError!) {
+    func geTuiSdkDidSetPushMode(_ isModeOff: Bool, error: Error!) {
         
     }
     

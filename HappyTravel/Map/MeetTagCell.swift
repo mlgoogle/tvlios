@@ -28,7 +28,7 @@ class MeetTagCell: MAAnnotationView {
             meetTipsView?.layer.masksToBounds = true
             meetTipsView?.backgroundColor = UIColor.clear
             addSubview(meetTipsView!)
-            meetTipsView?.snp_makeConstraints(closure: { (make) in
+            meetTipsView?.snp_makeConstraints({ (make) in
                 make.centerX.equalTo(self)
                 make.bottom.equalTo(self.snp_top).offset(-5)
                 make.width.equalTo(120)
@@ -47,7 +47,7 @@ class MeetTagCell: MAAnnotationView {
             timeLab?.textAlignment = NSTextAlignment.center
             timeLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
+            timeLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(meetTipsView!)
                 make.top.equalTo(meetTipsView!)
                 make.width.equalTo(35)
@@ -65,7 +65,7 @@ class MeetTagCell: MAAnnotationView {
             timeUnitLab?.textAlignment = NSTextAlignment.center
             timeUnitLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(timeUnitLab!)
-            timeUnitLab?.snp_makeConstraints(closure: { (make) in
+            timeUnitLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(timeLab!)
                 make.top.equalTo(timeLab!.snp_bottom)
                 make.width.equalTo(timeLab!.snp_width)
@@ -84,7 +84,7 @@ class MeetTagCell: MAAnnotationView {
             tipsLab?.textAlignment = NSTextAlignment.center
             tipsLab?.backgroundColor = UIColor.clear
             meetTipsView?.addSubview(tipsLab!)
-            tipsLab?.snp_makeConstraints(closure: { (make) in
+            tipsLab?.snp_makeConstraints({ (make) in
                 make.left.equalTo(timeLab!.snp_right)
                 make.top.equalTo(meetTipsView!)
                 make.right.equalTo(meetTipsView!)
