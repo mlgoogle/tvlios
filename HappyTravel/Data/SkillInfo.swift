@@ -22,7 +22,7 @@ class SkillInfo: Object {
     
     dynamic var skill_name_:String?
     
-    dynamic var skill_type = SkillType.Common.rawValue
+    dynamic var skill_type_ = SkillType.Common.rawValue
     
     dynamic var labelWidth:Float = 0.0
     
@@ -31,7 +31,7 @@ class SkillInfo: Object {
         
         skill_name_ = info.skill_name_
         
-        skill_type = info.skill_type
+        skill_type_ = info.skill_type_
         
         labelWidth = info.labelWidth
     }

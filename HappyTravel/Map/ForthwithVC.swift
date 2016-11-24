@@ -425,8 +425,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func recommendServants(notification: NSNotification?) {
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
-            let type = data["recommend_type"] as! Int
+            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
+            let type = data["recommend_type_"] as! Int
             var uid_str = ""
             if type == 1 {
                 for servant in servants! {
@@ -522,7 +522,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
-        let servants = data!["result"] as! Array<Dictionary<String, AnyObject>>
+        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
         annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()

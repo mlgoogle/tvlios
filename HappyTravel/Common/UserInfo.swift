@@ -185,7 +185,7 @@ class UserInfo: Object {
                     photoUrlList.append(photoUrl)
                 }
                 break
-            case "service":
+            case "service_list_":
                 serviceList.removeAll()
                 let services = (value as? Array<Dictionary<String, AnyObject>>)
                 for service in services! {
