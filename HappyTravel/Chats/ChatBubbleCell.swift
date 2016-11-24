@@ -105,7 +105,7 @@ class ChatBubbleCell: UITableViewCell {
             
             let constraints: NSArray = contentView.constraints as NSArray
             let indexOfConstraint = constraints.indexOfObject (passingTest: { constraint, idx, stop in
-                return (constraint.firstItem ).tag == bubbleTag && (constraint.firstAttribute == NSLayoutAttribute.left || constraint.firstAttribute == NSLayoutAttribute.right)
+                return (constraint.firstItem ).tag == bubbleTag && (constraint.firstAttribute == .left || constraint.firstAttribute == .right)
             })
             contentView.removeConstraint(constraints[indexOfConstraint] as! NSLayoutConstraint)
             contentView.addConstraint(NSLayoutConstraint(item: bubbleImageView, attribute: layoutAttribute, relatedBy: .equal, toItem: contentView, attribute: layoutAttribute, multiplier: 1, constant: layoutConstant))

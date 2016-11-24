@@ -202,7 +202,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     // MARK: - DoneAction
     func doneAction(_ sender: UIButton) {
         delegate?.endEdit(selectedSkills)
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 }
 

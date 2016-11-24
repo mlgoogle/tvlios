@@ -455,7 +455,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             }
             uid_str.remove(at: uid_str.characters.index(before: uid_str.endIndex))
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str as AnyObject]
-            SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
         }
         
     }
