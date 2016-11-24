@@ -142,13 +142,19 @@ class IdentBaseInfoCell: UITableViewCell {
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         
         if let headImageView = bgView?.viewWithTag(tags["headImageView"]!) as? UIImageView {
-            headImageView.kf_setImageWithURL(URL(string: (userInfo?.headUrl)!), placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+            if userInfo?.headUrl != nil {
                 
-            })
+                headImageView.kf_setImageWithURL(NSURL(string: (userInfo?.headUrl)!), placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+                })
+            }
+            
         }
         
         if let nicknameLab = contentView.viewWithTag(tags["nicknameLab"]!) as? UILabel {
-            nicknameLab.text = userInfo?.nickname!
+            if userInfo?.nickname != nil {
+                
+                nicknameLab.text = userInfo?.nickname!
+            }
         }
         
         if tallys.count != 0 {

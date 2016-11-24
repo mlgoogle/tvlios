@@ -65,6 +65,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table?.separatorStyle = .none
         addSubview(table!)
+
         table?.snp.makeConstraints({ (make) in
             make.left.equalTo(self)
             make.top.equalTo(self)
@@ -115,6 +116,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             label.font = .systemFont(ofSize: S15)
             label.textColor = UIColor.gray
             view.addSubview(label)
+
             label.snp.makeConstraints({ (make) in
                 make.left.equalTo(view).offset(20)
                 make.top.equalTo(view)
@@ -182,6 +184,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 commitBtn?.layer.masksToBounds = true
                 commitBtn?.addTarget(self, action: #selector(AppointmentView.appointment), for: .touchUpInside)
                 cell?.contentView.addSubview(commitBtn!)
+
                 commitBtn?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(20)
                     make.right.equalTo(cell!.contentView).offset(-20)
@@ -199,6 +202,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 separatorLine = UIView()
                 separatorLine?.backgroundColor = UIColor.init(red: 221/255.0, green: 222/255.0, blue: 222/255.0, alpha: 1)
                 cell?.contentView.addSubview(separatorLine!)
+
                 separatorLine?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView)
@@ -226,6 +230,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             citySelectorLab?.textColor = UIColor.black
             citySelectorLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(citySelectorLab!)
+
             citySelectorLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
@@ -244,6 +249,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             cityLab?.font = UIFont.systemFont(ofSize: S15)
             cityLab?.textColor = UIColor.gray
             cell?.contentView.addSubview(cityLab!)
+
             cityLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(citySelectorLab!.snp.right).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
@@ -260,6 +266,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             citySelector?.backgroundColor = UIColor.clear
             citySelector?.image = UIImage.init(named: "city-selector")
             cityLab?.addSubview(citySelector!)
+
             citySelector?.snp.makeConstraints({ (make) in
                 make.right.equalTo(cityLab!)
                 make.top.equalTo(cityLab!)
@@ -286,6 +293,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             dateTitleLab?.textColor = UIColor.black
             dateTitleLab?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(dateTitleLab!)
+
             dateTitleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
@@ -303,6 +311,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             dateLab?.font = UIFont.systemFont(ofSize: S15)
             dateLab?.textColor = UIColor.black
             cell?.contentView.addSubview(dateLab!)
+
             dateLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(dateTitleLab!.snp.right).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
@@ -337,6 +346,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 agentSelectorLab?.font = UIFont.systemFont(ofSize: S15)
                 agentSelectorLab?.text = "代订"
                 cell?.contentView.addSubview(agentSelectorLab!)
+
                 agentSelectorLab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
@@ -352,6 +362,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 agentSelector?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
                 agentSelector?.addTarget(self, action: #selector(AppointmentVC.agentSwitch(_:)), for: .valueChanged)
                 cell?.contentView.addSubview(agentSelector!)
+
                 agentSelector?.snp.makeConstraints({ (make) in
                     make.right.equalTo(cell!.contentView).offset(-15)
                     make.top.equalTo(cell!.contentView).offset(15)
@@ -374,6 +385,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 lab?.backgroundColor = UIColor.clear
                 lab?.font = UIFont.systemFont(ofSize: S15)
                 cell?.contentView.addSubview(lab!)
+
                 lab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
@@ -394,6 +406,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 textField?.backgroundColor = UIColor.clear
                 textField?.textAlignment = .left
                 cell?.contentView.addSubview(textField!)
+
                 textField?.snp.makeConstraints({ (make) in
                     make.left.equalTo(lab!.snp.right).offset(10)
                     make.top.equalTo(lab!).offset(-5)
@@ -420,6 +433,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 lab?.font = UIFont.systemFont(ofSize: S15)
                 lab?.text = "性别"
                 cell?.contentView.addSubview(lab!)
+
                 lab?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(15)
                     make.top.equalTo(cell!.contentView).offset(15)
@@ -439,6 +453,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     btn?.setTitleColor(UIColor.black, for: UIControlState())
                     btn?.addTarget(self, action: #selector(AppointmentVC.genderSelectAction(_:)), for: .touchUpInside)
                     cell?.contentView.addSubview(btn!)
+
                     btn?.snp.makeConstraints({ (make) in
                         make.top.equalTo(lab!).offset(-5)
                         make.bottom.equalTo(lab!).offset(5)
@@ -638,17 +653,21 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             skillStr = skillStr.substring(to: skillStr.characters.index(before: skillStr.endIndex))
         }
         
+        if remarksTextView?.text == nil {
+            remarksTextView?.text = ""
+        }
+        
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
                                         "city_code_": cityInfo!.cityCode as AnyObject,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)) as AnyObject,
                                         "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)) as AnyObject,
                                         "skills_": skillStr as AnyObject,
-                                        "remarks_": (remarksTextView?.text == nil ? "" : remarksTextView?.text)!,
-                                        "is_other_": agent == false ? 0 : 1,
+                                        "remarks_": remarksTextView?.text as AnyObject,
+                                        "is_other_": (agent == false ? 0 : 1) as AnyObject,
                                         "other_name_": agent == true ? name! : "",
                                         "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
                                         "other_phone_": agent == true ? tel! : ""]
-        SocketManager.sendData(.appointmentRequest, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.appointmentRequest, data: dict as AnyObject?)
         commitBtn?.isEnabled = false
     }
     

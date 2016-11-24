@@ -130,6 +130,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 ok?.layer.masksToBounds = true
                 ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), for: .touchUpInside)
                 cell?.contentView.addSubview(ok!)
+
                 ok?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(40)
                     make.top.equalTo(cell!.contentView).offset(15)
