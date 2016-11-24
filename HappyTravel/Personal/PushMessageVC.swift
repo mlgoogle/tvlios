@@ -63,7 +63,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
         
-            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
+            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
            
             var uid_str = ""
             for servant in servants! {
