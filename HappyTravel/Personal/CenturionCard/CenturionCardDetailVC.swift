@@ -106,7 +106,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
         table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table?.separatorStyle = .none
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -153,7 +153,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             headView = UIImageView()
             headView?.tag = tags["headView"]!
             cell?.contentView.addSubview(headView!)
-            headView?.snp_makeConstraints(closure: { (make) in
+            headView?.snp.makeConstraints({ (make) in
                 make.edges.equalTo(cell!.contentView)
                 make.width.height.equalTo(210)
             })
@@ -179,7 +179,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             title?.font = UIFont.systemFont(ofSize: S15)
             title?.textColor = UIColor.black
             cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
+            title?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
                 make.top.equalTo(cell!.contentView).offset(15)
                 make.right.equalTo(cell!.contentView).offset(-15)
@@ -196,9 +196,9 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             descLab?.textColor = UIColor.gray
             descLab?.numberOfLines = 0
             cell?.contentView.addSubview(descLab!)
-            descLab?.snp_makeConstraints(closure: { (make) in
+            descLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(15)
-                make.top.equalTo(title!.snp_bottom).offset(10)
+                make.top.equalTo(title!.snp.bottom).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-15)
                 make.right.equalTo(cell!.contentView).offset(-15)
             })
@@ -231,7 +231,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             callServantBtn?.layer.borderWidth = 1
             callServantBtn?.addTarget(self, action: #selector(CenturionCardDetailVC.callSrevant), for: .touchUpInside)
             cell?.contentView.addSubview(callServantBtn!)
-            callServantBtn?.snp_makeConstraints(closure: { (make) in
+            callServantBtn?.snp.makeConstraints({ (make) in
                 make.centerX.equalTo(cell!.contentView)
                 make.top.equalTo(cell!.contentView).offset(60)
                 make.bottom.equalTo(cell!.contentView).offset(-20)

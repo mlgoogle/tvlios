@@ -29,7 +29,7 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if totalInfos == nil {
                 return
             }
-            table?.mj_footer.hidden =  totalInfos!.count <= 10
+            table?.mj_footer.isHidden =  totalInfos!.count <= 10
         }
     }
     
@@ -111,18 +111,18 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         commitBtn.setTitle("提交", for: UIControlState())
         commitBtn.addTarget(self, action: #selector(InvoiceVC.commitAction(_:)), for: .touchUpInside)
         view.addSubview(commitBtn)
-        commitBtn.snp_makeConstraints { (make) in
+        commitBtn.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
             make.height.equalTo(60)
         }
         
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(commitBtn.snp_top)
+            make.bottom.equalTo(commitBtn.snp.top)
         })
         
         header.setRefreshingTarget(self, refreshingAction: #selector(InvoiceVC.headerRefresh))

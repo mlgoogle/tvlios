@@ -28,16 +28,11 @@ class DataManager: NSObject {
     
     static func setDefaultRealmForUID(_ uid: Int) {
         var config = Realm.Configuration()
-        
-        var path:NSString = (config.fileURL?.absoluteString)!
-        path = path.deletingLastPathComponent as NSString
-        path = path.appendingPathComponent("\(uid)") as NSString
-        path = path.appendingPathExtension("realm")! as NSString
-        config.fileURL = URL(string: path as String)
+        config.fileURL = config.fileURL?.deletingLastPathComponent().appendingPathComponent("\(uid).realm")
         config.schemaVersion = 1
         config.migrationBlock = {migration, oldSchemaVersion in
             if oldSchemaVersion < 1 {
-                migration.enumerate(OrderInfo.className()) { oldObject, newObject in
+                migration.enumerateObjects(ofType: OrderInfo.className()) { oldObject, newObject in
                     newObject!["start_time_"] = 123
                 }
             }
@@ -363,7 +358,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let infos = realm.objects(OpenTicketInfo.self).sorted("time", ascending: true)
+        let infos = realm.objects(OpenTicketInfo.self).sorted(byProperty: "time", ascending: true)
         return infos
     }
     
@@ -372,7 +367,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.Completed.rawValue)")
+        let hodometerInfos = realm.objects(HodometerInfo.self).filter("status_ = \(HodometerStatus.completed.rawValue)")
         return hodometerInfos
     }
     

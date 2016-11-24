@@ -48,11 +48,11 @@ class InvouiceHistoryDetailHeader: UIView {
      添加约束
      */
     func addSubViewConstraint() {
-        statusLabel?.snp_makeConstraints(closure: { (make) in
+        statusLabel?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(self)
             make.top.equalTo(self).offset(14)
         })
-        sendOutTimeLabel?.snp_makeConstraints(closure: { (make) in
+        sendOutTimeLabel?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(self)
             make.bottom.equalTo(self).offset(-14)
         })

@@ -37,7 +37,7 @@ class IdentBaseInfoCell: UITableViewCell {
             bgView?.layer.cornerRadius = 5
             bgView?.layer.masksToBounds = true
             contentView.addSubview(bgView!)
-            bgView?.snp_makeConstraints(closure: { (make) in
+            bgView?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.right.equalTo(contentView).offset(-10)
@@ -56,7 +56,7 @@ class IdentBaseInfoCell: UITableViewCell {
             headImageView?.layer.borderWidth = 1
             headImageView?.layer.borderColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1).cgColor
             bgView!.addSubview(headImageView!)
-            headImageView!.snp_makeConstraints { (make) in
+            headImageView!.snp.makeConstraints { (make) in
                 make.top.equalTo(bgView!).offset(20)
                 make.left.equalTo(bgView!).offset(10)
                 make.width.equalTo(80)
@@ -72,8 +72,8 @@ class IdentBaseInfoCell: UITableViewCell {
             nicknameLab?.backgroundColor = UIColor.clear
             nicknameLab?.font = UIFont.systemFont(ofSize: S15)
             bgView?.addSubview(nicknameLab!)
-            nicknameLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(headImageView!.snp_right).offset(10)
+            nicknameLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(headImageView!.snp.right).offset(10)
                 make.top.equalTo(headImageView!)
             })
         }
@@ -85,7 +85,7 @@ class IdentBaseInfoCell: UITableViewCell {
             starBGView?.tag = tags["starBGView"]!
             starBGView?.backgroundColor = UIColor.clear
             bgView?.addSubview(starBGView!)
-            starBGView?.snp_makeConstraints(closure: { (make) in
+            starBGView?.snp.makeConstraints({ (make) in
                 make.left.equalTo(nicknameLab!)
                 make.right.equalTo(bgView!).offset(-10)
                 make.bottom.equalTo(headImageView!)
@@ -99,11 +99,11 @@ class IdentBaseInfoCell: UITableViewCell {
                     star!.tag = starBGView!.tag * 10 + i
                     star!.contentMode = .scaleAspectFit
                     starBGView!.addSubview(star!)
-                    star!.snp_makeConstraints(closure: { (make) in
+                    star!.snp.makeConstraints({ (make) in
                         if i == 0 {
                             make.left.equalTo(starBGView!)
                         } else {
-                            make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
+                            make.left.equalTo((starBGView!.viewWithTag(starBGView!.tag * 10 + i - 1) as? UIImageView)!.snp.right).offset(10)
                         }
                         make.top.equalTo(starBGView!)
                         make.bottom.equalTo(starBGView!)
@@ -120,11 +120,11 @@ class IdentBaseInfoCell: UITableViewCell {
             tallyBGView?.tag = tags["tallyBGView"]!
             tallyBGView?.backgroundColor = UIColor.clear
             bgView?.addSubview(tallyBGView!)
-            tallyBGView?.snp_makeConstraints(closure: { (make) in
+            tallyBGView?.snp.makeConstraints({ (make) in
                 make.left.equalTo(nicknameLab!)
                 make.right.equalTo(bgView!).offset(-10)
-                make.top.equalTo(nicknameLab!.snp_bottom)
-                make.bottom.equalTo(starBGView!.snp_top)
+                make.top.equalTo(nicknameLab!.snp.bottom)
+                make.bottom.equalTo(starBGView!.snp.top)
             })
         }
     }
@@ -159,7 +159,7 @@ class IdentBaseInfoCell: UITableViewCell {
         
         if tallys.count != 0 {
             let tallyBGView = bgView?.viewWithTag(tags["tallyBGView"]!)
-            for (index, tag) in tallys.enumerate() {
+            for (index, tag) in tallys.enumerated() {
                 if index > 2 {
                     break
                 }
@@ -167,21 +167,21 @@ class IdentBaseInfoCell: UITableViewCell {
                 if tallyItemView == nil {
                     tallyItemView = UIView()
                     tallyItemView!.tag = self.tags["tallyItemView"]! * 10 + index
-                    tallyItemView!.userInteractionEnabled = true
-                    tallyItemView!.backgroundColor = UIColor.clearColor()
+                    tallyItemView!.isUserInteractionEnabled = true
+                    tallyItemView!.backgroundColor = UIColor.clear
                     tallyItemView!.layer.cornerRadius = 25 / 2.0
                     tallyItemView?.layer.masksToBounds = true
-                    tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+                    tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
                     tallyItemView?.layer.borderWidth = 1
                     tallyBGView!.addSubview(tallyItemView!)
                     tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
                     let previousView = tallyBGView!.viewWithTag(tallyItemView!.tag - 1)
-                    tallyItemView!.snp_makeConstraints { (make) in
+                    tallyItemView!.snp.makeConstraints { (make) in
                         make.centerY.equalTo(tallyBGView!)
                         if previousView == nil {
                             make.left.equalTo(tallyBGView!)
                         } else {
-                            make.left.equalTo(previousView!.snp_right).offset(10)
+                            make.left.equalTo(previousView!.snp.right).offset(10)
                         }
                         make.height.equalTo(25)
                     }
@@ -191,14 +191,14 @@ class IdentBaseInfoCell: UITableViewCell {
                 if tallyLabel == nil {
                     tallyLabel = UILabel(frame: CGRectZero)
                     tallyLabel!.tag = tallyItemView!.tag * 10 + 1
-                    tallyLabel!.font = UIFont.systemFontOfSize(S12)
-                    tallyLabel!.userInteractionEnabled = false
-                    tallyLabel!.backgroundColor = UIColor.clearColor()
-                    tallyLabel?.textAlignment = .Center
+                    tallyLabel!.font = UIFont.systemFont(ofSize: S12)
+                    tallyLabel!.isUserInteractionEnabled = false
+                    tallyLabel!.backgroundColor = UIColor.clear
+                    tallyLabel?.textAlignment = .center
                     tallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                     tallyItemView!.addSubview(tallyLabel!)
                     tallyLabel!.translatesAutoresizingMaskIntoConstraints = false
-                    tallyLabel!.snp_makeConstraints { (make) in
+                    tallyLabel!.snp.makeConstraints { (make) in
                         make.left.equalTo(tallyItemView!).offset(10)
                         make.top.equalTo(tallyItemView!)
                         make.bottom.equalTo(tallyItemView!)

@@ -73,7 +73,7 @@ class DistanceOfTravelCell: UITableViewCell {
             view?.layer.cornerRadius = 5
             view?.layer.masksToBounds = true
             contentView.addSubview(view!)
-            view?.snp_makeConstraints(closure: { (make) in
+            view?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.right.equalTo(contentView).offset(-10)
@@ -92,7 +92,7 @@ class DistanceOfTravelCell: UITableViewCell {
             headImageView!.isUserInteractionEnabled = true
             headImageView!.backgroundColor = UIColor.clear
             view!.addSubview(headImageView!)
-            headImageView!.snp_makeConstraints { (make) in
+            headImageView!.snp.makeConstraints { (make) in
                 make.left.equalTo(view!).offset(14)
                 make.top.equalTo(view!).offset(13)
                 make.height.equalTo(45)
@@ -108,8 +108,8 @@ class DistanceOfTravelCell: UITableViewCell {
             nickNameLab?.textAlignment = .left
             nickNameLab?.font = UIFont.systemFont(ofSize: S15)
             view?.addSubview(nickNameLab!)
-            nickNameLab?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(headImageView!.snp_right).offset(10)
+            nickNameLab?.snp.makeConstraints({ (make) in
+                make.left.equalTo(headImageView!.snp.right).offset(10)
                 make.top.equalTo(view!).offset(16)
             })
         }
@@ -123,9 +123,9 @@ class DistanceOfTravelCell: UITableViewCell {
             serviceTitleLab?.textColor = UIColor.black
             serviceTitleLab?.font = UIFont.systemFont(ofSize: S15)
             view?.addSubview(serviceTitleLab!)
-            serviceTitleLab?.snp_makeConstraints(closure: { (make) in
+            serviceTitleLab?.snp.makeConstraints({ (make) in
                 make.left.equalTo(nickNameLab!)
-                make.top.equalTo(nickNameLab!.snp_bottom).offset(9)
+                make.top.equalTo(nickNameLab!.snp.bottom).offset(9)
             })
         }
         
@@ -138,7 +138,7 @@ class DistanceOfTravelCell: UITableViewCell {
             payLab?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
             payLab?.font = UIFont.systemFont(ofSize: 15)
             view?.addSubview(payLab!)
-            payLab?.snp_makeConstraints(closure: { (make) in
+            payLab?.snp.makeConstraints({ (make) in
                 make.right.equalTo(view!).offset(-14)
                 make.top.equalTo(serviceTitleLab!)
             })
@@ -153,8 +153,8 @@ class DistanceOfTravelCell: UITableViewCell {
             timeLab?.textColor = UIColor.gray
             timeLab?.font = UIFont.systemFont(ofSize: S13)
             view?.addSubview(timeLab!)
-            timeLab?.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(serviceTitleLab!.snp_bottom).offset(11)
+            timeLab?.snp.makeConstraints({ (make) in
+                make.top.equalTo(serviceTitleLab!.snp.bottom).offset(11)
                 make.left.equalTo(nickNameLab!)
                 make.bottom.equalTo(view!).offset(-14)
             })
@@ -169,7 +169,7 @@ class DistanceOfTravelCell: UITableViewCell {
             statusLab?.textColor = UIColor.init(red: 245/255.0, green: 146/255.0, blue: 49/255.0, alpha: 1)
             statusLab?.font = UIFont.systemFont(ofSize: S15)
             view?.addSubview(statusLab!)
-            statusLab?.snp_makeConstraints(closure: { (make) in
+            statusLab?.snp.makeConstraints({ (make) in
                 make.right.equalTo(payLab!)
                 make.top.equalTo(timeLab!)
             })

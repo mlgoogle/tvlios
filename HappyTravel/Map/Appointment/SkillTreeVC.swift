@@ -69,7 +69,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         table?.separatorStyle = .none
         table?.register(SkillsCell.self, forCellReuseIdentifier: "SkillsCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints({ (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
@@ -130,7 +130,8 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 ok?.layer.masksToBounds = true
                 ok?.addTarget(self, action: #selector(SkillTreeVC.doneAction(_:)), for: .touchUpInside)
                 cell?.contentView.addSubview(ok!)
-                ok?.snp_makeConstraints({ (make) in
+
+                ok?.snp.makeConstraints({ (make) in
                     make.left.equalTo(cell!.contentView).offset(40)
                     make.top.equalTo(cell!.contentView).offset(15)
                     make.right.equalTo(cell!.contentView).offset(-40)

@@ -52,11 +52,11 @@ class InvoiceHistoryDetailCustomCell: UITableViewCell {
      */
     func addSubViewConstraints() {
         
-        titleLabel?.snp_makeConstraints(closure: { (make) in
+        titleLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(contentView).offset(10)
             make.top.equalTo(contentView).offset(15)
         })
-        dateLabel?.snp_makeConstraints(closure: { (make) in
+        dateLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(titleLabel!)
             make.bottom.equalTo(contentView).offset(-15)
         })
@@ -135,16 +135,16 @@ class InvoiceHistoryDetailNormalCell: UITableViewCell {
      添加约束
      */
     func addSubViewConstraints() {
-        titleLabel?.snp_makeConstraints(closure: { (make) in
+        titleLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(contentView).offset(10)
             make.centerY.equalTo(contentView)
         })
-        infoLabel?.snp_makeConstraints(closure: { (make) in
+        infoLabel?.snp.makeConstraints({ (make) in
             make.left.equalTo(90)
             make.centerY.equalTo(titleLabel!)
         })
     
-        bottomLine?.snp_makeConstraints(closure: { (make) in
+        bottomLine?.snp.makeConstraints({ (make) in
             make.left.equalTo(titleLabel!)
             make.bottom.equalTo(contentView)
             make.right.equalTo(contentView)

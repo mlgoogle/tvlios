@@ -66,7 +66,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func registerNotify() {
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ChatMessgaeNotiy), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NSNotification.Name(rawValue: NotifyDefine.PushMessageNotify), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ObtainTripReply), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NSNotification.Name(rawValue: NotifyDefine.AppointmentRecommendReply), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.PayForInvitationReply), object: nil)
     }
@@ -93,7 +93,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             navigationController?.pushViewController(recommendVC, animated: true)
             uid_str.remove(at: uid_str.characters.index(before: uid_str.endIndex))
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str as AnyObject]
-            SocketManager.sendData(.getUserInfo, data: dict)
+            SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ObtainTripReply), object: nil)
     }
@@ -132,7 +132,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
         let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).sorted("start_", ascending: false)
+        hotometers = realm.objects(HodometerInfo.self).sorted(byProperty: "start_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
@@ -165,7 +165,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "segment-bg")
         view.addSubview(segmentBGV)
-        segmentBGV.snp_makeConstraints { (make) in
+        segmentBGV.snp.makeConstraints { (make) in
             make.top.equalTo(view)
             make.left.equalTo(view)
             make.right.equalTo(view)
@@ -184,10 +184,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: UIControlState.selected)
         segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
         view.addSubview(segmentSC!)
-        segmentSC!.snp_makeConstraints { (make) in
+        segmentSC!.snp.makeConstraints { (make) in
             make.center.equalTo(segmentBGV)
             make.height.equalTo(30)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+            make.width.equalTo(UIScreen.main.bounds.size.width / 2.0)
         }
     
         table = UITableView(frame: CGRect.zero, style: .plain)
@@ -201,9 +201,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
         table?.register(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
-            make.top.equalTo(segmentBGV.snp_bottom)
+            make.top.equalTo(segmentBGV.snp.bottom)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
         })
@@ -261,7 +261,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
             let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
+            let userPushMessage = realm.objects(UserPushMessage.self).sorted(byProperty: "msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread)
             return cell
         } else {
@@ -275,7 +275,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if segmentIndex == 0 {
             let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
+            let userPushMessage = realm.objects(UserPushMessage.self).sorted(byProperty: "msg_time_", ascending: false)[indexPath.row]
 
             let message = userPushMessage.msgList.last
             if message?.push_msg_type == 2231 {
@@ -351,7 +351,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                         "order_id_": (info?.order_id_)! as AnyObject,
                         "passwd_": passwd! as AnyObject]
-                    SocketManager.sendData(.payForInvitationRequest, data: dict)
+                    SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
                 }
                 
             }

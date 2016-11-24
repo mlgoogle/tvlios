@@ -66,45 +66,45 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         infoView.addSubview(infoLabel)
         
         
-        timeLab.snp_remakeConstraints { (make) in
-            make.top.equalTo(serviceTitleLab.snp_bottom).offset(11)
+        timeLab.snp.remakeConstraints { (make) in
+            make.top.equalTo(serviceTitleLab.snp.bottom).offset(11)
             make.left.equalTo(nickNameLab)
         }
         
-        endTimeLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(timeLab.snp_bottom).offset(AtapteHeightValue(5))
+        endTimeLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(timeLab.snp.bottom).offset(AtapteHeightValue(5))
             make.left.equalTo(timeLab)
         }
         
-        statusLabel.snp_remakeConstraints { (make) in
+        statusLabel.snp.remakeConstraints { (make) in
             make.bottom.equalTo(endTimeLabel)
             make.right.equalTo(view).offset(AtapteWidthValue(-10))
         }
         
-        payLabel.snp_remakeConstraints { (make) in
+        payLabel.snp.remakeConstraints { (make) in
             
-            make.bottom.equalTo(statusLabel.snp_top).offset(AtapteHeightValue(-5))
+            make.bottom.equalTo(statusLabel.snp.top).offset(AtapteHeightValue(-5))
             make.right.equalTo(view).offset(AtapteWidthValue(-10))
             
         }
-        infoView.snp_makeConstraints { (make) in
-            make.top.equalTo(endTimeLabel.snp_bottom).offset(AtapteHeightValue(10))
+        infoView.snp.makeConstraints { (make) in
+            make.top.equalTo(endTimeLabel.snp.bottom).offset(AtapteHeightValue(10))
             make.left.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(view.snp_bottom)
+            make.bottom.equalTo(view.snp.bottom)
         }
         
-        lineView.snp_makeConstraints { (make) in
+        lineView.snp.makeConstraints { (make) in
             make.top.equalTo(infoView)
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.height.equalTo(1)
         }
-        infoLabel.snp_makeConstraints { (make) in
-            make.top.equalTo(lineView.snp_bottom).offset(AtapteHeightValue(10))
+        infoLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(lineView.snp.bottom).offset(AtapteHeightValue(10))
             make.left.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(infoView.snp_bottom).offset(-10)
+            make.bottom.equalTo(infoView.snp.bottom).offset(-10)
         }
 
     }
@@ -172,22 +172,22 @@ class AppointmentRecordCell: DistanceOfTravelCell {
          */
         if recordInfo?.is_other_ == 1  {
          
-            infoView.snp_remakeConstraints { (make) in
-                make.top.equalTo(endTimeLabel.snp_bottom).offset(AtapteHeightValue(10))
+            infoView.snp.remakeConstraints { (make) in
+                make.top.equalTo(endTimeLabel.snp.bottom).offset(AtapteHeightValue(10))
                 make.left.equalTo(view!)
                 make.right.equalTo(view!)
-                make.bottom.equalTo(view!.snp_bottom)
+                make.bottom.equalTo(view!.snp.bottom)
             }
             infoView.isHidden = false
             infoLabel.text = "代订 : " + (recordInfo?.other_name_)! + " " + (recordInfo?.other_phone_)!
         } else {
             infoView.isHidden = true
-            infoView.snp_remakeConstraints(closure: { (make) in
-                make.top.equalTo(endTimeLabel.snp_bottom).offset(AtapteHeightValue(10))
+            infoView.snp.remakeConstraints({ (make) in
+                make.top.equalTo(endTimeLabel.snp.bottom).offset(AtapteHeightValue(10))
                 make.left.equalTo(view!)
                 make.right.equalTo(view!)
                 make.height.equalTo(0.001)
-                make.bottom.equalTo(view!.snp_bottom)
+                make.bottom.equalTo(view!.snp.bottom)
             })
         }
         

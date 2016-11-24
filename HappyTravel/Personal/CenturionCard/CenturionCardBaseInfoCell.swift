@@ -34,7 +34,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             bgView!.isUserInteractionEnabled = true
             bgView!.image = UIImage.init(named: "bg-baseinfo")
             contentView.addSubview(bgView!)
-            bgView!.snp_makeConstraints { (make) in
+            bgView!.snp.makeConstraints { (make) in
                 make.top.equalTo(contentView)
                 make.left.equalTo(contentView)
                 make.right.equalTo(contentView)
@@ -53,7 +53,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             headView!.isUserInteractionEnabled = true
             headView!.backgroundColor = UIColor.clear
             bgView!.addSubview(headView!)
-            headView!.snp_makeConstraints { (make) in
+            headView!.snp.makeConstraints { (make) in
                 make.top.equalTo(bgView!).offset(AtapteWidthValue(36))
                 make.centerX.equalTo(bgView!)
                 make.height.equalTo(AtapteWidthValue(80))
@@ -71,9 +71,9 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             levelLabel?.textColor = UIColor.white
             levelLabel?.font = UIFont.boldSystemFont(ofSize: S15)
             bgView?.addSubview(levelLabel!)
-            levelLabel?.snp_makeConstraints(closure: { (make) in
+            levelLabel?.snp.makeConstraints({ (make) in
                 make.centerX.equalTo(bgView!)
-                make.top.equalTo(headView!.snp_bottom).offset(AtapteHeightValue(19))
+                make.top.equalTo(headView!.snp.bottom).offset(AtapteHeightValue(19))
             })
         }
         levelLabel?.text = "会员卡等级"
@@ -87,9 +87,9 @@ class CenturionCardBaseInfoCell : UITableViewCell {
             nicknameLabel?.textColor = .white
             nicknameLabel?.font = UIFont.boldSystemFont(ofSize: S15)
             bgView?.addSubview(nicknameLabel!)
-            nicknameLabel?.snp_makeConstraints(closure: { (make) in
+            nicknameLabel?.snp.makeConstraints({ (make) in
                 make.centerX.equalTo(bgView!)
-                make.top.equalTo(levelLabel!.snp_bottom).offset(AtapteHeightValue(7))
+                make.top.equalTo(levelLabel!.snp.bottom).offset(AtapteHeightValue(7))
             })
         }
         nicknameLabel?.text = "用户昵称"

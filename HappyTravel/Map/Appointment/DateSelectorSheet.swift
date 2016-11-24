@@ -33,7 +33,7 @@ class DateSelectorSheet: UIView {
         bgView.backgroundColor = UIColor.white
         bgView.isUserInteractionEnabled = true
         addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(-10)
             make.right.equalTo(self).offset(10)
             make.bottom.equalTo(self).offset(10)
@@ -44,7 +44,7 @@ class DateSelectorSheet: UIView {
         head.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         head.isUserInteractionEnabled = true
         addSubview(head)
-        head.snp_makeConstraints { (make) in
+        head.snp.makeConstraints { (make) in
             make.left.equalTo(bgView)
             make.right.equalTo(bgView)
             make.top.equalTo(bgView)
@@ -57,9 +57,9 @@ class DateSelectorSheet: UIView {
         cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
         cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .touchUpInside)
         head.addSubview(cancelBtn)
-        cancelBtn.snp_makeConstraints { (make) in
+        cancelBtn.snp.makeConstraints { (make) in
             make.left.equalTo(head)
-            make.right.equalTo(head.snp_centerX)
+            make.right.equalTo(head.snp.centerX)
             make.top.equalTo(head)
             make.bottom.equalTo(head)
         }
@@ -70,9 +70,9 @@ class DateSelectorSheet: UIView {
         sureBtn.setTitleColor(UIColor.black, for: UIControlState())
         sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .touchUpInside)
         head.addSubview(sureBtn)
-        sureBtn.snp_makeConstraints { (make) in
+        sureBtn.snp.makeConstraints { (make) in
             make.right.equalTo(head)
-            make.left.equalTo(head.snp_centerX)
+            make.left.equalTo(head.snp.centerX)
             make.top.equalTo(head)
             make.bottom.equalTo(head)
         }
@@ -81,10 +81,10 @@ class DateSelectorSheet: UIView {
         body.backgroundColor = UIColor.clear
         body.isUserInteractionEnabled = true
         addSubview(body)
-        body.snp_makeConstraints { (make) in
+        body.snp.makeConstraints { (make) in
             make.left.equalTo(bgView).offset(48)
             make.right.equalTo(bgView).offset(-48)
-            make.top.equalTo(head.snp_bottom).offset(28)
+            make.top.equalTo(head.snp.bottom).offset(28)
             make.bottom.equalTo(bgView).offset(-38)
         }
         
@@ -93,7 +93,7 @@ class DateSelectorSheet: UIView {
         datePicker?.minimumDate = Date.init(timeIntervalSinceNow: 3600 * 24)
         datePicker?.maximumDate = Date.init(timeIntervalSinceNow: 3600 * 24 * 30)
         body.addSubview(datePicker!)
-        datePicker?.snp_makeConstraints { (make) in
+        datePicker?.snp.makeConstraints { (make) in
             make.left.equalTo(body)
             make.right.equalTo(body)
             make.top.equalTo(body)
@@ -103,10 +103,10 @@ class DateSelectorSheet: UIView {
         let bottomView = UIView()
         bottomView.backgroundColor = UIColor.clear
         body.addSubview(bottomView)
-        bottomView.snp_makeConstraints { (make) in
+        bottomView.snp.makeConstraints { (make) in
             make.left.equalTo(body)
             make.right.equalTo(body)
-            make.top.equalTo(datePicker!.snp_bottom)
+            make.top.equalTo(datePicker!.snp.bottom)
             make.bottom.equalTo(body)
         }
     }

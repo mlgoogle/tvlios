@@ -60,7 +60,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
         }
         let touch = UITapGestureRecognizer.init(target: self, action: #selector(LoginWithMSGVC.touchWhiteSpace))
@@ -71,7 +71,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         bgView.addSubview(blurView)
-        blurView.snp_makeConstraints { (make) in
+        blurView.snp.makeConstraints { (make) in
             make.edges.equalTo(bgView)
         }
         
@@ -82,7 +82,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.image = UIImage.init(named: "logo")
         view.addSubview(logo)
-        logo.snp_makeConstraints { (make) in
+        logo.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view).offset(100)
             make.width.equalTo(width)
@@ -101,9 +101,9 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         usernameField.keyboardType = .phonePad
         usernameField.attributedPlaceholder = NSAttributedString.init(string: "请输入手机号码", attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(usernameField)
-        usernameField.snp_makeConstraints(closure: { (make) in
+        usernameField.snp.makeConstraints({ (make) in
             make.left.equalTo(view).offset(60)
-            make.top.equalTo(logo.snp_bottom).offset(60)
+            make.top.equalTo(logo.snp.bottom).offset(60)
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
@@ -128,17 +128,17 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         getVerifyCodeBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), for: UIControlState())
         getVerifyCodeBtn.addTarget(self, action: #selector(LoginWithMSGVC.getVerifyCodeAction(_:)), for: .touchUpInside)
         view.addSubview(getVerifyCodeBtn)
-        getVerifyCodeBtn.snp_makeConstraints { (make) in
+        getVerifyCodeBtn.snp.makeConstraints { (make) in
             make.right.equalTo(usernameField)
             make.top.equalTo(verifyCodeField)
             make.bottom.equalTo(verifyCodeField)
             make.width.equalTo(100)
         }
         
-        verifyCodeField.snp_makeConstraints(closure: { (make) in
+        verifyCodeField.snp.makeConstraints({ (make) in
             make.left.equalTo(usernameField)
-            make.top.equalTo(usernameField.snp_bottom).offset(20)
-            make.right.equalTo(getVerifyCodeBtn.snp_left).offset(-10)
+            make.top.equalTo(usernameField.snp.bottom).offset(20)
+            make.right.equalTo(getVerifyCodeBtn.snp.left).offset(-10)
             make.height.equalTo(35)
         })
         
@@ -147,7 +147,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             fieldUnderLine.tag = tags["fieldUnderLine"]! + i
             fieldUnderLine.backgroundColor = UIColor.gray
             view.addSubview(fieldUnderLine)
-            fieldUnderLine.snp_makeConstraints(closure: { (make) in
+            fieldUnderLine.snp.makeConstraints({ (make) in
                 if i < 2 {
                     make.left.equalTo(usernameField)
                 } else {
@@ -172,10 +172,10 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         nextBtn.layer.masksToBounds = true
         nextBtn.addTarget(self, action: #selector(LoginWithMSGVC.nextAction(_:)), for: .touchUpInside)
         view.addSubview(nextBtn)
-        nextBtn.snp_makeConstraints { (make) in
+        nextBtn.snp.makeConstraints { (make) in
             make.left.equalTo(usernameField)
             make.right.equalTo(usernameField)
-            make.top.equalTo(verifyCodeField.snp_bottom).offset(60)
+            make.top.equalTo(verifyCodeField.snp.bottom).offset(60)
             make.height.equalTo(45)
         }
         
@@ -186,7 +186,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         loginWithAccountBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), for: UIControlState())
         loginWithAccountBtn.addTarget(self, action: #selector(LoginWithMSGVC.loginWithAccountAction(_:)), for: .touchUpInside)
         view.addSubview(loginWithAccountBtn)
-        loginWithAccountBtn.snp_makeConstraints { (make) in
+        loginWithAccountBtn.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.bottom.equalTo(view).offset(-60)
             make.height.equalTo(25)
@@ -230,7 +230,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func loginResult(_ notification: Notification?) {
-        let data = notification?.userInfo!["data"]
+        let data = notification?.userInfo!["data"] as? [String: Any]
         let err = (data! as AnyObject).allKeys!.contains(where: { (key) -> Bool in
             return key as! String == "error_" ? true : false
         })
@@ -246,7 +246,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     
     func verifyCodeInfoNotify(_ notification: Notification?) {
         SVProgressHUD.dismiss()
-        if let data = notification?.userInfo!["data"] {
+        if let data = notification?.userInfo!["data"] as? [String: Any] {
             verifyCodeTime = (data["timestamp_"] as? Int)!
             token = data["token_"] as? String
         }else{
@@ -300,7 +300,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
         let dict  = ["verify_type_": 1, "phone_num_": username!] as [String : Any]
-        SocketManager.sendData(.sendMessageVerify, data: dict)
+        SocketManager.sendData(.sendMessageVerify, data: dict as AnyObject?)
         sender.isUserInteractionEnabled = false
         setupCountdown()
     }

@@ -33,16 +33,16 @@ class CenturionCardServerItem: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(iconBtn)
-        iconBtn.snp_makeConstraints { (make) in
+        iconBtn.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
             make.size.equalTo(CGSizeMake(AtapteWidthValue(40), AtapteWidthValue(40)))
         }
         
         contentView.addSubview(titleLabel)
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
-            make.top.equalTo(iconBtn.snp_bottom).offset(AtapteWidthValue(4))
+            make.top.equalTo(iconBtn.snp.bottom).offset(AtapteWidthValue(4))
             make.height.equalTo(S12)
         }
     }
@@ -118,7 +118,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             blackCardImage.layer.masksToBounds = true
             blackCardImage.stars = DataManager.currentUser!.centurionCardLv
             sectionFooter.addSubview(blackCardImage)
-            blackCardImage.snp_makeConstraints(closure: { (make) in
+            blackCardImage.snp.makeConstraints({ (make) in
                 make.bottom.equalTo(-10)
                 make.left.equalTo(AtapteWidthValue(20))
                 make.right.equalTo(-AtapteWidthValue(20))
@@ -138,9 +138,9 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         buyBtn.layer.cornerRadius = 5
         buyBtn.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor
         buyBtn.layer.borderWidth = 1
-        buyBtn.hidden = service.privilege_lv_ > DataManager.currentUser!.centurionCardLv ? false : true
+        buyBtn.isHidden = service.privilege_lv_ > DataManager.currentUser!.centurionCardLv ? false : true
         sectionFooter.addSubview(buyBtn)
-        buyBtn.snp_makeConstraints { (make) in
+        buyBtn.snp.makeConstraints { (make) in
             make.bottom.equalTo(0)
             make.height.equalTo(44)
             make.left.equalTo(40)
@@ -159,7 +159,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         contentCollection.delegate = self
         contentCollection.dataSource = self
         contentView.addSubview(contentCollection)
-        contentCollection.snp_makeConstraints { (make) in
+        contentCollection.snp.makeConstraints { (make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
             make.right.equalTo(0)
@@ -176,7 +176,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             noDataLabel.textAlignment = .center
             noDataLabel.backgroundColor = UIColor.white
             contentView.addSubview(noDataLabel)
-            noDataLabel.snp_makeConstraints(closure: { (make) in
+            noDataLabel.snp.makeConstraints({ (make) in
                 make.edges.equalTo(contentView)
             })
             contentView.bringSubview(toFront: noDataLabel)

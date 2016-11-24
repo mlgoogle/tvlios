@@ -37,7 +37,7 @@ class SettingCell: UITableViewCell{
             titleLable?.textAlignment = .left
             titleLable?.textColor = UIColor.black
             contentView.addSubview(titleLable!)
-            titleLable?.snp_makeConstraints(closure: { (make) in
+            titleLable?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(10)
                 make.top.equalTo(contentView).offset(10)
                 make.bottom.equalTo(contentView).offset(-10)
@@ -49,7 +49,7 @@ class SettingCell: UITableViewCell{
             rightLabel?.textColor = UIColor.gray
             rightLabel?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(rightLabel!)
-            rightLabel?.snp_makeConstraints(closure: { (make) in
+            rightLabel?.snp.makeConstraints({ (make) in
                 make.right.equalTo(titleLable!)
                 make.top.equalTo(titleLable!)
                 make.bottom.equalTo(titleLable!)
@@ -58,7 +58,7 @@ class SettingCell: UITableViewCell{
             let upLine = UIView()
             upLine.backgroundColor = colorWithHexString("#e2e2e2")
             contentView.addSubview(upLine)
-            upLine.snp_makeConstraints(closure: { (make) in
+            upLine.snp.makeConstraints({ (make) in
                 make.width.equalTo(ScreenWidth)
                 make.height.equalTo(0.5)
                 make.left.equalTo(titleLable!)
@@ -82,7 +82,7 @@ extension SettingCell{
         }
         switchBtn?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
         contentView.addSubview(switchBtn!)
-        switchBtn?.snp_makeConstraints(closure: { (make) in
+        switchBtn?.snp.makeConstraints({ (make) in
             make.right.equalTo(contentView).offset(-10)
             make.top.equalTo(contentView).offset(10)
             make.bottom.equalTo(contentView).offset(-10)
@@ -170,7 +170,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsTable?.separatorStyle = .none
         settingsTable?.register(SettingCell.classForCoder(), forCellReuseIdentifier: "SettingCell")
         view.addSubview(settingsTable!)
-        settingsTable?.snp_makeConstraints(closure: { (make) in
+        settingsTable?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
     }

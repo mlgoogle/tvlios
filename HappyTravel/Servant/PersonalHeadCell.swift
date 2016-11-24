@@ -35,7 +35,7 @@ class PersonalHeadCell : UITableViewCell {
             view = UIView()
             view!.tag = tags["view"]!
             contentView.addSubview(view!)
-            view?.snp_makeConstraints(closure: { (make) in
+            view?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView)
                 make.top.equalTo(contentView)
                 make.right.equalTo(contentView)
@@ -50,7 +50,7 @@ class PersonalHeadCell : UITableViewCell {
             personalView!.backgroundColor = UIColor.red
             personalView!.isUserInteractionEnabled = true
             view!.addSubview(personalView!)
-            personalView!.snp_makeConstraints { (make) in
+            personalView!.snp.makeConstraints { (make) in
                 make.top.equalTo(view!)
                 make.left.equalTo(view!)
                 make.width.equalTo(width)
@@ -71,7 +71,7 @@ class PersonalHeadCell : UITableViewCell {
             headImageView!.isUserInteractionEnabled = true
             headImageView!.backgroundColor = UIColor.clear
             personalView!.addSubview(headImageView!)
-            headImageView!.snp_makeConstraints { (make) in
+            headImageView!.snp.makeConstraints { (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(25))
                 make.centerY.equalTo(personalView!)
                 make.height.equalTo(AtapteWidthValue(100))
@@ -85,7 +85,7 @@ class PersonalHeadCell : UITableViewCell {
             starLevelView!.tag = tags["starLevelView"]!
             starLevelView?.backgroundColor = UIColor.clear
             personalView!.addSubview(starLevelView!)
-            starLevelView?.snp_makeConstraints(closure: { (make) in
+            starLevelView?.snp.makeConstraints({ (make) in
                 make.bottom.equalTo(personalView!).offset(AtapteWidthValue(-20))
                 make.centerX.equalTo(headImageView!).offset(AtapteWidthValue(10))
                 make.width.equalTo(AtapteWidthValue(width) / 3.0 + AtapteWidthValue(20))
@@ -98,8 +98,8 @@ class PersonalHeadCell : UITableViewCell {
                     star?.tag = starLevelView!.tag * 10 + i
                     star?.backgroundColor = UIColor.clear
                     starLevelView?.addSubview(star!)
-                    star?.snp_makeConstraints(closure: { (make) in
-                        make.left.equalTo(starLevelView!.snp_left).offset(((width / 3.0 + 20) / 5.0) * CGFloat(i))
+                    star?.snp.makeConstraints({ (make) in
+                        make.left.equalTo(starLevelView!.snp.left).offset(((width / 3.0 + 20) / 5.0) * CGFloat(i))
                         make.centerY.equalTo(starLevelView!)
                         make.width.equalTo(AtapteWidthValue(20))
                         make.height.equalTo(AtapteHeightValue(20))
@@ -117,7 +117,7 @@ class PersonalHeadCell : UITableViewCell {
             officialAuth?.backgroundColor = UIColor.clear
             officialAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(officialAuth!)
-            officialAuth?.snp_makeConstraints(closure: { (make) in
+            officialAuth?.snp.makeConstraints({ (make) in
                 make.left.equalTo(personalView!).offset(AtapteWidthValue(20))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.width.equalTo(AtapteWidthValue(20))
@@ -133,8 +133,8 @@ class PersonalHeadCell : UITableViewCell {
             zhimaAuth?.backgroundColor = UIColor.clear
             zhimaAuth?.contentMode = .scaleAspectFit
             personalView?.addSubview(zhimaAuth!)
-            zhimaAuth?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(officialAuth!.snp_right).offset(AtapteWidthValue(10))
+            zhimaAuth?.snp.makeConstraints({ (make) in
+                make.left.equalTo(officialAuth!.snp.right).offset(AtapteWidthValue(10))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.width.equalTo(AtapteWidthValue(20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -152,7 +152,7 @@ class PersonalHeadCell : UITableViewCell {
             authTips?.textColor = UIColor.init(red: 240/255.0, green: 140/255.0, blue: 30/255.0, alpha: 1)
             authTips?.font = UIFont.boldSystemFont(ofSize: AtapteWidthValue(S15))
             personalView?.addSubview(authTips!)
-            authTips?.snp_makeConstraints(closure: { (make) in
+            authTips?.snp.makeConstraints({ (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
                 make.top.equalTo(personalView!).offset(AtapteHeightValue(20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -169,7 +169,7 @@ class PersonalHeadCell : UITableViewCell {
             limitLab?.textColor = .white
             limitLab?.font = UIFont.boldSystemFont(ofSize: AtapteWidthValue(S15))
             personalView?.addSubview(limitLab!)
-            limitLab?.snp_makeConstraints(closure: { (make) in
+            limitLab?.snp.makeConstraints({ (make) in
                 make.right.equalTo(personalView!).offset(AtapteWidthValue(-20))
                 make.bottom.equalTo(personalView!).offset(AtapteHeightValue(-20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -184,8 +184,8 @@ class PersonalHeadCell : UITableViewCell {
             limitIcon?.backgroundColor = UIColor.clear
             limitIcon?.contentMode = .scaleAspectFit
             personalView?.addSubview(limitIcon!)
-            limitIcon?.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(limitLab!.snp_left).offset(AtapteWidthValue(-5))
+            limitIcon?.snp.makeConstraints({ (make) in
+                make.right.equalTo(limitLab!.snp.left).offset(AtapteWidthValue(-5))
                 make.bottom.equalTo(limitLab!)
                 make.width.equalTo(AtapteWidthValue(20))
                 make.height.equalTo(AtapteHeightValue(20))
@@ -208,8 +208,8 @@ class PersonalHeadCell : UITableViewCell {
             
             if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
                 let headUrl = URL(string: userInfo!.headUrl!)
-                headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
+                headImageView.kf_setImage(with: headUrl, placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+
                 }
             }
             

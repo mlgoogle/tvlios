@@ -44,7 +44,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 faceButton.addTarget(self, action: #selector(ChatVC.sendMessageAction), for: UIControlEvents.touchUpInside)
                 toolBar.addSubview(faceButton)
                 faceButton.translatesAutoresizingMaskIntoConstraints = false
-                faceButton.snp_makeConstraints(closure: { (make) in
+                faceButton.snp.makeConstraints({ (make) in
                     make.top.equalTo(toolBar).offset(5)
                     make.left.equalTo(toolBar).offset(5)
                     make.bottom.equalTo(toolBar).offset(-5)
@@ -64,7 +64,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 sendButton.addTarget(self, action: #selector(ChatVC.sendMessageAction), for: UIControlEvents.touchUpInside)
                 toolBar.addSubview(sendButton)
                 sendButton.translatesAutoresizingMaskIntoConstraints = false
-                sendButton.snp_makeConstraints(closure: { (make) in
+                sendButton.snp.makeConstraints({ (make) in
                     make.top.equalTo(toolBar).offset(5)
                     make.right.equalTo(toolBar).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
@@ -82,9 +82,9 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                 textView.textContainerInset = UIEdgeInsetsMake(4, 3, 3, 3)
                 toolBar.addSubview(textView)
                 textView.translatesAutoresizingMaskIntoConstraints = false
-                textView.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(faceButton.snp_right).offset(5)
-                    make.right.equalTo(sendButton.snp_left).offset(-5)
+                textView.snp.makeConstraints({ (make) in
+                    make.left.equalTo(faceButton.snp.right).offset(5)
+                    make.right.equalTo(sendButton.snp.left).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.top.equalTo(toolBar).offset(5)
                 })
@@ -135,7 +135,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         super.viewDidAppear(animated)
         
         if msgList != nil {
-            chatTable!.scrollToRowAtIndexPath(IndexPath.init(forRow: msgList!.count-1, inSection: 0), atScrollPosition: .Bottom, animated: false)
+            chatTable!.scrollToRow(at: IndexPath.init(row: msgList!.count-1, inSection: 0), at: .bottom, animated: false)
         }
         let unreadCntBefore = DataManager.getUnreadMsgCnt(-1)
         DataManager.readMessage(servantInfo!.uid)
@@ -216,7 +216,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             sheet.servantInfo = DataManager.getUserInfo(servantInfo!.uid)
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
+            sheet.snp.makeConstraints { (make) in
                 make.left.equalTo(alertController!.view).offset(-10)
                 make.right.equalTo(alertController!.view).offset(10)
                 make.bottom.equalTo(alertController!.view).offset(10)
@@ -257,7 +257,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
             sheet.daysList = days
             sheet.delegate = self
             daysAlertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
+            sheet.snp.makeConstraints { (make) in
                 make.left.equalTo(daysAlertController!.view).offset(-10)
                 make.right.equalTo(daysAlertController!.view).offset(10)
                 make.bottom.equalTo(daysAlertController!.view).offset(10)
@@ -361,11 +361,11 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         let message = msgList![indexPath.row]
         if message.msg_type_ == PushMessage.MessageType.Date.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatDateCell", for: indexPath) as! ChatDateCell
-            cell.sentDateLabel.text = dateFormatter.stringFromDate(Date(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
+            cell.sentDateLabel.text = dateFormatter.string(from: Date(timeIntervalSince1970: NSNumber.init(value: message.msg_time_).doubleValue))
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatBubbleCell", for: indexPath) as! ChatBubbleCell
-            let msgData = Message(incoming: (message.from_uid_ == DataManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: Date(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
+            let msgData = Message(incoming: (message.from_uid_ == DataManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: Date(timeIntervalSince1970: NSNumber.init(value: message.msg_time_).doubleValue))
             cell.configureWithMessage(msgData)
             return cell
         }
@@ -381,7 +381,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                                                   "msg_time_": NSNumber.init(value: Int64(Date().timeIntervalSince1970) as Int64),
                                                   "content_": msg as AnyObject]
         
-        SocketManager.sendData(.sendChatMessage, data: data)
+        SocketManager.sendData(.sendChatMessage, data: data as AnyObject?)
         let message = PushMessage(value: data)
         DataManager.insertMessage(message)
         

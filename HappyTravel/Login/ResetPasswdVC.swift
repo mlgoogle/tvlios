@@ -54,7 +54,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
         }
         
@@ -66,7 +66,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         bgView.addSubview(blurView)
-        blurView.snp_makeConstraints { (make) in
+        blurView.snp.makeConstraints { (make) in
             make.edges.equalTo(bgView)
         }
         
@@ -77,7 +77,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.image = UIImage.init(named: "logo")
         view.addSubview(logo)
-        logo.snp_makeConstraints { (make) in
+        logo.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view).offset(100)
             make.width.equalTo(width)
@@ -96,9 +96,9 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码",
                                                                     attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(passwdField)
-        passwdField.snp_makeConstraints(closure: { (make) in
+        passwdField.snp.makeConstraints({ (make) in
             make.left.equalTo(view).offset(60)
-            make.top.equalTo(logo.snp_bottom).offset(60)
+            make.top.equalTo(logo.snp.bottom).offset(60)
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
@@ -115,9 +115,9 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         reInPasswdField.attributedPlaceholder = NSAttributedString.init(string: "请重新输入密码",
                                                                         attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(reInPasswdField)
-        reInPasswdField.snp_makeConstraints(closure: { (make) in
+        reInPasswdField.snp.makeConstraints({ (make) in
             make.left.equalTo(passwdField)
-            make.top.equalTo(passwdField.snp_bottom).offset(20)
+            make.top.equalTo(passwdField.snp.bottom).offset(20)
             make.right.equalTo(passwdField)
             make.height.equalTo(35)
         })
@@ -127,7 +127,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             fieldUnderLine.tag = tags["fieldUnderLine"]! + i
             fieldUnderLine.backgroundColor = UIColor.gray
             view.addSubview(fieldUnderLine)
-            fieldUnderLine.snp_makeConstraints(closure: { (make) in
+            fieldUnderLine.snp.makeConstraints({ (make) in
                 make.left.equalTo(passwdField)
                 make.right.equalTo(passwdField)
                 make.bottom.equalTo(i == 0 ? passwdField : reInPasswdField).offset(1)
@@ -144,10 +144,10 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         sureBtn.layer.masksToBounds = true
         sureBtn.addTarget(self, action: #selector(ResetPasswdVC.sureAction(_:)), for: .touchUpInside)
         view.addSubview(sureBtn)
-        sureBtn.snp_makeConstraints { (make) in
+        sureBtn.snp.makeConstraints { (make) in
             make.left.equalTo(passwdField)
             make.right.equalTo(passwdField)
-            make.top.equalTo(reInPasswdField.snp_bottom).offset(60)
+            make.top.equalTo(reInPasswdField.snp.bottom).offset(60)
             make.height.equalTo(45)
         }
         
@@ -160,10 +160,10 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         cancelBtn.layer.masksToBounds = true
         cancelBtn.addTarget(self, action: #selector(lastStep), for: .touchUpInside)
         view.addSubview(cancelBtn)
-        cancelBtn.snp_makeConstraints { (make) in
+        cancelBtn.snp.makeConstraints { (make) in
             make.left.equalTo(passwdField)
             make.right.equalTo(passwdField)
-            make.top.equalTo(sureBtn.snp_bottom).offset(25)
+            make.top.equalTo(sureBtn.snp.bottom).offset(25)
             make.height.equalTo(45)
         }
         
@@ -195,7 +195,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             }
             SVProgressHUD.dismiss()
             let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1] as [String : Any]
-            SocketManager.sendData(.login, data: loginDict)
+            SocketManager.sendData(.login, data: loginDict as AnyObject?)
             
         }
     }
@@ -238,7 +238,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                                                    "timestamp_": verifyCodeTime as AnyObject,
                                                    "verify_code_": verifyCode as AnyObject,
                                                    "token_": token == nil ? "" : token! as AnyObject]
-        SocketManager.sendData(.registerAccountRequest, data: dict)
+        SocketManager.sendData(.registerAccountRequest, data: dict as AnyObject?)
     
     }
     

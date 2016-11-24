@@ -139,7 +139,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         callServantBtn?.addTarget(self, action: #selector(CenturionCardVC.callSrevant), for: .touchUpInside)
         view.addSubview(callServantBtn!)
         callServantBtn?.isHidden = DataManager.currentUser!.centurionCardLv <= 0
-        callServantBtn?.snp_makeConstraints(closure: { (make) in
+        callServantBtn?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
@@ -147,7 +147,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             
         })
     
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
             make.right.equalTo(view)
@@ -277,7 +277,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                                         "wanted_lv_": selectedIndex+1]
         SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
-        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
+        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict as AnyObject?) { [weak self](result) in
             
             let data = result["data"] as! NSDictionary
             if let errorCord = data.value(forKey: "error_"){
@@ -336,7 +336,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
                 "order_id_": record.value(forKey: "order_id_")!,
                 "passwd_": passwd!]
-            SocketManager.sendData(.payForInvitationRequest, data: dict, result: { (result) in
+            SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?, result: { (result) in
                 let data = result["data"] as! NSDictionary
                 if let errorCord = data.value(forKey: "error_"){
                     let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]

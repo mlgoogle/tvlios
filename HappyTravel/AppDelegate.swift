@@ -27,15 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
         
-        XCGLogger.default.xcodeColorsEnabled = true
-        XCGLogger.default.xcodeColors = [
-            .Verbose: .lightGrey,
-            .Debug: .darkGrey,
-            .Info: .green,
-            .Warning: .orange,
-            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()),
-            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
-        ]
+        let log = XCGLogger.default
+        log.setup(level: .debug, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: false, fileLevel: .debug)
+        log.setup(level: .error, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: false, fileLevel: .error)
+        
+//        XCGLogger.default.xcodeColorsEnabled = true
+//        XCGLogger.default.xcodeColors = [
+//            .Verbose: .lightGrey,
+//            .Debug: .darkGrey,
+//            .Info: .green,
+//            .Warning: .orange,
+//            .Error: XCGLogger.XcodeColor(fg: UIColor.redColor(), bg: UIColor.whiteColor()),
+//            .Severe: XCGLogger.XcodeColor(fg: (255, 255, 255), bg: (255, 0, 0))
+//        ]
         
         commonViewSet()
         
@@ -165,6 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             if vc.isKind(of: ForthwithVC.self) {
                 if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
                     _ = vc.navigationController?.popToRootViewController(animated: false)
+
                     (vc as! ForthwithVC).msgAction(notification.userInfo as AnyObject?)
                     
                 }

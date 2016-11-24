@@ -41,9 +41,9 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         tipsLabel.textColor = UIColor.white
         tipsLabel.text = "等待对方同意邀约"
         view.addSubview(tipsLabel)
-        tipsLabel.snp_makeConstraints { (make) in
+        tipsLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.annularProgressView!.snp_top).offset(-20)
+            make.bottom.equalTo(self.annularProgressView!.snp.top).offset(-20)
             make.width.equalTo(view)
             make.height.equalTo(18)
         }
@@ -58,9 +58,9 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         cancelBtn.layer.masksToBounds = true
         cancelBtn.addTarget(self, action: #selector(cancel(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(cancelBtn)
-        cancelBtn.snp_makeConstraints { (make) in
+        cancelBtn.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view)
-            make.top.equalTo(self.annularProgressView!.snp_bottom).offset(40)
+            make.top.equalTo(self.annularProgressView!.snp.bottom).offset(40)
             make.width.equalTo(90)
             make.height.equalTo(30)
         }
@@ -72,7 +72,7 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
         annularProgressView?.delegate = self
         annularProgressView!.maximumValue = 100
         view.addSubview(annularProgressView!)
-        annularProgressView?.snp_makeConstraints(closure: { (make) in
+        annularProgressView?.snp.makeConstraints({ (make) in
             make.center.equalTo(self.view)
             make.width.equalTo(150)
             make.height.equalTo(150)
@@ -80,7 +80,7 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
     }
     
     func start() {
-        XCGLogger.defaultInstance().debug("\(Date.init().timeIntervalSince1970)")
+        XCGLogger.debug("\(Date.init().timeIntervalSince1970)")
         annularProgressView?.startAnimation()
     }
     
@@ -90,7 +90,7 @@ class InvitationVC: UIViewController, AnnularProgressViewDelegate {
 
     // MARK: - AnnularProgressViewDelegate
     func timeout() {
-        XCGLogger.defaultInstance().debug("\(Date.init().timeIntervalSince1970)")
+        XCGLogger.debug("\(Date.init().timeIntervalSince1970)")
         view.removeFromSuperview()
     }
 }
@@ -137,7 +137,7 @@ class AnnularProgressView: UIView {
         timeLabel?.font = UIFont.systemFont(ofSize: AtapteWidthValue(22))
         timeLabel?.textAlignment = NSTextAlignment.center
         addSubview(timeLabel!)
-        timeLabel?.snp_makeConstraints(closure: { (make) in
+        timeLabel?.snp.makeConstraints({ (make) in
             make.center.equalTo(self)
             make.width.equalTo(self)
             make.height.equalTo(22)

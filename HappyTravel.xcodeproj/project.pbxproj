@@ -1343,13 +1343,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "陈奕涛";
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 96YGS7NXK5;
-						ProvisioningStyle = Manual;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1368,13 +1369,13 @@
 					2FA75D051D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = RQ752K8E5Y;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0810;
 						TestTargetID = 2FA75CF11D5081CB00609C8E;
 					};
 					2FA75D101D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = RQ752K8E5Y;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0810;
 						TestTargetID = 2FA75CF11D5081CB00609C8E;
 					};
 				};
@@ -2217,7 +2218,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 96YGS7NXK5;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/Alipay",
@@ -2233,8 +2234,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "eb667b43-e180-40c3-8f90-af8afec6849a";
-				PROVISIONING_PROFILE_SPECIFIER = "dev-16-09-22";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2253,7 +2254,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 96YGS7NXK5;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/Alipay",
@@ -2269,8 +2270,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "eb667b43-e180-40c3-8f90-af8afec6849a";
-				PROVISIONING_PROFILE_SPECIFIER = "dev-16-09-22";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

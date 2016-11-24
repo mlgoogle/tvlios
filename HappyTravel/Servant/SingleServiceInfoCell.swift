@@ -38,7 +38,7 @@ class SingleServiceInfoCell: UITableViewCell {
             selectBtn?.setBackgroundImage(UIImage.init(named: "service-selected"), for: .selected)
             selectBtn?.backgroundColor = UIColor.clear
             contentView.addSubview(selectBtn!)
-            selectBtn?.snp_makeConstraints(closure: { (make) in
+            selectBtn?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(15)
                 make.top.equalTo(contentView).offset(20)
                 make.width.equalTo(20)
@@ -56,7 +56,7 @@ class SingleServiceInfoCell: UITableViewCell {
             priceLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
             priceLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(priceLab!)
-            priceLab!.snp_makeConstraints(closure: { (make) in
+            priceLab!.snp.makeConstraints({ (make) in
                 make.right.equalTo(contentView).offset(-15)
                 make.top.equalTo(selectBtn!)
                 make.bottom.equalTo(selectBtn!)
@@ -75,8 +75,8 @@ class SingleServiceInfoCell: UITableViewCell {
             descLab?.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
             descLab?.font = UIFont.systemFont(ofSize: S15)
             contentView.addSubview(descLab!)
-            descLab!.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(selectBtn!.snp_right).offset(15)
+            descLab!.snp.makeConstraints({ (make) in
+                make.left.equalTo(selectBtn!.snp.right).offset(15)
                 make.top.equalTo(contentView).offset(10)
                 make.bottom.equalTo(contentView).offset(-10)
             })
@@ -88,9 +88,9 @@ class SingleServiceInfoCell: UITableViewCell {
 //            plusOrReduceView?.tag = tags["plusOrReduceView"]!
 //            plusOrReduceView?.backgroundColor = UIColor.clearColor()
 //            contentView.addSubview(plusOrReduceView!)
-//            plusOrReduceView?.snp_makeConstraints(closure: { (make) in
-//                make.left.equalTo((descLab?.snp_right)!)
-//                make.right.equalTo((priceLab?.snp_left)!)
+//            plusOrReduceView?.snp.makeConstraints(closure: { (make) in
+//                make.left.equalTo((descLab?.snp.right)!)
+//                make.right.equalTo((priceLab?.snp.left)!)
 //                make.top.equalTo((descLab)!)
 //                make.bottom.equalTo(descLab!)
 //            })
@@ -109,9 +109,9 @@ class SingleServiceInfoCell: UITableViewCell {
 //            plusButton?.layer.borderColor = UIColor.redColor().CGColor
 //            plusButton?.setTitle("+", forState: .Normal)
 //            plusButton?.addTarget(self, action: #selector(SingleServiceInfoCell.plus), forControlEvents: .TouchUpInside)
-//            plusButton!.snp_makeConstraints(closure: { (make) in
+//            plusButton!.snp.makeConstraints(closure: { (make) in
 //                
-//                make.right.equalTo((plusOrReduceView?.snp_right)!)
+//                make.right.equalTo((plusOrReduceView?.snp.right)!)
 //                make.width.equalTo(30)
 //                make.height.equalTo(30)
 //                make.top.equalTo(plusOrReduceView!)
@@ -129,10 +129,10 @@ class SingleServiceInfoCell: UITableViewCell {
 //            countLabel!.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
 //            countLabel!.font = UIFont.systemFontOfSize(S15)
 //            plusOrReduceView?.addSubview(countLabel!)
-//            countLabel!.snp_makeConstraints(closure: { (make) in
+//            countLabel!.snp.makeConstraints(closure: { (make) in
 //                make.top.equalTo(descLab!)
 //                make.bottom.equalTo(descLab!)
-//                make.right.equalTo((plusButton?.snp_left)!).offset(-5)
+//                make.right.equalTo((plusButton?.snp.left)!).offset(-5)
 //            })
 //        }
 //
@@ -150,10 +150,10 @@ class SingleServiceInfoCell: UITableViewCell {
 //            reduceButton!.addTarget(self, action: #selector(SingleServiceInfoCell.reduce), forControlEvents: .TouchUpInside)
 //            reduceButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
 //            plusOrReduceView?.addSubview(reduceButton!)
-//            reduceButton!.snp_makeConstraints(closure: { (make) in
+//            reduceButton!.snp.makeConstraints(closure: { (make) in
 //                make.width.equalTo(30)
 //                make.height.equalTo(30)
-//                make.right.equalTo((countLabel?.snp_left)!).offset(-5)
+//                make.right.equalTo((countLabel?.snp.left)!).offset(-5)
 //                make.top.equalTo(plusOrReduceView!)
 //            })
 //        }

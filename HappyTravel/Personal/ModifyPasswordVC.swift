@@ -110,7 +110,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         table?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         table?.separatorStyle = .none
         view.addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         
@@ -166,7 +166,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             title?.backgroundColor = UIColor.clear
             title?.font = UIFont.systemFont(ofSize: S15)
             cell?.contentView.addSubview(title!)
-            title?.snp_makeConstraints(closure: { (make) in
+            title?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(10)
                 make.top.equalTo(cell!.contentView).offset(10)
                 make.bottom.equalTo(cell!.contentView).offset(-10)
@@ -183,8 +183,8 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             inputView?.rightViewMode = .whileEditing
             inputView?.clearButtonMode = .whileEditing
             cell?.contentView.addSubview(inputView!)
-            inputView?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(title!.snp_right).offset(10)
+            inputView?.snp.makeConstraints({ (make) in
+                make.left.equalTo(title!.snp.right).offset(10)
                 make.top.equalTo(title!)
                 make.bottom.equalTo(title!)
                 make.right.equalTo(cell!.contentView).offset(-20)
@@ -202,10 +202,10 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             sureBtn?.addTarget(self, action: #selector(ModifyPasswordVC.modifyPwd(_:)), for: .touchUpInside)
             sureBtn?.isEnabled = false
             cell?.contentView.addSubview(sureBtn!)
-            sureBtn?.snp_makeConstraints(closure: { (make) in
+            sureBtn?.snp.makeConstraints({ (make) in
                 make.left.equalTo(cell!.contentView).offset(20)
                 make.top.equalTo(cell!.contentView)
-                make.width.equalTo(UIScreen.mainScreen().bounds.size.width-40)
+                make.width.equalTo(UIScreen.main.bounds.size.width-40)
                 make.height.equalTo(35)
             })
         }
@@ -230,7 +230,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             separateLine = UIView()
             separateLine?.backgroundColor = UIColor.init(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1)
             cell?.contentView.addSubview(separateLine!)
-            separateLine?.snp_makeConstraints(closure: { (make) in
+            separateLine?.snp.makeConstraints({ (make) in
                 make.left.equalTo(title!)
                 make.right.equalTo(cell!.contentView).offset(40)
                 make.bottom.equalTo(cell!.contentView).offset(0.5)
@@ -261,7 +261,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func modifyPwd(_ sender: UIButton?) {
         let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"] as [String : Any]
-        SocketManager.sendData(.modifyPassword, data: dict)
+        SocketManager.sendData(.modifyPassword, data: dict as AnyObject?)
         XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }
     

@@ -30,16 +30,16 @@ class CenturionCardLVItem: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(icon)
-        icon.snp_makeConstraints { (make) in
+        icon.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
             make.size.equalTo(CGSizeMake(AtapteWidthValue(30), AtapteWidthValue(30)))
         }
         
         contentView.addSubview(titleLabel)
-        titleLabel.snp_makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
-            make.top.equalTo(icon.snp_bottom).offset(AtapteWidthValue(4))
+            make.top.equalTo(icon.snp.bottom).offset(AtapteWidthValue(4))
             make.height.equalTo(S12)
         }
     }
@@ -97,7 +97,7 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
         collectionView.reloadData()
         
         let left = (itemWidth / 2.0 ) * (2.0 * CGFloat(indexPath.row) + 1)-10
-        indirector.snp_remakeConstraints { (make) in
+        indirector.snp.remakeConstraints { (make) in
             make.left.equalTo(left)
             make.bottom.equalTo(2)
         }
@@ -110,12 +110,12 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
         contentCollection.delegate = self
         contentCollection.dataSource = self
         contentView.addSubview(contentCollection)
-        contentCollection.snp_makeConstraints { (make) in
+        contentCollection.snp.makeConstraints { (make) in
             make.edges.equalTo(contentView)
         }
         
         contentView.addSubview(indirector)
-        indirector.snp_makeConstraints { (make) in
+        indirector.snp.makeConstraints { (make) in
             make.left.equalTo(ScreenWidth/(CGFloat(self.centurionCardTitle.count)*2)-10)
             make.bottom.equalTo(2)
         }

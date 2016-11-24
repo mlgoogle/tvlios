@@ -59,7 +59,7 @@ class SkillsCell : UITableViewCell {
 //        collectionView?.registerClass(SingleSkillCell.self, forCellWithReuseIdentifier: "skillCell")
 //        contentView.addSubview(collectionView!)
 //
-//        collectionView?.snp_makeConstraints(closure: { (make) in
+//        collectionView?.snp.makeConstraints(closure: { (make) in
 //            
 //            make.edges.equalTo(contentView)
 //        })
@@ -77,7 +77,7 @@ class SkillsCell : UITableViewCell {
             noTallyLabel?.layer.borderWidth = 1
             noTallyLabel!.backgroundColor = UIColor.white
             contentView.addSubview(noTallyLabel!)
-            noTallyLabel!.snp_makeConstraints { (make) in
+            noTallyLabel!.snp.makeConstraints { (make) in
                 make.top.equalTo(contentView).offset(20)
                 make.left.equalTo(contentView).offset(20)
                 make.bottom.equalTo(contentView).offset(-20)
@@ -101,7 +101,8 @@ class SkillsCell : UITableViewCell {
             addnewBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: UIControlState())
             addnewBtn?.addTarget(self, action: #selector(SkillsCell.addNewAction(_:)), for: .touchUpInside)
             contentView.addSubview(addnewBtn!)
-            addnewBtn?.snp_makeConstraints({ (make) in
+
+            addnewBtn?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(20)
                 make.bottom.equalTo(contentView).offset(-20)
@@ -131,7 +132,6 @@ class SkillsCell : UITableViewCell {
                         tallyBtn = UIButton()
                         tallyBtn!.tag = self.tags["tallyBtn"]! * 10 + index
                         tallyBtn!.backgroundColor = UIColor.white
-                        
                         tallyBtn?.titleEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 0)
                         tallyBtn?.layer.cornerRadius = 30 / 2.0
                         tallyBtn?.layer.masksToBounds = true
@@ -146,7 +146,7 @@ class SkillsCell : UITableViewCell {
                          *  记录宽度
                          */
                         allButtonWidth = allButtonWidth + 10 + skill.labelWidth
-                        tallyBtn!.snp_makeConstraints { (make) in
+                        tallyBtn!.snp.makeConstraints { (make) in
                             let previousView = contentView.viewWithTag(tallyBtn!.tag - 1)
                             if previousView == nil {
                                 make.top.equalTo(self.contentView).offset(20)
@@ -158,11 +158,11 @@ class SkillsCell : UITableViewCell {
                                 if allButtonWidth > Float(ScreenWidth) {
                                     
                                     allButtonWidth = 20.0 + 10 + skill.labelWidth
-                                    make.top.equalTo(previousView!.snp_bottom).offset(10)
+                                    make.top.equalTo(previousView!.snp.bottom).offset(10)
                                     make.left.equalTo(self.contentView).offset(20)
                                 } else {
                                     make.top.equalTo(previousView!)
-                                    make.left.equalTo(previousView!.snp_right).offset(10)
+                                    make.left.equalTo(previousView!.snp.right).offset(10)
                                 }
                             }
                             
@@ -188,8 +188,9 @@ class SkillsCell : UITableViewCell {
                         deleteIcon?.text = " - "
                         deleteIcon?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                         contentView.addSubview(deleteIcon!)
-                        deleteIcon?.snp_makeConstraints({ (make) in
-                            make.right.equalTo(tallyBtn!.snp_right).offset(5)
+
+                        deleteIcon?.snp.makeConstraints({ (make) in
+                            make.right.equalTo(tallyBtn!.snp.right).offset(5)
                             make.top.equalTo(tallyBtn!).offset(-5)
                             make.width.equalTo(20)
                             make.height.equalTo(20)
@@ -205,13 +206,13 @@ class SkillsCell : UITableViewCell {
             }
             
             if let noTallyLabel = contentView.viewWithTag(self.tags["noTallyLabel"]!) as? UILabel {
-                noTallyLabel.snp_removeConstraints()
+                noTallyLabel.snp.removeConstraints()
                 noTallyLabel.isHidden = true
             }
          
         } else {
             if let noTallyLabel = contentView.viewWithTag(self.tags["noTallyLabel"]!) as? UILabel {
-                noTallyLabel.snp_remakeConstraints { (make) in
+                noTallyLabel.snp.remakeConstraints { (make) in
                     make.top.equalTo(contentView).offset(20)
                     make.left.equalTo(contentView).offset(20)
                     make.bottom.equalTo(contentView).offset(-20)
@@ -225,12 +226,13 @@ class SkillsCell : UITableViewCell {
         if let addnewBtn = contentView.viewWithTag(self.tags["addnewBtn"]!) as? UIButton {
             addnewBtn.isHidden = style == .addNew ? false : true
             if lastTallyItemView != nil {
-                addnewBtn.snp_remakeConstraints({ (make) in
+
+                addnewBtn.snp.remakeConstraints({ (make) in
                     if  allButtonWidth + 50 > Float(ScreenWidth) {
                         make.left.equalTo(contentView).offset(20)
-                        make.top.equalTo(lastTallyItemView!.snp_bottom).offset(10)
+                        make.top.equalTo(lastTallyItemView!.snp.bottom).offset(10)
                     } else {
-                        make.left.equalTo(lastTallyItemView!.snp_right).offset(10)
+                        make.left.equalTo(lastTallyItemView!.snp.right).offset(10)
                         make.top.equalTo(lastTallyItemView!)
                     }
                     make.bottom.equalTo(contentView).offset(-20)

@@ -56,7 +56,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         bgView.isUserInteractionEnabled = true
         bgView.image = UIImage.init(named: "login-bg")
         view.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.edges.equalTo(view)
         }
         
@@ -68,7 +68,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         bgView.addSubview(blurView)
-        blurView.snp_makeConstraints { (make) in
+        blurView.snp.makeConstraints { (make) in
             make.edges.equalTo(bgView)
         }
         
@@ -79,7 +79,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         logo.layer.masksToBounds = true
         logo.image = UIImage.init(named: "logo")
         view.addSubview(logo)
-        logo.snp_makeConstraints { (make) in
+        logo.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view).offset(100)
             make.width.equalTo(width)
@@ -98,9 +98,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         usernameField.keyboardType = .numberPad
         usernameField.attributedPlaceholder = NSAttributedString.init(string: "请输入手机号码", attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(usernameField)
-        usernameField.snp_makeConstraints(closure: { (make) in
+        usernameField.snp.makeConstraints({ (make) in
             make.left.equalTo(view).offset(60)
-            make.top.equalTo(logo.snp_bottom).offset(60)
+            make.top.equalTo(logo.snp.bottom).offset(60)
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
@@ -117,9 +117,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         passwdField.textAlignment = .left
         passwdField.attributedPlaceholder = NSAttributedString.init(string: "请输入密码", attributes: [NSForegroundColorAttributeName: UIColor.gray])
         view.addSubview(passwdField)
-        passwdField.snp_makeConstraints(closure: { (make) in
+        passwdField.snp.makeConstraints({ (make) in
             make.left.equalTo(usernameField)
-            make.top.equalTo(usernameField.snp_bottom).offset(20)
+            make.top.equalTo(usernameField.snp.bottom).offset(20)
             make.right.equalTo(usernameField)
             make.height.equalTo(35)
         })
@@ -129,7 +129,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             fieldUnderLine.tag = tags["fieldUnderLine"]! + i
             fieldUnderLine.backgroundColor = UIColor.gray
             view.addSubview(fieldUnderLine)
-            fieldUnderLine.snp_makeConstraints(closure: { (make) in
+            fieldUnderLine.snp.makeConstraints({ (make) in
                 make.left.equalTo(usernameField)
                 make.right.equalTo(usernameField)
                 make.bottom.equalTo(i == 0 ? usernameField : passwdField).offset(1)
@@ -146,10 +146,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         loginBtn.layer.masksToBounds = true
         loginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), for: .touchUpInside)
         view.addSubview(loginBtn)
-        loginBtn.snp_makeConstraints { (make) in
+        loginBtn.snp.makeConstraints { (make) in
             make.left.equalTo(usernameField)
             make.right.equalTo(usernameField)
-            make.top.equalTo(passwdField.snp_bottom).offset(60)
+            make.top.equalTo(passwdField.snp.bottom).offset(60)
             make.height.equalTo(45)
         }
         
@@ -164,9 +164,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
 //        servantLoginBtn.layer.masksToBounds = true
 //        servantLoginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
 //        view.addSubview(servantLoginBtn)
-//        servantLoginBtn.snp_makeConstraints { (make) in
+//        servantLoginBtn.snp.makeConstraints { (make) in
 //            make.centerX.equalTo(view)
-//            make.top.equalTo(loginBtn.snp_bottom).offset(5)
+//            make.top.equalTo(loginBtn.snp.bottom).offset(5)
 //            make.width.equalTo(100)
 //            make.height.equalTo(25)
 //        }
@@ -178,7 +178,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         loginWithMSGBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), for: UIControlState())
         loginWithMSGBtn.addTarget(self, action: #selector(LoginVC.login(_:)), for: .touchUpInside)
         view.addSubview(loginWithMSGBtn)
-        loginWithMSGBtn.snp_makeConstraints { (make) in
+        loginWithMSGBtn.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.bottom.equalTo(view).offset(-60)
             make.height.equalTo(25)
@@ -211,7 +211,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001" as AnyObject, "passwd_": "123456" as AnyObject, "user_type_": 2 as AnyObject]
-            SocketManager.sendData(.login, data: dict)
+            SocketManager.sendData(.login, data: dict as AnyObject?)
             return
         }
         
@@ -247,7 +247,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.set(username, forKey: CommonDefine.UserName)
         UserDefaults.standard.set(passwd, forKey: CommonDefine.Passwd)
         UserDefaults.standard.set("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
-        SocketManager.sendData(.login, data: dict)
+        SocketManager.sendData(.login, data: dict as AnyObject?)
     }
     
     func randomSmallCaseString(_ length: Int) -> String {

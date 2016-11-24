@@ -26,7 +26,7 @@ class UploadCell: UITableViewCell {
             titleLable.textColor = UIColor.black
             titleLable.isUserInteractionEnabled = true
             contentView.addSubview(titleLable)
-            titleLable.snp_makeConstraints { (make) in
+            titleLable.snp.makeConstraints { (make) in
                 make.top.equalTo(0)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
@@ -38,8 +38,8 @@ class UploadCell: UITableViewCell {
             backView.layer.cornerRadius = 5
             backView.backgroundColor = UIColor.white
             contentView.addSubview(backView)
-            backView.snp_makeConstraints { (make) in
-                make.top.equalTo(titleLable.snp_bottom)
+            backView.snp.makeConstraints { (make) in
+                make.top.equalTo(titleLable.snp.bottom)
                 make.left.equalTo(15)
                 make.right.equalTo(-15)
                 make.bottom.equalTo(-8)
@@ -49,11 +49,11 @@ class UploadCell: UITableViewCell {
             iconImage.layer.masksToBounds = true
             iconImage.isUserInteractionEnabled = true
             backView.addSubview(iconImage)
-            iconImage.snp_makeConstraints { (make) in
+            iconImage.snp.makeConstraints { (make) in
                 make.top.equalTo(0)
                 make.bottom.equalTo(0)
                 make.width.equalTo(162)
-                make.centerX.equalTo(backView.snp_centerX)
+                make.centerX.equalTo(backView.snp.centerX)
             }
             
         }
@@ -138,7 +138,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                         param["uid_"] = DataManager.currentUser!.uid as AnyObject?
                         param["front_pic_"] = self.photoURL["pic1"]
                         param["back_pic_"] = self.photoURL["pic0"]
-                        SocketManager.sendData(.authenticateUserCard, data:param)
+                        SocketManager.sendData(.authenticateUserCard, data:param as AnyObject?)
                     }
                 }
                 
@@ -160,7 +160,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         tableView!.tableFooterView = UIView()
         tableView!.separatorStyle = .none
         view.addSubview(tableView!)
-        tableView!.snp_makeConstraints { (make) in
+        tableView!.snp.makeConstraints { (make) in
             make.top.equalTo(0)
             make.bottom.equalTo(0)
             make.right.equalTo(0)

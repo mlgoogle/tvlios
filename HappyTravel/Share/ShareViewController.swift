@@ -26,16 +26,16 @@ class ShareItem: UICollectionViewCell {
         super.init(frame: frame)
         contentView.backgroundColor = UIColor.white
         contentView.addSubview(shareIcon)
-        shareIcon.snp_makeConstraints { (make) in
+        shareIcon.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
             make.width.equalTo(CGSizeMake(AtapteWidthValue(60), AtapteWidthValue(60)))
         }
         
         contentView.addSubview(shareTitle)
-        shareTitle.snp_makeConstraints { (make) in
+        shareTitle.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
-            make.top.equalTo(shareIcon.snp_bottom).offset(12)
+            make.top.equalTo(shareIcon.snp.bottom).offset(12)
             make.height.equalTo(S15)
         }
     }
@@ -93,7 +93,7 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         view.addSubview(bgView)
         
         view.addSubview(cancelBtn)
-        cancelBtn.snp_makeConstraints { (make) in
+        cancelBtn.snp.makeConstraints { (make) in
             make.bottom.equalTo(AtapteWidthValue(-10))
             make.left.equalTo(AtapteWidthValue(10))
             make.right.equalTo(AtapteWidthValue(-10))
@@ -103,8 +103,8 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         initShareCollectionView()
         view.addSubview(shareCollection)
-        shareCollection.snp_makeConstraints { (make) in
-            make.bottom.equalTo(cancelBtn.snp_top).offset(-AtapteWidthValue(10))
+        shareCollection.snp.makeConstraints { (make) in
+            make.bottom.equalTo(cancelBtn.snp.top).offset(-AtapteWidthValue(10))
             make.left.equalTo(AtapteWidthValue(10))
             make.right.equalTo(AtapteWidthValue(-10))
             make.height.equalTo(AtapteWidthValue(160))

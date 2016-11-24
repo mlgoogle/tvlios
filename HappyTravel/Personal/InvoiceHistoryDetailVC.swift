@@ -89,7 +89,7 @@ class InvoiceHistoryDetailVC: UIViewController {
         tableView?.estimatedRowHeight = 70
         tableView?.rowHeight = UITableViewAutomaticDimension
         view.addSubview(tableView!)
-        tableView?.snp_makeConstraints(closure: { (make) in
+        tableView?.snp.makeConstraints({ (make) in
             make.edges.equalTo(view)
         })
         

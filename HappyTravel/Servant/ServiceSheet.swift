@@ -46,7 +46,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         bgView.backgroundColor = UIColor.white
         bgView.isUserInteractionEnabled = true
         addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
+        bgView.snp.makeConstraints { (make) in
             make.left.equalTo(self).offset(-10)
             make.right.equalTo(self).offset(10)
             make.bottom.equalTo(self).offset(10)
@@ -57,7 +57,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         head.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         head.isUserInteractionEnabled = true
         addSubview(head)
-        head.snp_makeConstraints { (make) in
+        head.snp.makeConstraints { (make) in
             make.left.equalTo(bgView)
             make.right.equalTo(bgView)
             make.top.equalTo(bgView)
@@ -70,9 +70,9 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
         cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .touchUpInside)
         head.addSubview(cancelBtn)
-        cancelBtn.snp_makeConstraints { (make) in
+        cancelBtn.snp.makeConstraints { (make) in
             make.left.equalTo(head)
-            make.right.equalTo(head.snp_centerX)
+            make.right.equalTo(head.snp.centerX)
             make.top.equalTo(head)
             make.bottom.equalTo(head)
         }
@@ -83,9 +83,9 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         sureBtn.setTitleColor(UIColor.black, for: UIControlState())
         sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .touchUpInside)
         head.addSubview(sureBtn)
-        sureBtn.snp_makeConstraints { (make) in
+        sureBtn.snp.makeConstraints { (make) in
             make.right.equalTo(head)
-            make.left.equalTo(head.snp_centerX)
+            make.left.equalTo(head.snp.centerX)
             make.top.equalTo(head)
             make.bottom.equalTo(head)
         }
@@ -101,12 +101,12 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         table?.register(DistanceOfTravelCell.self, forCellReuseIdentifier: "DistanceOfTravelCell")
         table?.register(SingleServiceInfoCell.self, forCellReuseIdentifier: "singleService")
         addSubview(table!)
-        table?.snp_makeConstraints(closure: { (make) in
+        table?.snp.makeConstraints({ (make) in
             make.left.equalTo(self)
-            make.top.equalTo(head.snp_bottom)
+            make.top.equalTo(head.snp.bottom)
             make.right.equalTo(self)
             make.bottom.equalTo(self).offset(-20)
-            make.height.equalTo(UIScreen.mainScreen().bounds.size.height / 3.0)
+            make.height.equalTo(UIScreen.main.bounds.size.height / 3.0)
         })
     }
     
@@ -179,17 +179,6 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         }
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

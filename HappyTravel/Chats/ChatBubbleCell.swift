@@ -56,13 +56,13 @@ class ChatBubbleCell: UITableViewCell {
         bubbleImageView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        bubbleImageView.snp_makeConstraints { (make) in
+        bubbleImageView.snp.makeConstraints { (make) in
             make.left.equalTo(contentView).offset(10)
             make.top.equalTo(contentView).offset(4.5)
-            make.width.equalTo(messageLabel.snp_width).offset(30)
+            make.width.equalTo(messageLabel.snp.width).offset(30)
             make.bottom.equalTo(contentView).offset(-4.5)
         }
-        messageLabel.snp_makeConstraints { (make) in
+        messageLabel.snp.makeConstraints { (make) in
             make.centerX.equalTo(bubbleImageView).offset(3)
             make.centerY.equalTo(bubbleImageView).offset(-0.5)
             make.height.equalTo(bubbleImageView).offset(-15)

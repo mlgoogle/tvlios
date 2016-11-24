@@ -263,7 +263,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SocketManager.shareInstance.connectSock()
     }
     
-    static func getErrorCode(_ dict: [String: AnyObject]) -> SockErrCode? {
+    static func getErrorCode(_ dict: [String: Any]) -> SockErrCode? {
         if let err = dict["error_"] {
             return SockErrCode(rawValue: err as! Int)
         }
@@ -276,7 +276,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                                                   userInfo: aUserInfo)
     }
     
-    static func sendData(_ opcode: SockOpcode, data: AnyObject?) ->Bool {
+    static func sendData(_ opcode: SockOpcode, data: Any?) ->Bool {
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
@@ -313,7 +313,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    static func sendData(_ opcode: SockOpcode, data: AnyObject?, result: recevieDataBlock?) {
+    static func sendData(_ opcode: SockOpcode, data: Any?, result: recevieDataBlock?) {
         SocketManager.sendData(opcode, data: data)
         if result != nil {
             completationsDic[opcode.rawValue+1] = result
@@ -328,7 +328,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         var jsonBody:JSON?
         if body != nil && (body as! Data).count > 0 {
-            jsonBody = JSON.init(data: body as! NSData)
+            jsonBody = JSON.init(data: (body as! NSData) as Data)
             guard jsonBody?.dictionaryObject != nil else {
                 XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
                 return false
@@ -505,7 +505,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer.append(data)
         let headLen = SockHead.size
         while buffer.length >= headLen {
-            let head = SockHead(data: buffer)
+            let head = SockHead(data: buffer as Data)
             let packageLen = Int(head.len)
             if buffer.length >= packageLen {
                 let bodyLen = Int(head.bodyLen)
@@ -605,7 +605,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func obtainTripReply(_ jsonBody: JSON?) {
-        if try! jsonBody?.rawData().length <= 0 {
+        if try! (jsonBody?.rawData().count)! <= 0 {
             postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
         } else {
             if let tripList = jsonBody!.dictionaryObject!["trip_list"] as? Array<Dictionary<String, AnyObject>> {
@@ -666,9 +666,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let skillList = jsonBody?.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
             for skill in skillList {
                 let info = SkillInfo(value: skill)
-                let string:NSString = info.skill_name_!
-                let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(AtapteWidthValue(12))], context: nil)
+                let string:NSString = info.skill_name_! as NSString
+                let options:NSStringDrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
+                let rect = string.boundingRect(with: CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: AtapteWidthValue(12))], context: nil)
                 info.labelWidth = Float(rect.size.width) + 30
                 DataManager.insertData(SkillInfo.self, data: info)
             }
@@ -687,7 +687,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func invoiceInfoReply(_ jsonBody: JSON?) {
-        if try! jsonBody?.rawData().length <= 0 {
+        if try! (jsonBody?.rawData().count)! <= 0 {
             postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
         } else {
             if let invoiceList = jsonBody?.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {

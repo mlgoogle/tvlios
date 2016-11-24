@@ -53,7 +53,7 @@ class AppointmentDetailVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(AppointmentDetailVC.receivedDetailInfo(_:)), name: NSNotification.Name(rawValue: NotifyDefine.AppointmentDetailReply), object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(AppointmentDetailVC.reveicedCommentInfo(_:)), name: NSNotification.Name(rawValue: NotifyDefine.CheckCommentDetailResult), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(AppointmentDetailVC.evaluatetripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.EvaluatetripReply), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.UserBaseInfoReply), object: nil)
 
     }
     
@@ -147,7 +147,7 @@ class AppointmentDetailVC: UIViewController {
     func getServantBaseInfo() {
         
         let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
-        SocketManager.sendData(.getUserInfo, data: dic)
+        SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
         
     }
     func servantBaseInfoReply(_ notification: Notification) {
@@ -179,17 +179,17 @@ class AppointmentDetailVC: UIViewController {
         commitBtn.setTitle("发表评论", for: UIControlState())
         commitBtn.addTarget(self, action: #selector(AppointmentDetailVC.cancelOrCommitButtonAction), for: .touchUpInside)
         view.addSubview(commitBtn)
-        commitBtn.snp_makeConstraints { (make) in
+        commitBtn.snp.makeConstraints { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
             make.height.equalTo(60)
         }
-        tableView.snp_makeConstraints { (make) in
+        tableView.snp.makeConstraints { (make) in
             make.top.equalTo(view)
             make.right.equalTo(view)
             make.left.equalTo(view)
-            make.bottom.equalTo(commitBtn.snp_top)
+            make.bottom.equalTo(commitBtn.snp.top)
         }
         self.commitBtn = commitBtn
         initData()
@@ -208,7 +208,7 @@ class AppointmentDetailVC: UIViewController {
                                                   "service_score_": (self.commonCell?.serviceStar)! as AnyObject,
                                                   "user_score_": (self.commonCell?.servantStar)! as AnyObject,
                                                   "remarks_": self.commonCell!.comment as AnyObject]
-        SocketManager.sendData(.evaluateTripRequest, data: dict)
+        SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
     }
 
 }
@@ -219,7 +219,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let dict:Dictionary<String, AnyObject> = ["uid_": (appointmentInfo?.to_user_)! as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data:dict)
+            SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
             
         }
     }

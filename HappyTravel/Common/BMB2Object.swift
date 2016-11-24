@@ -115,7 +115,7 @@ class BMB2Object : NSObject {
             default:
                 break
             }
-            tmpData = tmpData.subdata(in: NSMakeRange(size, tmpData.count-size))
+            tmpData = tmpData.subdata(in: NSMakeRange(size, tmpData.count-size).toRange()!)
         }
         
     }
