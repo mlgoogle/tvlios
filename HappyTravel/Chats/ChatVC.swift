@@ -104,7 +104,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
 
         if servantInfo == nil {
-           navigationController?.popViewController(animated: true)
+           _ = navigationController?.popViewController(animated: true)
             return
         }
         
@@ -135,7 +135,8 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         super.viewDidAppear(animated)
         
         if msgList != nil {
-            chatTable!.scrollToRow(at: IndexPath.init(row: msgList!.count-1, inSection: 0), at: .bottom, animated: false)
+
+            chatTable!.scrollToRow(at: IndexPath.init(row: msgList!.count-1, section: 0), at: .bottom, animated: false)
         }
         let unreadCntBefore = DataManager.getUnreadMsgCnt(-1)
         DataManager.readMessage(servantInfo!.uid)
@@ -144,7 +145,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
         if readCnt == unreadCntBefore {
             readCnt = -1
         }
-        SocketManager.sendData(.feedbackMSGReadCnt, data: ["uid_": servantInfo!.uid, "count_": readCnt])
+        _ = SocketManager.sendData(.feedbackMSGReadCnt, data: ["uid_": servantInfo!.uid, "count_": readCnt])
         UIApplication.shared.applicationIconBadgeNumber = unreadCntLater
         
     }
@@ -359,7 +360,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
     
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = msgList![indexPath.row]
-        if message.msg_type_ == PushMessage.MessageType.Date.rawValue {
+        if message.msg_type_ == PushMessage.MessageType.date.rawValue {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatDateCell", for: indexPath) as! ChatDateCell
             cell.sentDateLabel.text = dateFormatter.string(from: Date(timeIntervalSince1970: NSNumber.init(value: message.msg_time_).doubleValue))
             return cell
@@ -381,7 +382,7 @@ open class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource
                                                   "msg_time_": NSNumber.init(value: Int64(Date().timeIntervalSince1970) as Int64),
                                                   "content_": msg as AnyObject]
         
-        SocketManager.sendData(.sendChatMessage, data: data as AnyObject?)
+        _ = SocketManager.sendData(.sendChatMessage, data: data as AnyObject?)
         let message = PushMessage(value: data)
         DataManager.insertMessage(message)
         
@@ -422,10 +423,10 @@ extension ChatVC:CitysSelectorSheetDelegate {
     func daysSureAction(_ sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismiss(animated: true, completion: nil)
         
-        SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-            "to_uid_": servantInfo!.uid,
-            "service_id_": selectedServcie!.service_id_,
-            "day_count_":targetDays])
+        _ = SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                                                            "to_uid_": servantInfo!.uid,
+                                                        "service_id_": selectedServcie!.service_id_,
+                                                         "day_count_":targetDays])
     }
     
     func daysCancelAction(_ sender: UIButton?) {

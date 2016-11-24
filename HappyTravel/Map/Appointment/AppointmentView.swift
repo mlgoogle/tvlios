@@ -664,9 +664,9 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                                         "skills_": skillStr as AnyObject,
                                         "remarks_": remarksTextView?.text as AnyObject,
                                         "is_other_": (agent == false ? 0 : 1) as AnyObject,
-                                        "other_name_": agent == true ? name! : "",
-                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
-                                        "other_phone_": agent == true ? tel! : ""]
+                                        "other_name_": (agent == true ? name! : "") as AnyObject,
+                                        "other_gender_": (agent == true ? (gender == true ? 1 : 0) : 0) as AnyObject,
+                                        "other_phone_": (agent == true ? tel! : "") as AnyObject]
         _ = SocketManager.sendData(.appointmentRequest, data: dict as AnyObject?)
         commitBtn?.isEnabled = false
     }
