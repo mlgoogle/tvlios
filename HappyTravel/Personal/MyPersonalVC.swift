@@ -86,16 +86,16 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
     
     //查询认证状态
     func checkAuthResult(_ notice: Notification) {
-        let data = notice.userInfo!["data"] as! NSDictionary
+        let data = notice.userInfo!["data"] as! [String : AnyObject]
         let failedReson = data["failed_reason_"] as? NSString
-        let reviewStatus = (data.value(forKey: "review_status_")? as AnyObject).intValue
+        let reviewStatus = data["review_status_"] as! Int
         if reviewStatus == -1 {
             return
         }
         if failedReson != "" {
             return
         }
-        DataManager.currentUser?.authentication = reviewStatus!
+        DataManager.currentUser?.authentication = reviewStatus
     }
     
     func improveDataSuccessed(_ notification: Notification) {
@@ -113,8 +113,8 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
     func updateUserInfo() {
         SVProgressHUD.dismiss()
 //        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
-        
-        headImageView?.kf_setImageWithURL(URL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
+        headImageView?.kf.setImage(with: URL.init(string: DataManager.currentUser!.headUrl!), for: .normal)
+//        headImageView?.kf.setImageWithURL(URL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
         nameLabel?.setTitle(DataManager.currentUser?.nickname, for: UIControlState())
     }
     
@@ -125,22 +125,22 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
         DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
         initPersonalView()
         
-        SocketManager.sendData(.getServiceCity, data: nil)
+        _ = SocketManager.sendData(.getServiceCity, data: nil)
         let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat as AnyObject,
                                                   "longitude_": DataManager.currentUser!.gpsLocationLon as AnyObject,
                                                   "distance_": 20.1 as AnyObject]
-        SocketManager.sendData(.getServantInfo, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.getServantInfo, data: dict as AnyObject?)
         if let dt = UserDefaults.standard.object(forKey: CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
                         "device_token_": dt] as [String : Any]
-            SocketManager.sendData(.putDeviceToken, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.putDeviceToken, data: dict as AnyObject?)
         }
-        SocketManager.sendData(.centurionCardInfoRequest, data: nil)
-        SocketManager.sendData(.centurionVIPPriceRequest, data: nil)
-        SocketManager.sendData(.userCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.skillsInfoRequest, data: nil)
-        SocketManager.sendData(.checkAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.checkUserCash, data: ["uid_": DataManager.currentUser!.uid])
+        _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil)
+        _ = SocketManager.sendData(.centurionVIPPriceRequest, data: nil)
+        _ = SocketManager.sendData(.userCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+        _ = SocketManager.sendData(.skillsInfoRequest, data: nil)
+        _ = SocketManager.sendData(.checkAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
+        _ = SocketManager.sendData(.checkUserCash, data: ["uid_": DataManager.currentUser!.uid])
 
     }
     
@@ -231,7 +231,8 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             }
         }
         let url = URL(string: DataManager.currentUser!.headUrl == nil ? "https://" : DataManager.currentUser!.headUrl!)
-        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        headImageView?.kf.setImage(with: url, for: .normal, placeholder: Image.init(named: "default-head"), options: nil, progressBlock: nil, completionHandler: nil)
+//        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {
             nameLabel = UIButton()
@@ -377,18 +378,18 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
             sideMenuController?.toggle()
 
         case 10001:
-            XCGLogger.defaultInstance().debug("钱包")
+            XCGLogger.default.debug("钱包")
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToWalletVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10002:
-            XCGLogger.defaultInstance().debug("我的行程")
+            XCGLogger.default.debug("我的行程")
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToDistanceOfTravelVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10003:
-            XCGLogger.defaultInstance().debug("客服")
+            XCGLogger.default.debug("客服")
             callSrevant()
         case 10004:
-            XCGLogger.defaultInstance().debug("设置")
+            XCGLogger.default.debug("设置")
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.JumpToSettingsVC), object: nil, userInfo: nil)
             sideMenuController?.toggle()
         default:
@@ -479,28 +480,45 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
                     let url = qiniuHost + value!
                     
                     let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-                    Alamofire.request(.GET, addr).responseJSON() { response in
+                    Alamofire.request(addr).responseJSON(completionHandler: { (response) in
+                        
                         let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-                        let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+                        
+                        let location = (geocodes!["location"] as! String).components(separatedBy: ",")
                         XCGLogger.debug("\(location)")
                         
-                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                            "nickname_": (DataManager.currentUser?.nickname)!,
-                            "gender_": (DataManager.currentUser?.gender)!,
-                            "head_url_": url,
-                            "address_": (DataManager.currentUser?.address)!,
-                            "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-                            "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
-                        SocketManager.sendData(.SendImproveData, data: dict)
-                        
-                        
-                    }
+                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
+                                                                  "nickname_": (DataManager.currentUser?.nickname)! as AnyObject,
+                                                                  "gender_": (DataManager.currentUser?.gender)! as AnyObject,
+                                                                  "head_url_": url as AnyObject,
+                                                                  "address_": (DataManager.currentUser?.address)! as AnyObject,
+                                                                  "longitude_": (DataManager.currentUser?.gpsLocationLon)! as AnyObject,
+                                                                  "latitude_": (DataManager.currentUser?.gpsLocationLat)! as AnyObject]
+                       _ = SocketManager.sendData(.sendImproveData, data: dict)
+
+                    })
+//                    Alamofire.request(.GET, addr).responseJSON() { response in
+//                        let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
+//                        let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+//                        XCGLogger.debug("\(location)")
+//                        
+//                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+//                            "nickname_": (DataManager.currentUser?.nickname)!,
+//                            "gender_": (DataManager.currentUser?.gender)!,
+//                            "head_url_": url,
+//                            "address_": (DataManager.currentUser?.address)!,
+//                            "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
+//                            "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
+//                        SocketManager.sendData(.SendImproveData, data: dict)
+//                        
+//                        
+//                    }
                 }
                 
             }, option: nil)
         } else {
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法提交，请稍后再试", ForDuration: 1, completion: {
-                SocketManager.sendData(.uploadImageToken, data: nil)
+                _ = SocketManager.sendData(.uploadImageToken, data: nil)
             })
         }
         
@@ -512,8 +530,9 @@ open class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UIN
         let data = notice?.userInfo!["data"] as! NSDictionary
         let code = data.value(forKey: "code")
         if (code as AnyObject).int32Value == 0 {
+            unowned let weakSelf = self
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewController(animated: true)
+               _ =  weakSelf.navigationController?.popViewController(animated: true)
             })
             return
         }

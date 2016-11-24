@@ -129,6 +129,10 @@ class IdentBaseInfoCell: UITableViewCell {
         }
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func setInfo(_ userInfo: UserInfo?) {
         servantInfo = userInfo
         
@@ -144,8 +148,7 @@ class IdentBaseInfoCell: UITableViewCell {
         if let headImageView = bgView?.viewWithTag(tags["headImageView"]!) as? UIImageView {
             if userInfo?.headUrl != nil {
                 
-                headImageView.kf_setImageWithURL(NSURL(string: (userInfo?.headUrl)!), placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
-                })
+                headImageView.kf.setImage(with:URL(string: (userInfo?.headUrl)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
             }
             
         }
@@ -189,7 +192,11 @@ class IdentBaseInfoCell: UITableViewCell {
                 
                 var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 10 + 1) as? UILabel
                 if tallyLabel == nil {
-                    tallyLabel = UILabel(frame: CGRectZero)
+                    
+                    
+                    
+                    
+                    tallyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
                     tallyLabel!.tag = tallyItemView!.tag * 10 + 1
                     tallyLabel!.font = UIFont.systemFont(ofSize: S12)
                     tallyLabel!.isUserInteractionEnabled = false
@@ -219,9 +226,6 @@ class IdentBaseInfoCell: UITableViewCell {
         }
         
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
 }
 

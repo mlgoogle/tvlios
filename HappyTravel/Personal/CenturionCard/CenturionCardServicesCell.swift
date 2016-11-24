@@ -36,7 +36,7 @@ class CenturionCardServerItem: UICollectionViewCell {
         iconBtn.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
-            make.size.equalTo(CGSizeMake(AtapteWidthValue(40), AtapteWidthValue(40)))
+            make.size.equalTo(CGSize(width: AtapteWidthValue(40), height: AtapteHeightValue(40)))
         }
         
         contentView.addSubview(titleLabel)
@@ -76,14 +76,25 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         collectionView.register(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "buyBtnFooterView")
         return collectionView
     }()
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return services == nil ? 0 : services!.count
     }
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let item: CenturionCardServerItem = collectionView.dequeueReusableCell(withReuseIdentifier: "CenturionCardServerItem", for: indexPath) as! CenturionCardServerItem
+        
         let service  = services![indexPath.row]
+        
+        
         let url = service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? service.privilege_pic_yes_ : service.privilege_pic_no_
-        item.iconBtn.kf_setBackgroundImageWithURL(URL(string: url!), forState: .Normal, placeholderImage: UIImage.init(named: "face-btn"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        
+        item.iconBtn.kf.setImage(with: URL(string: url!), for: .normal, placeholder: UIImage.init(named: "face-btn"), options: nil, progressBlock: nil, completionHandler: nil)
+//        item.iconBtn.kf_setBackgroundImageWithURL(URL(string: url!), forState: .Normal, placeholderImage: UIImage.init(named: "face-btn"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         item.titleLabel.text = service.privilege_name_!
         return item
     }

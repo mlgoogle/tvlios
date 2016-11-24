@@ -63,8 +63,9 @@ class AppointmentDetailVC: UIViewController {
      - parameter notification:
      */
     func evaluatetripReply(_ notification: Notification) {
+        unowned let weakSelf = self
         SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-            self.navigationController?.popViewController(animated: true)
+           _ = weakSelf.navigationController?.popViewController(animated: true)
         })
     }
     /**
@@ -135,7 +136,7 @@ class AppointmentDetailVC: UIViewController {
         let realm = try! Realm()
         try! realm.write({
             
-            servantInfo!.setInfo(.Servant, info: data)
+            servantInfo!.setInfo(.servant, info: data)
             
         })
         
@@ -147,7 +148,7 @@ class AppointmentDetailVC: UIViewController {
     func getServantBaseInfo() {
         
         let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
-        SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
+        _ = SocketManager.sendData(.getUserInfo, data: dic as AnyObject?)
         
     }
     func servantBaseInfoReply(_ notification: Notification) {
@@ -156,7 +157,7 @@ class AppointmentDetailVC: UIViewController {
         let realm = try! Realm()
         try! realm.write({
             
-            servantInfo!.setInfo(.Servant, info: servantDict)
+            servantInfo!.setInfo(.servant, info: servantDict)
             
         })
         let servantPersonalVC = ServantPersonalVC()
@@ -197,8 +198,8 @@ class AppointmentDetailVC: UIViewController {
 
     func initData() {
         
-        SocketManager.sendData(.appointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
-        SocketManager.sendData(.checkCommentDetail, data: ["order_id_": appointmentInfo!.order_id_])
+        _ = SocketManager.sendData(.appointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
+        _ = SocketManager.sendData(.checkCommentDetail, data: ["order_id_": appointmentInfo!.order_id_])
     }
     func cancelOrCommitButtonAction() {
         
@@ -208,7 +209,7 @@ class AppointmentDetailVC: UIViewController {
                                                   "service_score_": (self.commonCell?.serviceStar)! as AnyObject,
                                                   "user_score_": (self.commonCell?.servantStar)! as AnyObject,
                                                   "remarks_": self.commonCell!.comment as AnyObject]
-        SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.evaluateTripRequest, data: dict as AnyObject?)
     }
 
 }
@@ -219,7 +220,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 0 {
             let dict:Dictionary<String, AnyObject> = ["uid_": (appointmentInfo?.to_user_)! as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
+            _ = SocketManager.sendData(.getServantDetailInfo, data:dict as AnyObject?)
             
         }
     }

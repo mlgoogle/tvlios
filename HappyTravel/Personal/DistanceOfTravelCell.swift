@@ -182,10 +182,10 @@ class DistanceOfTravelCell: UITableViewCell {
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             
             if orderInfo?.to_url_ != nil {
-                
-                headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
-                }
+                headView.kf.setImage(with: URL(string: (orderInfo?.to_url_)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
+//                headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                    
+//                }
             }
         }
         
@@ -223,8 +223,9 @@ class DistanceOfTravelCell: UITableViewCell {
             
             if hotometer?.to_head_ != nil {
                 
-                headView.kf_setImageWithURL(URL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                }
+                headView.kf.setImage(with: URL(string: (hotometer?.to_head_)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
+//                headView.kf_setImageWithURL(URL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                }
             }
             
         }

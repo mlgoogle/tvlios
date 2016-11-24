@@ -76,7 +76,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var token:NSString = ""
     var imagePicker:UIImagePickerController? = nil
     var photoPaths:[String] = ["",""]
-    var photoURL = [NSString: NSString]()
+    var photoURL = [String: String]()
     var photoKeys = [String]()
     var qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
     //MARK: -- LIFECYCLE
@@ -84,7 +84,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境中，请稍后！")
-        SocketManager.sendData(.uploadImageToken, data: nil)
+        _ = SocketManager.sendData(.uploadImageToken, data: nil)
         initTableView()
         initNav()
     }
@@ -121,10 +121,12 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let qnManager = QNUploadManager()
         SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
         for (index,path) in photoPaths.enumerated() {
+            
+            unowned let weakSelf = self
             qnManager?.putFile(path, key: "settings/auth/\(photoKeys[index])", token: self.token as String, complete: { (info, key, resp) -> Void in
                 
                 if info?.statusCode != 200 || resp == nil{
-                    self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    weakSelf.navigationItem.rightBarButtonItem?.isEnabled = true
                     SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
                     return
                 }
@@ -132,13 +134,14 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                 if (info?.statusCode == 200 ){
                     let respDic: NSDictionary? = resp as NSDictionary?
                     let value:String? = respDic!.value(forKey: "key") as? String
-                    self.photoURL["pic\(index)"] = self.qiniuHost+value!
-                    if self.photoURL.count == 2{
+                    let indexStr = "pic" + String(index)
+                    weakSelf.photoURL[indexStr] = self.qiniuHost+value!
+                    if weakSelf.photoURL.count == 2{
                         var param = [NSString : AnyObject]()
                         param["uid_"] = DataManager.currentUser!.uid as AnyObject?
-                        param["front_pic_"] = self.photoURL["pic1"]
-                        param["back_pic_"] = self.photoURL["pic0"]
-                        SocketManager.sendData(.authenticateUserCard, data:param as AnyObject?)
+                        param["front_pic_"] = self.photoURL["pic1"] as AnyObject?
+                        param["back_pic_"] = self.photoURL["pic0"] as AnyObject?
+                        _ = SocketManager.sendData(.authenticateUserCard, data:param as AnyObject?)
                     }
                 }
                 
@@ -264,8 +267,9 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         let data = notice?.userInfo!["data"] as! NSDictionary
         let code = data.value(forKey: "code")
         if (code as AnyObject).int32Value == 0 {
+            unowned let weakSelf = self
             SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: { 
-                    self.navigationController?.popViewController(animated: true)
+                   _ =  weakSelf.navigationController?.popViewController(animated: true)
             })
             return
         }
@@ -280,9 +284,10 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         if resultCode! == 0 {
             SVProgressHUD.dismiss()
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .alert)
+            unowned let weakSelf = self
             let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .default) { (action) in
                 alter.dismiss(animated: true, completion:nil)
-                 self.navigationController?.popViewController(animated: true)
+                _ = weakSelf.navigationController?.popViewController(animated: true)
             }
             alter.addAction(backActiong)
             present(alter, animated: true, completion: nil)

@@ -58,10 +58,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        header.perform(#selector(MJRefreshHeader.beginRefreshing), with: nil, afterDelay: 0.5)
+        perform(#selector(DistanceOfTravelVC.headerBeginRefresh), with: nil, afterDelay: 0.5)
 
     }
     
+    func headerBeginRefresh() {
+        header.beginRefreshing()
+    }
     func appearheaderRefresh() {
         header.beginRefreshing()
     }
@@ -88,11 +91,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             case 0:
                 msg = "预支付成功"
                 if segmentIndex == 0 {
-                    SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                         "order_id_": 0,
                         "count_": 10])
                 } else {
-                    SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    _ = SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                         "last_id_": 0,
                         "count_": 10])
                 }
@@ -257,17 +260,17 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": 0,
                 "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+            _ = SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "last_id_": 0,
                 "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            _ = SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
             break
         default:
             break
@@ -282,17 +285,17 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func footerRefresh() {
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                "order_id_": orderID,
-                "count_": 10])
+            _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                                                             "order_id_": orderID,
+                                                                "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
-                "last_id_": lastRecordId,
-                "count_": 10])
+            _ = SocketManager.sendData(.appointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                                                                     "last_id_": lastRecordId,
+                                                                       "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            _ = SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
             break
         default:
             break
@@ -365,7 +368,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.waittingPay.rawValue {
-                    SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                    _ = SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
@@ -384,8 +387,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 return
             }
-            if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
-                object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
+            if  object.status_ == HodometerStatus.invoiceMaking.rawValue ||
+                object.status_ == HodometerStatus.invoiceMaked.rawValue ||
                 object.status_ == HodometerStatus.Completed.rawValue{
                 
                 detailVC.appointmentInfo = records![indexPath.row]
@@ -393,8 +396,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 /**
                  *  未支付状态去支付
                  */
-            } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
-                SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
+            } else if object.status_ == HodometerStatus.waittingPay.rawValue {
+                _ = SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
                  selectedAppointmentInfo = records![indexPath.row]
                 payForInvitationRequest()
                 
@@ -500,7 +503,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                                                "order_id_": order_id_ as AnyObject,
                                                  "passwd_": passwd! as AnyObject]
-                    SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
+                    _ = SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
                 }
                 
             }

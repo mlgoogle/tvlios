@@ -77,7 +77,7 @@ class InvoiceHistoryDetailVC: UIViewController {
         title = "开票详情"
         
         initViews()
-        SocketManager.sendData(.invoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
+        _ = SocketManager.sendData(.invoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
     }
     
     func initViews() {

@@ -112,17 +112,17 @@ class InvoiceHistoryVC:UIViewController {
     
     
     func headerRefresh() {
-        SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
-                                                        "count_" : 10,
-                                              "last_invoice_id_" : 0])
+        _ = SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid as AnyObject,
+                                                            "count_" : 10 as AnyObject,
+                                                  "last_invoice_id_" : 0 as AnyObject])
         
         
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid,
-                                                        "count_" : 10,
-                                              "last_invoice_id_" : last_invoice_id_])
+         _ = SocketManager.sendData(.invoiceInfoRequest, data: ["uid_": DataManager.currentUser!.uid as AnyObject,
+                                                            "count_" : 10 as AnyObject,
+                                                  "last_invoice_id_" : last_invoice_id_ as AnyObject])
 
     }
     

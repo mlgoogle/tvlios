@@ -131,8 +131,10 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if let _ = dict["oid_str_"] as? String {
                 let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .alert)
+                
+                unowned let weakSelf = self
                 let action = UIAlertAction.init(title: "确定", style: .default, handler: { (action: UIAlertAction) in
-                    self.navigationController?.popViewController(animated: true)
+                    _ =  weakSelf.navigationController?.popViewController(animated: true)
                 })
                 
                 alert.addAction(action)
@@ -579,7 +581,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
         invoiceInfoDict!["oid_str_"] = oidStr as AnyObject?
-        SocketManager.sendData(.drawBillRequest, data: invoiceInfoDict as AnyObject?)
+        _ = SocketManager.sendData(.drawBillRequest, data: invoiceInfoDict as AnyObject?)
     }
     
     //MARK: -- DATA

@@ -93,7 +93,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             navigationController?.pushViewController(recommendVC, animated: true)
             uid_str.remove(at: uid_str.characters.index(before: uid_str.endIndex))
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str as AnyObject]
-            SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NSNotification.Name(rawValue: NotifyDefine.ObtainTripReply), object: nil)
     }
@@ -104,9 +104,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         switch result {
         case 0:
             msg = "预支付成功"
-            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                                                              "order_id_": 0,
-                                                              "count_": 10])
+            _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                                                             "order_id_": 0,
+                                                                "count_": 10])
         case -1:
             msg = "密码错误"
         case -2:
@@ -221,7 +221,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             header.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": 0,
                 "count_": 10])
         }
@@ -232,7 +232,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             footer.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "order_id_": orderID,
                 "count_": 10])
         }
@@ -281,7 +281,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if message?.push_msg_type == 2231 {
                 let uid_str_ = message?.service_id_
                 currentAppointmentId = (message?.appointment_id_)!
-                SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                _ = SocketManager.sendData(.appointmentRecommendRequest, data: ["uid_str_": uid_str_!])
                 DataManager.readMessage(currentAppointmentId)
 
                 return
@@ -305,7 +305,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.waittingPay.rawValue {
-                    SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                    _ = SocketManager.sendData(.checkUserCash, data: ["uid_":DataManager.currentUser!.uid])
                     payForInvitationRequest(cell.curHodometerInfo)
                 }
                 
@@ -351,7 +351,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
                         "order_id_": (info?.order_id_)! as AnyObject,
                         "passwd_": passwd! as AnyObject]
-                    SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
+                    _ = SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?)
                 }
                 
             }

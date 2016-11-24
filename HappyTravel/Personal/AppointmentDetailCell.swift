@@ -149,9 +149,9 @@ class AppointmentDetailCell: UITableViewCell {
      */
     func setupDataWithInfo(_ info:UserInfo) {
         
-
-        iconImageView.kf_setImageWithURL(URL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
-        nicknameLabel.text = info.nickname
+        
+//        iconImageView.kf_setImageWithURL(URL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+//        nicknameLabel.text = info.nickname
         
     }
     

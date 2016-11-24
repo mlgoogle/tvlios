@@ -71,8 +71,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             lv += 1
         }
         services = DataManager.getCenturionCardServiceWithLV(lv)
-        SocketManager.sendData(.centurionCardInfoRequest, data: nil)
-        SocketManager.sendData(.centurionCardInfoRequest, data: nil) { [weak self](result) in
+        _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil)
+        _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil) { [weak self](result) in
             if let strongSelf = self{
                 strongSelf.table?.reloadData()
             }
@@ -172,7 +172,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func callSrevant() {
-        SocketManager.sendData(.serversManInfoRequest, data: nil)
+        _ = SocketManager.sendData(.serversManInfoRequest, data: nil)
 //        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
 //        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
 //            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
@@ -275,7 +275,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
-                                        "wanted_lv_": selectedIndex+1]
+                                        "wanted_lv_": (selectedIndex + 1) as AnyObject]
         SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
         SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict as AnyObject?) { [weak self](result) in
             
@@ -291,10 +291,15 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
         }
     }
+
     
+    /// 逻辑牵扯有点多  等其他全迁移到3.0再重写这个
+    ///
+    /// - Parameter record: 用了OC类型
     func upCenturionCardLv(_ record: NSDictionary) {
-        let price = (record.value(forKey: "order_price_")? as AnyObject).intValue
-        let msg = "\n您即将预支付人民币:\(Double(price!)/100)元"
+
+        let price = record.value(forKey: "order_price_") as! Int
+        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .alert)
         
         alert.addTextField(configurationHandler: { (textField) in
@@ -333,9 +338,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              *  请求购买
              */
             SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
-            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                "order_id_": record.value(forKey: "order_id_")!,
-                "passwd_": passwd!]
+            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
+                "order_id_": record.value(forKey: "order_id_")! as AnyObject,
+                "passwd_": passwd! as AnyObject]
             SocketManager.sendData(.payForInvitationRequest, data: dict as AnyObject?, result: { (result) in
                 let data = result["data"] as! NSDictionary
                 if let errorCord = data.value(forKey: "error_"){
@@ -353,7 +358,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 }
                 if orderStatus == 0 {
                     SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
-                        SocketManager.sendData(.userCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+                        _ = SocketManager.sendData(.userCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
                         DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
                         weakSelf!.viewDidLoad()
                     })
