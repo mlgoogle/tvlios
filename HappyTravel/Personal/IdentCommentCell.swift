@@ -192,14 +192,20 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         hodometerInfo = info
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
-            lineTitleLab.text = "\(info!.service_name_!) 评价"
+            if info?.service_name_ != nil {
+                
+                lineTitleLab.text = "\(info!.service_name_!) 评价"
+            }
         }
     }
     
     func setAppointmentInfo(info:AppointmentInfo?) {
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
-            lineTitleLab.text = "\(info!.service_name_!) 评价"
+            if info?.service_name_ != nil {
+                
+                lineTitleLab.text = "\(info!.service_name_!) 评价"
+            }
         }
         
     }
