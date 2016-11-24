@@ -110,7 +110,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     weak var weakSelf = self
                     let ok = UIAlertAction.init(title: "好的", style: .default, handler: { (action) in
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC) * 0.3)) / Double(NSEC_PER_SEC), execute: { () in
-                            weakSelf!.navigationController?.popViewController(animated: true)
+                            _ = weakSelf!.navigationController?.popViewController(animated: true)
                         })
                         
                     })
@@ -130,9 +130,9 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func wechatPaySuccessed(_ notification: Notification) {
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
-                                        "recharge_id_": Int(rechageID!)!,
-                                        "pay_result_": 1]
-        SocketManager.sendData(.clientWXPayStatusRequest, data: dict as AnyObject?)
+                                        "recharge_id_": Int(rechageID!) as AnyObject,
+                                        "pay_result_": 1 as AnyObject]
+        _ = SocketManager.sendData(.clientWXPayStatusRequest, data: dict as AnyObject?)
         
     }
     
@@ -454,9 +454,15 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if selectedIndex == 1 {
             DataManager.currentUser?.cash = 10
             let orderStr = "app_id=2016102102273564&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22BBCXFY4KAL3U6DB%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA&timestamp=2016-09-01%2013%3A49%3A34&version=1.0&sign=imFFzjpv%2BUt8iPLyFmrUqTUceLKWBZmn%2Bixy4siNLs3VmIw5jNddnLf1V0JdtkVQgAUhNWiw8oDTVlv6HuUAHj7Ja0Rz%2BdsYcr4MzTiqy1NHYYvoLUVFOlQGy1QXU6bMzYnhrQnjjkTf0hnNJiy6fVEA7iPRFnWr8cScHgA2JZI%3D"
-            AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [AnyHashable: Any]!) in
+            AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data) in
                 XCGLogger.debug("\(data)")
             })
+
+            //指定类型 报错  暂 改为上面
+//            AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [AnyHashable: Any]!) in
+//                XCGLogger.debug("\(data)")
+//            })
+
         } else if selectedIndex == 0 {
             rechargeWithWX()
             
@@ -467,8 +473,8 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func rechargeWithWX() {
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid as AnyObject,
                                         "title_": "V领队-余额充值" as AnyObject,
-                                        "price_": Int(amount!)! * 100]
-        SocketManager.sendData(.wxPlaceOrderRequest, data: dict as AnyObject?)
+                                        "price_": (Int(amount!)! * 100) as AnyObject]
+        _ = SocketManager.sendData(.wxPlaceOrderRequest, data: dict as AnyObject?)
     
     }
     

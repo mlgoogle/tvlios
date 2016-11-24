@@ -33,7 +33,7 @@ class CenturionCardLVItem: UICollectionViewCell {
         icon.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
-            make.size.equalTo(CGSizeMake(AtapteWidthValue(30), AtapteWidthValue(30)))
+            make.size.equalTo(CGSize(width: AtapteWidthValue(30), height: AtapteHeightValue(30)))
         }
         
         contentView.addSubview(titleLabel)
@@ -86,7 +86,7 @@ class CenturionCardLvSelCell : UITableViewCell, UICollectionViewDelegate, UIColl
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item: CenturionCardLVItem = collectionView.dequeueReusableCell(withReuseIdentifier: "CenturionCardLVItem", for: indexPath) as! CenturionCardLVItem
-        let selector = Int((DataManager.currentUser?.centurionCardLv)! > indexPath.row)
+        let selector = (DataManager.currentUser?.centurionCardLv)! > indexPath.row ? 1 : 0
         item.icon.image = UIImage.init(named: centurionCardIcon[indexPath.row]![selector]!)
         item.titleLabel.text = centurionCardTitle[indexPath.row]
         return item

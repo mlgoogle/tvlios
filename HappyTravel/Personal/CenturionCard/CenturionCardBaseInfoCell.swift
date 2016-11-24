@@ -99,10 +99,11 @@ class CenturionCardBaseInfoCell : UITableViewCell {
     func setInfo(_ userInfo: UserInfo?) {
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
             if let headView: UIImageView = bgView.viewWithTag(tags["headView"]!) as? UIImageView {
-                if let photoUrl = URL(string: (userInfo?.headUrl!)! == nil ? "" : (userInfo?.headUrl!)!) {
-                    headView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                        
-                    }
+                if let photoUrl = URL(string: userInfo?.headUrl == nil ? "" : (userInfo?.headUrl)!) {
+                    headView.kf.setImage(with: photoUrl, placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil, completionHandler: nil)
+//                    headView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                        
+//                    }
                 }
                 
             }

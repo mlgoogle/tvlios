@@ -119,9 +119,10 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             if recordInfo?.to_head_ != nil {
                 
-                headView.kf_setImageWithURL(URL(string: (recordInfo?.to_head_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
-                    
-                })
+                headView.kf.setImage(with: URL(string: (recordInfo?.to_head_)!), placeholder: UIImage(named: "touxiang_women"), options: nil, progressBlock: nil, completionHandler: nil)
+//                headView.kf_setImageWithURL(URL(string: (recordInfo?.to_head_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+//                    
+//                })
 
             } else {
                 

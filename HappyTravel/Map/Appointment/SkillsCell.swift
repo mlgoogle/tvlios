@@ -101,6 +101,7 @@ class SkillsCell : UITableViewCell {
             addnewBtn?.setTitleColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1), for: UIControlState())
             addnewBtn?.addTarget(self, action: #selector(SkillsCell.addNewAction(_:)), for: .touchUpInside)
             contentView.addSubview(addnewBtn!)
+
             addnewBtn?.snp.makeConstraints({ (make) in
                 make.left.equalTo(contentView).offset(20)
                 make.top.equalTo(contentView).offset(20)
@@ -165,7 +166,7 @@ class SkillsCell : UITableViewCell {
                                 }
                             }
                             
-                            if index == skills!.count - 1 && style == .Normal {
+                            if index == skills!.count - 1 && style == .normal {
                                 make.bottom.equalTo(contentView).offset(-20)
                             }
                             make.height.equalTo(30)
@@ -187,6 +188,7 @@ class SkillsCell : UITableViewCell {
                         deleteIcon?.text = " - "
                         deleteIcon?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
                         contentView.addSubview(deleteIcon!)
+
                         deleteIcon?.snp.makeConstraints({ (make) in
                             make.right.equalTo(tallyBtn!.snp.right).offset(5)
                             make.top.equalTo(tallyBtn!).offset(-5)
@@ -194,7 +196,7 @@ class SkillsCell : UITableViewCell {
                             make.height.equalTo(20)
                         })
                     }
-                    if style != .Delete {
+                    if style != .delete {
                         deleteIcon?.isHidden = true
                     }
 //                    allButtonWidth = 20.0
@@ -224,6 +226,7 @@ class SkillsCell : UITableViewCell {
         if let addnewBtn = contentView.viewWithTag(self.tags["addnewBtn"]!) as? UIButton {
             addnewBtn.isHidden = style == .addNew ? false : true
             if lastTallyItemView != nil {
+
                 addnewBtn.snp.remakeConstraints({ (make) in
                     if  allButtonWidth + 50 > Float(ScreenWidth) {
                         make.left.equalTo(contentView).offset(20)

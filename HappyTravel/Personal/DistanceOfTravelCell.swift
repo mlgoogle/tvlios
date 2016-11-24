@@ -180,17 +180,25 @@ class DistanceOfTravelCell: UITableViewCell {
     func setOrderInfo(_ orderInfo: OrderInfo?) {
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
-            headView.kf_setImageWithURL(URL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                
+            
+            if orderInfo?.to_url_ != nil {
+                headView.kf.setImage(with: URL(string: (orderInfo?.to_url_)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
+//                headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                    
+//                }
             }
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-            nickNameLab.text = (orderInfo?.to_name_)!
+            if orderInfo?.to_name_ != nil {
+                nickNameLab.text = (orderInfo?.to_name_)!
+            }
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {
-            serviceTitleLab.text = (orderInfo?.service_name_)!
+            if orderInfo?.service_name_ != nil {
+                serviceTitleLab.text = (orderInfo?.service_name_)!
+            }
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {
@@ -215,14 +223,17 @@ class DistanceOfTravelCell: UITableViewCell {
             
             if hotometer?.to_head_ != nil {
                 
-                headView.kf_setImageWithURL(URL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                }
+                headView.kf.setImage(with: URL(string: (hotometer?.to_head_)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
+//                headView.kf_setImageWithURL(URL(string: (hotometer?.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+//                }
             }
             
         }
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-            nickNameLab.text = (hotometer?.to_name_)!
+            if  hotometer?.to_name_  != nil  {
+                nickNameLab.text = (hotometer?.to_name_)!
+            }
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {

@@ -265,6 +265,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             make.top.equalTo(view)
             make.left.equalTo(view).offset(0.5)
             make.width.equalTo(UIScreen.main.bounds.size.width - 1)
+
             make.bottom.equalTo(bottomView.snp.top)
         }
 //        segmentBGV.snp.makeConstraints { (make) in
@@ -289,6 +290,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         recommendBtn.isEnabled = false
         
         view.addSubview(appointmentView)
+
         appointmentView.snp.makeConstraints({ (make) in
             make.left.equalTo(mapView!.snp.right).offset(0.5)
             make.top.equalTo(view)
@@ -372,12 +374,12 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     func postNotifi()  {
 //        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
         
-        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(Date().timeIntervalSince1970)), "appointment_id_" : appointment_id_] as [String : Any]
-        SocketManager.sendData(.testPushNotification, data: ["from_uid_" : -1,
+        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(Date().timeIntervalSince1970)), "appointment_id_" : appointment_id_] as Dictionary<String,Any>
+        _ = SocketManager.sendData(.testPushNotification, data: ["from_uid_" : -1,
                                                                "to_uid_" : DataManager.currentUser!.uid,
                                                              "msg_type_" : 2231,
                                                              "msg_body_" : dict,
-                                                               "content_":"您好，为您刚才的预约推荐服务者"])
+                                                               "content_":"您好，为您刚才的预约推荐服务者"] as AnyObject?)
 
     }
     func keyboardWillShow(_ notification: Notification?) {
@@ -416,7 +418,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
 
         if DataManager.getUserInfo(msg.from_uid_) == nil {
             //TUDO
-            SocketManager.sendData(.getUserInfo, data: ["uid_str_": "\(msg.from_uid_)"])
+            _ = SocketManager.sendData(.getUserInfo, data: ["uid_str_": "\(msg.from_uid_)"] as AnyObject?)
         }
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.PushMessageNotify), object: nil, userInfo: ["data": msg])
@@ -453,7 +455,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             }
             uid_str.remove(at: uid_str.characters.index(before: uid_str.endIndex))
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str as AnyObject]
-            SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.getUserInfo, data: dict as AnyObject?)
         }
         
     }
@@ -511,17 +513,18 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     }
     
     func reflushServantInfo(_ notification: Notification?) {
-        let data = notification?.userInfo!["data"]
-        let err = (data! as AnyObject).allKeys!.contains(where: { (key) -> Bool in
+        
+        let data = notification?.userInfo!["data"] as! [String : Any]
+        let err = (data as AnyObject).allKeys!.contains(where: { (key) -> Bool in
             return key as! String == "error_" ? true : false
         })
         if err {
-            XCGLogger.error("err:\(data!["error_"] as! Int)")
-            let errorCord = data!["error_"] as! Int
+            XCGLogger.error("err:\(data["error_"] as! Int)")
+            let errorCord = data["error_"] as! Int
             SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
-        let servants = data!["result"] as! Array<Dictionary<String, AnyObject>>
+        let servants = data["result"] as! Array<Dictionary<String, AnyObject>>
         annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()
@@ -543,16 +546,18 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     }
     
     func servantDetailInfo(_ notification: Notification?) {
-        let data = notification?.userInfo!["data"] as? [String: Any]
-        if data!["error_"]! != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
+ 
+        let data = notification?.userInfo!["data"] as! [String : Any]
+        if data["error_"] != nil {
+            XCGLogger.error("Get UserInfo Error:\(data["error_"])")
+
             return
         }
-        servantsInfo[data!["uid_"] as! Int]?.setInfo(.servant, info: data as? Dictionary<String, AnyObject>)
-        let user = servantsInfo[data!["uid_"] as! Int]
+        servantsInfo[data["uid_"] as! Int]?.setInfo(.servant, info: data as Dictionary<String, AnyObject>?)
+        let user = servantsInfo[data["uid_"] as! Int]
         DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
@@ -581,7 +586,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     func msgAction(_ sender: AnyObject?) {
         let msgVC = PushMessageVC()
 
-        if sender?.isKind(of: UIButton) == false {
+        if sender is UIButton == false {
             navigationController?.pushViewController(msgVC, animated: false)
             if let userInfo = sender as? [AnyHashable: Any] {
                 let type = userInfo["type"] as? Int
@@ -610,11 +615,13 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
 
         } else {
             bottomSelector.setValue(0, animated: false)
+
             mapView!.snp.updateConstraints { (make) in
                 make.width.equalTo(UIScreen.main.bounds.size.width - 1)
             }
         }
-        XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
+
+        XCGLogger.default.debug("\(bottomSelector.value)")
     }
     
     func segmentChange(_ sender: AnyObject?) {
@@ -643,7 +650,8 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
-                geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
+                
+                geoCoder.reverseGeocodeLocation(userLocation.location, completionHandler: { (placeMarks: [CLPlacemark]?, NSError) in
                     if placeMarks?.count == 1 {
                         self.locality = (placeMarks?[0])!.locality
                         self.titleLab?.text = self.locality
@@ -651,15 +659,33 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
                         DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
                         DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
                         self.perform(#selector(ForthwithVC.sendLocality), with: nil, afterDelay: 1)
-
+                        
                         if DataManager.currentUser!.login {
-                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                      "distance_": 20.1]
-                            SocketManager.sendData(.getServantInfo, data: dict)
+                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat as AnyObject,
+                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon as AnyObject,
+                                                                      "distance_": 20.1 as AnyObject]
+                          _ =  SocketManager.sendData(.getServantInfo, data: dict as AnyObject?)
                         }
                     }
-                } as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler
+                })
+//                geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
+//                    if placeMarks?.count == 1 {
+//                        self.locality = (placeMarks?[0])!.locality
+//                        self.titleLab?.text = self.locality
+//                        XCGLogger.debug("Update locality: \(self.locality!)")
+//                        DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
+//                        DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
+//                        self.perform(#selector(ForthwithVC.sendLocality), with: nil, afterDelay: 1)
+//
+//                        if DataManager.currentUser!.login {
+//                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+//                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
+//                                                                      "distance_": 20.1]
+//                            SocketManager.sendData(.getServantInfo, data: dict)
+//                        }
+//                    }
+//                } as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler as! CLGeocodeCompletionHandler
+
             }
             
         }
@@ -672,20 +698,20 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         }
         
         if lastMapCenter != nil {
-            if double2((lastMapCenter?.latitude)!) == double2(mapView.centerCoordinate.latitude) &&
-                double2((lastMapCenter?.longitude)!) == double2(mapView.centerCoordinate.longitude) &&
+            if double2(value: (lastMapCenter?.latitude)!) == double2(value: mapView.centerCoordinate.latitude) &&
+                double2(value: (lastMapCenter?.longitude)!) == double2(value: mapView.centerCoordinate.longitude) &&
                 firstLanch == false {
                 return
             }
         }
-        let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
-                                                  "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 20.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
+        let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude as AnyObject,
+                                                  "longitude_": mapView.centerCoordinate.longitude as AnyObject,
+                                                  "distance_": 20.1 as AnyObject]
+        _ =  SocketManager.sendData(.getServantInfo, data: dict as AnyObject?)
         lastMapCenter = mapView.centerCoordinate
     }
     
-    func double2(let value:Double) -> Double {
+    func double2( value:Double) -> Double {
         let valueStr = String(format: "%.4f",value)
         return Double(valueStr)!
     }
@@ -697,9 +723,10 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             for (cityCode, cityInfo) in serviceCitys {
                 if (locality! as NSString).range(of: cityInfo.cityName!).length > 0 {
                     var dict = ["city_code_": cityCode, "recommend_type_": 1]
-                    SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+                    _ = SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
                     dict["recommend_type_"] = 2
-                    SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+                    _ = SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+
                     return
                 }
             }
@@ -746,7 +773,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         return nil
     }
     
-    open func mapView(_ mapView: MAMapView!, didAddAnnotationViews views: [AnyObject]!) {
+    @nonobjc open func mapView(_ mapView: MAMapView!, didAddAnnotationViews views: [AnyObject]!) {
 
     }
     
@@ -810,7 +837,8 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             }
 
             let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid as AnyObject]
-            SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
+
             
         }
                 
@@ -844,18 +872,19 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
         recommendServants.removeAll()
         citysAlertController?.dismiss(animated: true, completion: nil)
         let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)! as AnyObject, "recommend_type_": 1 as AnyObject]
-        SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+
     }
     
     func headerRefresh() {
         let dict = ["city_code_": cityCode, "recommend_type_": 2]
-        SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.getRecommendServants, data: dict as AnyObject?)
     }
     
     //MARK: - ServantIntroCellDeleagte
     func chatAction(_ servantInfo: UserInfo?) {
         let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid as AnyObject]
-        SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.getServantDetailInfo, data: dict as AnyObject?)
 
     }
     

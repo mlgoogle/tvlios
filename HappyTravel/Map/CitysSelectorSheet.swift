@@ -11,12 +11,13 @@ import XCGLogger
 
 @objc protocol CitysSelectorSheetDelegate : NSObjectProtocol {
     
-    @objc optional  func cancelAction(sender: UIButton?)
+
+    @objc optional  func cancelAction(_ sender: UIButton?)
     
     
-    @objc optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
-    @objc optional  func daysSureAction(sender:UIButton?, targetDays: Int)
-    @objc optional  func daysCancelAction(sender:UIButton?)
+    @objc optional  func sureAction(_ sender: UIButton?, targetCity: CityInfo?)
+    @objc optional  func daysSureAction(_ sender:UIButton?, targetDays: Int)
+    @objc optional  func daysCancelAction(_ sender:UIButton?)
 
 }
 
@@ -59,11 +60,11 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         let cancelBtn = UIButton()
 
-        cancelBtn.setTitle("取消", for: .normal)
+        cancelBtn.setTitle("取消", for: UIControlState())
         cancelBtn.backgroundColor = UIColor.clear
-        cancelBtn.setTitleColor(UIColor.black
-            , for: .normal)
-        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .TouchUpInside)
+        cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
+        cancelBtn.addTarget(self, action: #selector(ServiceSheet.cancelAction(_:)), for: .touchUpInside)
+
         head.addSubview(cancelBtn)
         cancelBtn.snp.makeConstraints { (make) in
             make.left.equalTo(head)
@@ -73,9 +74,9 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
         
         let sureBtn = UIButton()
-        sureBtn.setTitle("确定", for: .normal)
+        sureBtn.setTitle("确定", for: UIControlState())
         sureBtn.backgroundColor = UIColor.clear
-        sureBtn.setTitleColor(UIColor.black, for: .normal)
+        sureBtn.setTitleColor(UIColor.black, for: UIControlState())
         sureBtn.addTarget(self, action: #selector(ServiceSheet.sureAction(_:)), for: .touchUpInside)
         head.addSubview(sureBtn)
         sureBtn.snp.makeConstraints { (make) in

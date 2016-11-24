@@ -212,7 +212,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     return
                 }
                 let controller = UploadUserPictureVC()
-                self.navigationController!.pushViewController(controller, animated: true)
+                _ = navigationController!.pushViewController(controller, animated: true)
                 break
             case .ClearCache:
                 clearCacleSizeCompletion({
@@ -222,7 +222,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 break
             case .LogoutUser:
                 SocketManager.logoutCurrentAccount()
-                navigationController?.popViewController(animated: false)
+                _ = navigationController?.popViewController(animated: false)
                 break
             default:
             break

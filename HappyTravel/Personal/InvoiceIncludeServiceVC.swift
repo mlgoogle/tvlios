@@ -40,15 +40,19 @@ class InvoiceIncludeServiceVC: UIViewController {
             make.edges.equalTo(view)
         })
 
+        
+        /*
+           ============ 迁移完需要修改 （用的OC类型）===========
+         */
         SocketManager.sendData(.serviceDetailRequest, data: ["oid_str_" : oid_str_]) { [weak self](result) in
             if let strongSelf = self{
-                if  let dict = result["data"] {
+                if  let dict:[String : Any] = result["data"] as? [String : Any]{
                     if let serviceList  = dict["service_list"] as? Array<Dictionary<String, AnyObject>> {
                         
                         for var service in serviceList {
-                            service["oid_str_"] = strongSelf.oid_str_
+                            service["oid_str_"] = strongSelf.oid_str_ as AnyObject?
                             let serviceInfo = InvoiceServiceInfo()
-                            serviceInfo.setInfoWithCommenInvoice(service)
+                            serviceInfo.setInfoWithCommenInvoice(service as NSDictionary)
                             DataManager.insertInvoiceServiceInfo(serviceInfo)
                         }
                     }
@@ -56,15 +60,15 @@ class InvoiceIncludeServiceVC: UIViewController {
                     if let serviceList  = dict["black_list"] as? Array<Dictionary<String, AnyObject>> {
                         
                         for var service in serviceList {
-                            service["oid_str_"] = strongSelf.oid_str_
+                            service["oid_str_"] = strongSelf.oid_str_ as AnyObject?
                             let serviceInfo = InvoiceServiceInfo()
-                            serviceInfo.setInfoWithBlackCardInvoice(service)
+                            serviceInfo.setInfoWithBlackCardInvoice(service as NSDictionary)
                             DataManager.insertInvoiceServiceInfo(serviceInfo)
                         }
                     }
                     
                     let realm = try! Realm()
-                    strongSelf.services = realm.objects(InvoiceServiceInfo.self).filter("oid_str_ == \"\(strongSelf.oid_str_)\"").sorted("order_time_", ascending: true)
+                    strongSelf.services = realm.objects(InvoiceServiceInfo.self).filter("oid_str_ == \"\(strongSelf.oid_str_)\"").sorted(byProperty: "order_time_", ascending: true)
                     strongSelf.tableView?.reloadData()
                 }
             }

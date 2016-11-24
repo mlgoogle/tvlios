@@ -129,6 +129,10 @@ class IdentBaseInfoCell: UITableViewCell {
         }
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func setInfo(_ userInfo: UserInfo?) {
         servantInfo = userInfo
         
@@ -142,13 +146,18 @@ class IdentBaseInfoCell: UITableViewCell {
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         
         if let headImageView = bgView?.viewWithTag(tags["headImageView"]!) as? UIImageView {
-            headImageView.kf_setImageWithURL(URL(string: (userInfo?.headUrl)!), placeholderImage: nil, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+            if userInfo?.headUrl != nil {
                 
-            })
+                headImageView.kf.setImage(with:URL(string: (userInfo?.headUrl)!), placeholder: nil, options: nil, progressBlock: nil, completionHandler: nil)
+            }
+            
         }
         
         if let nicknameLab = contentView.viewWithTag(tags["nicknameLab"]!) as? UILabel {
-            nicknameLab.text = userInfo?.nickname!
+            if userInfo?.nickname != nil {
+                
+                nicknameLab.text = userInfo?.nickname!
+            }
         }
         
         if tallys.count != 0 {
@@ -183,7 +192,11 @@ class IdentBaseInfoCell: UITableViewCell {
                 
                 var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 10 + 1) as? UILabel
                 if tallyLabel == nil {
-                    tallyLabel = UILabel(frame: CGRectZero)
+                    
+                    
+                    
+                    
+                    tallyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
                     tallyLabel!.tag = tallyItemView!.tag * 10 + 1
                     tallyLabel!.font = UIFont.systemFont(ofSize: S12)
                     tallyLabel!.isUserInteractionEnabled = false
@@ -213,9 +226,6 @@ class IdentBaseInfoCell: UITableViewCell {
         }
         
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
 }
 

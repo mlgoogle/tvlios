@@ -72,15 +72,15 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     func receivedData(_ notifation:Notification) {
         
-        let dict = notifation.userInfo!["data"]
+        let dict = notifation.userInfo!["data"] as! [String : AnyObject]
         
         
-        if let errorCode = dict!["error_"] {
+        if let errorCode = dict["error_"] {
             SVProgressHUD.showWainningMessage(WainningMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误：\(errorCode)", ForDuration: 1.5, completion: nil)
         } else {
             let userInfo = UserInfo()
             
-            userInfo.setInfo(.other, info: dict as? Dictionary<String, AnyObject>)
+            userInfo.setInfo(.other, info: dict)
             
             DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
@@ -246,7 +246,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     
     func callSrevant() {
         if service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
-            SocketManager.sendData(.serversManInfoRequest, data: nil)
+            _ = SocketManager.sendData(.serversManInfoRequest, data: nil)
 
             
         } else {
