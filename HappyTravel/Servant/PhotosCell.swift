@@ -134,11 +134,11 @@ open class PhotosCell : UITableViewCell {
     }
     
     func moreAction(_ sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("detailAction")
+        XCGLogger.debug("detailAction")
     }
     
     func selectAction(_ sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
+        XCGLogger.debug("selectAction:\(sender!.tag)")
     }
     
     required public init?(coder aDecoder: NSCoder) {
