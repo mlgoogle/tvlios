@@ -512,11 +512,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func reflushServantInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        let err = data!.allKeys!.contains({ (key) -> Bool in
-            return key as! String == "error_" ? true : false
+        let data = notification?.userInfo!["data"] as? [String: AnyObject]
+        let err = data?.keys.contains({ (key) -> Bool in
+            return key == "error_" ? true : false
         })
-        if err {
+        if (err != false) {
             XCGLogger.error("err:\(data!["error_"] as! Int)")
             let errorCord = data!["error_"] as! Int
             SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
@@ -544,12 +544,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func servantDetailInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        if data!["error_"]! != nil {
+        let data = notification?.userInfo!["data"] as? [String: AnyObject]
+        if data!["error_"] != nil {
             XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
             return
         }
-        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
         let user = servantsInfo[data!["uid_"] as! Int]
         DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
@@ -656,7 +656,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         if DataManager.currentUser!.login {
                             let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                                       "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                      "distance_": 20.1]
+                                                                      "distance_": 5.1]
                             SocketManager.sendData(.GetServantInfo, data: dict)
                         }
                     }
@@ -681,7 +681,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
                                                   "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 20.1]
+                                                  "distance_": 5.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
         lastMapCenter = mapView.centerCoordinate
     }
