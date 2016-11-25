@@ -389,7 +389,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             if  object.status_ == HodometerStatus.invoiceMaking.rawValue ||
                 object.status_ == HodometerStatus.invoiceMaked.rawValue ||
-                object.status_ == HodometerStatus.Completed.rawValue{
+                object.status_ == HodometerStatus.completed.rawValue{
                 
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)

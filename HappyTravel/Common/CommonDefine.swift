@@ -9,7 +9,8 @@
 import Foundation
 //MARK: -- 颜色全局方法
 func colorWithHexString(_ hex: String) -> UIColor {
-    var cString:String = hex.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercased()
+    var cString:String = hex.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).uppercased()
+//    stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercased()
     
     if (cString.hasPrefix("#")) {
         cString = (cString as NSString).substring(from: 1)

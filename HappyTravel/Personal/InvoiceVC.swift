@@ -134,17 +134,17 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func headerRefresh() {
-        SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+        _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": 0,
             "count_": 10])
-        SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+        _ = SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+        _ = SocketManager.sendData(.obtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
             "order_id_": orderID,
             "count_": 10])
-        SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+        _ = SocketManager.sendData(.centurionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     func commitAction(_ sender: UIButton) {

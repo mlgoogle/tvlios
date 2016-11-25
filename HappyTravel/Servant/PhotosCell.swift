@@ -92,7 +92,7 @@ open class PhotosCell : UITableViewCell {
                     photoView?.tag = 1003 * 10 + index
                     view?.addSubview(photoView!)
                 }
-                photoView!.kf_setImage(with: NSURL(string: photoURL.photoUrl!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                photoView!.kf.setImage(with: URL(string: photoURL.photoUrl!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 var previousView:UIImageView?
