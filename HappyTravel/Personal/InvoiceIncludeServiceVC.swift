@@ -62,7 +62,16 @@ class InvoiceIncludeServiceVC: UIViewController {
                             DataManager.insertInvoiceServiceInfo(serviceInfo)
                         }
                     }
+                    if let serviceList  = dict["black_buy_list_"] as? Array<Dictionary<String, AnyObject>> {
                     
+                        
+                        for var service in serviceList {
+                            service["oid_str_"] = strongSelf.oid_str_
+                            let serviceInfo = InvoiceServiceInfo()
+                            serviceInfo.setInfoWithBlackBuyInvoice(service)
+                            DataManager.insertInvoiceServiceInfo(serviceInfo)
+                        }
+                    }
                     let realm = try! Realm()
                     strongSelf.services = realm.objects(InvoiceServiceInfo.self).filter("oid_str_ == \"\(strongSelf.oid_str_)\"").sorted("order_time_", ascending: true)
                     strongSelf.tableView?.reloadData()

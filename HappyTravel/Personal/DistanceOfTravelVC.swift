@@ -141,7 +141,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let realm = try! Realm()
-        consumes = realm.objects(CenturionCardConsumedInfo.self).sorted("order_id_", ascending: false)
+        consumes = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ > 3").sorted("order_id_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
