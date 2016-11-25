@@ -524,7 +524,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
-        let servants = data["result"] as! Array<Dictionary<String, AnyObject>>
+        let servants = data["result_"] as! Array<Dictionary<String, AnyObject>>
         annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()
