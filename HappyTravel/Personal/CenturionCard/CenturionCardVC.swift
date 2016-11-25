@@ -251,18 +251,19 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         let realm = try! Realm()
+        let currentCardInfo = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)").first
         let price: CentuionCardPriceInfo? = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(selectedIndex + 1)").first
-        
+        let totalPrice = 0 + (price?.blackcard_price_)!
+
         if price?.blackcard_price_ != nil &&
             price?.blackcard_price_ > 0 &&
-            price?.blackcard_price_ > DataManager.currentUser?.cash{
+           totalPrice - (currentCardInfo?.blackcard_price_)! > DataManager.currentUser?.cash{
             
             moneyIsTooLess()
             return
         }
-        let currentCardInfo = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)").first
+
         
-        let totalPrice = 0 + (price?.blackcard_price_)!
         upCenturionCardLv(totalPrice - (currentCardInfo?.blackcard_price_)!)
     }
     
@@ -377,11 +378,13 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.reloadData()
     }
     func shareImage()-> UIImage  {
-        let imageView = UIImageView(frame: CGRectMake(0, 0, ScreenWidth, 100))
+        let view = UIView(frame:  CGRectMake(0, 0, ScreenWidth, 100))
+        let imageView = UIImageView(frame: CGRectMake((ScreenWidth - 100) / 2, 0, 100, 100))
         imageView.backgroundColor = UIColor.whiteColor()
         let image = UIImage(named: "face-btn@2x")
         imageView.image = image
-        table?.tableFooterView = imageView
+        view.addSubview(imageView)
+        table?.tableFooterView = view
         let frame = table?.frame
         table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
         table!.setContentOffset(CGPointZero, animated: false)
