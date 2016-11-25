@@ -29,7 +29,8 @@ class ShareItem: UICollectionViewCell {
         shareIcon.snp.makeConstraints { (make) in
             make.centerX.equalTo(contentView)
             make.top.equalTo(AtapteWidthValue(10))
-            make.width.equalTo(CGSizeMake(AtapteWidthValue(60), AtapteWidthValue(60)))
+            
+            make.width.equalTo(CGSize(width: AtapteWidthValue(60), height: AtapteWidthValue(60)))
         }
         
         contentView.addSubview(shareTitle)
@@ -153,11 +154,11 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
         WXApi.send(req)
     }
     func shareResult(_ notice: Notification) {
-        let dic = notice.object
+        let dic = notice.object as! [String : Any]
         if dic == nil {
             return
         }
-        let message: String = dic!["result"] as! String
+        let message: String = dic["result"] as! String
         if message == "分享成功" {
             SVProgressHUD.showSuccessMessage(SuccessMessage: "分享成功", ForDuration: 1, completion: { () in
                 self.dismiss(animated: true, completion: nil)

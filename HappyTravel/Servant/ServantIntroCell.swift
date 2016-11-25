@@ -284,7 +284,7 @@ class ServantIntroCell: UITableViewCell {
 //        }
         let headUrl = URL(string: userInfo!.headUrl!)
         let headView = imageView.viewWithTag(10001) as! UIImageView
-        headView.kf_setImage(with: headUrl, placeholder: UIImage(named: "touxiang_women"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+        headView.kf.setImage(with: headUrl, placeholder: UIImage(named: "touxiang_women"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             
         }
         

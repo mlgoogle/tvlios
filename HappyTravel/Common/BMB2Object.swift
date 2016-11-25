@@ -120,7 +120,7 @@ class BMB2Object : NSObject {
         
     }
     
-    func pack() -> Data? {
+    func pack() -> NSMutableData? {
         var cnt:UInt32 = 0
         let data = NSMutableData()
         let memberList = class_copyPropertyList(self.classForCoder, &cnt)

@@ -103,7 +103,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
-        SocketManager.sendData(.uploadImageToken, data: nil)
+        _ = SocketManager.sendData(.uploadImageToken, data: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -202,15 +202,15 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
             self.nickname = nicknameField?.text
-            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
-                "nickname_": self.nickname! as AnyObject,
-                "gender_": self.sex as AnyObject,
+            let dict:Dictionary<String, Any> = ["uid_": (DataManager.currentUser?.uid)! as AnyObject,
+                "nickname_": self.nickname!,
+                "gender_": self.sex,
                 "head_url_": url,
                 "address_": self.address!,
                 "longitude_": Float.init(location[0])!,
                 "latitude_": Float.init(location[1])!]
             self.headerUrl = url
-            SocketManager.sendData(.sendImproveData, data: dict)
+            _ = SocketManager.sendData(.sendImproveData, data: dict)
         }
     }
     
@@ -265,7 +265,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func improveDataSuccessed(_ notification: Notification?) {
         SVProgressHUD.dismiss()
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
         DataManager.currentUser?.headUrl = headerUrl
         DataManager.currentUser?.nickname = nickname
         DataManager.currentUser?.gender = sex
@@ -340,12 +340,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             if userInfo!.headUrl!.hasPrefix("http"){
                 
                 let headUrl = URL(string: userInfo!.headUrl!)
-                headView?.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                headView?.kf.setImage(with: headUrl, placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
             } else if userInfo!.headUrl!.hasPrefix("var"){
                 let headerUrl = URL(fileURLWithPath: userInfo!.headUrl!)
-                headView?.kf_setImageWithURL(headerUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                headView?.kf.setImage(with: headerUrl, placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
             }

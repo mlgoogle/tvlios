@@ -488,7 +488,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         perform(#selector(SocketManager.sendHeart), with: nil, afterDelay: 10)
     }
     
-    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: NSError?) {
+    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
         if !SocketManager.isLogout {
 //            connectSock()

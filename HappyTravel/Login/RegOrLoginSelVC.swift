@@ -67,8 +67,8 @@ class RegOrLoginSelVC: UIViewController {
         let regBtn = UIButton()
         regBtn.tag = tags["regBtn"]!
         regBtn.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 49/255.0, alpha: 1)
-        regBtn.setTitle("注册", for: UIControlState())
-        regBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: UIControlState())
+        regBtn.setTitle("注册", for: .normal)
+        regBtn.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: .normal)
         regBtn.layer.cornerRadius = 30 / 2.0
         regBtn.layer.masksToBounds = true
         regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), for: .touchUpInside)

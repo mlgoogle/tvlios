@@ -195,7 +195,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
             }
             SVProgressHUD.dismiss()
             let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1] as [String : Any]
-            SocketManager.sendData(.login, data: loginDict as AnyObject?)
+            _ = SocketManager.sendData(.login, data: loginDict as AnyObject?)
             
         }
     }
@@ -232,13 +232,17 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
+        
+        if token == nil {
+          token = ""
+        }
         let dict:Dictionary<String, AnyObject>? = ["phone_num_": username! as AnyObject,
                                                    "passwd_": passwd! as AnyObject,
                                                    "user_type_": 1 as AnyObject,
                                                    "timestamp_": verifyCodeTime as AnyObject,
                                                    "verify_code_": verifyCode as AnyObject,
-                                                   "token_": token == nil ? "" : token! as AnyObject]
-        SocketManager.sendData(.registerAccountRequest, data: dict as AnyObject?)
+                                                   "token_": token as AnyObject ]
+        _ = SocketManager.sendData(.registerAccountRequest, data: dict as AnyObject?)
     
     }
     

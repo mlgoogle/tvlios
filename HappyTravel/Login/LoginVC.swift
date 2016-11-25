@@ -211,7 +211,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001" as AnyObject, "passwd_": "123456" as AnyObject, "user_type_": 2 as AnyObject]
-            SocketManager.sendData(.login, data: dict as AnyObject?)
+            _ = SocketManager.sendData(.login, data: dict as AnyObject?)
             return
         }
         
@@ -247,7 +247,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.set(username, forKey: CommonDefine.UserName)
         UserDefaults.standard.set(passwd, forKey: CommonDefine.Passwd)
         UserDefaults.standard.set("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
-        SocketManager.sendData(.login, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.login, data: dict as AnyObject?)
     }
     
     func randomSmallCaseString(_ length: Int) -> String {
@@ -263,14 +263,14 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     func loginResult(_ notification: Notification?) {
         
-        let data = notification?.userInfo!["data"]
+        let data = notification?.userInfo!["data"] as! [String : Any]
         if let errorCode = (data as AnyObject).value(forKey: "error_") {
             let errorMsg = CommonDefine.errorMsgs[(errorCode as AnyObject).intValue]
             SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1.5, completion: nil)
             return
         }
         SVProgressHUD.dismiss()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil, userInfo: ["data": data!])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil, userInfo: ["data": data])
         
     }
     

@@ -58,7 +58,7 @@ class ViewController: SideMenuController {
     }
     
     func startSockThread() {
-        SocketManager.shareInstance
+        _ = SocketManager.shareInstance
     }
 
     override func didReceiveMemoryWarning() {

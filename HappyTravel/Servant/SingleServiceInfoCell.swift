@@ -81,82 +81,7 @@ class SingleServiceInfoCell: UITableViewCell {
                 make.bottom.equalTo(contentView).offset(-10)
             })
         }
-//        
-//        var plusOrReduceView = contentView.viewWithTag(tags["plusOrReduceView"]!)
-//        if  plusOrReduceView == nil {
-//            plusOrReduceView = UIView()
-//            plusOrReduceView?.tag = tags["plusOrReduceView"]!
-//            plusOrReduceView?.backgroundColor = UIColor.clearColor()
-//            contentView.addSubview(plusOrReduceView!)
-//            plusOrReduceView?.snp.makeConstraints(closure: { (make) in
-//                make.left.equalTo((descLab?.snp.right)!)
-//                make.right.equalTo((priceLab?.snp.left)!)
-//                make.top.equalTo((descLab)!)
-//                make.bottom.equalTo(descLab!)
-//            })
-//            
-//        }
-//
-//        var plusButton = contentView.viewWithTag(tags["plusButton"]!) as? UIButton
-//        if plusButton == nil {
-//            plusButton = UIButton(type: .Custom)
-//            plusButton?.tag = tags["plusButton"]!
-//            plusButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
-//            plusOrReduceView?.addSubview(plusButton!)
-//            plusButton?.backgroundColor = UIColor.clearColor()
-//            plusButton?.layer.borderWidth = 1
-//            plusButton?.layer.cornerRadius = 15
-//            plusButton?.layer.borderColor = UIColor.redColor().CGColor
-//            plusButton?.setTitle("+", forState: .Normal)
-//            plusButton?.addTarget(self, action: #selector(SingleServiceInfoCell.plus), forControlEvents: .TouchUpInside)
-//            plusButton!.snp.makeConstraints(closure: { (make) in
-//                
-//                make.right.equalTo((plusOrReduceView?.snp.right)!)
-//                make.width.equalTo(30)
-//                make.height.equalTo(30)
-//                make.top.equalTo(plusOrReduceView!)
-//            })
-//            
-//            
-//        }
-//        var countLabel  = contentView.viewWithTag(tags["countLabel"]!) as? UILabel
-//        
-//        if countLabel == nil {
-//            countLabel = UILabel()
-//            countLabel!.text = "1 天"
-//            countLabel?.tag = tags["countLabel"]!
-//            countLabel!.textAlignment = .Center
-//            countLabel!.textColor = UIColor.init(red: 142/255.0, green: 142/255.0, blue: 142/255.0, alpha: 1)
-//            countLabel!.font = UIFont.systemFontOfSize(S15)
-//            plusOrReduceView?.addSubview(countLabel!)
-//            countLabel!.snp.makeConstraints(closure: { (make) in
-//                make.top.equalTo(descLab!)
-//                make.bottom.equalTo(descLab!)
-//                make.right.equalTo((plusButton?.snp.left)!).offset(-5)
-//            })
-//        }
-//
-//        
-//        var reduceButton = contentView.viewWithTag(tags["reduceButton"]!) as? UIButton
-//        
-//        if reduceButton == nil {
-//            reduceButton = UIButton(type: .Custom)
-//            reduceButton?.tag = tags["reduceButton"]!
-//            reduceButton?.backgroundColor = UIColor.clearColor()
-//            reduceButton?.setTitle("-", forState: .Normal)
-//            reduceButton?.layer.borderWidth = 1
-//            reduceButton?.layer.cornerRadius = 15
-//            reduceButton?.layer.borderColor = UIColor.redColor().CGColor
-//            reduceButton!.addTarget(self, action: #selector(SingleServiceInfoCell.reduce), forControlEvents: .TouchUpInside)
-//            reduceButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
-//            plusOrReduceView?.addSubview(reduceButton!)
-//            reduceButton!.snp.makeConstraints(closure: { (make) in
-//                make.width.equalTo(30)
-//                make.height.equalTo(30)
-//                make.right.equalTo((countLabel?.snp.left)!).offset(-5)
-//                make.top.equalTo(plusOrReduceView!)
-//            })
-//        }
+
     }
     
     
@@ -170,23 +95,6 @@ class SingleServiceInfoCell: UITableViewCell {
         if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
             descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
         }
-//        /**
-//         *  如果是邀约 继续执行  如果是预约 则 直接return
-//         */
-//        guard isNormal else {
-//            
-//            let plusOrReduceView = contentView.viewWithTag(tags["plusOrReduceView"]!)
-//            
-//            plusOrReduceView?.hidden = true
-//            return
-//        }
-//        if let countLabel  = contentView.viewWithTag(tags["countLabel"]!) as? UILabel {
-//            countLabel.text = String(count) + " 天"
-//        }
-//        if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-//            priceLab.text = "\(Double(service.service_price_ * count) / 100) 元"
-//        }
-        
     }
     
     

@@ -163,7 +163,10 @@ class AppointmentDetailCell: UITableViewCell {
      */
     func setApponimentInfo(_ info:AppointmentInfo) {
         nicknameLabel.text = info.to_name_
-        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        if info.to_head_ != nil {
+         iconImageView.kf.setImage(with: URL(string: (info.to_head_)!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil, completionHandler: nil)
+        }
+//        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
 
 
         serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
@@ -191,7 +194,11 @@ class AppointmentDetailCell: UITableViewCell {
     func setServiceInfo(_ info:HodometerInfo) {
         
         nicknameLabel.text = info.to_name_
-        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        
+        if info.to_head_ != nil {
+            iconImageView.kf.setImage(with: URL(string: (info.to_head_)!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil, completionHandler: nil)
+        }
+//        iconImageView.kf_setImageWithURL(URL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         serviceTypeLabel.text = "【" + serviceTypes[info.service_type_]! + "】"
         let startTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.start_)))
         let endTime = dateFormatter.string(from: Date(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))

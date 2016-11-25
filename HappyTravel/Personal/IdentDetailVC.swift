@@ -107,14 +107,14 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
 
         let data = notification.userInfo!["data"] as! [String : Any]
-        if data["error_"]! != nil {
-            XCGLogger.error("Get UserInfo Error:\(data["error"])")
-            return
-        }
+//        if data["error_"] != nil {
+//            XCGLogger.error("Get UserInfo Error:\(data["error"])")
+//            return
+//        }
         servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
         guard servantInfo != nil else {
             
-            servantDict = data
+            servantDict = data as Dictionary<String, AnyObject>?
 //            servantInfo = UserInfo()
 //            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
             getServantBaseInfo()
@@ -125,7 +125,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let realm = try! Realm()
         try! realm.write({
                 
-          servantInfo!.setInfo(.servant, info: data)
+          servantInfo!.setInfo(.servant, info: data as Dictionary<String, AnyObject>?)
                 
         })
         

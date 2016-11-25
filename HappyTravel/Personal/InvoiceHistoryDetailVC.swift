@@ -109,7 +109,7 @@ class InvoiceHistoryDetailVC: UIViewController {
      */
     func receivedData(_ notification:Notification) {
         
-        if let dict = notification.userInfo!["data"] {
+        if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             let history = InvoiceHistoryInfo(value: dict)
             DataManager.updateInvoiceHistoryInfo(history)
             historyInfo = DataManager.getInvoiceHistoryInfo(invoice_id_)

@@ -92,7 +92,7 @@ open class PhotosCell : UITableViewCell {
                     photoView?.tag = 1003 * 10 + index
                     view?.addSubview(photoView!)
                 }
-                photoView!.kf_setImage(with: NSURL(string: photoURL.photoUrl!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                photoView!.kf.setImage(with: URL(string: photoURL.photoUrl!), placeholder: UIImage(named: "default-head"), options: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 var previousView:UIImageView?
@@ -134,11 +134,11 @@ open class PhotosCell : UITableViewCell {
     }
     
     func moreAction(_ sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("detailAction")
+        XCGLogger.debug("detailAction")
     }
     
     func selectAction(_ sender: AnyObject?) {
-        XCGLogger.defaultInstance().debug("selectAction:\(sender!.tag)")
+        XCGLogger.debug("selectAction:\(sender!.tag)")
     }
     
     required public init?(coder aDecoder: NSCoder) {

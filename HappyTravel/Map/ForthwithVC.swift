@@ -396,12 +396,12 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     }
     
     func loginResult(_ notification: Notification?) {
-        let data = notification?.userInfo!["data"]
-        let err = (data! as AnyObject).allKeys!.contains(where: { (key) -> Bool in
+        let data = notification?.userInfo!["data"] as! [String : Any]
+        let err = (data as AnyObject).allKeys!.contains(where: { (key) -> Bool in
             return key as! String == "error_" ? true : false
         })
         if !err {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil, userInfo: ["data": data!])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotifyDefine.LoginSuccessed), object: nil, userInfo: ["data": data])
         }
         
     }

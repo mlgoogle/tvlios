@@ -227,7 +227,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
             
             if currentCash >= totalMoney { // 余额充足
                 
-                SocketManager.sendData(.appointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
+                _ = SocketManager.sendData(.appointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
                     "to_uid_": personalInfo!.uid,
                     "service_id_": service!.service_id_,
                     "appointment_id_":appointment_id_])
@@ -295,7 +295,7 @@ open class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableVie
         present(weakSelf.daysAlertController!, animated: true, completion: nil)
     }
     func back() {
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     override open func viewDidLoad() {
@@ -484,7 +484,7 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
         
         if currentCash >= totalMoney {
             
-            SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+            _ = SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                 "to_uid_": personalInfo!.uid,
                 "service_id_": selectedServcie!.service_id_,
                 "day_count_":targetDays])
@@ -517,7 +517,7 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             
         }
 
-        SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+        _ = SocketManager.sendData(.askInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
                                           "to_uid_": personalInfo!.uid,
                                       "service_id_": selectedServcie!.service_id_,
                                        "day_count_":targetDays])

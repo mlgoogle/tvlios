@@ -300,7 +300,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
         let dict  = ["verify_type_": 1, "phone_num_": username!] as [String : Any]
-        SocketManager.sendData(.sendMessageVerify, data: dict as AnyObject?)
+        _ = SocketManager.sendData(.sendMessageVerify, data: dict as AnyObject?)
         sender.isUserInteractionEnabled = false
         setupCountdown()
     }

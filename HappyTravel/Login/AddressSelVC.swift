@@ -90,7 +90,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let titleLab = previousSelectedCell?.contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
             delegate?.addressSelected(titleLab.text)
         }
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func initView() {

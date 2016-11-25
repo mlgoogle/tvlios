@@ -167,10 +167,13 @@ class AnnularProgressView: UIView {
         let context = UIGraphicsGetCurrentContext()
         context?.setStrokeColor(UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1).cgColor)
         context?.setLineWidth(lineWidth)
-        CGContextAddArc(context, centerX, centerY, radius, startAngle, endAngle, 0)
+        
+        context?.addArc(center:CGPoint(x: centerX, y: centerY), radius:radius, startAngle:startAngle, endAngle:endAngle,clockwise:false)
         context?.strokePath()
         context?.setStrokeColor(UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).cgColor)
-        CGContextAddArc(context, centerX, centerY, radius, startAngle, endAngle, 1)
+        context?.addArc(center:CGPoint(x: centerX, y: centerY), radius:radius, startAngle:startAngle, endAngle:endAngle,clockwise:true)
+
+//        CGContextAddArc(context, centerX, centerY, radius, startAngle, endAngle, 1)
         context?.strokePath()
         
     }
