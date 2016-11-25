@@ -128,7 +128,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.GetServiceCity, data: nil)
         let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                   "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                  "distance_": 20.1]
+                                                  "distance_": 5.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
