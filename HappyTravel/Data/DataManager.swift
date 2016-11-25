@@ -381,7 +381,7 @@ class DataManager: NSObject {
             return nil
         }
         let realm = try! Realm()
-        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = \(HodometerStatus.Completed.rawValue)")
+        let infos = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ = 7")
         return infos
     }
     
@@ -534,6 +534,13 @@ class DataManager: NSObject {
             
         case CityInfo.className():
             let objs = realm.objects(CityInfo.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
+            }
+        case CentuionCardPriceInfo.className():
+            let objs = realm.objects(CentuionCardPriceInfo.self)
             if filter == nil {
                 return objs
             } else {

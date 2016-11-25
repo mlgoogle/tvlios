@@ -76,9 +76,16 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         collectionView.registerClass(UICollectionReusableView.classForCoder(), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "buyBtnFooterView")
         return collectionView
     }()
+    
+    
+    
+    
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return services == nil ? 0 : services!.count
     }
+    
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let item: CenturionCardServerItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardServerItem", forIndexPath: indexPath) as! CenturionCardServerItem
         let service  = services![indexPath.row]
@@ -87,9 +94,13 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         item.titleLabel.text = service.privilege_name_!
         return item
     }
+    
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         delegate!.serviceTouched(services![indexPath.row])
     }
+    
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
 
         if services == nil || services?.count == 0 {

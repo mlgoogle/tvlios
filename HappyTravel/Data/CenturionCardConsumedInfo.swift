@@ -24,7 +24,7 @@ class CenturionCardConsumedInfo: Object {
     dynamic var privilege_lv_ = 0
     
     dynamic var order_status_ = 0
-    
+    dynamic var order_type_ = 0
     
     func setInfo(info: CenturionCardConsumedInfo) {
         order_id_ = info.order_id_
