@@ -214,14 +214,16 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func checkUserResultReply(_ notice: Notification) {
         let data = notice.userInfo!["data"] as! NSDictionary
-        let code = data.value(forKey: "code")
-        if (code as AnyObject).int32Value == 0 {
-            unowned let weakSelf = self
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-              _ = weakSelf.navigationController?.popViewController(animated: true)
-            })
+        if let code = data.value(forKey: "code") as? Int {
+            if code == 0 {
+                unowned let weakSelf = self
+                SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
+                    _ = weakSelf.navigationController?.popViewController(animated: true)
+                })
+            }
             return
         }
+        
         SVProgressHUD.dismiss()
         walletTable?.reloadData()
     }

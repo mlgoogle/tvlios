@@ -426,8 +426,8 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
     
     func recommendServants(_ notification: Notification?) {
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            let servants = data["recommend_guide"] as? Array<Dictionary<String, AnyObject>>
-            let type = data["recommend_type"] as! Int
+            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
+            let type = data["recommend_type_"] as! Int
             var uid_str = ""
             if type == 1 {
                 for servant in servants! {
@@ -524,7 +524,7 @@ open class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetD
             SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
-        let servants = data["result_"] as! Array<Dictionary<String, AnyObject>>
+        let servants = data["guide_list_"] as! Array<Dictionary<String, AnyObject>>
         annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()

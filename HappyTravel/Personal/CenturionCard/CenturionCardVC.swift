@@ -71,7 +71,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             lv += 1
         }
         services = DataManager.getCenturionCardServiceWithLV(lv)
-        _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil)
+//        _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil)
         _ = SocketManager.sendData(.centurionCardInfoRequest, data: nil) { [weak self](result) in
             if let strongSelf = self{
                 strongSelf.table?.reloadData()

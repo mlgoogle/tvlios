@@ -583,7 +583,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func userInfoReply(_ jsonBody: JSON?) {
-        for info in jsonBody!["userinfo_list"] {
+        for info in jsonBody!["userinfo_list_"] {
             let user = UserInfo()
             user.setInfo(.other, info: info.1.dictionaryObject! as Dictionary<String, AnyObject>?)
             DataManager.updateUserInfo(user)
@@ -608,7 +608,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if try! (jsonBody?.rawData().count)! <= 0 {
             postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
         } else {
-            if let tripList = jsonBody!.dictionaryObject!["trip_list"] as? Array<Dictionary<String, AnyObject>> {
+            if let tripList = jsonBody!.dictionaryObject!["trip_list_"] as? Array<Dictionary<String, AnyObject>> {
                 var lastOrderID = 0
                 for trip in tripList {
                     let hodotemerInfo = HodometerInfo(value: trip)
@@ -631,7 +631,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func centurionCardInfoReply(_ jsonBody: JSON?) {
-        if let privilegeList = jsonBody?.dictionaryObject!["privilege_list"] as? Array<Dictionary<String, AnyObject>> {
+        if let privilegeList = jsonBody?.dictionaryObject!["privilege_list_"] as? Array<Dictionary<String, AnyObject>> {
             for privilege in privilegeList {
                 let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
                 DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
@@ -647,7 +647,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if jsonBody == nil {
             postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
         } else {
-            if let orderList = jsonBody?.dictionaryObject!["blackcard_consume_record"] as? Array<Dictionary<String, AnyObject>> {
+            if let orderList = jsonBody?.dictionaryObject!["blackcard_consume_record_"] as? Array<Dictionary<String, AnyObject>> {
                 var lastOrderID = 0
                 for order in orderList {
                     let info = CenturionCardConsumedInfo(value: order)
@@ -663,7 +663,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func skillsInfoReply(_ jsonBody: JSON?) {
-        if let skillList = jsonBody?.dictionaryObject!["skills_list"] as? Array<Dictionary<String, AnyObject>> {
+        if let skillList = jsonBody?.dictionaryObject!["skills_list_"] as? Array<Dictionary<String, AnyObject>> {
             for skill in skillList {
                
                 let info = SkillInfo(value: skill)
@@ -691,7 +691,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if try! (jsonBody?.rawData().count)! <= 0 {
             postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
         } else {
-            if let invoiceList = jsonBody?.dictionaryObject!["invoice_list"] as? Array<Dictionary<String, AnyObject>> {
+            if let invoiceList = jsonBody?.dictionaryObject!["invoice_list_"] as? Array<Dictionary<String, AnyObject>> {
                 var lastOrderID = 0
                 for invoice in invoiceList {
                     let historyInfo = InvoiceHistoryInfo(value: invoice)
@@ -738,7 +738,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func appointmentRecordReply(_ jsonBody: JSON?) {
         var lastID = -9999
-        if  let recordList = jsonBody?.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>> {
+        if  let recordList = jsonBody?.dictionaryObject!["data_list_"] as? Array<Dictionary<String, AnyObject>> {
             for record in recordList {
                 let recordInfo = AppointmentInfo(value: record)
                 DataManager.insertAppointmentRecordInfo(recordInfo)
@@ -822,7 +822,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func saveTheCenturionCardVIPPrice(_ jsonBody:JSON?) {
-        if let dataList = jsonBody?.dictionaryObject!["data_list"] as? Array<Dictionary<String, AnyObject>>{
+        if let dataList = jsonBody?.dictionaryObject!["data_list_"] as? Array<Dictionary<String, AnyObject>>{
             for data in dataList {
                 let price = CentuionCardPriceInfo(value: data)
                 DataManager.insertCenturionCardVIPPriceInfo(price)
