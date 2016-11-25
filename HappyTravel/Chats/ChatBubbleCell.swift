@@ -103,10 +103,42 @@ class ChatBubbleCell: UITableViewCell {
             let layoutConstraint: NSLayoutConstraint = bubbleImageView.constraints[1] // `messageLabel` CenterX
             layoutConstraint.constant = -layoutConstraint.constant
             
-            let constraints: NSArray = contentView.constraints as NSArray
-            let indexOfConstraint = constraints.indexOfObject (passingTest: { constraint, idx, stop in
-                return (constraint.firstItem ).tag == bubbleTag && (constraint.firstAttribute == .left || constraint.firstAttribute == .right)
-            })
+//            let constraints: NSArray = contentView.constraints as NSArray
+//            let firstcontentView.constraints.first
+//            let indexOfConstraint:Int = constraints.indexOfObject(passingTest: { (constraint, idx, stop) -> Bool in
+//                
+//                let isTag  = ((constraint.firstItem ).tag == bubbleTag) as! Bool
+//                let isLeft = (constraint.firstAttribute == .left) as! Bool
+//                let isRight = (constraint.firstAttribute == .right) as! Bool
+//                let isLeftOrRight = isLeft || isRight
+//                return isTag && isLeftOrRight
+//            })
+            
+            var indexOfConstraint = 0
+            for index  in 0...contentView.constraints.count  {
+               
+                let constraint = contentView.constraints[index]
+                let isTag  = ((constraint.firstItem ).tag == bubbleTag)
+                let isLeft = (constraint.firstAttribute == .left)
+                let isRight = (constraint.firstAttribute == .right)
+                let isLeftOrRight = isLeft || isRight
+                
+                if isTag && isLeftOrRight {
+                
+                    indexOfConstraint = index
+
+                    break
+                }
+                
+            }
+//            let indexOfConstraint = constraints.indexOfObject (passingTest: { constraint, idx, stop in
+//                let isTag  = ((constraint.firstItem ).tag == bubbleTag) as! Bool
+//                let isLeft = (constraint.firstAttribute == .left) as! Bool
+//                let isRight = (constraint.firstAttribute == .right) as! Bool
+//                let isLeftOrRight = isLeft || isRight
+//                return isTag && isLeftOrRight
+//                return ((constraint.firstItem ).tag == bubbleTag) && (constraint.firstAttribute == .left || constraint.firstAttribute == .right)
+//            })
             contentView.removeConstraint(constraints[indexOfConstraint] as! NSLayoutConstraint)
             contentView.addConstraint(NSLayoutConstraint(item: bubbleImageView, attribute: layoutAttribute, relatedBy: .equal, toItem: contentView, attribute: layoutAttribute, multiplier: 1, constant: layoutConstant))
         }
