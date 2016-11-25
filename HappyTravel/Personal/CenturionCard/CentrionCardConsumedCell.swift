@@ -129,6 +129,7 @@ class CentrionCardConsumedCell: UITableViewCell {
     
     func setCenturionCardConsumedInfo(info: CenturionCardConsumedInfo?) {
         if let headImageView = contentView.viewWithTag(tags["headImageView"]!) as? UIImageView {
+                        
             headImageView.kf_setImageWithURL(NSURL(string:  info!.privilege_pic_!), placeholderImage: UIImage.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
             
         }
@@ -147,7 +148,7 @@ class CentrionCardConsumedCell: UITableViewCell {
             formatter.numberStyle = .SpellOutStyle
             let lvNum = NSNumber.init(long: info!.privilege_lv_)
             let lvStr = formatter.stringFromNumber(lvNum)
-            subTitle.text = "\(lvStr!)星黑卡消费"
+            subTitle.text = info?.order_type_ == 0 ? "\(lvStr!)星黑卡消费" : "\(lvStr!)星黑卡"
         }
         
         if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {

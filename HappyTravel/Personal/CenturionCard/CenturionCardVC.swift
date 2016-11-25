@@ -24,10 +24,10 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     var services:Results<CenturionCardServiceInfo>?
 
     var selectedIndex = 0
-    
+    weak var lvContentCollectionView:UICollectionView?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.automaticallyAdjustsScrollViewInsets
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "黑卡会员"
         
@@ -36,7 +36,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             lv += 1
         }
         services = DataManager.getCenturionCardServiceWithLV(lv)
+        
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
+        SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil) { [weak self](result) in
             if let strongSelf = self{
                 strongSelf.table?.reloadData()
@@ -156,17 +158,37 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         return 3
     }
     
+    func returnCellHeightWithInfo(info:Results<CenturionCardServiceInfo>?) -> CGFloat {
+        
+        let serviceInfo = info?.first
+        var height = DataManager.currentUser?.centurionCardLv >=  serviceInfo?.privilege_lv_ ? AtapteWidthValue(240) : AtapteWidthValue(80)
+        if (info?.count)! % 4 == 0 {
+            height += CGFloat(((info?.count)! / 4)) * AtapteWidthValue(80)
+        } else {
+            height += CGFloat(((info?.count)! / 4) + 1) * AtapteWidthValue(80)
+
+        }
+        
+        
+        return height
+    }
+    
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : AtapteWidthValue(500))
+        
+        
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : returnCellHeightWithInfo(services))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("CenturionCardBaseInfoCell", forIndexPath: indexPath) as! CenturionCardBaseInfoCell
             cell.setInfo(DataManager.currentUser)
+
             return cell
         } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("CenturionCardLvSelCell", forIndexPath: indexPath) as! CenturionCardLvSelCell
+            lvContentCollectionView = cell.contentCollection
             cell.delegate = self
             return cell
         } else if indexPath.row == 2 {
@@ -181,9 +203,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     // MARK: - CenturionCardLvSelCellDelegate
     func selectedAction(index: Int) {
-        if selectedIndex == index {
-            return
-        }
+//        if selectedIndex == index {
+//            return
+//        }
         selectedIndex = index
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
@@ -229,7 +251,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         let realm = try! Realm()
-        let price: CentuionCardPriceInfo? = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(selectedIndex)").first
+        let price: CentuionCardPriceInfo? = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(selectedIndex + 1)").first
         
         if price?.blackcard_price_ != nil &&
             price?.blackcard_price_ > 0 &&
@@ -238,28 +260,15 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             moneyIsTooLess()
             return
         }
+        let currentCardInfo = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)").first
         
-        let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                                        "wanted_lv_": selectedIndex+1]
-        SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
-        SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
-            
-            let data = result["data"] as! NSDictionary
-            if let errorCord = data.valueForKey("error_"){
-                let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 1, completion: nil)
-                return
-            }
-            if let strongSelf = self {
-                strongSelf.upCenturionCardLv(data)
-                SVProgressHUD.dismiss()
-            }
-        }
+        let totalPrice = 0 + (price?.blackcard_price_)!
+        upCenturionCardLv(totalPrice - (currentCardInfo?.blackcard_price_)!)
     }
     
-    func upCenturionCardLv(record: NSDictionary) {
-        let price = record.valueForKey("order_price_")?.integerValue
-        let msg = "\n您即将预支付人民币:\(Double(price!)/100)元"
+    func upCenturionCardLv(price:Int) {
+//        let price = record.valueForKey("order_price_")?.integerValue
+        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in
@@ -297,34 +306,25 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             /**
              *  请求购买
              */
-            SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
+            
+            
+            
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                "order_id_": record.valueForKey("order_id_")!,
-                "passwd_": passwd!]
-            SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
+                "wanted_lv_": self!.selectedIndex+1]
+//            SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
+            SVProgressHUD.show()
+            SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
+                
                 let data = result["data"] as! NSDictionary
                 if let errorCord = data.valueForKey("error_"){
                     let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
+                    SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 1, completion: nil)
                     return
                 }
-                    
-                let orderStatus = data.valueForKey("result_") as? Int
-                if orderStatus == -1 {
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+                if let strongSelf = self {
+                    strongSelf.payWithRecord(data, password: passwd!)
                 }
-                if orderStatus == -2 {
-                    weakSelf!.moneyIsTooLess()
-                }
-                if orderStatus == 0 {
-                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
-                        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
-                        DataManager.currentUser?.centurionCardLv = weakSelf!.selectedIndex + 1
-                        weakSelf!.viewDidLoad()
-                    })
-                }
-
-            })
+            }
             
             
         })
@@ -335,17 +335,66 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         alert.addAction(cancel)
         presentViewController(alert, animated: true, completion: nil)
     }
+    func payWithRecord(record:NSDictionary, password:String) {
+        SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
+        let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                                        "order_id_": record.valueForKey("order_id_")!,
+                                        "passwd_": password]
+        unowned let weakSelf = self
+        SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
+            let data = result["data"] as! NSDictionary
+            if let errorCord = data.valueForKey("error_"){
+                let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
+                SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
+                return
+            }
+            
+            let orderStatus = data.valueForKey("result_") as? Int
+            if orderStatus == -1 {
+                SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+            }
+            if orderStatus == -2 {
+                weakSelf.moneyIsTooLess()
+            }
+            if orderStatus == 0 {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
+                    SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+                    DataManager.currentUser?.centurionCardLv = weakSelf.selectedIndex + 1
+                    weakSelf.refreshData()
+                })
+            }
+            
+        })
+    }
     
+    func refreshData() {
+        var lv = DataManager.currentUser!.centurionCardLv
+        if lv == 0 {
+            lv += 1
+        }
+        services = DataManager.getCenturionCardServiceWithLV(lv)
+        lvContentCollectionView?.reloadData()
+        table?.reloadData()
+    }
     func shareImage()-> UIImage  {
+        let imageView = UIImageView(frame: CGRectMake(0, 0, ScreenWidth, 100))
+        imageView.backgroundColor = UIColor.whiteColor()
+        let image = UIImage(named: "face-btn@2x")
+        imageView.image = image
+        table?.tableFooterView = imageView
+        let frame = table?.frame
         table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
         table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
-        UIGraphicsBeginImageContext(table!.contentSize)
-        UIGraphicsBeginImageContextWithOptions(table!.contentSize, true, table!.layer.contentsScale)
+        UIGraphicsBeginImageContext(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!))
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!), true, table!.layer.contentsScale)
 	    let context = UIGraphicsGetCurrentContext()
 	    table!.layer.renderInContext(context!)
 	    let img = UIGraphicsGetImageFromCurrentImageContext()
 	    UIGraphicsEndImageContext()
+        table?.frame = frame!
+        table?.tableFooterView?.frame = CGRectZero
+        table?.tableFooterView = nil
 	    return img;
     }
     

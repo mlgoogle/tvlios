@@ -50,6 +50,23 @@ class InvoiceServiceInfo: Object {
         service_time_ =  info.valueForKey("service_time_") as? String
     }
     
+    func setInfoWithBlackBuyInvoice(info: NSDictionary) {
+        oid_str_ = (info.valueForKey("oid_str_") as? String)!
+        service_id_ = (info.valueForKey("order_id_")?.integerValue)!
+        service_price_ = (info.valueForKey("privilege_price_")?.doubleValue)!/100
+        order_time_ = (info.valueForKey("order_time_")?.integerValue)!
+        service_type_ = "黑卡购买"
+        
+        let formatter = NSNumberFormatter.init()
+        formatter.roundingMode = .RoundHalfDown
+        formatter.numberStyle = .SpellOutStyle
+        let lvNum = NSNumber.init(long: (info.valueForKey("privilege_lv_")?.integerValue)!)
+        let lvStr = formatter.stringFromNumber(lvNum)
+        nick_name_ = "\(lvStr!)星黑卡"
+        
+        service_name_ = info.valueForKey("privilege_name_") as? String
+        service_time_ =  info.valueForKey("service_time_") as? String
+    }
     func setInfo(info: InvoiceServiceInfo) {
         service_id_ = info.service_id_
         service_price_ = info.service_price_
