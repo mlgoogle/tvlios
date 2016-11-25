@@ -103,7 +103,7 @@ class ChatBubbleCell: UITableViewCell {
             let layoutConstraint: NSLayoutConstraint = bubbleImageView.constraints[1] // `messageLabel` CenterX
             layoutConstraint.constant = -layoutConstraint.constant
             
-//            let constraints: NSArray = contentView.constraints as NSArray
+            let constraints: NSArray = contentView.constraints as NSArray
 //            let firstcontentView.constraints.first
 //            let indexOfConstraint:Int = constraints.indexOfObject(passingTest: { (constraint, idx, stop) -> Bool in
 //                
