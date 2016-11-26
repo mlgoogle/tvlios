@@ -480,13 +480,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         SocketManager.isLogout = false
         
-//        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
+        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
     }
     
     func sendHeart() {
-        SocketManager.sendData(.Heart, data: nil)
-        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
-    }
+        if DataManager.currentUser?.uid > -1 {
+            
+            SocketManager.sendData(.Heart, data: ["uid_":(DataManager.currentUser?.uid)!])
+            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
+        }    }
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
