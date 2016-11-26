@@ -246,6 +246,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         DataManager.currentUser?.nickname = nickname
         DataManager.currentUser?.gender = sex
         DataManager.currentUser?.address = address
+        DataManager.currentUser?.centurionCardName = nickname
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     
