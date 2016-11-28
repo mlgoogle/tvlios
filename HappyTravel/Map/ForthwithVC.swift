@@ -38,7 +38,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
     //延时测试用
     var appointment_id_ = 0
-    
+    var isShowBaseInfo = false
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -110,8 +110,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         } else {
             if DataManager.currentUser!.registerSstatus == 0 {
-                let completeBaseInfoVC = CompleteBaseInfoVC()
-                self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+                if !isShowBaseInfo {
+                    isShowBaseInfo = true
+                    let completeBaseInfoVC = CompleteBaseInfoVC()
+                    self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+                }
             }
         }
         
@@ -475,10 +478,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         appointmentView.serviceCitys = serviceCitys
         
         regOrLoginSelVC!.dismissViewControllerAnimated(false) {
+          unowned let weakSelf = self
             self.regOrLoginSelVC?.dismissViewControllerAnimated(false) {
                 if DataManager.currentUser!.registerSstatus == 0 {
-                    let completeBaseInfoVC = CompleteBaseInfoVC()
-                    self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+                    if !weakSelf.isShowBaseInfo {
+                        weakSelf.isShowBaseInfo = true
+                        let completeBaseInfoVC = CompleteBaseInfoVC()
+                        self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+                    }
                 }
                 
             }
