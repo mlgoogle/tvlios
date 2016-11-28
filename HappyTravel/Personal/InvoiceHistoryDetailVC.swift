@@ -33,7 +33,7 @@ class InvoiceHistoryDetailVC: UIViewController {
 
     
     override func viewWillDisappear(animated: Bool) {
-        super.viewWillAppear(animated)
+        super.viewWillDisappear(animated)
         
         
         NSNotificationCenter.defaultCenter().removeObserver(self)
