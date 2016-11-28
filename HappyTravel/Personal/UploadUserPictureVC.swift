@@ -277,6 +277,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
         let resultCode = data.valueForKey("review_status_") as? Int
+        DataManager.currentUser?.authentication = resultCode!
         if resultCode! == 0 {
             SVProgressHUD.dismiss()
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)

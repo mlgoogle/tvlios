@@ -97,6 +97,11 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
         }
+        guard (DataManager.currentUser?.headUrl?.hasPrefix("http"))! else {
+            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
+            return
+        }
+        
         let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
         guard nicknameField?.text?.characters.count > 0 else {
             
@@ -247,6 +252,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         DataManager.currentUser?.gender = sex
         DataManager.currentUser?.address = address
         DataManager.currentUser?.centurionCardName = nickname
+        DataManager.currentUser?.registerSstatus = 1
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     

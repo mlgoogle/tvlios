@@ -258,6 +258,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
+        DataManager.currentUser?.authentication = -1
+        DataManager.currentUser?.centurionCardName = nil
+        DataManager.currentUser?.centurionCardId = 0
+        DataManager.currentUser?.centurionCardLv = 0
         sock?.socket?.disconnect()
         SocketManager.shareInstance.buffer = NSMutableData()
         SocketManager.shareInstance.connectSock()
@@ -480,15 +484,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         SocketManager.isLogout = false
         
-        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
+        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
     }
     
     func sendHeart() {
         if DataManager.currentUser?.uid > -1 {
-            
             SocketManager.sendData(.Heart, data: ["uid_":(DataManager.currentUser?.uid)!])
-            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 10)
-        }    }
+        }
+        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
+    }
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         XCGLogger.warning("socketDidDisconnect:\(err)")
