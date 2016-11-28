@@ -230,7 +230,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.width.equalTo(80)
             }
         }
-        let url = NSURL(string: DataManager.currentUser!.headUrl == nil ? "https://" : DataManager.currentUser!.headUrl!)
+        let url = NSURL(string: DataManager.currentUser!.headUrl ?? "https://")
         headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {

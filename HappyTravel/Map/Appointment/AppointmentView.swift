@@ -208,7 +208,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             }
         }
         
-        return cell == nil ? UITableViewCell() : cell!
+        return cell ?? UITableViewCell()
     }
     
     func citySelectorCell(tableView: UITableView) -> UITableViewCell {
@@ -250,7 +250,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            cityLab?.text = cityInfo == nil ? "  请选择" : (cityInfo!.cityName)!
+            cityLab?.text = cityInfo?.cityName! ?? "  请选择"
         }
         
         var citySelector = cell?.contentView.viewWithTag(tags["citySelector"]!) as? UIImageView
@@ -643,7 +643,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,
-                                        "remarks_": (remarksTextView?.text == nil ? "" : remarksTextView?.text)!,
+                                        "remarks_": remarksTextView?.text ?? "",
                                         "is_other_": agent == false ? 0 : 1,
                                         "other_name_": agent == true ? name! : "",
                                         "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",

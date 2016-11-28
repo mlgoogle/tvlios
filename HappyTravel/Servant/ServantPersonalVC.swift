@@ -327,16 +327,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func invitationResult(notifucation: NSNotification?) {
         var msg = ""
-        if let err = SocketManager.getErrorCode((notifucation?.userInfo as? [String: AnyObject])!) {
-            switch err {
-            case .NoOrder:
-                msg = "邀约失败，订单异常"
-                break
-            default:
-                msg = "邀约失败，订单异常"
-                break
-            }
-            
+        if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
+            msg = err.values.first!
         }
         
         if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {

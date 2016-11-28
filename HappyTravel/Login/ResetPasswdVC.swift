@@ -237,7 +237,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                                                    "user_type_": 1,
                                                    "timestamp_": verifyCodeTime,
                                                    "verify_code_": verifyCode,
-                                                   "token_": token == nil ? "" : token!]
+                                                   "token_": token ?? ""]
         SocketManager.sendData(.RegisterAccountRequest, data: dict)
     
     }
