@@ -194,40 +194,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
         let data = str.dataUsingEncoding(NSUTF8StringEncoding)
         let jsonData = JSON.init(data: data!)
-        let pushMessage = PushMessage()
-        pushMessage.setInfo(jsonData.dictionaryObject)
+        let push_msg_type_ = jsonData.dictionaryObject!["push_msg_type_"] as? Int
         
-        DataManager.insertPushMessage(pushMessage)
-//        if UIApplication.sharedApplication().applicationState == .Background {
-////            XCGLogger.info("\((userInfo["aps"]!["alert"] as! NSDictionary)["body"] as! String)")
-//            application.applicationIconBadgeNumber = 0
-//            completionHandler(UIBackgroundFetchResult.NewData)
-//            let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
-//            for vc in vcs! {
-//                if vc.isKindOfClass(ForthwithVC) {
-//                    vc.navigationController?.popToRootViewControllerAnimated(false)
-//                    (vc as! ForthwithVC).msgAction((userInfo["aps"]!["alert"] as! [String: AnyObject])["body"])
-//                    break
-//                }
-//            }
-//        }
-//        else
-//        {
-//            
-//            let messageDict  = userInfo["aps"]!["alert"]!!["body"] as! String
-//
-//            var str = messageDict.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
-//            str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
-//            let data = str.dataUsingEncoding(NSUTF8StringEncoding)
-//            
-//            let jsonData = JSON.init(data: data!)
-//            let pushMessage = PushMessage()
-//
-//            
-//            pushMessage.setInfo(jsonData.dictionaryObject)
-//            
-//            DataManager.insertPushMessage(pushMessage)
-//        }
+        if push_msg_type_ == nil {
+            return
+        }
+        switch push_msg_type_! {
+        case PushMessage.MessageType.Appointment.rawValue:
+            let pushMessage = PushMessage()
+            pushMessage.setInfo(jsonData.dictionaryObject)
+            DataManager.insertPushMessage(pushMessage)
+
+            break
+        case PushMessage.MessageType.OrderAnswer.rawValue:
+            DataManager.modfyStatusWithDictonary((jsonData.dictionaryObject)!)
+            break
+        default:
+            break
+        }
+
+        
     }
     
     //MARK: - GeTuiSdkDelegate

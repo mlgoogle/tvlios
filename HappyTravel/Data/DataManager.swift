@@ -270,8 +270,26 @@ class DataManager: NSObject {
             }
         })
     }
-    
+
     //MARK: - HodometerInfo
+    
+    static func modfyStatusWithDictonary(dict:Dictionary<String, AnyObject>) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        try! realm.write {
+            if let appointmentInfo = DataManager.getAppointmentRecordInfo(dict["order_id_"] as! Int) {
+                appointmentInfo.status_ = dict["order_status_"] as! Int
+                
+            } else if let hodometerInfo = DataManager.getHodometerInfo(dict["order_id_"] as! Int) {
+                
+                hodometerInfo.status_ = dict["order_status_"] as! Int
+                
+            }
+        }
+        
+    }
     static func getHodometerInfo(oid: Int) -> HodometerInfo? {
         if DataManager.initialized == false {
             return nil
@@ -676,6 +694,19 @@ class DataManager: NSObject {
             }
         })
         
+    }
+    
+    static func getAppointmentRecordInfo(order_id_:Int) -> AppointmentInfo? {
+    
+        if DataManager.initialized == false {
+            return nil
+        }
+        
+        let realm = try! Realm()
+        let appointmentRecordInfo = realm.objects(AppointmentInfo.self).filter("order_id_ = \(order_id_)")
+
+        return appointmentRecordInfo.first
+    
     }
     static func getAppointmentRecordInfos(lv: Int) -> Results<AppointmentInfo>? {
         if DataManager.initialized == false {

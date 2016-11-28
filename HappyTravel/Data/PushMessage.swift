@@ -21,6 +21,7 @@ class PushMessage: Object {
         case Chat = 2004
         case System = 1
         case Date
+        case OrderAnswer = 2012
         case Appointment = 2231
     }
     
