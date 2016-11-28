@@ -55,8 +55,8 @@ class PushMessage: Object {
         if messageInfo!["to_uid_"] != nil {
             to_uid_ = messageInfo!["to_uid_"] as! Int
         }
-        if messageInfo!["push_msg_type"] != nil {
-            push_msg_type = messageInfo!["push_msg_type"] as! Int
+        if messageInfo!["push_msg_type_"] != nil {
+            push_msg_type = messageInfo!["push_msg_type_"] as! Int
         }
         if messageInfo!["msg_body_"] != nil {
             setBody(messageInfo!["msg_body_"] as! Dictionary)

@@ -694,7 +694,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func double2(let value:Double) -> Double {
-        let valueStr = String(format: "%.4f",value)
+        let valueStr = String(format: "%.2f",value)
         return Double(valueStr)!
     }
 
