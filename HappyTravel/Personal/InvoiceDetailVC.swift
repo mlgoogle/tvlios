@@ -248,7 +248,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 })
                 self.descLab = descLab
             }
-            descLab?.text = descLabText == nil ? invoiceInfo[indexPath.row] : descLabText
+            descLab?.text = descLabText ?? invoiceInfo[indexPath.row]
         } else {
             cell?.accessoryType = .None
             var textField = cell?.contentView.viewWithTag(tags["textField_Invoice"]!) as? UITextField

@@ -267,7 +267,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
-        var number = DataManager.currentUser!.phoneNumber == nil ? "***********" : DataManager.currentUser!.phoneNumber!
+        var number = DataManager.currentUser!.phoneNumber ?? "***********"
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex
         number.replaceRange(startIndex..<endIndex, with: "****")
