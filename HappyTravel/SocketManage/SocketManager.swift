@@ -467,6 +467,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         })
         socket?.readDataWithTimeout(-1, tag: 0)
         
+        if sockTag == 0 {
+            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
+        }
+        
         let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
         let passwd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String
         var userType:Int?
@@ -480,7 +484,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         SocketManager.isLogout = false
         
-        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
     }
     
     func sendHeart() {
