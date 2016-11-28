@@ -232,7 +232,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-                try socket?.connectToHost("61.147.114.78", onPort: 10006, withTimeout: 5)
+                try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
