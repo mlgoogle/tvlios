@@ -286,9 +286,9 @@ extension SkillsCell:UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        let count = skills == nil ? 0 : skills?.count
+        let count = skills?.count ?? 0
         
-        return count!
+        return count
     }
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1

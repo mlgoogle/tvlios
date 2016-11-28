@@ -155,7 +155,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         notificationCenter.addObserver(self, selector: #selector(ChatVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ChatVC.menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ChatVC.chatMessage(_:)), name: NotifyDefine.UpdateChatVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChatVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(ChatVC.invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
         
     }
     
@@ -346,7 +346,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return msgList == nil ? 0 : msgList!.count
+        return msgList?.count ?? 0
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

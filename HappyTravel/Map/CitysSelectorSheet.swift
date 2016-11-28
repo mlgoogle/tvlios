@@ -122,7 +122,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        let count = citysList == nil ? daysList?.count : citysList?.count
+        let count = citysList?.count ?? daysList?.count
         return count!
     }
     
@@ -174,7 +174,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         if daysList == nil {
 
             
-            delegate?.sureAction!(sender, targetCity: targetCity == nil ? self.citysList![0] : targetCity)
+            delegate?.sureAction!(sender, targetCity: targetCity ?? self.citysList![0])
         } else {
         
             

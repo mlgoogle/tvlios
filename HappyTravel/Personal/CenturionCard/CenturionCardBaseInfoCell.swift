@@ -99,7 +99,7 @@ class CenturionCardBaseInfoCell : UITableViewCell {
     func setInfo(userInfo: UserInfo?) {
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
             if let headView: UIImageView = bgView.viewWithTag(tags["headView"]!) as? UIImageView {
-                if let photoUrl = NSURL(string: (userInfo?.headUrl!)! == nil ? "" : (userInfo?.headUrl!)!) {
+                if let photoUrl = NSURL(string: (userInfo?.headUrl!)! ?? "") {
                     headView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                         
                     }

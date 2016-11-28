@@ -706,7 +706,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
             
             if firstLanch {
-                NSUserDefaults.standardUserDefaults().setValue(locality == nil ? "" : locality, forKey: UserDefaultKeys.homeLocation)
+                NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
                 mapView!.centerCoordinate = location!.coordinate
                 firstLanch = false
             }

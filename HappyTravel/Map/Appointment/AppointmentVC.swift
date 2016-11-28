@@ -239,7 +239,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
         }
         
-        return cell == nil ? UITableViewCell() : cell!
+        return cell ?? UITableViewCell()
     }
     
     func citySelectorCell(tableView: UITableView) -> UITableViewCell {
@@ -281,7 +281,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            cityLab?.text = cityInfo == nil ? "  请选择" : (cityInfo!.cityName)!
+            cityLab?.text = cityInfo?.cityName! ?? "  请选择"
         }
         
         var citySelector = cell?.contentView.viewWithTag(tags["citySelector"]!) as? UIImageView

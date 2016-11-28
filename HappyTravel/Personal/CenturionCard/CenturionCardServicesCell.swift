@@ -82,7 +82,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
     
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return services == nil ? 0 : services!.count
+        return services?.count ?? 0
     }
     
     
