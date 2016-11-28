@@ -525,8 +525,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         if (err != false) {
             XCGLogger.error("err:\(data!["error_"] as! Int)")
-            let errorCord = data!["error_"] as! Int
-            SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
+//            let errorCord = data!["error_"] as! Int
+//            SVProgressHUD.showWainningMessage(WainningMessage: CommonDefine.errorMsgs[errorCord]!, ForDuration: 1, completion: nil)
             return
         }
         let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
