@@ -36,6 +36,7 @@ class InvoiceHistoryVC:UIViewController {
         super.viewWillAppear(animated)
     }
     override func viewDidLoad() {
+        super.viewDidLoad()
         title = "开票记录"
         
         initView()

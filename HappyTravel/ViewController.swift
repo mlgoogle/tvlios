@@ -50,11 +50,12 @@ class ViewController: SideMenuController {
         
         initMainInterface()
         
+        startSockThread()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        startSockThread()
+        
     }
     
     func startSockThread() {
