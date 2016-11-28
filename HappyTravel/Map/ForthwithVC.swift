@@ -663,7 +663,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         if DataManager.currentUser!.login {
                             let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                                       "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                      "distance_": 5.1]
+                                                                      "distance_": 10.0]
                             SocketManager.sendData(.GetServantInfo, data: dict)
                         }
                     }
@@ -688,7 +688,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
                                                   "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 5.1]
+                                                  "distance_": 10.0]
         SocketManager.sendData(.GetServantInfo, data: dict)
         lastMapCenter = mapView.centerCoordinate
     }
