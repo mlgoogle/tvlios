@@ -31,10 +31,11 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         initView()
     }
     override func viewWillAppear(animated: Bool) {
-        
+        super.viewWillAppear(animated)
         registerNotice()
     }
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func initView() {
