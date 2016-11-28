@@ -53,7 +53,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
@@ -119,7 +119,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         
         let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).sorted("start_", ascending: false)
+        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
@@ -241,7 +241,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return segmentIndex == 0 ? DataManager.getMessageCount(-1) : (hotometers != nil ? hotometers!.count : 0)
+        return segmentIndex == 0 ? DataManager.getMessageCount(-1) : (hotometers?.count ?? 0)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

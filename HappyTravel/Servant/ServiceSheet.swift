@@ -123,7 +123,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return servantInfo != nil ? servantInfo!.serviceList.count : 0
+        return servantInfo?.serviceList.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

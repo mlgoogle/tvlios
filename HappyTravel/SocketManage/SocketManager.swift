@@ -211,12 +211,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     var buffer:NSMutableData = NSMutableData()
     
     var sockTag = 0
- 
-    static var last_chat_id:Int = 0
     
     static var isLogout = false
-    
-    static var isSendHeart = false
     
     typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
     
@@ -469,6 +465,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         })
         socket?.readDataWithTimeout(-1, tag: 0)
         
+        if sockTag == 0 {
+            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
+        }
+        
         let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
         let passwd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String
         var userType:Int?
@@ -481,10 +481,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.sendData(.Login, data: dict)
         }
         SocketManager.isLogout = false
-        if !SocketManager.isSendHeart {
-            SocketManager.isSendHeart = true
-            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
-        }
+
     }
     
     func sendHeart() {
