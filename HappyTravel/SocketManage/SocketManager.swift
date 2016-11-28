@@ -216,6 +216,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var isLogout = false
     
+    static var isSendHeart = false
+    
     typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
     
     static var completationsDic = [Int16: recevieDataBlock]()
@@ -479,8 +481,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.sendData(.Login, data: dict)
         }
         SocketManager.isLogout = false
-        
-        performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
+        if !SocketManager.isSendHeart {
+            SocketManager.isSendHeart = true
+            performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
+        }
     }
     
     func sendHeart() {
