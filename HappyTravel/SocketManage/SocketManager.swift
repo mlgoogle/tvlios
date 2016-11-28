@@ -13,12 +13,6 @@ import SwiftyJSON
 import SVProgressHUD
 
 
-enum SockErrCode : Int {
-
-    case NoOrder = -1015
-    case Other = 0
-}
-
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
     enum SockOpcode: Int16 {
         // 异常
@@ -263,9 +257,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SocketManager.shareInstance.connectSock()
     }
     
-    static func getErrorCode(dict: [String: AnyObject]) -> SockErrCode? {
-        if let err = dict["error_"] {
-            return SockErrCode(rawValue: err as! Int)
+    static func getError(dict: [String: AnyObject]) -> [Int: String]? {
+        if let err = dict["error_"] as? Int {
+            return [err: CommonDefine.errorMsgs[err]!]
         }
         return nil
     }
@@ -333,7 +327,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
                 return false
                 }
-            if let err = SocketManager.getErrorCode((jsonBody?.dictionaryObject)!) {
+            if let err = SocketManager.getError((jsonBody?.dictionaryObject)!) {
                 XCGLogger.warning(err)
             }
         }
@@ -758,12 +752,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     // Opcode => 2000+
     
     func invitationReply(jsonBody: JSON?) {
-        /*
-         if let _ = SocketManager.getErrorCode(dict.dictionaryObject!) {
-         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.AskInvitationResult, object: nil, userInfo: dict.dictionaryObject)
-         return true
-         }
-         */
         let order = HodometerInfo(value: (jsonBody?.dictionaryObject)!)
         if order.is_asked_ == 1 {
             postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])

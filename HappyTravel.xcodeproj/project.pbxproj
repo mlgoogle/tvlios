@@ -218,7 +218,6 @@
 		BF6E9D551DE2FD4500F32CCE /* guide-zhima-auth@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB21DE2FD4500F32CCE /* guide-zhima-auth@2x.png */; };
 		BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB31DE2FD4500F32CCE /* guide-zhima-auth@3x.png */; };
 		BF6E9D571DE2FD4500F32CCE /* indirector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB41DE2FD4500F32CCE /* indirector@2x.png */; };
-		BF6E9D581DE2FD4500F32CCE /* indirector@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB51DE2FD4500F32CCE /* indirector@3x.png */; };
 		BF6E9D591DE2FD4500F32CCE /* invoice-history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB61DE2FD4500F32CCE /* invoice-history@2x.png */; };
 		BF6E9D5A1DE2FD4500F32CCE /* invoice-history@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB71DE2FD4500F32CCE /* invoice-history@3x.png */; };
 		BF6E9D5B1DE2FD4500F32CCE /* invoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6E9CB81DE2FD4500F32CCE /* invoice@2x.png */; };
@@ -544,7 +543,6 @@
 		BF6E9CB21DE2FD4500F32CCE /* guide-zhima-auth@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-zhima-auth@2x.png"; sourceTree = "<group>"; };
 		BF6E9CB31DE2FD4500F32CCE /* guide-zhima-auth@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-zhima-auth@3x.png"; sourceTree = "<group>"; };
 		BF6E9CB41DE2FD4500F32CCE /* indirector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "indirector@2x.png"; sourceTree = "<group>"; };
-		BF6E9CB51DE2FD4500F32CCE /* indirector@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "indirector@3x.png"; sourceTree = "<group>"; };
 		BF6E9CB61DE2FD4500F32CCE /* invoice-history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-history@2x.png"; sourceTree = "<group>"; };
 		BF6E9CB71DE2FD4500F32CCE /* invoice-history@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice-history@3x.png"; sourceTree = "<group>"; };
 		BF6E9CB81DE2FD4500F32CCE /* invoice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invoice@2x.png"; sourceTree = "<group>"; };
@@ -1087,7 +1085,6 @@
 				BF6E9CB21DE2FD4500F32CCE /* guide-zhima-auth@2x.png */,
 				BF6E9CB31DE2FD4500F32CCE /* guide-zhima-auth@3x.png */,
 				BF6E9CB41DE2FD4500F32CCE /* indirector@2x.png */,
-				BF6E9CB51DE2FD4500F32CCE /* indirector@3x.png */,
 				BF6E9CB61DE2FD4500F32CCE /* invoice-history@2x.png */,
 				BF6E9CB71DE2FD4500F32CCE /* invoice-history@3x.png */,
 				BF6E9CB81DE2FD4500F32CCE /* invoice@2x.png */,
@@ -1530,7 +1527,6 @@
 				BF6E9D391DE2FD4500F32CCE /* service@2x.png in Resources */,
 				BF6E9D4A1DE2FD4500F32CCE /* default-big-photo.png in Resources */,
 				BF6E9D3C1DE2FD4500F32CCE /* share-wechat-moment@3x.png in Resources */,
-				BF6E9D581DE2FD4500F32CCE /* indirector@3x.png in Resources */,
 				BF6E9D281DE2FD4500F32CCE /* meeting-disable@3x.png in Resources */,
 				BF6E9D711DE2FD4500F32CCE /* my-star-hollow@3x.png in Resources */,
 				BF6E9D1F1DE2FD4500F32CCE /* dingji-level-disable@3x.png in Resources */,
@@ -2220,8 +2216,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
+				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
@@ -2253,6 +2250,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/HappyTravel/Other/WeChatSDK1.7.4",
 				);
+				New_Setting = "";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
