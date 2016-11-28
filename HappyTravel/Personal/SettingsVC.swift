@@ -226,6 +226,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 SocketManager.logoutCurrentAccount()
                 navigationController?.popViewControllerAnimated(false)
                 break
+        case .AboutUs:
+            let aboutUSVC = AboutUSVC()
+            navigationController?.pushViewController(aboutUSVC, animated: true)
+            break
             default:
             break
         }

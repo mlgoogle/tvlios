@@ -211,8 +211,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     var buffer:NSMutableData = NSMutableData()
     
     var sockTag = 0
- 
-    static var last_chat_id:Int = 0
     
     static var isLogout = false
     
@@ -483,7 +481,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.sendData(.Login, data: dict)
         }
         SocketManager.isLogout = false
-        
+
     }
     
     func sendHeart() {

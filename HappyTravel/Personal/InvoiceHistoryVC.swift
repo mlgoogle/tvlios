@@ -149,9 +149,9 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-        let count = historyData != nil ? historyData?.count : 0
+        let count = historyData?.count ?? 0
         footer.hidden = count < 10 ? true : false
-        return count!
+        return count
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

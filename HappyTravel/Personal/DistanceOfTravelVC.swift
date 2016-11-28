@@ -113,7 +113,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).sorted("start_", ascending: false)
+        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
         
         let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
         if lastOrderID == -1001 {
@@ -291,11 +291,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
         if segmentIndex == 0 {
-            cnt = hotometers != nil ? hotometers!.count : 0
+            cnt = hotometers?.count ?? 0
         } else if (segmentIndex == 1){
-            cnt = records != nil ? records!.count : 0
+            cnt = records?.count ?? 0
         } else {
-            cnt = consumes != nil ? consumes!.count : 0
+            cnt = consumes?.count ?? 0
         }
         footer.hidden = cnt < 10 ? true : false
         return cnt
