@@ -169,7 +169,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case EvaluatetripReply = 2010
         //
         case AnswerInvitationRequest = 2011
-        //
+        // 收到服务者回复
         case AnswerInvitationReply = 2012
         // 请求联系客服
         case ServersManInfoRequest = 2013
@@ -200,6 +200,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case CenturionVIPPriceRequest = 1083
         // 黑卡VIP价格
         case CenturionVIPPriceReply = 1084
+    
 
     }
     
@@ -431,6 +432,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .EvaluatetripReply:
             evaluatetripReply(jsonBody)
         case .AnswerInvitationReply:
+            answerInvitationReply(jsonBody)
             break
         case .ServersManInfoReply:
             serversManInfoReply(jsonBody)
@@ -807,6 +809,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func evaluatetripReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
+    }
+    func answerInvitationReply(jsonBody:JSON?) {
+        
+        DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
+        
     }
     
     func serversManInfoReply(jsonBody: JSON?) {
