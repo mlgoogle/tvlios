@@ -216,6 +216,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
                 
             })
         }
+        callServantBtn?.hidden = service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? false : true
 
         return cell!
     }

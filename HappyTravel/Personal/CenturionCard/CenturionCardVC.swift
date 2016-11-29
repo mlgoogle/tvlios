@@ -113,6 +113,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             make.height.equalTo(65)
             
         })
+        
+        createGetCenturionCardVIPView()
     
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
@@ -123,6 +125,24 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "share"), style: .Plain, target: self, action: #selector(shareToOthers))
+    }
+    
+    func createGetCenturionCardVIPView() -> UIView? {
+        let bgView = UIView()
+        bgView.userInteractionEnabled = true
+        bgView.layer.shadowColor = UIColor.grayColor().CGColor
+        bgView.layer.shadowRadius = 5
+        view.addSubview(bgView)
+        bgView.snp_makeConstraints(closure: { (make) in
+            make.edges.equalTo(callServantBtn!)
+        })
+        
+        let titleLab = UILabel()
+        titleLab.backgroundColor = UIColor.clearColor()
+        titleLab.text = "会员:"
+        
+        callServantBtn?.hidden = DataManager.currentUser!.centurionCardLv <= 0
+        return bgView
     }
     
     func shareToOthers() {

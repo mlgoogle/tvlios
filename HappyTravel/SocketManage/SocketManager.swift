@@ -459,32 +459,37 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         case .InvitationResult:
             invitationReply(jsonBody)
+            
         case .RecvChatMessage:
             chatMessageReply(jsonBody)
+            
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
+            
         case .MSGReadCntResult:
             break
+            
         case .EvaluatetripReply:
             evaluatetripReply(jsonBody)
+            
         case .AnswerInvitationReply:
             answerInvitationReply(jsonBody)
-            break
+
         case .ServersManInfoReply:
             serversManInfoReply(jsonBody)
-            break
+            
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
-            break
+
         case .AppointmentServantReply:
             appointmentServantReply(jsonBody)
-            break
+
         case .PayForInvitationReply:
             payForInvitationReply(jsonBody)
-            break
+
         case .CenturionVIPPriceReply:
             saveTheCenturionCardVIPPrice(jsonBody)
-            break
+            
         default:
             break
         }
@@ -505,9 +510,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         switch opcode {
         case .PasswdVerifyReply:
             notificationCenter.postNotificationName(NotifyDefine.PasswdVerifyReplyError, object: nil, userInfo: ["err": err])
-        
+            return false
+            
         case .SetupPaymentCodeReply:
             notificationCenter.postNotificationName(NotifyDefine.SetupPaymentCodeReplyError, object: nil, userInfo: ["err": err])
+            return false
             
         default:
             break

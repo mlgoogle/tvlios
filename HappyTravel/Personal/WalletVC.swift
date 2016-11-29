@@ -179,7 +179,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 separateLine?.hidden = false
             } else if indexPath.row == 1 {
                 icon?.image = UIImage.init(named: "cash")
-                title?.text = "修改支付密码"
+                title?.text = DataManager.currentUser?.has_passwd_ == -1 ? "设置支付密码" : "修改支付密码"
                 subTitleLabel?.text = ""
             }
         } else if indexPath.section == 1 {

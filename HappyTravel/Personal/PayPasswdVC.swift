@@ -90,7 +90,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     
     func setupPaymentCodeReply(notification: NSNotification) {
         weak var weakSelf = self
-        SVProgressHUD.showWainningMessage(WainningMessage: "支付密码设置成功", ForDuration: 1.5, completion: { () in
+        SVProgressHUD.showWainningMessage(WainningMessage: "支付密码\(payPasswdStatus == .NotSetup ? "设置" : "修改")成功", ForDuration: 1.5, completion: { () in
             weakSelf?.navigationController?.popViewControllerAnimated(true)
         })
     }
@@ -155,7 +155,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     }
     
     func nextStep() {
-        if step == 0 || step == 1 {
+        if step == 0 {
             oldPasswd = textField?.text
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
                                             "passwd_": oldPasswd!,
@@ -176,7 +176,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
                 let changeType = DataManager.currentUser?.has_passwd_ == -1 ? 0 : 1
                 let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
                                                 "new_passwd_": newPasswd!,
-                                                "old_passwd_": oldPasswd!,
+                                                "old_passwd_": oldPasswd ?? "",
                                                 "passwd_type_": 1,
                                                 "change_type_": changeType]
                 SocketManager.sendData(.SetupPaymentCodeRequest, data: dict)
