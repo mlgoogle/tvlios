@@ -109,6 +109,9 @@ class UserInfo: Object {
     // 是否充值过==> 0 ：未充值过 | 1 ：已充值过
     dynamic var has_recharged_ = 0
     
+    // -1: 未设置支付、体现密码   1: 已设置
+    dynamic var has_passwd_ = -1
+    
     
     let businessTags:List<Tally> = List<Tally>()
     
@@ -129,34 +132,34 @@ class UserInfo: Object {
             switch key {
             case "address_":
                 address = value as? String
-                break
+
             case "head_url_":
                 headUrl = value as? String
-                break
+
             case "level_":
                 level = value as! Float
-                break
+
             case "nickname_", "nick_name_":
                 nickname = value as? String
-                break
+
             case "phone_num_":
                 phoneNumber = value as? String
-                break
+
             case "uid_":
                 uid = value as! Int
-                break
+
             case "latitude_":
                 gpsLocationLat = (value as? CLLocationDegrees)!
-                break
+
             case "longitude_":
                 gpsLocationLon = (value as? CLLocationDegrees)!
-                break
+
             case "login_":
                 login = value as! Bool
-                break
+
             case "business_lv_":
                 businessLv = value as! Float
-                break
+
             case "business_tag_":
                 businessTags.removeAll()
                 let tags = (value as! String).componentsSeparatedByString(",")
@@ -169,13 +172,13 @@ class UserInfo: Object {
                     tally.labelWidth = Float(rect.size.width) + 24
                     businessTags.append(tally)
                 }
-                break
+
             case "heag_bg_url_":
                 bigBGPhotoUrl = value as? String
-                break
+                
             case "is_certification_":
                 certification = value as! Bool
-                break
+                
             case "photo_list_":
                 let urls = (value as! String).componentsSeparatedByString(",")
                 photoUrlList.removeAll()
@@ -184,7 +187,7 @@ class UserInfo: Object {
                     photoUrl.photoUrl = url
                     photoUrlList.append(photoUrl)
                 }
-                break
+                
             case "service_list_":
                 serviceList.removeAll()
                 let services = (value as? Array<Dictionary<String, AnyObject>>)
@@ -192,7 +195,7 @@ class UserInfo: Object {
                     let svc = ServiceInfo(value: service)
                     serviceList.append(svc)
                 }
-                break
+                
             case "traval_tag_":
                 travalTags.removeAll()
                 let tags = (value as! String).componentsSeparatedByString(",")
@@ -205,49 +208,51 @@ class UserInfo: Object {
                     tally.labelWidth = Float(rect.size.width) + 24
                     travalTags.append(tally)
                 }
-                break
+                
             case "register_status_":
                 registerSstatus = value as! Int
-                break
+                
             case "gender_":
                 gender = value as! Int
-                break
+                
             case "credit_lv_":
                 creditLv = value as! Int
-                break
+                
             case "praise_lv_":
                 praiseLv = value as! Int
-                break
+                
             case "cash_lv_":
                 cashLv = value as! Int
-                break
+                
             case "start_time_":
                 centurionCardStartTime = (value as! NSNumber).longValue
-                break
+                
             case "end_time_":
                 centurionCardEndTime = (value as! NSNumber).longValue
-                break
+                
             case "blackcard_lv_":
                 centurionCardLv = value as! Int
-                break
+                
             case "result":
                 centurionCardValid = value as! Int
-                break
+                
             case "authentication":
                 authentication = value as! Int
-                break
+                
             case "has_recharged_":
                 has_recharged_ = value as! Int
-                break
+                
             case "blackcard_id_":
                 centurionCardId = value as! Int
-                break
+                
             case "name_":
                 centurionCardName = value as? String
-                break
+                
+            case "has_passwd_":
+                has_passwd_ = value as! Int
+                
             default:
                 XCGLogger.warning("Exception:[\(key) : \(value)]")
-                break
             }
         }
     }

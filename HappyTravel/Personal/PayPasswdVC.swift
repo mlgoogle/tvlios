@@ -8,9 +8,10 @@
 
 import Foundation
 import XCGLogger
+import SVProgressHUD
 
 enum PayPasswdStatus : Int {
-    case NotSetup = 0
+    case NotSetup = -1
     case AlreadySet = 1
 }
 
@@ -44,6 +45,68 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
         step = payPasswdStatus == .NotSetup ? 1 : 0
         
         initView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        registerNotify()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func registerNotify() {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(passwdVerifyReply(_:)), name: NotifyDefine.PasswdVerifyReply, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(passwdVerifyReplyError(_:)), name: NotifyDefine.PasswdVerifyReplyError, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(setupPaymentCodeReply(_:)), name: NotifyDefine.SetupPaymentCodeReply, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(setupPaymentCodeReplyError(_:)), name: NotifyDefine.SetupPaymentCodeReplyError, object: nil)
+    }
+    
+    func passwdVerifyReply(notification: NSNotification) {
+        textField?.text = ""
+        for i in 0...5 {
+            if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
+                btn.setTitle("", forState: .Normal)
+            }
+        }
+        step += 1
+        tipsLable?.text = tips[step]
+    }
+    
+    func passwdVerifyReplyError(notification: NSNotification) {
+        if let err = notification.userInfo!["err"] as? [Int: String] {
+            SVProgressHUD.showWainningMessage(WainningMessage: err.values.first!, ForDuration: 1.5, completion: nil)
+            textField?.text = ""
+            for i in 0...5 {
+                if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
+                    btn.setTitle("", forState: .Normal)
+                }
+            }
+        }
+    }
+    
+    func setupPaymentCodeReply(notification: NSNotification) {
+        weak var weakSelf = self
+        SVProgressHUD.showWainningMessage(WainningMessage: "支付密码设置成功", ForDuration: 1.5, completion: { () in
+            weakSelf?.navigationController?.popViewControllerAnimated(true)
+        })
+    }
+    
+    func setupPaymentCodeReplyError(notification: NSNotification) {
+        if let err = notification.userInfo!["err"] as? [Int: String] {
+            SVProgressHUD.showWainningMessage(WainningMessage: err.values.first!, ForDuration: 1.5, completion: nil)
+            textField?.text = ""
+            for i in 0...5 {
+                if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
+                    btn.setTitle("", forState: .Normal)
+                }
+            }
+            step = payPasswdStatus == .NotSetup ? 1 : 0
+            tipsLable?.text = tips[step]
+        }
     }
     
     func initView() {
@@ -93,11 +156,13 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     
     func nextStep() {
         if step == 0 || step == 1 {
-            if step == 0 {
-                oldPasswd = textField?.text
-            } else {
-                newPasswd = textField?.text
-            }
+            oldPasswd = textField?.text
+            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                                            "passwd_": oldPasswd!,
+                                            "passwd_type_": 1]
+            SocketManager.sendData(.PasswdVerifyRequest, data: dict)
+        } else if step == 1 {
+            newPasswd = textField?.text
             textField?.text = ""
             for i in 0...5 {
                 if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
@@ -108,7 +173,13 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
             tipsLable?.text = tips[step]
         } else if step == 2 {
             if textField?.text == newPasswd {
-                // SockSend
+                let changeType = DataManager.currentUser?.has_passwd_ == -1 ? 0 : 1
+                let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                                                "new_passwd_": newPasswd!,
+                                                "old_passwd_": oldPasswd!,
+                                                "passwd_type_": 1,
+                                                "change_type_": changeType]
+                SocketManager.sendData(.SetupPaymentCodeRequest, data: dict)
                 XCGLogger.info("\(oldPasswd ?? "status:\(payPasswdStatus)") <=> \(newPasswd!)")
             } else {
                 weak var weakSelf = self
@@ -155,10 +226,8 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
                     
                 })
             }
-            
             return true
         }
-        
         return false
     }
     

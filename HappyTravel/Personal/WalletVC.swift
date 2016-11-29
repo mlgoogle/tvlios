@@ -203,6 +203,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(rechargeVC, animated: true)
             } else if indexPath.row == 1 {
                 let payPasswdVC = PayPasswdVC()
+                payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
                 navigationController?.pushViewController(payPasswdVC, animated: true)
             }
         } else if indexPath.section == 1 {
