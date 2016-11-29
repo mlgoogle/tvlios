@@ -19,6 +19,10 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var callServantBtn:UIButton?
     
+    var buyVIPView:UIView?
+    
+    var priceLab:UILabel?
+    
     var serviceTel = "10086"
     
     var services:Results<CenturionCardServiceInfo>?
@@ -127,22 +131,68 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "share"), style: .Plain, target: self, action: #selector(shareToOthers))
     }
     
-    func createGetCenturionCardVIPView() -> UIView? {
-        let bgView = UIView()
-        bgView.userInteractionEnabled = true
-        bgView.layer.shadowColor = UIColor.grayColor().CGColor
-        bgView.layer.shadowRadius = 5
-        view.addSubview(bgView)
-        bgView.snp_makeConstraints(closure: { (make) in
+    func createGetCenturionCardVIPView() {
+        buyVIPView = UIView()
+        buyVIPView?.backgroundColor = UIColor.whiteColor()
+        buyVIPView?.userInteractionEnabled = true
+        buyVIPView?.layer.shadowColor = UIColor.grayColor().CGColor
+        buyVIPView?.layer.shadowRadius = 3
+        buyVIPView?.layer.shadowOpacity = 0.3
+        view.addSubview(buyVIPView!)
+        buyVIPView?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(callServantBtn!)
+        })
+        
+        let btn = UIButton()
+        btn.backgroundColor = colorWithHexString("#162334")
+        btn.setTitle("购买此服务", forState: .Normal)
+        btn.addTarget(self, action: #selector(buyVIP(_:)), forControlEvents: .TouchUpInside)
+        buyVIPView?.addSubview(btn)
+        btn.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(buyVIPView!)
+            make.top.equalTo(buyVIPView!)
+            make.bottom.equalTo(buyVIPView!)
+            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 8.0 * 3)
         })
         
         let titleLab = UILabel()
         titleLab.backgroundColor = UIColor.clearColor()
         titleLab.text = "会员:"
+        titleLab.textColor = UIColor.blackColor()
+        titleLab.font = UIFont.systemFontOfSize(S12)
+        buyVIPView?.addSubview(titleLab)
+        titleLab.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(40)
+            make.centerY.equalTo(buyVIPView!).offset(5)
+        })
         
-        callServantBtn?.hidden = DataManager.currentUser!.centurionCardLv <= 0
-        return bgView
+        priceLab = UILabel()
+        priceLab?.backgroundColor = UIColor.clearColor()
+        priceLab?.text = "2998"
+        priceLab?.textColor = UIColor.blackColor()
+        priceLab?.font = UIFont.systemFontOfSize(S18)
+        buyVIPView?.addSubview(priceLab!)
+        priceLab?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(titleLab.snp_right).offset(5)
+            make.bottom.equalTo(titleLab).offset(3)
+        })
+        
+        let unitLab = UILabel()
+        unitLab.backgroundColor = UIColor.clearColor()
+        unitLab.text = "元/年"
+        unitLab.textColor = UIColor.blackColor()
+        unitLab.font = UIFont.systemFontOfSize(S12)
+        buyVIPView?.addSubview(unitLab)
+        unitLab.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(priceLab!.snp_right).offset(5)
+            make.bottom.equalTo(titleLab)
+        })
+        
+        buyVIPView?.hidden = !(callServantBtn?.hidden)!
+    }
+    
+    func buyVIP(sender: UIButton) {
+        buyNowButtonTouched()
     }
     
     func shareToOthers() {
@@ -230,6 +280,14 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         services = DataManager.getCenturionCardServiceWithLV(index + 1)
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
         callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
+        buyVIPView?.hidden = !(callServantBtn?.hidden)!
+        if let info = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(index+1)") as? CentuionCardPriceInfo {
+            priceLab?.text = "\(info.blackcard_price_ / 100)"
+        }
+        if index == 3 {
+            callServantBtn?.hidden = true
+            buyVIPView?.hidden = true
+        }
     }
     
     // MARK: - CenturionCardServicesCellDelegate
@@ -270,30 +328,49 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         
-        let realm = try! Realm()
-        let currentCardInfo = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)").first
-        let price: CentuionCardPriceInfo? = realm.objects(CentuionCardPriceInfo.self).filter("blackcard_lv_ = \(selectedIndex + 1)").first
+        let currentCardInfo = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)")
+        let price = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(selectedIndex + 1)")
         let totalPrice = 0 + (price?.blackcard_price_)!
 
         if price?.blackcard_price_ != nil &&
             price?.blackcard_price_ > 0 &&
-           totalPrice - (currentCardInfo?.blackcard_price_)! > DataManager.currentUser?.cash{
+           totalPrice - (currentCardInfo?.blackcard_price_)! > DataManager.currentUser?.cash {
             
             moneyIsTooLess()
             return
         }
-
         
         upCenturionCardLv(totalPrice - (currentCardInfo?.blackcard_price_)!)
     }
     
+    /**
+     跳转到设置支付密码界面
+     */
+    func jumpToPayPasswdVC() {
+        let payPasswdVC = PayPasswdVC()
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        navigationController?.pushViewController(payPasswdVC, animated: true)
+    }
+    
     func upCenturionCardLv(price:Int) {
+        if DataManager.currentUser?.has_passwd_ == -1 {
+            let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
+            weak var weakSelf = self
+            let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
+                weakSelf?.jumpToPayPasswdVC()
+            })
+            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: nil)
+            alert.addAction(gotoSetup)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
+            return
+        }
 //        let price = record.valueForKey("order_price_")?.integerValue
         let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in
-            textField.placeholder = "请输入密码"
+            textField.placeholder = "请输入支付密码"
             textField.secureTextEntry = true
         })
         
@@ -304,18 +381,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              *  密码为空
              */
             if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+                SVProgressHUD.showErrorMessage(ErrorMessage: "请输入支付密码", ForDuration: 1, completion: nil)
                 return
-            }
-            /**
-             *  密码错误
-             */
-            if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
-                if passwd != localPasswd {
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "密码输入错误，请重新输入", ForDuration: 2, completion: nil)
-                    return
-                }
-                
             }
             /**
              *  余额不足
@@ -327,8 +394,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             /**
              *  请求购买
              */
-            
-            
             
             let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
                 "wanted_lv_": self!.selectedIndex+1]

@@ -562,7 +562,7 @@ class DataManager: NSObject {
             if filter == nil {
                 return objs
             } else {
-                return objs.filter(filter!)
+                return objs.filter(filter!).first
             }
             
         default:
