@@ -59,7 +59,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //MARK: - TableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
+            return 2
         } else if section == 1 {
             return 2
         }
@@ -176,6 +176,11 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 title?.text = "余额"
                 let cash: String = String(format:"%.2f元", Double((DataManager.currentUser?.cash)!)/100)
                 subTitleLabel?.text = cash
+                separateLine?.hidden = false
+            } else if indexPath.row == 1 {
+                icon?.image = UIImage.init(named: "cash")
+                title?.text = "修改支付密码"
+                subTitleLabel?.text = ""
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
@@ -194,17 +199,17 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                XCGLogger.debug("余额")
                 let rechargeVC = RechargeVC()
                 navigationController?.pushViewController(rechargeVC, animated: true)
+            } else if indexPath.row == 1 {
+                let payPasswdVC = PayPasswdVC()
+                navigationController?.pushViewController(payPasswdVC, animated: true)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {
-                XCGLogger.debug("按行程开票")
                 let invoiceVC = InvoiceVC()
                 navigationController?.pushViewController(invoiceVC, animated: true)
             } else if indexPath.row == 1 {
-                XCGLogger.debug("开票记录")
                 let invoiceHistotyVC = InvoiceHistoryVC()
                 navigationController?.pushViewController(invoiceHistotyVC, animated: true)
             }
