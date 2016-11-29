@@ -39,6 +39,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     //延时测试用
     var appointment_id_ = 0
     var isShowBaseInfo = false
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -312,7 +313,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.height.equalTo(30)
         }
         
+        let centurionCardBtn = UIButton()
+        centurionCardBtn.backgroundColor = UIColor.clearColor()
+        centurionCardBtn.setBackgroundImage(UIImage.init(named: "blackCardIcon"), forState: .Normal)
+        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
+        mapView?.addSubview(centurionCardBtn)
+        centurionCardBtn.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(mapView!).offset(-20)
+            make.bottom.equalTo(mapView!).offset(-20)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
+        })
+        
         hideKeyboard()
+    }
+    
+    func jumpToCenturionCardVC(sender: UIButton) {
+        jumpToCenturionCardCenter()
     }
     
     func back2MyLocationAction(sender: UIButton) {
