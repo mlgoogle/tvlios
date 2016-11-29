@@ -99,4 +99,12 @@ class NotifyDefine: NSObject {
     static let AppointmentServantReply = "AppointmentServantReply"
     
     static let UserBaseInfoReply = "UserBaseInfoReply"
+    
+    static let PasswdVerifyReply = "PasswdVerifyReply"
+    
+    static let PasswdVerifyReplyError = "PasswdVerifyReplyError"
+    
+    static let SetupPaymentCodeReply = "SetupPaymentCodeReply"
+    
+    static let SetupPaymentCodeReplyError = "SetupPaymentCodeReplyError"
 }

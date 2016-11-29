@@ -69,11 +69,12 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wxPlaceOrderReply(_:)), name: NotifyDefine.WXplaceOrderReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RechargeVC.wxPayStatusReply(_:)), name: NotifyDefine.WXPayStatusReply, object: nil)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(wxPlaceOrderReply(_:)), name: NotifyDefine.WXplaceOrderReply, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(wxPayStatusReply(_:)), name: NotifyDefine.WXPayStatusReply, object: nil)
     }
     
     func wxPayStatusReply(notification: NSNotification) {

@@ -141,7 +141,27 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case  AppointmentDetailRequest = 1081
         // 预约详情、邀约返回
         case AppointmentDetailReply = 1082
-         // 请求邀请服务者
+        // 黑卡VIP价格
+        case CenturionVIPPriceRequest = 1083
+        // 黑卡VIP价格
+        case CenturionVIPPriceReply = 1084
+        // 获取黑卡等级升级
+        case getUpCenturionCardOriderRequest = 1085
+        // 获取黑卡等级下单
+        case getUpCenturionCardOriderReply = 1086
+        // 请求验证密码正确性
+        case PasswdVerifyRequest = 1087
+        // 验证密码正确性返回
+        case PasswdVerifyReply = 1088
+        // 请求设置、修改支付密码
+        case SetupPaymentCodeRequest = 1089
+        // 设置、修改支付密码返回
+        case SetupPaymentCodeReply = 1090
+        
+        
+        //MARK: - 2000+
+        
+        // 请求邀请服务者
         case AskInvitation = 2001
         // 邀请服务者返回
         case InvitationResult = 2002
@@ -185,16 +205,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PayForInvitationRequest = 2017
         // 邀约、雨夜付款返回
         case PayForInvitationReply = 2018
-
-        // 获取黑卡等级升级
-        case getUpCenturionCardOriderRequest = 1085
-        // 获取黑卡等级下单
-        case getUpCenturionCardOriderReply = 1086
-        // 黑卡VIP价格
-        case CenturionVIPPriceRequest = 1083
-        // 黑卡VIP价格
-        case CenturionVIPPriceReply = 1084
-    
 
     }
     
@@ -262,7 +272,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static func getError(dict: [String: AnyObject]) -> [Int: String]? {
         if let err = dict["error_"] as? Int {
-            return [err: CommonDefine.errorMsgs[err]!]
+            return [err: CommonDefine.errorMsgs[err] ?? "错误码: \(err)"]
         }
         return nil
     }
@@ -331,7 +341,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 return false
                 }
             if let err = SocketManager.getError((jsonBody?.dictionaryObject)!) {
-                XCGLogger.warning(err)
+                if !sockErrorHandling(SockOpcode(rawValue: head!.opcode)!, err: err) {
+                    return true
+                }
             }
         }
         
@@ -346,101 +358,138 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             break
         case .Logined:
             logined(jsonBody)
+            
         case .ServantInfo:
             servantInfoReply(jsonBody)
+            
         case .ServantDetailInfo:
             servantDetailInfoReply(jsonBody)
+            
         case .RecommendServants:
             recommonServantsReply(jsonBody)
+            
         case .ServiceCity:
             servicesCityReply(jsonBody)
+            
         case .ModifyPasswordResult:
             modifyPasswordReply(head, jsonBody: jsonBody)
+            
         case .UserInfoResult:
             userInfoReply(jsonBody)
+            
         case .MessageVerifyResult:
             messageVerifyReply(jsonBody)
+            
         case .RegisterAccountReply:
             registerAccountReply(jsonBody)
+            
         case .ImproveDataResult:
             improveDataReply(jsonBody)
+            
         case .ObtainTripReply:
             obtainTripReply(jsonBody)
+            
         case .ServiceDetailReply:
             serviceDetailReply(jsonBody)
+            
         case .DeviceTokenResult:
             break
+            
         case .DrawBillReply:
             drawBillReply(jsonBody)
+            
         case .CenturionCardInfoReply:
             centurionCardInfoReply(jsonBody)
+            
         case .UserCenturionCardInfoReply:
             userCenturionCardInfoReply(jsonBody)
+            
         case .CenturionCardConsumedReply:
             centurionCardConsumedReply(jsonBody)
+            
         case .SkillsInfoReply:
             skillsInfoReply(jsonBody)
+            
         case .AppointmentReply:
             appointmentReply(jsonBody)
+            
         case .InvoiceDetailReply:
             invoiceDetailReply(jsonBody)
+            
         case .InvoiceInfoReply:
             invoiceInfoReply(jsonBody)
+            
         case .UploadImageTokenReply:
             uploadImageTokenReply(jsonBody)
+            
         case .WXplaceOrderReply:
             wxPlaceOrderReply(jsonBody)
+            
         case .ClientWXPayStatusReply:
             clientWXPayStatusReply(jsonBody)
+            
         case .ServerWXPayStatusReply:
             serverWXPayStatusReply(jsonBody)
+            
         case .AuthenticateUserCardReply:
             authenticateUserCardReply(jsonBody)
+            
         case .CheckAuthenticateResultReply:
             checkAuthenticateResultReply(jsonBody)
+            
         case .CheckUserCashReply:
             checkUserCashReply(jsonBody)
+            
         case .AppointmentRecordReply:
             appointmentRecordReply(jsonBody)
  
         case .AppointmentRecommendReply:
-            
             appointmentRecommendReply(jsonBody)
             
         case .AppointmentDetailReply:
-            
             appointmentDetailReply(jsonBody)
-            break
+            
+        case .PasswdVerifyReply:
+            passwdVerifyReply(jsonBody)
+            
+        case .SetupPaymentCodeReply:
+            setupPaymentCodeReply(jsonBody)
+            
         // Opcode => 2000+
         
         case .InvitationResult:
             invitationReply(jsonBody)
+            
         case .RecvChatMessage:
             chatMessageReply(jsonBody)
+            
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
+            
         case .MSGReadCntResult:
             break
+            
         case .EvaluatetripReply:
             evaluatetripReply(jsonBody)
+            
         case .AnswerInvitationReply:
             answerInvitationReply(jsonBody)
-            break
+
         case .ServersManInfoReply:
             serversManInfoReply(jsonBody)
-            break
+            
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
-            break
+
         case .AppointmentServantReply:
             appointmentServantReply(jsonBody)
-            break
+
         case .PayForInvitationReply:
             payForInvitationReply(jsonBody)
-            break
+
         case .CenturionVIPPriceReply:
             saveTheCenturionCardVIPPrice(jsonBody)
-            break
+            
         default:
             break
         }
@@ -453,6 +502,24 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         
+        return true
+    }
+    
+    func sockErrorHandling(opcode: SockOpcode, err: [Int: String]) -> Bool {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        switch opcode {
+        case .PasswdVerifyReply:
+            notificationCenter.postNotificationName(NotifyDefine.PasswdVerifyReplyError, object: nil, userInfo: ["err": err])
+            return false
+            
+        case .SetupPaymentCodeReply:
+            notificationCenter.postNotificationName(NotifyDefine.SetupPaymentCodeReplyError, object: nil, userInfo: ["err": err])
+            return false
+            
+        default:
+            break
+        }
+        XCGLogger.warning(err)
         return true
     }
     
@@ -731,7 +798,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkUserCashReply(jsonBody: JSON?) {
         if let cash = jsonBody?.dictionaryObject!["user_cash_"] as? Int {
-            DataManager.currentUser!.cash = cash
+            DataManager.currentUser?.cash = cash
+        }
+        if let hasPasswd = jsonBody?.dictionaryObject!["has_passwd_"] as? Int {
+            DataManager.currentUser?.has_passwd_ = hasPasswd
         }
         postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -747,11 +817,21 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         postNotification(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
     }
+    
     func appointmentRecommendReply(jsonBody:JSON?) {
         postNotification(NotifyDefine.AppointmentRecommendReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
+    
     func appointmentDetailReply(jsonBody:JSON?) {
         postNotification(NotifyDefine.AppointmentDetailReply, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
+    }
+    
+    func passwdVerifyReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.PasswdVerifyReply, object: nil, userInfo: nil)
+    }
+    
+    func setupPaymentCodeReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.SetupPaymentCodeReply, object: nil, userInfo: nil)
     }
     
     // Opcode => 2000+

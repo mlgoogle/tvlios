@@ -149,7 +149,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         buyBtn.layer.cornerRadius = 5
         buyBtn.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
         buyBtn.layer.borderWidth = 1
-        buyBtn.hidden = service.privilege_lv_ > DataManager.currentUser!.centurionCardLv ? false : true
+        buyBtn.hidden =  true // service.privilege_lv_ > DataManager.currentUser!.centurionCardLv ? false : true
         sectionFooter.addSubview(buyBtn)
         buyBtn.snp_makeConstraints { (make) in
             make.bottom.equalTo(0)

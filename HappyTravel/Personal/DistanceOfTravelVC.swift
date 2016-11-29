@@ -439,6 +439,18 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      支付操作
      */
     func payForInvitationRequest() {
+        if DataManager.currentUser?.has_passwd_ == -1 {
+            let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
+            weak var weakSelf = self
+            let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
+                weakSelf?.jumpToPayPasswdVC()
+            })
+            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: nil)
+            alert.addAction(gotoSetup)
+            alert.addAction(cancel)
+            presentViewController(alert, animated: true, completion: nil)
+            return
+        }
 //        guard info != nil else {return}
         guard segmentIndex != 2 else { return }
         weak var weakSelf = self
@@ -457,7 +469,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) in
-            textField.placeholder = "请输入密码"
+            textField.placeholder = "请输入支付密码"
             textField.secureTextEntry = true
         })
         
@@ -465,11 +477,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             var errMsg = ""
             let passwd = alert.textFields?.first?.text
             if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                errMsg = "请输入密码"
-            } else if let localPasswd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String {
-                if passwd != localPasswd {
-                    errMsg = "密码输入错误，请重新输入"
-                }
+                errMsg = "请输入支付密码"
             }
             if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
                 let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
@@ -485,8 +493,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     weakSelf!.moneyIsTooLess()
                 } else {
                     let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                                               "order_id_": order_id_,
-                                                 "passwd_": passwd!]
+                                                    "order_id_": order_id_,
+                                                    "passwd_": passwd!]
                     SocketManager.sendData(.PayForInvitationRequest, data: dict)
                 }
                 
@@ -518,6 +526,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         alert.addAction(cancel)
         
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    /**
+     跳转到设置支付密码界面
+     */
+    func jumpToPayPasswdVC() {
+        let payPasswdVC = PayPasswdVC()
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     
     deinit {
