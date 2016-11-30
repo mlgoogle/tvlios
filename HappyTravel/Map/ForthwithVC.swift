@@ -348,21 +348,22 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
     }
     
     func hideKeyboard() {

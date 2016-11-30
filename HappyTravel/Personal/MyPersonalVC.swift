@@ -141,7 +141,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.SkillsInfoRequest, data: nil)
         SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
         SocketManager.sendData(.CheckUserCash, data: ["uid_": DataManager.currentUser!.uid])
-
+        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     
