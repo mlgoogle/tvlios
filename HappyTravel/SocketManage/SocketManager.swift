@@ -197,14 +197,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case TestPushNotification = 2019
         case TestPushNotificationReply = 2020
         
-        //预约导游服务
+        // 预约导游服务
         case AppointmentServantRequest = 2021
-        //预约导游服务返回
+        // 预约导游服务返回
         case AppointmentServantReply = 2022
         // 请求邀约、预约付款
         case PayForInvitationRequest = 2017
         // 邀约、雨夜付款返回
         case PayForInvitationReply = 2018
+        // 请求未读消息
+        case UnreadMessageRequest = 2025
+        // 未读消息返回
+        case UnreadMessageReply = 2026
 
     }
     
@@ -354,8 +358,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         switch SockOpcode(rawValue: head!.opcode)! {
             
         case .TestPushNotificationReply:
-
             break
+            
         case .Logined:
             logined(jsonBody)
             
@@ -489,6 +493,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
         case .CenturionVIPPriceReply:
             saveTheCenturionCardVIPPrice(jsonBody)
+            
+        case .UnreadMessageReply:
+            unreadMessageReply(jsonBody)
             
         default:
             break
@@ -877,10 +884,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func evaluatetripReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
     }
+    
     func answerInvitationReply(jsonBody:JSON?) {
-        
         DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
-        
     }
     
     func serversManInfoReply(jsonBody: JSON?) {
@@ -891,9 +897,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
+    
     func appointmentServantReply(jsonBody:JSON?) {
-       
-     postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
+        postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func payForInvitationReply(jsonBody: JSON?) {
@@ -905,6 +911,20 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             for data in dataList {
                 let price = CentuionCardPriceInfo(value: data)
                 DataManager.insertCenturionCardVIPPriceInfo(price)
+            }
+        }
+    }
+    
+    func unreadMessageReply(jsonBody: JSON?) {
+        if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
+            if msgList.count > 0 {
+                var pMsg:PushMessage?
+                for msg in msgList {
+                    let pushMsg = PushMessage(value: msg)
+                    DataManager.insertMessage(pushMsg)
+                    pMsg = pushMsg
+                }
+                postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
             }
         }
     }
