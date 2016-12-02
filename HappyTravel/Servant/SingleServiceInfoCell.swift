@@ -168,7 +168,7 @@ class SingleServiceInfoCell: UITableViewCell {
         }
 
         if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
-            descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
+            descLab.text = "\(service.service_name_ ?? "")    \(service.service_time_ ?? "")"
         }
 //        /**
 //         *  如果是邀约 继续执行  如果是预约 则 直接return
