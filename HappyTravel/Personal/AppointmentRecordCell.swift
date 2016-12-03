@@ -131,7 +131,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         
         if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
             
-            if recordInfo?.status_ == 2 || recordInfo?.status_ == 4 {
+            if recordInfo?.status_ > 2 {
                 nickNameLab.text = recordInfo?.service_name_
             } else {
                 

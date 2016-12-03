@@ -301,6 +301,11 @@ class ServantIntroCell: UITableViewCell {
         }
         allLabelWidth = 0.0
         for (index, tag) in tags.enumerate() {
+            
+            
+            let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(tag.tally!)") as! Results<SkillInfo>
+            
+            let skill = results.first
             var tallyItemView = tallyView!.viewWithTag(1001 + index)
             if tallyItemView == nil {
                 tallyItemView = UIView()
@@ -315,7 +320,7 @@ class ServantIntroCell: UITableViewCell {
                 tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
                 
                 
-                allLabelWidth = allLabelWidth + Float(AtapteWidthValue(10)) + tag.labelWidth
+                allLabelWidth = allLabelWidth + Float(AtapteWidthValue(10)) + skill!.labelWidth
 
                 tallyItemView!.snp_makeConstraints { (make) in
                     let previousView = tallyView!.viewWithTag(1001+index-1)
@@ -327,7 +332,7 @@ class ServantIntroCell: UITableViewCell {
                     } else {
                         if allLabelWidth + 20 > Float(ScreenWidth) {
 
-                            allLabelWidth = 10 + tag.labelWidth
+                            allLabelWidth = 10 + skill!.labelWidth
                             make.top.equalTo(previousView!.snp_bottom).offset(AtapteHeightValue(10))
                             make.left.equalTo(tallyView!)
                         } else {
@@ -336,7 +341,7 @@ class ServantIntroCell: UITableViewCell {
                         } 
                     }
                     make.height.equalTo(25)
-                    make.width.equalTo(tag.labelWidth)
+                    make.width.equalTo(skill!.labelWidth)
                 }
             }
             lastTallyView = tallyItemView
@@ -358,7 +363,7 @@ class ServantIntroCell: UITableViewCell {
                     make.right.equalTo(tallyItemView!).offset(AtapteWidthValue(-10))
                 }
             }
-            tallyLabel!.text = tag.tally
+            tallyLabel!.text = skill!.skill_name_
             
         }
         if lastTallyView != nil {

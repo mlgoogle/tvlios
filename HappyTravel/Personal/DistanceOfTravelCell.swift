@@ -159,7 +159,7 @@ class DistanceOfTravelCell: UITableViewCell {
             
             if orderInfo?.to_url_ != nil {
                 
-                headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                headView.kf_setImageWithURL(NSURL(string: (orderInfo?.to_url_)!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
             }
