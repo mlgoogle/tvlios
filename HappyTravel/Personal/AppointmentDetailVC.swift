@@ -104,6 +104,10 @@ class AppointmentDetailVC: UIViewController {
                     if idString == "" {
                         break
                     }
+                    if Int(idString) == nil {
+                        
+                        break
+                    }
                     let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(idString)") as! Results<SkillInfo>
                     let skillInfo = results.first
                     let dict = [skillInfo!:false] as Dictionary<SkillInfo, Bool>

@@ -91,6 +91,11 @@ public class TallyCell : UITableViewCell {
                 if tag.tally == "" {
                     break
                 }
+                if Int(tag.tally!) == nil {
+                    
+                    break
+                }
+                
                 let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(tag.tally!)") as! Results<SkillInfo>
                 
                 let skill = results.first
