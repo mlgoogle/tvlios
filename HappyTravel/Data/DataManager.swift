@@ -44,7 +44,6 @@ class DataManager: NSObject {
         }
         Realm.Configuration.defaultConfiguration = config
         DataManager.initialized = true
-        XCGLogger.debug("\(try! Realm().configuration.fileURL)")
     }
     
     //MARK: - UserInfo
