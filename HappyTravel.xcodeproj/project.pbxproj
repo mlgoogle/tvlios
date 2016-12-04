@@ -20,6 +20,15 @@
 		2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */; };
 		2F5F2D4A1DC19C6300EB5773 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F5F2D451DC19C6300EB5773 /* libWeChatSDK.a */; };
 		2F5F2D4B1DC19C6300EB5773 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2F5F2D461DC19C6300EB5773 /* README.txt */; };
+		2F65C5711DF2EE5A001EC13A /* centurion_card_recommon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C56F1DF2EE5A001EC13A /* centurion_card_recommon@2x.png */; };
+		2F65C5721DF2EE5A001EC13A /* centurion_card_recommon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5701DF2EE5A001EC13A /* centurion_card_recommon@3x.png */; };
+		2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */; };
+		2F65C5761DF2EE69001EC13A /* modify_pass@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */; };
+		2F65C57F1DF415BA001EC13A /* PhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */; };
+		2F65C5811DF415BA001EC13A /* PhotoWallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */; };
+		2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */; };
+		2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C5841DF41654001EC13A /* ModelDefine.swift */; };
+		2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C5861DF417E9001EC13A /* CommonMethod.swift */; };
 		2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */; };
 		2F6E2D5A1DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */; };
 		2F6E2D5C1DC0DFBF00AD0BB1 /* AppointmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */; };
@@ -329,6 +338,15 @@
 		2F5F2D471DC19C6300EB5773 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WechatAuthSDK.h; path = WeChatSDK1.7.4/WechatAuthSDK.h; sourceTree = "<group>"; };
 		2F5F2D481DC19C6300EB5773 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApi.h; path = WeChatSDK1.7.4/WXApi.h; sourceTree = "<group>"; };
 		2F5F2D491DC19C6300EB5773 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WXApiObject.h; path = WeChatSDK1.7.4/WXApiObject.h; sourceTree = "<group>"; };
+		2F65C56F1DF2EE5A001EC13A /* centurion_card_recommon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "centurion_card_recommon@2x.png"; sourceTree = "<group>"; };
+		2F65C5701DF2EE5A001EC13A /* centurion_card_recommon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "centurion_card_recommon@3x.png"; sourceTree = "<group>"; };
+		2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modify_pass@2x.png"; sourceTree = "<group>"; };
+		2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modify_pass@3x.png"; sourceTree = "<group>"; };
+		2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPreviewView.swift; sourceTree = "<group>"; };
+		2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallCell.swift; sourceTree = "<group>"; };
+		2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallViewController.swift; sourceTree = "<group>"; };
+		2F65C5841DF41654001EC13A /* ModelDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelDefine.swift; path = Data/ModelDefine.swift; sourceTree = "<group>"; };
+		2F65C5861DF417E9001EC13A /* CommonMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonMethod.swift; path = Common/CommonMethod.swift; sourceTree = "<group>"; };
 		2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyPersonalVC.swift; path = Personal/MyPersonalVC.swift; sourceTree = "<group>"; };
 		2F6E2D591DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceHistoryVC.swift; path = Personal/InvoiceHistoryVC.swift; sourceTree = "<group>"; };
 		2F6E2D5B1DC0DFBF00AD0BB1 /* AppointmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentView.swift; path = Map/Appointment/AppointmentView.swift; sourceTree = "<group>"; };
@@ -672,6 +690,17 @@
 			name = WeChatSDK;
 			sourceTree = "<group>";
 		};
+		2F65C5771DF415B9001EC13A /* PhotoWall */ = {
+			isa = PBXGroup;
+			children = (
+				2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */,
+				2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */,
+				2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */,
+			);
+			name = PhotoWall;
+			path = Servant/PhotoWall;
+			sourceTree = "<group>";
+		};
 		2F6E2D551DC0D1A400AD0BB1 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -875,6 +904,7 @@
 				6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */,
 				BFC4920F1DD9D2BF0056500D /* OpenTicketInfo.swift */,
 				BF6E9D921DE3E62300F32CCE /* CentuionCardPriceInfo.swift */,
+				2F65C5841DF41654001EC13A /* ModelDefine.swift */,
 			);
 			name = Data;
 			path = ..;
@@ -895,6 +925,7 @@
 		2FC25AFD1D6A9B8B00D48D6A /* Servant */ = {
 			isa = PBXGroup;
 			children = (
+				2F65C5771DF415B9001EC13A /* PhotoWall */,
 				2FC25AFE1D6A9C7600D48D6A /* InvitationVC.swift */,
 				2FC25AFF1D6A9C7600D48D6A /* PersonalHeadCell.swift */,
 				2FC25B001D6A9C7600D48D6A /* PhotosCell.swift */,
@@ -931,6 +962,7 @@
 				2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */,
 				BF3841EF1DC88ED100DF50AC /* UserDefaultKeys.swift */,
 				2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */,
+				2F65C5861DF417E9001EC13A /* CommonMethod.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1040,6 +1072,8 @@
 		BF6E9C551DE2FD4500F32CCE /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				2F65C56F1DF2EE5A001EC13A /* centurion_card_recommon@2x.png */,
+				2F65C5701DF2EE5A001EC13A /* centurion_card_recommon@3x.png */,
 				BF6E9C561DE2FD4500F32CCE /* address-selector-normal@2x.png */,
 				BF6E9C571DE2FD4500F32CCE /* address-selector-selected@2x.png */,
 				BF6E9C581DE2FD4500F32CCE /* city-selector@2x.png */,
@@ -1075,6 +1109,8 @@
 		BF6E9C6C1DE2FD4500F32CCE /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */,
+				2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */,
 				2FB95D131DED413400BBA506 /* passwd_box@3x.png */,
 				2FB95D111DED35A800BBA506 /* passwd_box@2x.png */,
 				BF6E9C6D1DE2FD4500F32CCE /* alipay@2x.png */,
@@ -1418,6 +1454,7 @@
 				BF6E9D5E1DE2FD4500F32CCE /* localaddress@2x.png in Resources */,
 				BF6E9D151DE2FD4500F32CCE /* advanced-level-disable@2x.png in Resources */,
 				BF6E9D211DE2FD4500F32CCE /* dingji-level@3x.png in Resources */,
+				2F65C5721DF2EE5A001EC13A /* centurion_card_recommon@3x.png in Resources */,
 				BF6E9D0E1DE2FD4500F32CCE /* nav-msg@2x.png in Resources */,
 				BF6E9D7C1DE2FD4500F32CCE /* side-bg@2x.png in Resources */,
 				BF6E9D0F1DE2FD4500F32CCE /* nav-personal@2x.png in Resources */,
@@ -1431,6 +1468,7 @@
 				BF6E9D3A1DE2FD4500F32CCE /* service@3x.png in Resources */,
 				BF6E9D591DE2FD4500F32CCE /* invoice-history@2x.png in Resources */,
 				BF6E9D451DE2FD4500F32CCE /* vipper-rest@2x.png in Resources */,
+				2F65C5711DF2EE5A001EC13A /* centurion_card_recommon@2x.png in Resources */,
 				BF6E9D401DE2FD4500F32CCE /* share-weibo@3x.png in Resources */,
 				BF6E9CF81DE2FD4500F32CCE /* head-bg@2x.png in Resources */,
 				BF6E9D2B1DE2FD4500F32CCE /* middle-level-disable@2x.png in Resources */,
@@ -1497,6 +1535,7 @@
 				BF6E9D551DE2FD4500F32CCE /* guide-zhima-auth@2x.png in Resources */,
 				BF6E9D6D1DE2FD4500F32CCE /* lv5@3x.png in Resources */,
 				BF6E9D231DE2FD4500F32CCE /* hotel-disable@3x.png in Resources */,
+				2F65C5761DF2EE69001EC13A /* modify_pass@3x.png in Resources */,
 				BF6E9D901DE2FD4500F32CCE /* segment-left@2x.png in Resources */,
 				BF6E9D1B1DE2FD4500F32CCE /* blackCardFrontBg.png in Resources */,
 				BF6E9D441DE2FD4500F32CCE /* vipper-rest-disable@3x.png in Resources */,
@@ -1528,6 +1567,7 @@
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				BF6E9D881DE2FD4500F32CCE /* touxiang_men@2x.png in Resources */,
 				BF6E9D871DE2FD4500F32CCE /* tianjia@3x.png in Resources */,
+				2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */,
 				BF6E9D0D1DE2FD4500F32CCE /* recommend@3x.png in Resources */,
 				BF6E9D911DE2FD4500F32CCE /* segment-right@2x.png in Resources */,
 				2FB95D121DED35A800BBA506 /* passwd_box@2x.png in Resources */,
@@ -1966,9 +2006,12 @@
 				2FC25B081D6A9C7600D48D6A /* ServantPersonalVC.swift in Sources */,
 				6E1074681DC1F22300F3F46F /* InvoiceHistoryDetailVC.swift in Sources */,
 				2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */,
+				2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */,
+				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
 				2F9684111D76CD040028E3F2 /* IdentBaseInfoCell.swift in Sources */,
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
 				2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */,
+				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
 				BF6E9D931DE3E62300F32CCE /* CentuionCardPriceInfo.swift in Sources */,
@@ -1985,6 +2028,7 @@
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
+				2F65C57F1DF415BA001EC13A /* PhotoPreviewView.swift in Sources */,
 				6E6FDF521DEC479A00C1E6DF /* AboutUSVC.swift in Sources */,
 				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */,
@@ -2001,6 +2045,7 @@
 				2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */,
 				6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */,
 				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
+				2F65C5811DF415BA001EC13A /* PhotoWallCell.swift in Sources */,
 				2F2A2B161DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift in Sources */,
 				2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */,
 				2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */,

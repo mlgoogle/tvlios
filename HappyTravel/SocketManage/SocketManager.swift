@@ -157,7 +157,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SetupPaymentCodeRequest = 1089
         // 设置、修改支付密码返回
         case SetupPaymentCodeReply = 1090
-        
+        // 请求照片墙
+        case PhotoWallRequest = 1109
+        // 照片墙返回
+        case PhotoWallReply = 1110
         
         //MARK: - 2000+
         
@@ -244,7 +247,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-                try socket?.connectToHost("61.147.114.78", onPort: 10001, withTimeout: 5)
+                let ip = "192.168.8.131"
+//                let ip = "61.147.114.78"
+                try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
@@ -335,7 +340,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
-        XCGLogger.info("Recv: \(SockOpcode.init(rawValue: head!.opcode)!)")
+        if let op = SocketManager.SockOpcode.init(rawValue: head!.opcode) {
+            XCGLogger.info("Recv: \(op)")
+        } else {
+            XCGLogger.info("Recv opcode: \(head!.opcode)")
+            return  true
+        }
         
         var jsonBody:JSON?
         if body != nil && (body as! NSData).length > 0 {

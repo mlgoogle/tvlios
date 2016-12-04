@@ -178,7 +178,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 subTitleLabel?.text = cash
                 separateLine?.hidden = false
             } else if indexPath.row == 1 {
-                icon?.image = UIImage.init(named: "cash")
+                icon?.image = UIImage.init(named: "modify_pass")
                 title?.text = DataManager.currentUser?.has_passwd_ == -1 ? "设置支付密码" : "修改支付密码"
                 subTitleLabel?.text = ""
             }
