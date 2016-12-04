@@ -101,6 +101,13 @@ class AppointmentDetailVC: UIViewController {
              let skillStr = data["skills_"] as? String
              let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
                 for idString in idArray {
+                    if idString == "" {
+                        break
+                    }
+                    if Int(idString) == nil {
+                        
+                        break
+                    }
                     let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(idString)") as! Results<SkillInfo>
                     let skillInfo = results.first
                     let dict = [skillInfo!:false] as Dictionary<SkillInfo, Bool>

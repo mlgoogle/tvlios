@@ -27,7 +27,9 @@ class ServiceInfo: Object {
     
     dynamic var service_name_:String?
     
-    dynamic var service_time_:String?
+//    dynamic var service_time_:String?
+    dynamic var service_start_ = 0
+    dynamic var service_end_ = 0
     
     dynamic var service_price_:Int = 0
     

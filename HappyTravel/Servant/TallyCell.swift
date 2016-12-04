@@ -88,6 +88,14 @@ public class TallyCell : UITableViewCell {
             for (index, tag) in tags!.enumerate() {
                 var tallyItemView = contentView.viewWithTag(self.tags["tallyItemView"]! * 10 + index)
                 
+                if tag.tally == "" {
+                    break
+                }
+                if Int(tag.tally!) == nil {
+                    
+                    break
+                }
+                
                 let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(tag.tally!)") as! Results<SkillInfo>
                 
                 let skill = results.first
