@@ -79,10 +79,11 @@ public class PhotosCell : UITableViewCell {
         
     }
     
-    func setInfo(photos: List<PhotoUrl>?, setSpread spd: Bool) {
+    func setInfo(photos: List<PhotoModel>?, setSpread spd: Bool) {
+        guard photos != nil else {return}
         let view = contentView.viewWithTag(101)
         let nonePhotosLabel = view!.viewWithTag(1003) as? UILabel
-        if photos!.count != 0 {
+        if photos?.count != 0 {
             nonePhotosLabel?.hidden = true
             for (index, photoURL) in photos!.enumerate() {
                 var photoView = nonePhotosLabel?.viewWithTag(1003 * 10 + index) as? UIImageView
@@ -92,7 +93,7 @@ public class PhotosCell : UITableViewCell {
                     photoView?.tag = 1003 * 10 + index
                     view?.addSubview(photoView!)
                 }
-                photoView!.kf_setImageWithURL(NSURL(string: photoURL.photoUrl!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                photoView!.kf_setImageWithURL(NSURL(string: photoURL.thumbnail_url_!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 var previousView:UIImageView?
@@ -110,7 +111,12 @@ public class PhotosCell : UITableViewCell {
                     if row == 0 {
                         make.top.equalTo(nonePhotosLabel!)
                     } else {
-                        make.top.equalTo(previousView!.snp_bottom).offset(10)
+                        if col == 0 {
+                            make.top.equalTo(previousView!.snp_bottom).offset(10)
+                        } else {
+                            make.top.equalTo(previousView!)
+                        }
+                        
                     }
                     let photoWidth = (UIScreen.mainScreen().bounds.size.width - 50) / 4.0
                     make.width.equalTo(photoWidth)

@@ -315,7 +315,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         let centurionCardBtn = UIButton()
         centurionCardBtn.backgroundColor = UIColor.clearColor()
-        centurionCardBtn.setBackgroundImage(UIImage.init(named: "blackCardIcon"), forState: .Normal)
+        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
         centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
         mapView?.addSubview(centurionCardBtn)
         centurionCardBtn.snp_makeConstraints(closure: { (make) in

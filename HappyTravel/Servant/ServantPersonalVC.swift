@@ -29,6 +29,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var daysAlertController:UIAlertController?
     
     var selectedServcie:ServiceInfo?
+    var photoModel:PhotoWallModel?
+    
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -349,6 +352,22 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func requestPhoto() {
+        if personalInfo != nil {
+            let dict = ["uid_": personalInfo!.uid,
+                        "size_": 12,
+                        "num_": 1]
+            SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
+                if let data = response["data"] as? [String: AnyObject] {
+                    self.photoModel = PhotoWallModel(value: data)
+                    self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
+                    
+                }
+            })
+        }
+        
+    }
+    
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(false)
         personalTable!.reloadData()
@@ -363,6 +382,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
+        requestPhoto()
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -427,10 +447,18 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("PhotosCell", forIndexPath: indexPath) as! PhotosCell
             cell.delegate = self
-            cell.setInfo(personalInfo!.photoUrlList, setSpread: serviceSpread)
+            cell.setInfo(photoModel?.photo_list_, setSpread: serviceSpread)
             return cell
         }
         
+    }
+    
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 3 {
+            let photoWall = PhotoWallViewController()
+            photoWall.info = self.personalInfo
+            navigationController?.pushViewController(photoWall, animated: true)
+        }
     }
     
     // MARK ServiceCellDelegate
