@@ -25,6 +25,12 @@ class SingleServiceInfoCell: UITableViewCell {
                 "reduceButton":1006,
                 "plusButton":1007]
     
+    lazy private var dateFormatter:NSDateFormatter = {
+        var dateFomatter = NSDateFormatter()
+        dateFomatter.dateFormat = "HH : mm"
+        
+        return dateFomatter
+    }()
     var count = 1
     weak var delegate:DaysCountDelegate?
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -161,6 +167,15 @@ class SingleServiceInfoCell: UITableViewCell {
     
     
 
+    func getTime(start:Int, end:Int)->String {
+        
+        
+        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start)))
+        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end)))
+
+        return "\(startTime) - \(endTime)"
+        
+    }
     func setupInfo(service:ServiceInfo,count:Int, isNormal:Bool) {
         
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
@@ -168,7 +183,7 @@ class SingleServiceInfoCell: UITableViewCell {
         }
 
         if let descLab = contentView.viewWithTag(tags["descLab"]!) as? UILabel {
-            descLab.text = "\(service.service_name_!)    \(service.service_time_!)"
+            descLab.text = "\(service.service_name_!)    \(getTime(service.service_start_, end: service.service_end_))"
         }
 //        /**
 //         *  如果是邀约 继续执行  如果是预约 则 直接return

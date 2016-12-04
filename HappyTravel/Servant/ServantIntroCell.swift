@@ -303,6 +303,9 @@ class ServantIntroCell: UITableViewCell {
         for (index, tag) in tags.enumerate() {
             
             
+            if tag.tally == "" {
+                break
+            }
             let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(tag.tally!)") as! Results<SkillInfo>
             
             let skill = results.first
