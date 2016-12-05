@@ -212,7 +212,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         segmentSC!.snp_makeConstraints { (make) in
             make.center.equalTo(segmentBGV)
             make.height.equalTo(30)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
+            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0 + 20)
         }
         
         table = UITableView(frame: CGRectZero, style: .Plain)

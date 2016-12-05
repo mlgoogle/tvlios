@@ -158,9 +158,16 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
+            var serviceTime = "09:00-21:00"
+            
+            if recordInfo?.status_ > 2 {
+              
+                serviceTime = getTime((recordInfo?.service_start_)!, end: (recordInfo?.service_end_)!)
+            }
             dateFormatter.dateStyle = .ShortStyle
-            timeLab.text = "开始 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.start_time_)!))) + " 09:00-21:00"
-            endTimeLabel.text = "结束 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.end_time_)!))) + " 09:00-21:00"
+
+            timeLab.text = "开始 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.start_time_)!))) + " " + serviceTime
+            endTimeLabel.text = "结束 : " + dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((recordInfo?.end_time_)!))) + " " + serviceTime
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
@@ -193,4 +200,16 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         
     }
 
+    
+    func getTime(start:Int, end:Int)->String {
+        dateFormatter.dateFormat = "HH:mm"
+
+        
+        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start)))
+        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end)))
+        
+        return "\(startTime)-\(endTime)"
+        
+    }
+    
 }
