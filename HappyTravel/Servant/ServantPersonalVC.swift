@@ -512,11 +512,6 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             return
             
         }
-
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                                          "to_uid_": personalInfo!.uid,
-                                      "service_id_": selectedServcie!.service_id_,
-                                       "day_count_":targetDays])
     }
     
     func daysCancelAction(sender: UIButton?) {

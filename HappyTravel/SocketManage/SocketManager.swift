@@ -577,7 +577,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
-        XCGLogger.warning("socketDidDisconnect:\(err!)")
+//        XCGLogger.warning("socketDidDisconnect:\(err!)")
         if !SocketManager.isLogout {
                 SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
                     
