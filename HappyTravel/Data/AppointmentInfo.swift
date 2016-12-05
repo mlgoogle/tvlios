@@ -32,6 +32,8 @@ class AppointmentInfo: Object {
     dynamic var to_user_ = 0
     dynamic var order_price_ = 0
     dynamic var order_id_ = 0
+    dynamic var service_end_ = 0
+    dynamic var service_start_ = 0
     
     func setInfo(info:AppointmentInfo) {
         
