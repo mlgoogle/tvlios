@@ -247,7 +247,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-//                let ip = "192.168.8.131"
 //                let ip = "61.147.114.78"
                 let ip = "103.40.192.101"
                 try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
