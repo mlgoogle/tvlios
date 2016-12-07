@@ -124,6 +124,9 @@
 		6ED243F71DF7B178002C1F78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ED243F51DF7B178002C1F78 /* LaunchScreen.storyboard */; };
 		6ED244021DF7B178002C1F78 /* TetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244011DF7B178002C1F78 /* TetsTests.swift */; };
 		6ED2440D1DF7B178002C1F78 /* TetsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2440C1DF7B178002C1F78 /* TetsUITests.swift */; };
+		6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */; };
+		6ED244551DF835B5002C1F78 /* FaceKeyboardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */; };
+		6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */; };
 		6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */; };
 		6EED9AD91DCDD5E500A701DD /* SingleSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */; };
 		B0CD9100C5B300D6D25A2150 /* Pods_HappyTravelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */; };
@@ -485,6 +488,9 @@
 		6ED244081DF7B178002C1F78 /* TetsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TetsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED2440C1DF7B178002C1F78 /* TetsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetsUITests.swift; sourceTree = "<group>"; };
 		6ED2440E1DF7B178002C1F78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceKeyboardView.swift; sourceTree = "<group>"; };
+		6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaceKeyboardView.xib; sourceTree = "<group>"; };
+		6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiFaceHelper.swift; sourceTree = "<group>"; };
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillWidthLayout.swift; path = Map/Appointment/SkillWidthLayout.swift; sourceTree = "<group>"; };
 		6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleSkillCell.swift; path = Map/Appointment/SingleSkillCell.swift; sourceTree = "<group>"; };
@@ -974,6 +980,9 @@
 		2FBB5E211D51CC47007BE4E0 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */,
+				6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */,
+				6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */,
 				2FBB5E741D51D2FC007BE4E0 /* Message.swift */,
 				2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */,
 				2FBB5E821D51E655007BE4E0 /* ChatDateCell.swift */,
@@ -1760,6 +1769,7 @@
 				BF6E9D7D1DE2FD4500F32CCE /* side-complain@2x.png in Resources */,
 				BF6E9CF41DE2FD4500F32CCE /* face-btn@2x.png in Resources */,
 				BF6E9D641DE2FD4500F32CCE /* lv1@2x.png in Resources */,
+				6ED244551DF835B5002C1F78 /* FaceKeyboardView.xib in Resources */,
 				BF6E9D6E1DE2FD4500F32CCE /* my-star-fill@2x.png in Resources */,
 				BF6E9D331DE2FD4500F32CCE /* service-agent-disable@2x.png in Resources */,
 				BF6E9D6A1DE2FD4500F32CCE /* lv4@2x.png in Resources */,
@@ -2208,6 +2218,7 @@
 				2FE7C3791D63FD4700994505 /* ForthwithVC.swift in Sources */,
 				2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
+				6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */,
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
@@ -2220,6 +2231,7 @@
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
 				2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */,
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
+				6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */,
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */,
@@ -2723,6 +2735,7 @@
 				6ED244101DF7B178002C1F78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6ED244161DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsTests" */ = {
 			isa = XCConfigurationList;
@@ -2731,6 +2744,7 @@
 				6ED244121DF7B178002C1F78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6ED244171DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsUITests" */ = {
 			isa = XCConfigurationList;
@@ -2739,6 +2753,7 @@
 				6ED244141DF7B178002C1F78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

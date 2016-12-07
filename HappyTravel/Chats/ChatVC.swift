@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 import MJRefresh
 
-public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate {
+public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate, FaceKeyboardViewDelegate{
     var daysAlertController:UIAlertController?
 
     var dateFormatter = NSDateFormatter()
@@ -34,6 +34,15 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var selectedServcie:ServiceInfo?
 
+    
+    var faceKeyBoard:FaceKeyboardView = {
+       
+        let keyboardView = NSBundle.mainBundle().loadNibNamed("FaceKeyboardView", owner: nil, options: nil).first as! FaceKeyboardView
+        
+        return keyboardView
+        
+    }()
+    
     override public var inputAccessoryView: UIView! {
         get {
             if toolBar == nil {
@@ -41,7 +50,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.backgroundColor = colorWithHexString("#f2f2f2")
                 faceButton = UIButton(type: .Custom)
                 faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
-                faceButton.addTarget(self, action: #selector(ChatVC.sendMessageAction), forControlEvents: UIControlEvents.TouchUpInside)
+                faceButton.addTarget(self, action: #selector(ChatVC.faceKeyboardShowOrHide), forControlEvents: UIControlEvents.TouchUpInside)
                 toolBar.addSubview(faceButton)
                 faceButton.translatesAutoresizingMaskIntoConstraints = false
                 faceButton.snp_makeConstraints(closure: { (make) in
@@ -107,6 +116,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
            navigationController?.popViewControllerAnimated(true)
             return
         }
+        
         
         msgList = DataManager.getMessage(servantInfo!.uid)?.msgList
         
@@ -266,7 +276,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     func initView() {
         dateFormatter.dateStyle = .ShortStyle
         dateFormatter.timeStyle = .ShortStyle
-
+        faceKeyBoard.faceDelegate = self
         let rect = view.bounds
         chatTable = UITableView(frame: rect, style: .Plain)
         chatTable!.tag = 1001
@@ -363,6 +373,33 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func faceKeyboardShowOrHide() {
+        
+        if faceButton.selected {
+            textView.inputView = nil
+
+        }
+        let isSelected = faceButton.selected
+        UIView.animateWithDuration(0.2) {
+            self.textView.resignFirstResponder()
+        }
+        
+        
+        faceButton.selected = !isSelected
+        
+        if faceButton.selected {
+            textView.inputView = faceKeyBoard
+            //            [self emojiOpen];
+        }
+        
+        
+        UIView.animateWithDuration(0.2) {
+            self.textView.becomeFirstResponder()
+        }
+        
+
+    }
+    
     func sendMessageAction() {
         let msg = textView.text
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
@@ -404,6 +441,17 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func faceKeyboardView(faceKeyboardView: FaceKeyboardView, didKeyCode keyCode: String) {
+        
+        if keyCode.characters.count > 0{
+            textView.insertText(keyCode)
+        }else {
+            
+            textView.deleteBackward()
+        }
+
     }
     
 }
