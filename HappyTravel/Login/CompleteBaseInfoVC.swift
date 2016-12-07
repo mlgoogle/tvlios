@@ -175,7 +175,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
      */
     func updateBaseInfo(url:String) {
         
-        let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
+        
+        let UTF8Adress = address?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
+        let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=\(UTF8Adress!)"
         Alamofire.request(.GET, addr).responseJSON() { response in
             let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
             let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
