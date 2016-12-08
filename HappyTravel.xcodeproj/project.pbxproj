@@ -117,6 +117,7 @@
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
 		6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */; };
 		6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */; };
+		6EBE4E071DF90F7F0040851B /* share_erweima.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EBE4E061DF90F7F0040851B /* share_erweima.png */; };
 		6ED243ED1DF7B178002C1F78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED243EC1DF7B178002C1F78 /* AppDelegate.swift */; };
 		6ED243EF1DF7B178002C1F78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED243EE1DF7B178002C1F78 /* ViewController.swift */; };
 		6ED243F21DF7B178002C1F78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ED243F01DF7B178002C1F78 /* Main.storyboard */; };
@@ -475,6 +476,7 @@
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
 		6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleServiceInfoCell.swift; path = Servant/SingleServiceInfoCell.swift; sourceTree = "<group>"; };
 		6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRemarksCell.swift; path = Map/Appointment/AppointmentRemarksCell.swift; sourceTree = "<group>"; };
+		6EBE4E061DF90F7F0040851B /* share_erweima.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share_erweima.png; sourceTree = "<group>"; };
 		6ED243EA1DF7B178002C1F78 /* Tets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED243EC1DF7B178002C1F78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6ED243EE1DF7B178002C1F78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -1210,6 +1212,7 @@
 		BF6E9C6C1DE2FD4500F32CCE /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				6EBE4E061DF90F7F0040851B /* share_erweima.png */,
 				2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */,
 				2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */,
 				2FB95D131DED413400BBA506 /* passwd_box@3x.png */,
@@ -1738,6 +1741,7 @@
 				2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */,
 				BF6E9D0D1DE2FD4500F32CCE /* recommend@3x.png in Resources */,
 				BF6E9D911DE2FD4500F32CCE /* segment-right@2x.png in Resources */,
+				6EBE4E071DF90F7F0040851B /* share_erweima.png in Resources */,
 				2FB95D121DED35A800BBA506 /* passwd_box@2x.png in Resources */,
 				BF6E9D3E1DE2FD4500F32CCE /* share-wechat@3x.png in Resources */,
 				BF6E9D531DE2FD4500F32CCE /* guide-star-fill@2x.png in Resources */,

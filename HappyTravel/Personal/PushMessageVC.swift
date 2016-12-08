@@ -266,7 +266,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
             let message = userPushMessage.msgList.last
             if message?.push_msg_type == 2231 {
-                let uid_str_ = message?.service_id_
+                let uid_str_ = message?.servant_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
                 DataManager.readMessage(currentAppointmentId)
