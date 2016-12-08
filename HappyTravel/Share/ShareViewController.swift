@@ -168,4 +168,5 @@ class ShareViewController: UIViewController, UICollectionViewDelegate, UICollect
             })
         }
     }
+
 }
