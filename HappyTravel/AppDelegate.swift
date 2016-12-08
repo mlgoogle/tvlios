@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
-        
+
         XCGLogger.defaultInstance().xcodeColorsEnabled = true
         XCGLogger.defaultInstance().xcodeColors = [
             .Verbose: .lightGrey,

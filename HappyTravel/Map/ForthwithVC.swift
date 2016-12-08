@@ -389,10 +389,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
         performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
-//        postNotifi()
     }
     func postNotifi()  {
-//        let appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
         
         let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
