@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		076B7FA9DE73586627415603 /* Pods_HappyTravelUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D637B89497F7B8043559D5E /* Pods_HappyTravelUITests.framework */; };
 		2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1434881D90C5CB002F227B /* OrderInfo.swift */; };
 		2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */; };
 		2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */; };
@@ -49,8 +48,6 @@
 		2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CF91D5081CB00609C8E /* Main.storyboard */; };
 		2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFC1D5081CB00609C8E /* Assets.xcassets */; };
 		2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFE1D5081CB00609C8E /* LaunchScreen.storyboard */; };
-		2FA75D0B1D5081CB00609C8E /* HappyTravelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D0A1D5081CB00609C8E /* HappyTravelTests.swift */; };
-		2FA75D161D5081CB00609C8E /* HappyTravelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */; };
 		2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57D1E1D82A3F300F1BAE3 /* AddressSelVC.swift */; };
 		2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57FF31D74330E002C015F /* PushMessage.swift */; };
 		2FB95D101DED2FD600BBA506 /* PayPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95D0F1DED2FD600BBA506 /* PayPasswdVC.swift */; };
@@ -117,16 +114,11 @@
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
 		6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */; };
 		6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */; };
-		6ED243ED1DF7B178002C1F78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED243EC1DF7B178002C1F78 /* AppDelegate.swift */; };
-		6ED243EF1DF7B178002C1F78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED243EE1DF7B178002C1F78 /* ViewController.swift */; };
-		6ED243F21DF7B178002C1F78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ED243F01DF7B178002C1F78 /* Main.storyboard */; };
-		6ED243F41DF7B178002C1F78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED243F31DF7B178002C1F78 /* Assets.xcassets */; };
-		6ED243F71DF7B178002C1F78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ED243F51DF7B178002C1F78 /* LaunchScreen.storyboard */; };
-		6ED244021DF7B178002C1F78 /* TetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244011DF7B178002C1F78 /* TetsTests.swift */; };
-		6ED2440D1DF7B178002C1F78 /* TetsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2440C1DF7B178002C1F78 /* TetsUITests.swift */; };
+		6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */; };
+		6ED244551DF835B5002C1F78 /* FaceKeyboardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */; };
+		6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */; };
 		6EED9AD71DCDC9B500A701DD /* SkillWidthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */; };
 		6EED9AD91DCDD5E500A701DD /* SingleSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */; };
-		B0CD9100C5B300D6D25A2150 /* Pods_HappyTravelTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85FD3A5997B0E4CFB445E33 /* Pods_HappyTravelTests.framework */; };
 		B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE111DC2E6F800DF93CB /* LabelEx.swift */; };
 		B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE121DC2E6F800DF93CB /* UIImageExt.swift */; };
 		B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B341CE151DC2E70D00DF93CB /* UploadUserPictureVC.swift */; };
@@ -309,37 +301,6 @@
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		2FA75D071D5081CB00609C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2FA75CEA1D5081CB00609C8E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2FA75CF11D5081CB00609C8E;
-			remoteInfo = HappyTravel;
-		};
-		2FA75D121D5081CB00609C8E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2FA75CEA1D5081CB00609C8E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2FA75CF11D5081CB00609C8E;
-			remoteInfo = HappyTravel;
-		};
-		6ED243FE1DF7B178002C1F78 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2FA75CEA1D5081CB00609C8E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6ED243E91DF7B178002C1F78;
-			remoteInfo = Tets;
-		};
-		6ED244091DF7B178002C1F78 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2FA75CEA1D5081CB00609C8E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6ED243E91DF7B178002C1F78;
-			remoteInfo = Tets;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		16D7D00546FBCA79D486C882 /* Pods-HappyTravelUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -351,7 +312,7 @@
 		2F337A821D9BC1FB003BAE20 /* HodometerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HodometerInfo.swift; path = Common/HodometerInfo.swift; sourceTree = "<group>"; };
 		2F337A841D9BC249003BAE20 /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Todo.swift; path = HappyTravel/Todo.swift; sourceTree = "<group>"; };
 		2F4EEC3C1D969148004DFFC8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HappyTravel.entitlements; sourceTree = "<group>"; };
+		2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = HappyTravel.entitlements; path = ../HappyTravel/HappyTravel.entitlements; sourceTree = "<group>"; };
 		2F4EEC3F1D9938C1004DFFC8 /* CommonDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonDefine.swift; path = Common/CommonDefine.swift; sourceTree = "<group>"; };
 		2F5B68D51D81084500EFC2DC /* LoginWithMSGVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginWithMSGVC.swift; path = Login/LoginWithMSGVC.swift; sourceTree = "<group>"; };
 		2F5F2D451DC19C6300EB5773 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = WeChatSDK1.7.4/libWeChatSDK.a; sourceTree = "<group>"; };
@@ -396,12 +357,6 @@
 		2FA75CFC1D5081CB00609C8E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2FA75CFF1D5081CB00609C8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FA75D011D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FA75D061D5081CB00609C8E /* HappyTravelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HappyTravelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FA75D0A1D5081CB00609C8E /* HappyTravelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyTravelTests.swift; sourceTree = "<group>"; };
-		2FA75D0C1D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2FA75D111D5081CB00609C8E /* HappyTravelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HappyTravelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyTravelUITests.swift; sourceTree = "<group>"; };
-		2FA75D171D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FA75D2A1D50DED300609C8E /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridge/Bridging-Header.h"; sourceTree = "<group>"; };
 		2FB57D1E1D82A3F300F1BAE3 /* AddressSelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddressSelVC.swift; path = Login/AddressSelVC.swift; sourceTree = "<group>"; };
 		2FB57FF31D74330E002C015F /* PushMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessage.swift; path = Data/PushMessage.swift; sourceTree = "<group>"; };
@@ -472,19 +427,9 @@
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
 		6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleServiceInfoCell.swift; path = Servant/SingleServiceInfoCell.swift; sourceTree = "<group>"; };
 		6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRemarksCell.swift; path = Map/Appointment/AppointmentRemarksCell.swift; sourceTree = "<group>"; };
-		6ED243EA1DF7B178002C1F78 /* Tets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tets.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6ED243EC1DF7B178002C1F78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6ED243EE1DF7B178002C1F78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6ED243F11DF7B178002C1F78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6ED243F31DF7B178002C1F78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6ED243F61DF7B178002C1F78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		6ED243F81DF7B178002C1F78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6ED243FD1DF7B178002C1F78 /* TetsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TetsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6ED244011DF7B178002C1F78 /* TetsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetsTests.swift; sourceTree = "<group>"; };
-		6ED244031DF7B178002C1F78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6ED244081DF7B178002C1F78 /* TetsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TetsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6ED2440C1DF7B178002C1F78 /* TetsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetsUITests.swift; sourceTree = "<group>"; };
-		6ED2440E1DF7B178002C1F78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceKeyboardView.swift; sourceTree = "<group>"; };
+		6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaceKeyboardView.xib; sourceTree = "<group>"; };
+		6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiFaceHelper.swift; sourceTree = "<group>"; };
 		6EE3806A1DC0833A000C3394 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = "../../../Library/Developer/Xcode/DerivedData/HappyTravel-eshhwfoatspbqzckfeqnuovkwmlu/Build/Products/Debug-iphoneos/SVProgressHUD/SVProgressHUD.framework"; sourceTree = "<group>"; };
 		6EED9AD61DCDC9B500A701DD /* SkillWidthLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillWidthLayout.swift; path = Map/Appointment/SkillWidthLayout.swift; sourceTree = "<group>"; };
 		6EED9AD81DCDD5E500A701DD /* SingleSkillCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleSkillCell.swift; path = Map/Appointment/SingleSkillCell.swift; sourceTree = "<group>"; };
@@ -693,43 +638,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2FA75D031D5081CB00609C8E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B0CD9100C5B300D6D25A2150 /* Pods_HappyTravelTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2FA75D0E1D5081CB00609C8E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				076B7FA9DE73586627415603 /* Pods_HappyTravelUITests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243E71DF7B178002C1F78 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243FA1DF7B178002C1F78 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED244051DF7B178002C1F78 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -843,16 +751,10 @@
 		2FA75CE91D5081CB00609C8E = {
 			isa = PBXGroup;
 			children = (
-				BF6E9C451DE2FD4500F32CCE /* Resource */,
 				2F337A841D9BC249003BAE20 /* Todo.swift */,
 				2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */,
 				2FA75CF41D5081CB00609C8E /* HappyTravel */,
-				2FA75D291D50DE7100609C8E /* Bridge */,
-				2FA75D091D5081CB00609C8E /* HappyTravelTests */,
-				2FA75D141D5081CB00609C8E /* HappyTravelUITests */,
-				6ED243EB1DF7B178002C1F78 /* Tets */,
-				6ED244001DF7B178002C1F78 /* TetsTests */,
-				6ED2440B1DF7B178002C1F78 /* TetsUITests */,
+				BF6E9C451DE2FD4500F32CCE /* Resource */,
 				2FA75CF31D5081CB00609C8E /* Products */,
 				D1BF5A800EB0D1063BCBAE20 /* Frameworks */,
 				8AB1BEA3F2B25CF447CA4C2B /* Pods */,
@@ -863,11 +765,6 @@
 			isa = PBXGroup;
 			children = (
 				2FA75CF21D5081CB00609C8E /* HappyTravel.app */,
-				2FA75D061D5081CB00609C8E /* HappyTravelTests.xctest */,
-				2FA75D111D5081CB00609C8E /* HappyTravelUITests.xctest */,
-				6ED243EA1DF7B178002C1F78 /* Tets.app */,
-				6ED243FD1DF7B178002C1F78 /* TetsTests.xctest */,
-				6ED244081DF7B178002C1F78 /* TetsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -875,8 +772,8 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
+				2FA75D291D50DE7100609C8E /* Bridge */,
 				BF9B4CFB1DD6DA7A00EC8E78 /* Share */,
-				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				2F9684141D77D1200028E3F2 /* Other */,
 				2FC25AFD1D6A9B8B00D48D6A /* Servant */,
 				2FDAFCEF1D65653F00FD28CB /* Login */,
@@ -893,24 +790,6 @@
 				2FA75D011D5081CB00609C8E /* Info.plist */,
 			);
 			path = HappyTravel;
-			sourceTree = "<group>";
-		};
-		2FA75D091D5081CB00609C8E /* HappyTravelTests */ = {
-			isa = PBXGroup;
-			children = (
-				2FA75D0A1D5081CB00609C8E /* HappyTravelTests.swift */,
-				2FA75D0C1D5081CB00609C8E /* Info.plist */,
-			);
-			path = HappyTravelTests;
-			sourceTree = "<group>";
-		};
-		2FA75D141D5081CB00609C8E /* HappyTravelUITests */ = {
-			isa = PBXGroup;
-			children = (
-				2FA75D151D5081CB00609C8E /* HappyTravelUITests.swift */,
-				2FA75D171D5081CB00609C8E /* Info.plist */,
-			);
-			path = HappyTravelUITests;
 			sourceTree = "<group>";
 		};
 		2FA75D241D50A30400609C8E /* Map */ = {
@@ -932,7 +811,6 @@
 				2FA75D2A1D50DED300609C8E /* Bridging-Header.h */,
 			);
 			name = Bridge;
-			path = HappyTravel;
 			sourceTree = "<group>";
 		};
 		2FA75D2B1D518D2600609C8E /* Personal */ = {
@@ -974,6 +852,9 @@
 		2FBB5E211D51CC47007BE4E0 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */,
+				6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */,
+				6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */,
 				2FBB5E741D51D2FC007BE4E0 /* Message.swift */,
 				2FBB5E721D51CFE6007BE4E0 /* ChatVC.swift */,
 				2FBB5E821D51E655007BE4E0 /* ChatDateCell.swift */,
@@ -1057,37 +938,6 @@
 			name = Appointment;
 			sourceTree = "<group>";
 		};
-		6ED243EB1DF7B178002C1F78 /* Tets */ = {
-			isa = PBXGroup;
-			children = (
-				6ED243EC1DF7B178002C1F78 /* AppDelegate.swift */,
-				6ED243EE1DF7B178002C1F78 /* ViewController.swift */,
-				6ED243F01DF7B178002C1F78 /* Main.storyboard */,
-				6ED243F31DF7B178002C1F78 /* Assets.xcassets */,
-				6ED243F51DF7B178002C1F78 /* LaunchScreen.storyboard */,
-				6ED243F81DF7B178002C1F78 /* Info.plist */,
-			);
-			path = Tets;
-			sourceTree = "<group>";
-		};
-		6ED244001DF7B178002C1F78 /* TetsTests */ = {
-			isa = PBXGroup;
-			children = (
-				6ED244011DF7B178002C1F78 /* TetsTests.swift */,
-				6ED244031DF7B178002C1F78 /* Info.plist */,
-			);
-			path = TetsTests;
-			sourceTree = "<group>";
-		};
-		6ED2440B1DF7B178002C1F78 /* TetsUITests */ = {
-			isa = PBXGroup;
-			children = (
-				6ED2440C1DF7B178002C1F78 /* TetsUITests.swift */,
-				6ED2440E1DF7B178002C1F78 /* Info.plist */,
-			);
-			path = TetsUITests;
-			sourceTree = "<group>";
-		};
 		8AB1BEA3F2B25CF447CA4C2B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1117,6 +967,7 @@
 		BF6E9C451DE2FD4500F32CCE /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				BF6E9C461DE2FD4500F32CCE /* BottomSelector */,
 				BF6E9C4B1DE2FD4500F32CCE /* Chat */,
 				BF6E9C4E1DE2FD4500F32CCE /* Common */,
@@ -1422,110 +1273,6 @@
 			productReference = 2FA75CF21D5081CB00609C8E /* HappyTravel.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2FA75D051D5081CB00609C8E /* HappyTravelTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */;
-			buildPhases = (
-				050921CCA4ABA32CD2B50F4A /* [CP] Check Pods Manifest.lock */,
-				FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */,
-				0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */,
-				7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */,
-				2FA75D021D5081CB00609C8E /* Sources */,
-				2FA75D031D5081CB00609C8E /* Frameworks */,
-				2FA75D041D5081CB00609C8E /* Resources */,
-				CBBB045E788A5D1B531ED14D /* [CP] Embed Pods Frameworks */,
-				8BB6E0A14D69E9B34E4AAE27 /* [CP] Copy Pods Resources */,
-				65C65BE2B84A37DC3AFAE3DA /* Embed Pods Frameworks */,
-				85DB6957B1B7A15970559DE5 /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2FA75D081D5081CB00609C8E /* PBXTargetDependency */,
-			);
-			name = HappyTravelTests;
-			productName = HappyTravelTests;
-			productReference = 2FA75D061D5081CB00609C8E /* HappyTravelTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		2FA75D101D5081CB00609C8E /* HappyTravelUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */;
-			buildPhases = (
-				16414BA693E80CBB38CBE0A9 /* [CP] Check Pods Manifest.lock */,
-				E297CF6E229EE035088867A0 /* [CP] Check Pods Manifest.lock */,
-				43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */,
-				15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */,
-				2FA75D0D1D5081CB00609C8E /* Sources */,
-				2FA75D0E1D5081CB00609C8E /* Frameworks */,
-				2FA75D0F1D5081CB00609C8E /* Resources */,
-				13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */,
-				6EC6C0E8187BFE62C1ECFE2A /* [CP] Embed Pods Frameworks */,
-				3B43AAB0E21EEAAAA891747A /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2FA75D131D5081CB00609C8E /* PBXTargetDependency */,
-			);
-			name = HappyTravelUITests;
-			productName = HappyTravelUITests;
-			productReference = 2FA75D111D5081CB00609C8E /* HappyTravelUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		6ED243E91DF7B178002C1F78 /* Tets */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6ED244151DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "Tets" */;
-			buildPhases = (
-				6ED243E61DF7B178002C1F78 /* Sources */,
-				6ED243E71DF7B178002C1F78 /* Frameworks */,
-				6ED243E81DF7B178002C1F78 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Tets;
-			productName = Tets;
-			productReference = 6ED243EA1DF7B178002C1F78 /* Tets.app */;
-			productType = "com.apple.product-type.application";
-		};
-		6ED243FC1DF7B178002C1F78 /* TetsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6ED244161DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsTests" */;
-			buildPhases = (
-				6ED243F91DF7B178002C1F78 /* Sources */,
-				6ED243FA1DF7B178002C1F78 /* Frameworks */,
-				6ED243FB1DF7B178002C1F78 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6ED243FF1DF7B178002C1F78 /* PBXTargetDependency */,
-			);
-			name = TetsTests;
-			productName = TetsTests;
-			productReference = 6ED243FD1DF7B178002C1F78 /* TetsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		6ED244071DF7B178002C1F78 /* TetsUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6ED244171DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsUITests" */;
-			buildPhases = (
-				6ED244041DF7B178002C1F78 /* Sources */,
-				6ED244051DF7B178002C1F78 /* Frameworks */,
-				6ED244061DF7B178002C1F78 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6ED2440A1DF7B178002C1F78 /* PBXTargetDependency */,
-			);
-			name = TetsUITests;
-			productName = TetsUITests;
-			productReference = 6ED244081DF7B178002C1F78 /* TetsUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1553,27 +1300,6 @@
 							};
 						};
 					};
-					2FA75D051D5081CB00609C8E = {
-						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = RQ752K8E5Y;
-						TestTargetID = 2FA75CF11D5081CB00609C8E;
-					};
-					2FA75D101D5081CB00609C8E = {
-						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = RQ752K8E5Y;
-						TestTargetID = 2FA75CF11D5081CB00609C8E;
-					};
-					6ED243E91DF7B178002C1F78 = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
-					6ED243FC1DF7B178002C1F78 = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = 6ED243E91DF7B178002C1F78;
-					};
-					6ED244071DF7B178002C1F78 = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = 6ED243E91DF7B178002C1F78;
-					};
 				};
 			};
 			buildConfigurationList = 2FA75CED1D5081CB00609C8E /* Build configuration list for PBXProject "HappyTravel" */;
@@ -1590,11 +1316,6 @@
 			projectRoot = "";
 			targets = (
 				2FA75CF11D5081CB00609C8E /* HappyTravel */,
-				2FA75D051D5081CB00609C8E /* HappyTravelTests */,
-				2FA75D101D5081CB00609C8E /* HappyTravelUITests */,
-				6ED243E91DF7B178002C1F78 /* Tets */,
-				6ED243FC1DF7B178002C1F78 /* TetsTests */,
-				6ED244071DF7B178002C1F78 /* TetsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1760,6 +1481,7 @@
 				BF6E9D7D1DE2FD4500F32CCE /* side-complain@2x.png in Resources */,
 				BF6E9CF41DE2FD4500F32CCE /* face-btn@2x.png in Resources */,
 				BF6E9D641DE2FD4500F32CCE /* lv1@2x.png in Resources */,
+				6ED244551DF835B5002C1F78 /* FaceKeyboardView.xib in Resources */,
 				BF6E9D6E1DE2FD4500F32CCE /* my-star-fill@2x.png in Resources */,
 				BF6E9D331DE2FD4500F32CCE /* service-agent-disable@2x.png in Resources */,
 				BF6E9D6A1DE2FD4500F32CCE /* lv4@2x.png in Resources */,
@@ -1780,122 +1502,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2FA75D041D5081CB00609C8E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2FA75D0F1D5081CB00609C8E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243E81DF7B178002C1F78 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6ED243F71DF7B178002C1F78 /* LaunchScreen.storyboard in Resources */,
-				6ED243F41DF7B178002C1F78 /* Assets.xcassets in Resources */,
-				6ED243F21DF7B178002C1F78 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243FB1DF7B178002C1F78 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED244061DF7B178002C1F78 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		050921CCA4ABA32CD2B50F4A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		0DFB104DD0C46ED4108FDB1C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		13D64607C5E889F56B457B0A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		15F997ADEB1E6CAD26E7A563 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		16414BA693E80CBB38CBE0A9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		3583E4C86F6762EFA7B2BC19 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1909,36 +1518,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3B43AAB0E21EEAAAA891747A /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		43E3CC8853F990523E240FA8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		58FE031919B13DBB5C3C6F67 /* [CP] Copy Pods Resources */ = {
@@ -1971,21 +1550,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		65C65BE2B84A37DC3AFAE3DA /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6A8F5360DC649019021BDABF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2016,21 +1580,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6EC6C0E8187BFE62C1ECFE2A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6EED9AD21DCC8C2B00A701DD /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2043,51 +1592,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 13b0dd85b007ad78249b02fc26fa3972dff8da79 09fbffcee88c3bfa1086819566cdaf4b4c0f451fe57b9699cd9525804778308d";
-		};
-		7185EE59EEE9E1F29D515D20 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		85DB6957B1B7A15970559DE5 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8BB6E0A14D69E9B34E4AAE27 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		C4952FAD2C84A402C734B3D3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2119,21 +1623,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CBBB045E788A5D1B531ED14D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravelTests/Pods-HappyTravelTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DCE85A5322AA5F470618A3C1 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2147,36 +1636,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HappyTravel/Pods-HappyTravel-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E297CF6E229EE035088867A0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FFD86A81F631AC3E27F62F68 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2208,6 +1667,7 @@
 				2FE7C3791D63FD4700994505 /* ForthwithVC.swift in Sources */,
 				2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
+				6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */,
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
@@ -2220,6 +1680,7 @@
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
 				2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */,
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
+				6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */,
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */,
@@ -2294,71 +1755,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2FA75D021D5081CB00609C8E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2FA75D0B1D5081CB00609C8E /* HappyTravelTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2FA75D0D1D5081CB00609C8E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2FA75D161D5081CB00609C8E /* HappyTravelUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243E61DF7B178002C1F78 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6ED243EF1DF7B178002C1F78 /* ViewController.swift in Sources */,
-				6ED243ED1DF7B178002C1F78 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED243F91DF7B178002C1F78 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6ED244021DF7B178002C1F78 /* TetsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6ED244041DF7B178002C1F78 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6ED2440D1DF7B178002C1F78 /* TetsUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2FA75D081D5081CB00609C8E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2FA75CF11D5081CB00609C8E /* HappyTravel */;
-			targetProxy = 2FA75D071D5081CB00609C8E /* PBXContainerItemProxy */;
-		};
-		2FA75D131D5081CB00609C8E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2FA75CF11D5081CB00609C8E /* HappyTravel */;
-			targetProxy = 2FA75D121D5081CB00609C8E /* PBXContainerItemProxy */;
-		};
-		6ED243FF1DF7B178002C1F78 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6ED243E91DF7B178002C1F78 /* Tets */;
-			targetProxy = 6ED243FE1DF7B178002C1F78 /* PBXContainerItemProxy */;
-		};
-		6ED2440A1DF7B178002C1F78 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6ED243E91DF7B178002C1F78 /* Tets */;
-			targetProxy = 6ED244091DF7B178002C1F78 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2FA75CF91D5081CB00609C8E /* Main.storyboard */ = {
@@ -2373,22 +1770,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				2FA75CFF1D5081CB00609C8E /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		6ED243F01DF7B178002C1F78 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6ED243F11DF7B178002C1F78 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6ED243F51DF7B178002C1F78 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6ED243F61DF7B178002C1F78 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -2557,126 +1938,6 @@
 			};
 			name = Release;
 		};
-		2FA75D1E1D5081CB00609C8E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4572D5D9DCD0C8A1183E8D43 /* Pods-HappyTravelTests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = HappyTravelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyitao.HappyTravelTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HappyTravel.app/HappyTravel";
-			};
-			name = Debug;
-		};
-		2FA75D1F1D5081CB00609C8E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92713384FC5A0EBCE69AE0F3 /* Pods-HappyTravelTests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = HappyTravelTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyitao.HappyTravelTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HappyTravel.app/HappyTravel";
-			};
-			name = Release;
-		};
-		2FA75D211D5081CB00609C8E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16D7D00546FBCA79D486C882 /* Pods-HappyTravelUITests.debug.xcconfig */;
-			buildSettings = {
-				INFOPLIST_FILE = HappyTravelUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyitao.HappyTravelUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = HappyTravel;
-			};
-			name = Debug;
-		};
-		2FA75D221D5081CB00609C8E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 374E1C200742D74430AB7193 /* Pods-HappyTravelUITests.release.xcconfig */;
-			buildSettings = {
-				INFOPLIST_FILE = HappyTravelUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.chenyitao.HappyTravelUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = HappyTravel;
-			};
-			name = Release;
-		};
-		6ED2440F1DF7B178002C1F78 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Tets/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.Tets;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		6ED244101DF7B178002C1F78 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Tets/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.Tets;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		6ED244111DF7B178002C1F78 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = TetsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.TetsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tets.app/Tets";
-			};
-			name = Debug;
-		};
-		6ED244121DF7B178002C1F78 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = TetsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.TetsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tets.app/Tets";
-			};
-			name = Release;
-		};
-		6ED244131DF7B178002C1F78 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = TetsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.TetsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
-				TEST_TARGET_NAME = Tets;
-			};
-			name = Debug;
-		};
-		6ED244141DF7B178002C1F78 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = TetsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bb.TetsUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
-				TEST_TARGET_NAME = Tets;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2697,48 +1958,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
-		2FA75D1D1D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2FA75D1E1D5081CB00609C8E /* Debug */,
-				2FA75D1F1D5081CB00609C8E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2FA75D201D5081CB00609C8E /* Build configuration list for PBXNativeTarget "HappyTravelUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2FA75D211D5081CB00609C8E /* Debug */,
-				2FA75D221D5081CB00609C8E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6ED244151DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "Tets" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6ED2440F1DF7B178002C1F78 /* Debug */,
-				6ED244101DF7B178002C1F78 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		6ED244161DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6ED244111DF7B178002C1F78 /* Debug */,
-				6ED244121DF7B178002C1F78 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		6ED244171DF7B178002C1F78 /* Build configuration list for PBXNativeTarget "TetsUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6ED244131DF7B178002C1F78 /* Debug */,
-				6ED244141DF7B178002C1F78 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

@@ -35,6 +35,7 @@ class ChatBubbleCell: UITableViewCell {
     let messageLabel: UILabel
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        
         bubbleImageView = UIImageView(image: ChatBubbleCell.bubbleImage.incoming, highlightedImage: ChatBubbleCell.bubbleImage.incomingHighlighed)
         bubbleImageView.tag = bubbleTag
         bubbleImageView.userInteractionEnabled = true // #CopyMesage
