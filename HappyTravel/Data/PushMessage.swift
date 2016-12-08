@@ -39,7 +39,7 @@ class PushMessage: Object {
     
     dynamic var content_:String?
     
-    dynamic var service_id_:String?
+    dynamic var servant_id_:String?
     
     
     func setInfo(messageInfo:Dictionary<String,AnyObject>?) {
@@ -59,18 +59,25 @@ class PushMessage: Object {
         if messageInfo!["push_msg_type_"] != nil {
             push_msg_type = messageInfo!["push_msg_type_"] as! Int
         }
-        if messageInfo!["msg_body_"] != nil {
-            setBody(messageInfo!["msg_body_"] as! Dictionary)
-
+//        if messageInfo!["msg_body_"] != nil {
+//            setBody(messageInfo!["msg_body_"] as! Dictionary)
+//
+//        }
+//        
+        
+        if messageInfo!["servant_id_"] != nil {
+            servant_id_ = messageInfo!["servant_id_"] as? String
         }
-        
-        
+        if messageInfo!["appointment_id_"]  != nil {
+            appointment_id_ = messageInfo!["appointment_id_"] as! Int
+        }
+  
     }
     
     func setBody(body:Dictionary<String, AnyObject>) {
         
-        if body["servantID"] != nil {
-            service_id_ = body["servantID"] as? String
+        if body["servant_id_"] != nil {
+            servant_id_ = body["servant_id_"] as? String
         }
         if body["appointment_id_"]  != nil {
             appointment_id_ = body["appointment_id_"] as! Int
