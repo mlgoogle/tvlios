@@ -204,8 +204,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let shareController = ShareViewController()
         shareController.modalPresentationStyle = .Custom
         shareController.shareImage = shareImage()
-        presentViewController(shareController, animated: true
-            , completion: nil)
+        
+        presentViewController(shareController, animated: true) { 
+        }
     }
     
     func callSrevant() {
@@ -478,11 +479,14 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         UIGraphicsBeginImageContextWithOptions((table?.contentSize)!,false, 1)
 	    let context = UIGraphicsGetCurrentContext()
 	    table!.layer.renderInContext(context!)
+        table?.drawViewHierarchyInRect((table?.frame)!, afterScreenUpdates: false)
 	    let img = UIGraphicsGetImageFromCurrentImageContext()
 	    UIGraphicsEndImageContext()
         table?.frame = frame!
         table?.tableFooterView?.frame = CGRectZero
         table?.tableFooterView = nil
+        table!.reloadData()
+        
 	    return img;
     }
     
