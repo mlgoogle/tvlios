@@ -160,7 +160,11 @@ public class TallyCell : UITableViewCell {
             if let bgView = contentView.viewWithTag(self.tags["bgView"]!) {
                 if let bottomControl = bgView.viewWithTag(self.tags["bottomControl"]!) {
                     bottomControl.snp_remakeConstraints(closure: { (make) in
-                        make.top.equalTo(lastTallyItemView!.snp_bottom)
+                        if lastTallyItemView != nil {
+                            make.top.equalTo(lastTallyItemView!.snp_bottom)
+                        } else {
+                            make.top.equalTo(0)
+                        }
                         make.bottom.equalTo(bgView).offset(-10)
                         make.left.equalTo(bgView)
                         make.right.equalTo(bgView)

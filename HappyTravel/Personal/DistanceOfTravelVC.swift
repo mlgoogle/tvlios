@@ -19,9 +19,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
     var timer:NSTimer?
+    var servantsArray:Array<UserInfo>? = []
 
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
+    var currentApponitmentID = 0
     
     var consumedOrderID = 0
     var consumes:Results<CenturionCardConsumedInfo>?
@@ -59,10 +61,38 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
+    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+        
+        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+            servantsArray?.removeAll()
+            
+            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
+            
+            var uid_str = ""
+            for servant in servants! {
+                let servantInfo = UserInfo()
+                servantInfo.setInfo(.Servant, info: servant)
+                servantsArray?.append(servantInfo)
+                uid_str += "\(servantInfo.uid),"
+                
+            }
+            let recommendVC = RecommendServantsVC()
+            recommendVC.isNormal = false
+            recommendVC.appointment_id_ = currentApponitmentID
+            recommendVC.servantsInfo = servantsArray
+            navigationController?.pushViewController(recommendVC, animated: true)
+            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+            SocketManager.sendData(.GetUserInfo, data: dict)
+        }
+    }
+    
     /**
      支付回调
      
@@ -368,7 +398,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let object = records![indexPath.row]
             guard object.status_ > 1  else {
-                SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                if object.recomment_uid_ != nil {
+                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recomment_uid_!])
+
+                    
+                } else {
+                    
+                    SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
+                }
                 return
             }
             if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
@@ -386,26 +423,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 payForInvitationRequest()
                 
             }
-//            
-//            guard object.status_ > 1  else {
-//              SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
-//                return
-//            }
-//            guard object.status_ != 3  else {
-//                SVProgressHUD.showWainningMessage(WainningMessage: "预约已取消", ForDuration: 1.5, completion: nil)
-//                return
-//            }
-//            /**
-//             *  未支付状态去支付
-//             */
-//            if object.status_ == 2 {
-//                selectedAppointmentInfo = records![indexPath.row]
-//                payForInvitationRequest()
-//                
-//            } else {
-//                detailVC.appointmentInfo = records![indexPath.row]
-//                navigationController?.pushViewController(detailVC, animated: true)
-//            }      
+    
             break
         case 2:
             break

@@ -122,7 +122,7 @@ class MessageCell: UITableViewCell {
             msgLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nickNameLab!)
                 make.top.equalTo(nickNameLab!.snp_bottom).offset(12)
-                make.right.equalTo(timeLab!)
+                make.right.equalTo((unreadCntLab?.snp_left)!)
                 make.bottom.equalTo(view!).offset(-13)
             })
         }
