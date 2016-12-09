@@ -875,6 +875,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func chatMessageReply(jsonBody: JSON?) {
+        if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
+            return
+        }
+        
         let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
         DataManager.insertMessage(msg)
         if UIApplication.sharedApplication().applicationState == .Background {
