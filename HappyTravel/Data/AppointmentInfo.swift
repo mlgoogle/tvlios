@@ -24,7 +24,7 @@ class AppointmentInfo: Object {
     dynamic var service_id_ = 0
     dynamic var service_name_:String?
     dynamic var service_price_ = 0
-    dynamic var service_time_:String?
+//    dynamic var service_time_:String?
     dynamic var service_type_ = 0
     dynamic var status_ = 0
     dynamic var to_head_:String?
@@ -34,10 +34,13 @@ class AppointmentInfo: Object {
     dynamic var order_id_ = 0
     dynamic var service_end_ = 0
     dynamic var service_start_ = 0
+    dynamic var recomment_uid_:String?
+    
+    
     
     func setInfo(info:AppointmentInfo) {
         
-//        appointment_id_ = info.appointment_id_
+        appointment_id_ = info.appointment_id_
         user_id_ = info.user_id_
         city_code_ = info.city_code_
         start_time_  = info.start_time_
@@ -49,7 +52,7 @@ class AppointmentInfo: Object {
         service_id_ = info.service_id_
         service_name_ = info.service_name_
         service_price_ = info.service_price_
-        service_time_ = info.service_time_
+//        service_time_ = info.service_time_
         service_type_ = info.service_type_
         status_ = info.status_
         to_head_ = info.to_head_
@@ -57,6 +60,10 @@ class AppointmentInfo: Object {
         to_user_ = info.to_user_
         order_price_ = info.order_price_
         order_id_ = info.order_id_
+        if info.recomment_uid_?.characters.count > 0 {
+            
+            recomment_uid_ = info.recomment_uid_
+        }
     }
     
 }
