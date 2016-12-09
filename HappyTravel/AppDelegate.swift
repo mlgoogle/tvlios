@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     var window: UIWindow?
     
     var rootVC:UIViewController?
-    
+    var bgTask:UIBackgroundTaskIdentifier?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         application.applicationSupportsShakeToEdit = true
@@ -134,9 +134,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        GeTuiSdk.destroy()
+        
+//       bgTask = application.beginBackgroundTaskWithExpirationHandler {
+//            application.endBackgroundTask(self.bgTask!)
+//        self.bgTask = UIBackgroundTaskInvalid
+//        }
+//        
+//        GeTuiSdk.destroy()
+//        var timeRemain = 0 as NSTimeInterval
+//        
+//        let isInvalid  = bgTask == UIBackgroundTaskInvalid
+//        let isTimeOut = timeRemain > (10 * 60)
+//        
+//        repeat {
+//            NSThread.sleepForTimeInterval(5)
+//            if bgTask != UIBackgroundTaskInvalid {
+//                timeRemain = application.backgroundTimeRemaining
+//            }
+//        } while isInvalid && isTimeOut
+//        
+        
+        
     }
-    
+    func applicationWillEnterForeground(application: UIApplication) {
+//        dispatch_async(dispatch_get_main_queue()) { 
+//            
+//            if self.bgTask != UIBackgroundTaskInvalid {
+//                application.endBackgroundTask(self.bgTask!)
+//                self.bgTask = UIBackgroundTaskInvalid
+//            }
+//        }
+    }
     //MARK: - Notify
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         var token = deviceToken.description

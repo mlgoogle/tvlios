@@ -475,7 +475,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
         table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
-//        UIGraphicsBeginImageContext(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!))
         UIGraphicsBeginImageContextWithOptions((table?.contentSize)!,false, 1)
 	    let context = UIGraphicsGetCurrentContext()
 	    table!.layer.renderInContext(context!)
@@ -485,7 +484,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.frame = frame!
         table?.tableFooterView?.frame = CGRectZero
         table?.tableFooterView = nil
-        table!.reloadData()
         
 	    return img;
     }

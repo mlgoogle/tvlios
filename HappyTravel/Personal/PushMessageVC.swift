@@ -268,7 +268,11 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if message?.push_msg_type == 2231 {
                 let uid_str_ = message?.servant_id_
                 currentAppointmentId = (message?.appointment_id_)!
-                SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                if uid_str_ != nil  {
+                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                } else {
+                    XCGLogger.error("推送服务者id 为空")
+                }
                 DataManager.readMessage(currentAppointmentId)
 
                 return

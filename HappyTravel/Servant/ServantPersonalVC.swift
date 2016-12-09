@@ -376,13 +376,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        
+        requestPhoto()
+
         guard isNormal else { return }
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(image: UIImage.init(named: "nav-msg"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ServantPersonalVC.msgAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
-        requestPhoto()
     }
     
     public override func viewWillDisappear(animated: Bool) {
