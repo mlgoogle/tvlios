@@ -97,10 +97,10 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
         }
-        guard (DataManager.currentUser?.headUrl?.hasPrefix("http"))! else {
-            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
-            return
-        }
+//        guard (DataManager.currentUser?.headUrl?.hasPrefix("http"))! else {
+//            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
+//            return
+//        }
         
         let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
         guard nicknameField?.text?.characters.count > 0 else {

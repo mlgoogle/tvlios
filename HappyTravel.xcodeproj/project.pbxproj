@@ -114,6 +114,7 @@
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
 		6EA322401DD948EE00F334A4 /* SingleServiceInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */; };
 		6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */; };
+		6EBE4E071DF90F7F0040851B /* share_erweima.png in Resources */ = {isa = PBXBuildFile; fileRef = 6EBE4E061DF90F7F0040851B /* share_erweima.png */; };
 		6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */; };
 		6ED244551DF835B5002C1F78 /* FaceKeyboardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */; };
 		6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */; };
@@ -427,6 +428,7 @@
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
 		6EA3223F1DD948EE00F334A4 /* SingleServiceInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleServiceInfoCell.swift; path = Servant/SingleServiceInfoCell.swift; sourceTree = "<group>"; };
 		6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRemarksCell.swift; path = Map/Appointment/AppointmentRemarksCell.swift; sourceTree = "<group>"; };
+		6EBE4E061DF90F7F0040851B /* share_erweima.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share_erweima.png; sourceTree = "<group>"; };
 		6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceKeyboardView.swift; sourceTree = "<group>"; };
 		6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaceKeyboardView.xib; sourceTree = "<group>"; };
 		6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiFaceHelper.swift; sourceTree = "<group>"; };
@@ -1052,6 +1054,7 @@
 		BF6E9C6C1DE2FD4500F32CCE /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				6EBE4E061DF90F7F0040851B /* share_erweima.png */,
 				2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */,
 				2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */,
 				2FB95D131DED413400BBA506 /* passwd_box@3x.png */,
@@ -1450,6 +1453,7 @@
 				2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */,
 				BF6E9D0D1DE2FD4500F32CCE /* recommend@3x.png in Resources */,
 				BF6E9D911DE2FD4500F32CCE /* segment-right@2x.png in Resources */,
+				6EBE4E071DF90F7F0040851B /* share_erweima.png in Resources */,
 				2FB95D121DED35A800BBA506 /* passwd_box@2x.png in Resources */,
 				BF6E9D3E1DE2FD4500F32CCE /* share-wechat@3x.png in Resources */,
 				BF6E9D531DE2FD4500F32CCE /* guide-star-fill@2x.png in Resources */,
@@ -1930,7 +1934,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;

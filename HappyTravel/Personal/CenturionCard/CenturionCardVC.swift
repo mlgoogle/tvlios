@@ -463,10 +463,10 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.reloadData()
     }
     func shareImage()-> UIImage  {
-        let view = UIView(frame:  CGRectMake(0, 0, ScreenWidth, 100))
-        let imageView = UIImageView(frame: CGRectMake((ScreenWidth - 100) / 2, 0, 100, 100))
+        let view = UIView(frame:  CGRectMake(0, 0, ScreenWidth, 160))
+        let imageView = UIImageView(frame: CGRectMake((ScreenWidth - 150) / 2, 10, 140, 140))
         imageView.backgroundColor = UIColor.whiteColor()
-        let image = UIImage(named: "face-btn@2x")
+        let image = UIImage(named: "share_erweima")
         imageView.image = image
         view.addSubview(imageView)
         table?.tableFooterView = view
@@ -474,8 +474,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table!.frame =  CGRect.init(origin: CGPointZero, size: table!.contentSize)
         table!.setContentOffset(CGPointZero, animated: false)
         table!.reloadData()
-        UIGraphicsBeginImageContext(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!))
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!), true, table!.layer.contentsScale)
+//        UIGraphicsBeginImageContext(CGSizeMake((table?.contentSize.width)!, (table?.contentSize.height)!))
+        UIGraphicsBeginImageContextWithOptions((table?.contentSize)!,false, 1)
 	    let context = UIGraphicsGetCurrentContext()
 	    table!.layer.renderInContext(context!)
 	    let img = UIGraphicsGetImageFromCurrentImageContext()
