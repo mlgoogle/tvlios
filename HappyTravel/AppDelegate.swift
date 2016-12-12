@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         registerUMAnalytics()
     }
     func registerUMAnalytics() {
-        UMAnalyticsConfig.sharedInstance().appKey = ""
+        UMAnalyticsConfig.sharedInstance().appKey = "584e18ca1c5dd07e7d001a19"
         UMAnalyticsConfig.sharedInstance().channelId = ""
         MobClick.startWithConfigure(UMAnalyticsConfig.sharedInstance())
         //version标识
