@@ -138,7 +138,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         //预约推荐服务者返回
         case AppointmentRecommendReply = 1080
         // 请求预约 、邀约详情
-        case  AppointmentDetailRequest = 1081
+        case AppointmentDetailRequest = 1081
         // 预约详情、邀约返回
         case AppointmentDetailReply = 1082
         // 黑卡VIP价格
