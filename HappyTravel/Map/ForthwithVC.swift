@@ -388,7 +388,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
         }
         appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
-//        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
+        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
     }
     func postNotifi()  {
         

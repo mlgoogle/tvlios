@@ -42,7 +42,7 @@ class InvoiceIncludeServiceVC: UIViewController {
 
         SocketManager.sendData(.ServiceDetailRequest, data: ["oid_str_" : oid_str_]) { [weak self](result) in
             if let strongSelf = self{
-                if  let dict = result["data"] {
+                if  let dict = result["data"] as? NSDictionary {
                     if let serviceList  = dict["service_list_"] as? Array<Dictionary<String, AnyObject>> {
                         
                         for var service in serviceList {
