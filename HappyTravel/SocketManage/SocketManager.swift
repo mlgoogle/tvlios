@@ -630,7 +630,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         localNotify.soundName = UILocalNotificationDefaultSoundName
         if #available(iOS 8.2, *) {
-            localNotify.alertTitle = "V领队"
+            localNotify.alertTitle = "优悦出行"
         } else {
             // Fallback on earlier versions
         }
