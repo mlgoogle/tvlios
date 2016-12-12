@@ -21,6 +21,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     var passwd:String?
     
     var loginWithMSGVC:LoginWithMSGVC?
+    var startTime = 0.0
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -39,11 +40,16 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+        startTime = NSDate().timeIntervalSinceNow
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         SVProgressHUD.dismiss()
+        let endTime = NSDate().timeIntervalSinceNow
+        
+        let timeCount = endTime - startTime
+        MobClick.event("login", durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -208,6 +214,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func login(sender: UIButton?) {
+        
+         MobClick.event("loginAction")
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]

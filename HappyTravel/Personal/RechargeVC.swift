@@ -81,6 +81,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if let dict = notification.userInfo {
             if let code = dict["return_code_"] as? Int {
                 if code == 3 {
+                     MobClick.event("paySuccess")
                     DataManager.currentUser!.cash = dict["user_cash_"] as! Int
                     let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
                     
@@ -382,9 +383,11 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func textFieldDidEndEditing(textField: UITextField) {
         amount = textField.text
     }
-    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        MobClick.event("recharfeTextField")
+
+    }
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        
         return true
     }
     
@@ -400,6 +403,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        
         if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
             payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
             payBtn?.enabled = true
@@ -427,6 +431,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func payAction(sender: UIButton) {
         
+         MobClick.event("paySureBtn")
         
         if selectedIndex == 1 {
             DataManager.currentUser?.cash = 10
@@ -442,6 +447,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func rechargeWithWX() {
+         MobClick.event("payWithWechat")
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
                                         "title_": "V领队-余额充值",
                                         "price_": Int(amount!)! * 100]

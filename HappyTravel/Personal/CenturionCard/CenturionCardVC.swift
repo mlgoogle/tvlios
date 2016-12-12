@@ -27,6 +27,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var services:Results<CenturionCardServiceInfo>?
 
+    var startTime = 0.0
+    
     var selectedIndex = 0
     weak var lvContentCollectionView:UICollectionView?
     override func viewDidLoad() {
@@ -53,12 +55,20 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
         registerNotify()
+        startTime = NSDate().timeIntervalSinceNow
+        
         
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        let endTime = NSDate().timeIntervalSinceNow
+        
+        let timeCount = endTime - startTime
+        MobClick.event("vippage", durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
@@ -315,6 +325,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func buyNowButtonTouched() {
+        
+         MobClick.event("vipLvpay")
         if selectedIndex == 3 {
             let alert = UIAlertController.init(title: "购买提示", message: "对不起，四星会员仅支持内部邀请！", preferredStyle: .Alert)
             let ok = UIAlertAction.init(title: "好的", style: .Default, handler: nil)

@@ -99,10 +99,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      - parameter notification: 
      */
     func payForInvitationReply(notification: NSNotification) {
+        
+        
         if let result = notification.userInfo!["result_"] as? Int {
             var msg = ""
             switch result {
             case 0:
+                 MobClick.event("payForOrderSuccess")
                 msg = "预支付成功"
                 if segmentIndex == 0 {
                     SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
@@ -116,6 +119,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             case -1:
                 msg = "密码错误"
             case -2:
+                 MobClick.event("payForOrderFail")
                 msg = "余额不足"
                 moneyIsTooLess()
                 return
@@ -457,6 +461,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      支付操作
      */
     func payForInvitationRequest() {
+         MobClick.event("payForOrder")
         if DataManager.currentUser?.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
