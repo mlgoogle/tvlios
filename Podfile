@@ -34,6 +34,15 @@ target 'HappyTravel' do
     pod 'Qiniu', '~> 7.1'
     pod 'Fabric'
     pod 'Crashlytics'
-   
+    
+    target 'HappyTravelTests' do
+        inherit! :search_paths
+        # Pods for testing
+    end
+    
+    target 'HappyTravelUITests' do
+        inherit! :search_paths
+        # Pods for testing
+    end
     
 end
