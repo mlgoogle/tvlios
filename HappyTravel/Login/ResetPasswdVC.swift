@@ -216,6 +216,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func sureAction(sender: UIButton?) {
+         MobClick.event("registerSure") 
         if  passwd == nil || passwd?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
             return

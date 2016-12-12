@@ -83,11 +83,16 @@ class RegOrLoginSelVC: UIViewController {
     }
     
     func regOrLoginSelAction(sender: UIButton) {
+        
         if sender.tag == tags["loginBtn"]! {
             loginVC = LoginVC()
+            MobClick.event("loginBtn")
+
             presentViewController(loginVC!, animated: false, completion: nil)
         } else if sender.tag == tags["regBtn"]! {
             let regVC = LoginWithMSGVC()
+            MobClick.event("registerBtn")
+
             presentViewController(regVC, animated: false, completion: nil)
 //            let dict  = ["verify_type_": 0, "phone_num_": "15157109258"]
 //            SocketManager.sendData(.SendMessageVerify, data: dict)

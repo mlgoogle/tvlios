@@ -13,7 +13,6 @@ import RealmSwift
 import Fabric
 import Crashlytics
 import SwiftyJSON
-
 //import YWFeedbackKit
 
 @UIApplicationMain
@@ -64,6 +63,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             }
             AMapServices.sharedServices().apiKey = key
         })
+        
+        registerUMAnalytics()
+    }
+    func registerUMAnalytics() {
+        UMAnalyticsConfig.sharedInstance().appKey = "584e18ca1c5dd07e7d001a19"
+        UMAnalyticsConfig.sharedInstance().channelId = ""
+        MobClick.startWithConfigure(UMAnalyticsConfig.sharedInstance())
+        //version标识
+        let version: String? = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as? String
+        MobClick.setAppVersion(version)
+        //日志加密设置
+        MobClick.setEncryptEnabled(true)
+        //使用集成测试服务
+        MobClick.setLogEnabled(true)
+        
+
         
     }
     

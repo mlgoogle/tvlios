@@ -26,6 +26,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     var timer:NSTimer?
     var timeSecond:Int = 0
     var resetPasswdVC:ResetPasswdVC?
+    var startTime = 0.0
     
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -42,13 +43,18 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+        startTime = NSDate().timeIntervalSinceNow
+
         
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        let endTime = NSDate().timeIntervalSinceNow
         
+        let timeCount = endTime - startTime
+        MobClick.event("register", durations:Int32(timeCount))
     }
     
     func touchWhiteSpace() {
@@ -306,6 +312,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func nextAction(sender: UIButton?) {
+         MobClick.event("registerNext")
         if username?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入手机号", ForDuration: 1, completion: nil)
             return
