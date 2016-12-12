@@ -29,7 +29,8 @@ target 'HappyTravel' do
     pod 'MJRefresh', '~> 3.1.12'
     
     pod 'SVProgressHUD', '~> 2.0.3'
-    
+
+    pod 'UMengAnalytics-NO-IDFA'
     pod 'Qiniu', '~> 7.1'
     pod 'Fabric'
     pod 'Crashlytics'

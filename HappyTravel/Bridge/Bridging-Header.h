@@ -29,5 +29,5 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import <YWFeedbackFMWK/YWFeedbackKit.h>
 #import <YWFeedbackFMWK/YWFeedbackViewController.h>
-
+#import <UMMobClick/MobClick.h>
 #endif /* Bridging_Header_h */
