@@ -200,7 +200,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 let rechargeVC = RechargeVC()
-                 MobClick.event("rechargeBtn")
+                 MobClick.event(CommonDefine.BuriedPoint.rechargeBtn)
                 navigationController?.pushViewController(rechargeVC, animated: true)
             } else if indexPath.row == 1 {
                 let payPasswdVC = PayPasswdVC()

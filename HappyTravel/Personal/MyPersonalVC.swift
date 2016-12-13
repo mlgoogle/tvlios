@@ -378,7 +378,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
         case 10001:
             XCGLogger.defaultInstance().debug("钱包")
-             MobClick.event("walletbtn")
+             MobClick.event(CommonDefine.BuriedPoint.walletbtn)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10002:

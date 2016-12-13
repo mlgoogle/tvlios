@@ -81,7 +81,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if let dict = notification.userInfo {
             if let code = dict["return_code_"] as? Int {
                 if code == 3 {
-                     MobClick.event("paySuccess")
+                     MobClick.event(CommonDefine.BuriedPoint.paySuccess)
                     DataManager.currentUser!.cash = dict["user_cash_"] as! Int
                     let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
                     
@@ -384,7 +384,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         amount = textField.text
     }
     func textFieldDidBeginEditing(textField: UITextField) {
-        MobClick.event("recharfeTextField")
+        MobClick.event(CommonDefine.BuriedPoint.recharfeTextField)
 
     }
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -431,7 +431,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func payAction(sender: UIButton) {
         
-         MobClick.event("paySureBtn")
+         MobClick.event(CommonDefine.BuriedPoint.paySureBtn)
         
         if selectedIndex == 1 {
             DataManager.currentUser?.cash = 10
@@ -447,7 +447,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func rechargeWithWX() {
-         MobClick.event("payWithWechat")
+         MobClick.event(CommonDefine.BuriedPoint.payWithWechat)
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
                                         "title_": "V领队-余额充值",
                                         "price_": Int(amount!)! * 100]

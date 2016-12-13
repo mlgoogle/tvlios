@@ -49,7 +49,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
-        MobClick.event("login", durations:Int32(timeCount))
+        MobClick.event(CommonDefine.BuriedPoint.login, durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -215,7 +215,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     func login(sender: UIButton?) {
         
-         MobClick.event("loginAction")
+         MobClick.event(CommonDefine.BuriedPoint.loginAction)
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]

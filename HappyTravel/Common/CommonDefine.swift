@@ -154,6 +154,31 @@ class CommonDefine: NSObject {
                                             -1064:"不能直接设置登录"]
     
     
+    
+    class BuriedPoint {
+       
+        static let register = "register"
+        static let registerBtn = "registerBtn"
+        static let registerNext = "registerNext"
+        static let registerSure = "registerSure"
+        static let login = "login"
+        static let loginBtn = "loginBtn"
+        static let loginAction = "loginAction"
+        static let walletbtn = "walletbtn"
+        static let rechargeBtn = "rechargeBtn"
+        static let recharfeTextField = "recharfeTextField"
+        static let paySureBtn = "paySureBtn"
+        static let payWithWechat = "payWithWechat"
+        static let paySuccess = "paySuccess"
+        static let payForOrder = "payForOrder"
+        static let payForOrderSuccess = "payForOrderSuccess"
+        static let payForOrderFail = "payForOrderFail"
+        static let vippage = "vippage"
+        static let vipLvpay = "vipLvpay"
+
+    }
+    
+    
 }
 
 
