@@ -575,8 +575,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             return
         }
         servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
-        let user = servantsInfo[data!["uid_"] as! Int]
-        DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
@@ -790,13 +788,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
                         let controller = UploadUserPictureVC()
                         self.navigationController!.pushViewController(controller, animated: true)
-                        DataManager.currentUser?.authentication = 1   // 测试
+//                        DataManager.currentUser?.authentication = 1   // 测试
                     })
                 })
                 alert.view.tintColor = UIColor.grayColor()
                 let cancel = UIAlertAction.init(title: auth != 0 ? "算了吧" : "好的", style: .Default, handler: { (action) in
                     if auth == 0 {
-                        DataManager.currentUser?.authentication = 1 // 测试
+//                        DataManager.currentUser?.authentication = 1 // 测试
                     }
                 })
                 if auth != 0{
@@ -817,7 +815,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     
                     let rechargeVC = RechargeVC()
                     self.navigationController?.pushViewController(rechargeVC, animated: true)
-                    DataManager.currentUser?.cash = 10
+//                    DataManager.currentUser?.cash = 10
                     
                 })
                 

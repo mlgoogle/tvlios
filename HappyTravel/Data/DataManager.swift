@@ -617,6 +617,29 @@ class DataManager: NSObject {
         return true
     }
 
+    static func clearData<T: Object>(type: T.Type) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        switch type.className() {
+        case CenturionCardServiceInfo.className():
+            try! realm.write({
+                let objs = realm.objects(CenturionCardServiceInfo.self)
+                if objs.count > 0 {
+                    realm.delete(objs)
+                }
+            })
+            break
+        case CityInfo.className():
+            
+            break
+        default:
+            break
+        }
+        
+    }
+    
     // MARK: - InvoiceHistoryInfo
     /**
      开票记录

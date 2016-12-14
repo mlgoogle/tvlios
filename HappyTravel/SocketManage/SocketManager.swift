@@ -11,6 +11,7 @@ import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
 import SVProgressHUD
+import RealmSwift
 
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
@@ -649,6 +650,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func servantDetailInfoReply(jsonBody: JSON?) {
+        let user = DataManager.getUserInfo(jsonBody?.dictionaryObject!["uid_"] as! Int)
+        let realm = try! Realm()
+        try! realm.write({
+            user?.setInfo(.Servant, info: jsonBody?.dictionaryObject!)
+        })
         postNotification(NotifyDefine.ServantDetailInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -720,6 +726,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func centurionCardInfoReply(jsonBody: JSON?) {
         if let privilegeList = jsonBody?.dictionaryObject!["privilege_list_"] as? Array<Dictionary<String, AnyObject>> {
+            if privilegeList.count > 0 {
+                DataManager.clearData(CenturionCardServiceInfo.self)
+            }
             for privilege in privilegeList {
                 let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
                 DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
