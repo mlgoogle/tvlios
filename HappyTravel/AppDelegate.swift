@@ -78,6 +78,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         //使用集成测试服务
         MobClick.setLogEnabled(true)
         
+        
+        MobClick.setCrashReportEnabled(false)
+        
 
         
     }

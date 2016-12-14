@@ -90,7 +90,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var msg = ""
         switch result {
         case 0:
-             MobClick.event("payForOrderSuccess")
+             MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
                                                               "order_id_": 0,
@@ -316,7 +316,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func payForInvitationRequest(info: HodometerInfo?) {
-         MobClick.event("payForOrder")
+         MobClick.event(CommonDefine.BuriedPoint.payForOrder)
         if DataManager.currentUser?.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
@@ -377,7 +377,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func moneyIsTooLess() {
-        MobClick.event("payForOrderFail")
+        MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
 
         let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
         
