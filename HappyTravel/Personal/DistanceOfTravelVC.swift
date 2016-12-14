@@ -105,7 +105,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             var msg = ""
             switch result {
             case 0:
-                 MobClick.event("payForOrderSuccess")
+                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
                 msg = "预支付成功"
                 if segmentIndex == 0 {
                     SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
@@ -119,7 +119,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             case -1:
                 msg = "密码错误"
             case -2:
-                 MobClick.event("payForOrderFail")
+                 MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
                 msg = "余额不足"
                 moneyIsTooLess()
                 return
@@ -461,7 +461,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      支付操作
      */
     func payForInvitationRequest() {
-         MobClick.event("payForOrder")
+         MobClick.event(CommonDefine.BuriedPoint.payForOrder)
         if DataManager.currentUser?.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self

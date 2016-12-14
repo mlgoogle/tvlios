@@ -68,7 +68,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
-        MobClick.event("vippage", durations:Int32(timeCount))
+        MobClick.event(CommonDefine.BuriedPoint.vippage, durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
@@ -326,7 +326,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func buyNowButtonTouched() {
         
-         MobClick.event("vipLvpay")
+         MobClick.event(CommonDefine.BuriedPoint.vipLvpay)
         if selectedIndex == 3 {
             let alert = UIAlertController.init(title: "购买提示", message: "对不起，四星会员仅支持内部邀请！", preferredStyle: .Alert)
             let ok = UIAlertAction.init(title: "好的", style: .Default, handler: nil)

@@ -54,7 +54,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
-        MobClick.event("register", durations:Int32(timeCount))
+        MobClick.event(CommonDefine.BuriedPoint.register, durations:Int32(timeCount))
     }
     
     func touchWhiteSpace() {
@@ -312,7 +312,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func nextAction(sender: UIButton?) {
-         MobClick.event("registerNext")
+         MobClick.event(CommonDefine.BuriedPoint.registerNext)
         if username?.characters.count == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入手机号", ForDuration: 1, completion: nil)
             return
