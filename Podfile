@@ -35,14 +35,4 @@ target 'HappyTravel' do
     pod 'Fabric'
     pod 'Crashlytics'
     
-    target 'HappyTravelTests' do
-        inherit! :search_paths
-        # Pods for testing
-    end
-    
-    target 'HappyTravelUITests' do
-        inherit! :search_paths
-        # Pods for testing
-    end
-    
 end
