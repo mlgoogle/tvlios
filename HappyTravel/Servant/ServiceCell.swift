@@ -29,7 +29,7 @@ public class ServiceCell : UITableViewCell {
     weak var delegate:ServiceCellDelegate?
     lazy private var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
-        dateFomatter.dateFormat = "HH : mm"
+        dateFomatter.dateFormat = "HH:mm"
         
         return dateFomatter
     }()
@@ -171,7 +171,7 @@ public class ServiceCell : UITableViewCell {
                         titleLabel!.snp_makeConstraints(closure: { (make) in
                             make.left.equalTo(svcView!)
                             make.top.equalTo(svcView!)
-                            make.width.equalTo(AtapteWidthValue(100))
+                            make.width.equalTo(AtapteWidthValue(110))
                             make.bottom.equalTo(svcView!)
                         })
                     }

@@ -106,32 +106,29 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func servantDetailInfo(notification: NSNotification) {
 
 
-        let data = notification.userInfo!["data"]
-        if data!["error_"]! != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error"])")
-            return
-        }
-        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-        guard servantInfo != nil else {
+        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             
-            servantDict = data as? Dictionary<String, AnyObject>
-//            servantInfo = UserInfo()
-//            servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-            getServantBaseInfo()
+            if data["error_"] != nil {
+                XCGLogger.error("Get UserInfo Error:\(data["error"])")
+                return
+            }
+            servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+            guard servantInfo != nil else {
+                servantDict = data
+                getServantBaseInfo()
+                return
+            }
             
-            return
+            let realm = try! Realm()
+            try! realm.write({
+                servantInfo!.setInfo(.Servant, info: data)
+                
+            })
+            
+            let servantPersonalVC = ServantPersonalVC()
+            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
+            navigationController?.pushViewController(servantPersonalVC, animated: true)
         }
-        
-        let realm = try! Realm()
-        try! realm.write({
-                
-          servantInfo!.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-                
-        })
-        
-        let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
        
     }
     

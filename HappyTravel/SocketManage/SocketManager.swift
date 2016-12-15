@@ -230,6 +230,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     var sockTag = 0
     
+    static var isFirstReConnect = true
+    
+    
     static var isLogout = false
     
     typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
@@ -295,11 +298,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
+        
+
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
         }
         if !sock!.socket!.isConnected {
+            SocketManager.showDisConnectErrorInfo()
             sock!.connectSock()
             return true
         }
@@ -545,7 +551,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     // MARK: - GCDAsyncSocketDelegate
     func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         XCGLogger.info("didConnectToHost:\(host)  \(port)")
-        
+        SocketManager.isFirstReConnect = true
+
         sock.performBlock({() -> Void in
             sock.enableBackgroundingOnSocket()
         })
@@ -571,7 +578,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func sendHeart() {
-        if DataManager.currentUser?.uid > -1 {
+        if ((DataManager.currentUser?.uid)! > -1) && (socket?.isConnected)!{
             SocketManager.sendData(.Heart, data: ["uid_":(DataManager.currentUser?.uid)!])
         }
         performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
@@ -582,14 +589,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if err != nil {
             XCGLogger.warning("socketDidDisconnect:\(err!)")
         }
-        if !SocketManager.isLogout {
-                SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
-                    
-                    self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 3.5)
-            }
+        if !SocketManager.isLogout && SocketManager.isFirstReConnect {
+            SocketManager.isFirstReConnect = false
+            SocketManager.showDisConnectErrorInfo()
         }
+        self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5.0)
+
     }
     
+   static func showDisConnectErrorInfo() {
+        SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
+        }
+    }
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
         buffer.appendData(data)
         let headLen = SockHead.size
