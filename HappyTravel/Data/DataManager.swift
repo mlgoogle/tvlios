@@ -26,6 +26,8 @@ class DataManager: NSObject {
     
     static var initialized = false
     
+    static var realm:Realm?
+    
     static func setDefaultRealmForUID(uid: Int) {
         var config = Realm.Configuration()
         
@@ -44,6 +46,7 @@ class DataManager: NSObject {
         }
         Realm.Configuration.defaultConfiguration = config
         DataManager.initialized = true
+        DataManager.realm = try! Realm()
     }
     
     //MARK: - UserInfo
@@ -492,12 +495,11 @@ class DataManager: NSObject {
         
     }
     
+    //MARK: - DataManagerAPI
     static func insertData<T: Object>(type: T.Type, data: AnyObject) {
-        if DataManager.initialized == false {
-            return
-        }
+        guard DataManager.initialized != false else { return }
         
-        let realm = try! Realm()
+        let realm = DataManager.realm!
         switch type.className() {
         case SkillInfo.className():
             let obj = data as! SkillInfo
@@ -509,7 +511,7 @@ class DataManager: NSObject {
                     info?.setInfo(obj)
                 }
             })
-            break
+
         case CityInfo.className():
             let obj = data as! CityInfo
             let info = realm.objects(CityInfo.self).filter("cityCode = \(obj.cityCode)").first
@@ -523,7 +525,7 @@ class DataManager: NSObject {
         default:
             break
         }
-        
+
     }
     
     static func getData<T: Object>(type: T.Type, filter: String?) -> AnyObject? {
@@ -617,6 +619,29 @@ class DataManager: NSObject {
         return true
     }
 
+    static func clearData<T: Object>(type: T.Type) {
+        if DataManager.initialized == false {
+            return
+        }
+        let realm = try! Realm()
+        switch type.className() {
+        case CenturionCardServiceInfo.className():
+            try! realm.write({
+                let objs = realm.objects(CenturionCardServiceInfo.self)
+                if objs.count > 0 {
+                    realm.delete(objs)
+                }
+            })
+            break
+        case CityInfo.className():
+            
+            break
+        default:
+            break
+        }
+        
+    }
+    
     // MARK: - InvoiceHistoryInfo
     /**
      开票记录

@@ -87,6 +87,9 @@ class CommonDefine: NSObject {
     static let Passwd = "Passwd"
     
     static let UserType = "UserType"
+    
+    static let qiniuImgStyle = "?imageView2/2/w/160/h/160/interlace/0/q/100"
+    
     static let errorMsgs: [Int: String] =  [-1000:"mysql执行错误",
                                             -1001:"登陆json格式错误",
                                             -1002:"手机号格式有误",

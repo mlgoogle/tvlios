@@ -271,6 +271,16 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
+        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid]) { [weak self](result) in
+            if let strongSelf = self{
+                strongSelf.authUserCardCode = DataManager.currentUser!.authentication
+                strongSelf.settingOptingValue![0][2] = strongSelf.autoStatus
+                dispatch_async(dispatch_get_main_queue(), {
+                    strongSelf.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+                })
+                
+            }
+        }
         var number = DataManager.currentUser!.phoneNumber ?? "***********"
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex

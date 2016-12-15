@@ -130,13 +130,13 @@ class PhotoWallCell: UITableViewCell {
             for (index, photo) in photos!.enumerate() {
                 switch index {
                 case 0:
-                    leftPhoto?.kf_setImageWithURL(NSURL(string: photo.thumbnail_url_!), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+                    leftPhoto?.kf_setImageWithURL(NSURL(string: photo.photo_url_! + CommonDefine.qiniuImgStyle), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
                     
                 case 1:
-                    centerPhoto?.kf_setImageWithURL(NSURL(string: photo.thumbnail_url_!), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+                    centerPhoto?.kf_setImageWithURL(NSURL(string: photo.photo_url_! + CommonDefine.qiniuImgStyle), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
                     
                 case 2:
-                    rightPhoto?.kf_setImageWithURL(NSURL(string: photo.thumbnail_url_!), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+                    rightPhoto?.kf_setImageWithURL(NSURL(string: photo.photo_url_! + CommonDefine.qiniuImgStyle), placeholderImage: UIImage.init(named: "head_giry"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
                     
                 default:
                     break
