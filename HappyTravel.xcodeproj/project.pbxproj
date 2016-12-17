@@ -1288,7 +1288,6 @@
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 96YGS7NXK5;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1916,8 +1915,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = HappyTravel/HappyTravel.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Zhejiang palm Easy Tour Network Technology Co., Ltd.";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1935,7 +1934,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.enterprise.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2d96044d-94a1-43db-bfad-c1951ae48957";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;

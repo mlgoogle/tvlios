@@ -911,13 +911,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
         DataManager.insertMessage(msg)
         if UIApplication.sharedApplication().applicationState == .Background {
-            if let user = DataManager.getUserInfo(msg.from_uid_) {
-                let body = "\(user.nickname!): \(msg.content_!)"
-                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                userInfo["type"] = PushMessage.MessageType.Chat.rawValue
-                userInfo["data"] = (jsonBody?.dictionaryObject)!
-                localNotify(body, userInfo: userInfo)
-            }
+            let user = DataManager.getUserInfo(msg.from_uid_)
+            let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
+            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+            userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+            userInfo["data"] = (jsonBody?.dictionaryObject)!
+            localNotify(body, userInfo: userInfo)
         } else {
             postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
         }
