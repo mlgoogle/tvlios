@@ -609,6 +609,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let packageLen = Int(head.len)
             if buffer.length >= packageLen {
                 let bodyLen = Int(head.bodyLen)
+                if bodyLen != packageLen - SockHead.size {
+                    socket?.disconnect()
+                    return
+                }
                 let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
                 recvData(head, body: bodyData)
