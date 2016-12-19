@@ -75,9 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         MobClick.setAppVersion(version)
         //日志加密设置
         MobClick.setEncryptEnabled(true)
-        //使用集成测试服务
-        MobClick.setLogEnabled(true)
-        
         
         MobClick.setCrashReportEnabled(false)
         
@@ -230,33 +227,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)
-
-
-        let messageDict  = userInfo["aps"]!["category"] as? String
         
-        var str = messageDict!.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
-        str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
-        let data = str.dataUsingEncoding(NSUTF8StringEncoding)
-        let jsonData = JSON.init(data: data!)
-        let push_msg_type_ = jsonData.dictionaryObject!["push_msg_type_"] as? Int
-        
-        if push_msg_type_ == nil {
-            return
+        if let info = userInfo["aps"] as? [String: AnyObject] {
+            if let messageDict  = info["category"] as? String {
+                var str = messageDict.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
+                str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
+                let data = str.dataUsingEncoding(NSUTF8StringEncoding)
+                let jsonData = JSON.init(data: data!)
+                let push_msg_type_ = jsonData.dictionaryObject!["push_msg_type_"] as? Int
+                
+                if push_msg_type_ == nil {
+                    return
+                }
+                switch push_msg_type_! {
+                case PushMessage.MessageType.Appointment.rawValue:
+                    let pushMessage = PushMessage()
+                    pushMessage.setInfo(jsonData.dictionaryObject)
+                    DataManager.insertPushMessage(pushMessage)
+                    
+                    break
+                case PushMessage.MessageType.OrderAnswer.rawValue:
+                    DataManager.modfyStatusWithDictonary((jsonData.dictionaryObject)!)
+                    break
+                default:
+                    break
+                }
+            }
+            
         }
-        switch push_msg_type_! {
-        case PushMessage.MessageType.Appointment.rawValue:
-            let pushMessage = PushMessage()
-            pushMessage.setInfo(jsonData.dictionaryObject)
-            DataManager.insertPushMessage(pushMessage)
-
-            break
-        case PushMessage.MessageType.OrderAnswer.rawValue:
-            DataManager.modfyStatusWithDictonary((jsonData.dictionaryObject)!)
-            break
-        default:
-            break
-        }
-
         
     }
     

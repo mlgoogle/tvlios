@@ -156,6 +156,11 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         SocketManager.sendData(.FeedbackMSGReadCnt, data: ["uid_": servantInfo!.uid, "count_": readCnt])
         UIApplication.sharedApplication().applicationIconBadgeNumber = unreadCntLater
         
+        if servantInfo?.serviceList.count == 0 {
+            let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+            SocketManager.sendData(.GetServantDetailInfo, data: dict)
+        }
+        
     }
     
     func registerNotify() {

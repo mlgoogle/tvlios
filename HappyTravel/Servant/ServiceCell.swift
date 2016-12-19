@@ -29,7 +29,7 @@ public class ServiceCell : UITableViewCell {
     weak var delegate:ServiceCellDelegate?
     lazy private var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
-        dateFomatter.dateFormat = "HH : mm"
+        dateFomatter.dateFormat = "HH:mm"
         
         return dateFomatter
     }()
@@ -113,17 +113,6 @@ public class ServiceCell : UITableViewCell {
 
     }
     
-    
-    func getTime(start:Int, end:Int)->String {
-        
-        
-        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start)))
-        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end)))
-        
-        return "\(startTime) - \(endTime)"
-        
-    }
-    
     func setInfo(services: List<ServiceInfo>?, setSpread spd: Bool) {
         if services!.count != 0 {
             spread = spd
@@ -132,7 +121,7 @@ public class ServiceCell : UITableViewCell {
                 let serviceLabel = bgView.viewWithTag(tags["serviceLabel"]!) as? UILabel
                 for (index, service) in services!.enumerate() {
                     let titleStr = service.service_name_
-                    let timeStr = getTime(service.service_start_, end: service.service_end_)
+                    let timeStr = getServiceDateString(service.service_start_, end: service.service_end_)
                     let payStr = "\(Double(service.service_price_) / 100)元"
                     
                     var svcView = bgView.viewWithTag(tags["svcView"]! * 10 + index)
@@ -171,7 +160,7 @@ public class ServiceCell : UITableViewCell {
                         titleLabel!.snp_makeConstraints(closure: { (make) in
                             make.left.equalTo(svcView!)
                             make.top.equalTo(svcView!)
-                            make.width.equalTo(AtapteWidthValue(100))
+                            make.width.equalTo(AtapteWidthValue(110))
                             make.bottom.equalTo(svcView!)
                         })
                     }

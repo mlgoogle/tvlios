@@ -11,6 +11,7 @@ import CocoaAsyncSocket
 import XCGLogger
 import SwiftyJSON
 import SVProgressHUD
+import RealmSwift
 
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
@@ -206,7 +207,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentServantReply = 2022
         // 请求邀约、预约付款
         case PayForInvitationRequest = 2017
-        // 邀约、雨夜付款返回
+        // 邀约、预约付款返回
         case PayForInvitationReply = 2018
         // 请求未读消息
         case UnreadMessageRequest = 2025
@@ -228,6 +229,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     var buffer:NSMutableData = NSMutableData()
     
     var sockTag = 0
+    
+    static var isFirstReConnect = true
+    
     
     static var isLogout = false
     
@@ -294,11 +298,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
+        
+
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
         }
         if !sock!.socket!.isConnected {
+            SocketManager.showDisConnectErrorInfo()
             sock!.connectSock()
             return true
         }
@@ -544,7 +551,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     // MARK: - GCDAsyncSocketDelegate
     func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         XCGLogger.info("didConnectToHost:\(host)  \(port)")
-        
+        SocketManager.isFirstReConnect = true
+
         sock.performBlock({() -> Void in
             sock.enableBackgroundingOnSocket()
         })
@@ -570,7 +578,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func sendHeart() {
-        if DataManager.currentUser?.uid > -1 {
+        if ((DataManager.currentUser?.uid)! > -1) && (socket?.isConnected)!{
             SocketManager.sendData(.Heart, data: ["uid_":(DataManager.currentUser?.uid)!])
         }
         performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
@@ -581,14 +589,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if err != nil {
             XCGLogger.warning("socketDidDisconnect:\(err!)")
         }
-        if !SocketManager.isLogout {
-                SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
-                    
-                    self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 3.5)
-            }
+        if !SocketManager.isLogout && SocketManager.isFirstReConnect {
+            SocketManager.isFirstReConnect = false
+            SocketManager.showDisConnectErrorInfo()
         }
+        self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5.0)
+
     }
     
+   static func showDisConnectErrorInfo() {
+        SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
+        }
+    }
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
         buffer.appendData(data)
         let headLen = SockHead.size
@@ -597,6 +609,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             let packageLen = Int(head.len)
             if buffer.length >= packageLen {
                 let bodyLen = Int(head.bodyLen)
+                if bodyLen != packageLen - SockHead.size {
+                    socket?.disconnect()
+                    return
+                }
                 let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
                 recvData(head, body: bodyData)
@@ -649,6 +665,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func servantDetailInfoReply(jsonBody: JSON?) {
+        let user = DataManager.getUserInfo(jsonBody?.dictionaryObject!["uid_"] as! Int)
+        let realm = try! Realm()
+        try! realm.write({
+            user?.setInfo(.Servant, info: jsonBody?.dictionaryObject!)
+        })
         postNotification(NotifyDefine.ServantDetailInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -720,6 +741,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func centurionCardInfoReply(jsonBody: JSON?) {
         if let privilegeList = jsonBody?.dictionaryObject!["privilege_list_"] as? Array<Dictionary<String, AnyObject>> {
+            if privilegeList.count > 0 {
+                DataManager.clearData(CenturionCardServiceInfo.self)
+            }
             for privilege in privilegeList {
                 let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
                 DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
@@ -813,6 +837,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {
+        if let data = jsonBody?.dictionaryObject {
+            if let reason = data["failed_reason_"] as? String {
+                if reason == "" {
+                    if let reviewStatus = data["review_status_"] as? Int {
+                        DataManager.currentUser?.authentication = reviewStatus
+                    }
+                }
+            }
+        }
         postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
@@ -885,13 +918,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //        msg.content_ = try! decodeBase64Str(msg.content_!)
         DataManager.insertMessage(msg)
         if UIApplication.sharedApplication().applicationState == .Background {
-            if let user = DataManager.getUserInfo(msg.from_uid_) {
-                let body = "\(user.nickname!): \(msg.content_!)"
-                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                userInfo["type"] = PushMessage.MessageType.Chat.rawValue
-                userInfo["data"] = (jsonBody?.dictionaryObject)!
-                localNotify(body, userInfo: userInfo)
-            }
+            let user = DataManager.getUserInfo(msg.from_uid_)
+            let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
+            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+            userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+            userInfo["data"] = (jsonBody?.dictionaryObject)!
+            localNotify(body, userInfo: userInfo)
         } else {
             postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
         }

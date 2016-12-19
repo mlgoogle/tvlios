@@ -279,11 +279,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 return
 
             }
-
             
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
-                chatVC.servantInfo = cell.userInfo
+                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
                 navigationController?.pushViewController(chatVC, animated: true)
                 
             }

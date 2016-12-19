@@ -52,6 +52,17 @@ func  AtapteHeightValue(value: CGFloat) -> CGFloat {
     return atapteValue
 }
 
+func getServiceDateString(start:Int, end:Int) -> String {
+    
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    // 8 * 3600 = 28800 
+    let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start * 60 - 28800)))
+    let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end * 60 - 28800)))
+    
+    return "\(startTime) - \(endTime)"
+    
+}
 //MARK: --正则表达
 func isTelNumber(num:NSString)->Bool
 {
@@ -87,6 +98,9 @@ class CommonDefine: NSObject {
     static let Passwd = "Passwd"
     
     static let UserType = "UserType"
+    
+    static let qiniuImgStyle = "?imageView2/2/w/160/h/160/interlace/0/q/100"
+    
     static let errorMsgs: [Int: String] =  [-1000:"mysql执行错误",
                                             -1001:"登陆json格式错误",
                                             -1002:"手机号格式有误",

@@ -121,7 +121,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 
                 let rechargeVC = RechargeVC()
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
-                DataManager.currentUser?.cash = 10
+//                DataManager.currentUser?.cash = 10
                 
             })
             
