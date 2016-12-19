@@ -565,7 +565,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             mapView?.removeAnnotations(mapView!.annotations)
         }
         mapView!.addAnnotations(annotations)
-        
     }
     
     func servantDetailInfo(notification: NSNotification?) {
@@ -679,7 +678,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         if DataManager.currentUser!.login {
                             let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                                       "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                      "distance_": 10.0]
+                                                                      "distance_": 10.1]
                             SocketManager.sendData(.GetServantInfo, data: dict)
                         }
                     }
@@ -704,7 +703,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
                                                   "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 10.0]
+                                                  "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
         lastMapCenter = mapView.centerCoordinate
     }
