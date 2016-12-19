@@ -487,11 +487,10 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
         }else{
 
    
-            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100)元", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100+1)元", preferredStyle: .Alert)
 
             let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
                 XCGLogger.debug("去充值")
-
                 let rechargeVC = RechargeVC()
                 rechargeVC.chargeNumber = totalMoney - currentCash!
                 self.navigationController?.pushViewController(rechargeVC, animated: true)

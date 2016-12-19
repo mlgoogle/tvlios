@@ -56,11 +56,10 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
-        
+        MobClick.beginLogPageView(CommonDefine.BuriedPoint.vippage)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -68,6 +67,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
+        MobClick.endLogPageView(CommonDefine.BuriedPoint.vippage)
         MobClick.event(CommonDefine.BuriedPoint.vippage, durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
@@ -450,6 +450,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             
             let orderStatus = data.valueForKey("result_") as? Int
             if orderStatus == -1 {
+                
                 SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
             }
             if orderStatus == -2 {
