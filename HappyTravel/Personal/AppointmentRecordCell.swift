@@ -162,7 +162,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
             
             if recordInfo?.status_ > 2 {
               
-                serviceTime = getTime((recordInfo?.service_start_)!, end: (recordInfo?.service_end_)!)
+                serviceTime = getServiceDateString((recordInfo?.service_start_)!, end: (recordInfo?.service_end_)!)
             }
             dateFormatter.dateStyle = .ShortStyle
 
@@ -201,15 +201,6 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     }
 
     
-    func getTime(start:Int, end:Int)->String {
-        dateFormatter.dateFormat = "HH:mm"
 
-        
-        let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start)))
-        let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end)))
-        
-        return "\(startTime)-\(endTime)"
-        
-    }
     
 }

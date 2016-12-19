@@ -52,6 +52,17 @@ func  AtapteHeightValue(value: CGFloat) -> CGFloat {
     return atapteValue
 }
 
+func getServiceDateString(start:Int, end:Int) -> String {
+    
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "HH:mm"
+    // 8 * 3600 = 28800 
+    let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(start * 60 - 28800)))
+    let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(end * 60 - 28800)))
+    
+    return "\(startTime) - \(endTime)"
+    
+}
 //MARK: --正则表达
 func isTelNumber(num:NSString)->Bool
 {
