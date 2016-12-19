@@ -224,7 +224,14 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 amountTextField?.tag = tags["amountTextField"]!
                 amountTextField?.backgroundColor = UIColor.clearColor()
                 if let chargeNum = chargeNumber {
-                    amountTextField?.text = "\(chargeNum)"
+                    if chargeNum%100 == 0{
+                        amount = String(chargeNum/100)
+                    }
+                    else{
+                        amount = String(chargeNum/100+1)
+                    }
+                    //chargeNum为分，显示为元，要转化为元
+                    amountTextField?.text = amount
                 }else{
                     amountTextField?.placeholder = "请输入充值金额"
                 }
@@ -381,6 +388,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     //MARK: - UITextField
     func textFieldDidEndEditing(textField: UITextField) {
+        //金额为元
         amount = textField.text
     }
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -448,9 +456,10 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func rechargeWithWX() {
          MobClick.event(CommonDefine.BuriedPoint.payWithWechat)
+        //金额为分
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
                                         "title_": "V领队-余额充值",
-                                        "price_": Int(amount!)! * 100]
+                                        "price_": Int(amount!)!*100]
         SocketManager.sendData(.WXPlaceOrderRequest, data: dict)
     
     }

@@ -119,7 +119,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         msgList = DataManager.getMessage(servantInfo!.uid)?.msgList
-        
         initView()
         
     }
@@ -399,17 +398,27 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
 
     }
-    
+
     func sendMessageAction() {
         let msg = textView.text
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
-        
         let data:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
                                                   "to_uid_": servantInfo!.uid,
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
+        //base64编码
+//        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
+//        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+//        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
+//                                                  "to_uid_": servantInfo!.uid,
+//                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
+//                                                  "content_": msg_base64!]
+//        SocketManager.sendData(.SendChatMessage, data: data_base)
+
         
+        
+        //发送聊天消息包
         SocketManager.sendData(.SendChatMessage, data: data)
         let message = PushMessage(value: data)
         DataManager.insertMessage(message)
