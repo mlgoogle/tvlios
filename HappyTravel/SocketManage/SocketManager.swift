@@ -908,11 +908,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func chatMessageReply(jsonBody: JSON?) {
+        //接收聊天信息
         if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
             return
         }
         
         let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
+        //base64解码
+//        msg.content_ = try! decodeBase64Str(msg.content_!)
         DataManager.insertMessage(msg)
         if UIApplication.sharedApplication().applicationState == .Background {
             let user = DataManager.getUserInfo(msg.from_uid_)
@@ -970,6 +973,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 var pMsg:PushMessage?
                 for msg in msgList {
                     let pushMsg = PushMessage(value: msg)
+                    //base64解码
+//                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
                     DataManager.insertMessage(pushMsg)
                     pMsg = pushMsg
                 }
@@ -977,5 +982,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             }
         }
     }
+    
+    func decodeBase64Str(base64Str:String) throws -> String{
+        //解码
+        let data = NSData(base64EncodedString: base64Str, options: NSDataBase64DecodingOptions(rawValue: 0))
+        let base64Decoded = String(data: data!, encoding: NSUTF8StringEncoding)
+        return base64Decoded!
+    }
 }
+
+
 
