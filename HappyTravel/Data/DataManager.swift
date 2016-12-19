@@ -216,6 +216,10 @@ class DataManager: NSObject {
         let realm = try! Realm()
         let objs = realm.objects(UserPushMessage.self).filter("uid = \(uid)")
         try! realm.write({
+        
+            if UIApplication.sharedApplication().applicationIconBadgeNumber > 0 {
+                UIApplication.sharedApplication().applicationIconBadgeNumber -= 1
+            }
             objs.setValue(0, forKey: "unread")
         })
         

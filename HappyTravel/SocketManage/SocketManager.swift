@@ -207,7 +207,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentServantReply = 2022
         // 请求邀约、预约付款
         case PayForInvitationRequest = 2017
-        // 邀约、雨夜付款返回
+        // 邀约、预约付款返回
         case PayForInvitationReply = 2018
         // 请求未读消息
         case UnreadMessageRequest = 2025
