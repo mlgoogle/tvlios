@@ -54,8 +54,23 @@ class AppointmentDetailVC: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        tableView.contentInset = inset
+        tableView.scrollIndicatorInsets = inset
+        
+        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: appointmentInfo?.is_other_ == 1 ? 3 : 2), atScrollPosition: .Bottom, animated: true)
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        tableView.contentInset = inset
+        tableView.scrollIndicatorInsets =  inset
     }
     
     /**

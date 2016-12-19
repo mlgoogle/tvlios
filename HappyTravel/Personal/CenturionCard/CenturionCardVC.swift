@@ -56,7 +56,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
@@ -451,6 +450,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             
             let orderStatus = data.valueForKey("result_") as? Int
             if orderStatus == -1 {
+                
                 SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
             }
             if orderStatus == -2 {

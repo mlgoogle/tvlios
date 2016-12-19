@@ -75,9 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         MobClick.setAppVersion(version)
         //日志加密设置
         MobClick.setEncryptEnabled(true)
-        //使用集成测试服务
-        MobClick.setLogEnabled(true)
-        
         
         MobClick.setCrashReportEnabled(false)
         

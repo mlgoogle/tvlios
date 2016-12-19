@@ -163,6 +163,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets = inset
+
+        table?.scrollToRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 0), atScrollPosition: .Bottom, animated: true)
     }
     
     func keyboardWillHide(notification: NSNotification?) {
