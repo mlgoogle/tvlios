@@ -41,6 +41,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
+        MobClick.beginLogPageView(CommonDefine.BuriedPoint.login)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -50,6 +51,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         let timeCount = endTime - startTime
         MobClick.event(CommonDefine.BuriedPoint.login, durations:Int32(timeCount))
+        MobClick.endLogPageView(CommonDefine.BuriedPoint.login)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     

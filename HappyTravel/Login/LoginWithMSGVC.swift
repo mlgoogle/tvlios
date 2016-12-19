@@ -45,7 +45,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
 
-        
+        MobClick.beginLogPageView(CommonDefine.BuriedPoint.register)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -54,6 +54,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
+        MobClick.endLogPageView(CommonDefine.BuriedPoint.register)
         MobClick.event(CommonDefine.BuriedPoint.register, durations:Int32(timeCount))
     }
     
