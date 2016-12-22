@@ -184,7 +184,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             view.backgroundColor = .clearColor()
             let label = UILabel()
             label.backgroundColor = .clearColor()
-            label.text = section == 0 ? "预约信息" : "服务者技能"
+            label.text = section == 0 ? "预约信息" : "服务者标签"
             label.font = .systemFontOfSize(AtapteWidthValue(S15))
             label.textColor = UIColor.grayColor()
             view.addSubview(label)
@@ -625,7 +625,7 @@ class AppointmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             errMsg = "请选择目标城市"
         } else if skills.count == 0 {
             alright = false
-            errMsg = "请选择服务者技能"
+            errMsg = "请选择服务者标签"
         } else if agent == true {
             if name == nil {
                 alright = false
