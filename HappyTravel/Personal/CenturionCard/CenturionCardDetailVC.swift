@@ -48,24 +48,21 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     func receivedData(notifation:NSNotification) {
         
-        let dict = notifation.userInfo!["data"]
-        
+        let dict = notifation.userInfo!["data"] as? [String: AnyObject]
         
         if let errorCode = dict!["error_"] {
             SVProgressHUD.showWainningMessage(WainningMessage: errorCode as! Int == -1040 ? "当前没有在线服务管家" : "未知错误：\(errorCode)", ForDuration: 1.5, completion: nil)
         } else {
             let userInfo = UserInfo()
             
-            userInfo.setInfo(.Other, info: dict as? Dictionary<String, AnyObject>)
+            userInfo.setInfo(.Other, info: dict)
             
             DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
             chatVC.servantInfo = userInfo
-            chatVC.isServersMan = true
             navigationController?.pushViewController(chatVC, animated: true)
             
         }
-        
         
     }
     func registerNotify() {
