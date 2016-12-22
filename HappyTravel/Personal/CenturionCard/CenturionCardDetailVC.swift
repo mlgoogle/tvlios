@@ -61,6 +61,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
             chatVC.servantInfo = userInfo
+            chatVC.isServersMan = true
             navigationController?.pushViewController(chatVC, animated: true)
             
         }

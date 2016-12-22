@@ -59,7 +59,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
-        MobClick.beginLogPageView(CommonDefine.BuriedPoint.vippage)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -67,7 +66,6 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
-        MobClick.endLogPageView(CommonDefine.BuriedPoint.vippage)
         MobClick.event(CommonDefine.BuriedPoint.vippage, durations:Int32(timeCount))
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
@@ -90,6 +88,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
             chatVC.servantInfo = userInfo
+            chatVC.isServersMan = true
             navigationController?.pushViewController(chatVC, animated: true)
             
         }
