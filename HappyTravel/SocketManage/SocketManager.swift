@@ -665,6 +665,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func servantDetailInfoReply(jsonBody: JSON?) {
+        
+        if jsonBody?.dictionaryObject!["error_"] != nil {
+            return
+        }
         let user = DataManager.getUserInfo(jsonBody?.dictionaryObject!["uid_"] as! Int)
         let realm = try! Realm()
         try! realm.write({
