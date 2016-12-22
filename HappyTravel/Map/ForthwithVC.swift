@@ -105,6 +105,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             msgCountLab?.hidden = true
         }
         
+        UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
             if regOrLoginSelVC?.isShow == false {
