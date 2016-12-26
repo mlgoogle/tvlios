@@ -975,7 +975,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
                 var pMsg:PushMessage?
-                for msg in msgList {
+                for msg in msgList.reverse() {
                     let pushMsg = PushMessage(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
