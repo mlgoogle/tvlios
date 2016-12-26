@@ -278,20 +278,21 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            make.right.equalTo(mapView!).offset(0.5)
 //            make.height.equalTo(60)
 //        }
-        
-        let recommendBtn = UIButton()
-        recommendBtn.tag = 2001
-        recommendBtn.backgroundColor = .clearColor()
-        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
-        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
-        mapView?.addSubview(recommendBtn)
-        recommendBtn.snp_makeConstraints { (make) in
-            make.left.equalTo(mapView!).offset(20)
-            make.top.equalTo(mapView!).offset(20)
-            make.width.equalTo(30)
-            make.height.equalTo(30)
-        }
-        recommendBtn.enabled = false
+        //大拇指推荐功能，暂时隐藏，后继使用
+//        let recommendBtn = UIButton()
+//        recommendBtn.tag = 2001
+//        recommendBtn.backgroundColor = .clearColor()
+//        recommendBtn.backgroundColor = UIColor.redColor()
+//        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
+//        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
+//        mapView?.addSubview(recommendBtn)
+//        recommendBtn.snp_makeConstraints { (make) in
+//            make.left.equalTo(mapView!).offset(20)
+//            make.top.equalTo(mapView!).offset(20)
+//            make.width.equalTo(30)
+//            make.height.equalTo(30)
+//        }
+//        recommendBtn.enabled = false
         
         view.addSubview(appointmentView)
         appointmentView.snp_makeConstraints(closure: { (make) in
