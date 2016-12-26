@@ -21,7 +21,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var segmentIndex = 0
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
-    
+    var timer:NSTimer?
+
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
@@ -111,7 +112,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
     }
     
-    func obtainTripReply(notification: NSNotification) {
+    func allEndRefreshing() {
         if header.state == MJRefreshState.Refreshing {
             header.endRefreshing()
         }
@@ -119,6 +120,12 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             footer.endRefreshing()
         }
         
+
+    }
+    
+    func obtainTripReply(notification: NSNotification) {
+        
+        allEndRefreshing()
         let realm = try! Realm()
         hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
         
@@ -196,7 +203,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             make.bottom.equalTo(view)
         })
         
-        header.hidden = true
+//        header.hidden = true
         header.setRefreshingTarget(self, refreshingAction: #selector(PushMessageVC.headerRefresh))
         table?.mj_header = header
         footer.hidden = true
@@ -213,9 +220,26 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "order_id_": 0,
                 "count_": 10])
         }
-        
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(PushMessageVC.endRefresh), userInfo: nil, repeats: false)
+        /**
+         加入mainloop 防止滑动计时器停止
+         */
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
-    
+    func endRefresh() {
+        
+        if header.state == .Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == .Refreshing {
+            footer.endRefreshing()
+        }
+        if timer != nil {
+            
+            timer?.invalidate()
+            timer = nil
+        }
+    }
     func footerRefresh() {
         if segmentIndex == 0 {
             footer.endRefreshing()
@@ -228,16 +252,21 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func segmentChange(sender: UISegmentedControl?) {
+        allEndRefreshing()
         segmentIndex = (sender?.selectedSegmentIndex)!
         if segmentIndex == 0 {
-            header.hidden = true
+            header.beginRefreshing()
+            performSelector(#selector(PushMessageVC.allEndRefreshing), withObject: nil, afterDelay: 1.5)
+//            header.hidden = true
             footer.hidden = true
         } else if segmentIndex == 1 {
             header.hidden = false
             footer.hidden = false
             header.beginRefreshing()
         }
+        
         table?.reloadData()
+
     }
 
     // MARK: - UITableView
@@ -395,6 +424,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
