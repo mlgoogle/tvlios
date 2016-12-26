@@ -34,7 +34,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var selectedServcie:ServiceInfo?
 
-    
     var faceKeyBoard:FaceKeyboardView = {
        
         let keyboardView = NSBundle.mainBundle().loadNibNamed("FaceKeyboardView", owner: nil, options: nil).first as! FaceKeyboardView
@@ -127,6 +126,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewWillAppear(animated)
         registerNotify()
         
+       //如果是客服聊天则直接return
+        guard servantInfo?.uid > -1 else {return}
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
@@ -155,6 +156,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         SocketManager.sendData(.FeedbackMSGReadCnt, data: ["uid_": servantInfo!.uid, "count_": readCnt])
         UIApplication.sharedApplication().applicationIconBadgeNumber = unreadCntLater
+        
+        //如果是客服聊天则直接return
+        guard servantInfo?.uid > -1 else {return}
         
         if servantInfo?.serviceList.count == 0 {
             let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
