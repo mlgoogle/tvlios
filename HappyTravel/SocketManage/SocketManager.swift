@@ -251,10 +251,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-//                let ip = "192.168.8.131"
-                let ip = "103.40.192.101"
-//                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
+//                let ip = "192.168.25.129"
+//                let ip = "103.40.192.101"
+                let ip = "61.147.114.78"
+                try socket?.connectToHost(ip, onPort: 10007, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
@@ -975,7 +975,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
                 var pMsg:PushMessage?
-                for msg in msgList {
+                for msg in msgList.reverse() {
                     let pushMsg = PushMessage(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
