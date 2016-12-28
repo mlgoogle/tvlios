@@ -7,16 +7,10 @@
 //
 
 import Foundation
+import RealmSwift
 
-
-class Heart: SockHead {
+class Heart: Object {
     
-    var body = ["uid_": DataManager.currentUser!.uid]
-    
-    override init() {
-        super.init()
-        
-        opcode = SocketManager.SockOpcode.Heart.rawValue
-    }
+    var uid_:Int32 = -1
     
 }

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RealmSwift
+import Realm.RLMSchema
 
 class SocketResponse {
     private var body:SocketDataPacket?
@@ -35,36 +37,20 @@ class SocketJsonResponse: SocketResponse {
         return try! NSJSONSerialization.JSONObjectWithData(body!.data!, options: NSJSONReadingOptions.MutableContainers)
     }
     
-    func responseJson<T:NSObject>() ->T? {
+    func responseJson<T:NSObject>() -> T? {
         var object = responseJsonObject()
-        if object != nil && T.isKindOfClass(SockHead) {
+        if object != nil && T.isKindOfClass(Object) {
             object = responseModel(T.classForCoder())
         }
         return object as? T
     }
     
-    func responseModel(modelClass: AnyClass) ->AnyObject?{
-        let object = responseJsonObject()
-        if object != nil  {
-//            return try! OEZJsonModelAdapter.modelOfClass(modelClass, fromJSONDictionary: object as! [NSObject : AnyObject])
+    func responseModel(modelClass: AnyClass) ->AnyObject? {
+        if let object = responseJsonObject() {
+            let cls = modelClass as! Object.Type
+            return cls.init(value: object as! [String: AnyObject], schema: RLMSchema.partialSharedSchema())
         }
         return nil
-    }
-    
-    func responseModels(modelClass: AnyClass) ->[AnyObject]? {
-        let array:[AnyObject]? = responseJsonObject() as? [AnyObject]
-        if array != nil {
-//            return try! OEZJsonModelAdapter.modelsOfClass(modelClass, fromJSONArray: array)
-        }
-        return nil;
-    }
-    
-    func responseResult() -> Int? {
-        let dict = responseJsonObject() as? [String:AnyObject]
-        if dict != nil && dict!["result_"] != nil {
-            return dict!["result_"] as? Int;
-        }
-        return nil;
     }
     
 }

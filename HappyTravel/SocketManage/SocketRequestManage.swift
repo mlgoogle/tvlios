@@ -92,7 +92,6 @@ class SocketRequestManage: NSObject {
         objc_sync_exit(self)
     }
     
-    
     private func sendRequest(packet: SocketDataPacket) {
         let block:dispatch_block_t = {
             [weak self] in
