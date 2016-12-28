@@ -247,16 +247,13 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
 //        确定服务选择
-//        unowned let weakSelf = self
+        unowned let weakSelf = self
 
         selectedServcie = service
 
         alertController?.dismissViewControllerAnimated(true, completion: {
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
-                "to_uid_": self.servantInfo!.uid,
-                "service_id_": self.selectedServcie!.service_id_,
-                "day_count_":1])
-            //移除天数选择
+            //移除天数选择,默认一天
+            weakSelf.daysSureAction(nil, targetDays: 1)
 //            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             
