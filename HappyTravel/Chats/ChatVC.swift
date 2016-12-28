@@ -251,8 +251,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         selectedServcie = service
 
         alertController?.dismissViewControllerAnimated(true, completion: {
-            
-            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+            //移除天数选择,默认一天
+            weakSelf.daysSureAction(nil, targetDays: 1)
+//            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             
         })
