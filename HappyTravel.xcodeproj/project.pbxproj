@@ -43,6 +43,14 @@
 		2F9684271D791CCB0028E3F2 /* RechargeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684261D791CCB0028E3F2 /* RechargeVC.swift */; };
 		2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684381D7D06220028E3F2 /* DataManager.swift */; };
 		2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */; };
+		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
+		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
+		2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A921E12890E001655A3 /* SocketDataPacket.swift */; };
+		2FA15A951E128B3E001655A3 /* SocketResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A941E128B3E001655A3 /* SocketResponse.swift */; };
+		2FA15A981E128E6A001655A3 /* SockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A971E128E6A001655A3 /* SockModel.swift */; };
+		2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A991E13B661001655A3 /* ModelHelper.swift */; };
+		2FA15A9D1E13BAB5001655A3 /* UserSocketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A9C1E13BAB5001655A3 /* UserSocketAPI.swift */; };
+		2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A9E1E13BB50001655A3 /* UserModels.swift */; };
 		2FA75CF61D5081CB00609C8E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75CF51D5081CB00609C8E /* AppDelegate.swift */; };
 		2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75CF71D5081CB00609C8E /* ViewController.swift */; };
 		2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CF91D5081CB00609C8E /* Main.storyboard */; };
@@ -352,6 +360,14 @@
 		2F9684381D7D06220028E3F2 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataManager.swift; path = Data/DataManager.swift; sourceTree = "<group>"; };
 		2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketManager.swift; path = SocketManage/SocketManager.swift; sourceTree = "<group>"; };
+		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
+		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
+		2FA15A921E12890E001655A3 /* SocketDataPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketDataPacket.swift; path = SocketManage/SocketDataPacket.swift; sourceTree = "<group>"; };
+		2FA15A941E128B3E001655A3 /* SocketResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketResponse.swift; path = SocketManage/SocketResponse.swift; sourceTree = "<group>"; };
+		2FA15A971E128E6A001655A3 /* SockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SockModel.swift; path = SocketManage/SockModel.swift; sourceTree = "<group>"; };
+		2FA15A991E13B661001655A3 /* ModelHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelHelper.swift; path = SocketManage/ModelHelper.swift; sourceTree = "<group>"; };
+		2FA15A9C1E13BAB5001655A3 /* UserSocketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserSocketAPI.swift; path = SocketManage/UserSocketAPI.swift; sourceTree = "<group>"; };
+		2FA15A9E1E13BB50001655A3 /* UserModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserModels.swift; path = SocketManage/UserModels.swift; sourceTree = "<group>"; };
 		2FA75CF21D5081CB00609C8E /* HappyTravel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyTravel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FA75CF51D5081CB00609C8E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FA75CF71D5081CB00609C8E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -746,10 +762,34 @@
 		2F9D42101D5C0F1E00D10FBC /* SocketManage */ = {
 			isa = PBXGroup;
 			children = (
+				2FA15A9B1E13BA94001655A3 /* SocketAPI */,
+				2FA15A961E128E4C001655A3 /* Models */,
+				2FA15A941E128B3E001655A3 /* SocketResponse.swift */,
+				2FA15A8E1E12845E001655A3 /* SocketRequest.swift */,
+				2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */,
 				2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */,
 				2FD995951DD32842000CB006 /* SockHead.swift */,
+				2FA15A921E12890E001655A3 /* SocketDataPacket.swift */,
 			);
 			name = SocketManage;
+			sourceTree = "<group>";
+		};
+		2FA15A961E128E4C001655A3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2FA15A971E128E6A001655A3 /* SockModel.swift */,
+				2FA15A991E13B661001655A3 /* ModelHelper.swift */,
+				2FA15A9E1E13BB50001655A3 /* UserModels.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		2FA15A9B1E13BA94001655A3 /* SocketAPI */ = {
+			isa = PBXGroup;
+			children = (
+				2FA15A9C1E13BAB5001655A3 /* UserSocketAPI.swift */,
+			);
+			name = SocketAPI;
 			sourceTree = "<group>";
 		};
 		2FA75CE91D5081CB00609C8E = {
@@ -1660,8 +1700,10 @@
 				2F9684111D76CD040028E3F2 /* IdentBaseInfoCell.swift in Sources */,
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
 				2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */,
+				2FA15A9D1E13BAB5001655A3 /* UserSocketAPI.swift in Sources */,
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
+				2FA15A981E128E6A001655A3 /* SockModel.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
 				BF6E9D931DE3E62300F32CCE /* CentuionCardPriceInfo.swift in Sources */,
 				2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */,
@@ -1699,9 +1741,11 @@
 				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
 				2F65C5811DF415BA001EC13A /* PhotoWallCell.swift in Sources */,
 				2F2A2B161DB9C25000CFB7A7 /* CenturionCardConsumedInfo.swift in Sources */,
+				2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */,
 				2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */,
 				2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */,
 				2F9684131D76D5250028E3F2 /* IdentCommentCell.swift in Sources */,
+				2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */,
 				BF4CF6CA1DDC5EED007B3993 /* BlackCardView.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */,
@@ -1724,6 +1768,7 @@
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
+				2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */,
 				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
 				6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */,
@@ -1737,6 +1782,7 @@
 				2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */,
 				2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */,
 				2FBB5E831D51E655007BE4E0 /* ChatDateCell.swift in Sources */,
+				2FA15A951E128B3E001655A3 /* SocketResponse.swift in Sources */,
 				2FD995961DD32842000CB006 /* SockHead.swift in Sources */,
 				6E3060311DD1C31B00EB1D2F /* AppointmentRecordCell.swift in Sources */,
 				6E1074721DC3412C00F3F46F /* InvoiceHistoryDetailCustomCell.swift in Sources */,
@@ -1748,10 +1794,12 @@
 				BFC492101DD9D2BF0056500D /* OpenTicketInfo.swift in Sources */,
 				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
+				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
 				2F96840F1D76CB6F0028E3F2 /* IdentDetailVC.swift in Sources */,
 				2F96840B1D76ACC90028E3F2 /* InvoiceCell.swift in Sources */,
 				2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */,
+				2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */,
 				6E09F4711DC19FC600F1D4FA /* InvoiceHistoryCell.swift in Sources */,
 				6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */,
 				2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */,

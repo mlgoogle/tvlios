@@ -247,7 +247,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         if sender?.tag == tags["loginBtn"]! {
             dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
@@ -256,6 +255,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
         SocketManager.sendData(.Login, data: dict)
+        
+        
     }
     
     func randomSmallCaseString(length: Int) -> String {
