@@ -784,8 +784,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
             // 认证状态限制查看个人信息
-            var auth = (DataManager.currentUser?.authentication)!
-            auth = 1
+            let auth = (DataManager.currentUser?.authentication)!
             if auth != 1 {
                 SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid]) { [weak self](result) in
                     if let strongSelf = self{
@@ -819,7 +818,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
-            DataManager.currentUser?.has_recharged_ = 1008
             if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
                 
