@@ -168,22 +168,22 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab?.userInteractionEnabled = true
         titleView.addSubview(titleLab!)
         titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX).offset(-10)
+            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
             make.centerY.equalTo(titleView.snp_centerY)
         }
         titleLab?.text = "我的位置"
-        
-        titleBtn = UIButton()
-        titleBtn!.backgroundColor = .clearColor()
-        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
-        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
-        titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), forControlEvents: .TouchUpInside)
-        titleView.addSubview(titleBtn!)
-        titleBtn!.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLab!.snp_right)
-            make.width.equalTo(20)
-            make.centerY.equalTo(titleLab!.snp_centerY)
-        }
+        //城市选择功能
+//        titleBtn = UIButton()
+//        titleBtn!.backgroundColor = .clearColor()
+//        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
+//        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
+//        titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), forControlEvents: .TouchUpInside)
+//        titleView.addSubview(titleBtn!)
+//        titleBtn!.snp_makeConstraints { (make) in
+//            make.left.equalTo(titleLab!.snp_right)
+//            make.width.equalTo(20)
+//            make.centerY.equalTo(titleLab!.snp_centerY)
+//        }
         
 //        let segmentBGV = UIImageView()
 //        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
@@ -818,7 +818,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
-
             if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
                 
