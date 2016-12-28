@@ -13,7 +13,7 @@ protocol ServiceSheetDelegate : NSObjectProtocol {
     func cancelAction(sender: UIButton?)
     
     func sureAction(service: ServiceInfo?, daysCount:Int?)
-    
+
 }
 
 class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
@@ -105,7 +105,7 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
             make.left.equalTo(self)
             make.top.equalTo(head.snp_bottom)
             make.right.equalTo(self)
-            make.bottom.equalTo(self).offset(-20)
+            make.bottom.equalTo(self).offset(-30)
             make.height.equalTo(UIScreen.mainScreen().bounds.size.height / 3.0)
         })
     }
@@ -115,9 +115,12 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     }
     
     func sureAction(sender: UIButton?) {
+        //确定服务选择，在外部实现
         if selectedIndexPath == nil {
             return
         }
+//        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row], daysCount: 1)
+
         delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row], daysCount: countsArray[(selectedIndexPath?.row)!])
     }
     

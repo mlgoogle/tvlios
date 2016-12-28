@@ -219,6 +219,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func invitation() {
+        //邀约服务选择
         textView.resignFirstResponder()
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -245,14 +246,18 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        
-        unowned let weakSelf = self
+//        确定服务选择
+//        unowned let weakSelf = self
 
         selectedServcie = service
 
         alertController?.dismissViewControllerAnimated(true, completion: {
-            
-            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+                "to_uid_": self.servantInfo!.uid,
+                "service_id_": self.selectedServcie!.service_id_,
+                "day_count_":1])
+            //移除天数选择
+//            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             
         })
