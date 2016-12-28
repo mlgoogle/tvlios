@@ -23,7 +23,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var priceLab:UILabel?
     
-    var serviceTel = "10086"
+    var serviceTel = "0571-87611687"
     
     var services:Results<CenturionCardServiceInfo>?
 
