@@ -39,6 +39,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     //延时测试用
     var appointment_id_ = 0
     var isShowBaseInfo = false
+    var isShowLocationInfo = false
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -131,6 +132,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func checkLocationService() {
         if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+            
+            guard !isShowLocationInfo else {return}
             let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许V领队使用定位服务", preferredStyle: .Alert)
             let goto = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
                 if #available(iOS 10, *) {
@@ -140,7 +143,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 }
                 
             })
-            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: nil)
+            let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (action) in
+                self.isShowLocationInfo = true
+            })
             alert.addAction(goto)
             alert.addAction(cancel)
             presentViewController(alert, animated: true, completion: nil)
@@ -567,7 +572,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             mapView?.removeAnnotations(mapView!.annotations)
         }
         mapView!.addAnnotations(annotations)
-        
     }
     
     func servantDetailInfo(notification: NSNotification?) {
@@ -666,7 +670,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         
         if  latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
-            
+            location = userLocation.location
             let geoCoder = CLGeocoder()
             if userLocation.location != nil {
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
@@ -681,7 +685,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         if DataManager.currentUser!.login {
                             let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                                       "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                                      "distance_": 10.0]
+                                                                      "distance_": 10.1]
                             SocketManager.sendData(.GetServantInfo, data: dict)
                         }
                     }
@@ -706,7 +710,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
                                                   "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 10.0]
+                                                  "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
         lastMapCenter = mapView.centerCoordinate
     }

@@ -22,7 +22,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
     var nameLabel:UIButton?
     
-    var serviceTel = "10086"
+    var serviceTel = "0571-87611687"
     
     var imagePicker:UIImagePickerController? = nil
     
@@ -128,7 +128,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SocketManager.sendData(.GetServiceCity, data: nil)
         let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
                                                   "longitude_": DataManager.currentUser!.gpsLocationLon,
-                                                  "distance_": 5.1]
+                                                  "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
