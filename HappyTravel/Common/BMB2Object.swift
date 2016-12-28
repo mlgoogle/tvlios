@@ -178,4 +178,70 @@ class BMB2Object : NSObject {
         return data.length > 0 ? data : nil
     }
     
+    func pack2() -> NSData? {
+        var propertyList = [[UInt32:UnsafeMutablePointer<objc_property_t>]]()
+        let data = NSMutableData()
+        var superCls = self.superclass
+        while superCls != nil && superCls != BMB2Object.self && superCls != BMB2Object.superclass() {
+            var cnt:UInt32 = 0
+            let memberList = class_copyPropertyList(superCls!, &cnt)
+            propertyList.append([cnt: memberList])
+            superCls = superCls!.superclass()
+        }
+//        let memberList = class_copyPropertyList(self.classForCoder, &cnt)
+//        for i in 0..<cnt {
+//            let item = memberList[Int(i)]
+//            var cnt2:UInt32 = 0
+//            let prList = property_copyAttributeList(item, &cnt2)
+//            
+//            var type = ""
+//            var valueName = ""
+//            for j in 0..<cnt2 {
+//                let property = prList[Int(j)]
+//                let propertyName = String.fromCString(property.name)
+//                if propertyName == "T" {
+//                    type = String.fromCString(property.value)!
+//                } else if propertyName == "V" {
+//                    valueName = String.fromCString(property.value)!
+//                }
+//            }
+//            
+//            let value = valueForKey(valueName) as? NSNumber
+//            let size = BMB2Object.getMemSizeWith(type)
+//            
+//            switch type {
+//            case "c":
+//                var buf = value?.charValue
+//                data.appendBytes(&buf, length: size)
+//            case "C":
+//                var buf = value?.unsignedCharValue
+//                data.appendBytes(&buf, length: size)
+//            case "s":
+//                var buf = value?.shortValue
+//                data.appendBytes(&buf, length: size)
+//            case "S":
+//                var buf = value?.unsignedShortValue
+//                data.appendBytes(&buf, length: size)
+//            case "i":
+//                var buf = value?.intValue
+//                data.appendBytes(&buf, length: size)
+//            case "I":
+//                var buf = value?.unsignedIntValue
+//                data.appendBytes(&buf, length: size)
+//            case "q":
+//                var buf = value?.longLongValue
+//                data.appendBytes(&buf, length: size)
+//            case "Q":
+//                var buf = value?.unsignedLongLongValue
+//                data.appendBytes(&buf, length: size)
+//            default:
+//                break
+//            }
+//            
+//        }
+//        
+//        return data.length > 0 ? data : nil
+//    }
+        return nil
+    }
 }

@@ -239,6 +239,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
+    var isConnected : Bool {
+        return socket!.isConnected
+    }
+    
     override init() {
         super.init()
         
@@ -248,13 +252,20 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func connectSock() {
-        buffer = NSMutableData()
+        var packet = SocketDataPacket()
+        packet.data = "hello".dataUsingEncoding(NSUTF8StringEncoding)
+        packet.pack2()
         do {
             if !socket!.isConnected {
-//                let ip = "192.168.25.129"
-//                let ip = "103.40.192.101"
-                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10007, withTimeout: 5)
+                #if true  // true: 测试环境    false: 正式环境
+                    let ip:String = "61.147.114.78"
+                    let port:UInt16 = 10007
+                #else
+                    let ip:String = "103.40.192.101"
+                    let port:UInt16 = 10001
+                #endif
+                buffer = NSMutableData()
+                try socket?.connectToHost(ip, onPort: port, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
@@ -263,6 +274,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         } catch {
             
         }
+    }
+    
+    func disconnect() {
+        socket?.delegate = nil
+        socket?.disconnect()
     }
     
     static func logoutCurrentAccount() {
@@ -342,6 +358,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if result != nil {
             completationsDic[opcode.rawValue+1] = result
         }
+    }
+    
+    func sendData(packet: SocketDataPacket) {
+        
     }
     
     func recvData(head: SockHead?, body:AnyObject?) ->Bool {
