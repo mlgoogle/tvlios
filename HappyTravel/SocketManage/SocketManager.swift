@@ -252,9 +252,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func connectSock() {
-        var packet = SocketDataPacket()
-        packet.data = "hello".dataUsingEncoding(NSUTF8StringEncoding)
-        packet.pack2()
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
@@ -314,8 +311,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
-        
-
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
@@ -361,7 +356,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func sendData(packet: SocketDataPacket) {
-        
+        socket?.writeData(packet.pack()!, withTimeout: 5, tag: sockTag)
+        sockTag += 1
     }
     
     func recvData(head: SockHead?, body:AnyObject?) ->Bool {
