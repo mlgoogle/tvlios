@@ -15,65 +15,55 @@ class PayVC: UIViewController, UITextFieldDelegate {
     var price:Int?
     var orderId:Int?
     var segmentIndex:Int?
+    var sureInsurancePrice:Int?//保险金额
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "支付"
+        //支付结果返回
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+        //保险金额返回
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.sureInsuranceReply(_:)), name: NotifyDefine.SureInsuranceReply, object: nil)
         initView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        //请求协议金额
+//        SocketManager.sendData(.SureInsuranceReply, data: ["": "", "": ""])
+    }
+    
     func initView() {
+        let descLab = UILabel()
+        descLab.text = "您即将支付人民币:"
+        descLab.textAlignment = .Center
+        descLab.font = UIFont.systemFontOfSize(14.0)
+        descLab.textColor = UIColor.blackColor()
+        self.view.addSubview(descLab)
+        descLab.snp_makeConstraints { (make) in
+            make.top.equalTo(self.view).offset(20)
+            make.height.equalTo(15)
+            make.left.equalTo(self.view).offset(20)
+            make.right.equalTo(self.view).offset(-20)
+        }
+
         payLab = UILabel()
-//        price = 200
-        payLab!.text = "您即将预支付人民币\(Double(price!)/100)元"
+        payLab!.text = "￥\(Double(price!)/100)"
         payLab!.textAlignment = .Center
-        payLab!.font = UIFont.systemFontOfSize(15.0)
+//        payLab?.numberOfLines = 0
+//        payLab?.lineBreakMode = .ByWordWrapping
+        payLab!.font = UIFont.systemFontOfSize(25.0)
+//        payLab?.backgroundColor = UIColor.redColor()
         payLab!.textColor = UIColor.blackColor()
         self.view.addSubview(payLab!)
         payLab?.snp_makeConstraints(closure: { (make) in
-            make.top.equalTo(self.view).offset(20)
-            make.centerX.equalTo(self.view)
-            make.height.equalTo(20)
-            make.left.equalTo(10)
+            make.top.equalTo(descLab.snp_bottom).offset(20)
+//            make.centerX.equalTo(self.view)
+            make.height.equalTo(30)
+            make.left.equalTo(descLab.snp_left)
+            make.right.equalTo(descLab.snp_right)
         })
-        
-        let insuranceBtn = UIButton()
-        insuranceBtn.setImage(UIImage(named: "guide-star-hollow"), forState: .Normal)
-        insuranceBtn.setImage(UIImage(named: "guide-star-fill"), forState: .Selected)
-        insuranceBtn.setTitle("同意购买商务保险,", forState: .Normal)
-        insuranceBtn.titleLabel?.font = UIFont.systemFontOfSize(10.0)
-        insuranceBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        insuranceBtn.contentHorizontalAlignment = .Left
-        insuranceBtn.addTarget(self, action: #selector(sureInsuranceActure(_:)), forControlEvents: .TouchUpInside)
-        self.view.addSubview(insuranceBtn)
-        insuranceBtn.snp_makeConstraints { (make) in
-//            let left = (UIScreen.mainScreen().bounds.width-110-60)/2
-            make.top.equalTo(payLab!.snp_bottom).offset(10)
-            make.width.equalTo(110)
-            make.height.equalTo(20)
-            make.left.equalTo(self.view).offset(20)
-//            make.left.equalTo(self.view).offset(left)
-        }
-        
-        let webBtn = UIButton()
-        let attrs = [
-            NSFontAttributeName : UIFont.systemFontOfSize(10.0),
-            NSForegroundColorAttributeName : UIColor.blueColor(),
-            NSUnderlineStyleAttributeName : 1]
-        let attributedString = NSMutableAttributedString(string:"")
-        let buttonTitleStr = NSMutableAttributedString(string:"《保险说明》", attributes:attrs)
-        attributedString.appendAttributedString(buttonTitleStr)
-        webBtn.setAttributedTitle(attributedString, forState: .Normal)
-        webBtn.addTarget(self, action: #selector(webView(_:)), forControlEvents: .TouchUpInside)
-        self.view.addSubview(webBtn)
-        webBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(payLab!.snp_bottom).offset(10)
-            make.width.equalTo(60)
-            make.height.equalTo(20)
-            make.left.equalTo(insuranceBtn.snp_right)
-        }
         
         passwdTF = UITextField()
         passwdTF!.borderStyle = .RoundedRect
@@ -87,21 +77,66 @@ class PayVC: UIViewController, UITextFieldDelegate {
         passwdTF!.resignFirstResponder()
         self.view.addSubview(passwdTF!)
         passwdTF!.snp_makeConstraints { (make) in
-            make.left.equalTo(self.view).offset(20)
-            make.right.equalTo(self.view).offset(-20)
+            make.left.equalTo(descLab.snp_left)
+            make.right.equalTo(descLab.snp_right)
             make.height.equalTo(30)
-            make.top.equalTo(webBtn.snp_bottom).offset(5)
+            make.top.equalTo(payLab!.snp_bottom).offset(20)
         }
+
+        let insuranceBtn = UIButton()
+        insuranceBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 100)
+        insuranceBtn.setImage(UIImage(named: "pay-unselect"), forState: .Normal)
+        insuranceBtn.setImage(UIImage(named: "pay-selected"), forState: .Selected)
+        insuranceBtn.setTitle("同意购买商务保险,", forState: .Normal)
+        insuranceBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
+        insuranceBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
+        insuranceBtn.contentHorizontalAlignment = .Left
+        insuranceBtn.addTarget(self, action: #selector(sureInsuranceActure(_:)), forControlEvents: .TouchUpInside)
+        self.view.addSubview(insuranceBtn)
+        insuranceBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
+            make.width.equalTo(115)
+            make.height.equalTo(15)
+            make.left.equalTo(self.view).offset(20)
+        }
+        
+        let webBtn = UIButton()
+        webBtn.setTitle("《保险说明》", forState: .Normal)
+        webBtn.tag = 99
+        webBtn.setTitleColor(UIColor.init(decR: 17, decG: 30, decB: 46, a: 1), forState: .Normal)
+        webBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
+        webBtn.contentHorizontalAlignment = .Left
+//        let attrs = [
+//            NSFontAttributeName : UIFont.systemFontOfSize(12.0),
+//            NSForegroundColorAttributeName : UIColor.init(decR: 3, decG: 168, decB: 236, a: 1),
+//            NSUnderlineStyleAttributeName : 1]
+//        let attributedString = NSMutableAttributedString(string:"") //3 168 236
+//        let buttonTitleStr = NSMutableAttributedString(string:"《保险说明》", attributes:attrs)
+//        attributedString.appendAttributedString(buttonTitleStr)
+//        webBtn.setAttributedTitle(attributedString, forState: .Normal)
+        webBtn.addTarget(self, action: #selector(webView(_:)), forControlEvents: .TouchUpInside)
+        self.view.addSubview(webBtn)
+        webBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
+            make.width.equalTo(70)
+            make.height.equalTo(15)
+            make.left.equalTo(insuranceBtn.snp_right)
+        }
+        
         
         let sureBtn = UIButton()
         sureBtn.setTitle("确认支付", forState: .Normal)
+        sureBtn.layer.cornerRadius = 10
+        sureBtn.layer.borderWidth = 1
+        sureBtn.layer.masksToBounds = true
+        sureBtn.layer.borderColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1).CGColor
         sureBtn.setBackgroundImage(UIImage(named: "bottom-selector-bg"), forState: .Normal)
         sureBtn.addTarget(self, action: #selector(surePay(_:)), forControlEvents: .TouchUpInside)
         self.view.addSubview(sureBtn)
         sureBtn.snp_makeConstraints { (make) in
-            make.left.equalTo(passwdTF!.snp_left)
-            make.right.equalTo(passwdTF!.snp_right)
-            make.top.equalTo(passwdTF!.snp_bottom).offset(10)
+            make.left.equalTo(descLab.snp_left)
+            make.right.equalTo(descLab.snp_right)
+            make.top.equalTo(webBtn.snp_bottom).offset(10)
             make.height.equalTo(40)
         }
 
@@ -131,25 +166,25 @@ class PayVC: UIViewController, UITextFieldDelegate {
                                                 "passwd_": passwd!]
                 SocketManager.sendData(.PayForInvitationRequest, data: dict)
             }
-            
         }
-
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         //收起键盘
         textField.resignFirstResponder()
-        //打印出文本框中的值
         print(textField.text)
         return true
     }
-    
+    func sureInsuranceReply(notification: NSNotification) {
+//        sureInsurancePrice = notification
+        
+    }
     func sureInsuranceActure(sender:UIButton) {
         let isSelected = sender.selected
         sender.selected = !isSelected
-        let sureInsurancePrice = isSelected ? 0 : 20
-        let money = price! + sureInsurancePrice*100
-        payLab!.text = "您即将预支付人民币\(Double(money)/100)元"
+        let num = isSelected ? 0 : sureInsurancePrice
+        let money = price! + num!*100
+        payLab!.text = "￥\(Double(money)/100)"
         
     }
     func webView(sender:UIButton) {
@@ -192,7 +227,11 @@ class PayVC: UIViewController, UITextFieldDelegate {
                 break
             }
             let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
+            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: {(action) in
+                if result == 0{
+                self.navigationController?.popViewControllerAnimated(true)
+                }
+            })
             alert.addAction(sure)
             presentViewController(alert, animated: true, completion: nil)
         }

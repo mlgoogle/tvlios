@@ -197,14 +197,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      - parameter notification: 
      */
     func receivedAppointmentInfos(notification:NSNotification) {
-        
+        let realm = try! Realm()
         if header.state == MJRefreshState.Refreshing {
             header.endRefreshing()
+            
         }
         if footer.state == MJRefreshState.Refreshing {
             footer.endRefreshing()
         }
-        let realm = try! Realm()
+        
         records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
         let lastID = notification.userInfo!["lastID"] as! Int
         if lastID == -9999 {
@@ -265,7 +266,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.left.equalTo(view)
             make.top.equalTo(segmentBGV.snp_bottom)
             make.right.equalTo(view)
-            make.bottom.equalTo(view)
+            make.bottom.equalTo(view).offset(-5)
         })
         header.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.headerRefresh))
         table?.mj_header = header
@@ -283,6 +284,12 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 "count_": 10])
             break
         case 1:
+            let realm = try! Realm()
+            let objs = realm.objects(AppointmentInfo.self)
+            try! realm.write({
+                realm.delete(objs)
+                
+            })
             SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "last_id_": 0,
                 "count_": 10])
@@ -476,7 +483,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
 //        guard info != nil else {return}
         guard segmentIndex != 2 else { return }
-        weak var weakSelf = self
+//        weak var weakSelf = self
        
         var price = 0
         var order_id_ = 0
@@ -494,7 +501,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         payVc.orderId = order_id_
         payVc.segmentIndex = segmentSC!.selectedSegmentIndex
         self.navigationController?.pushViewController(payVc, animated: true)
-        return
         
 //        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
 //        
