@@ -188,7 +188,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         
     }
     func webView(sender:UIButton) {
-        let webVc = BaseWebView()
+        let webVc = BaseWebView.init(title: "保险须知", url: "http://www.yundiantrip.com")
         self.navigationController?.pushViewController(webVc, animated: true)
         
     }
