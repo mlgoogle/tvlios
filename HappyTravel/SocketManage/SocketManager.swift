@@ -232,12 +232,17 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var isFirstReConnect = true
     
-    
     static var isLogout = false
     
     typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
     
     static var completationsDic = [Int16: recevieDataBlock]()
+    
+    let tmpNewRequestType:[Int16] = []  // [SockOpcode.Logined.rawValue]
+    
+    var isConnected : Bool {
+        return socket!.isConnected
+    }
     
     override init() {
         super.init()
@@ -248,13 +253,17 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     func connectSock() {
-        buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-//                let ip = "192.168.25.129"
-//                let ip = "103.40.192.101"
-                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10007, withTimeout: 5)
+                #if true  // true: 测试环境    false: 正式环境
+                    let ip:String = "61.147.114.78"
+                    let port:UInt16 = 10007
+                #else
+                    let ip:String = "103.40.192.101"
+                    let port:UInt16 = 10001
+                #endif
+                buffer = NSMutableData()
+                try socket?.connectToHost(ip, onPort: port, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
@@ -263,6 +272,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         } catch {
             
         }
+    }
+    
+    func disconnect() {
+        socket?.delegate = nil
+        socket?.disconnect()
     }
     
     static func logoutCurrentAccount() {
@@ -298,8 +312,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     static func sendData(opcode: SockOpcode, data: AnyObject?) ->Bool {
-        
-
         let sock:SocketManager? = SocketManager.shareInstance
         if sock == nil {
             return false
@@ -342,6 +354,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if result != nil {
             completationsDic[opcode.rawValue+1] = result
         }
+    }
+    
+    func sendData(packet: SocketDataPacket) {
+        socket?.writeData(packet.pack()!, withTimeout: 5, tag: sockTag)
+        sockTag += 1
     }
     
     func recvData(head: SockHead?, body:AnyObject?) ->Bool {
@@ -571,6 +588,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         if username != nil && passwd != nil && userType != nil && SocketManager.isLogout == false {
             let dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": userType!]
+//            let loginModel = LoginModel()
+//            loginModel.user_type_ = 1
+//            loginModel.phone_num_ = username!
+//            loginModel.passwd_ = passwd!
+//            UserSocketAPI.login(loginModel, complete: { (response) in
+//                    XCGLogger.debug(response)
+//                }, error: { (err) in
+//            
+//            })
             SocketManager.sendData(.Login, data: dict)
         }
         SocketManager.isLogout = false
@@ -601,6 +627,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
         }
     }
+    
+    func onPacketData(data: NSData) {
+        let packet: SocketDataPacket = SocketDataPacket(data: data)
+        SocketRequestManage.shared.notifyResponsePacket(packet)
+    }
+    
     func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
         buffer.appendData(data)
         let headLen = SockHead.size
@@ -613,9 +645,15 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     socket?.disconnect()
                     return
                 }
-                let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
+                
+                if tmpNewRequestType.contains(head.opcode) {
+                    let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
+                    onPacketData(packetData)
+                } else {
+                    let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
+                    recvData(head, body: bodyData)
+                }
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
-                recvData(head, body: bodyData)
             } else {
                 break
             }

@@ -169,11 +169,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab?.userInteractionEnabled = true
         titleView.addSubview(titleLab!)
         titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX)  // .offset(-10)
+            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
             make.centerY.equalTo(titleView.snp_centerY)
         }
         titleLab?.text = "我的位置"
-        
+        //城市选择功能
+      
 //        titleBtn = UIButton()
 //        titleBtn!.backgroundColor = .clearColor()
 //        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
