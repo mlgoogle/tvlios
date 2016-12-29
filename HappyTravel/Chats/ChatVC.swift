@@ -323,8 +323,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         chatTable!.registerClass(ChatBubbleCell.self, forCellReuseIdentifier: "ChatBubbleCell")
         view.addSubview(chatTable!)
         
-        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
-        chatTable?.mj_header = header
+//        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
+//        chatTable?.mj_header = header
         
     }
     
