@@ -23,7 +23,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var priceLab:UILabel?
     
-    var serviceTel = "10086"
+    var serviceTel = "0571-87611687"
     
     var services:Results<CenturionCardServiceInfo>?
 
@@ -176,7 +176,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         priceLab = UILabel()
         priceLab?.backgroundColor = UIColor.clearColor()
-        priceLab?.text = "2998"
+        priceLab?.text = "1999"
         priceLab?.textColor = UIColor.blackColor()
         priceLab?.font = UIFont.systemFontOfSize(S18)
         buyVIPView?.addSubview(priceLab!)
@@ -335,7 +335,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
         let curLv = DataManager.currentUser?.centurionCardLv
         if curLv <= 0 {
-            UIApplication.sharedApplication().openURL(NSURL.init(string: "http://baidu.com")!)
+            UIApplication.sharedApplication().openURL(NSURL.init(string: "http://www.yundiantrip.com/?page_id=6")!)
             return
         }
         

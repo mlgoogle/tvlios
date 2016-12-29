@@ -231,9 +231,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             weakSelf.selectedServcie = service
 
             alertController?.dismissViewControllerAnimated(true, completion: {
-                
-                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
-                
+                //移除天数选泽,默认一天
+//                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+                weakSelf.daysSureAction(nil, targetDays: 1)
                 
             })
         }
@@ -472,9 +472,8 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
                 "service_id_": selectedServcie!.service_id_,
                 "day_count_":targetDays])
         }else{
-
-   
-            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\((totalMoney - currentCash!)/100+1)元", preferredStyle: .Alert)
+            let needChargeNum = Int(ceil(Float(totalMoney - currentCash!)/100))
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还差\(needChargeNum)元", preferredStyle: .Alert)
 
             let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
                 XCGLogger.debug("去充值")
