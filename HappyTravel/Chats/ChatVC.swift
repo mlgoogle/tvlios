@@ -45,7 +45,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     override public var inputAccessoryView: UIView! {
         get {
             if toolBar == nil {
-                toolBar = UIToolbar(frame: CGRectMake(0, 0, 0, 44-0.5))
+                toolBar = UIToolbar(frame: CGRectZero)
+                toolBar.autoresizingMask = .FlexibleHeight
                 toolBar.backgroundColor = colorWithHexString("#f2f2f2")
                 faceButton = UIButton(type: .Custom)
                 faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
@@ -53,7 +54,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.addSubview(faceButton)
                 faceButton.translatesAutoresizingMaskIntoConstraints = false
                 faceButton.snp_makeConstraints(closure: { (make) in
-                    make.top.equalTo(toolBar).offset(5)
+                    make.height.equalTo(32)
                     make.left.equalTo(toolBar).offset(5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.width.equalTo(32)
@@ -73,9 +74,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.addSubview(sendButton)
                 sendButton.translatesAutoresizingMaskIntoConstraints = false
                 sendButton.snp_makeConstraints(closure: { (make) in
-                    make.top.equalTo(toolBar).offset(5)
-                    make.right.equalTo(toolBar).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
+                    make.right.equalTo(toolBar).offset(-5)
+                    make.height.equalTo(30)
                     make.width.equalTo(80)
                 })
                 
@@ -88,6 +89,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 textView.layer.cornerRadius = 5
                 textView.scrollsToTop = false
                 textView.textContainerInset = UIEdgeInsetsMake(4, 3, 3, 3)
+                textView.scrollRangeToVisible(NSMakeRange(0, 0))
+                textView.scrollEnabled = false
                 toolBar.addSubview(textView)
                 textView.translatesAutoresizingMaskIntoConstraints = false
                 textView.snp_makeConstraints(closure: { (make) in
@@ -95,11 +98,34 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                     make.right.equalTo(sendButton.snp_left).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.top.equalTo(toolBar).offset(5)
+                    
                 })
-
+            }
+            let height = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat(MAXFLOAT))).height
+            if height < 120 {
+                textView.snp_remakeConstraints(closure: { (make) in
+                    make.left.equalTo(faceButton.snp_right).offset(5)
+                    make.right.equalTo(sendButton.snp_left).offset(-5)
+                    make.bottom.equalTo(toolBar).offset(-5)
+                    make.top.equalTo(toolBar).offset(5)
+                    make.height.equalTo(height)
+                })
             }
             return toolBar
         }
+    }
+    
+    //MARK: - UITextViewDelegate
+    public func textViewDidChange(textView: UITextView) {
+        sendButton.enabled = textView.hasText()
+        let oldHeight = textView.frame.size.height
+        let newHeight = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat(MAXFLOAT))).height
+        let height = abs(Int(newHeight) - Int(oldHeight))
+        if height > 18 && newHeight <= 120 {
+            inputAccessoryView.reloadInputViews()
+        }
+
+        textView.scrollEnabled = newHeight > 120
     }
     
     override public func canBecomeFirstResponder() -> Bool {
@@ -278,9 +304,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         presentViewController(daysAlertController!, animated: true, completion: nil)
     }
-    public func textViewDidChange(textView: UITextView) {
-        sendButton.enabled = textView.hasText()
-    }
     
     func initView() {
         dateFormatter.dateStyle = .ShortStyle
@@ -445,6 +468,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         textView.text = ""
+        inputAccessoryView.reloadInputViews()
     }
     
     func menuControllerWillHide(notification: NSNotification) {
