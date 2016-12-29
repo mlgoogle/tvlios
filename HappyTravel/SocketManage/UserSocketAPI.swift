@@ -14,6 +14,10 @@ class UserSocketAPI {
     
     let requestManager = SocketRequestManage.shared
     
+    static func autoLogin() -> Bool {
+        return NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) != nil
+    }
+    
     static func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let api = UserSocketAPI.shared
         let packet = SocketDataPacket(opcode: .Login, model: model)
