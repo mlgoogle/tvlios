@@ -90,7 +90,6 @@
 		2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */; };
 		2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */; };
 		2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B971DAF701E001EEED2 /* CenturionCardServicesCell.swift */; };
-		2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */; };
 		2FF72BA11DB61E7F001EEED2 /* SkillsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */; };
 		2FF72BA31DB73054001EEED2 /* DateSelectorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */; };
 		2FF72BA51DB7436E001EEED2 /* SkillTreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */; };
@@ -402,7 +401,6 @@
 		2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardVC.swift; path = Personal/CenturionCard/CenturionCardVC.swift; sourceTree = "<group>"; };
 		2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardBaseInfoCell.swift; path = Personal/CenturionCard/CenturionCardBaseInfoCell.swift; sourceTree = "<group>"; };
 		2FF72B971DAF701E001EEED2 /* CenturionCardServicesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardServicesCell.swift; path = Personal/CenturionCard/CenturionCardServicesCell.swift; sourceTree = "<group>"; };
-		2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentVC.swift; path = Map/Appointment/AppointmentVC.swift; sourceTree = "<group>"; };
 		2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillsCell.swift; path = Map/Appointment/SkillsCell.swift; sourceTree = "<group>"; };
 		2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateSelectorSheet.swift; path = Map/Appointment/DateSelectorSheet.swift; sourceTree = "<group>"; };
 		2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SkillTreeVC.swift; path = Map/Appointment/SkillTreeVC.swift; sourceTree = "<group>"; };
@@ -931,7 +929,6 @@
 		2FF72B991DB47854001EEED2 /* Appointment */ = {
 			isa = PBXGroup;
 			children = (
-				2FF72B9A1DB478D1001EEED2 /* AppointmentVC.swift */,
 				2FF72BA01DB61E7F001EEED2 /* SkillsCell.swift */,
 				2FF72BA21DB73054001EEED2 /* DateSelectorSheet.swift */,
 				2FF72BA41DB7436E001EEED2 /* SkillTreeVC.swift */,
@@ -1659,7 +1656,6 @@
 				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
 				2F9684111D76CD040028E3F2 /* IdentBaseInfoCell.swift in Sources */,
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
-				2FF72B9B1DB478D1001EEED2 /* AppointmentVC.swift in Sources */,
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,

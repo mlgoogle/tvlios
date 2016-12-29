@@ -122,6 +122,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         appointmentView.commitBtn?.enabled = true
+
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -374,10 +375,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentVC.touchWhiteSpace))
-        touch.numberOfTapsRequired = 1
-        touch.cancelsTouchesInView = false
-        appointmentView.table?.addGestureRecognizer(touch)
+//        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentView.touchWhiteSpace))
+//        touch.numberOfTapsRequired = 1
+//        touch.cancelsTouchesInView = false
+//        appointmentView.table?.addGestureRecognizer(touch)
     }
     
     func touchWhiteSpace() {

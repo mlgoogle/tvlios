@@ -121,7 +121,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 
                 let rechargeVC = RechargeVC()
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
-//                DataManager.currentUser?.cash = 10
                 
             })
             
@@ -169,7 +168,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
         presentViewController(alertController!, animated: true, completion: nil)
         
-        
     }
     
     // MARK: - ServiceSheetDelegate
@@ -184,28 +182,21 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter daysCount:
      */
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        
         service_price_oneday = service?.service_price_
         
-        
-    
         if !isNormal { // 预约
-            
             alertController?.dismissViewControllerAnimated(true, completion: nil)
             
-            let arrry = DataManager.getAppointmentRecordInfos(appointment_id_)
-            let appointmentInfo:AppointmentInfo? = arrry?.first
+//            let arrry = DataManager.getAppointmentRecordInfos(appointment_id_)
+//            let appointmentInfo:AppointmentInfo? = arrry?.first
             
             // 预约天数
-            let dayNum:Double = Double(((appointmentInfo?.end_time_)! - (appointmentInfo?.start_time_)!) / (24 * 60 * 60))
+            let dayNum:Double = 1.0 // Double(((appointmentInfo?.end_time_)! - (appointmentInfo?.start_time_)!) / (24 * 60 * 60))
             
             // 预约总金额
             let totalMoney = service_price_oneday! * Int(dayNum)
             let currentCash = DataManager.currentUser?.cash
-            
-            
             if currentCash >= totalMoney { // 余额充足
-                
                 SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
                     "to_uid_": personalInfo!.uid,
                     "service_id_": service!.service_id_,
@@ -235,10 +226,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 })
             }
             
-            
-            
-            
-
         } else { // 邀约
             unowned let weakSelf = self
             weakSelf.selectedServcie = service
