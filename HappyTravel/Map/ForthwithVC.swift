@@ -169,22 +169,22 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab?.userInteractionEnabled = true
         titleView.addSubview(titleLab!)
         titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX).offset(-10)
+            make.centerX.equalTo(titleView.snp_centerX)  // .offset(-10)
             make.centerY.equalTo(titleView.snp_centerY)
         }
         titleLab?.text = "我的位置"
         
-        titleBtn = UIButton()
-        titleBtn!.backgroundColor = .clearColor()
-        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
-        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
-        titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), forControlEvents: .TouchUpInside)
-        titleView.addSubview(titleBtn!)
-        titleBtn!.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLab!.snp_right)
-            make.width.equalTo(20)
-            make.centerY.equalTo(titleLab!.snp_centerY)
-        }
+//        titleBtn = UIButton()
+//        titleBtn!.backgroundColor = .clearColor()
+//        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
+//        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
+//        titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), forControlEvents: .TouchUpInside)
+//        titleView.addSubview(titleBtn!)
+//        titleBtn!.snp_makeConstraints { (make) in
+//            make.left.equalTo(titleLab!.snp_right)
+//            make.width.equalTo(20)
+//            make.centerY.equalTo(titleLab!.snp_centerY)
+//        }
         
 //        let segmentBGV = UIImageView()
 //        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))

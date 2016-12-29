@@ -252,9 +252,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
 //                let ip = "192.168.25.129"
-                let ip = "103.40.192.101"
-//                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
+//                let ip = "103.40.192.101"
+                let ip = "61.147.114.78"
+                try socket?.connectToHost(ip, onPort: 10007, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
