@@ -22,7 +22,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
     var nameLabel:UIButton?
     
-    var serviceTel = "10086"
+    var serviceTel = "0571-87611687"
     
     var imagePicker:UIImagePickerController? = nil
     

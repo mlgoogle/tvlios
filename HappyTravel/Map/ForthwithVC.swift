@@ -122,6 +122,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         appointmentView.commitBtn?.enabled = true
+
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -173,6 +174,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         titleLab?.text = "我的位置"
         //城市选择功能
+      
 //        titleBtn = UIButton()
 //        titleBtn!.backgroundColor = .clearColor()
 //        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
@@ -374,10 +376,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentVC.touchWhiteSpace))
-        touch.numberOfTapsRequired = 1
-        touch.cancelsTouchesInView = false
-        appointmentView.table?.addGestureRecognizer(touch)
+//        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentView.touchWhiteSpace))
+//        touch.numberOfTapsRequired = 1
+//        touch.cancelsTouchesInView = false
+//        appointmentView.table?.addGestureRecognizer(touch)
     }
     
     func touchWhiteSpace() {
