@@ -109,7 +109,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
             if regOrLoginSelVC?.isShow == false {
-                presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
+                presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
             }
         } else {
             if DataManager.currentUser!.registerSstatus == 0 {
