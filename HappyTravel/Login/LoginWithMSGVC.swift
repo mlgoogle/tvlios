@@ -197,20 +197,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             make.height.equalTo(25)
         }
     }
-    
-//    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        if let textField = view.viewWithTag(tags["usernameField"]!) {
-//            if !textField.exclusiveTouch {
-//                textField.resignFirstResponder()
-//            }
-//        }
-//        
-//        if let textField = view.viewWithTag(tags["verifyCodeField"]!) {
-//            if !textField.exclusiveTouch {
-//                textField.resignFirstResponder()
-//            }
-//        }
-//    }
 
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)

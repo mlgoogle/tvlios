@@ -158,7 +158,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let timeLab = view!.viewWithTag(1005) as? UILabel {
-            var serviceTime = "09:00-21:00"
+            var serviceTime = "06:00-23:00"
             
             if recordInfo?.status_ > 2 {
               
