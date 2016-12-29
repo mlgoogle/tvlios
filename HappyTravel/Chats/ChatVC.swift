@@ -13,7 +13,7 @@ import MJRefresh
 
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate, FaceKeyboardViewDelegate{
     var daysAlertController:UIAlertController?
-
+    
     var dateFormatter = NSDateFormatter()
     var messages:Array<Message> = []
     var chatTable:UITableView?
@@ -33,9 +33,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     
     var selectedServcie:ServiceInfo?
-
+    
     var faceKeyBoard:FaceKeyboardView = {
-       
+        
         let keyboardView = NSBundle.mainBundle().loadNibNamed("FaceKeyboardView", owner: nil, options: nil).first as! FaceKeyboardView
         
         return keyboardView
@@ -45,7 +45,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     override public var inputAccessoryView: UIView! {
         get {
             if toolBar == nil {
-                toolBar = UIToolbar(frame: CGRectMake(0, 0, 0, 44-0.5))
+                toolBar = UIToolbar(frame: CGRectZero)
+                toolBar.autoresizingMask = .FlexibleHeight
                 toolBar.backgroundColor = colorWithHexString("#f2f2f2")
                 faceButton = UIButton(type: .Custom)
                 faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
@@ -53,7 +54,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.addSubview(faceButton)
                 faceButton.translatesAutoresizingMaskIntoConstraints = false
                 faceButton.snp_makeConstraints(closure: { (make) in
-                    make.top.equalTo(toolBar).offset(5)
+                    make.height.equalTo(32)
                     make.left.equalTo(toolBar).offset(5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.width.equalTo(32)
@@ -73,9 +74,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.addSubview(sendButton)
                 sendButton.translatesAutoresizingMaskIntoConstraints = false
                 sendButton.snp_makeConstraints(closure: { (make) in
-                    make.top.equalTo(toolBar).offset(5)
-                    make.right.equalTo(toolBar).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
+                    make.right.equalTo(toolBar).offset(-5)
+                    make.height.equalTo(30)
                     make.width.equalTo(80)
                 })
                 
@@ -88,6 +89,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 textView.layer.cornerRadius = 5
                 textView.scrollsToTop = false
                 textView.textContainerInset = UIEdgeInsetsMake(4, 3, 3, 3)
+                textView.scrollRangeToVisible(NSMakeRange(0, 0))
+                textView.scrollEnabled = false
                 toolBar.addSubview(textView)
                 textView.translatesAutoresizingMaskIntoConstraints = false
                 textView.snp_makeConstraints(closure: { (make) in
@@ -95,11 +98,34 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                     make.right.equalTo(sendButton.snp_left).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.top.equalTo(toolBar).offset(5)
+                    
                 })
-
+            }
+            let height = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat(MAXFLOAT))).height
+            if height < 120 {
+                textView.snp_remakeConstraints(closure: { (make) in
+                    make.left.equalTo(faceButton.snp_right).offset(5)
+                    make.right.equalTo(sendButton.snp_left).offset(-5)
+                    make.bottom.equalTo(toolBar).offset(-5)
+                    make.top.equalTo(toolBar).offset(5)
+                    make.height.equalTo(height)
+                })
             }
             return toolBar
         }
+    }
+    
+    //MARK: - UITextViewDelegate
+    public func textViewDidChange(textView: UITextView) {
+        sendButton.enabled = textView.hasText()
+        let oldHeight = textView.frame.size.height
+        let newHeight = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat(MAXFLOAT))).height
+        let height = abs(Int(newHeight) - Int(oldHeight))
+        if height > 18 && newHeight <= 120 {
+            inputAccessoryView.reloadInputViews()
+        }
+        
+        textView.scrollEnabled = newHeight > 120
     }
     
     override public func canBecomeFirstResponder() -> Bool {
@@ -110,9 +136,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-
+        
         if servantInfo == nil {
-           navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewControllerAnimated(true)
             return
         }
         
@@ -126,7 +152,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewWillAppear(animated)
         registerNotify()
         
-       //如果是客服聊天则直接return
+        //如果是客服聊天则直接return
         guard servantInfo?.uid > -1 else {return}
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
@@ -247,19 +273,19 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
         
         unowned let weakSelf = self
-
+        
         selectedServcie = service
-
+        
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
             weakSelf.daysSureAction(nil, targetDays: 1)
-//            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+            //            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             
         })
         
     }
-
+    
     func inviteAction() {
         if daysAlertController == nil {
             daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -277,9 +303,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         presentViewController(daysAlertController!, animated: true, completion: nil)
-    }
-    public func textViewDidChange(textView: UITextView) {
-        sendButton.enabled = textView.hasText()
     }
     
     func initView() {
@@ -302,7 +325,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
         chatTable?.mj_header = header
-
+        
     }
     
     func headerRefresh() {
@@ -386,7 +409,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if faceButton.selected {
             textView.inputView = nil
-
+            
         }
         let isSelected = faceButton.selected
         UIView.animateWithDuration(0.2) {
@@ -406,9 +429,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             self.textView.becomeFirstResponder()
         }
         
-
+        
     }
-
+    
     func sendMessageAction() {
         let msg = textView.text
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
@@ -418,14 +441,14 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
         //base64编码
-//        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
-//        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-//        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
-//                                                  "to_uid_": servantInfo!.uid,
-//                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
-//                                                  "content_": msg_base64!]
-//        SocketManager.sendData(.SendChatMessage, data: data_base)
-
+        //        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
+        //        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        //        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
+        //                                                  "to_uid_": servantInfo!.uid,
+        //                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
+        //                                                  "content_": msg_base64!]
+        //        SocketManager.sendData(.SendChatMessage, data: data_base)
+        
         
         
         //发送聊天消息包
@@ -445,6 +468,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         textView.text = ""
+        inputAccessoryView.reloadInputViews()
     }
     
     func menuControllerWillHide(notification: NSNotification) {
@@ -470,7 +494,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             
             textView.deleteBackward()
         }
-
+        
     }
     
 }
