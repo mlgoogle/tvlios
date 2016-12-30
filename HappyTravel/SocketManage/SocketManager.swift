@@ -526,7 +526,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.completationsDic.removeValueForKey(blockKey)
         }
         
-        
         return true
     }
     
@@ -842,13 +841,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {
         if let data = jsonBody?.dictionaryObject {
-            if let reason = data["failed_reason_"] as? String {
-                if reason == "" {
+//            if let reason = data["failed_reason_"] as? String {
+//                if reason == "" {
                     if let reviewStatus = data["review_status_"] as? Int {
                         DataManager.currentUser?.authentication = reviewStatus
                     }
-                }
-            }
+//                }
+//            }
         }
         postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
