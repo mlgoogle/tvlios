@@ -79,8 +79,9 @@ class DistanceOfTravelCell: UITableViewCell {
         var nickNameLab = view?.viewWithTag(1002) as? UILabel
         if nickNameLab == nil {
             nickNameLab = UILabel()
+            nickNameLab?.backgroundColor = UIColor.redColor()
             nickNameLab?.tag = 1002
-            nickNameLab?.backgroundColor = UIColor.clearColor()
+//            nickNameLab?.backgroundColor = UIColor.clearColor()
             nickNameLab?.textAlignment = .Left
             nickNameLab?.font = UIFont.systemFontOfSize(S15)
             view?.addSubview(nickNameLab!)
@@ -93,8 +94,9 @@ class DistanceOfTravelCell: UITableViewCell {
         var serviceTitleLab = view? .viewWithTag(1003) as? UILabel
         if serviceTitleLab == nil {
             serviceTitleLab = UILabel()
+            serviceTitleLab?.backgroundColor = UIColor.grayColor()
             serviceTitleLab?.tag = 1003
-            serviceTitleLab?.backgroundColor = UIColor.clearColor()
+//            serviceTitleLab?.backgroundColor = UIColor.clearColor()
             serviceTitleLab?.textAlignment = .Left
             serviceTitleLab?.textColor = UIColor.blackColor()
             serviceTitleLab?.font = UIFont.systemFontOfSize(S15)
@@ -108,8 +110,9 @@ class DistanceOfTravelCell: UITableViewCell {
         var payLab = view? .viewWithTag(1004) as? UILabel
         if payLab == nil {
             payLab = UILabel()
+            payLab?.backgroundColor = UIColor.yellowColor()
             payLab?.tag = 1004
-            payLab?.backgroundColor = UIColor.clearColor()
+//            payLab?.backgroundColor = UIColor.clearColor()
             payLab?.textAlignment = .Right
             payLab?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
             payLab?.font = UIFont.systemFontOfSize(15)
@@ -123,8 +126,9 @@ class DistanceOfTravelCell: UITableViewCell {
         var timeLab = view?.viewWithTag(1005) as? UILabel
         if timeLab == nil {
             timeLab = UILabel()
+            timeLab?.backgroundColor = UIColor.blueColor()
             timeLab?.tag = 1005
-            timeLab?.backgroundColor = UIColor.clearColor()
+//            timeLab?.backgroundColor = UIColor.clearColor()
             timeLab?.textAlignment = .Left
             timeLab?.textColor = UIColor.grayColor()
             timeLab?.font = UIFont.systemFontOfSize(S13)
@@ -139,8 +143,9 @@ class DistanceOfTravelCell: UITableViewCell {
         var statusLab = view? .viewWithTag(1006) as? UILabel
         if statusLab == nil {
             statusLab = UILabel()
+            statusLab?.backgroundColor = UIColor.brownColor()
             statusLab?.tag = 1006
-            statusLab?.backgroundColor = UIColor.clearColor()
+//            statusLab?.backgroundColor = UIColor.clearColor()
             statusLab?.textAlignment = .Right
             statusLab?.textColor = UIColor.init(red: 245/255.0, green: 146/255.0, blue: 49/255.0, alpha: 1)
             statusLab?.font = UIFont.systemFontOfSize(S15)

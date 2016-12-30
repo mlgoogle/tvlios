@@ -226,12 +226,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 SocketManager.logoutCurrentAccount()
                 navigationController?.popViewControllerAnimated(false)
                 break
-        case .AboutUs:
-            let aboutUSVC = AboutUSVC()
-            navigationController?.pushViewController(aboutUSVC, animated: true)
-            break
+            case .AboutUs:
+                let webVc = CommonWebVC.init(title: "关于我们", url: "http://www.yundiantrip.com")
+                self.navigationController?.pushViewController(webVc, animated: true)
+                break
             default:
-            break
+                break
         }
     }
     
