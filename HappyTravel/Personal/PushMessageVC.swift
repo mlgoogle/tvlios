@@ -66,24 +66,25 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
         
-            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
-           
-            var uid_str = ""
-            for servant in servants! {
-                let servantInfo = UserInfo()
-                servantInfo.setInfo(.Servant, info: servant)
-                servantsArray?.append(servantInfo)
-                uid_str += "\(servantInfo.uid),"
-
+            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+                var uid_str = ""
+                for servant in servants {
+                    let servantInfo = UserInfo()
+                    servantInfo.setInfo(.Servant, info: servant)
+                    servantsArray?.append(servantInfo)
+                    uid_str += "\(servantInfo.uid),"
+                    
+                }
+                let recommendVC = RecommendServantsVC()
+                recommendVC.isNormal = false
+                recommendVC.appointment_id_ = currentAppointmentId
+                recommendVC.servantsInfo = servantsArray
+                navigationController?.pushViewController(recommendVC, animated: true)
+                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+                SocketManager.sendData(.GetUserInfo, data: dict)
             }
-            let recommendVC = RecommendServantsVC()
-            recommendVC.isNormal = false
-            recommendVC.appointment_id_ = currentAppointmentId
-            recommendVC.servantsInfo = servantsArray
-            navigationController?.pushViewController(recommendVC, animated: true)
-            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-            SocketManager.sendData(.GetUserInfo, data: dict)
+           
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
     }
