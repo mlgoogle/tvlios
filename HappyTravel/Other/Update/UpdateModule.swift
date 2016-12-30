@@ -9,7 +9,7 @@
 import Foundation
 
 
-class UpdateModel {
+class UpdateModule {
     
     private enum VerCompare : Int {
         case Low = -1
@@ -17,7 +17,7 @@ class UpdateModel {
         case Height = 1
     }
     
-    private static var share = UpdateModel()
+    private static var share = UpdateModule()
     
     /**
      检查并提示更新
@@ -27,7 +27,7 @@ class UpdateModel {
      - parameter forced:   强制更新
      */
     static func checking4Update(lastVer: String, buildVer: String, forced: Bool, result:((gotoUpdate:Bool) -> (Void))?) {
-        let manager = UpdateModel.share
+        let manager = UpdateModule.share
         let curVer = manager.getVer()
         let curBuildVer = manager.getBuildVer()
         var needUpdate = false
