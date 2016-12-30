@@ -18,7 +18,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
                 "descLab": 1003,
                 "callServantBtn": 1004]
     
-    var serviceTel = "10086"
+    var serviceTel = "0571-87611687"
     
     var service:CenturionCardServiceInfo?
     

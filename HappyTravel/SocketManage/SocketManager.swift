@@ -213,6 +213,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case UnreadMessageRequest = 2025
         // 未读消息返回
         case UnreadMessageReply = 2026
+        
+        //保险说明
+        case SureInsuranceRequest = 2030
+        case SureInsuranceReply = 2032
 
     }
     
@@ -531,6 +535,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .UnreadMessageReply:
             unreadMessageReply(jsonBody)
+        
+        case .SureInsuranceReply:
+            sureInsuranceReply(jsonBody)
+            
             
         default:
             break
@@ -542,7 +550,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             completation!(["data": jsonBody!.dictionaryObject!])
             SocketManager.completationsDic.removeValueForKey(blockKey)
         }
-        
         
         return true
     }
@@ -880,13 +887,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {
         if let data = jsonBody?.dictionaryObject {
-            if let reason = data["failed_reason_"] as? String {
-                if reason == "" {
+//            if let reason = data["failed_reason_"] as? String {
+//                if reason == "" {
                     if let reviewStatus = data["review_status_"] as? Int {
                         DataManager.currentUser?.authentication = reviewStatus
                     }
-                }
-            }
+//                }
+//            }
         }
         postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -1030,6 +1037,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let data = NSData(base64EncodedString: base64Str, options: NSDataBase64DecodingOptions(rawValue: 0))
         let base64Decoded = String(data: data!, encoding: NSUTF8StringEncoding)
         return base64Decoded!
+    }
+    
+    func sureInsuranceReply(jsonBody: JSON?) {
+        postNotification(NotifyDefine.SureInsuranceReply, object: nil, userInfo: jsonBody?.dictionaryObject)
     }
 }
 

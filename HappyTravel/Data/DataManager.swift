@@ -28,6 +28,8 @@ class DataManager: NSObject {
     
     static var realm:Realm?
     
+    static var curLocation:CLLocation?
+    
     static func setDefaultRealmForUID(uid: Int) {
         var config = Realm.Configuration()
         

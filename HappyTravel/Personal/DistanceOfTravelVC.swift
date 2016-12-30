@@ -65,31 +65,31 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
     func receivedAppoinmentRecommendServants(notification:NSNotification?) {
         
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
-            
-            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
-            
-            var uid_str = ""
-            for servant in servants! {
-                let servantInfo = UserInfo()
-                servantInfo.setInfo(.Servant, info: servant)
-                servantsArray?.append(servantInfo)
-                uid_str += "\(servantInfo.uid),"
-                
+            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+                var uid_str = ""
+                for servant in servants {
+                    let servantInfo = UserInfo()
+                    servantInfo.setInfo(.Servant, info: servant)
+                    servantsArray?.append(servantInfo)
+                    uid_str += "\(servantInfo.uid),"
+                    
+                }
+                let recommendVC = RecommendServantsVC()
+                recommendVC.isNormal = false
+                recommendVC.appointment_id_ = currentApponitmentID
+                recommendVC.servantsInfo = servantsArray
+                navigationController?.pushViewController(recommendVC, animated: true)
+                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+                SocketManager.sendData(.GetUserInfo, data: dict)
             }
-            let recommendVC = RecommendServantsVC()
-            recommendVC.isNormal = false
-            recommendVC.appointment_id_ = currentApponitmentID
-            recommendVC.servantsInfo = servantsArray
-            navigationController?.pushViewController(recommendVC, animated: true)
-            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-            SocketManager.sendData(.GetUserInfo, data: dict)
+            
         }
     }
     
@@ -98,42 +98,42 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      
      - parameter notification: 
      */
-    func payForInvitationReply(notification: NSNotification) {
-        
-        
-        if let result = notification.userInfo!["result_"] as? Int {
-            var msg = ""
-            switch result {
-            case 0:
-                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
-                msg = "预支付成功"
-                if segmentIndex == 0 {
-                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                        "order_id_": 0,
-                        "count_": 10])
-                } else {
-                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
-                        "last_id_": 0,
-                        "count_": 10])
-                }
-            case -1:
-                msg = "密码错误"
-            case -2:
-                 MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
-                msg = "余额不足"
-                moneyIsTooLess()
-                return
-            default:
-                break
-            }
-            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
-            alert.addAction(sure)
-            presentViewController(alert, animated: true, completion: nil)
-        }
-        
-        
-    }
+//    func payForInvitationReply(notification: NSNotification) {
+//        
+//        
+//        if let result = notification.userInfo!["result_"] as? Int {
+//            var msg = ""
+//            switch result {
+//            case 0:
+//                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
+//                msg = "预支付成功"
+//                if segmentIndex == 0 {
+//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+//                        "order_id_": 0,
+//                        "count_": 10])
+//                } else {
+//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+//                        "last_id_": 0,
+//                        "count_": 10])
+//                }
+//            case -1:
+//                msg = "密码错误"
+//            case -2:
+//                 MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
+//                msg = "余额不足"
+//                moneyIsTooLess()
+//                return
+//            default:
+//                break
+//            }
+//            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
+//            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
+//            alert.addAction(sure)
+//            presentViewController(alert, animated: true, completion: nil)
+//        }
+//        
+//        
+//    }
     /**
      邀约行程回调记录
      - parameter notification:
@@ -197,14 +197,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      - parameter notification: 
      */
     func receivedAppointmentInfos(notification:NSNotification) {
-        
+        let realm = try! Realm()
         if header.state == MJRefreshState.Refreshing {
             header.endRefreshing()
+            
         }
         if footer.state == MJRefreshState.Refreshing {
             footer.endRefreshing()
         }
-        let realm = try! Realm()
+        
         records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
         let lastID = notification.userInfo!["lastID"] as! Int
         if lastID == -9999 {
@@ -265,7 +266,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.left.equalTo(view)
             make.top.equalTo(segmentBGV.snp_bottom)
             make.right.equalTo(view)
-            make.bottom.equalTo(view)
+            make.bottom.equalTo(view).offset(-5)
         })
         header.setRefreshingTarget(self, refreshingAction: #selector(DistanceOfTravelVC.headerRefresh))
         table?.mj_header = header
@@ -283,6 +284,12 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 "count_": 10])
             break
         case 1:
+            let realm = try! Realm()
+            let objs = realm.objects(AppointmentInfo.self)
+            try! realm.write({
+                realm.delete(objs)
+                
+            })
             SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
                 "last_id_": 0,
                 "count_": 10])
@@ -402,19 +409,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let object = records![indexPath.row]
             guard object.status_ > 1  else {
-                if object.recomment_uid_ != nil {
-                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recomment_uid_!])
-
-                    
+                if object.recommend_uid_ != nil {
+                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
                 } else {
-                    
                     SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 }
                 return
             }
             if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
                 object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
-                object.status_ == HodometerStatus.Completed.rawValue{
+                object.status_ == HodometerStatus.Completed.rawValue {
                 
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)
@@ -476,7 +480,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
 //        guard info != nil else {return}
         guard segmentIndex != 2 else { return }
-        weak var weakSelf = self
+//        weak var weakSelf = self
        
         var price = 0
         var order_id_ = 0
@@ -488,67 +492,76 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             price =  (selectedHodometerInfo?.order_price_)!
             order_id_ = (selectedHodometerInfo?.order_id_)!
         }
-        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
-        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+        guard price>0 else{return}
+        let payVc = PayVC()
+        payVc.price = price
+        payVc.orderId = order_id_
+        payVc.segmentIndex = segmentSC!.selectedSegmentIndex
+        self.navigationController?.pushViewController(payVc, animated: true)
         
-        alert.addTextFieldWithConfigurationHandler({ (textField) in
-            textField.placeholder = "请输入支付密码"
-            textField.secureTextEntry = true
-        })
-        
-        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
-            var errMsg = ""
-            let passwd = alert.textFields?.first?.text
-            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-                errMsg = "请输入支付密码"
-            }
-            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
-                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
-                        weakSelf!.payForInvitationRequest()
-                    })
-                })
-                warningAlert.addAction(sure)
-                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
-            } else {
-                if DataManager.currentUser?.cash < price {
-                    weakSelf!.moneyIsTooLess()
-                } else {
-                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
-                                                    "order_id_": order_id_,
-                                                    "passwd_": passwd!]
-                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
-                }
-                
-            }
-            
-        })
-        
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-        
-        alert.addAction(ok)
-        alert.addAction(cancel)
-        
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    /**
-     余额不足操作
-     */
-    func moneyIsTooLess() {
-        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
-        
-        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
-            let rechargeVC = RechargeVC()
-            self.navigationController?.pushViewController(rechargeVC, animated: true)
-        })
-        
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-        
-        alert.addAction(ok)
-        alert.addAction(cancel)
-        
-        presentViewController(alert, animated: true, completion: nil)
+//        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
+//        
+//        
+//        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
+//        
+//        alert.addTextFieldWithConfigurationHandler({ (textField) in
+//            textField.placeholder = "请输入支付密码"
+//            textField.secureTextEntry = true
+//        })
+//        
+//        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
+//            var errMsg = ""
+//            let passwd = alert.textFields?.first?.text
+//            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
+//                errMsg = "请输入支付密码"
+//            }
+//            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
+//                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
+//                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
+//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
+//                        weakSelf!.payForInvitationRequest()
+//                    })
+//                })
+//                warningAlert.addAction(sure)
+//                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
+//            } else {
+//                if DataManager.currentUser?.cash < price {
+//                    weakSelf!.moneyIsTooLess()
+//                } else {
+//                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+//                                                    "order_id_": order_id_,
+//                                                    "passwd_": passwd!]
+//                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
+//                }
+//                
+//            }
+//            
+//        })
+//        
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+//        
+//        alert.addAction(ok)
+//        alert.addAction(cancel)
+//        
+//        presentViewController(alert, animated: true, completion: nil)
+//    }
+//    /**
+//     余额不足操作
+//     */
+//    func moneyIsTooLess() {
+//        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
+//        
+//        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
+//            let rechargeVC = RechargeVC()
+//            self.navigationController?.pushViewController(rechargeVC, animated: true)
+//        })
+//        
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+//        
+//        alert.addAction(ok)
+//        alert.addAction(cancel)
+//        
+//        presentViewController(alert, animated: true, completion: nil)
     }
     
     /**

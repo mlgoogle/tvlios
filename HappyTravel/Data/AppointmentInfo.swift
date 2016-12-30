@@ -34,7 +34,7 @@ class AppointmentInfo: Object {
     dynamic var order_id_ = 0
     dynamic var service_end_ = 0
     dynamic var service_start_ = 0
-    dynamic var recomment_uid_:String?
+    dynamic var recommend_uid_:String?
     
     
     
@@ -60,9 +60,9 @@ class AppointmentInfo: Object {
         to_user_ = info.to_user_
         order_price_ = info.order_price_
         order_id_ = info.order_id_
-        if info.recomment_uid_?.characters.count > 0 {
+        if info.recommend_uid_?.characters.count > 0 {
             
-            recomment_uid_ = info.recomment_uid_
+            recommend_uid_ = info.recommend_uid_
         }
     }
     

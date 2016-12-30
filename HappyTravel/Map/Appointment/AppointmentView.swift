@@ -19,8 +19,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var selectedBtn:UIButton?
     
     var cityInfo:CityInfo?
-    var startDate:NSDate?
-    var endDate:NSDate?
+    var startDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
+    var endDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
     var gender = false
     var name:String?
     var tel:String?
@@ -71,6 +71,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             make.right.equalTo(self)
             make.bottom.equalTo(self)
         })
+        
     }
     
     //MARK: - TableView
@@ -309,13 +310,9 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            let normalDate = NSDate.init(timeIntervalSinceNow: 3600 * 24)
-
-            dateLab?.text = dateFormatter.stringFromDate(normalDate)
-            startDate = dateFormatter.dateFromString((dateLab?.text)!)
-
-            endDate =  dateFormatter.dateFromString((dateLab?.text)!)
+            
         }
+        dateLab?.text = dateFormatter.stringFromDate(startDate!)
         
         return cell!
     }
@@ -350,7 +347,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 agentSelector = UISwitch()
                 agentSelector?.tag = tags["agentSelector"]!
                 agentSelector?.onTintColor = UIColor.init(decR: 183, decG: 39, decB: 43, a: 1)
-                agentSelector?.addTarget(self, action: #selector(AppointmentVC.agentSwitch(_:)), forControlEvents: .ValueChanged)
+                agentSelector?.addTarget(self, action: #selector(agentSwitch(_:)), forControlEvents: .ValueChanged)
                 cell?.contentView.addSubview(agentSelector!)
                 agentSelector?.snp_makeConstraints(closure: { (make) in
                     make.right.equalTo(cell!.contentView).offset(-15)
@@ -437,7 +434,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     btn?.setImage(UIImage.init(named: "service-selected"), forState: .Selected)
                     btn?.setTitle(i == 0 ? "  男" : "  女", forState: .Normal)
                     btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
-                    btn?.addTarget(self, action: #selector(AppointmentVC.genderSelectAction(_:)), forControlEvents: .TouchUpInside)
+                    btn?.addTarget(self, action: #selector(genderSelectAction(_:)), forControlEvents: .TouchUpInside)
                     cell?.contentView.addSubview(btn!)
                     btn?.snp_makeConstraints(closure: { (make) in
                         make.top.equalTo(lab!).offset(-5)
@@ -479,7 +476,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     make.top.equalTo(citysAlertController!.view).offset(-10)
                 }
                 nav?.presentViewController(citysAlertController!, animated: true, completion: nil)
-            } else if indexPath.row == 1 || indexPath.row == 2 {
+            } else if indexPath.row == 1 {
                 if dateAlertController == nil {
                     dateAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
                     let sheet = DateSelectorSheet()
@@ -543,21 +540,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     
     func sureAction(tag: Int, date: NSDate) {
         dateAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        if let cell = table?.cellForRowAtIndexPath(curIndexPath!) {
-            if let dateLab = cell.contentView.viewWithTag(tags["dateLab"]!) as? UILabel {
-                if let dateTitleLab = cell.contentView.viewWithTag(tags["dateTitleLab"]!) as? UILabel {
-                    let dateForMatter = NSDateFormatter()
-                    dateForMatter.dateFormat = "yyyy-MM-dd"
-                    dateLab.text = dateForMatter.stringFromDate(date)
-                    if dateTitleLab.text == "开始日期" {
-                        startDate = date
-                    } else {
-                        endDate = date
-                    }
-                }
-            }
-            
-        }
+        startDate = date
+        endDate = date
+        table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 1, inSection: 0), NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
+
     }
     
     func agentSwitch(agentSwitch: UISwitch) {
@@ -594,9 +580,9 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             alright = false
             errMsg = "请选择结束时间"
         } else if Int(UInt64(startDate!.timeIntervalSince1970)) > Int(UInt64(endDate!.timeIntervalSince1970)) {
-            alright = false
-
-            errMsg = "开始时间不能大于结束时间"
+//            alright = false
+//
+//            errMsg = "开始时间不能大于结束时间"
         } else if cityInfo == nil {
             alright = false
             errMsg = "请选择目标城市"
@@ -641,7 +627,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
                                         "city_code_": cityInfo!.cityCode,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
-                                        "end_time_": Int(UInt64(endDate!.timeIntervalSince1970)),
+                                        "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,
                                         "remarks_": remarksTextView?.text ?? "",
                                         "is_other_": agent == false ? 0 : 1,
