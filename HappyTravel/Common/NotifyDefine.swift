@@ -107,4 +107,6 @@ class NotifyDefine: NSObject {
     static let SetupPaymentCodeReply = "SetupPaymentCodeReply"
     
     static let SetupPaymentCodeReplyError = "SetupPaymentCodeReplyError"
+    
+    static let SureInsuranceReply = "SureInsuranceReply"
 }

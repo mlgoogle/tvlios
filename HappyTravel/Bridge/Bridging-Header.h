@@ -30,4 +30,7 @@
 #import <YWFeedbackFMWK/YWFeedbackKit.h>
 #import <YWFeedbackFMWK/YWFeedbackViewController.h>
 #import <UMMobClick/MobClick.h>
+
+#import <Realm/RLMSchema.h>
+
 #endif /* Bridging_Header_h */
