@@ -122,8 +122,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         appointmentView.commitBtn?.enabled = true
-        
-//        dispatch_after(dispatch_time(, <#T##delta: Int64##Int64#>), <#T##queue: dispatch_queue_t##dispatch_queue_t#>, <#T##block: dispatch_block_t##dispatch_block_t##() -> Void#>)
     }
     
     override public func viewDidAppear(animated: Bool) {

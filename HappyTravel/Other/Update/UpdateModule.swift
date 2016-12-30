@@ -41,14 +41,14 @@ class UpdateModule {
             break
         }
         if needUpdate {
-            let tips = String.init(format: "您好，软件有新的版本，%s请点击“前往”下载新版本", forced ? "旧版本将无法使用，" : "")
+            let tips = "您好，软件有新的版本，\(forced ? "旧版本将无法使用，" : "")请点击“前往”下载新版本"
             let alert = UIAlertController.init(title: "升级提示", message: tips, preferredStyle: .Alert)
             let goto = UIAlertAction.init(title: "前往", style: .Default, handler: { (action) in
                 result?(gotoUpdate: true)
             })
             alert.addAction(goto)
             if !forced {
-                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action) in
+                let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (action) in
                     result?(gotoUpdate: false)
                 })
                 alert.addAction(cancel)
