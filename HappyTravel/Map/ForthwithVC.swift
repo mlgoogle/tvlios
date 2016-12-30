@@ -163,11 +163,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 
             })
             let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (action) in
-                self.isShowLocationInfo = true
             })
             alert.addAction(goto)
             alert.addAction(cancel)
-            presentViewController(alert, animated: true, completion: nil)
+            presentViewController(alert, animated: true, completion: { 
+                self.isShowLocationInfo = true
+
+            })
             
         }
     }
