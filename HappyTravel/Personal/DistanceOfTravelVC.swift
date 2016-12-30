@@ -71,25 +71,25 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         
         if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
             servantsArray?.removeAll()
-            
-            let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>>
-            
-            var uid_str = ""
-            for servant in servants! {
-                let servantInfo = UserInfo()
-                servantInfo.setInfo(.Servant, info: servant)
-                servantsArray?.append(servantInfo)
-                uid_str += "\(servantInfo.uid),"
-                
+            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+                var uid_str = ""
+                for servant in servants {
+                    let servantInfo = UserInfo()
+                    servantInfo.setInfo(.Servant, info: servant)
+                    servantsArray?.append(servantInfo)
+                    uid_str += "\(servantInfo.uid),"
+                    
+                }
+                let recommendVC = RecommendServantsVC()
+                recommendVC.isNormal = false
+                recommendVC.appointment_id_ = currentApponitmentID
+                recommendVC.servantsInfo = servantsArray
+                navigationController?.pushViewController(recommendVC, animated: true)
+                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+                SocketManager.sendData(.GetUserInfo, data: dict)
             }
-            let recommendVC = RecommendServantsVC()
-            recommendVC.isNormal = false
-            recommendVC.appointment_id_ = currentApponitmentID
-            recommendVC.servantsInfo = servantsArray
-            navigationController?.pushViewController(recommendVC, animated: true)
-            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-            SocketManager.sendData(.GetUserInfo, data: dict)
+            
         }
     }
     
@@ -402,19 +402,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let object = records![indexPath.row]
             guard object.status_ > 1  else {
-                if object.recomment_uid_ != nil {
-                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recomment_uid_!])
-
-                    
+                if object.recommend_uid_ != nil {
+                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
                 } else {
-                    
                     SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 }
                 return
             }
             if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
                 object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
-                object.status_ == HodometerStatus.Completed.rawValue{
+                object.status_ == HodometerStatus.Completed.rawValue {
                 
                 detailVC.appointmentInfo = records![indexPath.row]
                 navigationController?.pushViewController(detailVC, animated: true)
