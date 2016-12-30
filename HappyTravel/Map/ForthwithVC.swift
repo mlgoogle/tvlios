@@ -193,17 +193,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab?.text = "我的位置"
         //城市选择功能
       
-//        titleBtn = UIButton()
-//        titleBtn!.backgroundColor = .clearColor()
-//        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
-//        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
-//        titleBtn!.addTarget(self, action: #selector(ForthwithVC.titleAction(_:)), forControlEvents: .TouchUpInside)
-//        titleView.addSubview(titleBtn!)
-//        titleBtn!.snp_makeConstraints { (make) in
-//            make.left.equalTo(titleLab!.snp_right)
-//            make.width.equalTo(20)
-//            make.centerY.equalTo(titleLab!.snp_centerY)
-//        }
+        titleBtn = UIButton()
+        titleBtn!.backgroundColor = .clearColor()
+        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
+        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
+        titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
+        titleView.addSubview(titleBtn!)
+        titleBtn!.snp_makeConstraints { (make) in
+            make.left.equalTo(titleLab!.snp_right)
+            make.width.equalTo(20)
+            make.centerY.equalTo(titleLab!.snp_centerY)
+        }
         
 //        let segmentBGV = UIImageView()
 //        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
@@ -353,6 +353,34 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         
         hideKeyboard()
+    }
+    
+    func screenServices(sender:UIButton) {
+//        let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+//        
+//        let allServices = UIAlertAction.init(title: "所有服务者", style: .Default, handler: { (sender: UIAlertAction) in
+//            
+//        })
+//        
+//        let businessServices = UIAlertAction.init(title: "商务服务者", style: .Default, handler: { (sender: UIAlertAction) in
+//            
+//        })
+//        
+//        let leisureServices = UIAlertAction.init(title: "休闲服务者", style: .Default, handler: { (sender: UIAlertAction) in
+//            
+//        })
+//
+//        
+//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
+//            
+//        })
+//        
+//        alertCtrl.addAction(allServices)
+//        alertCtrl.addAction(businessServices)
+//        alertCtrl.addAction(leisureServices)
+//        alertCtrl.addAction(cancel)
+//        
+//        presentViewController(alertCtrl, animated: true, completion: nil)
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
