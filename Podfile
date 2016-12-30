@@ -17,6 +17,7 @@ target 'HappyTravel' do
     pod 'SideMenuController', '~> 0.1.6'
     pod 'SnapKit', '~> 0.22.0'
     pod 'AMap2DMap', '~> 4.2.0'
+    pod 'AMapSearch'
     pod 'Kingfisher', '~> 2.5.0'
     pod 'CocoaAsyncSocket', '~> 7.5.1'
     pod 'RealmSwift', '~> 1.0.2'

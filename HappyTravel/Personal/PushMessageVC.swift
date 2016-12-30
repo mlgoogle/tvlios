@@ -42,7 +42,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        table?.reloadData()
+        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
+
+//        table?.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -277,12 +279,14 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if segmentIndex == 0 {
+            //消息
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
             let realm = try! Realm()
             let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread)
             return cell
         } else {
+            //行程(和我的消费中商务游相同)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
             cell.setHodometerInfo(hotometers![indexPath.row])
             return cell
