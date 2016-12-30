@@ -245,6 +245,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func invitation() {
+        //邀约服务选择
         textView.resignFirstResponder()
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -271,7 +272,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        
+//        确定服务选择
         unowned let weakSelf = self
 
         selectedServcie = service
