@@ -214,9 +214,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         // 未读消息返回
         case UnreadMessageReply = 2026
         
-        //保险说明
-        case SureInsuranceRequest = 2030
-        case SureInsuranceReply = 2032
+        //保险说明(未测试)
+        case SureInsuranceRequest = 3333
+        case SureInsuranceReply = 3334
 
     }
     

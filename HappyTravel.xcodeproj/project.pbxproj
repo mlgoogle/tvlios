@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D61E9141E12BFDD009A7DEC /* CommonWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61E9131E12BFDD009A7DEC /* CommonWebVC.swift */; };
 		0D61E91A1E135893009A7DEC /* PayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61E9191E135893009A7DEC /* PayVC.swift */; };
+		0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */; };
 		2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1434881D90C5CB002F227B /* OrderInfo.swift */; };
 		2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */; };
 		2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */; };
@@ -313,8 +313,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D61E9131E12BFDD009A7DEC /* CommonWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonWebVC.swift; sourceTree = "<group>"; };
 		0D61E9191E135893009A7DEC /* PayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayVC.swift; sourceTree = "<group>"; };
+		0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonWebVC.swift; path = Common/CommonWebVC.swift; sourceTree = "<group>"; };
 		16D7D00546FBCA79D486C882 /* Pods-HappyTravelUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F1434881D90C5CB002F227B /* OrderInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderInfo.swift; path = Data/OrderInfo.swift; sourceTree = "<group>"; };
@@ -663,14 +663,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0D61E9121E12BFDD009A7DEC /* webView */ = {
-			isa = PBXGroup;
-			children = (
-				0D61E9131E12BFDD009A7DEC /* CommonWebVC.swift */,
-			);
-			path = webView;
-			sourceTree = "<group>";
-		};
 		2F5F2D441DC19C3300EB5773 /* WeChatSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -827,7 +819,6 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
-				0D61E9121E12BFDD009A7DEC /* webView */,
 				2FA75D291D50DE7100609C8E /* Bridge */,
 				BF9B4CFB1DD6DA7A00EC8E78 /* Share */,
 				2F9684141D77D1200028E3F2 /* Other */,
@@ -954,6 +945,7 @@
 		2FE7C38D1D64469100994505 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */,
 				BF6E9AF51DE2D7AB00F32CCE /* Extension */,
 				2FDAFCF01D65698E00FD28CB /* NotifyDefine.swift */,
 				2FC25B2F1D6C395A00D48D6A /* CityInfo.swift */,
@@ -1710,7 +1702,6 @@
 				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
 				2F9684111D76CD040028E3F2 /* IdentBaseInfoCell.swift in Sources */,
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
-				0D61E9141E12BFDD009A7DEC /* CommonWebVC.swift in Sources */,
 				2FA15A9D1E13BAB5001655A3 /* UserSocketAPI.swift in Sources */,
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
@@ -1805,6 +1796,7 @@
 				BFC492101DD9D2BF0056500D /* OpenTicketInfo.swift in Sources */,
 				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
+				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
 				2F96840F1D76CB6F0028E3F2 /* IdentDetailVC.swift in Sources */,
