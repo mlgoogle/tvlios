@@ -252,9 +252,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
 //                let ip = "192.168.25.129"
-//                let ip = "103.40.192.101"
-                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10007, withTimeout: 5)
+                let ip = "103.40.192.101"
+//                let ip = "61.147.114.78"
+                try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
@@ -525,7 +525,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             completation!(["data": jsonBody!.dictionaryObject!])
             SocketManager.completationsDic.removeValueForKey(blockKey)
         }
-        
         
         return true
     }
@@ -842,13 +841,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {
         if let data = jsonBody?.dictionaryObject {
-            if let reason = data["failed_reason_"] as? String {
-                if reason == "" {
+//            if let reason = data["failed_reason_"] as? String {
+//                if reason == "" {
                     if let reviewStatus = data["review_status_"] as? Int {
                         DataManager.currentUser?.authentication = reviewStatus
                     }
-                }
-            }
+//                }
+//            }
         }
         postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }

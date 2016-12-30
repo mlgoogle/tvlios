@@ -109,7 +109,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
             if regOrLoginSelVC?.isShow == false {
-                presentViewController(regOrLoginSelVC!, animated: true, completion: nil)
+                presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
             }
         } else {
             if DataManager.currentUser!.registerSstatus == 0 {
@@ -556,23 +556,31 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             return
         }
         let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
-        annotations.removeAll()
+//        annotations.removeAll()
+        var tmpAnnotations = [MAPointAnnotation]()
         for servant in servants {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
-            servantsInfo[servantInfo.uid] = servantInfo
             DataManager.updateUserInfo(servantInfo)
             let latitude = servantInfo.gpsLocationLat
             let longitude = servantInfo.gpsLocationLon
             let point = MAPointAnnotation.init()
             point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
             point.title = "\(servantInfo.uid)"
-            annotations.append(point)
+            if !servantsInfo.keys.contains(servantInfo.uid) {
+                servantsInfo[servantInfo.uid] = servantInfo
+                annotations.append(point)
+                tmpAnnotations.append(point)
+            }
+            
         }
-        if mapView!.annotations.count > 0{
-            mapView?.removeAnnotations(mapView!.annotations)
+//        if mapView!.annotations.count > 0{
+//            mapView?.removeAnnotations(mapView!.annotations)
+//        }
+        if tmpAnnotations.count > 0 {
+            mapView!.addAnnotations(tmpAnnotations)
         }
-        mapView!.addAnnotations(annotations)
+        
     }
     
     func servantDetailInfo(notification: NSNotification?) {
@@ -659,6 +667,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     // MARK MAP
     public func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
+        DataManager.curLocation = userLocation.location
         var latDiffValue = Double(0)
         var lonDiffvalue = Double(0)
         if location == nil {
@@ -669,7 +678,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
         }
         
-        
         if  latDiffValue == 720.0 || latDiffValue >= 0.01 || latDiffValue <= -0.01 || lonDiffvalue >= 0.01 || lonDiffvalue <= -0.01 {
             location = userLocation.location
             let geoCoder = CLGeocoder()
@@ -679,13 +687,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         self.locality = (placeMarks?[0])!.locality
                         self.titleLab?.text = self.locality
                         XCGLogger.debug("Update locality: \(self.locality!)")
-                        DataManager.currentUser!.gpsLocationLat = userLocation.coordinate.latitude
-                        DataManager.currentUser!.gpsLocationLon = userLocation.coordinate.longitude
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
 
                         if DataManager.currentUser!.login {
-                            let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
-                                                                      "longitude_": DataManager.currentUser!.gpsLocationLon,
+                            let dict:Dictionary<String, AnyObject> = ["latitude_": (DataManager.curLocation?.coordinate.latitude)!,
+                                                                      "longitude_": (DataManager.curLocation?.coordinate.longitude)!,
                                                                       "distance_": 10.1]
                             SocketManager.sendData(.GetServantInfo, data: dict)
                         }

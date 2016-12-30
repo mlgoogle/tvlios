@@ -227,8 +227,8 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let limitLab = personalView.viewWithTag(tags["limitLab"]!) as? UILabel {
-                let myLongitude = DataManager.currentUser!.gpsLocationLon
-                let myLatitude = DataManager.currentUser!.gpsLocationLat
+                let myLongitude = DataManager.curLocation?.coordinate.longitude ?? 0
+                let myLatitude = DataManager.curLocation?.coordinate.latitude ?? 0
                 let servantLongitude = userInfo?.gpsLocationLon
                 let servantLatitude = userInfo?.gpsLocationLat
                 limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
