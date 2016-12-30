@@ -13,7 +13,7 @@ import MJRefresh
 
 public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, ServiceSheetDelegate, FaceKeyboardViewDelegate{
     var daysAlertController:UIAlertController?
-    
+
     var dateFormatter = NSDateFormatter()
     var messages:Array<Message> = []
     var chatTable:UITableView?
@@ -33,9 +33,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     
     var selectedServcie:ServiceInfo?
-    
+
     var faceKeyBoard:FaceKeyboardView = {
-        
+       
         let keyboardView = NSBundle.mainBundle().loadNibNamed("FaceKeyboardView", owner: nil, options: nil).first as! FaceKeyboardView
         
         return keyboardView
@@ -124,6 +124,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         if height > 18 && newHeight <= 120 {
             inputAccessoryView.reloadInputViews()
         }
+
         textView.scrollEnabled = newHeight > 120
     }
     
@@ -135,9 +136,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         navigationItem.title = servantInfo?.nickname
         view.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
-        
+
         if servantInfo == nil {
-            navigationController?.popViewControllerAnimated(true)
+           navigationController?.popViewControllerAnimated(true)
             return
         }
         
@@ -151,7 +152,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewWillAppear(animated)
         registerNotify()
         
-        //如果是客服聊天则直接return
+       //如果是客服聊天则直接return
         guard servantInfo?.uid > -1 else {return}
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
@@ -273,19 +274,19 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
 //        确定服务选择
         unowned let weakSelf = self
-        
+
         selectedServcie = service
-        
+
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
             weakSelf.daysSureAction(nil, targetDays: 1)
-            //            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
+//            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             
         })
         
     }
-    
+
     func inviteAction() {
         if daysAlertController == nil {
             daysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -325,6 +326,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
 //        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
 //        chatTable?.mj_header = header
+
     }
     
     func headerRefresh() {
@@ -408,7 +410,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if faceButton.selected {
             textView.inputView = nil
-            
+
         }
         let isSelected = faceButton.selected
         UIView.animateWithDuration(0.2) {
@@ -428,9 +430,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             self.textView.becomeFirstResponder()
         }
         
-        
+
     }
-    
+
     func sendMessageAction() {
         let msg = textView.text
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
@@ -440,14 +442,14 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
         //base64编码
-        //        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
-        //        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        //        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
-        //                                                  "to_uid_": servantInfo!.uid,
-        //                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
-        //                                                  "content_": msg_base64!]
-        //        SocketManager.sendData(.SendChatMessage, data: data_base)
-        
+//        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
+//        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+//        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
+//                                                  "to_uid_": servantInfo!.uid,
+//                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
+//                                                  "content_": msg_base64!]
+//        SocketManager.sendData(.SendChatMessage, data: data_base)
+
         
         
         //发送聊天消息包
@@ -493,7 +495,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             
             textView.deleteBackward()
         }
-        
+
     }
     
 }

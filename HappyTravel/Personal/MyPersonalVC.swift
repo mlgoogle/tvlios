@@ -126,17 +126,15 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         initPersonalView()
         
         SocketManager.sendData(.GetServiceCity, data: nil)
+        let dict:Dictionary<String, AnyObject> = ["latitude_": DataManager.currentUser!.gpsLocationLat,
+                                                  "longitude_": DataManager.currentUser!.gpsLocationLon,
+                                                  "distance_": 10.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": DataManager.currentUser!.uid,
                         "device_token_": dt]
             SocketManager.sendData(.PutDeviceToken, data: dict)
         }
-        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
-        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
-        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
-                                                  "longitude_": lon,
-                                                  "distance_": 10.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
