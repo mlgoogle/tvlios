@@ -124,7 +124,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         if height > 18 && newHeight <= 120 {
             inputAccessoryView.reloadInputViews()
         }
-        
         textView.scrollEnabled = newHeight > 120
     }
     
@@ -245,6 +244,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func invitation() {
+        //邀约服务选择
         textView.resignFirstResponder()
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
@@ -271,7 +271,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func sureAction(service: ServiceInfo?, daysCount: Int?) {
-        
+//        确定服务选择
         unowned let weakSelf = self
         
         selectedServcie = service
@@ -325,7 +325,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
 //        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
 //        chatTable?.mj_header = header
-        
     }
     
     func headerRefresh() {

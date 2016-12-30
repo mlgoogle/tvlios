@@ -108,9 +108,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         if DataManager.currentUser?.login == false {
             mapView!.setZoomLevel(11, animated: true)
-            if regOrLoginSelVC?.isShow == false {
-                presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
+            if UserSocketAPI.autoLogin() {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.5)), dispatch_get_main_queue(), { ()
+                    if DataManager.currentUser?.login == false {
+                        if self.regOrLoginSelVC?.isShow == false {
+                            self.presentViewController(self.regOrLoginSelVC!, animated: true, completion: nil)
+                            self.banGesture(false)
+                        }
+                    }
+                    
+                })
+                banGesture(true)
+            } else {
+                if self.regOrLoginSelVC?.isShow == false {
+                    self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
+                }
             }
+
         } else {
             if DataManager.currentUser!.registerSstatus == 0 {
                 if !isShowBaseInfo {
@@ -122,7 +136,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         appointmentView.commitBtn?.enabled = true
-
+    }
+    
+    func banGesture(ban: Bool) {
+        view.userInteractionEnabled = !ban
+        navigationController?.navigationBar.userInteractionEnabled = !ban
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -169,11 +187,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleLab?.userInteractionEnabled = true
         titleView.addSubview(titleLab!)
         titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX)  // .offset(-10)
+            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
             make.centerY.equalTo(titleView.snp_centerY)
         }
         titleLab?.text = "我的位置"
-        
+        //城市选择功能
+      
 //        titleBtn = UIButton()
 //        titleBtn!.backgroundColor = .clearColor()
 //        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
@@ -430,6 +449,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         if !err {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
+            banGesture(false)
         }
         
     }

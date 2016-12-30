@@ -25,8 +25,8 @@ class SockHead: BMB2Object {
     
     var timestamp:UInt32 = UInt32(UInt64(NSDate().timeIntervalSince1970))
     
-    var sessionID:Int64 = 0
+    var sessionID:UInt64 = 0
     
-    var reserved:Int32 = 0
+    var requestID:UInt32 = 0
     
 }

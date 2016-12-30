@@ -19,6 +19,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     
     var username:String?
     var passwd:String?
+    var currentTextField:UITextField?
     
     var loginWithMSGVC:LoginWithMSGVC?
     var startTime = 0.0
@@ -158,25 +159,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.top.equalTo(passwdField.snp_bottom).offset(60)
             make.height.equalTo(45)
         }
-        
-//        let servantLoginBtn = UIButton()
-//        servantLoginBtn.tag = 20001
-//        servantLoginBtn.backgroundColor = .clearColor()
-//        servantLoginBtn.setTitle("服务者登录", forState: .Normal)
-//        servantLoginBtn.setTitleColor(UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1), forState: .Normal)
-//        servantLoginBtn.layer.borderColor = UIColor.init(red: 0/255.0, green: 120/255.0, blue: 200/255.0, alpha: 1).CGColor
-//        servantLoginBtn.layer.borderWidth = 1
-//        servantLoginBtn.layer.cornerRadius = 5
-//        servantLoginBtn.layer.masksToBounds = true
-//        servantLoginBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
-//        view.addSubview(servantLoginBtn)
-//        servantLoginBtn.snp_makeConstraints { (make) in
-//            make.centerX.equalTo(view)
-//            make.top.equalTo(loginBtn.snp_bottom).offset(5)
-//            make.width.equalTo(100)
-//            make.height.equalTo(25)
-//        }
-        
+
         let loginWithMSGBtn = UIButton()
         loginWithMSGBtn.tag = tags["loginWithMSGBtn"]!
         loginWithMSGBtn.backgroundColor = .clearColor()
@@ -214,8 +197,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func login(sender: UIButton?) {
-        
-         MobClick.event(CommonDefine.BuriedPoint.loginAction)
+        currentTextField?.resignFirstResponder()
+        MobClick.event(CommonDefine.BuriedPoint.loginAction)
         var dict:Dictionary<String, AnyObject>?
         if sender?.tag == 20001 {
             dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]
@@ -247,7 +230,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         if sender?.tag == tags["loginBtn"]! {
             dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
@@ -256,6 +238,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
         SocketManager.sendData(.Login, data: dict)
+        
+        
     }
     
     func randomSmallCaseString(length: Int) -> String {
@@ -277,7 +261,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1.5, completion: nil)
             return
         }
-        SVProgressHUD.dismiss()
+        SVProgressHUD.dismissWithDelay(0.5)
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
         
     }
@@ -298,6 +282,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        currentTextField = textField
         if range.location > 15 {
             return false
         }
