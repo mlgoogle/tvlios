@@ -356,31 +356,31 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func screenServices(sender:UIButton) {
-//        let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-//        
-//        let allServices = UIAlertAction.init(title: "所有服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        let businessServices = UIAlertAction.init(title: "商务服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        let leisureServices = UIAlertAction.init(title: "休闲服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//
-//        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        alertCtrl.addAction(allServices)
-//        alertCtrl.addAction(businessServices)
-//        alertCtrl.addAction(leisureServices)
-//        alertCtrl.addAction(cancel)
-//        
-//        presentViewController(alertCtrl, animated: true, completion: nil)
+        let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let allServices = UIAlertAction.init(title: "所有服务者", style: .Default, handler: { (sender: UIAlertAction) in
+            
+        })
+        
+        let businessServices = UIAlertAction.init(title: "商务服务者", style: .Default, handler: { (sender: UIAlertAction) in
+            
+        })
+        
+        let leisureServices = UIAlertAction.init(title: "休闲服务者", style: .Default, handler: { (sender: UIAlertAction) in
+            
+        })
+
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
+            
+        })
+        
+        alertCtrl.addAction(allServices)
+        alertCtrl.addAction(businessServices)
+        alertCtrl.addAction(leisureServices)
+        alertCtrl.addAction(cancel)
+        
+        presentViewController(alertCtrl, animated: true, completion: nil)
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
