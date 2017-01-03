@@ -217,6 +217,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         //保险说明(未测试)
         case SureInsuranceRequest = 3333
         case SureInsuranceReply = 3334
+        
+        case UploadContactRequest = 1111
+        case UploadContactReply = 1112
 
     }
     

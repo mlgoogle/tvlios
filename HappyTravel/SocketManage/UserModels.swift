@@ -9,6 +9,13 @@
 import Foundation
 import RealmSwift
 
+class UploadContactModel: Object {
+
+    dynamic var uid = 0
+
+    dynamic var contacts_list:[Dictionary<String,String>] = []
+    
+}
 
 class LoginModel: Object {
     
