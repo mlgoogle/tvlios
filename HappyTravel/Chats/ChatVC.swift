@@ -21,6 +21,9 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var textView: UITextView!
     var sendButton: UIButton!
     var faceButton: UIButton!
+    
+    var locationButton: UIButton!
+    
     var rotating = false
     var invitaionVC = InvitationVC()
     var alertController:UIAlertController?
@@ -48,17 +51,23 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar = UIToolbar(frame: CGRectZero)
                 toolBar.autoresizingMask = .FlexibleHeight
                 toolBar.backgroundColor = colorWithHexString("#f2f2f2")
-                faceButton = UIButton(type: .Custom)
-                faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
-                faceButton.addTarget(self, action: #selector(ChatVC.faceKeyboardShowOrHide), forControlEvents: UIControlEvents.TouchUpInside)
-                toolBar.addSubview(faceButton)
-                faceButton.translatesAutoresizingMaskIntoConstraints = false
-                faceButton.snp_makeConstraints(closure: { (make) in
+                
+                
+                
+                locationButton = UIButton(type: .Custom)
+                locationButton.setBackgroundImage(UIImage.init(named: "chat_navigation"), forState: .Normal)
+                locationButton.addTarget(self, action: #selector(ChatVC.pushToSelectLocationPage), forControlEvents: UIControlEvents.TouchUpInside)
+                toolBar.addSubview(locationButton)
+                locationButton.translatesAutoresizingMaskIntoConstraints = false
+                locationButton.snp_makeConstraints(closure: { (make) in
                     make.height.equalTo(32)
                     make.left.equalTo(toolBar).offset(5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.width.equalTo(32)
                 })
+
+                
+  
                 
                 sendButton = UIButton(type: .System)
                 sendButton.enabled = false
@@ -80,6 +89,17 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                     make.width.equalTo(80)
                 })
                 
+                faceButton = UIButton(type: .Custom)
+                faceButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
+                faceButton.addTarget(self, action: #selector(ChatVC.faceKeyboardShowOrHide), forControlEvents: UIControlEvents.TouchUpInside)
+                toolBar.addSubview(faceButton)
+                faceButton.translatesAutoresizingMaskIntoConstraints = false
+                faceButton.snp_makeConstraints(closure: { (make) in
+                    make.height.equalTo(32)
+                    make.bottom.equalTo(toolBar).offset(-5)
+                    make.width.equalTo(32)
+                    make.right.equalTo(sendButton.snp_left)
+                })
                 textView = InputTextView(frame: CGRectZero)
                 textView.backgroundColor = UIColor(white: 250/255, alpha: 1)
                 textView.delegate = self
@@ -94,8 +114,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.addSubview(textView)
                 textView.translatesAutoresizingMaskIntoConstraints = false
                 textView.snp_makeConstraints(closure: { (make) in
-                    make.left.equalTo(faceButton.snp_right).offset(5)
-                    make.right.equalTo(sendButton.snp_left).offset(-5)
+                    make.left.equalTo(locationButton.snp_right).offset(5)
+                    make.right.equalTo(faceButton.snp_left).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.top.equalTo(toolBar).offset(5)
                     
@@ -104,8 +124,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             let height = textView.sizeThatFits(CGSize(width: textView.frame.size.width, height: CGFloat(MAXFLOAT))).height
             if height < 120 {
                 textView.snp_remakeConstraints(closure: { (make) in
-                    make.left.equalTo(faceButton.snp_right).offset(5)
-                    make.right.equalTo(sendButton.snp_left).offset(-5)
+                    make.left.equalTo(locationButton.snp_right).offset(5)
+                    make.right.equalTo(faceButton.snp_left).offset(-5)
                     make.bottom.equalTo(toolBar).offset(-5)
                     make.top.equalTo(toolBar).offset(5)
                     make.height.equalTo(height)
@@ -321,6 +341,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         chatTable!.separatorStyle = .None
         chatTable!.registerClass(ChatDateCell.self, forCellReuseIdentifier: "ChatDateCell")
         chatTable!.registerClass(ChatBubbleCell.self, forCellReuseIdentifier: "ChatBubbleCell")
+        chatTable?.registerClass(ChatLocationAnotherCell.self, forCellReuseIdentifier: "ChatLocationAnother")
+        chatTable?.registerClass(ChatLocationMeCell.self, forCellReuseIdentifier: "ChatLocationMe")
         view.addSubview(chatTable!)
         
 //        header.setRefreshingTarget(self, refreshingAction: #selector(ChatVC.headerRefresh))
@@ -389,19 +411,59 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return msgList?.count ?? 0
     }
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let message = msgList![indexPath.row]
+        
+        if message.msg_type_ == PushMessage.MessageType.Location.rawValue  {
+            
+            let vc = ShowLocationDetailViewController()
+            vc.poiModel = stringToModel(message.content_!)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
     
+
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let message = msgList![indexPath.row]
+        
+        if message.msg_type_ == PushMessage.MessageType.Location.rawValue  {
+            return 110
+        }
+        
+        return  UITableViewAutomaticDimension
+    }
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = msgList![indexPath.row]
+   
+        if message.msg_type_ == PushMessage.MessageType.Location.rawValue  {
+        
+            if message.to_uid_ == (DataManager.currentUser?.uid)! {
+                let cell = tableView.dequeueReusableCellWithIdentifier("ChatLocationAnother", forIndexPath: indexPath) as! ChatLocationAnotherCell
+                cell.setupDataWithContent(message.content_)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCellWithIdentifier("ChatLocationMe", forIndexPath: indexPath) as! ChatLocationMeCell
+                cell.setupDataWithContent(message.content_)
+                return cell
+            }
+        }
+        
         if message.msg_type_ == PushMessage.MessageType.Date.rawValue {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatDateCell", forIndexPath: indexPath) as! ChatDateCell
             cell.sentDateLabel.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
             return cell
-        } else {
+        } else  {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatBubbleCell", forIndexPath: indexPath) as! ChatBubbleCell
             let msgData = Message(incoming: (message.from_uid_ == CurrentUser.uid_) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
             cell.configureWithMessage(msgData)
             return cell
         }
+    }
+    func pushToSelectLocationPage() {
+        let getLocationVC = GetLocationInfoViewController()
+        getLocationVC.delegate = self
+        navigationController?.pushViewController(getLocationVC, animated: true)
+        
     }
     
     func faceKeyboardShowOrHide() {
@@ -432,7 +494,10 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func sendMessageAction() {
-        let msg = textView.text
+        sendMessageWithText(textView.text)
+    }
+    
+    func sendMessageWithText(msg:String) {
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
         let data:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
@@ -500,7 +565,15 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
 
 
 
-extension ChatVC:CitysSelectorSheetDelegate {
+extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate{
+    
+    func sendLocation(poiModel: POIInfoModel?) {
+        
+        sendMessageWithText(modelToString(poiModel!))
+        
+    }
+    
+    
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         
