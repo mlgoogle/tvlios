@@ -107,7 +107,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func wechatPaySuccessed(notification: NSNotification) {
-        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                         "recharge_id_": Int(rechageID!)!,
                                         "pay_result_": 1]
         SocketManager.sendData(.ClientWXPayStatusRequest, data: dict)
@@ -457,7 +457,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func rechargeWithWX() {
          MobClick.event(CommonDefine.BuriedPoint.payWithWechat)
         //金额为分
-        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                         "title_": "V领队-余额充值",
                                         "price_": Int(amount!)!*100]
         SocketManager.sendData(.WXPlaceOrderRequest, data: dict)

@@ -106,35 +106,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
-        if DataManager.currentUser?.login == false {
-            mapView!.setZoomLevel(11, animated: true)
+        if CurrentUser.login_ == false {
             if UserSocketAPI.autoLogin() {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.5)), dispatch_get_main_queue(), { ()
-                    if DataManager.currentUser?.login == false {
-                        if self.regOrLoginSelVC?.isShow == false {
-                            self.presentViewController(self.regOrLoginSelVC!, animated: true, completion: nil)
-                            self.banGesture(false)
-                        }
-                    }
-                    
-                })
                 banGesture(true)
             } else {
-                if self.regOrLoginSelVC?.isShow == false {
-                    self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
-                }
+                self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
             }
 
-        } else {
-            if DataManager.currentUser!.registerSstatus == 0 {
-                if !isShowBaseInfo {
-                    isShowBaseInfo = true
-                    let completeBaseInfoVC = CompleteBaseInfoVC()
-                    self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
-                }
-            }
-        }
-        
+        } 
+
         appointmentView.commitBtn?.enabled = true
     }
     
@@ -406,7 +386,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         notificationCenter.addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
@@ -451,7 +431,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
 //        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
         SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-                                                               "to_uid_" : DataManager.currentUser!.uid,
+                                                               "to_uid_" : CurrentUser.uid_,
                                                              "msg_type_" : 2231,
                                                              "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)),
                                                            "servant_id_" : "1,2,3,4,5,6",
@@ -472,16 +452,29 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         appointmentView.table?.scrollIndicatorInsets =  inset
     }
     
-    func loginResult(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        let err = data!.allKeys!.contains({ (key) -> Bool in
-            return key as! String == "error_" ? true : false
-        })
-        if !err {
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
-            banGesture(false)
+    func loginSuccessed(notification: NSNotification) {
+        banGesture(false)
+        if CurrentUser.register_status_ == 0 {
+            if !isShowBaseInfo {
+                isShowBaseInfo = true
+                let completeBaseInfoVC = CompleteBaseInfoVC()
+                self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
+            }
         }
-        
+        SocketManager.sendData(.GetServiceCity, data: nil)
+        if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
+            let dict = ["uid_": CurrentUser.uid_,
+                        "device_token_": dt]
+            SocketManager.sendData(.PutDeviceToken, data: dict)
+        }
+        let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
+        let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
+        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
+                                                  "longitude_": lon,
+                                                  "distance_": 10.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
+        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
     }
     
     func chatMessage(notification: NSNotification?) {
@@ -552,21 +545,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         }
         appointmentView.serviceCitys = serviceCitys
-        
-        regOrLoginSelVC!.dismissViewControllerAnimated(false) {
-          unowned let weakSelf = self
-            self.regOrLoginSelVC?.dismissViewControllerAnimated(false) {
-                if DataManager.currentUser!.registerSstatus == 0 {
-                    if !weakSelf.isShowBaseInfo {
-                        weakSelf.isShowBaseInfo = true
-                        let completeBaseInfoVC = CompleteBaseInfoVC()
-                        self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
-                    }
-                }
-                
-            }
-        }
-        
+
     }
     
     func jumpToCenturionCardCenter() {
@@ -602,6 +581,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if (err != false) {
             XCGLogger.warning("warning:\(data!["error_"] as! Int)")
             return
+        }
+        if servantsInfo.count == 0 {
+            mapView!.setZoomLevel(11, animated: true)
         }
         let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
         annotations.removeAll()
@@ -762,7 +744,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         XCGLogger.debug("Update locality: \(self.locality!)")
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
 
-                        if DataManager.currentUser!.login {
+                        if CurrentUser.login_ {
                             let dict:Dictionary<String, AnyObject> = ["latitude_": (DataManager.curLocation?.coordinate.latitude)!,
                                                                       "longitude_": (DataManager.curLocation?.coordinate.longitude)!,
                                                                       "distance_": 10.1]
@@ -866,7 +848,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             // 认证状态限制查看个人信息
             let auth = (DataManager.currentUser?.authentication)!
             if auth != 1 {
-                SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid]) { [weak self](result) in
+                SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_]) { [weak self](result) in
                     if let strongSelf = self{
                         dispatch_async(dispatch_get_main_queue(), {
                             if DataManager.currentUser!.authentication != 1 {

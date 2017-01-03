@@ -236,7 +236,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func modifyPwd(sender: UIButton?) {
-        let dict = ["uid_": DataManager.currentUser!.uid, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
+        let dict = ["uid_": CurrentUser.uid_, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
         SocketManager.sendData(.ModifyPassword, data: dict)
         XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
     }

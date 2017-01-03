@@ -105,7 +105,7 @@ class DataManager: NSObject {
             var cnt = 0
             let objs = realm.objects(UserPushMessage.self)
             for obj in objs {
-                if obj.uid != DataManager.currentUser!.uid {
+                if obj.uid != CurrentUser.uid_ {
                     cnt += obj.unread
                 }
                 
@@ -129,9 +129,9 @@ class DataManager: NSObject {
         }
         let realm = try! Realm()
         var uid = -1
-        if message.from_uid_ == DataManager.currentUser?.uid {
+        if message.from_uid_ == CurrentUser.uid_ {
             uid = message.to_uid_
-        } else if message.to_uid_ == DataManager.currentUser?.uid {
+        } else if message.to_uid_ == CurrentUser.uid_ {
             uid = message.from_uid_
         }
         var userPushMessage = realm.objects(UserPushMessage.self).filter("uid = \(uid)").first
@@ -145,7 +145,7 @@ class DataManager: NSObject {
             } else {
                 userPushMessage?.msgList.append(message)
             }
-            if message.from_uid_ != DataManager.currentUser?.uid {
+            if message.from_uid_ != CurrentUser.uid_ {
                 userPushMessage?.unread += 1
             }
             
@@ -185,7 +185,7 @@ class DataManager: NSObject {
                 } else {
                     userPushMessage?.msgList.append(message)
                 }
-                if message.from_uid_ != DataManager.currentUser?.uid {
+                if message.from_uid_ != CurrentUser.uid_ {
                     userPushMessage?.unread += 1
                 }
                 

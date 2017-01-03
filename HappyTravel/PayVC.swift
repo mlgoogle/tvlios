@@ -162,7 +162,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
             if DataManager.currentUser?.cash < price {
                 self.moneyIsTooLess()
             } else {
-                let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                                 "order_id_": orderId!,
                                                 "passwd_": passwd!]
                 SocketManager.sendData(.PayForInvitationRequest, data: dict)
@@ -208,11 +208,11 @@ class PayVC: UIViewController, UITextFieldDelegate {
                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
                 msg = "预支付成功"
                 if segmentIndex! == 0 {
-                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
                         "order_id_": 0,
                         "count_": 10])
                 } else {
-                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
                         "last_id_": 0,
                         "count_": 10])
                 }

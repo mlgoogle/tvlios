@@ -242,7 +242,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[SockOpcode] = []  // [.Logined]
+    let tmpNewRequestType:[SockOpcode] = [.Logined]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -291,6 +291,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserName)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
+        CurrentUser.login_ = false
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
         DataManager.currentUser?.authentication = -1
@@ -586,27 +587,26 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
         }
         
-        let loginModel = LoginModel()
-        if loginModel.phone_num_ != nil && loginModel.passwd_ != nil && SocketManager.isLogout == false {
-//            UserSocketAPI.login(loginModel, complete: { (response) in
-//                if let user = response as? UserInfoModel {
-//                    CurrentUser = user
-//                }
-//                DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
-//            }, error: { (err) in
-//                XCGLogger.debug(err)
-//            })
-            
-            let dict = ["phone_num_": loginModel.phone_num_!, "passwd_": loginModel.passwd_!, "user_type_": 1]
-            SocketManager.sendData(.Login, data: dict)
+        if UserSocketAPI.autoLogin() {
+            let loginModel = LoginModel()
+            UserSocketAPI.login(loginModel, complete: { (response) in
+                if let user = response as? UserInfoModel {
+                    CurrentUser = user
+                    CurrentUser.login_ = true
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+                }
+                
+                }, error: { (err) in
+                    XCGLogger.debug(err)
+            })
         }
         SocketManager.isLogout = false
 
     }
     
     func sendHeart() {
-        if ((DataManager.currentUser?.uid)! > -1) && (socket?.isConnected)!{
-            SocketManager.sendData(.Heart, data: ["uid_":(DataManager.currentUser?.uid)!])
+        if (CurrentUser.uid_ > -1) && (socket?.isConnected)!{
+            SocketManager.sendData(.Heart, data: ["uid_": CurrentUser.uid_])
         }
         performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
 

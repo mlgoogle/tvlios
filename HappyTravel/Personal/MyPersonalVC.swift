@@ -26,11 +26,11 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     var imagePicker:UIImagePickerController? = nil
     
-    var headImagePath:String? = DataManager.currentUser?.headUrl
+    var headImagePath:String? = CurrentUser.head_url_
     
     var headImageName:String?
     
-    var nickName:String? = DataManager.currentUser?.nickname
+    var nickName:String? = CurrentUser.nickname_
     
     var token:String?
     
@@ -102,48 +102,28 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         SVProgressHUD.dismiss()
         if headImagePath != nil {
             headImageView?.setImage(UIImage.init(contentsOfFile: headImagePath!), forState: .Normal)
-            DataManager.currentUser?.headUrl = headImagePath
+            CurrentUser.head_url_ = headImagePath
         }
         if nickName != nil {
             nameLabel?.setTitle(nickName!, forState: .Normal)
-            DataManager.currentUser?.nickname = nickName
+            CurrentUser.nickname_ = nickName
         }
     }
     
     func updateUserInfo() {
         SVProgressHUD.dismiss()
-//        headImageView?.setImage(UIImage.init(contentsOfFile: DataManager.currentUser!.headUrl!), forState: .Normal)
-        
-        headImageView?.kf_setImageWithURL(NSURL.init(string: DataManager.currentUser!.headUrl!), forState: .Normal)
-        nameLabel?.setTitle(DataManager.currentUser?.nickname, forState: .Normal)
+        headImageView?.kf_setImageWithURL(NSURL.init(string: CurrentUser.head_url_!), forState: .Normal)
+        nameLabel?.setTitle(CurrentUser.nickname_, forState: .Normal)
     }
     
     func loginSuccessed(notification: NSNotification?) {
-        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        DataManager.currentUser!.setInfo(.CurrentUser, info: data)
-        DataManager.currentUser!.login = true
-        DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
+        DataManager.setDefaultRealmForUID(CurrentUser.uid_)
         initPersonalView()
-        
-        SocketManager.sendData(.GetServiceCity, data: nil)
-        if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
-            let dict = ["uid_": DataManager.currentUser!.uid,
-                        "device_token_": dt]
-            SocketManager.sendData(.PutDeviceToken, data: dict)
-        }
-        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
-        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
-        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
-                                                  "longitude_": lon,
-                                                  "distance_": 10.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
-        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.SkillsInfoRequest, data: nil)
-        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.CheckUserCash, data: ["uid_": DataManager.currentUser!.uid])
-        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
+        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_])
+        SocketManager.sendData(.CheckUserCash, data: ["uid_": CurrentUser.uid_])
     }
     
     
@@ -184,7 +164,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //        let ok = UIAlertAction.init(title: "修改", style: .Default, handler: { (action) in
 //            SVProgressHUD.displayDurationForString("提交修改中，请稍后！")
 //            self.nickName = (alert.textFields?.first?.text)!
-//            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+//            let dict:Dictionary<String, AnyObject> = ["uid_": (CurrentUser.uid_)!,
 //                "nickname_": self.nickName!,
 //                "gender_": (DataManager.currentUser?.gender)!,
 //                "head_url_": (DataManager.currentUser?.headUrl)!,
@@ -232,7 +212,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.width.equalTo(80)
             }
         }
-        let url = NSURL(string: DataManager.currentUser!.headUrl ?? "https://")
+        
+        let url = NSURL(string: CurrentUser.head_url_ ?? "https://")
         headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {
@@ -251,8 +232,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //                make.right.equalTo(personalView!.snp_right)
             }
         }
-        nameLabel?.setTitle(DataManager.currentUser!.nickname!, forState: .Normal)
-        nickName = DataManager.currentUser?.nickname
+
+        nameLabel?.setTitle(CurrentUser.nickname_ ?? "未登录", forState: .Normal)
+        nickName = CurrentUser.nickname_
         
         var starView = personalView!.viewWithTag(10003)
         if starView == nil {
@@ -309,7 +291,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             })
         }
         
-        let imageName = "lv" + "\(Int(DataManager.currentUser!.level))"
+        let imageName = "lv" + "\(Int(CurrentUser.levle_))"
         levelIcon!.image = UIImage.init(named:imageName)
         
     }
@@ -453,7 +435,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         catch _ {
         }
         let timestemp:Int = Int(NSDate().timeIntervalSince1970)
-        let fileName = "/\(DataManager.currentUser!.uid)_\(timestemp).png"
+//        let fileName = "/\(CurrentUser.uid_)_\(timestemp).png"
+        let fileName = "/\(CurrentUser.uid_)_\(timestemp).png"
         headImageName = fileName
         fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径
@@ -487,15 +470,14 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                         let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
                         XCGLogger.debug("\(location)")
                         
-                        let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
-                            "nickname_": (DataManager.currentUser?.nickname)!,
-                            "gender_": (DataManager.currentUser?.gender)!,
+                        let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
+                            "nickname_": CurrentUser.nickname_!,
+                            "gender_": CurrentUser.gender_,
                             "head_url_": url,
-                            "address_": (DataManager.currentUser?.address)!,
-                            "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-                            "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
+                            "address_": CurrentUser.address_!,
+                            "longitude_": CurrentUser.longitude_,
+                            "latitude_": CurrentUser.latitude_]
                         SocketManager.sendData(.SendImproveData, data: dict)
-                        
                         
                     }
                 }

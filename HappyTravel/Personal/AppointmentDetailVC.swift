@@ -225,7 +225,7 @@ class AppointmentDetailVC: UIViewController {
     }
     func cancelOrCommitButtonAction() {
         
-        let dict:Dictionary<String, AnyObject> = ["from_uid_": (DataManager.currentUser?.uid)!,
+        let dict:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
                                                   "to_uid_": (appointmentInfo?.to_user_)!,
                                                   "order_id_": (appointmentInfo?.order_id_)!,
                                                   "service_score_": (self.commonCell?.serviceStar)!,
