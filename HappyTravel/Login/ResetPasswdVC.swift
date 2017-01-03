@@ -185,7 +185,6 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerAccountReply(notification: NSNotification) {
-        
         if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
             if dict["error_"] != nil {
                 let errorCode = dict["error_"] as! Int
@@ -194,9 +193,20 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                 return
             }
             SVProgressHUD.dismiss()
-            let loginDict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
-            SocketManager.sendData(.Login, data: loginDict)
-            
+            NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
+            NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
+            let loginModel = LoginModel()
+            UserSocketAPI.login(loginModel, complete: { (response) in
+                if let user = response as? UserInfoModel {
+                    CurrentUser = user
+                    CurrentUser.login_ = true
+                    self.dismissViewControllerAnimated(false, completion: { () in
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+                    })
+                }
+                }, error: { (err) in
+                    XCGLogger.debug(err)
+            })
         }
     }
     

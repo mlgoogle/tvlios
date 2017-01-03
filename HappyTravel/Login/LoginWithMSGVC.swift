@@ -199,7 +199,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
 
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.verifyCodeInfoNotify(_:)), name: NotifyDefine.VerifyCodeInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
@@ -218,21 +217,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         var vFrame = view.frame
         vFrame.origin.y = 0
         view.frame = vFrame
-    }
-    
-    func loginResult(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"]
-        let err = data!.allKeys!.contains({ (key) -> Bool in
-            return key as! String == "error_" ? true : false
-        })
-        if err {
-            XCGLogger.error("err:\(data!["error_"] as! Int)")
-            return
-        }
-        XCGLogger.debug("\(data!)")
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
-        
     }
     
     func verifyCodeInfoNotify(notification: NSNotification?) {

@@ -146,7 +146,7 @@ class MessageCell: UITableViewCell {
             let view = contentView.viewWithTag(101)
             if let headView = view!.viewWithTag(1001) as? UIImageView {
                 var uid = 0
-                if message!.from_uid_ == DataManager.currentUser!.uid {
+                if message!.from_uid_ == CurrentUser.uid_ {
                     uid = message!.to_uid_
                 } else {
                     uid = message!.from_uid_
@@ -162,8 +162,8 @@ class MessageCell: UITableViewCell {
                     
                     if let msgLab = view!.viewWithTag(1004) as? UILabel {
                         var nickname:String?
-                        if message!.from_uid_ == DataManager.currentUser!.uid {
-                            nickname = DataManager.currentUser?.nickname
+                        if message!.from_uid_ == CurrentUser.uid_ {
+                            nickname = CurrentUser.nickname_
                         } else {
                             nickname = userInfo?.nickname
                         }

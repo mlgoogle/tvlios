@@ -228,7 +228,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func chatMessage(notification: NSNotification?) {
         let msg = (notification?.userInfo!["data"])! as! PushMessage
-        if msg.from_uid_ == servantInfo?.uid && msg.to_uid_ == DataManager.currentUser!.uid {
+        if msg.from_uid_ == servantInfo?.uid && msg.to_uid_ == CurrentUser.uid_ {
             chatTable?.beginUpdates()
             let numberOfRows = chatTable?.numberOfRowsInSection(0)
             chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
@@ -398,7 +398,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("ChatBubbleCell", forIndexPath: indexPath) as! ChatBubbleCell
-            let msgData = Message(incoming: (message.from_uid_ == DataManager.currentUser?.uid) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
+            let msgData = Message(incoming: (message.from_uid_ == CurrentUser.uid_) ? false : true, text: message.content_!, sentDate: NSDate(timeIntervalSince1970: NSNumber.init(longLong: message.msg_time_).doubleValue))
             cell.configureWithMessage(msgData)
             return cell
         }
@@ -435,14 +435,14 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         let msg = textView.text
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
-        let data:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
+        let data:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
                                                   "to_uid_": servantInfo!.uid,
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
                                                   "content_": msg]
         //base64编码
         //        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
         //        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        //        let data_base:Dictionary<String, AnyObject> = ["from_uid_": DataManager.currentUser!.uid,
+        //        let data_base:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
         //                                                  "to_uid_": servantInfo!.uid,
         //                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
         //                                                  "content_": msg_base64!]
@@ -504,7 +504,7 @@ extension ChatVC:CitysSelectorSheetDelegate {
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+        SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
             "to_uid_": servantInfo!.uid,
             "service_id_": selectedServcie!.service_id_,
             "day_count_":targetDays])

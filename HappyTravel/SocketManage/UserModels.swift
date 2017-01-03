@@ -43,7 +43,9 @@ class UserInfoModel: UserModel {
     dynamic var currentBankCardNumber_:String?
     dynamic var currentBanckCardName_:String?
     dynamic var has_passwd_: Int = -1 //-1:未设置提现密码 1:已设置提现密码
+    dynamic var levle_:Float = 0.0
     
     dynamic var skills_:String?
     
+    dynamic var login_:Bool = false
 }

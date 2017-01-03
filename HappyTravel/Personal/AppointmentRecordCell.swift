@@ -135,22 +135,17 @@ class AppointmentRecordCell: DistanceOfTravelCell {
                 nickNameLab.text = recordInfo?.service_name_
             } else {
                 
-                nickNameLab.text = DataManager.currentUser?.nickname
+                nickNameLab.text = CurrentUser.nickname_
             }
         }
         
         if let serviceTitleLab = view!.viewWithTag(1003) as? UILabel {
-            
             if let cityCode = recordInfo?.city_code_ {
-                
                 let results = DataManager.getData(CityInfo.self, filter: "cityCode = \(cityCode)") as! Results<CityInfo>
-                
                 if let cityInfo = results.first  {
                     serviceTitleLab.text = cityInfo.cityName
                 }
-                
             }
-            
         }
         
         if let payLab = view!.viewWithTag(1004) as? UILabel {

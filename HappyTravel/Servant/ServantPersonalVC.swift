@@ -197,7 +197,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             let totalMoney = service_price_oneday! * Int(dayNum)
             let currentCash = DataManager.currentUser?.cash
             if currentCash >= totalMoney { // 余额充足
-                SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": DataManager.currentUser!.uid,
+                SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": CurrentUser.uid_,
                     "to_uid_": personalInfo!.uid,
                     "service_id_": service!.service_id_,
                     "appointment_id_":appointment_id_])
@@ -467,7 +467,7 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
         
         if currentCash >= totalMoney {
             
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
                 "to_uid_": personalInfo!.uid,
                 "service_id_": selectedServcie!.service_id_,
                 "day_count_":targetDays])
