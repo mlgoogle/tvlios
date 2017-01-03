@@ -251,10 +251,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-//                let ip = "192.168.25.129"
-                let ip = "103.40.192.101"
-//                let ip = "61.147.114.78"
-                try socket?.connectToHost(ip, onPort: 10001, withTimeout: 5)
+                #if true  // true: 测试环境    false: 正式环境
+                    let ip:String = "61.147.114.78"
+                    let port:UInt16 = 10007
+                #else
+                    let ip:String = "103.40.192.101"
+                    let port:UInt16 = 10001
+                #endif
+                try socket?.connectToHost(ip, onPort: port, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
             
