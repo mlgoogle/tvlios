@@ -70,7 +70,8 @@ class PayVC: UIViewController, UITextFieldDelegate {
         passwdTF!.placeholder = "请输入密码"
         passwdTF!.textAlignment = .Left
         passwdTF!.contentVerticalAlignment = .Center
-        passwdTF!.keyboardType = .NumberPad
+        passwdTF!.keyboardType = .Default
+        passwdTF!.clearButtonMode = .Always
         passwdTF!.secureTextEntry = true
         passwdTF!.delegate = self
         passwdTF!.becomeFirstResponder()
@@ -172,7 +173,6 @@ class PayVC: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         //收起键盘
         textField.resignFirstResponder()
-        print(textField.text)
         return true
     }
     func sureInsuranceReply(notification: NSNotification) {

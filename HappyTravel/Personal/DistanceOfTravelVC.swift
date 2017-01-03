@@ -345,7 +345,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         switch segmentIndex {
-        case 0:
+        case 0://商务游(和消息中心的行程一样)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
             if hotometers?.count > 0 && indexPath.row < hotometers?.count {
                 cell.setHodometerInfo(hotometers![indexPath.row])
@@ -353,7 +353,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             
             return cell
 
-        case 1:
+        case 1://预约
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentRecordCell", forIndexPath: indexPath) as! AppointmentRecordCell
             if records?.count > 0 && indexPath.row < records?.count {
                 cell.setRecordInfo(records![indexPath.row])
