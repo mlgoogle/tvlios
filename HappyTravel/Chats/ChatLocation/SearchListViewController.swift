@@ -42,7 +42,6 @@ class SearchListViewController: UIViewController {
         tableView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
-        
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cells")
         tableView.registerClass(SearchHeaderView.self, forHeaderFooterViewReuseIdentifier: "SearchHeaderView")
   
@@ -60,6 +59,19 @@ class SearchListViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+
     }
 }
 
