@@ -117,7 +117,8 @@ class MessageCell: UITableViewCell {
             msgLab?.textAlignment = .Left
             msgLab?.font = UIFont.systemFontOfSize(S13)
             msgLab?.textColor = UIColor.grayColor()
-            msgLab?.numberOfLines = 0
+//            msgLab?.numberOfLines = 0
+            msgLab?.numberOfLines = 2
             view?.addSubview(msgLab!)
             msgLab?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(nickNameLab!)

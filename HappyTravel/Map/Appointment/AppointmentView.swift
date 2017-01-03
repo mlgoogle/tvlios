@@ -112,7 +112,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             view.backgroundColor = .clearColor()
             let label = UILabel()
             label.backgroundColor = .clearColor()
-            label.text = section == 0 ? "预约信息" : "服务者标签"
+            label.text = section == 0 ? "预约信息" : "预约的服务"
             label.font = .systemFontOfSize(S15)
             label.textColor = UIColor.grayColor()
             view.addSubview(label)
