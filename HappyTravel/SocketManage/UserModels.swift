@@ -12,9 +12,9 @@ import RealmSwift
 
 class LoginModel: Object {
     
-    dynamic var phone_num_:String?
+    dynamic var phone_num_:String? = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
     
-    dynamic var passwd_:String?
+    dynamic var passwd_:String? = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String
     
     dynamic var user_type_:Int = 1
     
@@ -25,6 +25,7 @@ class UserModel : Object {
     dynamic var head_url_: String?
 }
 
+var CurrentUser = UserInfoModel()
 class UserInfoModel: UserModel {
     dynamic var address_: String?
     dynamic var cash_lv_: Int = 0
