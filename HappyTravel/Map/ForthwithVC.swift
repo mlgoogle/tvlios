@@ -40,6 +40,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var appointment_id_ = 0
     var isShowBaseInfo = false
     var isShowLocationInfo = false
+    //服务者类型 0商务，1休闲, 999所有服务者，默认为所有服务者（服务端发送的serviceType_ 0商务，1休闲, 2既是商务又是休闲）
+    var serviceType:Int = 999
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -192,7 +194,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
             make.centerY.equalTo(titleView.snp_centerY)
         }
-        titleLab?.text = "我的位置"
+        titleLab?.text = "所有服务者"
         //城市选择功能
       
         titleBtn = UIButton()
@@ -358,31 +360,33 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func screenServices(sender:UIButton) {
+        sender.selected = true
         let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        let allServices = UIAlertAction.init(title: "所有服务者", style: .Default, handler: { (sender: UIAlertAction) in
-            
-        })
-        
-        let businessServices = UIAlertAction.init(title: "商务服务者", style: .Default, handler: { (sender: UIAlertAction) in
-            
-        })
-        
-        let leisureServices = UIAlertAction.init(title: "休闲服务者", style: .Default, handler: { (sender: UIAlertAction) in
-            
-        })
-
-        
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
-            
-        })
-        
-        alertCtrl.addAction(allServices)
-        alertCtrl.addAction(businessServices)
-        alertCtrl.addAction(leisureServices)
-        alertCtrl.addAction(cancel)
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者"]
+        let typeArray = [999, 0, 1]
+        for i in 0..<3 {
+            let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
+                self.serviceType = typeArray[i]
+                self.screenAction(nameArray[i])
+                
+            })
+            alertCtrl.addAction(services)
+        }
         
         presentViewController(alertCtrl, animated: true, completion: nil)
+    }
+    
+    func screenAction(title:String) {
+        self.titleLab?.text = title
+        self.titleBtn?.selected = false
+        
+        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
+        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
+        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
+                                                  "longitude_": lon,
+                                                  "distance_": 10.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
+
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
@@ -603,7 +607,57 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             XCGLogger.warning("warning:\(data!["error_"] as! Int)")
             return
         }
-        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
+        //改let
+        var servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
+        
+        
+//        guard servants.count != 0 else {
+//            return
+//        }
+//        
+//        var Vservant = servants[0]
+//        Vservant["uid_"] = 12
+//        Vservant["nick_name_"] = "第二个"
+//        Vservant["gender_"] = 1
+//        Vservant["servicetype_"] = 0
+//        Vservant["latitude"] = 31.245099999999999
+//        Vservant["longitude_"] = 7.1145453001139502e-322
+//        servants.append(Vservant)
+//        
+//        Vservant["uid_"] = 13
+//        Vservant["nick_name_"] = "第三个"
+//        Vservant["gender_"] = 2
+//        Vservant["servicetype_"] = 1
+//        Vservant["latitude"] = 32.345099999999999
+//        Vservant["longitude_"] = 7.2145453001139502e-322
+//        servants.append(Vservant)
+//        
+//        Vservant["uid_"] = 14
+//        Vservant["nick_name_"] = "第四个"
+//        Vservant["gender_"] = 1
+//        Vservant["servicetype_"] = 2
+//        Vservant["latitude"] = 33.445099999999999
+//        Vservant["longitude_"] = 7.3145453001139502e-322
+//        servants.append(Vservant)
+//        
+//        Vservant["uid_"] = 15
+//        Vservant["nick_name_"] = "第五个"
+//        Vservant["gender_"] = 1
+//        Vservant["servicetype_"] = 1
+//        Vservant["latitude"] = 34.545099999999999
+//        Vservant["longitude_"] = 7.4145453001139502e-322
+//        servants.append(Vservant)
+//        
+//        Vservant["uid_"] = 16
+//        Vservant["nick_name_"] = "第六个"
+//        Vservant["gender_"] = 2
+//        Vservant["servicetype_"] = 0
+//        Vservant["latitude"] = 35.645099999999999
+//        Vservant["longitude_"] = 7.5145453001139502e-322
+//        servants.append(Vservant)
+
+        
+        
         annotations.removeAll()
         for servant in servants {
             let servantInfo = UserInfo()
@@ -615,6 +669,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let point = MAPointAnnotation.init()
             point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
             point.title = "\(servantInfo.uid)"
+            //根据serviceType筛选
+            if serviceType != 999{
+                //不是默认的所有服务者，进行筛选
+                let type = servant["servicetype_"] as? Int
+                //不是类型2和要筛选的服务者，忽略
+                if  type != serviceType && type != 2 {
+                    continue
+                }
+            }
+            
             annotations.append(point)
         }
         if mapView!.annotations.count > 0{
@@ -759,7 +823,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     if placeMarks?.count == 1 {
                         self.locality = (placeMarks?[0])!.locality
                         self.titleLab?.text = self.locality
-                        XCGLogger.debug("Update locality: \(self.locality!)")
+                        XCGLogger.debug("Update locality: \(self.locality ?? "")")
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
 
                         if DataManager.currentUser!.login {
