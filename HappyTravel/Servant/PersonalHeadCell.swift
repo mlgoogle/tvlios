@@ -207,9 +207,11 @@ class PersonalHeadCell : UITableViewCell {
 //            }
             
             if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
-                let headUrl = NSURL(string: userInfo!.headUrl!)
-                headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
+                if userInfo?.headUrl != nil {                    
+                    let headUrl = NSURL(string: userInfo!.headUrl!)
+                    headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                        
+                    }
                 }
             }
             

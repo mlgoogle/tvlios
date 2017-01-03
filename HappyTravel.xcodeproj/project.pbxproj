@@ -119,6 +119,22 @@
 		6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */; };
 		6E3060311DD1C31B00EB1D2F /* AppointmentRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */; };
 		6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */; };
+		6E5ADC851E1B440A00E6823F /* ChatLocationAnotherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */; };
+		6E5ADC861E1B440A00E6823F /* ChatLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7A1E1B440A00E6823F /* ChatLocationCell.swift */; };
+		6E5ADC871E1B440A00E6823F /* ChatLocationMeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7B1E1B440A00E6823F /* ChatLocationMeCell.swift */; };
+		6E5ADC881E1B440A00E6823F /* GetLocationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7C1E1B440A00E6823F /* GetLocationInfoViewController.swift */; };
+		6E5ADC891E1B440A00E6823F /* POIInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7D1E1B440A00E6823F /* POIInfoCell.swift */; };
+		6E5ADC8A1E1B440A00E6823F /* POIInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7E1E1B440A00E6823F /* POIInfoModel.swift */; };
+		6E5ADC8B1E1B440A00E6823F /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC7F1E1B440A00E6823F /* SearchHeaderView.swift */; };
+		6E5ADC8C1E1B440A00E6823F /* SearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC801E1B440A00E6823F /* SearchListViewController.swift */; };
+		6E5ADC8D1E1B440A00E6823F /* ShowLocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC811E1B440A00E6823F /* ShowLocationDetailViewController.swift */; };
+		6E5ADC8E1E1B440A00E6823F /* ShowMapHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC821E1B440A00E6823F /* ShowMapHeaderView.swift */; };
+		6E5ADC8F1E1B440A00E6823F /* YD_Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC831E1B440A00E6823F /* YD_Annotation.swift */; };
+		6E5ADC901E1B440A00E6823F /* YD_AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC841E1B440A00E6823F /* YD_AnnotationView.swift */; };
+		6E5ADC921E1B51DF00E6823F /* 2222.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC911E1B51DF00E6823F /* 2222.png */; };
+		6E5ADC941E1B54D000E6823F /* select_duihao.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC931E1B54D000E6823F /* select_duihao.png */; };
+		6E5ADC961E1B58DB00E6823F /* datou.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC951E1B58DB00E6823F /* datou.png */; };
+		6E5ADC981E1B58E000E6823F /* fangda.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC971E1B58E000E6823F /* fangda.png */; };
 		6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */; };
 		6E5E4E4E1DD45A3100368011 /* AppointmentDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */; };
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
@@ -444,6 +460,22 @@
 		6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceIncludeCell.swift; path = Personal/InvoiceIncludeCell.swift; sourceTree = "<group>"; };
 		6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRecordCell.swift; path = Personal/AppointmentRecordCell.swift; sourceTree = "<group>"; };
 		6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentInfo.swift; path = Data/AppointmentInfo.swift; sourceTree = "<group>"; };
+		6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLocationAnotherCell.swift; sourceTree = "<group>"; };
+		6E5ADC7A1E1B440A00E6823F /* ChatLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLocationCell.swift; sourceTree = "<group>"; };
+		6E5ADC7B1E1B440A00E6823F /* ChatLocationMeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLocationMeCell.swift; sourceTree = "<group>"; };
+		6E5ADC7C1E1B440A00E6823F /* GetLocationInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLocationInfoViewController.swift; sourceTree = "<group>"; };
+		6E5ADC7D1E1B440A00E6823F /* POIInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POIInfoCell.swift; sourceTree = "<group>"; };
+		6E5ADC7E1E1B440A00E6823F /* POIInfoModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POIInfoModel.swift; sourceTree = "<group>"; };
+		6E5ADC7F1E1B440A00E6823F /* SearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		6E5ADC801E1B440A00E6823F /* SearchListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchListViewController.swift; sourceTree = "<group>"; };
+		6E5ADC811E1B440A00E6823F /* ShowLocationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLocationDetailViewController.swift; sourceTree = "<group>"; };
+		6E5ADC821E1B440A00E6823F /* ShowMapHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMapHeaderView.swift; sourceTree = "<group>"; };
+		6E5ADC831E1B440A00E6823F /* YD_Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YD_Annotation.swift; sourceTree = "<group>"; };
+		6E5ADC841E1B440A00E6823F /* YD_AnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YD_AnnotationView.swift; sourceTree = "<group>"; };
+		6E5ADC911E1B51DF00E6823F /* 2222.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2222.png; sourceTree = "<group>"; };
+		6E5ADC931E1B54D000E6823F /* select_duihao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_duihao.png; sourceTree = "<group>"; };
+		6E5ADC951E1B58DB00E6823F /* datou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = datou.png; sourceTree = "<group>"; };
+		6E5ADC971E1B58E000E6823F /* fangda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fangda.png; sourceTree = "<group>"; };
 		6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailVC.swift; path = Personal/AppointmentDetailVC.swift; sourceTree = "<group>"; };
 		6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailCell.swift; path = Personal/AppointmentDetailCell.swift; sourceTree = "<group>"; };
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
@@ -901,6 +933,7 @@
 		2FBB5E211D51CC47007BE4E0 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
+				6E5ADC781E1B440A00E6823F /* ChatLocation */,
 				6ED244561DF836CE002C1F78 /* EmojiFaceHelper.swift */,
 				6ED244521DF835B5002C1F78 /* FaceKeyboardView.swift */,
 				6ED244531DF835B5002C1F78 /* FaceKeyboardView.xib */,
@@ -995,6 +1028,29 @@
 				6EA6D4651DE2FA4D0041BF32 /* AppointmentRemarksCell.swift */,
 			);
 			name = Appointment;
+			sourceTree = "<group>";
+		};
+		6E5ADC781E1B440A00E6823F /* ChatLocation */ = {
+			isa = PBXGroup;
+			children = (
+				6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */,
+				6E5ADC931E1B54D000E6823F /* select_duihao.png */,
+				6E5ADC971E1B58E000E6823F /* fangda.png */,
+				6E5ADC951E1B58DB00E6823F /* datou.png */,
+				6E5ADC911E1B51DF00E6823F /* 2222.png */,
+				6E5ADC7A1E1B440A00E6823F /* ChatLocationCell.swift */,
+				6E5ADC7B1E1B440A00E6823F /* ChatLocationMeCell.swift */,
+				6E5ADC7C1E1B440A00E6823F /* GetLocationInfoViewController.swift */,
+				6E5ADC7D1E1B440A00E6823F /* POIInfoCell.swift */,
+				6E5ADC7E1E1B440A00E6823F /* POIInfoModel.swift */,
+				6E5ADC7F1E1B440A00E6823F /* SearchHeaderView.swift */,
+				6E5ADC801E1B440A00E6823F /* SearchListViewController.swift */,
+				6E5ADC811E1B440A00E6823F /* ShowLocationDetailViewController.swift */,
+				6E5ADC821E1B440A00E6823F /* ShowMapHeaderView.swift */,
+				6E5ADC831E1B440A00E6823F /* YD_Annotation.swift */,
+				6E5ADC841E1B440A00E6823F /* YD_AnnotationView.swift */,
+			);
+			path = ChatLocation;
 			sourceTree = "<group>";
 		};
 		8AB1BEA3F2B25CF447CA4C2B /* Pods */ = {
@@ -1410,6 +1466,7 @@
 				BF6E9D451DE2FD4500F32CCE /* vipper-rest@2x.png in Resources */,
 				2F65C5711DF2EE5A001EC13A /* centurion_card_recommon@2x.png in Resources */,
 				BF6E9D401DE2FD4500F32CCE /* share-weibo@3x.png in Resources */,
+				6E5ADC981E1B58E000E6823F /* fangda.png in Resources */,
 				BF6E9CF81DE2FD4500F32CCE /* head-bg@2x.png in Resources */,
 				BF6E9D2B1DE2FD4500F32CCE /* middle-level-disable@2x.png in Resources */,
 				BF6E9D671DE2FD4500F32CCE /* lv2@3x.png in Resources */,
@@ -1436,6 +1493,7 @@
 				BF6E9D3B1DE2FD4500F32CCE /* share-wechat-moment@2x.png in Resources */,
 				BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */,
 				BF6E9D721DE2FD4500F32CCE /* pay-selected@2x.png in Resources */,
+				6E5ADC921E1B51DF00E6823F /* 2222.png in Resources */,
 				BF6E9CFC1DE2FD4500F32CCE /* address-selector-normal@2x.png in Resources */,
 				BF6E9D751DE2FD4500F32CCE /* pay-unselect@3x.png in Resources */,
 				BF6E9D5B1DE2FD4500F32CCE /* invoice@2x.png in Resources */,
@@ -1487,6 +1545,7 @@
 				BF6E9D521DE2FD4500F32CCE /* guide-detail-arrows@2x.png in Resources */,
 				BF6E9D361DE2FD4500F32CCE /* service-agent@3x.png in Resources */,
 				BF6E9D601DE2FD4500F32CCE /* login-bg@2x.png in Resources */,
+				6E5ADC961E1B58DB00E6823F /* datou.png in Resources */,
 				BF6E9D321DE2FD4500F32CCE /* primary-levle@2x.png in Resources */,
 				BF6E9D061DE2FD4500F32CCE /* map-head-male@2x.png in Resources */,
 				BF6E9D851DE2FD4500F32CCE /* star-common-hollow@3x.png in Resources */,
@@ -1507,6 +1566,7 @@
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				BF6E9D881DE2FD4500F32CCE /* touxiang_men@2x.png in Resources */,
 				BF6E9D871DE2FD4500F32CCE /* tianjia@3x.png in Resources */,
+				6E5ADC941E1B54D000E6823F /* select_duihao.png in Resources */,
 				2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */,
 				BF6E9D0D1DE2FD4500F32CCE /* recommend@3x.png in Resources */,
 				BF6E9D911DE2FD4500F32CCE /* segment-right@2x.png in Resources */,
@@ -1717,7 +1777,9 @@
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2FECFBCB1E1627730065AF60 /* UpdateModule.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
+				6E5ADC8F1E1B440A00E6823F /* YD_Annotation.swift in Sources */,
 				2FA15A981E128E6A001655A3 /* SockModel.swift in Sources */,
+				6E5ADC8B1E1B440A00E6823F /* SearchHeaderView.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
 				BF6E9D931DE3E62300F32CCE /* CentuionCardPriceInfo.swift in Sources */,
 				2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */,
@@ -1726,11 +1788,13 @@
 				2F6E2D5A1DC0D27E00AD0BB1 /* InvoiceHistoryVC.swift in Sources */,
 				2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */,
 				2FBA71F71D6EA49400839E51 /* DistanceOfTravelCell.swift in Sources */,
+				6E5ADC8E1E1B440A00E6823F /* ShowMapHeaderView.swift in Sources */,
 				2FF72BA31DB73054001EEED2 /* DateSelectorSheet.swift in Sources */,
 				2FE7C3791D63FD4700994505 /* ForthwithVC.swift in Sources */,
 				2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
 				6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */,
+				6E5ADC851E1B440A00E6823F /* ChatLocationAnotherCell.swift in Sources */,
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
@@ -1738,8 +1802,10 @@
 				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */,
 				6E85F7551E0932C400B4AF3D /* UIViewController+Analysis.swift in Sources */,
+				6E5ADC871E1B440A00E6823F /* ChatLocationMeCell.swift in Sources */,
 				BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */,
 				2FF72BAD1DB8B2DF001EEED2 /* CenturionCardDetailVC.swift in Sources */,
+				6E5ADC881E1B440A00E6823F /* GetLocationInfoViewController.swift in Sources */,
 				2FBB5E731D51CFE6007BE4E0 /* ChatVC.swift in Sources */,
 				2FE7C38C1D64466300994505 /* UserInfo.swift in Sources */,
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
@@ -1763,6 +1829,7 @@
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */,
 				2FF72BAF1DB8C17F001EEED2 /* CentrionCardConsumedCell.swift in Sources */,
+				6E5ADC8D1E1B440A00E6823F /* ShowLocationDetailViewController.swift in Sources */,
 				2FF72BAB1DB8A0A2001EEED2 /* CenturionCardLvSelCell.swift in Sources */,
 				2FF72BA11DB61E7F001EEED2 /* SkillsCell.swift in Sources */,
 				6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */,
@@ -1775,10 +1842,12 @@
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
 				B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
+				6E5ADC891E1B440A00E6823F /* POIInfoCell.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
+				6E5ADC861E1B440A00E6823F /* ChatLocationCell.swift in Sources */,
 				6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */,
@@ -1793,6 +1862,7 @@
 				2FECFBCD1E165F1D0065AF60 /* UpdateManager.swift in Sources */,
 				2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */,
 				2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */,
+				6E5ADC901E1B440A00E6823F /* YD_AnnotationView.swift in Sources */,
 				2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */,
 				2FC25B301D6C395A00D48D6A /* CityInfo.swift in Sources */,
 				2FBB5E831D51E655007BE4E0 /* ChatDateCell.swift in Sources */,
@@ -1807,6 +1877,7 @@
 				2FCB5D961DC093E6006DEB26 /* InvoiceInfo.swift in Sources */,
 				BFC492101DD9D2BF0056500D /* OpenTicketInfo.swift in Sources */,
 				2FC25B361D6D6E7B00D48D6A /* DistanceOfTravelVC.swift in Sources */,
+				6E5ADC8A1E1B440A00E6823F /* POIInfoModel.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
 				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
@@ -1817,6 +1888,7 @@
 				2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */,
 				6E09F4711DC19FC600F1D4FA /* InvoiceHistoryCell.swift in Sources */,
 				6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */,
+				6E5ADC8C1E1B440A00E6823F /* SearchListViewController.swift in Sources */,
 				0D61E91A1E135893009A7DEC /* PayVC.swift in Sources */,
 				2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */,
 				2FC25B321D6C3CC200D48D6A /* CitysSelectorSheet.swift in Sources */,

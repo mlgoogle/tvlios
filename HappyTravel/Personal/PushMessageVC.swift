@@ -248,8 +248,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             footer.endRefreshing()
         } else if segmentIndex == 1 {
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                "order_id_": orderID,
-                "count_": 10])
+                                                         "order_id_": orderID,
+                                                            "count_": 10])
         }
         
     }

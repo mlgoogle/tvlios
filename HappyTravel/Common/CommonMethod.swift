@@ -72,3 +72,5 @@ func cacheImage(image: UIImage ,imageName: String) -> String {
     let filePath: String = String(format: "%@%@", documentPath, key)
     return filePath
 }
+
+
