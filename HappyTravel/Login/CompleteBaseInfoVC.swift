@@ -92,7 +92,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func sureAction(sender: UIButton) {
         
         
-        guard headImageName != nil || DataManager.currentUser?.headUrl != nil else {
+        guard headImageName != nil || CurrentUser.head_url_ != nil else {
            
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
@@ -152,7 +152,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
 //                    
 //                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
 //                    self.nickname = nicknameField?.text
-//                    let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+//                    let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
 //                        "nickname_": self.nickname!,
 //                        "gender_": self.sex,
 //                        "head_url_": url,
@@ -185,7 +185,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
             self.nickname = nicknameField?.text
-            let dict:Dictionary<String, AnyObject> = ["uid_": (DataManager.currentUser?.uid)!,
+            let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
                 "nickname_": self.nickname!,
                 "gender_": self.sex,
                 "head_url_": url,
@@ -569,7 +569,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         catch _ {
         }
         let timestemp:Int = Int(NSDate().timeIntervalSince1970)
-        let fileName = "/\(DataManager.currentUser!.uid)_\(timestemp).png"
+        let fileName = "/\(CurrentUser.uid_)_\(timestemp).png"
         headImageName = fileName
         fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径

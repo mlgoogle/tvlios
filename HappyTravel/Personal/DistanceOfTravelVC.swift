@@ -108,11 +108,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
 //                msg = "预支付成功"
 //                if segmentIndex == 0 {
-//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
 //                        "order_id_": 0,
 //                        "count_": 10])
 //                } else {
-//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
 //                        "last_id_": 0,
 //                        "count_": 10])
 //                }
@@ -279,7 +279,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
                 "order_id_": 0,
                 "count_": 10])
             break
@@ -290,12 +290,12 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 realm.delete(objs)
                 
             })
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
                 "last_id_": 0,
                 "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
             break
         default:
             break
@@ -310,17 +310,17 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func footerRefresh() {
         switch segmentIndex {
         case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
                 "order_id_": orderID,
                 "count_": 10])
             break
         case 1:
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
                 "last_id_": lastRecordId,
                 "count_": 10])
             break
         case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": DataManager.currentUser!.uid])
+            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
             break
         default:
             break
@@ -393,7 +393,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
@@ -426,7 +426,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                  *  未支付状态去支付
                  */
             } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
-                SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
                  selectedAppointmentInfo = records![indexPath.row]
                 payForInvitationRequest()
                 
@@ -528,7 +528,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //                if DataManager.currentUser?.cash < price {
 //                    weakSelf!.moneyIsTooLess()
 //                } else {
-//                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+//                    let dict:[String: AnyObject] = ["uid_": (CurrentUser.uid_)!,
 //                                                    "order_id_": order_id_,
 //                                                    "passwd_": passwd!]
 //                    SocketManager.sendData(.PayForInvitationRequest, data: dict)

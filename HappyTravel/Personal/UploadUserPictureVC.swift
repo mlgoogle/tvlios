@@ -135,7 +135,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
                         var param = [NSString : AnyObject]()
-                        param["uid_"] = DataManager.currentUser!.uid
+                        param["uid_"] = CurrentUser.uid_
                         param["front_pic_"] = self.photoURL["pic1"]
                         param["back_pic_"] = self.photoURL["pic0"]
                         SocketManager.sendData(.AuthenticateUserCard, data:param)
@@ -249,7 +249,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         catch _ {
         }
         let timestemp:Int = Int(NSDate().timeIntervalSince1970)
-        let key = "/\(DataManager.currentUser!.uid)\(timestemp)\(index).png"
+        let key = "/\(CurrentUser.uid_)\(timestemp)\(index).png"
         photoKeys.append(key)
         fileManager.createFileAtPath(documentPath.stringByAppendingString(key), contents: data, attributes: nil)
         //得到选择后沙盒中图片的完整路径

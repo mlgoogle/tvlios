@@ -97,7 +97,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case 0:
              MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
                                                               "order_id_": 0,
                                                               "count_": 10])
         case -1:
@@ -220,7 +220,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             header.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
                 "order_id_": 0,
                 "count_": 10])
         }
@@ -249,9 +249,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             footer.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                                                         "order_id_": orderID,
-                                                            "count_": 10])
+            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+                "order_id_": orderID,
+                "count_": 10])
         }
         
     }
@@ -335,7 +335,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":DataManager.currentUser!.uid])
+                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
                     payForInvitationRequest(cell.curHodometerInfo)
                 }
                 
@@ -402,7 +402,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 //                if DataManager.currentUser?.cash < info?.order_price_ {
 //                    weakSelf!.moneyIsTooLess()
 //                } else {
-//                    let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+//                    let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
 //                        "order_id_": (info?.order_id_)!,
 //                        "passwd_": passwd!]
 //                    SocketManager.sendData(.PayForInvitationRequest, data: dict)

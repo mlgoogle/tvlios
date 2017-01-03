@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import SVProgressHUD
+
 
 class UserSocketAPI {
     
@@ -21,7 +23,9 @@ class UserSocketAPI {
     static func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let api = UserSocketAPI.shared
         let packet = SocketDataPacket(opcode: .Login, model: model)
+        SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         api.requestManager.startRequest(packet, complete: { (response) in
+            SVProgressHUD.dismiss()
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)
     }

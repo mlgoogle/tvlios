@@ -175,7 +175,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.loginResult(_:)), name: NotifyDefine.LoginResult, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -217,29 +216,32 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
         if predicate.evaluateWithObject(username) == false {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
         }
         
-        
         if passwd == nil || (passwd?.characters.count)! == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
             return
         }
         
-        SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
-        if sender?.tag == tags["loginBtn"]! {
-            dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": 1]
-        }
         NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
         NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
-        NSUserDefaults.standardUserDefaults().setObject("\(dict!["user_type_"]!)", forKey: CommonDefine.UserType)
-        SocketManager.sendData(.Login, data: dict)
-        
-        
+        let loginModel = LoginModel()
+        UserSocketAPI.login(loginModel, complete: { (response) in
+            if let user = response as? UserInfoModel {
+                CurrentUser = user
+                CurrentUser.login_ = true
+                self.dismissViewControllerAnimated(false, completion: { () in
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+                })
+                
+            }
+        }, error: { (err) in
+            XCGLogger.debug(err)
+        })
     }
     
     func randomSmallCaseString(length: Int) -> String {
@@ -251,19 +253,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             output.append(randomChar)
         }
         return output
-    }
-    
-    func loginResult(notification: NSNotification?) {
-        
-        let data = notification?.userInfo!["data"]
-        if let errorCode = data?.valueForKey("error_") {
-            let errorMsg = CommonDefine.errorMsgs[errorCode.integerValue]
-            SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1.5, completion: nil)
-            return
-        }
-        SVProgressHUD.dismissWithDelay(0.5)
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
-        
     }
     
     //MARK: - UITextField

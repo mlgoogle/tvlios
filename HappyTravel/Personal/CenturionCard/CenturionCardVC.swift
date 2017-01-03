@@ -406,7 +406,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              *  请求购买
              */
             
-            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+            let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                 "wanted_lv_": self!.selectedIndex+1]
 //            SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
             SVProgressHUD.show()
@@ -434,7 +434,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     func payWithRecord(record:NSDictionary, password:String) {
         SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
-        let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                         "order_id_": record.valueForKey("order_id_")!,
                                         "passwd_": password]
         unowned let weakSelf = self
@@ -456,7 +456,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
             if orderStatus == 0 {
                 SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
-                    SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+                    SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
                     DataManager.currentUser?.centurionCardLv = weakSelf.selectedIndex + 1
                     weakSelf.refreshData()
                 })

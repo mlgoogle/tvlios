@@ -157,7 +157,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     func nextStep() {
         if step == 0 {
             oldPasswd = textField?.text
-            let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+            let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                             "passwd_": oldPasswd!,
                                             "passwd_type_": 1]
             SocketManager.sendData(.PasswdVerifyRequest, data: dict)
@@ -174,7 +174,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
         } else if step == 2 {
             if textField?.text == newPasswd {
                 let changeType = DataManager.currentUser?.has_passwd_ == -1 ? 0 : 1
-                let dict:[String: AnyObject] = ["uid_": (DataManager.currentUser?.uid)!,
+                let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                                 "new_passwd_": newPasswd!,
                                                 "old_passwd_": oldPasswd ?? "",
                                                 "passwd_type_": 1,

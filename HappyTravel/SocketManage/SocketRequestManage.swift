@@ -145,13 +145,13 @@ class SocketRequestManage: NSObject {
     
     
     private func sendHeart() {
-//        let packet = SocketDataPacket(opcode: .Heart,dict:["uid_": DataManager.currentUser!.uid])
+//        let packet = SocketDataPacket(opcode: .Heart,dict:["uid_": CurrentUser.uid_])
 //        sendRequest(packet)
     }
     
     func didActionTimer() {
         if _socketHelper != nil && _socketHelper!.isConnected {
-            if  DataManager.currentUser!.login
+            if  CurrentUser.login_
                 &&  isDispatchInterval(&_lastHeardBeatTime!,interval: 10) {
                 sendHeart()
             }

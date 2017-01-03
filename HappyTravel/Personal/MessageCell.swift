@@ -142,13 +142,10 @@ class MessageCell: UITableViewCell {
             
             showDetailInfo.hidden = false
             setAppointmentInfo(message, unreadCnt: unreadCnt)
-        }
-        else if msgInfo?.msg_type_ ==  PushMessage.MessageType.Location.rawValue {
-        
+        } else if msgInfo?.msg_type_ ==  PushMessage.MessageType.Location.rawValue {
             showDetailInfo.hidden = true
             setLocationInfo(message, unreadCnt: unreadCnt)
-        }
-        else {
+        } else {
             showDetailInfo.hidden = true
 
             setNormalInfo(message, unreadCnt: unreadCnt)
@@ -174,8 +171,8 @@ class MessageCell: UITableViewCell {
             }
         }
         
-        
     }
+    
     func setNormalInfo(message: PushMessage?, unreadCnt: Int) {
         let view = contentView.viewWithTag(101)
 
@@ -221,7 +218,7 @@ class MessageCell: UITableViewCell {
             if let user = DataManager.getUserInfo(uid) {
                 userInfo = user
                 headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
+
                 }
                 if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
                     nickNameLab.text = userInfo!.nickname!
@@ -270,8 +267,8 @@ class MessageCell: UITableViewCell {
                     msgLab.text = message?.content_
 
                 }
-            }
-            
+        }
+        
 //            if let timeLab = view!.viewWithTag(1003) as? UILabel {
 //                let dateFormatter = NSDateFormatter()
 //                dateFormatter.timeStyle = .ShortStyle

@@ -624,7 +624,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             skillStr = skillStr.substringToIndex(skillStr.endIndex.predecessor())
         }
         
-        let dict:[String: AnyObject] = ["uid_": DataManager.currentUser!.uid,
+        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
                                         "city_code_": cityInfo!.cityCode,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),

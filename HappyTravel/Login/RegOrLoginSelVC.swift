@@ -29,14 +29,20 @@ class RegOrLoginSelVC: UIViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         isShow = true
     }
-
+ 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
         isShow = false
+    }
+    
+    func loginSuccessed(notification: NSNotification) {
+        dismissViewControllerAnimated(false, completion: nil)
     }
 
     func initView() {
@@ -83,19 +89,11 @@ class RegOrLoginSelVC: UIViewController {
     }
     
     func regOrLoginSelAction(sender: UIButton) {
-        
         if sender.tag == tags["loginBtn"]! {
             loginVC = LoginVC()
             MobClick.event(CommonDefine.BuriedPoint.loginBtn)
-
             presentViewController(loginVC!, animated: false, completion: nil)
-        } else if sender.tag == tags["regBtn"]! {
-            let regVC = LoginWithMSGVC()
-            MobClick.event(CommonDefine.BuriedPoint.registerBtn)
-
-            presentViewController(regVC, animated: false, completion: nil)
-//            let dict  = ["verify_type_": 0, "phone_num_": "15157109258"]
-//            SocketManager.sendData(.SendMessageVerify, data: dict)
+            
         }
     }
     
