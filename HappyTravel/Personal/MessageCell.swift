@@ -137,60 +137,121 @@ class MessageCell: UITableViewCell {
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
         msgInfo = message
-        if msgInfo?.msg_type_ == 2231 {
+
+        if msgInfo?.msg_type_ == PushMessage.MessageType.Appointment.rawValue {
             
             showDetailInfo.hidden = false
             setAppointmentInfo(message, unreadCnt: unreadCnt)
-        }else {
+        } else if msgInfo?.msg_type_ ==  PushMessage.MessageType.Location.rawValue {
             showDetailInfo.hidden = true
-            let view = contentView.viewWithTag(101)
-            if let headView = view!.viewWithTag(1001) as? UIImageView {
-                var uid = 0
-                if message!.from_uid_ == DataManager.currentUser!.uid {
-                    uid = message!.to_uid_
-                } else {
-                    uid = message!.from_uid_
-                }
-                if let user = DataManager.getUserInfo(uid) {
-                    userInfo = user
-                    headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                        
-                    }
-                    if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                        nickNameLab.text = userInfo!.nickname!
-                    }
-                    
-                    if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                        var nickname:String?
-                        if message!.from_uid_ == DataManager.currentUser!.uid {
-                            nickname = DataManager.currentUser?.nickname
-                        } else {
-                            nickname = userInfo?.nickname
-                        }
-                        msgLab.text = "\(nickname!) : \((message?.content_!)!)"
-                    }
-                }
-                
-                if let timeLab = view!.viewWithTag(1003) as? UILabel {
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.timeStyle = .ShortStyle
-                    dateFormatter.dateStyle = .ShortStyle
-                    let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
-                    timeLab.text = dateStr
-                }
-                
-                if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
-                    
-                    if unreadCnt > 0 {
-                        unreadCntLab.hidden = false
-                        unreadCntLab.text = "\(unreadCnt)"
-                    } else {
-                        unreadCntLab.hidden = true
-                    }
-                }
-                
+            setLocationInfo(message, unreadCnt: unreadCnt)
+        } else {
+            showDetailInfo.hidden = true
+
+            setNormalInfo(message, unreadCnt: unreadCnt)
+        }
+        
+        let view = contentView.viewWithTag(101)
+
+        if let timeLab = view!.viewWithTag(1003) as? UILabel {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.timeStyle = .ShortStyle
+            dateFormatter.dateStyle = .ShortStyle
+            let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+            timeLab.text = dateStr
+        }
+        
+        if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
+            
+            if unreadCnt > 0 {
+                unreadCntLab.hidden = false
+                unreadCntLab.text = "\(unreadCnt)"
+            } else {
+                unreadCntLab.hidden = true
             }
         }
+        
+    }
+    
+    func setNormalInfo(message: PushMessage?, unreadCnt: Int) {
+        let view = contentView.viewWithTag(101)
+
+        if let headView = view!.viewWithTag(1001) as? UIImageView {
+            var uid = 0
+            if message!.from_uid_ == DataManager.currentUser!.uid {
+                uid = message!.to_uid_
+            } else {
+                uid = message!.from_uid_
+            }
+            if let user = DataManager.getUserInfo(uid) {
+                userInfo = user
+                headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                    
+                }
+                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
+                    nickNameLab.text = userInfo!.nickname!
+                }
+                
+                if let msgLab = view!.viewWithTag(1004) as? UILabel {
+                    var nickname:String?
+                    if message!.from_uid_ == DataManager.currentUser!.uid {
+                        nickname = DataManager.currentUser?.nickname
+                    } else {
+                        nickname = userInfo?.nickname
+                    }
+                    msgLab.text = "\(nickname!) : \((message?.content_!)!)"
+                }
+            }
+            
+        }
+    }
+    func setLocationInfo(message: PushMessage?, unreadCnt: Int) {
+        let view = contentView.viewWithTag(101)
+
+        if let headView = view!.viewWithTag(1001) as? UIImageView {
+            var uid = 0
+            if message!.from_uid_ == DataManager.currentUser!.uid {
+                uid = message!.to_uid_
+            } else {
+                uid = message!.from_uid_
+            }
+            if let user = DataManager.getUserInfo(uid) {
+                userInfo = user
+                headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+
+                }
+                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
+                    nickNameLab.text = userInfo!.nickname!
+                }
+                
+                if let msgLab = view!.viewWithTag(1004) as? UILabel {
+                    var nickname:String?
+                    if message!.from_uid_ == DataManager.currentUser!.uid {
+                        nickname = DataManager.currentUser?.nickname
+                    } else {
+                        nickname = userInfo?.nickname
+                    }
+                    msgLab.text = "\(nickname!) : \("[位置分享]")"
+                }
+            }
+            
+        }
+//        if let timeLab = view!.viewWithTag(1003) as? UILabel {
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.timeStyle = .ShortStyle
+//            dateFormatter.dateStyle = .ShortStyle
+//            let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+//            timeLab.text = dateStr
+//        }
+//        
+//        if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
+//            if unreadCnt > 0 {
+//                unreadCntLab.hidden = false
+//                unreadCntLab.text = "\(unreadCnt)"
+//            } else {
+//                unreadCntLab.hidden = true
+//            }
+//        }
         
     }
     
@@ -206,25 +267,25 @@ class MessageCell: UITableViewCell {
                     msgLab.text = message?.content_
 
                 }
-            }
-            
-            if let timeLab = view!.viewWithTag(1003) as? UILabel {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.timeStyle = .ShortStyle
-                dateFormatter.dateStyle = .ShortStyle
-                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
-                timeLab.text = dateStr
-            }
-            
-            if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
-                if unreadCnt > 0 {
-                    unreadCntLab.hidden = false
-                    unreadCntLab.text = "\(unreadCnt)"
-                } else {
-                    unreadCntLab.hidden = true
-                }
-            }
-            
+        }
+        
+//            if let timeLab = view!.viewWithTag(1003) as? UILabel {
+//                let dateFormatter = NSDateFormatter()
+//                dateFormatter.timeStyle = .ShortStyle
+//                dateFormatter.dateStyle = .ShortStyle
+//                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
+//                timeLab.text = dateStr
+//            }
+//            
+//            if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
+//                if unreadCnt > 0 {
+//                    unreadCntLab.hidden = false
+//                    unreadCntLab.text = "\(unreadCnt)"
+//                } else {
+//                    unreadCntLab.hidden = true
+//                }
+//            }
+        
         
     }
     

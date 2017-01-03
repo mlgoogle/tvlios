@@ -271,7 +271,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
-        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": DataManager.currentUser!.uid]) { [weak self](result) in
+        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_]) { [weak self](result) in
             if let strongSelf = self{
                 strongSelf.authUserCardCode = DataManager.currentUser!.authentication
                 strongSelf.settingOptingValue![0][2] = strongSelf.autoStatus

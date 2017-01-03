@@ -563,7 +563,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         invoiceInfoDict = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.invoiceInfoDict) as? [String: AnyObject]
         if invoiceInfoDict != nil {
             invoiceInfoDict!["invoice_type_"] = 0
-            invoiceInfoDict!["uid_"] = DataManager.currentUser!.uid
+            invoiceInfoDict!["uid_"] = CurrentUser.uid_
         }else{
             invoiceInfoDict =  ["oid_str_": "",
                                 "title_": "",
@@ -575,7 +575,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                                 "area_": "",
                                 "addr_detail_": "",
                                 "remarks_": "",
-                                "uid_": DataManager.currentUser!.uid]
+                                "uid_": CurrentUser.uid_]
 
         }
         
