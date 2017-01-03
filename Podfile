@@ -35,6 +35,5 @@ target 'HappyTravel' do
     pod 'Qiniu', '~> 7.1'
     pod 'Fabric'
     pod 'Crashlytics'
-    pod 'AMapSearch'
 
 end

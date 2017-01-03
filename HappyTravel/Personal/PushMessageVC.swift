@@ -22,7 +22,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
     var timer:NSTimer?
-
+    var isFirstTime = true
+    
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
@@ -231,6 +232,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     func endRefresh() {
         
+        isFirstTime = false
         if header.state == .Refreshing {
             header.endRefreshing()
         }
@@ -248,8 +250,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             footer.endRefreshing()
         } else if segmentIndex == 1 {
             SocketManager.sendData(.ObtainTripRequest, data: ["uid_": DataManager.currentUser!.uid,
-                "order_id_": orderID,
-                "count_": 10])
+                                                         "order_id_": orderID,
+                                                            "count_": 10])
         }
         
     }
@@ -258,8 +260,11 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         allEndRefreshing()
         segmentIndex = (sender?.selectedSegmentIndex)!
         if segmentIndex == 0 {
-            header.beginRefreshing()
-            performSelector(#selector(PushMessageVC.allEndRefreshing), withObject: nil, afterDelay: 1.5)
+
+            if !isFirstTime {
+                header.beginRefreshing()
+                performSelector(#selector(PushMessageVC.allEndRefreshing), withObject: nil, afterDelay: 1.5)
+            }
 //            header.hidden = true
             footer.hidden = true
         } else if segmentIndex == 1 {
