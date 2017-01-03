@@ -242,7 +242,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[SockOpcode] = [.Logined]
+    let tmpNewRequestType:[SockOpcode] = [.Logined, .CenturionCardInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
