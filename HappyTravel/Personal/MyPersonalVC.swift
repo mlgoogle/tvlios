@@ -118,8 +118,16 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func loginSuccessed(notification: NSNotification?) {
         DataManager.setDefaultRealmForUID(CurrentUser.uid_)
+        
         initPersonalView()
-        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
+        
+//        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
+        UserSocketAPI.centurionCardBaseInfo({ (response) in
+                XCGLogger.debug(response)
+            }, error: { (err) in
+        
+        })
+        
         SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
         SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
         SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_])

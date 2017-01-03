@@ -30,4 +30,10 @@ class UserSocketAPI {
             }, error: error)
     }
     
+    static func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
+            }, error: error)
+    }
 }
