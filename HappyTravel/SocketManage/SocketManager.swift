@@ -242,7 +242,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[Int16] = []  // [SockOpcode.Logined.rawValue]
+    let tmpNewRequestType:[SockOpcode] = []  // [.Logined]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -588,24 +588,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
         }
         
-        let username = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserName) as? String
-        let passwd = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) as? String
-        var userType:Int?
-        if let type = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.UserType) as? String {
-            userType = Int.init(type)
-        }
-        
-        if username != nil && passwd != nil && userType != nil && SocketManager.isLogout == false {
-            let dict = ["phone_num_": username!, "passwd_": passwd!, "user_type_": userType!]
-//            let loginModel = LoginModel()
-//            loginModel.user_type_ = 1
-//            loginModel.phone_num_ = username!
-//            loginModel.passwd_ = passwd!
+        let loginModel = LoginModel()
+        if loginModel.phone_num_ != nil && loginModel.passwd_ != nil && SocketManager.isLogout == false {
 //            UserSocketAPI.login(loginModel, complete: { (response) in
-//                    XCGLogger.debug(response)
-//                }, error: { (err) in
-//            
+//                if let user = response as? UserInfoModel {
+//                    CurrentUser = user
+//                }
+//                DataManager.setDefaultRealmForUID(DataManager.currentUser!.uid)
+//            }, error: { (err) in
+//                XCGLogger.debug(err)
 //            })
+            
+            let dict = ["phone_num_": loginModel.phone_num_!, "passwd_": loginModel.passwd_!, "user_type_": 1]
             SocketManager.sendData(.Login, data: dict)
         }
         SocketManager.isLogout = false
@@ -655,7 +649,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 
-                if tmpNewRequestType.contains(head.opcode) {
+                if tmpNewRequestType.contains(SockOpcode.init(rawValue: head.opcode)!) {
                     let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
                     onPacketData(packetData)
                 } else {
