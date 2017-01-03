@@ -52,7 +52,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         super.init(frame: frame)
         
         initView()
-       
+       registerNotify()
     }
     
     func initView() {
@@ -73,11 +73,29 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         })
         
     }
+    func registerNotify() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentView.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentView.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+        
+        table?.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 4), atScrollPosition: .Bottom, animated: true)
+    }
+    
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
+    }
     
     //MARK: - TableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 3
+            return 2
         } else if section == 1 {
             return 1
         } else if section == 2 {
@@ -136,7 +154,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             } else {
                 cell = dateSelectorCell(tableView, indexPath: indexPath)
             }
-            line = indexPath.row < 2 ? true : false
+            line = indexPath.row < 1 ? true : false
         } else if indexPath.section == 1 {
             let tallys = SkillsCell()
             tallys.delegate = self
@@ -158,6 +176,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         } else if indexPath.section == 3 {
             cell = tableView.dequeueReusableCellWithIdentifier("remarksCell", forIndexPath: indexPath) as! AppointmentRemarksCell
             remarksTextView = cell?.valueForKey("remarksTextView") as? UITextView
+            
             line = false
             
         }else if indexPath.section == 4 {
@@ -294,7 +313,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.width.equalTo(80)
             })
         }
-        dateTitleLab?.text = indexPath.row == 1 ? "开始日期" : "结束日期"
+        dateTitleLab?.text = indexPath.row == 1 ? "预约日期" : "结束日期"
         
         var dateLab = cell?.contentView.viewWithTag(tags["dateLab"]!) as? UILabel
         if dateLab == nil {
@@ -542,7 +561,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         dateAlertController?.dismissViewControllerAnimated(true, completion: nil)
         startDate = date
         endDate = date
-        table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 1, inSection: 0), NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
+//        table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 1, inSection: 0), NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
+                table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 1, inSection: 0)], withRowAnimation: .Fade)
 
     }
     
@@ -646,5 +666,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+
     }
 }
