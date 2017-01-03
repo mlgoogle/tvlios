@@ -17,6 +17,11 @@ class ShowMapHeaderView: UITableViewHeaderFooterView {
 
     var delegate:ShowSearchVCDelegate?
     
+    lazy var backUserCenterButton:UIButton = {
+       let button = UIButton(type: .Custom)
+        button.setImage(UIImage.init(named: ""), forState: .Normal)
+        return button
+    }()
     
     lazy var mapView:MAMapView = {
         
@@ -46,7 +51,7 @@ class ShowMapHeaderView: UITableViewHeaderFooterView {
         button.setTitle("搜索", forState: .Normal)
         button.titleLabel?.font = UIFont.systemFontOfSize(14)
         button.setTitleColor( UIColor(red: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0), forState: .Normal)
-        button.setImage(UIImage.init(named: "fangda"), forState: .Normal)
+        button.setImage(UIImage.init(named: "chat_search"), forState: .Normal)
         return button
     }()
     override init(reuseIdentifier: String?) {
@@ -78,7 +83,6 @@ class ShowMapHeaderView: UITableViewHeaderFooterView {
             make.left.equalTo(searchView)
             make.bottom.equalTo(self)
         }
-        
         searchButton.addTarget(self, action: #selector(ShowMapHeaderView.showSearchAction), forControlEvents: .TouchUpInside)
     }
     

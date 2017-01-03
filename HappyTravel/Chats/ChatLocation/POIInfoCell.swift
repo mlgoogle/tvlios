@@ -30,7 +30,7 @@ class POIInfoCell: UITableViewCell {
     var selectImageView:UIImageView = {
        let imageView = UIImageView()
         
-        imageView.image = UIImage(named: "select_duihao")
+        imageView.image = UIImage(named: "checkMark")
         return imageView
     }()
     

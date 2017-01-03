@@ -234,7 +234,7 @@ class MessageCell: UITableViewCell {
                     } else {
                         nickname = userInfo?.nickname
                     }
-                    msgLab.text = "\(nickname!) : \("【位置分享】")"
+                    msgLab.text = "\(nickname!) : \("[位置分享]")"
                 }
             }
             

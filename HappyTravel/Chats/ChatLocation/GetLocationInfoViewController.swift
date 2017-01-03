@@ -60,12 +60,22 @@ class GetLocationInfoViewController: UIViewController {
         tableView.backgroundColor = UIColor(red: 242 / 255.0, green: 242 / 255.0, blue: 242 / 255.0, alpha: 1.0)
         tableView.registerClass(ChatLocationAnotherCell.self, forCellReuseIdentifier: "POIInfoCell")
         tableView.registerClass(ChatLocationMeCell.self, forCellReuseIdentifier: "meCell")
-        
         tableView.registerClass(POIInfoCell.self, forCellReuseIdentifier: "poi")
         tableView.registerClass(ShowMapHeaderView.self, forHeaderFooterViewReuseIdentifier: "header")
     }
     
-    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+            
+            let alert = UIAlertController.init(title: "提示", message: "无法获取您的位置信息。请到手机系统的[设置]->[隐私]->[定位服务]中打开定位服务，并允许优悦助理使用定位服务", preferredStyle: .Alert)
+            let goto = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            alert.addAction(goto)
+            presentViewController(alert, animated: true, completion: {})
+        }
+    }
     
     func sendLocation() {
         navigationController?.popViewControllerAnimated(true)
@@ -165,7 +175,7 @@ extension GetLocationInfoViewController:MAMapViewDelegate, AMapSearchDelegate{
             if annotationView == nil {
                 annotationView = MAAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             }
-            annotationView.image = UIImage(named: "datou")
+            annotationView.image = UIImage(named: "chat_location")
             return annotationView
         }
         return nil

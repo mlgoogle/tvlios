@@ -22,7 +22,7 @@ class SearchHeaderView: UITableViewHeaderFooterView {
     lazy var searchImageView:UIImageView = {
        let imageView = UIImageView()
         
-        imageView.image = UIImage(named: "fangda")
+        imageView.image = UIImage(named: "chat_search")
         return imageView
     }()
     

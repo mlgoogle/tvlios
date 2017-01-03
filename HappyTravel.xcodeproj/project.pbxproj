@@ -135,6 +135,15 @@
 		6E5ADC941E1B54D000E6823F /* select_duihao.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC931E1B54D000E6823F /* select_duihao.png */; };
 		6E5ADC961E1B58DB00E6823F /* datou.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC951E1B58DB00E6823F /* datou.png */; };
 		6E5ADC981E1B58E000E6823F /* fangda.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADC971E1B58E000E6823F /* fangda.png */; };
+		6E5ADCA91E1BA72600E6823F /* chat_location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA11E1BA72600E6823F /* chat_location@2x.png */; };
+		6E5ADCAA1E1BA72600E6823F /* chat_location@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA21E1BA72600E6823F /* chat_location@3x.png */; };
+		6E5ADCAB1E1BA72600E6823F /* chat_navigation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA31E1BA72600E6823F /* chat_navigation@2x.png */; };
+		6E5ADCAC1E1BA72600E6823F /* chat_navigation@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA41E1BA72600E6823F /* chat_navigation@3x.png */; };
+		6E5ADCAD1E1BA72600E6823F /* chat_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA51E1BA72600E6823F /* chat_search@2x.png */; };
+		6E5ADCAE1E1BA72600E6823F /* chat_search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA61E1BA72600E6823F /* chat_search@3x.png */; };
+		6E5ADCAF1E1BA72600E6823F /* checkMark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA71E1BA72600E6823F /* checkMark@2x.png */; };
+		6E5ADCB01E1BA72600E6823F /* checkMark@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCA81E1BA72600E6823F /* checkMark@3x.png */; };
+		6E5ADCB21E1BB19800E6823F /* snajiaoxing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E5ADCB11E1BB19800E6823F /* snajiaoxing@2x.png */; };
 		6E5E4E4C1DD4427C00368011 /* AppointmentDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */; };
 		6E5E4E4E1DD45A3100368011 /* AppointmentDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */; };
 		6E85E8ED1DC7129E00EFEF9B /* InvoiceServiceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */; };
@@ -476,6 +485,15 @@
 		6E5ADC931E1B54D000E6823F /* select_duihao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_duihao.png; sourceTree = "<group>"; };
 		6E5ADC951E1B58DB00E6823F /* datou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = datou.png; sourceTree = "<group>"; };
 		6E5ADC971E1B58E000E6823F /* fangda.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fangda.png; sourceTree = "<group>"; };
+		6E5ADCA11E1BA72600E6823F /* chat_location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_location@2x.png"; sourceTree = "<group>"; };
+		6E5ADCA21E1BA72600E6823F /* chat_location@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_location@3x.png"; sourceTree = "<group>"; };
+		6E5ADCA31E1BA72600E6823F /* chat_navigation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_navigation@2x.png"; sourceTree = "<group>"; };
+		6E5ADCA41E1BA72600E6823F /* chat_navigation@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_navigation@3x.png"; sourceTree = "<group>"; };
+		6E5ADCA51E1BA72600E6823F /* chat_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_search@2x.png"; sourceTree = "<group>"; };
+		6E5ADCA61E1BA72600E6823F /* chat_search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_search@3x.png"; sourceTree = "<group>"; };
+		6E5ADCA71E1BA72600E6823F /* checkMark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkMark@2x.png"; sourceTree = "<group>"; };
+		6E5ADCA81E1BA72600E6823F /* checkMark@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkMark@3x.png"; sourceTree = "<group>"; };
+		6E5ADCB11E1BB19800E6823F /* snajiaoxing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snajiaoxing@2x.png"; sourceTree = "<group>"; };
 		6E5E4E4B1DD4427C00368011 /* AppointmentDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailVC.swift; path = Personal/AppointmentDetailVC.swift; sourceTree = "<group>"; };
 		6E5E4E4D1DD45A3000368011 /* AppointmentDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentDetailCell.swift; path = Personal/AppointmentDetailCell.swift; sourceTree = "<group>"; };
 		6E85E8EC1DC7129E00EFEF9B /* InvoiceServiceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceServiceInfo.swift; path = Data/InvoiceServiceInfo.swift; sourceTree = "<group>"; };
@@ -1033,11 +1051,11 @@
 		6E5ADC781E1B440A00E6823F /* ChatLocation */ = {
 			isa = PBXGroup;
 			children = (
-				6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */,
 				6E5ADC931E1B54D000E6823F /* select_duihao.png */,
 				6E5ADC971E1B58E000E6823F /* fangda.png */,
 				6E5ADC951E1B58DB00E6823F /* datou.png */,
 				6E5ADC911E1B51DF00E6823F /* 2222.png */,
+				6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */,
 				6E5ADC7A1E1B440A00E6823F /* ChatLocationCell.swift */,
 				6E5ADC7B1E1B440A00E6823F /* ChatLocationMeCell.swift */,
 				6E5ADC7C1E1B440A00E6823F /* GetLocationInfoViewController.swift */,
@@ -1108,8 +1126,17 @@
 		BF6E9C4B1DE2FD4500F32CCE /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				6E5ADCB11E1BB19800E6823F /* snajiaoxing@2x.png */,
 				BF6E9C4C1DE2FD4500F32CCE /* face-btn@2x.png */,
 				BF6E9C4D1DE2FD4500F32CCE /* msg-bubble@2x.png */,
+				6E5ADCA11E1BA72600E6823F /* chat_location@2x.png */,
+				6E5ADCA21E1BA72600E6823F /* chat_location@3x.png */,
+				6E5ADCA31E1BA72600E6823F /* chat_navigation@2x.png */,
+				6E5ADCA41E1BA72600E6823F /* chat_navigation@3x.png */,
+				6E5ADCA51E1BA72600E6823F /* chat_search@2x.png */,
+				6E5ADCA61E1BA72600E6823F /* chat_search@3x.png */,
+				6E5ADCA71E1BA72600E6823F /* checkMark@2x.png */,
+				6E5ADCA81E1BA72600E6823F /* checkMark@3x.png */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1448,6 +1475,7 @@
 				BF6E9D621DE2FD4500F32CCE /* logo@3x.png in Resources */,
 				BF6E9D8E1DE2FD4500F32CCE /* wechat-pay@2x.png in Resources */,
 				BF6E9D5E1DE2FD4500F32CCE /* localaddress@2x.png in Resources */,
+				6E5ADCAC1E1BA72600E6823F /* chat_navigation@3x.png in Resources */,
 				BF6E9D151DE2FD4500F32CCE /* advanced-level-disable@2x.png in Resources */,
 				BF6E9D211DE2FD4500F32CCE /* dingji-level@3x.png in Resources */,
 				2F65C5721DF2EE5A001EC13A /* centurion_card_recommon@3x.png in Resources */,
@@ -1484,6 +1512,7 @@
 				BF6E9D811DE2FD4500F32CCE /* side-wallet@2x.png in Resources */,
 				BF6E9D371DE2FD4500F32CCE /* service-disable@2x.png in Resources */,
 				BF6E9D2F1DE2FD4500F32CCE /* primary-level-disable@2x.png in Resources */,
+				6E5ADCAA1E1BA72600E6823F /* chat_location@3x.png in Resources */,
 				BF6E9D341DE2FD4500F32CCE /* service-agent-disable@3x.png in Resources */,
 				BF6E9D541DE2FD4500F32CCE /* guide-star-hollow@2x.png in Resources */,
 				BF6E9CF71DE2FD4500F32CCE /* blackCardBg.png in Resources */,
@@ -1494,6 +1523,7 @@
 				BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */,
 				BF6E9D721DE2FD4500F32CCE /* pay-selected@2x.png in Resources */,
 				6E5ADC921E1B51DF00E6823F /* 2222.png in Resources */,
+				6E5ADCA91E1BA72600E6823F /* chat_location@2x.png in Resources */,
 				BF6E9CFC1DE2FD4500F32CCE /* address-selector-normal@2x.png in Resources */,
 				BF6E9D751DE2FD4500F32CCE /* pay-unselect@3x.png in Resources */,
 				BF6E9D5B1DE2FD4500F32CCE /* invoice@2x.png in Resources */,
@@ -1523,8 +1553,11 @@
 				BF6E9CF61DE2FD4500F32CCE /* appointment-detail@2x.png in Resources */,
 				BF6E9D741DE2FD4500F32CCE /* pay-unselect@2x.png in Resources */,
 				BF6E9CF51DE2FD4500F32CCE /* msg-bubble@2x.png in Resources */,
+				6E5ADCAE1E1BA72600E6823F /* chat_search@3x.png in Resources */,
+				6E5ADCB21E1BB19800E6823F /* snajiaoxing@2x.png in Resources */,
 				2FB95D141DED413400BBA506 /* passwd_box@3x.png in Resources */,
 				BF6E9D7F1DE2FD4500F32CCE /* side-settings@2x.png in Resources */,
+				6E5ADCAB1E1BA72600E6823F /* chat_navigation@2x.png in Resources */,
 				BF6E9D5F1DE2FD4500F32CCE /* localaddress@3x.png in Resources */,
 				BF6E9CFE1DE2FD4500F32CCE /* city-selector@2x.png in Resources */,
 				BF6E9D801DE2FD4500F32CCE /* side-travel@2x.png in Resources */,
@@ -1583,6 +1616,7 @@
 				BF6E9D4A1DE2FD4500F32CCE /* default-big-photo.png in Resources */,
 				BF6E9D3C1DE2FD4500F32CCE /* share-wechat-moment@3x.png in Resources */,
 				BF6E9D281DE2FD4500F32CCE /* meeting-disable@3x.png in Resources */,
+				6E5ADCB01E1BA72600E6823F /* checkMark@3x.png in Resources */,
 				BF6E9D711DE2FD4500F32CCE /* my-star-hollow@3x.png in Resources */,
 				BF6E9D1F1DE2FD4500F32CCE /* dingji-level-disable@3x.png in Resources */,
 				BF6E9D8B1DE2FD4500F32CCE /* touxiang_women@3x.png in Resources */,
@@ -1608,6 +1642,7 @@
 				BF6E9D6A1DE2FD4500F32CCE /* lv4@2x.png in Resources */,
 				BF6E9D821DE2FD4500F32CCE /* star-common-fill@2x.png in Resources */,
 				BF6E9D051DE2FD4500F32CCE /* map-head-female@3x.png in Resources */,
+				6E5ADCAF1E1BA72600E6823F /* checkMark@2x.png in Resources */,
 				2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */,
 				BF6E9D131DE2FD4500F32CCE /* cash@2x.png in Resources */,
 				BF6E9CF11DE2FD4500F32CCE /* bottom_selector_normal@2x.png in Resources */,
@@ -1617,6 +1652,7 @@
 				BF6E9D8F1DE2FD4500F32CCE /* wechat-pay@3x.png in Resources */,
 				BF6E9D701DE2FD4500F32CCE /* my-star-hollow@2x.png in Resources */,
 				BF6E9CF31DE2FD4500F32CCE /* bottom_selector_selected@2x.png in Resources */,
+				6E5ADCAD1E1BA72600E6823F /* chat_search@2x.png in Resources */,
 				BF6E9D691DE2FD4500F32CCE /* lv3@3x.png in Resources */,
 				BF6E9D2E1DE2FD4500F32CCE /* middle-level@3x.png in Resources */,
 				BF6E9D081DE2FD4500F32CCE /* map_meet@2x.png in Resources */,

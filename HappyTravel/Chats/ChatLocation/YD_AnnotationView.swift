@@ -49,13 +49,15 @@ class YD_AnnotationView: MAAnnotationView {
         return button
     }()
     
+
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         
-        contentView.frame = CGRectMake(-100, -50, 200, 50)
+        contentView.frame = CGRectMake(-80, -70, 200, 50)
         addSubview(contentView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(adressLabel)
@@ -77,13 +79,16 @@ class YD_AnnotationView: MAAnnotationView {
             make.top.equalTo(nameLabel.snp_bottom).offset(5)
             make.bottom.equalTo(-5)
         }
+        
+        let imageview = UIImageView.init(frame: CGRectMake(5, -20, 20, 20))
+        imageview.image = UIImage(named: "snajiaoxing")
+        addSubview(imageview)
         navigationButton.addTarget(self, action: #selector(YD_AnnotationView.openMapAction), forControlEvents: .TouchUpInside)
     }
     
     func openMapAction() {
         guard delegate != nil else {return}
         delegate?.openMap(self)
-        
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -98,4 +103,21 @@ class YD_AnnotationView: MAAnnotationView {
         return super.hitTest(point, withEvent: event)
     }
     
+}
+
+class TriangleView: UIView {
+    
+    override func drawRect(rect: CGRect) {
+        let path = UIBezierPath()
+        let point1 = CGPointMake(0, 0)
+        let point2 = CGPointMake(rect.size.width / 2, -rect.size.height)
+        let point3 = CGPointMake(rect.size.width, 0)
+        path.moveToPoint(point1)
+        path.addLineToPoint(point2)
+        path.addLineToPoint(point3)
+        path.closePath()
+        UIColor.whiteColor().setFill()
+        path.fill()
+    }
+
 }

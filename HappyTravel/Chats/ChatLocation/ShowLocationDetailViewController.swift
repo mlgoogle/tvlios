@@ -92,7 +92,7 @@ extension ShowLocationDetailViewController:MAMapViewDelegate, OpenMapDelegate{
             }
             annotationView?.nameLabel.text = poiModel?.name
             annotationView?.adressLabel.text = poiModel?.detail
-            annotationView!.image = UIImage(named: "datou")
+            annotationView!.image = UIImage(named: "chat_location")
             annotationView?.delegate = self
             return annotationView
         }

@@ -55,7 +55,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 
                 locationButton = UIButton(type: .Custom)
-                locationButton.setBackgroundImage(UIImage.init(named: "face-btn"), forState: .Normal)
+                locationButton.setBackgroundImage(UIImage.init(named: "chat_navigation"), forState: .Normal)
                 locationButton.addTarget(self, action: #selector(ChatVC.pushToSelectLocationPage), forControlEvents: UIControlEvents.TouchUpInside)
                 toolBar.addSubview(locationButton)
                 locationButton.translatesAutoresizingMaskIntoConstraints = false
