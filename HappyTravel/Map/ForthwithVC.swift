@@ -42,6 +42,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var isShowLocationInfo = false
     //服务者类型 0商务，1休闲, 999所有服务者，默认为所有服务者（服务端发送的serviceType_ 0商务，1休闲, 2既是商务又是休闲）
     var serviceType:Int = 999
+    //筛选弹框
+    var alertCtrl:UIAlertController?
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -183,30 +185,37 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
         
-        titleLab = UILabel()
-        titleLab?.backgroundColor = .clearColor()
-        titleLab?.textColor = .whiteColor()
-        titleLab?.font = UIFont.systemFontOfSize(S18)
-        titleLab?.textAlignment = .Center
-        titleLab?.userInteractionEnabled = true
-        titleView.addSubview(titleLab!)
-        titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
-            make.centerY.equalTo(titleView.snp_centerY)
-        }
-        titleLab?.text = "所有服务者"
+//        titleLab = UILabel()
+//        titleLab?.backgroundColor = .clearColor()
+//        titleLab?.textColor = .whiteColor()
+//        titleLab?.font = UIFont.systemFontOfSize(S18)
+//        titleLab?.textAlignment = .Center
+//        titleLab?.userInteractionEnabled = true
+//        titleView.addSubview(titleLab!)
+//        titleLab!.snp_makeConstraints { (make) in
+//            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
+//            make.centerY.equalTo(titleView.snp_centerY)
+//        }
+//        titleLab?.text = "所有服务者"
         //城市选择功能
       
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
+        titleBtn?.setTitle("所有服务者", forState: .Normal)
+        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(S18)
+        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 110, bottom: 0, right: 0)
+
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
         titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
         titleView.addSubview(titleBtn!)
         titleBtn!.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLab!.snp_right)
-            make.width.equalTo(20)
-            make.centerY.equalTo(titleLab!.snp_centerY)
+            make.width.equalTo(130)
+            make.centerX.equalTo(titleView)
+            make.centerY.equalTo(titleView)
+//            make.left.equalTo(titleLab!.snp_right)
+//            make.width.equalTo(20)
+//            make.centerY.equalTo(titleLab!.snp_centerY)
         }
         
 //        let segmentBGV = UIImageView()
@@ -361,7 +370,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func screenServices(sender:UIButton) {
         sender.selected = true
-        let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
         let nameArray = ["所有服务者", "商务服务者", "休闲服务者"]
         let typeArray = [999, 0, 1]
         for i in 0..<3 {
@@ -370,10 +379,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.screenAction(nameArray[i])
                 
             })
-            alertCtrl.addAction(services)
+            alertCtrl!.addAction(services)
         }
         
-        presentViewController(alertCtrl, animated: true, completion: nil)
+//        let gesture = UITapGestureRecognizer(target: self, action: #selector(addCancelGesture(_:)))
+//        alertCtrl?.view.backgroundColor = UIColor.redColor()
+        //附加识别器到视图
+//        alertCtrl!.view.addGestureRecognizer(gesture)
+        
+        presentViewController(alertCtrl!, animated: true, completion: nil)
     }
     
     func screenAction(title:String) {
@@ -387,6 +401,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                                   "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
 
+    }
+    
+    func addCancelGesture(sender: UITapGestureRecognizer) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
