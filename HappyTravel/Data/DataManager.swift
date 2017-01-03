@@ -38,11 +38,11 @@ class DataManager: NSObject {
         path = path.stringByAppendingPathComponent("\(uid)")
         path = path.stringByAppendingPathExtension("realm")!
         config.fileURL = NSURL(string: path as String)
-        config.schemaVersion = 1
+        config.schemaVersion = 2
         config.migrationBlock = {migration, oldSchemaVersion in
-            if oldSchemaVersion < 1 {
-                migration.enumerate(OrderInfo.className()) { oldObject, newObject in
-                    newObject!["start_time_"] = 123
+            if oldSchemaVersion < 2 {
+                migration.enumerate(AppointmentInfo.className()) { oldObject, newObject in
+                    newObject!["recommend_uid_"] = "1,2"
                 }
             }
         }
