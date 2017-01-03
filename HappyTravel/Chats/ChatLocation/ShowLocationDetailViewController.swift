@@ -61,7 +61,18 @@ class ShowLocationDetailViewController: UIViewController {
         annotation.title = poiModel?.name
         mapView.addAnnotations([annotation])
     }
-    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+            
+            let alert = UIAlertController.init(title: "提示", message: "无法获取您的位置信息。请到手机系统的[设置]->[隐私]->[定位服务]中打开定位服务，并允许优悦助理使用定位服务", preferredStyle: .Alert)
+            let goto = UIAlertAction.init(title: "确定", style: .Default, handler: { (action) in
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            alert.addAction(goto)
+            presentViewController(alert, animated: true, completion: {})
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
