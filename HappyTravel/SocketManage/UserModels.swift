@@ -49,3 +49,17 @@ class UserInfoModel: UserModel {
     
     dynamic var login_:Bool = false
 }
+
+
+
+
+
+class UploadContactModel: Object {    
+    dynamic var uid = 0
+    var contacts_list:List<ContactModel> = List<ContactModel>()
+}
+
+class ContactModel: Object {
+    dynamic var name:String?
+    dynamic var phone_num:String?
+}

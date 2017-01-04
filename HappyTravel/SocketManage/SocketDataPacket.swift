@@ -35,5 +35,5 @@ class SocketDataPacket: SockHead {
         }
         self.len = SockHead.size + self.bodyLen
     }
-    
+
 }

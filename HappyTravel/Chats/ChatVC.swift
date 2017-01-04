@@ -172,7 +172,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         registerNotify()
         
         //如果是客服聊天则直接return
-        guard servantInfo?.uid > -1 else {return}
+//        guard servantInfo?.uid > -1 && servantInfo?.uid != 50 else {return} // uid:50 客服临时账号
+        guard servantInfo?.uid > -1 else {return} // uid:50 客服临时账号
         if navigationItem.rightBarButtonItem == nil {
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
@@ -460,6 +461,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     func pushToSelectLocationPage() {
+        
         let getLocationVC = GetLocationInfoViewController()
         getLocationVC.delegate = self
         navigationController?.pushViewController(getLocationVC, animated: true)
