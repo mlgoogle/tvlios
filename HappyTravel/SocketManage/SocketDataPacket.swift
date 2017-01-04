@@ -30,8 +30,8 @@ class SocketDataPacket: SockHead {
         self.opcode = opcode.rawValue
         self.type = type.rawValue
         if model != nil {
-            self.data = ModelHelper.modelToData(model!)
-            self.bodyLen = Int16(self.data!.length)
+            self.data = model?.toData()
+            self.bodyLen = Int16(self.data?.length ?? 0)
         }
         self.len = SockHead.size + self.bodyLen
     }

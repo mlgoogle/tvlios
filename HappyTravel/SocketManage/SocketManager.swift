@@ -256,7 +256,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         socket = GCDAsyncSocket.init(delegate: self, delegateQueue: dispatch_get_main_queue())
         connectSock()
-
     }
     
     func connectSock() {
@@ -597,10 +596,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     CurrentUser = user
                     CurrentUser.login_ = true
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+                    return
                 }
-                
+                XCGLogger.debug(response)
                 }, error: { (err) in
                     XCGLogger.debug(err)
+                    NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
             })
         }
         SocketManager.isLogout = false
