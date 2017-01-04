@@ -134,6 +134,7 @@ class MessageCell: UITableViewCell {
             make.right.equalTo(timeLab!)
         }
     }
+
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
         msgInfo = message
@@ -151,6 +152,7 @@ class MessageCell: UITableViewCell {
                 } else {
                     uid = message!.from_uid_
                 }
+                
                 if let user = DataManager.getUserInfo(uid) {
                     userInfo = user
                     headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
