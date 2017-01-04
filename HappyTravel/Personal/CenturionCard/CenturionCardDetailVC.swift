@@ -220,9 +220,15 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func callSrevant() {
+//        let userInfo = UserInfo()
+//        userInfo.uid = 50
+//        userInfo.nickname = "优悦金牌客服"
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = userInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
+        
         if service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
             SocketManager.sendData(.ServersManInfoRequest, data: nil)
-
             
         } else {
             
