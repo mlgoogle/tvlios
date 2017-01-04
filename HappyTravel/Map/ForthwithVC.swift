@@ -61,14 +61,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.LoginFailed, object: nil)
     }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
-                                                         name: NotifyDefine.ServantDetailInfo,
-                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
@@ -450,6 +449,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let inset = UIEdgeInsetsMake(0, 0, 0, 0)
         appointmentView.table?.contentInset = inset
         appointmentView.table?.scrollIndicatorInsets =  inset
+    }
+    
+    func loginFailed(notification: NSNotification) {
+        presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
+
     }
     
     func loginSuccessed(notification: NSNotification) {

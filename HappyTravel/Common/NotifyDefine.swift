@@ -14,6 +14,8 @@ class NotifyDefine: NSObject {
     
     static let LoginSuccessed = "LoginSuccesse"
     
+    static let LoginFailed = "LoginFailed"
+    
     static let ServantInfo = "ServantInfo"
     
     static let ServantDetailInfo = "ServantDetailInfo"

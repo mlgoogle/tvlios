@@ -18,30 +18,20 @@ class SocketRequest {
     var timestamp: NSTimeInterval = NSDate().timeIntervalSince1970
     
     class func errorString(code:Int) ->String {
-        if errorDict == nil {
-            if let bundlePath = NSBundle.mainBundle().pathForResource("errorcode", ofType: "plist") {
-                errorDict = NSDictionary(contentsOfFile: bundlePath)
-            }
-        }
-        let key:String = String(format: "%d", code);
-        if errorDict?.objectForKey(key) != nil {
-            return errorDict!.objectForKey(key) as! String
+        if let errMsg = CommonDefine.errorMsgs[code] {
+            return errMsg
         }
         return "Unknown";
     }
 
-    
     deinit {
-        
         XCGLogger.debug(" \(self)")
         
     }
     
-    
     func isReqeustTimeout() -> Bool {
        return  timestamp + 10.0  <= NSDate().timeIntervalSince1970
     }
-    
     
     private func dispatch_main_async(block:dispatch_block_t) {
         dispatch_async(dispatch_get_main_queue(), {
@@ -49,13 +39,11 @@ class SocketRequest {
         })
     }
     
-    
     func onComplete(obj:AnyObject!) {
         dispatch_main_async { 
             self.complete?(obj)
         }
     }
-    
     
     func onError(errorCode:Int!) {
         let errorStr:String = SocketRequest.errorString(errorCode)

@@ -27,7 +27,13 @@ class UserSocketAPI {
         api.requestManager.startRequest(packet, complete: { (response) in
             SVProgressHUD.dismiss()
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
-            }, error: error)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+        }, error: { (err) in
+            SVProgressHUD.showErrorMessage(ErrorMessage: err.localizedDescription, ForDuration: 1.5, completion: nil)
+            error?(err)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+        })
     }
     
     static func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {

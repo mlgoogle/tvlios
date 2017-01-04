@@ -592,13 +592,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 if let user = response as? UserInfoModel {
                     CurrentUser = user
                     CurrentUser.login_ = true
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
                     return
                 }
                 XCGLogger.debug(response)
-                }, error: { (err) in
-                    XCGLogger.debug(err)
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+            }, error: { (err) in
+                XCGLogger.debug(err)
             })
         }
         SocketManager.isLogout = false
