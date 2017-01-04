@@ -32,6 +32,6 @@ class CenturionCardBaseInfo: Object {
 
 class CenturionCardBaseInfosModel: Object {
     
-    let privilege_list_:List<CenturionCardBaseInfo> = List<CenturionCardBaseInfo>()
+    let privilege_list_ = List<CenturionCardBaseInfo>()
     
 }
