@@ -258,7 +258,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         do {
             if !socket!.isConnected {
-                #if false  // true: 测试环境    false: 正式环境
+                #if true  // true: 测试环境    false: 正式环境
                     let ip:String = "61.147.114.78"
                     let port:UInt16 = 10007
                 #else
@@ -592,10 +592,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 if let user = response as? UserInfoModel {
                     CurrentUser = user
                     CurrentUser.login_ = true
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
                     return
                 }
                 XCGLogger.debug(response)
             }, error: { (err) in
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
                 XCGLogger.debug(err)
             })
         }

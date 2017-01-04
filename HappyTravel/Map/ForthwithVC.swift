@@ -112,7 +112,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
             }
 
-        } 
+        }
 
         appointmentView.commitBtn?.enabled = true
     }
