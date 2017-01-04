@@ -35,13 +35,5 @@ class SocketDataPacket: SockHead {
         }
         self.len = SockHead.size + self.bodyLen
     }
-    init(opcode: SocketManager.SockOpcode, dict:[String : AnyObject],type t:PacketType = .User) {
-        super.init()
-        let data = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions.PrettyPrinted)
-        self.opcode = opcode.rawValue
-        self.type = type
-        self.data = data
-        self.bodyLen = Int16(self.data!.length)
-        self.len = SockHead.size + self.bodyLen
-    }
+
 }

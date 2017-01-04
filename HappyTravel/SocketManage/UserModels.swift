@@ -9,12 +9,6 @@
 import Foundation
 import RealmSwift
 
-class UploadContactModel: NSObject {
-
-    var uid = 0
-    var contacts_list:[[String:String]] = []
-    
-}
 
 class LoginModel: Object {
     
@@ -54,4 +48,18 @@ class UserInfoModel: UserModel {
     dynamic var skills_:String?
     
     dynamic var login_:Bool = false
+}
+
+
+
+
+
+class UploadContactModel: Object {    
+    dynamic var uid = 0
+    var contacts_list:List<ContactModel> = List<ContactModel>()
+}
+
+class ContactModel: Object {
+    dynamic var name:String?
+    dynamic var phone_num:String?
 }
