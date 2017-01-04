@@ -251,7 +251,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         buffer = NSMutableData()
         do {
             if !socket!.isConnected {
-                #if false  // true: 测试环境    false: 正式环境
+                #if true  // true: 测试环境    false: 正式环境
                     let ip:String = "61.147.114.78"
                     let port:UInt16 = 10007
                 #else
@@ -924,8 +924,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         //base64解码
 //        msg.content_ = try! decodeBase64Str(msg.content_!)
         DataManager.insertMessage(msg)
+        let user = DataManager.getUserInfo(msg.from_uid_)
+        if user == nil {
+            let dic = ["uid_str_" : String(msg.from_uid_) + "," + "0"]
+
+            SocketManager.sendData(.GetUserInfo, data: dic)
+        }
         if UIApplication.sharedApplication().applicationState == .Background {
-            let user = DataManager.getUserInfo(msg.from_uid_)
+
             let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
             var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
             userInfo["type"] = PushMessage.MessageType.Chat.rawValue
@@ -978,12 +984,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
                 var pMsg:PushMessage?
+                
                 for msg in msgList.reverse() {
                     let pushMsg = PushMessage(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
                     DataManager.insertMessage(pushMsg)
                     pMsg = pushMsg
+                }
+                let user = DataManager.getUserInfo(pMsg!.from_uid_)
+                if user == nil {
+                    let dic = ["uid_str_" : String(pMsg!.from_uid_) + "," + "0"]
+                    
+                    SocketManager.sendData(.GetUserInfo, data: dic)
                 }
                 postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
             }
