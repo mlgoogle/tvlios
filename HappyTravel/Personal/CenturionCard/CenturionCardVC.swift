@@ -59,6 +59,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
+        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -218,7 +219,15 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func callSrevant() {
+//        let userInfo = UserInfo()
+//        userInfo.uid = 50
+//        userInfo.nickname = "优悦金牌客服"
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = userInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
+        
         SocketManager.sendData(.ServersManInfoRequest, data: nil)
+
 //        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
 //        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
 //            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)

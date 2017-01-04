@@ -168,25 +168,25 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         }
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1;
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return 30
-        }
+//        if section == 1 {
+//            return 30
+//        }
         return 0
     }
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 1 {
-            let sectionLabel = UILabel.init(text: "    注意：请服务者手持身份证正反图像，进行上传", font: UIFont.systemFontOfSize(13), textColor: colorWithHexString("#999999"))
-            sectionLabel.frame = CGRectMake(0, 0, ScreenWidth, 30)
-            return sectionLabel
-        }
-        return UIView()
-    }
+//    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        if section == 1 {
+//            let sectionLabel = UILabel.init(text: "    注意：请服务者手持身份证正反图像，进行上传", font: UIFont.systemFontOfSize(13), textColor: colorWithHexString("#999999"))
+//            sectionLabel.frame = CGRectMake(0, 0, ScreenWidth, 30)
+//            return sectionLabel
+//        }
+//        return UIView()
+//    }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
