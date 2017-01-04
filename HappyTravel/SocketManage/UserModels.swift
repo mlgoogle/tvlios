@@ -21,7 +21,7 @@ class LoginModel: Object {
 }
 
 class UserModel : Object {
-    dynamic var uid_: Int = 0
+    dynamic var uid_: Int = -1
     dynamic var head_url_: String?
 }
 
