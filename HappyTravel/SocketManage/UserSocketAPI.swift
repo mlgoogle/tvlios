@@ -29,9 +29,9 @@ class UserSocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)
     }
-    static func uploadContact(model:UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
+    static func uploadContact(dict:[String : AnyObject], complete: CompleteBlock?, error: ErrorBlock?){
         let api = UserSocketAPI.shared
-        let packet = SocketDataPacket(opcode: .UploadContactRequest, model: model)
+        let packet = SocketDataPacket(opcode: .UploadContactRequest, dict: dict)
         api.requestManager.startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)

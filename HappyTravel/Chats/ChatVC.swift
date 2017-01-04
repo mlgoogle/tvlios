@@ -461,14 +461,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     func pushToSelectLocationPage() {
         
-        let model = UploadContactModel()
-        model.uid = (DataManager.currentUser?.uid)!
-        model.contacts_list = [["测试":"13569365932"]]
-        UserSocketAPI.uploadContact(model, complete: { (response) in
-            
-            }) { (error) in
-                
-        }
         let getLocationVC = GetLocationInfoViewController()
         getLocationVC.delegate = self
         navigationController?.pushViewController(getLocationVC, animated: true)

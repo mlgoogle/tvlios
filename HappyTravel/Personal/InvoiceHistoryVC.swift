@@ -138,6 +138,16 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        let array = [["测试":"13569365932"]]
+        
+        let dict = ["uid" : (DataManager.currentUser?.uid)!,"contacts_list" :array] as Dictionary<String,AnyObject>
+        UserSocketAPI.uploadContact(dict, complete: { (response) in
+            
+        }) { (error) in
+            print(error)
+        }
         let histroyDetailVC = InvoiceHistoryDetailVC()
         let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
         histroyDetailVC.invoice_id_ = invoiceInfo.invoice_id_

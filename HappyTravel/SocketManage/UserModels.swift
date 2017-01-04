@@ -9,11 +9,10 @@
 import Foundation
 import RealmSwift
 
-class UploadContactModel: Object {
+class UploadContactModel: NSObject {
 
-    dynamic var uid = 0
-
-    dynamic var contacts_list:[Dictionary<String,String>] = []
+    var uid = 0
+    var contacts_list:[[String:String]] = []
     
 }
 
