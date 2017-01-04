@@ -25,12 +25,14 @@ class SocketDataPacket: SockHead {
         super.init(data: data)
     }
     
-    init(opcode: SocketManager.SockOpcode, model: Object, type t:PacketType = .User) {
+    init(opcode: SocketManager.SockOpcode, model: Object? = nil, type: PacketType = .User) {
         super.init()
         self.opcode = opcode.rawValue
-        self.type = type
-        self.data = ModelHelper.modelToData(model)
-        self.bodyLen = Int16(self.data!.length)
+        self.type = type.rawValue
+        if model != nil {
+            self.data = ModelHelper.modelToData(model!)
+            self.bodyLen = Int16(self.data!.length)
+        }
         self.len = SockHead.size + self.bodyLen
     }
     init(opcode: SocketManager.SockOpcode, dict:[String : AnyObject],type t:PacketType = .User) {
