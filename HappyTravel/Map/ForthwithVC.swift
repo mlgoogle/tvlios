@@ -362,16 +362,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             alertCtrl!.addAction(services)
         }
         
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(addCancelGesture(_:)))
-//        alertCtrl?.view.backgroundColor = UIColor.redColor()
-        //附加识别器到视图
-//        alertCtrl!.view.addGestureRecognizer(gesture)
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alertCtrl!.addAction(cancel)
         
         presentViewController(alertCtrl!, animated: true, completion: nil)
     }
     
     func screenAction(title:String) {
-        self.titleLab?.text = title
+        self.titleBtn?.setTitle(title, forState: .Normal)
         self.titleBtn?.selected = false
         
         let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
@@ -381,10 +380,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                                   "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
 
-    }
-    
-    func addCancelGesture(sender: UITapGestureRecognizer) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
