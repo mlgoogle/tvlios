@@ -984,12 +984,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
                 var pMsg:PushMessage?
+                
                 for msg in msgList.reverse() {
                     let pushMsg = PushMessage(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
                     DataManager.insertMessage(pushMsg)
                     pMsg = pushMsg
+                }
+                let user = DataManager.getUserInfo(pMsg!.from_uid_)
+                if user == nil {
+                    let dic = ["uid_str_" : String(pMsg!.from_uid_) + "," + "0"]
+                    
+                    SocketManager.sendData(.GetUserInfo, data: dic)
                 }
                 postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
             }
