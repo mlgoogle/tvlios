@@ -123,8 +123,11 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
 //        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         UserSocketAPI.centurionCardBaseInfo({ (response) in
-                XCGLogger.debug(response)
-            }, error: { (err) in
+            if let model = response as? CenturionCardBaseInfosModel {
+                DataManager.insertData(model)
+            }
+            
+        }, error: { (err) in
         
         })
         

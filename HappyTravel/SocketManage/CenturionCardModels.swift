@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 
-class CenturionCardBaseInfo: Object {
+class CenturionCardBaseInfoModel: Object {
     
     dynamic var privilege_bg_:String?
     
@@ -32,6 +32,6 @@ class CenturionCardBaseInfo: Object {
 
 class CenturionCardBaseInfosModel: Object {
     
-    let privilege_list_ = List<CenturionCardBaseInfo>()
+    let privilege_list_ = List<CenturionCardBaseInfoModel>()
     
 }
