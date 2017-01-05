@@ -27,7 +27,10 @@ class UserSocketAPI {
         api.requestManager.startRequest(packet, complete: { (response) in
             SVProgressHUD.dismiss()
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
-            }, error: error)
+        }, error: { (err) in
+            SVProgressHUD.showErrorMessage(ErrorMessage: err.localizedDescription, ForDuration: 1.5, completion: nil)
+            error?(err)
+        })
     }
     
 
@@ -35,6 +38,20 @@ class UserSocketAPI {
         let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
         UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
+            }, error: error)
+    }
+    
+    static func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
+            }, error: error)
+    }
+    
+    static func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .UserCenturionCardInfoRequest, model: model)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(UserCenturionCardInfoModel.classForCoder()))
             }, error: error)
     }
     

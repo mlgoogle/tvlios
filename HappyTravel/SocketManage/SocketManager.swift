@@ -245,7 +245,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[SockOpcode] = [.Logined, .CenturionCardInfoReply]
+    let tmpNewRequestType:[SockOpcode] = [.Logined,
+                                          .CenturionCardInfoReply,
+                                          .CenturionVIPPriceReply,
+                                          .UserCenturionCardInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -599,9 +602,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 XCGLogger.debug(response)
-                }, error: { (err) in
-                    XCGLogger.debug(err)
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+            }, error: { (err) in
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+                XCGLogger.debug(err)
             })
         }
         SocketManager.isLogout = false

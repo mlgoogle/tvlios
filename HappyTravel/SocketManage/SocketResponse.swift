@@ -23,7 +23,7 @@ class SocketResponse {
     }
     
     init(packet:SocketDataPacket) {
-        body = packet;
+        body = packet
     }
 }
 

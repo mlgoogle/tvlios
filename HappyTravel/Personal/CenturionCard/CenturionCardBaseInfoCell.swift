@@ -96,24 +96,24 @@ class CenturionCardBaseInfoCell : UITableViewCell {
         
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func update() {
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
             if let headView: UIImageView = bgView.viewWithTag(tags["headView"]!) as? UIImageView {
-                if let photoUrl = NSURL(string: (userInfo?.headUrl!)! ?? "") {
+                if let photoUrl = NSURL(string: CurrentUser.head_url_ ?? "") {
                     headView.kf_setImageWithURL(photoUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                         
                     }
                 }
-                
             }
             
             if let levelLabel = bgView.viewWithTag(tags["levelLabel"]!) as? UILabel {
-                levelLabel.text = centurionCardLv[userInfo!.centurionCardLv]
+                levelLabel.text = centurionCardLv[UserCenturionCardInfo.blackcard_lv_]
             }
             
             if let nicknameLabel = bgView.viewWithTag(tags["nicknameLabel"]!) as? UILabel {
-                nicknameLabel.text = userInfo?.nickname!
+                nicknameLabel.text = CurrentUser.nickname_
             }
+            
         }
         
     }

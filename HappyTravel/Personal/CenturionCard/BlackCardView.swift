@@ -101,7 +101,7 @@ class BlackCardView: UIView {
             make.bottom.equalTo(contentView)
             make.left.equalTo(contentView)
         }
-        let name = pinyin(DataManager.currentUser?.centurionCardName! ?? "")
+        let name = pinyin(UserCenturionCardInfo.name_ ?? "")
         nameLabel.text = name.uppercaseString
         
         contentView.addSubview(dateLabel)
