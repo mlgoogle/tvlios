@@ -478,7 +478,24 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
-        SocketManager.sendData(.GetServiceCity, data: nil)
+//        SocketManager.sendData(.GetServiceCity, data: nil)
+//        UserSocketAPI.cityNameInfo(<#T##complete: CompleteBlock?##CompleteBlock?##(AnyObject?) -> ()#>, error: <#T##ErrorBlock?##ErrorBlock?##(NSError) -> ()#>)
+        SocketManager.sendData(.GetServiceCity, data: nil, result: { (response) in
+            if let data = response["data"] as? [String: AnyObject] {
+                if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
+                    for city in citys {
+                        let cityInfo = CityInfo()
+                        cityInfo.setInfo(city)
+                        self.serviceCitys[cityInfo.cityCode] = cityInfo
+                        DataManager.insertData(CityInfo.self, data: cityInfo)
+                    }
+                }
+                
+            }
+            self.appointmentView.serviceCitys = self.serviceCitys
+            
+        })
+        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,
                         "device_token_": dt]

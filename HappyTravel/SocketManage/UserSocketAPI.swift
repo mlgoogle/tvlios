@@ -36,4 +36,12 @@ class UserSocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
             }, error: error)
     }
+    
+    static func cityNameInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+       let packet = SocketDataPacket(opcode: .GetServiceCity)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CityNameInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
 }

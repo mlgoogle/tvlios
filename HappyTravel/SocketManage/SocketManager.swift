@@ -36,10 +36,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetRecommendServants = 1007
         // 推荐服务者返回
         case RecommendServants = 1008
+        
         // 请求服务城市列表
         case GetServiceCity = 1009
         // 服务城市列表返回
         case ServiceCity = 1010
+        
         // 请求修改密码
         case ModifyPassword = 1011
         // 修改密码返回
