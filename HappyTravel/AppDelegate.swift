@@ -53,10 +53,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             
         })
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
-            var key = ""
+            var key = "62f33d0af1098f28ceed54c86ea21890"
             if let id = NSBundle.mainBundle().bundleIdentifier {
                 if id == "com.yundian.enterprise.trip" {
-                    key = "11feec2b7ad127ae156d72aa08f2342e"
+                    key = "62f33d0af1098f28ceed54c86ea21890"
+//                    key = "11feec2b7ad127ae156d72aa08f2342e"
                 } else if id == "com.yundian.trip" {
 //                    key = "50bb1e806f1d2c1a797e6e789563e334"
                     key = "7c6f2b0d4d35fce64803e99efb2fbd55"

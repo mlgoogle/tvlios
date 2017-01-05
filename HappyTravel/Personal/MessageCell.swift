@@ -134,6 +134,7 @@ class MessageCell: UITableViewCell {
             make.right.equalTo(timeLab!)
         }
     }
+
     
     func setInfo(message: PushMessage?, unreadCnt: Int) {
         msgInfo = message

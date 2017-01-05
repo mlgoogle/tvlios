@@ -277,6 +277,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
 
+
+    
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return segmentIndex == 0 ? DataManager.getMessageCount(-1) : (hotometers?.count ?? 0)

@@ -40,6 +40,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var appointment_id_ = 0
     var isShowBaseInfo = false
     var isShowLocationInfo = false
+    //服务者类型 0商务，1休闲, 999所有服务者，默认为所有服务者（服务端发送的serviceType_ 0商务，1休闲, 2既是商务又是休闲）
+    var serviceType:Int = 999
+    //筛选弹框
+    var alertCtrl:UIAlertController?
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -160,30 +164,37 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
         
-        titleLab = UILabel()
-        titleLab?.backgroundColor = .clearColor()
-        titleLab?.textColor = .whiteColor()
-        titleLab?.font = UIFont.systemFontOfSize(S18)
-        titleLab?.textAlignment = .Center
-        titleLab?.userInteractionEnabled = true
-        titleView.addSubview(titleLab!)
-        titleLab!.snp_makeConstraints { (make) in
-            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
-            make.centerY.equalTo(titleView.snp_centerY)
-        }
-        titleLab?.text = "我的位置"
+//        titleLab = UILabel()
+//        titleLab?.backgroundColor = .clearColor()
+//        titleLab?.textColor = .whiteColor()
+//        titleLab?.font = UIFont.systemFontOfSize(S18)
+//        titleLab?.textAlignment = .Center
+//        titleLab?.userInteractionEnabled = true
+//        titleView.addSubview(titleLab!)
+//        titleLab!.snp_makeConstraints { (make) in
+//            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
+//            make.centerY.equalTo(titleView.snp_centerY)
+//        }
+//        titleLab?.text = "所有服务者"
         //城市选择功能
       
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
+        titleBtn?.setTitle("所有服务者", forState: .Normal)
+        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(S18)
+        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 110, bottom: 0, right: 0)
+
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
         titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
         titleView.addSubview(titleBtn!)
         titleBtn!.snp_makeConstraints { (make) in
-            make.left.equalTo(titleLab!.snp_right)
-            make.width.equalTo(20)
-            make.centerY.equalTo(titleLab!.snp_centerY)
+            make.width.equalTo(130)
+            make.centerX.equalTo(titleView)
+            make.centerY.equalTo(titleView)
+//            make.left.equalTo(titleLab!.snp_right)
+//            make.width.equalTo(20)
+//            make.centerY.equalTo(titleLab!.snp_centerY)
         }
         
 //        let segmentBGV = UIImageView()
@@ -337,31 +348,37 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func screenServices(sender:UIButton) {
-//        let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-//        
-//        let allServices = UIAlertAction.init(title: "所有服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        let businessServices = UIAlertAction.init(title: "商务服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        let leisureServices = UIAlertAction.init(title: "休闲服务者", style: .Default, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//
-//        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
-//            
-//        })
-//        
-//        alertCtrl.addAction(allServices)
-//        alertCtrl.addAction(businessServices)
-//        alertCtrl.addAction(leisureServices)
-//        alertCtrl.addAction(cancel)
-//        
-//        presentViewController(alertCtrl, animated: true, completion: nil)
+        sender.selected = true
+        alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者"]
+        let typeArray = [999, 0, 1]
+        for i in 0..<3 {
+            let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
+                self.serviceType = typeArray[i]
+                self.screenAction(nameArray[i])
+                
+            })
+            alertCtrl!.addAction(services)
+        }
+        
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        
+        alertCtrl!.addAction(cancel)
+        
+        presentViewController(alertCtrl!, animated: true, completion: nil)
+    }
+    
+    func screenAction(title:String) {
+        self.titleBtn?.setTitle(title, forState: .Normal)
+        self.titleBtn?.selected = false
+        
+        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
+        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
+        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
+                                                  "longitude_": lon,
+                                                  "distance_": 10.1]
+        SocketManager.sendData(.GetServantInfo, data: dict)
+
     }
     
     func jumpToCenturionCardVC(sender: UIButton) {
@@ -601,6 +618,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let point = MAPointAnnotation.init()
             point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
             point.title = "\(servantInfo.uid)"
+            //根据serviceType筛选
+            if serviceType != 999{
+                //不是默认的所有服务者，进行筛选
+                let type = servant["servicetype_"] as? Int
+                //不是类型2和要筛选的服务者，忽略
+                if  type != serviceType && type != 2 {
+                    continue
+                }
+            }
+            
             annotations.append(point)
         }
         if mapView!.annotations.count > 0{
@@ -745,7 +772,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     if placeMarks?.count == 1 {
                         self.locality = (placeMarks?[0])!.locality
                         self.titleLab?.text = self.locality
-                        XCGLogger.debug("Update locality: \(self.locality!)")
+                        XCGLogger.debug("Update locality: \(self.locality ?? "")")
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
 
                         if CurrentUser.login_ {

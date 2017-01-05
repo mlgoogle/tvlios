@@ -461,6 +461,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     func pushToSelectLocationPage() {
+        
         let getLocationVC = GetLocationInfoViewController()
         getLocationVC.delegate = self
         navigationController?.pushViewController(getLocationVC, animated: true)
