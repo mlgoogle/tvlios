@@ -121,18 +121,33 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
         
-//        SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         UserSocketAPI.centurionCardBaseInfo({ (response) in
             if let model = response as? CenturionCardBaseInfosModel {
                 DataManager.insertData(model)
             }
-            
         }, error: { (err) in
         
         })
         
-        SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
-        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
+        UserSocketAPI.centurionCardPriceInfo({ (response) in
+            if let model = response as? CenturionCardPriceInfosModel {
+                DataManager.insertData(model)
+            }
+        }, error: { (err) in
+            
+        })
+        
+        let user = UserBaseModel()
+        user.uid_ = CurrentUser.uid_
+        UserSocketAPI.userCenturionCardInfo(user, complete: { (response) in
+            if let model = response as? UserCenturionCardInfoModel {
+                DataManager.insertData(model)
+                UserCenturionCardInfo = model
+            }
+        }, error: { (err) in
+        
+        })
+        
         SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_])
         SocketManager.sendData(.CheckUserCash, data: ["uid_": CurrentUser.uid_])
     }

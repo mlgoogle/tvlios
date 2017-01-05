@@ -35,3 +35,38 @@ class CenturionCardBaseInfosModel: Object {
     let privilege_list_ = List<CenturionCardBaseInfoModel>()
     
 }
+
+
+class CenturionCardPriceInfoModel: Object {
+    
+    dynamic var blackcard_lv_:Int = 0
+    
+    dynamic var blackcard_price_:Int = 0
+    
+    dynamic var blackcard_icon_:String?
+    
+}
+
+class CenturionCardPriceInfosModel: Object {
+    
+    let data_list_ = List<CenturionCardPriceInfoModel>()
+    
+}
+
+
+var UserCenturionCardInfo = UserCenturionCardInfoModel()
+class UserCenturionCardInfoModel: Object {
+    
+    dynamic var result:Int = -1
+    
+    dynamic var blackcard_id_:Int64 = -1
+    
+    dynamic var blackcard_lv_:Int = 0
+    
+    dynamic var start_time_:Int64 = 0
+    
+    dynamic var end_time_:Int64 = 0
+    
+    dynamic var name_:String?
+    
+}
