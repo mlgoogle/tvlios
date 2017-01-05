@@ -429,6 +429,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         if !err {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
+            SocketManager.sendData(.VersionInfoRequest, data: ["type": 1], result: { (result) in
+                UpdateManager.checking4Update("", buildVer: "", forced: true, result: { (gotoUpdate) in
+                
+                })
+            })
         }
         
     }

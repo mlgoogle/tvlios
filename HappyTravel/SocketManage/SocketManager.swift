@@ -162,7 +162,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PhotoWallRequest = 1109
         // 照片墙返回
         case PhotoWallReply = 1110
-        
+        // 请求APP版本信息
+        case VersionInfoRequest = 1115
+        // APP版本信息返回
+        case VersionInfoReply = 1116
         //MARK: - 2000+
         
         // 请求邀请服务者
