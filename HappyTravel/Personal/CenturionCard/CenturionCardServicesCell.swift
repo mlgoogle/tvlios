@@ -13,7 +13,7 @@ import RealmSwift
 
 protocol CenturionCardServicesCellDelegate : NSObjectProtocol {
     
-    func serviceTouched(service: CenturionCardServiceInfo)
+    func serviceTouched(service: CenturionCardBaseInfoModel)
     func buyNowButtonTouched()
 }
 
@@ -57,7 +57,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
     
     weak var delegate:CenturionCardServicesCellDelegate?
     
-    var services:Results<CenturionCardServiceInfo>?
+    var services:Results<CenturionCardBaseInfoModel>?
     
     
     //collectionView
@@ -89,7 +89,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let item: CenturionCardServerItem = collectionView.dequeueReusableCellWithReuseIdentifier("CenturionCardServerItem", forIndexPath: indexPath) as! CenturionCardServerItem
         let service  = services![indexPath.row]
-        let url = service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? service.privilege_pic_yes_ : service.privilege_pic_no_
+        let url = service.privilege_lv_ <= (UserCenturionCardInfo.blackcard_lv_ ?? 0) ? service.privilege_pic_yes_ : service.privilege_pic_no_
         item.iconBtn.kf_setBackgroundImageWithURL(NSURL(string: url!), forState: .Normal, placeholderImage: UIImage.init(named: "face-btn"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         item.titleLabel.text = service.privilege_name_!
         return item
@@ -106,9 +106,8 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         if services == nil || services?.count == 0 {
             return CGSizeZero
         }
-        
         let service  = services![0]
-        return service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ?  CGSize.init(width: ScreenWidth, height: AtapteWidthValue(250)) : CGSize.init(width: ScreenWidth, height: 80)
+        return service.privilege_lv_ <= UserCenturionCardInfo.blackcard_lv_ ?  CGSize.init(width: ScreenWidth, height: AtapteWidthValue(250)) : CGSize.init(width: ScreenWidth, height: 80)
     }
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
@@ -120,14 +119,13 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
             return footerView
         }
         let service  = services![indexPath.row]
-        if service.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
-            
+        if service.privilege_lv_ <= UserCenturionCardInfo.blackcard_lv_ {
             let sectionFooter: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "cardFooterView", forIndexPath: indexPath)
             
             let blackCardImage = BlackCardView.init(frame: CGRectZero)
             blackCardImage.layer.cornerRadius = 8
             blackCardImage.layer.masksToBounds = true
-            blackCardImage.stars = DataManager.currentUser!.centurionCardLv
+            blackCardImage.stars = UserCenturionCardInfo.blackcard_lv_
             sectionFooter.addSubview(blackCardImage)
             blackCardImage.snp_makeConstraints(closure: { (make) in
                 make.bottom.equalTo(-10)
@@ -179,7 +177,7 @@ class CenturionCardServicesCell : UITableViewCell, UICollectionViewDelegate, UIC
         
     }
     
-    func setInfo(services: Results<CenturionCardServiceInfo>?) {
+    func setInfo(services: Results<CenturionCardBaseInfoModel>?) {
        
         self.services = services
         if services!.count == 0 {

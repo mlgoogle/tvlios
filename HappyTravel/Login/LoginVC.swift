@@ -240,6 +240,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 
             }
         }, error: { (err) in
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
             XCGLogger.debug(err)
         })
     }
