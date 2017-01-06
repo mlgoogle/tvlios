@@ -10,21 +10,16 @@ import Foundation
 import SVProgressHUD
 
 
-class UserSocketAPI {
-    
-    static var shared = UserSocketAPI()
-    
-    let requestManager = SocketRequestManage.shared
+class UserSocketAPI: SocketAPI {
     
     static func autoLogin() -> Bool {
         return NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) != nil
     }
     
     static func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let api = UserSocketAPI.shared
         let packet = SocketDataPacket(opcode: .Login, model: model)
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
-        api.requestManager.startRequest(packet, complete: { (response) in
+        startRequest(packet, complete: { (response) in
             SVProgressHUD.dismiss()
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
         }, error: { (err) in
@@ -33,32 +28,30 @@ class UserSocketAPI {
         })
     }
     
-
     static func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
-        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+        startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
             }, error: error)
     }
     
     static func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
-        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+        startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
             }, error: error)
     }
     
     static func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .UserCenturionCardInfoRequest, model: model)
-        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+        startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(UserCenturionCardInfoModel.classForCoder()))
             }, error: error)
     }
     
     static func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
-        let api = UserSocketAPI.shared
         let packet = SocketDataPacket(opcode: .Login, model: model)
-        api.requestManager.startRequest(packet, complete: { (response) in
+        startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)
     }

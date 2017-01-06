@@ -468,7 +468,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         appointmentView.table?.scrollIndicatorInsets =  inset
     }
     
-<<<<<<< HEAD
     func loginFailed(notification: NSNotification) {
         presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
 
@@ -494,7 +493,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
             
         })
-        
         SocketManager.sendData(.GetServiceCity, data: nil)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,
