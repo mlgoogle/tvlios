@@ -19,13 +19,15 @@ class YD_AnnotationView: MAAnnotationView {
     lazy var nameLabel:UILabel = {
        
         let label = UILabel()
-        
+        label.textColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
+
         label.font = UIFont.systemFontOfSize(16)
         return label
     }()
     lazy var adressLabel:UILabel = {
         
         let label = UILabel()
+        label.textColor = UIColor(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
 
         label.font = UIFont.systemFontOfSize(15)
         return label
@@ -76,6 +78,7 @@ class YD_AnnotationView: MAAnnotationView {
         }
         adressLabel.snp_makeConstraints { (make) in
             make.left.equalTo(nameLabel)
+            make.right.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp_bottom).offset(5)
             make.bottom.equalTo(-5)
         }
