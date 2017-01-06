@@ -120,6 +120,9 @@
 		6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E10746B1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift */; };
 		6E1074721DC3412C00F3F46F /* InvoiceHistoryDetailCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1074711DC3412C00F3F46F /* InvoiceHistoryDetailCustomCell.swift */; };
 		6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */; };
+		6E1CCC2F1E1E622C00374B75 /* YD_ContactManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1CCC2E1E1E622C00374B75 /* YD_ContactManager.swift */; };
+		6E1CCC311E1E6CBA00374B75 /* ConsumeSocketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */; };
+		6E1CCC351E1E741600374B75 /* ConsumeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1CCC341E1E741600374B75 /* ConsumeModels.swift */; };
 		6E3060311DD1C31B00EB1D2F /* AppointmentRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */; };
 		6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */; };
 		6E5ADC851E1B440A00E6823F /* ChatLocationAnotherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */; };
@@ -473,6 +476,9 @@
 		6E10746B1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceHistoryInfo.swift; path = Data/InvoiceHistoryInfo.swift; sourceTree = "<group>"; };
 		6E1074711DC3412C00F3F46F /* InvoiceHistoryDetailCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvoiceHistoryDetailCustomCell.swift; sourceTree = "<group>"; };
 		6E1074731DC344FF00F3F46F /* InvoiceIncludeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InvoiceIncludeCell.swift; path = Personal/InvoiceIncludeCell.swift; sourceTree = "<group>"; };
+		6E1CCC2E1E1E622C00374B75 /* YD_ContactManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YD_ContactManager.swift; sourceTree = "<group>"; };
+		6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConsumeSocketAPI.swift; path = SocketManage/ConsumeSocketAPI.swift; sourceTree = "<group>"; };
+		6E1CCC341E1E741600374B75 /* ConsumeModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsumeModels.swift; sourceTree = "<group>"; };
 		6E3060301DD1C31B00EB1D2F /* AppointmentRecordCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentRecordCell.swift; path = Personal/AppointmentRecordCell.swift; sourceTree = "<group>"; };
 		6E4B24801DD19AF30071EE93 /* AppointmentInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppointmentInfo.swift; path = Data/AppointmentInfo.swift; sourceTree = "<group>"; };
 		6E5ADC791E1B440A00E6823F /* ChatLocationAnotherCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLocationAnotherCell.swift; sourceTree = "<group>"; };
@@ -842,6 +848,7 @@
 				2FA15A991E13B661001655A3 /* ModelHelper.swift */,
 				2FA15A9E1E13BB50001655A3 /* UserModels.swift */,
 				2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */,
+				6E1CCC341E1E741600374B75 /* ConsumeModels.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -852,6 +859,7 @@
 				2FA15A9C1E13BAB5001655A3 /* UserSocketAPI.swift */,
 				2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */,
 				2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */,
+				6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */,
 			);
 			name = SocketAPI;
 			sourceTree = "<group>";
@@ -1016,6 +1024,7 @@
 				2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */,
 				2F65C5861DF417E9001EC13A /* CommonMethod.swift */,
 				6E85F7541E0932C400B4AF3D /* UIViewController+Analysis.swift */,
+				6E1CCC2E1E1E622C00374B75 /* YD_ContactManager.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1817,6 +1826,7 @@
 				2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */,
 				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
 				2F9684111D76CD040028E3F2 /* IdentBaseInfoCell.swift in Sources */,
+				6E1CCC351E1E741600374B75 /* ConsumeModels.swift in Sources */,
 				6E1074741DC344FF00F3F46F /* InvoiceIncludeCell.swift in Sources */,
 				2FA15A9D1E13BAB5001655A3 /* UserSocketAPI.swift in Sources */,
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
@@ -1857,6 +1867,7 @@
 				2FC25B051D6A9C7600D48D6A /* InvitationVC.swift in Sources */,
 				6ED244541DF835B5002C1F78 /* FaceKeyboardView.swift in Sources */,
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
+				6E1CCC2F1E1E622C00374B75 /* YD_ContactManager.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				6E10746C1DC20D7D00F3F46F /* InvoiceHistoryInfo.swift in Sources */,
 				2F96840D1D76B82A0028E3F2 /* InvoiceDetailVC.swift in Sources */,
@@ -1890,6 +1901,7 @@
 				B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
 				6E5ADC891E1B440A00E6823F /* POIInfoCell.swift in Sources */,
+				6E1CCC311E1E6CBA00374B75 /* ConsumeSocketAPI.swift in Sources */,
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,

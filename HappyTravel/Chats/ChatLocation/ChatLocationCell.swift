@@ -41,7 +41,7 @@ class ChatLocationCell: UITableViewCell {
         
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
+        label.textColor = UIColor(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         label.font = UIFont.systemFontOfSize(14)
         return label
     }()
@@ -78,7 +78,7 @@ class ChatLocationCell: UITableViewCell {
             make.top.equalTo(titleLabel.snp_bottom).offset(5)
             make.left.equalTo(titleLabel)
             make.right.equalTo(titleLabel)
-            make.bottom.lessThanOrEqualTo(10)
+            make.bottom.lessThanOrEqualTo(-10)
             
         }
     }
