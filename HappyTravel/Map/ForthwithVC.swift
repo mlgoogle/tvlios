@@ -482,6 +482,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
+        
+        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
+            if let verInfo = result["data"] as? [String: AnyObject] {
+                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+                    if gotoUpdate {
+                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
+                    }
+                })
+            }
+            
+        })
         SocketManager.sendData(.GetServiceCity, data: nil)
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,

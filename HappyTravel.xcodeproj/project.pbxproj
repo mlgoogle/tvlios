@@ -99,6 +99,8 @@
 		2FECFBCB1E1627730065AF60 /* UpdateModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBCA1E1627730065AF60 /* UpdateModule.swift */; };
 		2FECFBCD1E165F1D0065AF60 /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBCC1E165F1D0065AF60 /* UpdateManager.swift */; };
 		2FECFBD11E1BD5AE0065AF60 /* CenturionCardModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */; };
+		2FECFBDF1E1F6C1D0065AF60 /* CommonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */; };
+		2FECFBE11E1F6D020065AF60 /* SocketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */; };
 		2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */; };
 		2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */; };
 		2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */; };
@@ -450,6 +452,8 @@
 		2FECFBCA1E1627730065AF60 /* UpdateModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateModule.swift; path = Update/UpdateModule.swift; sourceTree = "<group>"; };
 		2FECFBCC1E165F1D0065AF60 /* UpdateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateManager.swift; path = Update/UpdateManager.swift; sourceTree = "<group>"; };
 		2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardModels.swift; path = SocketManage/CenturionCardModels.swift; sourceTree = "<group>"; };
+		2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonAPI.swift; path = SocketManage/CommonAPI.swift; sourceTree = "<group>"; };
+		2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketAPI.swift; path = SocketManage/SocketAPI.swift; sourceTree = "<group>"; };
 		2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResetPasswdVC.swift; path = Login/ResetPasswdVC.swift; sourceTree = "<group>"; };
 		2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardVC.swift; path = Personal/CenturionCard/CenturionCardVC.swift; sourceTree = "<group>"; };
 		2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardBaseInfoCell.swift; path = Personal/CenturionCard/CenturionCardBaseInfoCell.swift; sourceTree = "<group>"; };
@@ -853,6 +857,8 @@
 			isa = PBXGroup;
 			children = (
 				2FA15A9C1E13BAB5001655A3 /* UserSocketAPI.swift */,
+				2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */,
+				2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */,
 				6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */,
 			);
 			name = SocketAPI;
@@ -1843,6 +1849,7 @@
 				2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
 				6ED244571DF836CE002C1F78 /* EmojiFaceHelper.swift in Sources */,
+				2FECFBE11E1F6D020065AF60 /* SocketAPI.swift in Sources */,
 				6E5ADC851E1B440A00E6823F /* ChatLocationAnotherCell.swift in Sources */,
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
@@ -1938,6 +1945,7 @@
 				2F96840B1D76ACC90028E3F2 /* InvoiceCell.swift in Sources */,
 				2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */,
 				2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */,
+				2FECFBDF1E1F6C1D0065AF60 /* CommonAPI.swift in Sources */,
 				6E09F4711DC19FC600F1D4FA /* InvoiceHistoryCell.swift in Sources */,
 				6E4B24811DD19AF30071EE93 /* AppointmentInfo.swift in Sources */,
 				6E5ADC8C1E1B440A00E6823F /* SearchListViewController.swift in Sources */,
