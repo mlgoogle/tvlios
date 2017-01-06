@@ -162,7 +162,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PhotoWallRequest = 1109
         // 照片墙返回
         case PhotoWallReply = 1110
-        
+        // 请求APP版本信息
+        case VersionInfoRequest = 1115
+        // APP版本信息返回
+        case VersionInfoReply = 1116
         //MARK: - 2000+
         
         // 请求邀请服务者
@@ -254,6 +257,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 #if true  // true: 测试环境    false: 正式环境
                     let ip:String = "61.147.114.78"
                     let port:UInt16 = 10007
+//                    let ip:String = "192.168.8.111"
+//                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001

@@ -429,6 +429,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
         if !err {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: ["data": data!])
+            SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
+                if let verInfo = result["data"] as? [String: AnyObject] {
+                    UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+                        if gotoUpdate {
+                            UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
+                        }
+                    })
+                }
+                
+            })
         }
         
     }
