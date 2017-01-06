@@ -505,7 +505,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                                   "longitude_": lon,
                                                   "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
-        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+//        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+        CommonAPI.skills( { (response) in
+            if let model = response as? SkillsModel {
+                DataManager.insertData(model)
+            }
+        }, error: nil)
+        
         SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
     }
     

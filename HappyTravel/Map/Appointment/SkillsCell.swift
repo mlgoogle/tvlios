@@ -19,11 +19,11 @@ enum SkillsCellStyle : Int {
 
 @objc protocol SkillsCellDelegate : NSObjectProtocol {
     
-    optional func selectedAction(info: Dictionary<SkillInfo, Bool>)
+    optional func selectedAction(info: Dictionary<SkillModel, Bool>)
     
     optional func addNewAction()
     
-    optional func deleteAction(index: Int, info: Dictionary<SkillInfo, Bool>)
+    optional func deleteAction(index: Int, info: Dictionary<SkillModel, Bool>)
     
 }
 
@@ -33,7 +33,7 @@ class SkillsCell : UITableViewCell {
     
     var style:SkillsCellStyle = .Normal
     var allButtonWidth:Float = 20.0
-    var skills:Array<Dictionary<SkillInfo, Bool>>?
+    var skills:Array<Dictionary<SkillModel, Bool>>?
     var collectionView:UICollectionView?
     let tags = ["bgView": 1001,
                 "noTallyLabel": 1002,
@@ -111,7 +111,7 @@ class SkillsCell : UITableViewCell {
         }
     }
     
-    func setInfo(skills: Array<Dictionary<SkillInfo, Bool>>?) {
+    func setInfo(skills: Array<Dictionary<SkillModel, Bool>>?) {
         self.skills = skills
         
         
@@ -270,7 +270,7 @@ extension SkillsCell:SkillWidthLayoutDelegate {
     func  autoLayout(layout:SkillWidthLayout, atIndexPath:NSIndexPath)->Float {
         
         let skillInfoDict = skills![atIndexPath.item]
-        let skillInfo = skillInfoDict.keys.first! as SkillInfo
+        let skillInfo = skillInfoDict.keys.first! as SkillModel
         return skillInfo.labelWidth
     }
 }
@@ -297,7 +297,7 @@ extension SkillsCell:UICollectionViewDelegate, UICollectionViewDataSource{
      
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("skillCell", forIndexPath: indexPath) as! SingleSkillCell
         let skillInfoDict = skills![indexPath.item]
-        let skillInfo = skillInfoDict.keys.first! as SkillInfo
+        let skillInfo = skillInfoDict.keys.first! as SkillModel
         var cellStyle = SkillsCellStyle.Normal
         switch style {
         case .Select:

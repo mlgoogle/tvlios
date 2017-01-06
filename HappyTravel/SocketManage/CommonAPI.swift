@@ -14,7 +14,7 @@ class CommonAPI: SocketAPI {
     static func skills(complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .SkillsInfoRequest)
         startRequest(packet, complete: { (response) in
-                complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+                complete?((response as? SocketJsonResponse)?.responseModel(SkillsModel.classForCoder()))
             }, error: error)
     }
     

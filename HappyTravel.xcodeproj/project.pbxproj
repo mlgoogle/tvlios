@@ -101,6 +101,7 @@
 		2FECFBD11E1BD5AE0065AF60 /* CenturionCardModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */; };
 		2FECFBDF1E1F6C1D0065AF60 /* CommonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */; };
 		2FECFBE11E1F6D020065AF60 /* SocketAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */; };
+		2FECFBE31E1F709A0065AF60 /* CommonModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FECFBE21E1F709A0065AF60 /* CommonModels.swift */; };
 		2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */; };
 		2FF72B3C1DAF56B7001EEED2 /* CenturionCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */; };
 		2FF72B3F1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */; };
@@ -454,6 +455,7 @@
 		2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardModels.swift; path = SocketManage/CenturionCardModels.swift; sourceTree = "<group>"; };
 		2FECFBDE1E1F6C1D0065AF60 /* CommonAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonAPI.swift; path = SocketManage/CommonAPI.swift; sourceTree = "<group>"; };
 		2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketAPI.swift; path = SocketManage/SocketAPI.swift; sourceTree = "<group>"; };
+		2FECFBE21E1F709A0065AF60 /* CommonModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonModels.swift; path = SocketManage/CommonModels.swift; sourceTree = "<group>"; };
 		2FF2F36A1D811421001CE92B /* ResetPasswdVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResetPasswdVC.swift; path = Login/ResetPasswdVC.swift; sourceTree = "<group>"; };
 		2FF72B3B1DAF56B7001EEED2 /* CenturionCardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardVC.swift; path = Personal/CenturionCard/CenturionCardVC.swift; sourceTree = "<group>"; };
 		2FF72B3E1DAF5A4C001EEED2 /* CenturionCardBaseInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenturionCardBaseInfoCell.swift; path = Personal/CenturionCard/CenturionCardBaseInfoCell.swift; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 				2FA15A9E1E13BB50001655A3 /* UserModels.swift */,
 				2FECFBD01E1BD5AE0065AF60 /* CenturionCardModels.swift */,
 				6E1CCC341E1E741600374B75 /* ConsumeModels.swift */,
+				2FECFBE21E1F709A0065AF60 /* CommonModels.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1898,6 +1901,7 @@
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,
 				2FF72BA71DB76CF9001EEED2 /* CenturionCardServiceInfo.swift in Sources */,
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
+				2FECFBE31E1F709A0065AF60 /* CommonModels.swift in Sources */,
 				B341CE161DC2E70D00DF93CB /* UploadUserPictureVC.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
 				6E5ADC891E1B440A00E6823F /* POIInfoCell.swift in Sources */,

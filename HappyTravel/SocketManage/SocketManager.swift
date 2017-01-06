@@ -251,7 +251,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     let tmpNewRequestType:[SockOpcode] = [.Logined,
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
-                                          .UserCenturionCardInfoReply]
+                                          .UserCenturionCardInfoReply,
+                                          .SkillsInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
