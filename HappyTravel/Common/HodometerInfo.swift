@@ -9,18 +9,7 @@
 import Foundation
 import RealmSwift
 
-enum HodometerStatus : Int {
-    case WaittingAccept = 0
-    case Reject = 1
-    case Accept = 2
-    case WaittingPay = 3
-    case Paid = 4
-    case Cancel = 5
-    case OnGoing = 6
-    case Completed = 7
-    case InvoiceMaking = 8
-    case InvoiceMaked = 9
-}
+
 
 class HodometerInfo : Object {
     

@@ -19,8 +19,8 @@ class PushMessage: Object {
     
     enum MessageType : Int {
         case Chat = 2004
-        case System = 1
-        case Location = 2
+        case System = 0
+        case Location = 1
         case Date
         case OrderAnswer = 2012
         case Appointment = 2231
