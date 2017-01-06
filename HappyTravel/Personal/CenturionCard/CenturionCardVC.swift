@@ -25,23 +25,24 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var serviceTel = "0571-87611687"
     
-    var services:Results<CenturionCardServiceInfo>?
+    var services:Results<CenturionCardBaseInfoModel>?
 
     var startTime = 0.0
     
     var selectedIndex = 0
     weak var lvContentCollectionView:UICollectionView?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.automaticallyAdjustsScrollViewInsets
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "黑卡会员"
         
-        var lv = DataManager.currentUser!.centurionCardLv
+        var lv = UserCenturionCardInfo.blackcard_lv_
         if lv == 0 {
             lv += 1
         }
-        services = DataManager.getCenturionCardServiceWithLV(lv)
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)") as? Results<CenturionCardBaseInfoModel>
         
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
@@ -59,6 +60,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
+        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -117,7 +119,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         callServantBtn?.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
         callServantBtn?.addTarget(self, action: #selector(CenturionCardVC.callSrevant), forControlEvents: .TouchUpInside)
         view.addSubview(callServantBtn!)
-        callServantBtn?.hidden = DataManager.currentUser!.centurionCardLv <= 0
+        callServantBtn?.hidden = UserCenturionCardInfo.blackcard_lv_ <= 0
         callServantBtn?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
@@ -204,7 +206,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func shareToOthers() {
-        if (DataManager.currentUser?.centurionCardLv)! == 0 {
+        if UserCenturionCardInfo.blackcard_lv_ == 0 {
             SVProgressHUD.showErrorMessage(ErrorMessage: "只有开通的帐号才能进行分享！！！", ForDuration: 1, completion: nil)
             return
         }
@@ -218,7 +220,15 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func callSrevant() {
+//        let userInfo = UserInfo()
+//        userInfo.uid = 50
+//        userInfo.nickname = "优悦金牌客服"
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = userInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
+        
         SocketManager.sendData(.ServersManInfoRequest, data: nil)
+
 //        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
 //        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
 //            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
@@ -237,10 +247,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         return 3
     }
     
-    func returnCellHeightWithInfo(info:Results<CenturionCardServiceInfo>?) -> CGFloat {
-        
+    func returnCellHeightWithInfo(info:Results<CenturionCardBaseInfoModel>?) -> CGFloat {
         let serviceInfo = info?.first
-        var height = DataManager.currentUser?.centurionCardLv >=  serviceInfo?.privilege_lv_ ? AtapteWidthValue(240) : AtapteWidthValue(80)
+        var height = UserCenturionCardInfo.blackcard_lv_ >=  serviceInfo?.privilege_lv_ ? AtapteWidthValue(240) : AtapteWidthValue(80)
         if (info?.count)! % 4 == 0 {
             height += CGFloat(((info?.count)! / 4)) * AtapteWidthValue(80)
         } else {
@@ -248,22 +257,18 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 
         }
         
-        
         return height
     }
     
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        
-        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : returnCellHeightWithInfo(services))
+        return indexPath.row == 0 ? AtapteWidthValue(209) : (indexPath.row == 1 ? AtapteWidthValue(70) : returnCellHeightWithInfo(services!))
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("CenturionCardBaseInfoCell", forIndexPath: indexPath) as! CenturionCardBaseInfoCell
-            cell.setInfo(DataManager.currentUser)
-
+            cell.update()
             return cell
         } else if indexPath.row == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("CenturionCardLvSelCell", forIndexPath: indexPath) as! CenturionCardLvSelCell
@@ -286,9 +291,9 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //            return
 //        }
         selectedIndex = index
-        services = DataManager.getCenturionCardServiceWithLV(index + 1)
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(index + 1)") as? Results<CenturionCardBaseInfoModel>
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
-        callServantBtn?.hidden = index >= DataManager.currentUser!.centurionCardLv
+        callServantBtn?.hidden = index >= UserCenturionCardInfo.blackcard_lv_
         buyVIPView?.hidden = !(callServantBtn?.hidden)!
         if let info = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(index+1)") as? CentuionCardPriceInfo {
             priceLab?.text = "\(info.blackcard_price_ / 100)"
@@ -300,7 +305,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     // MARK: - CenturionCardServicesCellDelegate
-    func serviceTouched(service: CenturionCardServiceInfo) {
+    func serviceTouched(service: CenturionCardBaseInfoModel) {
         let detailVC = CenturionCardDetailVC()
         detailVC.service = service
         navigationController?.pushViewController(detailVC, animated: true)
@@ -333,13 +338,13 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         
-        let curLv = DataManager.currentUser?.centurionCardLv
+        let curLv = UserCenturionCardInfo.blackcard_lv_
         if curLv <= 0 {
             UIApplication.sharedApplication().openURL(NSURL.init(string: "http://www.yundiantrip.com/?page_id=6")!)
             return
         }
         
-        let currentCardInfo = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \((DataManager.currentUser?.centurionCardLv)!)")
+        let currentCardInfo = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(curLv)")
         let price = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(selectedIndex + 1)")
         let totalPrice = 0 + (price?.blackcard_price_)!
 
@@ -466,11 +471,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func refreshData() {
-        var lv = DataManager.currentUser!.centurionCardLv
+        var lv = UserCenturionCardInfo.blackcard_lv_
         if lv == 0 {
             lv += 1
         }
-        services = DataManager.getCenturionCardServiceWithLV(lv)
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)") as? Results<CenturionCardBaseInfoModel>
         lvContentCollectionView?.reloadData()
         table?.reloadData()
     }

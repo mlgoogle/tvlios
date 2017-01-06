@@ -24,6 +24,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var annotations:Array<MAPointAnnotation> = []
     var login = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
+    
+    var serviceCitysModel:CityNameInfoModel?
+    
     var citysAlertController:UIAlertController?
     var recommendServants:Array<UserInfo> = []
     var subscribeServants:Array<UserInfo> = []
@@ -65,14 +68,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.LoginFailed, object: nil)
     }
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ForthwithVC.servantDetailInfo(_:)),
-                                                         name: NotifyDefine.ServantDetailInfo,
-                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
@@ -117,7 +119,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
             }
 
-        } 
+        }
 
         appointmentView.commitBtn?.enabled = true
     }
@@ -182,9 +184,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
         titleBtn?.setTitle("所有服务者", forState: .Normal)
-        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(S18)
-        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 110, bottom: 0, right: 0)
-
+        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(16)
+        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 115, bottom: 0, right: 0)
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
         titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
@@ -362,7 +363,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             alertCtrl!.addAction(services)
         }
         
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
+            self.titleBtn?.selected = false
+            
+        })
         
         alertCtrl!.addAction(cancel)
         
@@ -469,6 +473,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         appointmentView.table?.scrollIndicatorInsets =  inset
     }
     
+    func loginFailed(notification: NSNotification) {
+        presentViewController(regOrLoginSelVC!, animated: false, completion: nil)
+
+    }
+    
     func loginSuccessed(notification: NSNotification) {
         banGesture(false)
         if CurrentUser.register_status_ == 0 {
@@ -479,23 +488,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
 //        SocketManager.sendData(.GetServiceCity, data: nil)
-//        UserSocketAPI.cityNameInfo(<#T##complete: CompleteBlock?##CompleteBlock?##(AnyObject?) -> ()#>, error: <#T##ErrorBlock?##ErrorBlock?##(NSError) -> ()#>)
-        SocketManager.sendData(.GetServiceCity, data: nil, result: { (response) in
-            if let data = response["data"] as? [String: AnyObject] {
-                if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
-                    for city in citys {
-                        let cityInfo = CityInfo()
-                        cityInfo.setInfo(city)
-                        self.serviceCitys[cityInfo.cityCode] = cityInfo
-                        DataManager.insertData(CityInfo.self, data: cityInfo)
-                    }
-                }
-                
+        UserSocketAPI.cityNameInfo({ (response) in
+            if let model = response as? CityNameInfoModel {
+                DataManager.insertData(model)
+                self.serviceCitysModel = model
             }
-            self.appointmentView.serviceCitys = self.serviceCitys
+            self.appointmentView.serviceCitysModel = self.serviceCitysModel
             
+            }, error: { (err) in
+
         })
-        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,
                         "device_token_": dt]
@@ -701,8 +703,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if citysAlertController == nil {
             citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = CitysSelectorSheet()
-            let citys = NSDictionary.init(dictionary: serviceCitys)
-            sheet.citysList = citys.allValues as? Array<CityInfo>
+            sheet.citysList = self.serviceCitysModel
+            sheet.targetCity = self.serviceCitysModel?.service_city_.first
+//            let citys = NSDictionary.init(dictionary: serviceCitys)
+//            sheet.citysList = citys.allValues as? Array<CityInfo>
             sheet.delegate = self
             citysAlertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -925,7 +929,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
             // 余额限制查看个人信息
             if DataManager.currentUser?.has_recharged_ == 0 {
-                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为1000元，还需充值200元", preferredStyle: .Alert)
+                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                     XCGLogger.debug("去充值")
@@ -979,7 +983,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
         guard targetCity != nil else { return }
         recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)

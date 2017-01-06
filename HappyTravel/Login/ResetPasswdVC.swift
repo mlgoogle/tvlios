@@ -204,8 +204,10 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
                     })
                 }
-                }, error: { (err) in
-                    XCGLogger.debug(err)
+            }, error: { (err) in
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+                XCGLogger.debug(err)
             })
         }
     }

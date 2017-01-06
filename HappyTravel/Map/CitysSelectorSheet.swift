@@ -14,7 +14,7 @@ import XCGLogger
     optional  func cancelAction(sender: UIButton?)
     
     
-    optional  func sureAction(sender: UIButton?, targetCity: CityInfo?)
+    optional  func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?)
     optional  func daysSureAction(sender:UIButton?, targetDays: Int)
     optional  func daysCancelAction(sender:UIButton?)
 }
@@ -22,8 +22,13 @@ import XCGLogger
 class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     weak var delegate:CitysSelectorSheetDelegate?
-    var citysList:Array<CityInfo>?
-    var targetCity:CityInfo?
+//    var citysList:Array<CityInfo>?
+    
+//    var cityInfoModel:CityNameInfoModel?
+    var citysList:CityNameInfoModel?
+    var targetCity:CityNameBaseInfo?
+    
+//    var targetCity:CityInfo?
     
     let pickView = UIPickerView()
     var daysList:Array<Int>?
@@ -122,15 +127,16 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        let count = citysList?.count ?? daysList?.count
-        return count!
+//        let count = citysList?.count ?? daysList?.count
+        let count = citysList!.service_city_.count
+        return count
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
       
         if daysList == nil {
             
-            let cityInfo = citysList![row]
+            let cityInfo = citysList!.service_city_[row]
             
             return cityInfo.cityName
         }
@@ -143,7 +149,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         
         if daysList == nil  {
             
-            for (index, city) in citysList!.enumerate() {
+            for (index, city) in citysList!.service_city_.enumerate() {
                 if index == row {
                     targetCity = city
                     return
@@ -174,7 +180,7 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         if daysList == nil {
 
             
-            delegate?.sureAction!(sender, targetCity: targetCity ?? self.citysList![0])
+            delegate?.sureAction!(sender, targetCity: targetCity ?? self.citysList!.service_city_[0])
         } else {
         
             

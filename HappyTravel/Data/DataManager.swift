@@ -46,6 +46,7 @@ class DataManager: NSObject {
                 }
             }
         }
+        config.deleteRealmIfMigrationNeeded = true
         Realm.Configuration.defaultConfiguration = config
         DataManager.initialized = true
         DataManager.realm = try! Realm()
@@ -502,6 +503,59 @@ class DataManager: NSObject {
     }
     
     //MARK: - DataManagerAPI
+    static func insertData(model: Object) {
+        guard DataManager.initialized != false else { return }
+        
+        let realm = try! Realm()
+        if model.isKindOfClass(CenturionCardBaseInfosModel) {
+            let type = CenturionCardBaseInfosModel.self
+            try! realm.write({
+                realm.delete(realm.objects(CenturionCardBaseInfoModel.self))
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else if model.isKindOfClass(CenturionCardPriceInfosModel) {
+            let type = CenturionCardPriceInfosModel.self
+            try! realm.write({
+                realm.delete(realm.objects(CenturionCardPriceInfoModel.self))
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else if model.isKindOfClass(UserCenturionCardInfoModel) {
+            let type = UserCenturionCardInfoModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else if  model.isKindOfClass(CityNameInfoModel) {
+            let type = CityNameInfoModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        }
+        
+    }
+    
+    static func removeData<T: Object>(type: T.Type, filter: String? = nil) {
+        guard DataManager.initialized != false else { return }
+        
+        let realm = try! Realm()
+        try! realm.write({
+            if filter != nil {
+                let objs = realm.objects(type)
+                if objs.count > 0 {
+                    realm.delete(objs)
+                }
+            } else {
+                let objs = realm.objects(type).filter(filter!)
+                if objs.count > 0 {
+                    realm.delete(objs)
+                }
+            }
+        })
+    }
+    
     static func insertData<T: Object>(type: T.Type, data: AnyObject) {
         guard DataManager.initialized != false else { return }
         
@@ -534,7 +588,7 @@ class DataManager: NSObject {
 
     }
     
-    static func getData<T: Object>(type: T.Type, filter: String?) -> AnyObject? {
+    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> AnyObject? {
         if DataManager.initialized == false {
             return nil
         }
@@ -570,6 +624,13 @@ class DataManager: NSObject {
                 return objs
             } else {
                 return objs.filter(filter!).first
+            }
+        case CenturionCardBaseInfoModel.className():
+            let objs = realm.objects(CenturionCardBaseInfoModel.self)
+            if filter == nil {
+                return objs
+            } else {
+                return objs.filter(filter!)
             }
             
         default:

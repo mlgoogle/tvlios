@@ -219,6 +219,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         //保险说明(未测试)
         case SureInsuranceRequest = 3333
         case SureInsuranceReply = 3334
+        
+        case UploadContactRequest = 1111
+        case UploadContactReply = 1112
 
     }
     
@@ -244,7 +247,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[SockOpcode] = [.Logined, .CenturionCardInfoReply]
+    let tmpNewRequestType:[SockOpcode] = [.Logined,
+                                          .ServiceCity,
+                                          .CenturionCardInfoReply,
+                                          .CenturionVIPPriceReply,
+                                          .UserCenturionCardInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -598,9 +605,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 XCGLogger.debug(response)
-                }, error: { (err) in
-                    XCGLogger.debug(err)
-                    NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+            }, error: { (err) in
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+                XCGLogger.debug(err)
             })
         }
         SocketManager.isLogout = false
@@ -963,8 +971,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         //base64解码
 //        msg.content_ = try! decodeBase64Str(msg.content_!)
         DataManager.insertMessage(msg)
+        let user = DataManager.getUserInfo(msg.from_uid_)
+        if user == nil {
+            let dic = ["uid_str_" : String(msg.from_uid_) + "," + "0"]
+
+            SocketManager.sendData(.GetUserInfo, data: dic)
+        }
         if UIApplication.sharedApplication().applicationState == .Background {
-            let user = DataManager.getUserInfo(msg.from_uid_)
+
             let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
             var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
             userInfo["type"] = PushMessage.MessageType.Chat.rawValue
@@ -1017,12 +1031,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
                 var pMsg:PushMessage?
+                
                 for msg in msgList.reverse() {
                     let pushMsg = PushMessage(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
                     DataManager.insertMessage(pushMsg)
                     pMsg = pushMsg
+                }
+                let user = DataManager.getUserInfo(pMsg!.from_uid_)
+                if user == nil {
+                    let dic = ["uid_str_" : String(pMsg!.from_uid_) + "," + "0"]
+                    
+                    SocketManager.sendData(.GetUserInfo, data: dic)
                 }
                 postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
             }

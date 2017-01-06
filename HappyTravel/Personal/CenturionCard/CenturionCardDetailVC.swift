@@ -20,7 +20,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     
     var serviceTel = "0571-87611687"
     
-    var service:CenturionCardServiceInfo?
+    var service:CenturionCardBaseInfoModel?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -191,7 +191,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             cell?.contentView.backgroundColor = UIColor.clearColor()
         }
         
-        let title = service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? "联系服务管家" : "购买此服务"
+        let title = service?.privilege_lv_ <= UserCenturionCardInfo.blackcard_lv_ ? "联系服务管家" : "购买此服务"
         var callServantBtn = cell?.contentView.viewWithTag(tags["callServantBtn"]!) as? UIButton
         if callServantBtn == nil {
             callServantBtn = UIButton()
@@ -214,15 +214,21 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
                 
             })
         }
-        callServantBtn?.hidden = service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv ? false : true
+        callServantBtn?.hidden = service?.privilege_lv_ <= UserCenturionCardInfo.blackcard_lv_ ? false : true
 
         return cell!
     }
     
     func callSrevant() {
+//        let userInfo = UserInfo()
+//        userInfo.uid = 50
+//        userInfo.nickname = "优悦金牌客服"
+//        let chatVC = ChatVC()
+//        chatVC.servantInfo = userInfo
+//        navigationController?.pushViewController(chatVC, animated: true)
+        
         if service?.privilege_lv_ <= DataManager.currentUser!.centurionCardLv {
             SocketManager.sendData(.ServersManInfoRequest, data: nil)
-
             
         } else {
             

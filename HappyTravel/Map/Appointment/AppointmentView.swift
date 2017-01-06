@@ -13,12 +13,16 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var commitBtn:UIButton?
     var agent = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
+    
+    var serviceCitysModel:CityNameInfoModel?
+    
     var citysAlertController:UIAlertController?
     var dateAlertController:UIAlertController?
     var curIndexPath:NSIndexPath?
     var selectedBtn:UIButton?
     
-    var cityInfo:CityInfo?
+//    var cityInfo:CityInfo?
+    var cityInfo: CityNameBaseInfo?
     var startDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
     var endDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
     var gender = false
@@ -464,9 +468,12 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             if indexPath.row == 0 {
                 citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
                 let sheet = CitysSelectorSheet()
-                let citys = NSDictionary.init(dictionary: serviceCitys)
-                sheet.citysList = citys.allValues as? Array<CityInfo>
-                sheet.targetCity = sheet.citysList?.first
+                
+//                let citys = NSDictionary.init(dictionary: serviceCitys)
+//                sheet.citysList = citys.allValues as? Array<CityInfo>
+                sheet.citysList = self.serviceCitysModel
+                sheet.targetCity = self.serviceCitysModel?.service_city_.first
+//                sheet.targetCity = sheet.citysList?.first
                 sheet.delegate = self
                 citysAlertController!.view.addSubview(sheet)
                 sheet.snp_makeConstraints { (make) in
@@ -523,7 +530,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         if let cell = table?.cellForRowAtIndexPath(curIndexPath!) {
             if let cityLab = cell.contentView.viewWithTag(tags["cityLab"]!) as? UILabel {

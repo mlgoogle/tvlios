@@ -20,8 +20,11 @@ class LoginModel: Object {
     
 }
 
-class UserModel : Object {
+class UserBaseModel : Object {
     dynamic var uid_: Int = -1
+}
+
+class UserModel: UserBaseModel {
     dynamic var head_url_: String?
 }
 
@@ -34,7 +37,7 @@ class UserInfoModel: UserModel {
     dynamic var has_recharged_: Int = 0
     dynamic var latitude_: Double = 0.0
     dynamic var longitude_: Double = 0.0
-    dynamic var nickname_: String?
+    dynamic var nickname_: String? = "未登录"
     dynamic var phone_num_: String?
     dynamic var praise_lv_: Int = 0
     dynamic var register_status_: Int = 0
@@ -48,4 +51,18 @@ class UserInfoModel: UserModel {
     dynamic var skills_:String?
     
     dynamic var login_:Bool = false
+}
+
+
+
+
+
+class UploadContactModel: Object {    
+    dynamic var uid = 0
+    var contacts_list:List<ContactModel> = List<ContactModel>()
+}
+
+class ContactModel: Object {
+    dynamic var name:String?
+    dynamic var phone_num:String?
 }

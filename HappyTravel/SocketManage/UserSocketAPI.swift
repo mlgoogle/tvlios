@@ -27,9 +27,13 @@ class UserSocketAPI {
         api.requestManager.startRequest(packet, complete: { (response) in
             SVProgressHUD.dismiss()
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
-            }, error: error)
+        }, error: { (err) in
+            SVProgressHUD.showErrorMessage(ErrorMessage: err.localizedDescription, ForDuration: 1.5, completion: nil)
+            error?(err)
+        })
     }
     
+
     static func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
         UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
@@ -37,11 +41,32 @@ class UserSocketAPI {
             }, error: error)
     }
     
+    static func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
+            }, error: error)
+    }
+    
+    static func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .UserCenturionCardInfoRequest, model: model)
+        UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(UserCenturionCardInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
+    static func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
+        let api = UserSocketAPI.shared
+        let packet = SocketDataPacket(opcode: .Login, model: model)
+        api.requestManager.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
     static func cityNameInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-       let packet = SocketDataPacket(opcode: .GetServiceCity)
+        let packet = SocketDataPacket(opcode: .GetServiceCity)
         UserSocketAPI.shared.requestManager.startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CityNameInfoModel.classForCoder()))
             }, error: error)
     }
-    
 }

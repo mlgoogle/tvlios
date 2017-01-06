@@ -19,6 +19,8 @@ import RealmSwift
 
 class CityNameBaseInfo: Object {
     
+    dynamic var cityName:String?
+    
     dynamic var cityCode:Int = 0
     
     dynamic var provinceName:String?
@@ -29,6 +31,6 @@ class CityNameBaseInfo: Object {
 
 class CityNameInfoModel: Object {
     
-    let privilege_list_ = List<CityNameBaseInfo>()
+    let service_city_ = List<CityNameBaseInfo>()
     
 }
