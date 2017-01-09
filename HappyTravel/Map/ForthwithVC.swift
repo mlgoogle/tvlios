@@ -110,7 +110,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         if CurrentUser.login_ == false {
-            if UserSocketAPI.autoLogin() {
+            if APIHelper.userAPI().autoLogin() {
                 banGesture(true)
             } else {
                 self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
@@ -506,7 +506,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                                   "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
 //        SocketManager.sendData(.SkillsInfoRequest, data: nil)
-        CommonAPI.skills( { (response) in
+        APIHelper.commonAPI().skills( { (response) in
             if let model = response as? SkillsModel {
                 DataManager.insertData(model)
             }

@@ -129,7 +129,7 @@ class YD_ContactManager: NSObject {
         
         uploadContactModel.uid = (DataManager.currentUser?.uid)!
         uploadContactModel.contacts_list = array
-        UserSocketAPI.uploadContact(uploadContactModel, complete: { (response) in
+        APIHelper.userAPI().uploadContact(uploadContactModel, complete: { (response) in
             compeleteCount += 1
             if compeleteCount == requestCount {
                 insertUploadTimeRecord()
