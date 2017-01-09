@@ -252,6 +252,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
                                           .UserCenturionCardInfoReply,
+                                          .UploadContactReply,
+                                          .ObtainTripReply,
+                                          .AppointmentRecordReply,
+                                          .CenturionCardConsumedReply,
+                                          .AppointmentRecommendReply,
+                                          .SkillsInfoReply,
                                           .SkillsInfoReply,
                                           .ServantInfo,
                                           .CheckAuthenticateResultReply]

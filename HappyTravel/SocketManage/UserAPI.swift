@@ -35,10 +35,11 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
+
     func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Login, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
     
