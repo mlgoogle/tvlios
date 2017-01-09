@@ -41,4 +41,11 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)
     }
+    
+    func servantNearby(model: ServantNearbyModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .GetServantInfo, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "guide_list_"))
+            }, error: error)
+    }
 }

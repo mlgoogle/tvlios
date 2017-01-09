@@ -20,7 +20,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var segmentSC:UISegmentedControl?
     var mapView:MAMapView?
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
-    var servantsInfo:Dictionary<Int, UserInfo> = [:]
+    var servantsInfo:Dictionary<Int, UserInfoModel> = [:]
     var annotations:Array<MAPointAnnotation> = []
     var login = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
@@ -374,10 +374,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
         let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
-        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
-                                                  "longitude_": lon,
-                                                  "distance_": 10.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
+        getServantNearby(lat, lon: lon)
 
     }
     
@@ -499,13 +496,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         "device_token_": dt]
             SocketManager.sendData(.PutDeviceToken, data: dict)
         }
+        
         let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
         let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
-        let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
-                                                  "longitude_": lon,
-                                                  "distance_": 10.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
-//        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+        getServantNearby(lat, lon: lon)
+        
         APIHelper.commonAPI().skills( { (response) in
             if let model = response as? SkillsModel {
                 DataManager.insertData(model)
@@ -513,6 +508,43 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }, error: nil)
         
         SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
+    }
+    
+    func getServantNearby(lat: Double, lon:Double) {
+        let servantNearbyModel = ServantNearbyModel()
+        servantNearbyModel.latitude_ = lat
+        servantNearbyModel.longitude_ = lon
+        APIHelper.userAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
+            if let models = response as? [UserInfoModel] {
+                if self!.servantsInfo.count == 0 {
+                    self!.mapView!.setZoomLevel(11, animated: true)
+                }
+                self!.annotations.removeAll()
+                for servant in models {
+                    self!.servantsInfo[servant.uid_] = servant
+                    DataManager.insertData(servant)
+                    let latitude = servant.latitude_
+                    let longitude = servant.longitude_
+                    let point = MAPointAnnotation.init()
+                    point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
+                    point.title = "\(servant.uid_)"
+                    //根据serviceType筛选
+                    if self!.serviceType != 999 {
+                        //不是默认的所有服务者，进行筛选
+                        let type = servant["servicetype_"] as? Int
+                        //不是类型2和要筛选的服务者，忽略
+                        if  type != self!.serviceType && type != 2 {
+                            continue
+                        }
+                    }
+                    self!.annotations.append(point)
+                }
+                if self!.mapView!.annotations.count > 0{
+                    self!.mapView?.removeAnnotations(self!.mapView!.annotations)
+                }
+                self!.mapView!.addAnnotations(self!.annotations)
+            }
+        }, error: nil)
     }
     
     func chatMessage(notification: NSNotification?) {
@@ -628,7 +660,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         for servant in servants {
             let servantInfo = UserInfo()
             servantInfo.setInfo(.Servant, info: servant)
-            servantsInfo[servantInfo.uid] = servantInfo
+//            servantsInfo[servantInfo.uid] = servantInfo
             DataManager.updateUserInfo(servantInfo)
             let latitude = servantInfo.gpsLocationLat
             let longitude = servantInfo.gpsLocationLon
@@ -692,7 +724,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
             return
         }
-        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
+//        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
@@ -793,10 +825,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
 
                         if CurrentUser.login_ {
-                            let dict:Dictionary<String, AnyObject> = ["latitude_": (DataManager.curLocation?.coordinate.latitude)!,
-                                                                      "longitude_": (DataManager.curLocation?.coordinate.longitude)!,
-                                                                      "distance_": 10.1]
-                            SocketManager.sendData(.GetServantInfo, data: dict)
+                            self.getServantNearby(DataManager.curLocation!.coordinate.latitude, lon: DataManager.curLocation!.coordinate.longitude)
                         }
                     }
                 }
@@ -818,10 +847,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
         }
-        let dict:Dictionary<String, AnyObject> = ["latitude_": mapView.centerCoordinate.latitude,
-                                                  "longitude_": mapView.centerCoordinate.longitude,
-                                                  "distance_": 10.1]
-        SocketManager.sendData(.GetServantInfo, data: dict)
+        
+        getServantNearby(mapView.centerCoordinate.latitude, lon: mapView.centerCoordinate.longitude)
+        
         lastMapCenter = mapView.centerCoordinate
     }
     
@@ -861,8 +889,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let lat = annotation.coordinate.latitude
         let lng = annotation.coordinate.longitude
         for (_, servantInfo) in servantsInfo {
-            if servantInfo.gpsLocationLat == lat && servantInfo.gpsLocationLon == lng {
-                if servantInfo.userType == UserInfo.UserType.Servant.rawValue {
+            if servantInfo.latitude_ == lat && servantInfo.longitude_ == lng {
+                if servantInfo.uid_ != CurrentUser.uid_ {
                     id = "Guide"
                     var annotationView:GuideTagCell? = mapView.dequeueReusableAnnotationViewWithIdentifier(id) as? GuideTagCell
                     if annotationView == nil{
@@ -870,7 +898,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                     annotationView!.setInfo(servantInfo)
                     return annotationView
-                } else if servantInfo.userType == UserInfo.UserType.MeetLocation.rawValue {
+                } /*else if servantInfo.userType == UserInfo.UserType.MeetLocation.rawValue {
                     id = "Meet"
                     var annotationView:MeetTagCell? = mapView.dequeueReusableAnnotationViewWithIdentifier(id) as? MeetTagCell
                     if annotationView == nil{
@@ -878,7 +906,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                     annotationView!.setInfo(servantInfo)
                     return annotationView
-                }
+                }*/
          
             }
         }
@@ -953,7 +981,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
 
-            let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid]
+            let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid_]
             SocketManager.sendData(.GetServantDetailInfo, data: dict)
             
         }

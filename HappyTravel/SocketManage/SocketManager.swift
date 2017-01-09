@@ -252,7 +252,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
                                           .UserCenturionCardInfoReply,
-                                          .SkillsInfoReply]
+                                          .SkillsInfoReply,
+                                          .ServantInfo]
     
     var isConnected : Bool {
         return socket!.isConnected
