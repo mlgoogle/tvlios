@@ -55,8 +55,6 @@ class UserInfoModel: UserModel {
 
 
 
-
-
 class UploadContactModel: Object {    
     dynamic var uid = 0
     var contacts_list:List<ContactModel> = List<ContactModel>()
@@ -65,4 +63,15 @@ class UploadContactModel: Object {
 class ContactModel: Object {
     dynamic var name:String?
     dynamic var phone_num:String?
+}
+
+
+
+class ServantNearbyModel: Object {
+    
+    dynamic var latitude_:Double = 0
+    
+    dynamic var longitude_:Double = 0
+    
+    dynamic var distance_ = 10.1
 }

@@ -59,6 +59,7 @@
 		2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFC1D5081CB00609C8E /* Assets.xcassets */; };
 		2FA75D001D5081CB00609C8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FA75CFE1D5081CB00609C8E /* LaunchScreen.storyboard */; };
 		2FA991531E237CC900F10B0A /* APIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA991521E237CC900F10B0A /* APIHelper.swift */; };
+		2FA991551E238FFC00F10B0A /* ServantAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA991541E238FFC00F10B0A /* ServantAPI.swift */; };
 		2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57D1E1D82A3F300F1BAE3 /* AddressSelVC.swift */; };
 		2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB57FF31D74330E002C015F /* PushMessage.swift */; };
 		2FB95D101DED2FD600BBA506 /* PayPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95D0F1DED2FD600BBA506 /* PayPasswdVC.swift */; };
@@ -414,6 +415,7 @@
 		2FA75D011D5081CB00609C8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FA75D2A1D50DED300609C8E /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridge/Bridging-Header.h"; sourceTree = "<group>"; };
 		2FA991521E237CC900F10B0A /* APIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APIHelper.swift; path = SocketManage/APIHelper.swift; sourceTree = "<group>"; };
+		2FA991541E238FFC00F10B0A /* ServantAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantAPI.swift; path = SocketManage/ServantAPI.swift; sourceTree = "<group>"; };
 		2FB57D1E1D82A3F300F1BAE3 /* AddressSelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddressSelVC.swift; path = Login/AddressSelVC.swift; sourceTree = "<group>"; };
 		2FB57FF31D74330E002C015F /* PushMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessage.swift; path = Data/PushMessage.swift; sourceTree = "<group>"; };
 		2FB95D0F1DED2FD600BBA506 /* PayPasswdVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayPasswdVC.swift; path = Personal/PayPasswdVC.swift; sourceTree = "<group>"; };
@@ -866,6 +868,7 @@
 				2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */,
 				6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */,
 				2FA991521E237CC900F10B0A /* APIHelper.swift */,
+				2FA991541E238FFC00F10B0A /* ServantAPI.swift */,
 			);
 			name = SocketAPI;
 			sourceTree = "<group>";
@@ -1860,6 +1863,7 @@
 				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				2FC25B201D6AA41F00D48D6A /* ServantIntroCell.swift in Sources */,
 				2FC25B091D6A9C7600D48D6A /* ServiceCell.swift in Sources */,
+				2FA991551E238FFC00F10B0A /* ServantAPI.swift in Sources */,
 				2F65C57F1DF415BA001EC13A /* PhotoPreviewView.swift in Sources */,
 				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */,

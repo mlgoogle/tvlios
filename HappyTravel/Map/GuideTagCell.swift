@@ -10,7 +10,7 @@ import Foundation
 
 class GuideTagCell: MAAnnotationView {
     
-    var userInfo:UserInfo?
+    var userInfo:UserInfoModel?
     
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
@@ -83,10 +83,10 @@ class GuideTagCell: MAAnnotationView {
         guideTipsView?.hidden = true
     }
     
-    func setInfo(info: UserInfo?) {
+    func setInfo(info: UserInfoModel?) {
         userInfo = info
         if let headView = viewWithTag(1001) as? UIImageView {
-            headView.image = UIImage.init(named: userInfo?.gender == 1 ? "map-head-male" : "map-head-female")
+            headView.image = UIImage.init(named: userInfo!.gender_ == 1 ? "map-head-male" : "map-head-female")
         }
         
     }

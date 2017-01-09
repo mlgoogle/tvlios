@@ -148,7 +148,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        authUserCardCode = (DataManager.currentUser?.authentication)!
+        authUserCardCode = CurrentUser.auth_status_
 
         settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
@@ -271,17 +271,20 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
-        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_]) { [weak self](result) in
-            if let strongSelf = self{
-                strongSelf.authUserCardCode = DataManager.currentUser!.authentication
-                strongSelf.settingOptingValue![0][2] = strongSelf.autoStatus
-                dispatch_async(dispatch_get_main_queue(), {
-                    strongSelf.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
-                })
-                
+        APIHelper.userAPI().authStatus({ [weak self](response) in
+            if let dict = response as? [String: AnyObject] {
+                if let status = dict["review_status_"] as? Int {
+                    CurrentUser.auth_status_ = status
+                    self!.authUserCardCode = status
+                    self!.settingOptingValue![0][2] = self!.autoStatus
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self!.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+                    })
+                }
             }
-        }
-        var number = DataManager.currentUser!.phoneNumber ?? "***********"
+        }, error: nil)
+        
+        var number = CurrentUser.phone_num_ ?? "***********"
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex
         number.replaceRange(startIndex..<endIndex, with: "****")
