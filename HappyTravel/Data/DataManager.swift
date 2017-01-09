@@ -503,6 +503,7 @@ class DataManager: NSObject {
     }
     
     //MARK: - DataManagerAPI
+    
     static func insertData(model: Object) {
         guard DataManager.initialized != false else { return }
         
@@ -527,17 +528,23 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
-        } else if model.isKindOfClass(CenturionCardRecordListModel) {
-            let type = CenturionCardRecordListModel.self
-            try! realm.write({ 
-                realm.delete(realm.objects(type))
-                realm.add(model)
+        } else if model.isKindOfClass(CenturionCardRecordModel) {
+            let type = CenturionCardRecordModel.self
+            
+            let info = model as! CenturionCardRecordModel
+
+            let cardRecordModel = realm.objects(type).filter("order_id_ = \(info.order_id_)").first
+            try! realm.write({
+                if  cardRecordModel == nil {
+                    realm.add(info)
+                } else {
+                    cardRecordModel?.refreshPropertiesWithModel(info)
+                }
             })
         } else if model.isKindOfClass(AppointmentInfoModel) {
             let type = AppointmentInfoModel.self
             let info = model as! AppointmentInfoModel
             let appointmentModel = realm.objects(type).filter("appointment_id_ = \(info.appointment_id_)").first
-            
             try! realm.write({
                 if appointmentModel == nil {
                     realm.add(info)
@@ -547,17 +554,21 @@ class DataManager: NSObject {
             })
         } else if model.isKindOfClass(HodometerInfoModel) {
             let type = HodometerInfoModel.self
-            
             let info = model as! HodometerInfoModel
-            
             let hodoModel = realm.objects(type).filter("order_id_ = \(info.order_id_)").first
-            
-            try! realm.write({ 
+            try! realm.write({
                 if hodoModel == nil {
                     realm.add(info)
                 } else {
                     hodoModel?.refreshPropertiesWithModel(info)
                 }
+            })
+        } else if model.isKindOfClass(SkillsModel) {
+            let type = SkillsModel.self
+            try! realm.write({
+                realm.delete(realm.objects(SkillModel.self))
+                realm.delete(realm.objects(type))
+                realm.add(model)
             })
         }
         
@@ -614,63 +625,78 @@ class DataManager: NSObject {
 
     }
     
-    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> AnyObject? {
-        if DataManager.initialized == false {
-            return nil
-        }
+
+    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> Results<T>? {
+        guard DataManager.initialized != false else { return nil }
         
         let realm = try! Realm()
-        switch type.className() {
-            
-        case UserInfo.className():
-            let objs = realm.objects(UserInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-        case SkillInfo.className():
-            let objs = realm.objects(SkillInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-            
-        case CityInfo.className():
-            let objs = realm.objects(CityInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-        case CentuionCardPriceInfo.className():
-            let objs = realm.objects(CentuionCardPriceInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!).first
-            }
-        case CenturionCardBaseInfoModel.className():
-            let objs = realm.objects(CenturionCardBaseInfoModel.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-
-        default:
-            break
-        }
-        
-        let objs = realm.objects(type)
         if filter == nil {
-            return objs
+            return realm.objects(type)
         } else {
-            return objs.filter(filter!)
+            return realm.objects(type).filter(filter!)
         }
         
     }
+    
+//    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> AnyObject? {
+//        if DataManager.initialized == false {
+//            return nil
+//        }
+//        
+//        let realm = try! Realm()
+//        switch type.className() {
+//            
+//        case UserInfo.className():
+//            let objs = realm.objects(UserInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case SkillInfo.className():
+//            let objs = realm.objects(SkillInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//            
+//        case CityInfo.className():
+//            let objs = realm.objects(CityInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case CentuionCardPriceInfo.className():
+//            let objs = realm.objects(CentuionCardPriceInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!).first
+//            }
+//        case CenturionCardBaseInfoModel.className():
+//            let objs = realm.objects(CenturionCardBaseInfoModel.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case SkillModel.className():
+//            let objs = realm.objects(SkillModel.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//            
+//        default:
+//            break
+//        }
+//        
+//        return nil
+//    }
+
     
     static func updateData<T: Object>(type: T.Type, data: AnyObject) -> Bool {
         if DataManager.initialized == false {

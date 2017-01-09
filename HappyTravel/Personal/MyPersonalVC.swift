@@ -121,7 +121,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
         
-        UserSocketAPI.centurionCardBaseInfo({ (response) in
+        APIHelper.commonAPI().centurionCardBaseInfo({ (response) in
             if let model = response as? CenturionCardBaseInfosModel {
                 DataManager.insertData(model)
             }
@@ -129,7 +129,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         })
         
-        UserSocketAPI.centurionCardPriceInfo({ (response) in
+        APIHelper.commonAPI().centurionCardPriceInfo({ (response) in
             if let model = response as? CenturionCardPriceInfosModel {
                 DataManager.insertData(model)
             }
@@ -139,7 +139,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         let user = UserBaseModel()
         user.uid_ = CurrentUser.uid_
-        UserSocketAPI.userCenturionCardInfo(user, complete: { (response) in
+        APIHelper.userAPI().userCenturionCardInfo(user, complete: { (response) in
             if let model = response as? UserCenturionCardInfoModel {
                 DataManager.insertData(model)
                 UserCenturionCardInfo = model

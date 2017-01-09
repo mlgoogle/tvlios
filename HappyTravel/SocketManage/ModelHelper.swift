@@ -49,8 +49,8 @@ extension Object {
                 if let selfModelPro = self[pro.name] as? Object  {
                     guard model[pro.name] != nil else {continue}
                     selfModelPro.refreshPropertiesWithModel(model[pro.name] as! Object)
-                } else if let modelPro = model[pro.name] as? ListBase {
-                    self[pro.name]  =  modelPro
+                } else  {
+                    self[pro.name]  =  model[pro.name]
                 }
             }
         }

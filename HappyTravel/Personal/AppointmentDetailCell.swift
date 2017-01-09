@@ -170,16 +170,11 @@ class AppointmentDetailCell: UITableViewCell {
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
         let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.end_time_)))
         dateLabel.text = startTime + "-" + endTime
-        
-
-            
-            let results = DataManager.getData(CityInfo.self, filter: "cityCode = \(info.city_code_)") as! Results<CityInfo>
-            
+        if let results = DataManager.getData(CityInfo.self, filter: "cityCode = \(info.city_code_)") {
             if let cityInfo = results.first  {
                 cityLabel.text = cityInfo.cityName
             }
-            
-    
+        }
     }
     
     

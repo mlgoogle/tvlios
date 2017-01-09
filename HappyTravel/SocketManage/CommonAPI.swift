@@ -11,11 +11,24 @@ import Foundation
 
 class CommonAPI: SocketAPI {
     
-    static func skills(complete: CompleteBlock?, error: ErrorBlock?){
+    func skills(complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .SkillsInfoRequest)
         startRequest(packet, complete: { (response) in
-                complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseModel(SkillsModel.classForCoder()))
             }, error: error)
     }
     
+    func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
+            }, error: error)
+    }
+    
+    func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
+            }, error: error)
+    }
 }

@@ -10,13 +10,13 @@ import Foundation
 import SVProgressHUD
 
 
-class UserSocketAPI: SocketAPI {
+class UserAPI: SocketAPI {
     
-    static func autoLogin() -> Bool {
+    func autoLogin() -> Bool {
         return NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) != nil
     }
     
-    static func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
+    func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Login, model: model)
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
         startRequest(packet, complete: { (response) in
@@ -28,29 +28,16 @@ class UserSocketAPI: SocketAPI {
         })
     }
     
-    static func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
-            }, error: error)
-    }
-    
-    static func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
-            }, error: error)
-    }
-    
-    static func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
+    func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .UserCenturionCardInfoRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(UserCenturionCardInfoModel.classForCoder()))
             }, error: error)
     }
     
-    static func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .UploadContactRequest, model: model)
+
+    func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .Login, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
