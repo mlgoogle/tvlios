@@ -33,7 +33,7 @@ class DistanceOfTravelCell: UITableViewCell {
                                                         .InvoiceMaking: UIColor.init(red: 245/255.0, green: 164/255.0, blue: 49/255.0, alpha: 1),
                                                         .InvoiceMaked: UIColor.greenColor()]
     
-    var curHodometerInfo:HodometerInfo?
+    var curHodometerInfo:HodometerInfoModel?
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -192,7 +192,7 @@ class DistanceOfTravelCell: UITableViewCell {
         
     }
     
-    func setHodometerInfo(hotometer: HodometerInfo?) {
+    func setHodometerInfo(hotometer: HodometerInfoModel?) {
         curHodometerInfo = hotometer
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {

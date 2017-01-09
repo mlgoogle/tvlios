@@ -287,7 +287,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter notifucation:
      */
     func receivedResults(notifucation: NSNotification?) {
+
         
+        YD_ContactManager.checkIfUploadContact()
+
         let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
         
         var msg = "预约发起成功，等待对方接受邀请"
@@ -320,6 +323,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter notifucation:
      */
     func invitationResult(notifucation: NSNotification?) {
+        
+        YD_ContactManager.checkIfUploadContact()
         var msg = ""
         if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
             msg = err.values.first!

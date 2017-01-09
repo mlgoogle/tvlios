@@ -107,10 +107,6 @@ class InsuranceVC: UIViewController {
     func sureAction(sender: UIButton) {
         SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
             self.navigationController?.popViewControllerAnimated(true)
-//            let dict = ["from_uid_": CurrentUser.uid_,
-//            "to_uid_": self.servantInfoDict!["to_uid_"],
-//            "service_id_": self.servantInfoDict!["service_id_"],
-//            "day_count_":self.servantInfoDict!["targetDays"]]
             SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
 
         })

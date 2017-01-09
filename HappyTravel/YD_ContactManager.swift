@@ -51,13 +51,11 @@ class YD_ContactManager: NSObject {
                     uploadContactArray.append(contact)
                     if uploadContactArray.count > 200 {
                         uploadContact(uploadContactArray)
-                        requestCount += 1
                         uploadContactArray.removeAll()
                     }
                 }
             if uploadContactArray.count != 0 {
                 uploadContact(uploadContactArray)
-                requestCount += 1
             }
 
         }
@@ -122,12 +120,11 @@ class YD_ContactManager: NSObject {
         userDefaults.setDouble(currentTime, forKey: TimeRecordKey)
     }
 
-
+    
     static func uploadContact(array:List<ContactModel>) {
-        
         let uploadContactModel = UploadContactModel()
-        
-        uploadContactModel.uid = (DataManager.currentUser?.uid)!
+        requestCount += 1
+        uploadContactModel.uid = CurrentUser.uid_
         uploadContactModel.contacts_list = array
         APIHelper.userAPI().uploadContact(uploadContactModel, complete: { (response) in
             compeleteCount += 1
@@ -137,8 +134,6 @@ class YD_ContactManager: NSObject {
             }) { (error) in
                 
         }
-        
-        
     }
 }
 

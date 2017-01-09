@@ -35,10 +35,11 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
+
     func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Login, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
     //保险金额
@@ -68,4 +69,12 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
+    func cash(complete: CompleteBlock?, error: ErrorBlock?) {
+        let model = UserBaseModel()
+        model.uid_ = CurrentUser.uid_
+        let packet = SocketDataPacket(opcode: .CheckUserCash, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
 }
