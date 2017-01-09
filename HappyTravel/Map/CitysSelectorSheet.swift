@@ -127,9 +127,8 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-//        let count = citysList?.count ?? daysList?.count
-        let count = citysList!.service_city_.count
-        return count
+        let count = citysList?.service_city_.count ?? daysList?.count
+        return count!
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -138,7 +137,9 @@ class CitysSelectorSheet: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
             
             let cityInfo = citysList!.service_city_[row]
             
-            return cityInfo.cityName
+            
+//            return cityInfo.cityName
+            return cityInfo.city_name_
         }
         let daysCount = daysList![row]
         

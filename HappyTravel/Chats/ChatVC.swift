@@ -438,7 +438,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
    
         if message.msg_type_ == PushMessage.MessageType.Location.rawValue  {
         
-            if message.to_uid_ == (DataManager.currentUser?.uid)! {
+            if message.to_uid_ == CurrentUser.uid_ {
                 let cell = tableView.dequeueReusableCellWithIdentifier("ChatLocationAnother", forIndexPath: indexPath) as! ChatLocationAnotherCell
                 cell.setupDataWithContent(message.content_)
                 return cell
@@ -499,13 +499,15 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         sendMessageWithText(textView.text)
     }
     
-    func sendMessageWithText(msg:String) {
+    func sendMessageWithText(msg:String, type:Int = 0) {
         let msgData = Message(incoming: false, text: msg, sentDate: NSDate(timeIntervalSinceNow: 0))
         messages.append(msgData)
+        
         let data:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
                                                   "to_uid_": servantInfo!.uid,
                                                   "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
-                                                  "content_": msg]
+                                                  "content_": msg,
+                                                  "msg_type_":type]
         //base64编码
         //        let utf8str = textView.text.dataUsingEncoding(NSUTF8StringEncoding)
         //        let msg_base64 = utf8str?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
@@ -514,7 +516,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         //                                                  "msg_time_": NSNumber.init(longLong: Int64(NSDate().timeIntervalSince1970)),
         //                                                  "content_": msg_base64!]
         //        SocketManager.sendData(.SendChatMessage, data: data_base)
-        
         
         
         //发送聊天消息包
@@ -571,7 +572,7 @@ extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate{
     
     func sendLocation(poiModel: POIInfoModel?) {
         
-        sendMessageWithText(modelToString(poiModel!))
+        sendMessageWithText(modelToString(poiModel!), type: PushMessage.MessageType.Location.rawValue)
         
     }
     

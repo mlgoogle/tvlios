@@ -10,22 +10,16 @@
 import Foundation
 import RealmSwift
 
-/*
- cityName = 深圳市;
-	cityCode = 440300;
-	provinceName = 广东省;
-	provinceCode = 440000;
- */
 
 class CityNameBaseInfo: Object {
     
-    dynamic var cityName:String?
+    dynamic var city_name_:String?
     
-    dynamic var cityCode:Int = 0
+    dynamic var city_code_:Int = 0
     
-    dynamic var provinceName:String?
+    dynamic var province_name_:String?
     
-    dynamic var provinceCode:Int = 0
+    dynamic var province_code_:Int = 0
     
 }
 

@@ -115,6 +115,7 @@ extension GetLocationInfoViewController:UITableViewDataSource, UITableViewDelega
         selectModel.isSelect = false
         let willSelectModel = poiArray[indexPath.row]
         willSelectModel.isSelect = true
+        centerPOIModel = willSelectModel
         tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: selectIndex, inSection: 0), NSIndexPath.init(forRow: indexPath.row, inSection: 0)], withRowAnimation: .None)
         selectIndex = indexPath.row
     }

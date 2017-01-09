@@ -298,11 +298,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            make.right.equalTo(mapView!).offset(0.5)
 //            make.height.equalTo(60)
 //        }
-        //大拇指推荐功能，暂时隐藏，后继使用
+//        大拇指推荐功能，暂时隐藏，后继使用
 //        let recommendBtn = UIButton()
 //        recommendBtn.tag = 2001
 //        recommendBtn.backgroundColor = .clearColor()
-//        recommendBtn.backgroundColor = UIColor.redColor()
 //        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
 //        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
 //        mapView?.addSubview(recommendBtn)
@@ -352,23 +351,31 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func screenServices(sender:UIButton) {
         sender.selected = true
         alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-        let nameArray = ["所有服务者", "商务服务者", "休闲服务者"]
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "取消"]
         let typeArray = [999, 0, 1]
-        for i in 0..<3 {
+        for i in 0..<4 {
             let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
-                self.serviceType = typeArray[i]
-                self.screenAction(nameArray[i])
+                if i == 3{
+                    self.titleBtn?.selected = false
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                else{
+                    self.serviceType = typeArray[i]
+                    self.screenAction(nameArray[i])
+                }
+                
                 
             })
             alertCtrl!.addAction(services)
         }
         
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (sender: UIAlertAction) in
-            self.titleBtn?.selected = false
+//        let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (sender: UIAlertAction) in
+//            self.titleBtn?.selected = false
+//            self.dismissViewControllerAnimated(true, completion: nil)
             
-        })
+//        })
         
-        alertCtrl!.addAction(cancel)
+//        alertCtrl!.addAction(cancel)
         
         presentViewController(alertCtrl!, animated: true, completion: nil)
     }
@@ -377,8 +384,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         self.titleBtn?.setTitle(title, forState: .Normal)
         self.titleBtn?.selected = false
         
-        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
-        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
+        let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
+        let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
         let dict:Dictionary<String, AnyObject> = ["latitude_": lat,
                                                   "longitude_": lon,
                                                   "distance_": 10.1]
@@ -400,9 +407,19 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendAction(sender: UIButton?) {
-        let recommendVC = RecommendServantsVC()
-        recommendVC.servantsInfo = recommendServants
-        navigationController?.pushViewController(recommendVC, animated: true)
+        UserSocketAPI.cityNameInfo({ (response) in
+            if let model = response as? CityNameInfoModel {
+                DataManager.insertData(model)
+                self.serviceCitysModel = model
+            }
+            self.appointmentView.serviceCitysModel = self.serviceCitysModel
+            
+            }, error: { (err) in
+                
+        })
+//        let recommendVC = RecommendServantsVC()
+//        recommendVC.servantsInfo = recommendServants
+//        navigationController?.pushViewController(recommendVC, animated: true)
     }
     
     func registerNotify() {
@@ -487,6 +504,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
+        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
+            if let verInfo = result["data"] as? [String: AnyObject] {
+                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+                    if gotoUpdate {
+                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
+                    }
+                })
+            }
+            
+        })
+
 //        SocketManager.sendData(.GetServiceCity, data: nil)
         UserSocketAPI.cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
@@ -496,8 +524,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             self.appointmentView.serviceCitysModel = self.serviceCitysModel
             
             }, error: { (err) in
-
+                
         })
+        
+        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,
                         "device_token_": dt]
@@ -987,7 +1017,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         guard targetCity != nil else { return }
         recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
+        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
+
+//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
         SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
