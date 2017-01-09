@@ -21,4 +21,8 @@ class APIHelper {
         return _commonAPI
     }
     
+    private static var _servantAPI = ServantAPI()
+    class func servantAPI() -> ServantAPI {
+        return _servantAPI
+    }
 }

@@ -514,7 +514,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
-        APIHelper.userAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
+        APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
                 if self!.servantsInfo.count == 0 {
                     self!.mapView!.setZoomLevel(11, animated: true)
@@ -921,40 +921,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
-            // 认证状态限制查看个人信息
-            let auth = (DataManager.currentUser?.authentication)!
-            if auth != 1 {
-                SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_]) { [weak self](result) in
-                    if let strongSelf = self{
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if DataManager.currentUser!.authentication != 1 {
-                                let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客",
-                                    0: "尊敬的游客，您的认证尚未通过审核，在审核成功后将为您开通查看服务者信息的权限",
-                                    2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为V领队的正式游客"]
-                                let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[auth], preferredStyle: .Alert)
-                                let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
-                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                                        let controller = UploadUserPictureVC()
-                                        strongSelf.navigationController!.pushViewController(controller, animated: true)
-                                    })
-                                })
-                                alert.view.tintColor = UIColor.grayColor()
-                                let cancel = UIAlertAction.init(title: auth != 0 ? "算了吧" : "好的", style: .Default, handler: { (action) in
-                                    
-                                })
-                                if auth != 0{
-                                    alert.addAction(ok)
-                                }
-                                alert.addAction(cancel)
-                                strongSelf.presentViewController(alert, animated: true, completion: nil)
-                            }
-                        })
-                        
-                    }
-                }
-                
-                return
-            }
+            
+            guard checkAuthStaus() else { return }
+            
             // 余额限制查看个人信息
             if DataManager.currentUser?.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
@@ -986,6 +955,43 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         }
                 
+    }
+    
+    func checkAuthStaus() -> Bool {
+        // 认证状态限制查看个人信息
+        if CurrentUser.auth_status_ != 1 {
+            APIHelper.userAPI().authStatus({ [weak self](response) in
+                if let dict = response as? [String: AnyObject] {
+                    if let status = dict["review_status_"] as? Int {
+                        CurrentUser.auth_status_ = status
+                        if status != 1 {
+                            let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客",
+                                0: "尊敬的游客，您的认证尚未通过审核，在审核成功后将为您开通查看服务者信息的权限",
+                                2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为V领队的正式游客"]
+                            let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[status], preferredStyle: .Alert)
+                            let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
+                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                                    let controller = UploadUserPictureVC()
+                                    self!.navigationController!.pushViewController(controller, animated: true)
+                                })
+                            })
+                            alert.view.tintColor = UIColor.grayColor()
+                            let cancel = UIAlertAction.init(title: status != 0 ? "算了吧" : "好的", style: .Default, handler: { (action) in
+                                
+                            })
+                            if status != 0{
+                                alert.addAction(ok)
+                            }
+                            alert.addAction(cancel)
+                            self!.presentViewController(alert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }, error: nil)
+            
+            return false
+        }
+        return true
     }
    
     public func mapView(mapView: MAMapView!, didFailToLocateUserWithError error: NSError!) {

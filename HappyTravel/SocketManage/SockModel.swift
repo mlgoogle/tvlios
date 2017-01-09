@@ -11,6 +11,6 @@ import RealmSwift
 
 class Heart: Object {
     
-    var uid_:Int32 = -1
+    var uid_:Int = -1
     
 }
