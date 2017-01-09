@@ -42,5 +42,17 @@ extension Object {
         }
         return mutabledic
     }
-    
+
+    func refreshPropertiesWithModel(model:Object) {
+        for pro in objectSchema.properties as [Property]!  {
+            if model[pro.name] != nil {
+                if let selfModelPro = self[pro.name] as? Object  {
+                    guard model[pro.name] != nil else {continue}
+                    selfModelPro.refreshPropertiesWithModel(model[pro.name] as! Object)
+                } else if let modelPro = model[pro.name] as? ListBase {
+                    self[pro.name]  =  modelPro
+                }
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var commonCell:IdentCommentCell?
     
     var servantInfo:UserInfo?
-    var hodometerInfo:HodometerInfo?
+    var hodometerInfo:HodometerInfoModel?
     var serviceScore:Int?
     var userScore:Int?
     var remark:String?

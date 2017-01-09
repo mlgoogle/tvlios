@@ -527,6 +527,38 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if model.isKindOfClass(CenturionCardRecordListModel) {
+            let type = CenturionCardRecordListModel.self
+            try! realm.write({ 
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else if model.isKindOfClass(AppointmentInfoModel) {
+            let type = AppointmentInfoModel.self
+            let info = model as! AppointmentInfoModel
+            let appointmentModel = realm.objects(type).filter("appointment_id_ = \(info.appointment_id_)").first
+            
+            try! realm.write({
+                if appointmentModel == nil {
+                    realm.add(info)
+                } else {
+                    appointmentModel?.refreshPropertiesWithModel(info)
+                }
+            })
+        } else if model.isKindOfClass(HodometerInfoModel) {
+            let type = HodometerInfoModel.self
+            
+            let info = model as! HodometerInfoModel
+            
+            let hodoModel = realm.objects(type).filter("order_id_ = \(info.order_id_)").first
+            
+            try! realm.write({ 
+                if hodoModel == nil {
+                    realm.add(info)
+                } else {
+                    hodoModel?.refreshPropertiesWithModel(info)
+                }
+            })
         }
         
     }
@@ -626,12 +658,18 @@ class DataManager: NSObject {
             } else {
                 return objs.filter(filter!)
             }
-            
+
         default:
             break
         }
         
-        return nil
+        let objs = realm.objects(type)
+        if filter == nil {
+            return objs
+        } else {
+            return objs.filter(filter!)
+        }
+        
     }
     
     static func updateData<T: Object>(type: T.Type, data: AnyObject) -> Bool {

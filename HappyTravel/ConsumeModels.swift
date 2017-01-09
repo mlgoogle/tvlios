@@ -26,6 +26,8 @@ class OrderRequestBaseModel: Object {
     dynamic var count_ = 10
 }
 
+
+//邀约记录
 class HodometerRequestModel: OrderRequestBaseModel {
     dynamic var order_id_ = 0
     
@@ -75,6 +77,7 @@ class HodometerInfoModel : Object {
     dynamic var order_addr:String?
     
 }
+//预约记录
 class AppointmentRequestModel: OrderRequestBaseModel {
     dynamic var last_id_ = 0
 }
@@ -110,6 +113,8 @@ class AppointmentInfoModel: Object {
     dynamic var recommend_uid_:String?
 }
 
+
+//黑卡记录
 class CenturionCardRecordRequestModel: Object {
     dynamic var uid_ = CurrentUser.uid_
 }
@@ -133,4 +138,12 @@ class CenturionCardRecordModel: Object {
     
     dynamic var order_status_ = 0
     dynamic var order_type_ = 0
+}
+//推荐服务者列表
+class AppointmentRecommendRequestModel: Object {
+    dynamic var uid_str_:String?
+}
+
+class AppointmentRecommendListModel: Object{
+   let recommend_guide_ = List<UserInfoModel>()
 }

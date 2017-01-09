@@ -33,8 +33,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
-    var selectedHodometerInfo:HodometerInfo?
-    var selectedAppointmentInfo:AppointmentInfo?
+    var selectedHodometerInfo:HodometerInfoModel?
+    var selectedAppointmentInfo:AppointmentInfoModel?
     
     var orderID = 0
     var lastRecordId = 0
@@ -45,7 +45,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      \***/
     var inviteList = List<HodometerInfoModel>()
     var appointmentList = List<AppointmentInfoModel>()
-    var centurionRecordList:Results<CenturionCardRecordModel>?
+    var centurionRecordList = List<CenturionCardRecordModel>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        registerNotify()
+//        registerNotify()
         header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
 
     }
@@ -70,41 +70,41 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
-    func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
-    }
-    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
-        
-        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            servantsArray?.removeAll()
-            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-                var uid_str = ""
-                for servant in servants {
-                    let servantInfo = UserInfo()
-                    servantInfo.setInfo(.Servant, info: servant)
-                    servantsArray?.append(servantInfo)
-                    uid_str += "\(servantInfo.uid),"
-                    
-                }
-                let recommendVC = RecommendServantsVC()
-                recommendVC.isNormal = false
-                recommendVC.appointment_id_ = currentApponitmentID
-                recommendVC.servantsInfo = servantsArray
-                navigationController?.pushViewController(recommendVC, animated: true)
-                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-                SocketManager.sendData(.GetUserInfo, data: dict)
-            }
-            
-        }
-    }
-    
+//    
+//    func registerNotify() {
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+//
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
+////        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+//    }
+//    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+//        
+//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            servantsArray?.removeAll()
+//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+//                var uid_str = ""
+//                for servant in servants {
+//                    let servantInfo = UserInfo()
+//                    servantInfo.setInfo(.Servant, info: servant)
+//                    servantsArray?.append(servantInfo)
+//                    uid_str += "\(servantInfo.uid),"
+//                    
+//                }
+//                let recommendVC = RecommendServantsVC()
+//                recommendVC.isNormal = false
+//                recommendVC.appointment_id_ = currentApponitmentID
+//                recommendVC.servantsInfo = servantsArray
+//                navigationController?.pushViewController(recommendVC, animated: true)
+//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+//                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+//                SocketManager.sendData(.GetUserInfo, data: dict)
+//            }
+//            
+//        }
+//    }
+//    
     /**
      支付回调
      
@@ -146,93 +146,93 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //        
 //        
 //    }
-    /**
-     邀约行程回调记录
-     - parameter notification:
-     */
-    func obtainTripReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
-        }
-        
-        let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
-        
-        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-        if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-            table?.reloadData()
-            return
-        }
-        orderID = lastOrderID
-        if segmentIndex == 0 {
-            table?.reloadData()
-        }
-        
-    }
-    /**
-     黑卡消费记录回调
-     - parameter notification:
-     */
-    func centurionCardConsumedReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
-        }
-        
-        let realm = try! Realm()
-        consumes = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ > 3").sorted("order_id_", ascending: false)
-        
-        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-        if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-            table?.reloadData()
-            return
-        }
-        consumedOrderID = lastOrderID
-        if segmentIndex == 2 {
-            table?.reloadData()
-        }
-        
-    }
-    
-    /**
-     预约行程记录回调
-     
-     - parameter notification: 
-     */
-    func receivedAppointmentInfos(notification:NSNotification) {
-        let realm = try! Realm()
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
-            
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
-        }
-        
-        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
-        let lastID = notification.userInfo!["lastID"] as! Int
-        if lastID == -9999 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-            table?.reloadData()
-            return
-        }
-        lastRecordId = lastID
-        if segmentIndex == 1 {
-            table?.reloadData()
-        }
-        
-    }
-    
+//    /**
+//     邀约行程回调记录
+//     - parameter notification:
+//     */
+//    func obtainTripReply(notification: NSNotification) {
+//        if header.state == MJRefreshState.Refreshing {
+//            header.endRefreshing()
+//        }
+//        if footer.state == MJRefreshState.Refreshing {
+//            footer.endRefreshing()
+//        }
+//        
+//        let realm = try! Realm()
+//        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
+//        
+//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
+//        if lastOrderID == -1001 {
+//            footer.state = .NoMoreData
+//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+//            table?.reloadData()
+//            return
+//        }
+//        orderID = lastOrderID
+//        if segmentIndex == 0 {
+//            table?.reloadData()
+//        }
+//        
+//    }
+//    /**
+//     黑卡消费记录回调
+//     - parameter notification:
+//     */
+//    func centurionCardConsumedReply(notification: NSNotification) {
+//        if header.state == MJRefreshState.Refreshing {
+//            header.endRefreshing()
+//        }
+//        if footer.state == MJRefreshState.Refreshing {
+//            footer.endRefreshing()
+//        }
+//        
+//        let realm = try! Realm()
+//        consumes = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ > 3").sorted("order_id_", ascending: false)
+//        
+//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
+//        if lastOrderID == -1001 {
+//            footer.state = .NoMoreData
+//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+//            table?.reloadData()
+//            return
+//        }
+//        consumedOrderID = lastOrderID
+//        if segmentIndex == 2 {
+//            table?.reloadData()
+//        }
+//        
+//    }
+//    
+//    /**
+//     预约行程记录回调
+//     
+//     - parameter notification: 
+//     */
+//    func receivedAppointmentInfos(notification:NSNotification) {
+//        let realm = try! Realm()
+//        if header.state == MJRefreshState.Refreshing {
+//            header.endRefreshing()
+//            
+//        }
+//        if footer.state == MJRefreshState.Refreshing {
+//            footer.endRefreshing()
+//        }
+//        
+//        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
+//        let lastID = notification.userInfo!["lastID"] as! Int
+//        if lastID == -9999 {
+//            footer.state = .NoMoreData
+//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+//            table?.reloadData()
+//            return
+//        }
+//        lastRecordId = lastID
+//        if segmentIndex == 1 {
+//            table?.reloadData()
+//        }
+//        
+//    }
+//    
     func initView() {
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "segment-bg")
@@ -296,12 +296,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func refreshAction(isRefresh:Bool) {
         
         var orderType = OrderType.InviteOrder.rawValue
-        
+        footer.state = .Idle
         switch segmentIndex {
         case 1:
             orderType = OrderType.AppointmentOrder.rawValue
             break
         case 2:
+            footer.state = .NoMoreData
+            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
             orderType = OrderType.CenturionCardOrder.rawValue
             break
         default:
@@ -311,7 +313,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func handleOrderRequest(isRefresh:Bool, orderType:Int) {
-        allEndRefresh()
         switch orderType {
         case OrderType.InviteOrder.rawValue:
             if isRefresh {
@@ -340,8 +341,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func handleCenturionCardRequest(isRefresh:Bool) {
         ConsumeSocketAPI.requsetCenturionCardRecordList(CenturionCardRecordRequestModel(), complete: { (response) in
             let listModel = response as? CenturionCardRecordListModel
-            let recordList = listModel?.blackcard_consume_record_.filter("order_status_ > 3")
-            self.centurionRecordList = recordList
+            let recordList = listModel?.blackcard_consume_record_
+            for record in recordList! {
+                if record.order_status_ > 3 {
+                    self.centurionRecordList.append(record)
+                }
+            }
+            self.endRefresh()
             self.table?.reloadData()
             }) { (error) in
                 
@@ -355,9 +361,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         ConsumeSocketAPI.requestAppointmentList(model, complete: { (response) in
             let lsitModel = response as? AppointmentListModel
             let appointmentlist = lsitModel?.data_list_
-            guard self.appointmentList.count > 0 else {return}
+            guard appointmentlist!.count > 0 else {return}
             self.appointmentList = self.appointmentList + appointmentlist!
             self.lastRecordId = (appointmentlist?.last?.appointment_id_)!
+            self.endRefresh()
+
             self.table?.reloadData()
             }) { (error) in
                 
@@ -374,21 +382,39 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let inviteList = listModel?.trip_list_
             self.inviteList = self.inviteList + inviteList!
             self.orderID = (inviteList?.last?.order_id_)!
+            self.endRefresh()
+
             self.table?.reloadData()
             }) { (error) in
         }
     }
     
-    func allEndRefresh() {
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
+
+    func requestRecommendListWithUidStr(uid_str_:String) {
+        let model = AppointmentRecommendRequestModel()
+        model.uid_str_ = uid_str_
+        ConsumeSocketAPI.requestAppointmentRecommendList(model, complete: { (response) in
             
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
+            let listModel = response as? AppointmentRecommendListModel
+            var uid_str = ""
+            for servant in (listModel?.recommend_guide_)! {
+
+                DataManager.insertData(servant)
+                uid_str += "\(servant.uid_),"
+                
+            }
+            let recommendVC = RecommendServantsVC()
+            recommendVC.isNormal = false
+            recommendVC.appointment_id_ = self.currentApponitmentID
+//            recommendVC.servantsInfo = listModel?.recommend_guide_
+//            navigationController?.pushViewController(recommendVC, animated: true)
+            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+            SocketManager.sendData(.GetUserInfo, data: dict)
+        }) { (error) in
         }
     }
-
+    
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
@@ -397,14 +423,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         } else if (segmentIndex == 1){
             cnt = appointmentList.count ?? 0
         } else {
-            cnt = centurionRecordList?.count ?? 0
+            cnt = centurionRecordList.count ?? 0
         }
         footer.hidden = cnt < 10 ? true : false
         return cnt
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
         switch segmentIndex {
         case 0://商务游(和消息中心的行程一样)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
@@ -424,8 +449,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
-            if centurionRecordList?.count > 0 && indexPath.row < centurionRecordList?.count {
-                cell.setCenturionCardConsumedInfo(centurionRecordList![indexPath.row])
+            if centurionRecordList.count > 0 && indexPath.row < centurionRecordList.count {
+                cell.setCenturionCardConsumedInfo(centurionRecordList[indexPath.row])
             }
             
             return cell
@@ -448,27 +473,22 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue{
                     
                     let identDetailVC = IdentDetailVC()
-//                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
+                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                     /**
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
                     SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
-//                    selectedHodometerInfo = cell.curHodometerInfo
+                    selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
                 }
             }
             break
         case 1:
-            let detailVC = AppointmentDetailVC()
-            guard  records?.count > 0 else {
-                XCGLogger.error("注意: records数据是空的！")
-                return
-            }
-            
-            let object = records![indexPath.row]
+            guard  appointmentList.count > 0 else {return}
+            let object = appointmentList[indexPath.row]
             guard object.status_ > 1  else {
                 if object.recommend_uid_ != nil {
                     SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
@@ -480,15 +500,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             if  object.status_ == HodometerStatus.InvoiceMaking.rawValue ||
                 object.status_ == HodometerStatus.InvoiceMaked.rawValue ||
                 object.status_ == HodometerStatus.Completed.rawValue {
-                
-                detailVC.appointmentInfo = records![indexPath.row]
+                let detailVC = AppointmentDetailVC()
+                detailVC.appointmentInfo = appointmentList[indexPath.row]
+
                 navigationController?.pushViewController(detailVC, animated: true)
                 /**
                  *  未支付状态去支付
                  */
             } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
                 SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
-                 selectedAppointmentInfo = records![indexPath.row]
+                 selectedAppointmentInfo = appointmentList[indexPath.row]
                 payForInvitationRequest()
                 
             }
@@ -517,10 +538,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             footer.endRefreshing()
         }
         if timer != nil {
-            
             timer?.invalidate()
             timer = nil
         }
+        refreshData()
+    }
+    func refreshData() {
+        
+        
+        table?.reloadData()
     }
     /**
      支付操作
@@ -539,10 +565,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             presentViewController(alert, animated: true, completion: nil)
             return
         }
-//        guard info != nil else {return}
         guard segmentIndex != 2 else { return }
-//        weak var weakSelf = self
-       
         var price = 0
         var order_id_ = 0
         if segmentIndex == 1 {
@@ -635,7 +658,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     deinit {
-        
         if timer != nil {
             timer?.invalidate()
             timer = nil

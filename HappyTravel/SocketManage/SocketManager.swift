@@ -255,7 +255,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .UploadContactReply,
                                           .ObtainTripReply,
                                           .AppointmentRecordReply,
-                                          .CenturionCardConsumedReply]
+                                          .CenturionCardConsumedReply,
+                                          .AppointmentRecommendReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -272,10 +273,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-//                    let ip:String = "61.147.114.78"
-//                    let port:UInt16 = 10007
-                    let ip:String = "192.168.8.111"
-                    let port:UInt16 = 10001
+                    let ip:String = "61.147.114.78"
+                    let port:UInt16 = 10007
+//                    let ip:String = "192.168.8.111"
+//                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001

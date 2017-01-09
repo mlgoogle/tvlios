@@ -14,7 +14,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
     
     var servantInfo:UserInfo?
     
-    var hodometerInfo:HodometerInfo?
+    var hodometerInfo:HodometerInfoModel?
     
     var serviceStar = 0
     var servantStar = 0
@@ -188,7 +188,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         
     }
     
-    func setInfo(info: HodometerInfo?) {
+    func setInfo(info: HodometerInfoModel?) {
         hodometerInfo = info
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
@@ -199,7 +199,7 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    func setAppointmentInfo(info:AppointmentInfo?) {
+    func setAppointmentInfo(info:AppointmentInfoModel?) {
         let bgView = contentView.viewWithTag(tags["bgView"]!)
         if let lineTitleLab = bgView?.viewWithTag(tags["lineTitleLab"]! * 10 + 0) as? UILabel {
             if info?.service_name_ != nil {
