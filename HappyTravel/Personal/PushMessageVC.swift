@@ -295,7 +295,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else {
             //行程(和我的消费中商务游相同)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-            cell.setHodometerInfo(hotometers![indexPath.row])
+//            cell.setHodometerInfo(hotometers![indexPath.row])
             return cell
         }
         
@@ -334,7 +334,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue ||
                     cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue {
                     let identDetailVC = IdentDetailVC()
-                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
+//                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.WaittingPay.rawValue {
                     APIHelper.userAPI().cash({ (response) in
@@ -347,7 +347,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                             }
                         }
                     }, error: nil)
-                    payForInvitationRequest(cell.curHodometerInfo)
+//                    payForInvitationRequest(cell.curHodometerInfo)
                 }
                 
             }

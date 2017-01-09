@@ -138,8 +138,6 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-
         let histroyDetailVC = InvoiceHistoryDetailVC()
         let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
         histroyDetailVC.invoice_id_ = invoiceInfo.invoice_id_

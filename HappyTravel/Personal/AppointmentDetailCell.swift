@@ -161,7 +161,7 @@ class AppointmentDetailCell: UITableViewCell {
      预约界面使用时 数据填充
      - parameter info:
      */
-    func setApponimentInfo(info:AppointmentInfo) {
+    func setApponimentInfo(info:AppointmentInfoModel) {
         nicknameLabel.text = info.to_name_
         iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
 
@@ -183,7 +183,7 @@ class AppointmentDetailCell: UITableViewCell {
      邀约界面使用时 数据填充
      - parameter info:
      */
-    func setServiceInfo(info:HodometerInfo) {
+    func setServiceInfo(info:HodometerInfoModel) {
         
         nicknameLabel.text = info.to_name_
         iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)

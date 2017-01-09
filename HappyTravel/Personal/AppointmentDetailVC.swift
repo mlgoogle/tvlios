@@ -15,7 +15,7 @@ class AppointmentDetailVC: UIViewController {
     var servantInfo:UserInfo?
     var skillsArray:Array<Dictionary<SkillModel, Bool>> = Array()
     var skills:List<Tally> = List()
-    var appointmentInfo:AppointmentInfo?
+    var appointmentInfo:AppointmentInfoModel?
     var commonCell:IdentCommentCell?
     var servantDict:Dictionary<String, AnyObject>?
 
