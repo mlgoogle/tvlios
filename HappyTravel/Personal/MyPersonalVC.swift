@@ -148,7 +148,13 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         })
         
-        SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_])
+        APIHelper.userAPI().authStatus({ (response) in
+            if let dict = response as? [String: AnyObject] {
+                if let status = dict["review_status_"] as? Int {
+                    CurrentUser.auth_status_ = status
+                }
+            }
+        }, error: nil)
         SocketManager.sendData(.CheckUserCash, data: ["uid_": CurrentUser.uid_])
     }
     

@@ -37,6 +37,21 @@ class SocketJsonResponse: SocketResponse {
         return try! NSJSONSerialization.JSONObjectWithData(body!.data!, options: NSJSONReadingOptions.MutableContainers)
     }
     
+    func responseModels(modelClass: AnyClass, listKey: String) -> AnyObject? {
+        if let bodyDict = responseJsonObject() as? [String: [[String: AnyObject]]] {
+            var ret = [Object]()
+            let cls = modelClass as! Object.Type
+            if let bodyArr = bodyDict[listKey] {
+                for item in bodyArr {
+                    let obj = cls.init(value: item, schema: RLMSchema.partialSharedSchema())
+                    ret.append(obj)
+                }
+                return ret
+            }
+        }
+        return nil
+    }
+    
     func responseJson<T:NSObject>() -> T? {
         var object = responseJsonObject()
         if object != nil && T.isKindOfClass(Object) {
