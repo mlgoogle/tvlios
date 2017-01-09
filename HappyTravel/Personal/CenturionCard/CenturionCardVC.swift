@@ -42,7 +42,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         if lv == 0 {
             lv += 1
         }
-        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)") as? Results<CenturionCardBaseInfoModel>
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)")
         
         SocketManager.sendData(.CenturionCardInfoRequest, data: nil)
         SocketManager.sendData(.CenturionVIPPriceRequest, data: nil)
@@ -291,11 +291,11 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //            return
 //        }
         selectedIndex = index
-        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(index + 1)") as? Results<CenturionCardBaseInfoModel>
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(index + 1)")
         table?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 2, inSection: 0)], withRowAnimation: .Fade)
         callServantBtn?.hidden = index >= UserCenturionCardInfo.blackcard_lv_
         buyVIPView?.hidden = !(callServantBtn?.hidden)!
-        if let info = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(index+1)") as? CentuionCardPriceInfo {
+        if let info = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(index+1)")?.first {
             priceLab?.text = "\(info.blackcard_price_ / 100)"
         }
         if index == 3 {
@@ -344,8 +344,8 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             return
         }
         
-        let currentCardInfo = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(curLv)")
-        let price = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(selectedIndex + 1)")
+        let currentCardInfo = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(curLv)")?.first
+        let price = DataManager.getData(CentuionCardPriceInfo.self, filter: "blackcard_lv_ = \(selectedIndex + 1)")?.first
         let totalPrice = 0 + (price?.blackcard_price_)!
 
         if price?.blackcard_price_ != nil &&
@@ -475,7 +475,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         if lv == 0 {
             lv += 1
         }
-        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)") as? Results<CenturionCardBaseInfoModel>
+        services = DataManager.getData(CenturionCardBaseInfoModel.self, filter: "privilege_lv_ = \(lv)")
         lvContentCollectionView?.reloadData()
         table?.reloadData()
     }

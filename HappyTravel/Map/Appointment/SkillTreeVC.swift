@@ -12,7 +12,7 @@ import RealmSwift
 
 protocol SkillTreeVCDelegate : NSObjectProtocol {
     
-    func endEdit(skills: Array<Dictionary<SkillInfo, Bool>>)
+    func endEdit(skills: Array<Dictionary<SkillModel, Bool>>)
     
 }
 
@@ -21,9 +21,9 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     weak var delegate:SkillTreeVCDelegate?
     
     var table:UITableView?
-    var skills:Array<Dictionary<SkillInfo, Bool>> = []
+    var skills:Array<Dictionary<SkillModel, Bool>> = []
 
-    var selectedSkills:Array<Dictionary<SkillInfo, Bool>> = []
+    var selectedSkills:Array<Dictionary<SkillModel, Bool>> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func initData() {
-        if let infos = DataManager.getData(SkillInfo.self, filter: nil) as? Results<SkillInfo> {
+        if let infos = DataManager.getData(SkillModel.self) {
             for info in infos {
                 var selected = false
                 for sk in selectedSkills {
@@ -168,7 +168,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     // MARK: - TallysCellDelegate
-    func selectedAction(info: Dictionary<SkillInfo, Bool>) {
+    func selectedAction(info: Dictionary<SkillModel, Bool>) {
         selectedSkills.append(info)
         table?.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: .None)
         for (index, skillInfo) in skills.enumerate() {
@@ -182,7 +182,7 @@ class SkillTreeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
     }
     
-    func deleteAction(index: Int, info: Dictionary<SkillInfo, Bool>) {
+    func deleteAction(index: Int, info: Dictionary<SkillModel, Bool>) {
         selectedSkills.removeAtIndex(index)
         
         for (_index, skillInfo) in skills.enumerate() {
