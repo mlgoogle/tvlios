@@ -924,37 +924,38 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
             guard checkAuthStaus() else { return }
             
-            // 余额限制查看个人信息
-            if DataManager.currentUser?.has_recharged_ == 0 {
-                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
-                
-                let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                    XCGLogger.debug("去充值")
-                    
-                    let rechargeVC = RechargeVC()
-                    self.navigationController?.pushViewController(rechargeVC, animated: true)
-                    
-                })
-                
-                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-                    
-                })
-                
-                alert.addAction(ok)
-                alert.addAction(cancel)
-                
-                presentViewController(alert, animated: true, completion: {
-                    
-                })
-                
-                return
-            }
+            guard cashCheck() else { return }
 
             let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid_]
             SocketManager.sendData(.GetServantDetailInfo, data: dict)
             
         }
                 
+    }
+    
+    func cashCheck() -> Bool {
+        // 余额限制查看个人信息
+        if CurrentUser.has_recharged_ == 0 {
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
+            
+            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                let rechargeVC = RechargeVC()
+                self.navigationController?.pushViewController(rechargeVC, animated: true)
+                
+            })
+            
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            
+            presentViewController(alert, animated: true, completion: nil)
+            
+            return false
+        }
+        return true
     }
     
     func checkAuthStaus() -> Bool {

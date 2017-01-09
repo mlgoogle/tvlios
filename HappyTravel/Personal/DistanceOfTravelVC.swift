@@ -431,7 +431,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+                    APIHelper.userAPI().cash({ (response) in
+                        if let dict = response as? [String: AnyObject] {
+                            if let cash = dict["user_cash_"] as? Int {
+                                CurrentUser.user_cash_ = cash
+                            }
+                            if let hasPasswd = dict["has_passwd_"] as? Int {
+                                CurrentUser.has_passwd_ = hasPasswd
+                            }
+                        }
+                        }, error: nil)
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
@@ -460,8 +469,17 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                  *  未支付状态去支付
                  */
             } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
-                SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
-                 selectedAppointmentInfo = appointmentList![indexPath.row]
+                APIHelper.userAPI().cash({ (response) in
+                    if let dict = response as? [String: AnyObject] {
+                        if let cash = dict["user_cash_"] as? Int {
+                            CurrentUser.user_cash_ = cash
+                        }
+                        if let hasPasswd = dict["has_passwd_"] as? Int {
+                            CurrentUser.has_passwd_ = hasPasswd
+                        }
+                    }
+                    }, error: nil)
+                selectedAppointmentInfo = appointmentList![indexPath.row]
                 payForInvitationRequest()
                 
             }

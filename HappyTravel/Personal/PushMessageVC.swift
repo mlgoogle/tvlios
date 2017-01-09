@@ -337,7 +337,16 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 //                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+                    APIHelper.userAPI().cash({ (response) in
+                        if let dict = response as? [String: AnyObject] {
+                            if let cash = dict["user_cash_"] as? Int {
+                                CurrentUser.user_cash_ = cash
+                            }
+                            if let hasPasswd = dict["has_passwd_"] as? Int {
+                                CurrentUser.has_passwd_ = hasPasswd
+                            }
+                        }
+                    }, error: nil)
 //                    payForInvitationRequest(cell.curHodometerInfo)
                 }
                 
