@@ -533,7 +533,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      */
     func payForInvitationRequest() {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in

@@ -257,7 +257,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
 //            cityLab?.text = cityInfo?.cityName! ?? "  请选择"
-            cityLab?.text = cityInfoBase?.city_name_ ?? " 选择"
+            cityLab?.text = cityInfoBase?.city_name_ ?? " 请选择"
         }
         
         var citySelector = cell?.contentView.viewWithTag(tags["citySelector"]!) as? UIImageView

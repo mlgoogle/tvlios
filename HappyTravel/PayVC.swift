@@ -23,15 +23,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         navigationItem.title = "支付"
         //支付结果返回
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
-        //保险金额返回
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.sureInsuranceReply(_:)), name: NotifyDefine.SureInsuranceReply, object: nil)
         initView()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        //请求协议金额
-//        SocketManager.sendData(.SureInsuranceReply, data: ["": "", "": ""])
     }
     
     func initView() {
@@ -159,7 +151,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
             warningAlert.addAction(sure)
             self.presentViewController(warningAlert, animated: true, completion: nil)
         } else {
-            if DataManager.currentUser?.cash < price {
+            if CurrentUser.user_cash_ < price {
                 self.moneyIsTooLess()
             } else {
                 let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,

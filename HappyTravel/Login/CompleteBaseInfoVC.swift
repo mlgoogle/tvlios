@@ -46,7 +46,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var imagePicker:UIImagePickerController? = nil
     
-    var userInfo:UserInfo?
+//    var userInfo:UserInfo?
+    var userInfoModel:UserInfoModel?
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -55,7 +56,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         navigationItem.title = "完善基本资料"
-        userInfo = DataManager.currentUser
+        userInfoModel = CurrentUser//DataManager.currentUser
         initView()
         
     }
@@ -122,7 +123,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
         
         guard headImagePath != nil else {
-            updateBaseInfo((userInfo?.headUrl)!)
+            updateBaseInfo((userInfoModel?.head_url_)!)
             
             return
         }
@@ -249,12 +250,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     func improveDataSuccessed(notification: NSNotification?) {
         SVProgressHUD.dismiss()
         navigationController?.popViewControllerAnimated(true)
-        DataManager.currentUser?.headUrl = headerUrl
-        DataManager.currentUser?.nickname = nickname
-        DataManager.currentUser?.gender = sex
-        DataManager.currentUser?.address = address
-        DataManager.currentUser?.centurionCardName = nickname
-        DataManager.currentUser?.registerSstatus = 1
+        CurrentUser.head_url_ = headerUrl
+        CurrentUser.nickname_ = nickname
+        CurrentUser.gender_ = sex
+        CurrentUser.address_ = address
+        CurrentUser.currentBanckCardName_ = nickname
+        CurrentUser.register_status_ = 1
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     
@@ -314,22 +315,22 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 return cell!
             }
             
-            guard userInfo != nil else {
+            guard userInfoModel != nil else {
                 return cell!
             }
-            guard userInfo?.headUrl != nil else {
+            guard userInfoModel?.head_url_ != nil else {
                 return cell!
             }
             
             
-            if userInfo!.headUrl!.hasPrefix("http"){
+            if userInfoModel!.head_url_!.hasPrefix("http"){
                 
-                let headUrl = NSURL(string: userInfo!.headUrl!)
+                let headUrl = NSURL(string: userInfoModel!.head_url_!)
                 headView?.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
-            } else if userInfo!.headUrl!.hasPrefix("var"){
-                let headerUrl = NSURL(fileURLWithPath: userInfo!.headUrl!)
+            } else if userInfoModel!.head_url_!.hasPrefix("var"){
+                let headerUrl = NSURL(fileURLWithPath: userInfoModel!.head_url_!)
                 headView?.kf_setImageWithURL(headerUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
@@ -416,22 +417,22 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             cells[indexPath.row] = cell!
             
             
-            guard userInfo != nil else {
+            guard userInfoModel != nil else {
                 return cell!
             }
             
-            if userInfo?.nickname != nil {
-                nicknameField?.text = userInfo?.nickname
-                nickname = userInfo?.nickname
+            if userInfoModel?.nickname_ != nil {
+                nicknameField?.text = userInfoModel?.nickname_
+                nickname = userInfoModel?.nickname_
             }
             
             if indexPath.row == 2 {
-                sex = (userInfo?.gender)!
-                selectedRetLab?.text = userInfo?.gender == 0 ? "女" : "男"
+                sex = (userInfoModel?.gender_)!
+                selectedRetLab?.text = userInfoModel?.gender_ == 0 ? "女" : "男"
             } else if indexPath.row == 3 {
-                if userInfo?.address != nil && userInfo?.address?.characters.count > 0 {
-                    address = userInfo?.address
-                    selectedRetLab?.text = userInfo?.address
+                if userInfoModel?.address_ != nil && userInfoModel?.address_?.characters.count > 0 {
+                    address = userInfoModel?.address_
+                    selectedRetLab?.text = userInfoModel?.address_
                 }else{
                     address = cityName
                     selectedRetLab?.text = cityName
