@@ -18,6 +18,7 @@ class InsuranceVC: UIViewController {
     var sureBtn:UIButton?
     var order_price:Int64 = 0
     var insurance_price:Int64 = 0
+    var servantInfoDict:NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +44,6 @@ class InsuranceVC: UIViewController {
     
     func initUI() {
         insuranceTV = UITextView()
-        insuranceTV?.backgroundColor = UIColor.purpleColor()
         insuranceTV?.text = "先前，苹果宣布将于1月6日8点在中国正式开启“红色星期五”促销活动，购买指定iPhone与Mac机型即可免费赠送红色一副Beats Solo3耳机。但不到5分钟，赠送的耳机就被哄抢一空，不少果粉甚至无法提交订单.先前，苹果宣布将于1月6日8点在中国正式开启“红色星期五”促销活动，购买指定iPhone与Mac机型即可免费赠送红色一副Beats Solo3耳机。但不到5分钟，赠送的耳机就被哄抢一空，不少果粉甚至无法提交订单.先前，苹果宣布将于1月6日8点在中国正式开启“红色星期五”促销活动，购买指定iPhone与Mac机型即可免费赠送红色一副Beats Solo3耳机。但不到5分钟，赠送的耳机就被哄抢一空，不少果粉甚至无法提交订单.先前，苹果宣布将于1月6日8点在中国正式开启“红色星期五”促销活动，购买指定iPhone与Mac机型即可免费赠送红色一副Beats Solo3耳机。但不到5分钟，赠送的耳机就被哄抢一空，不少果粉甚至无法提交订单"
         self.view.addSubview(insuranceTV!)
         insuranceTV?.snp_makeConstraints(closure: { (make) in
@@ -107,6 +107,12 @@ class InsuranceVC: UIViewController {
     func sureAction(sender: UIButton) {
         SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
             self.navigationController?.popViewControllerAnimated(true)
+//            let dict = ["from_uid_": CurrentUser.uid_,
+//            "to_uid_": self.servantInfoDict!["to_uid_"],
+//            "service_id_": self.servantInfoDict!["service_id_"],
+//            "day_count_":self.servantInfoDict!["targetDays"]]
+            SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+
         })
 //        let model = InsurancePayBaseInfo()
 //        model.insurance_price = insurance_price

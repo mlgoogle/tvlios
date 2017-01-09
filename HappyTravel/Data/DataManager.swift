@@ -542,6 +542,7 @@ class DataManager: NSObject {
         } else if model.isKindOfClass(SkillsModel) {
             let type = SkillsModel.self
             try! realm.write({
+                realm.delete(realm.objects(SkillModel.self))
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
