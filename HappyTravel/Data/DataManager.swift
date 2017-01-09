@@ -546,6 +546,10 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if model.isKindOfClass(UserInfoModel) {
+            try! realm.write({
+                realm.add(model)
+            })
         }
         
     }

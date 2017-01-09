@@ -303,10 +303,10 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             //弹出保险页面
             let insuranceVc = InsuranceVC()
             insuranceVc.order_price = Int64(service!.service_price_)
-            insuranceVc.servantInfoDict = ["from_uid_": CurrentUser.uid_,
-                                            "to_uid_": self.servantInfo!.uid,
-                                            "service_id_": self.selectedServcie!.service_id_,
-                                            "day_count_":daysCount!]
+//            insuranceVc.servantInfoDict = ["from_uid_": CurrentUser.uid_,
+//                                            "to_uid_": self.servantInfo!.uid,
+//                                            "service_id_": self.selectedServcie!.service_id_,
+//                                            "day_count_":daysCount!]
             
 //            SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
 //                "to_uid_": servantInfo!.uid,

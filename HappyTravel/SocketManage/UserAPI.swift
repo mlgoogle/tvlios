@@ -35,7 +35,7 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
-    func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
+    func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Login, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
@@ -58,5 +58,14 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
 
+    
+    func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {
+        let model = UserBaseModel()
+        model.uid_ = CurrentUser.uid_
+        let packet = SocketDataPacket(opcode: .CheckAuthenticateResult, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
     
 }
