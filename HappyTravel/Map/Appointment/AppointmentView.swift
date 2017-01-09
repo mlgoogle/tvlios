@@ -32,7 +32,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     weak var remarksTextView:UITextView?
     var nav:UINavigationController?
     
-    var skills:Array<Dictionary<SkillInfo, Bool>> = []
+    var skills:Array<Dictionary<SkillModel, Bool>> = []
     lazy var dateFormatter:NSDateFormatter = {
         var dateFromatter = NSDateFormatter()
         dateFromatter.dateFormat = "yyyy-MM-dd"
@@ -649,7 +649,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     }
     
     // MARK: - SkillTreeVCDelegate
-    func endEdit(skills: Array<Dictionary<SkillInfo, Bool>>) {
+    func endEdit(skills: Array<Dictionary<SkillModel, Bool>>) {
         self.skills = skills
         table?.reloadSections(NSIndexSet.init(index: 1), withRowAnimation: .Fade)
     }

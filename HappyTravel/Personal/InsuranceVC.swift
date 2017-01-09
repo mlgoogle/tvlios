@@ -33,7 +33,7 @@ class InsuranceVC: UIViewController {
         let model = InsuranceBaseInfo()
         model.insurance_type_ = 0
         model.order_price_ = 1
-        UserSocketAPI.insuranceInfo(model, complete: { (response) in
+        APIHelper.userAPI().insuranceInfo(model, complete: { (response) in
             if let model = response as? InsuranceInfoModel {
                 self.insurance_price = model.insurance_price_
             }

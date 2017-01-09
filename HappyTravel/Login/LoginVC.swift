@@ -230,7 +230,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
         NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
         let loginModel = LoginModel()
-        UserSocketAPI.login(loginModel, complete: { (response) in
+        APIHelper.userAPI().login(loginModel, complete: { (response) in
             if let user = response as? UserInfoModel {
                 CurrentUser = user
                 CurrentUser.login_ = true

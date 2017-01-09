@@ -539,6 +539,12 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if model.isKindOfClass(SkillsModel) {
+            let type = SkillsModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
         }
         
     }
@@ -594,57 +600,76 @@ class DataManager: NSObject {
 
     }
     
-    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> AnyObject? {
-        if DataManager.initialized == false {
-            return nil
-        }
+    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> Results<T>? {
+        guard DataManager.initialized != false else { return nil }
         
         let realm = try! Realm()
-        switch type.className() {
-            
-        case UserInfo.className():
-            let objs = realm.objects(UserInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-        case SkillInfo.className():
-            let objs = realm.objects(SkillInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-            
-        case CityInfo.className():
-            let objs = realm.objects(CityInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-        case CentuionCardPriceInfo.className():
-            let objs = realm.objects(CentuionCardPriceInfo.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!).first
-            }
-        case CenturionCardBaseInfoModel.className():
-            let objs = realm.objects(CenturionCardBaseInfoModel.self)
-            if filter == nil {
-                return objs
-            } else {
-                return objs.filter(filter!)
-            }
-            
-        default:
-            break
+        if filter == nil {
+            return realm.objects(type)
+        } else {
+            return realm.objects(type).filter(filter!)
         }
         
-        return nil
     }
+    
+//    static func getData<T: Object>(type: T.Type, filter: String? = nil) -> AnyObject? {
+//        if DataManager.initialized == false {
+//            return nil
+//        }
+//        
+//        let realm = try! Realm()
+//        switch type.className() {
+//            
+//        case UserInfo.className():
+//            let objs = realm.objects(UserInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case SkillInfo.className():
+//            let objs = realm.objects(SkillInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//            
+//        case CityInfo.className():
+//            let objs = realm.objects(CityInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case CentuionCardPriceInfo.className():
+//            let objs = realm.objects(CentuionCardPriceInfo.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!).first
+//            }
+//        case CenturionCardBaseInfoModel.className():
+//            let objs = realm.objects(CenturionCardBaseInfoModel.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//        case SkillModel.className():
+//            let objs = realm.objects(SkillModel.self)
+//            if filter == nil {
+//                return objs
+//            } else {
+//                return objs.filter(filter!)
+//            }
+//            
+//        default:
+//            break
+//        }
+//        
+//        return nil
+//    }
     
     static func updateData<T: Object>(type: T.Type, data: AnyObject) -> Bool {
         if DataManager.initialized == false {

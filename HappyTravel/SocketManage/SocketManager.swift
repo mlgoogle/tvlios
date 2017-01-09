@@ -260,7 +260,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .InsurancePayReply,
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
-                                          .UserCenturionCardInfoReply]
+                                          .UserCenturionCardInfoReply,
+                                          .SkillsInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -606,9 +607,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
         }
         
-        if UserSocketAPI.autoLogin() {
+        if APIHelper.userAPI().autoLogin() {
             let loginModel = LoginModel()
-            UserSocketAPI.login(loginModel, complete: { (response) in
+            APIHelper.userAPI().login(loginModel, complete: { (response) in
                 if let user = response as? UserInfoModel {
                     CurrentUser = user
                     CurrentUser.login_ = true

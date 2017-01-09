@@ -113,7 +113,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         if CurrentUser.login_ == false {
-            if UserSocketAPI.autoLogin() {
+            if APIHelper.userAPI().autoLogin() {
                 banGesture(true)
             } else {
                 self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
@@ -507,7 +507,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
 
 //        SocketManager.sendData(.GetServiceCity, data: nil)
-        UserSocketAPI.cityNameInfo({ (response) in
+        APIHelper.commonAPI().cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
                 DataManager.insertData(model)
                 self.serviceCitysModel = model
@@ -530,7 +530,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                                   "longitude_": lon,
                                                   "distance_": 10.1]
         SocketManager.sendData(.GetServantInfo, data: dict)
-        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+//        SocketManager.sendData(.SkillsInfoRequest, data: nil)
+        APIHelper.commonAPI().skills( { (response) in
+            if let model = response as? SkillsModel {
+                DataManager.insertData(model)
+            }
+        }, error: nil)
+        
         SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
     }
     

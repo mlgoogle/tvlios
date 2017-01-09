@@ -13,7 +13,7 @@ import XCGLogger
 class AppointmentDetailVC: UIViewController {
     var commitBtn: UIButton?
     var servantInfo:UserInfo?
-    var skillsArray:Array<Dictionary<SkillInfo, Bool>> = Array()
+    var skillsArray:Array<Dictionary<SkillModel, Bool>> = Array()
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfo?
     var commonCell:IdentCommentCell?
@@ -123,15 +123,15 @@ class AppointmentDetailVC: UIViewController {
                         
                         break
                     }
-                    let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(idString)") as! Results<SkillInfo>
-                    let skillInfo = results.first
-                    let dict = [skillInfo!:false] as Dictionary<SkillInfo, Bool>
-                    skillsArray.append(dict)
+                    if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(idString)") {
+                        let skillInfo = results.first
+                        let dict = [skillInfo!:false] as Dictionary<SkillModel, Bool>
+                        skillsArray.append(dict)
+                    }
                 }
                 tableView.reloadData()
             }
 
-            
         }
     }
     /**
