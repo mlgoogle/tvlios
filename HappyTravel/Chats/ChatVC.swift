@@ -299,20 +299,15 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
-//            weakSelf.daysSureAction(nil, targetDays: 1)
+            weakSelf.daysSureAction(nil, targetDays: 1)
             //弹出保险页面
-            let insuranceVc = InsuranceVC()
-            insuranceVc.order_price = Int64(service!.service_price_)
+//            let insuranceVc = InsuranceVC()
+//            insuranceVc.order_price = Int64(service!.service_price_)
 //            insuranceVc.servantInfoDict = ["from_uid_": CurrentUser.uid_,
 //                                            "to_uid_": self.servantInfo!.uid,
 //                                            "service_id_": self.selectedServcie!.service_id_,
 //                                            "day_count_":daysCount!]
-            
-//            SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
-//                "to_uid_": servantInfo!.uid,
-//                "service_id_": selectedServcie!.service_id_,
-//                "day_count_":targetDays])
-            self.navigationController?.pushViewController(insuranceVc, animated: true)
+//            self.navigationController?.pushViewController(insuranceVc, animated: true)
             
             //            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             

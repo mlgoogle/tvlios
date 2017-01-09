@@ -34,7 +34,7 @@ class InsuranceVC: UIViewController {
         let model = InsuranceBaseInfo()
         model.insurance_type_ = 0
         model.order_price_ = 1
-        APIHelper.userAPI().insuranceInfo(model, complete: { (response) in
+        APIHelper.commonAPI().insuranceInfo(model, complete: { (response) in
             if let model = response as? InsuranceInfoModel {
                 self.insurance_price = model.insurance_price_
             }
@@ -105,24 +105,20 @@ class InsuranceVC: UIViewController {
     }
     
     func sureAction(sender: UIButton) {
-        SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
-            self.navigationController?.popViewControllerAnimated(true)
-            SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
-
+        let model = InsurancePayBaseInfo()
+        model.insurance_price = insurance_price
+        model.insurance_username_ = String(CurrentUser.uid_)//用户id
+        APIHelper.commonAPI().insurancePay(model, complete: { (response) in
+            if let model = response as? InsuranceSuccessModel {
+                if model.is_success_ == 0{
+                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
+                        self.navigationController?.popViewControllerAnimated(true)
+                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+                    })
+                }
+            }
+            }, error: { (err) in
         })
-//        let model = InsurancePayBaseInfo()
-//        model.insurance_price = insurance_price
-//        model.insurance_username_ = String(CurrentUser.uid_)//用户id
-//        UserSocketAPI.insurancePay(model, complete: { (response) in
-//            if let model = response as? InsuranceSuccessModel {
-//                if model.is_success_ == 0{
-//                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
-////                        self.navigationController?.popViewControllerAnimated(true)
-//                    })
-//                }
-//            }
-//            }, error: { (err) in
-//        })
     }
 
     override func didReceiveMemoryWarning() {

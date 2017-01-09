@@ -42,22 +42,22 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    //保险金额
-    func insuranceInfo(model: InsuranceBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
-            
-            }, error: error)
-    }
-    //保险支付
-    func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
-            
-            }, error: error)
-    }
+//    //保险金额
+//    func insuranceInfo(model: InsuranceBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+//        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+//        startRequest(packet, complete: { (response) in
+//            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
+//            
+//            }, error: error)
+//    }
+//    //保险支付
+//    func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+//        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+//        startRequest(packet, complete: { (response) in
+//            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
+//            
+//            }, error: error)
+//    }
 
     
     func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {

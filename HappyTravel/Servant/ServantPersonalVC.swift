@@ -235,9 +235,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
 //                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
                 weakSelf.daysSureAction(nil, targetDays: 1)
                 //弹出保险页面
-                let insuranceVc = InsuranceVC()
-                insuranceVc.order_price = Int64(service!.service_price_)
-                self.navigationController?.pushViewController(insuranceVc, animated: true)
+//                let insuranceVc = InsuranceVC()
+//                insuranceVc.order_price = Int64(service!.service_price_)
+//                self.navigationController?.pushViewController(insuranceVc, animated: true)
                 
             })
         }
