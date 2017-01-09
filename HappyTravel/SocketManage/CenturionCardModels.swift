@@ -37,6 +37,7 @@ class CenturionCardBaseInfosModel: Object {
 }
 
 
+
 class CenturionCardPriceInfoModel: Object {
     
     dynamic var blackcard_lv_:Int = 0

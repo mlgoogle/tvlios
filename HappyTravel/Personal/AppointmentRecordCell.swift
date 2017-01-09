@@ -114,7 +114,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
     }
     
     
-    func setRecordInfo(recordInfo: AppointmentInfo?) {
+    func setRecordInfo(recordInfo: AppointmentInfoModel?) {
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             if recordInfo?.to_head_ != nil {

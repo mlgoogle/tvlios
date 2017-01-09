@@ -50,9 +50,9 @@ class UserSocketAPI: SocketAPI {
     }
     
     static func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .Login, model: model)
+        let packet = SocketDataPacket(opcode: .UploadContactRequest, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
 }

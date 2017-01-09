@@ -8,13 +8,24 @@
 
 import Foundation
 
-class ConsumeSocketAPI {
-    static var shared = ConsumeSocketAPI()
-    let requestManager = SocketRequestManage.shared
-    
-    static func requestInviteOrderLsit(complete: CompleteBlock?, error: ErrorBlock?) {
-    
-        
+class ConsumeSocketAPI: SocketAPI{
+
+    static func requestInviteOrderLsit(model:HodometerRequestModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .ObtainTripRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(HodometerListModel.classForCoder()))
+            }, error: error)
     }
-    
+    static func requestAppointmentList(model:AppointmentRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AppointmentRecordRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(AppointmentListModel.classForCoder()))
+            }, error: error)
+    }
+    static func requsetCenturionCardRecordList(model:CenturionCardRecordRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AppointmentRecordRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardRecordListModel.classForCoder()))
+            }, error: error)
+    }
 }

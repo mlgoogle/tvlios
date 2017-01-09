@@ -11,7 +11,11 @@ import RealmSwift
 import MJRefresh
 import XCGLogger
 import SVProgressHUD
-
+enum OrderType : Int {
+    case InviteOrder = 0
+    case AppointmentOrder = 1
+    case CenturionCardOrder = 2
+}
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var segmentSC:UISegmentedControl?
@@ -21,20 +25,28 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var timer:NSTimer?
     var servantsArray:Array<UserInfo>? = []
 
-    var orderID = 0
     var hotometers:Results<HodometerInfo>?
     var currentApponitmentID = 0
     
-    var consumedOrderID = 0
     var consumes:Results<CenturionCardConsumedInfo>?
     var records:Results<AppointmentInfo>?
-    var lastRecordId = 0
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
     var selectedHodometerInfo:HodometerInfo?
     var selectedAppointmentInfo:AppointmentInfo?
     
+    var orderID = 0
+    var lastRecordId = 0
+    var consumedOrderID = 0
+    
+    /***
+     新
+     \***/
+    var inviteList = List<HodometerInfoModel>()
+    var appointmentList = List<AppointmentInfoModel>()
+    var centurionRecordList:Results<CenturionCardRecordModel>?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -274,29 +286,48 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         table?.mj_footer = footer
 
     }
+    func footerRefresh() {
+        refreshAction(false)
+    }
     
     func headerRefresh() {
-
+        refreshAction(true)
+    }
+    func refreshAction(isRefresh:Bool) {
+        
+        var orderType = OrderType.InviteOrder.rawValue
+        
         switch segmentIndex {
-        case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                "order_id_": 0,
-                "count_": 10])
-            break
         case 1:
-            let realm = try! Realm()
-            let objs = realm.objects(AppointmentInfo.self)
-            try! realm.write({
-                realm.delete(objs)
-                
-            })
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-                "last_id_": 0,
-                "count_": 10])
+            orderType = OrderType.AppointmentOrder.rawValue
             break
         case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
+            orderType = OrderType.CenturionCardOrder.rawValue
             break
+        default:
+            break
+        }
+        handleOrderRequest(isRefresh, orderType: orderType)
+    }
+    
+    func handleOrderRequest(isRefresh:Bool, orderType:Int) {
+        allEndRefresh()
+        switch orderType {
+        case OrderType.InviteOrder.rawValue:
+            if isRefresh {
+                inviteList.removeAll()
+            }
+            handleInviteOrderRequest(isRefresh)
+        case OrderType.AppointmentOrder.rawValue:
+            if isRefresh {
+                appointmentList.removeAll()
+            }
+            handleAppointmentRequest(isRefresh)
+        case OrderType.CenturionCardOrder.rawValue:
+            if isRefresh {
+                inviteList.removeAll()
+            }
+            handleCenturionCardRequest(isRefresh)
         default:
             break
         }
@@ -306,37 +337,67 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
          */
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
+    func handleCenturionCardRequest(isRefresh:Bool) {
+        ConsumeSocketAPI.requsetCenturionCardRecordList(CenturionCardRecordRequestModel(), complete: { (response) in
+            let listModel = response as? CenturionCardRecordListModel
+            let recordList = listModel?.blackcard_consume_record_.filter("order_status_ > 3")
+            self.centurionRecordList = recordList
+            self.table?.reloadData()
+            }) { (error) in
+                
+        }
+    }
     
-    func footerRefresh() {
-        switch segmentIndex {
-        case 0:
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                "order_id_": orderID,
-                "count_": 10])
-            break
-        case 1:
-            SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-                "last_id_": lastRecordId,
-                "count_": 10])
-            break
-        case 2:
-            SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
-            break
-        default:
-            break
+    func handleAppointmentRequest(isRefresh:Bool) {
+        
+        let model = AppointmentRequestModel()
+        model.last_id_ = isRefresh ? 0 : lastRecordId
+        ConsumeSocketAPI.requestAppointmentList(model, complete: { (response) in
+            let lsitModel = response as? AppointmentListModel
+            let appointmentlist = lsitModel?.data_list_
+            guard self.appointmentList.count > 0 else {return}
+            self.appointmentList = self.appointmentList + appointmentlist!
+            self.lastRecordId = (appointmentlist?.last?.appointment_id_)!
+            self.table?.reloadData()
+            }) { (error) in
+                
         }
         
     }
     
+    func handleInviteOrderRequest(isRefresh:Bool) {
+
+        let model = HodometerRequestModel()
+        model.order_id_ = isRefresh ? 0 : orderID
+        ConsumeSocketAPI.requestInviteOrderLsit(model, complete: { (response) in
+            let listModel = response as? HodometerListModel
+            let inviteList = listModel?.trip_list_
+            self.inviteList = self.inviteList + inviteList!
+            self.orderID = (inviteList?.last?.order_id_)!
+            self.table?.reloadData()
+            }) { (error) in
+        }
+    }
+    
+    func allEndRefresh() {
+        if header.state == MJRefreshState.Refreshing {
+            header.endRefreshing()
+            
+        }
+        if footer.state == MJRefreshState.Refreshing {
+            footer.endRefreshing()
+        }
+    }
+
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var cnt = 0
         if segmentIndex == 0 {
-            cnt = hotometers?.count ?? 0
+            cnt = inviteList.count ?? 0
         } else if (segmentIndex == 1){
-            cnt = records?.count ?? 0
+            cnt = appointmentList.count ?? 0
         } else {
-            cnt = consumes?.count ?? 0
+            cnt = centurionRecordList?.count ?? 0
         }
         footer.hidden = cnt < 10 ? true : false
         return cnt
@@ -347,24 +408,24 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         switch segmentIndex {
         case 0://商务游(和消息中心的行程一样)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-            if hotometers?.count > 0 && indexPath.row < hotometers?.count {
-                cell.setHodometerInfo(hotometers![indexPath.row])
+            if inviteList.count > 0 && indexPath.row < inviteList.count {
+                cell.setHodometerInfo(inviteList[indexPath.row])
             }
             
             return cell
 
         case 1://预约
             let cell = tableView.dequeueReusableCellWithIdentifier("AppointmentRecordCell", forIndexPath: indexPath) as! AppointmentRecordCell
-            if records?.count > 0 && indexPath.row < records?.count {
-                cell.setRecordInfo(records![indexPath.row])
+            if appointmentList.count > 0 && indexPath.row < appointmentList.count {
+                cell.setRecordInfo(appointmentList[indexPath.row])
             }
             
             return cell
 
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("CentrionCardConsumedCell", forIndexPath: indexPath) as! CentrionCardConsumedCell
-            if consumes?.count > 0 && indexPath.row < consumes?.count {
-                cell.setCenturionCardConsumedInfo(consumes![indexPath.row])
+            if centurionRecordList?.count > 0 && indexPath.row < centurionRecordList?.count {
+                cell.setCenturionCardConsumedInfo(centurionRecordList![indexPath.row])
             }
             
             return cell
@@ -387,14 +448,14 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                     cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue{
                     
                     let identDetailVC = IdentDetailVC()
-                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
+//                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                     /**
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
                     SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
-                    selectedHodometerInfo = cell.curHodometerInfo
+//                    selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                     
                 }
