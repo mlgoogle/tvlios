@@ -55,11 +55,29 @@ class UserSocketAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(UserInfoModel.classForCoder()))
             }, error: error)
     }
-    
+    //城市选择
     static func cityNameInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .GetServiceCity)
         SocketAPI.startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CityNameInfoModel.classForCoder()))
             }, error: error)
     }
+    //保险金额
+    static func insuranceInfo(model: InsuranceBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        SocketAPI.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
+            
+            }, error: error)
+    }
+    //保险支付
+    static func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        SocketAPI.startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
+            
+            }, error: error)
+    }
+
+    
 }

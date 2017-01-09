@@ -300,6 +300,11 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
             weakSelf.daysSureAction(nil, targetDays: 1)
+            //弹出保险页面
+            let insuranceVc = InsuranceVC()
+            insuranceVc.order_price = Int64(service!.service_price_)
+            self.navigationController?.pushViewController(insuranceVc, animated: true)
+            
             //            weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
             
             

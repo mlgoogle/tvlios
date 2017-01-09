@@ -533,6 +533,12 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if model.isKindOfClass(InsuranceInfoModel) {
+            let type = InsuranceInfoModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
         }
         
     }

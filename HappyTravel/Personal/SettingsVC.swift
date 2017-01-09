@@ -148,7 +148,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        authUserCardCode = (DataManager.currentUser?.authentication)!
+        authUserCardCode = CurrentUser.auth_status_
 
         settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }

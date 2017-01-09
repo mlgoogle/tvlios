@@ -168,6 +168,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case VersionInfoRequest = 1115
         // APP版本信息返回
         case VersionInfoReply = 1116
+        //保险金额请求
+        case InsuranceRequest = 1117
+        //保险金额返回
+        case InsuranceReply = 1118
+        //保险支付
+        case InsurancePayRequest = 1119
+        //保险支付返回
+        case InsurancePayReply = 1120
         //MARK: - 2000+
         
         // 请求邀请服务者
@@ -219,10 +227,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         // 未读消息返回
         case UnreadMessageReply = 2026
         
-        //保险说明(未测试)
-        case SureInsuranceRequest = 3333
-        case SureInsuranceReply = 3334
-        
         case UploadContactRequest = 1111
         case UploadContactReply = 1112
 
@@ -252,6 +256,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     let tmpNewRequestType:[SockOpcode] = [.Logined,
                                           .ServiceCity,
+                                          .InsuranceReply,
+                                          .InsurancePayReply,
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
                                           .UserCenturionCardInfoReply]
@@ -550,7 +556,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .UnreadMessageReply:
             unreadMessageReply(jsonBody)
         
-        case .SureInsuranceReply:
+        case .InsuranceReply:
             sureInsuranceReply(jsonBody)
             
             

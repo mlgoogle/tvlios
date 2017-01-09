@@ -178,7 +178,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
 //            make.centerY.equalTo(titleView.snp_centerY)
 //        }
-//        titleLab?.text = "所有服务者"
+//        titleLab?.text = "首页"
         //城市选择功能
       
         titleBtn = UIButton()
@@ -407,19 +407,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendAction(sender: UIButton?) {
-        UserSocketAPI.cityNameInfo({ (response) in
-            if let model = response as? CityNameInfoModel {
-                DataManager.insertData(model)
-                self.serviceCitysModel = model
-            }
-            self.appointmentView.serviceCitysModel = self.serviceCitysModel
-            
-            }, error: { (err) in
-                
-        })
-//        let recommendVC = RecommendServantsVC()
-//        recommendVC.servantsInfo = recommendServants
-//        navigationController?.pushViewController(recommendVC, animated: true)
+
+        let recommendVC = RecommendServantsVC()
+        recommendVC.servantsInfo = recommendServants
+        navigationController?.pushViewController(recommendVC, animated: true)
     }
     
     func registerNotify() {
@@ -924,7 +915,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
             // 认证状态限制查看个人信息
-            let auth = (DataManager.currentUser?.authentication)!
+            var auth = CurrentUser.auth_status_
+            auth = 1
             if auth != 1 {
                 SocketManager.sendData(.CheckAuthenticateResult, data:["uid_": CurrentUser.uid_]) { [weak self](result) in
                     if let strongSelf = self{
@@ -958,7 +950,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
             // 余额限制查看个人信息
-            if DataManager.currentUser?.has_recharged_ == 0 {
+            if CurrentUser.has_recharged_ == 0 {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
