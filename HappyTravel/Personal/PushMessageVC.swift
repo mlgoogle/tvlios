@@ -20,9 +20,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var servantsArray:Array<UserInfoModel>? = []
     var segmentIndex = 0
     var orderID = 0
-    var hotometers:Results<HodometerInfo>?
+    var hotometers:Results<HodometerInfoModel>?
     var timer:NSTimer?
     var isFirstTime = true
+    var requestCount = 0
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
@@ -57,38 +58,38 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
     }
     
-    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
-        
-        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            servantsArray?.removeAll()
-        
-            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-                var uid_str = ""
-                for servant in servants {
-//                    let servantInfo = UserInfo()
-//                    servantInfo.setInfo(.Servant, info: servant)
-//                    servantsArray?.append(servantInfo)
-//                    uid_str += "\(servantInfo.uid),"
-                    
-                }
-                let recommendVC = RecommendServantsVC()
-                recommendVC.isNormal = false
-                recommendVC.appointment_id_ = currentAppointmentId
-//                recommendVC.servantsInfo = servantsArray
-                navigationController?.pushViewController(recommendVC, animated: true)
-                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-                SocketManager.sendData(.GetUserInfo, data: dict)
-            }
-           
-        }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-    }
+//    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
+//        
+//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            servantsArray?.removeAll()
+//        
+//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+//                var uid_str = ""
+//                for servant in servants {
+////                    let servantInfo = UserInfo()
+////                    servantInfo.setInfo(.Servant, info: servant)
+////                    servantsArray?.append(servantInfo)
+////                    uid_str += "\(servantInfo.uid),"
+//                    
+//                }
+//                let recommendVC = RecommendServantsVC()
+//                recommendVC.isNormal = false
+//                recommendVC.appointment_id_ = currentAppointmentId
+////                recommendVC.servantsInfo = servantsArray
+//                navigationController?.pushViewController(recommendVC, animated: true)
+//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+//                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
+//                SocketManager.sendData(.GetUserInfo, data: dict)
+//            }
+//           
+//        }
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+//    }
     
     func payForInvitationReply(notification: NSNotification) {
         let result = notification.userInfo!["result_"] as! Int
@@ -127,22 +128,59 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     
-    func obtainTripReply(notification: NSNotification) {
-        
-        allEndRefreshing()
-        let realm = try! Realm()
-        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
-        
-        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-        if lastOrderID == -1001 {
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-            return
+//    func obtainTripReply(notification: NSNotification) {
+//        
+//        allEndRefreshing()
+//        let realm = try! Realm()
+//        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
+//        
+//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
+//        if lastOrderID == -1001 {
+//            footer.state = .NoMoreData
+//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+//            return
+//        }
+//        orderID = lastOrderID
+//        table?.reloadData()
+//    }
+    func requestRecommendListWithUidStr(uid_str_:String) {
+        let model = AppointmentRecommendRequestModel()
+        model.uid_str_ = uid_str_
+        APIHelper.consumeAPI().requestAppointmentRecommendList(model, complete: { (response) in
+            let list = response as? Array<UserInfoModel>
+            var uid_str = ""
+            self.servantsArray?.removeAll()
+            guard list?.count > 0 else {return}
+            for servant in list! {
+                self.servantsArray?.append(servant)
+                uid_str += "\(servant.uid_),"
+                self.requestDetaiInfo(servant.uid_)
+            }
+            //            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+            //            self.requestUserInfoByIDStr(uid_str)
+        }) { (error) in
         }
-        orderID = lastOrderID
-        table?.reloadData()
     }
-    
+    func requestDetaiInfo(uid:Int) {
+        
+        let model = UserBaseModel()
+        model.uid_ = uid
+        APIHelper.servantAPI().servantDetail(model, complete: { (response) in
+            self.requestCount += 1
+            if self.requestCount == self.servantsArray?.count {
+                let recommendVC = RecommendServantsVC()
+                recommendVC.isNormal = false
+                recommendVC.appointment_id_ = self.currentAppointmentId
+                recommendVC.servantsInfo = self.servantsArray
+                self.navigationController?.pushViewController(recommendVC, animated: true)
+            }
+            let info = response as? ServantDetailModel
+            guard info != nil else {return}
+            DataManager.insertData(info!)
+        }) { (error) in
+        }
+        
+    }
     func chatMessage(notification: NSNotification?) {
 //        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
         table?.reloadData()
@@ -207,7 +245,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             make.bottom.equalTo(view)
         })
         
-//        header.hidden = true
         header.setRefreshingTarget(self, refreshingAction: #selector(PushMessageVC.headerRefresh))
         table?.mj_header = header
         footer.hidden = true
@@ -215,19 +252,30 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.mj_footer = footer
         
     }
-    
+    func handleInviteOrderRequest(isRefresh:Bool) {
+        let model = HodometerRequestModel()
+        model.order_id_ = isRefresh ? 0 : orderID
+        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
+            self.hotometers = DataManager.getData(HodometerInfoModel.self)!.filter("order_id_ != 0").sorted("start_", ascending: false)
+
+            let lastID = response as! Int
+            if lastID == -1000 || self.hotometers?.count <= 10 {
+                self.footer.state = .NoMoreData
+                self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            } else {
+                self.orderID = lastID
+                self.endRefresh()
+            }
+        }) { (error) in
+        }
+    }
     func headerRefresh() {
         if segmentIndex == 0 {
             header.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                "order_id_": 0,
-                "count_": 10])
+            handleInviteOrderRequest(true)
         }
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(PushMessageVC.endRefresh), userInfo: nil, repeats: false)
-        /**
-         加入mainloop 防止滑动计时器停止
-         */
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
     func endRefresh() {
@@ -240,18 +288,19 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             footer.endRefreshing()
         }
         if timer != nil {
-            
             timer?.invalidate()
             timer = nil
         }
+        table?.reloadData()
     }
     func footerRefresh() {
         if segmentIndex == 0 {
             footer.endRefreshing()
         } else if segmentIndex == 1 {
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                "order_id_": orderID,
-                "count_": 10])
+            handleInviteOrderRequest(false)
+//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                "order_id_": orderID,
+//                "count_": 10])
         }
         
     }
@@ -295,7 +344,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         } else {
             //行程(和我的消费中商务游相同)
             let cell = tableView.dequeueReusableCellWithIdentifier("DistanceOfTravelCell", forIndexPath: indexPath) as! DistanceOfTravelCell
-//            cell.setHodometerInfo(hotometers![indexPath.row])
+            cell.setHodometerInfo(hotometers![indexPath.row])
             return cell
         }
         
@@ -311,7 +360,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let uid_str_ = message?.servant_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 if uid_str_ != nil  {
-                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                    
+//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
                 } else {
                     XCGLogger.error("推送服务者id 为空")
                 }

@@ -15,6 +15,10 @@ class ConsumeSocketAPI: SocketAPI{
         startRequest(packet, complete: { (response) in
             var lastid = 0
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
+            guard jsonObject != nil else {
+                complete?(-1000)
+                return
+            }
             if let tripList = jsonObject!["trip_list_"] as? Array<Dictionary<String, AnyObject>> {
                 for trip in tripList {
                     let model = HodometerInfoModel(value: trip)
@@ -61,7 +65,7 @@ class ConsumeSocketAPI: SocketAPI{
      func requestAppointmentRecommendList(model:AppointmentRecommendRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .AppointmentRecommendRequest, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(AppointmentRecommendListModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "recommend_guide_"))
             }, error: error)
     }
 }
