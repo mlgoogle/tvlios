@@ -252,6 +252,44 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                                                    "verify_code_": verifyCode,
                                                    "token_": token ?? ""]
         SocketManager.sendData(.RegisterAccountRequest, data: dict)
+        
+        
+        
+//        let model = RegisterAccountBaseInfo()
+//        model.invitation_phone_num_ = username!
+//        model.passwd_ = passwd!
+//        model.timestamp_ = Int64(verifyCodeTime)
+//        model.verify_code_ = verifyCode
+//        model.token_ = token ?? ""
+//        APIHelper.userAPI().registerAccount(model, complete: { (response) in
+//            if let model = response as? RegisterAccountModel {
+//                if model.result == 1 {
+//                    SVProgressHUD.dismiss()
+//                    NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
+//                    NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
+//                    let loginModel = LoginModel()
+//                    APIHelper.userAPI().login(loginModel, complete: { (response) in
+//                        if let user = response as? UserInfoModel {
+//                            CurrentUser = user
+//                            CurrentUser.login_ = true
+//                            self.dismissViewControllerAnimated(false, completion: { () in
+//                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+//                            })
+//                        }
+//                        }, error: { (err) in
+//                            NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+//                            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+//                            XCGLogger.debug(err)
+//                    })
+//                }
+//
+//                }
+//            }, error: { (err) in
+//                let warning = SocketRequest.errorString(err.code)
+//                SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
+//        })
+        
+        
     
     }
     
