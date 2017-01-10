@@ -77,4 +77,12 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(UploadPhotoModel.classForCoder()))
             }, error: error)
     }
+    
+    // 请求微信支付
+    func WXPlaceOrder(model: WXPlaceOrderRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .WXPlaceOrderRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(WXPlcaeOrderModel.classForCoder()))
+            }, error: error)
+    }
 }
