@@ -77,9 +77,7 @@ public class TallyCell : UITableViewCell {
         
     }
     
-    func setInfo(tags: List<Tally>?) {
-        
-        
+    func setInfo(tags: [String]?) {
         if tags?.count != 0 {
             var lastTallyItemView:UIView?
             allLabelWidth = 10.0
@@ -88,16 +86,14 @@ public class TallyCell : UITableViewCell {
             for (index, tag) in tags!.enumerate() {
                 var tallyItemView = contentView.viewWithTag(self.tags["tallyItemView"]! * 10 + index)
                 
-                if tag.tally == "" {
+                if tag == "" {
                     break
                 }
-                if Int(tag.tally!) == nil {
-                    
+                if Int(tag) == nil {
                     break
                 }
                 
-                if let results = DataManager.getData(SkillInfo.self, filter: "skill_id_ = \(tag.tally!)") {
-                    let skill = results.first
+                if let skill = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(tag)")?.first {
                     if tallyItemView == nil {
                         tallyItemView = UIView()
                         tallyItemView!.tag = self.tags["tallyItemView"]! * 10 + index
@@ -111,7 +107,7 @@ public class TallyCell : UITableViewCell {
                         tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
                         let previousView = contentView.viewWithTag(tallyItemView!.tag - 1)
                         
-                        allLabelWidth = allLabelWidth + 10 + skill!.labelWidth
+                        allLabelWidth = allLabelWidth + 10 + skill.labelWidth
                         
                         tallyItemView!.snp_makeConstraints { (make) in
                             if previousView == nil {
@@ -120,7 +116,7 @@ public class TallyCell : UITableViewCell {
                             } else {
                                 if allLabelWidth + 10 > Float(ScreenWidth) {
                                     
-                                    allLabelWidth = 10 + skill!.labelWidth
+                                    allLabelWidth = 10 + skill.labelWidth
                                     make.top.equalTo(previousView!.snp_bottom).offset(10)
                                     make.left.equalTo(self.contentView).offset(10)
                                 } else {
@@ -129,7 +125,7 @@ public class TallyCell : UITableViewCell {
                                 }
                             }
                             make.height.equalTo(25)
-                            make.width.equalTo((skill?.labelWidth)!)
+                            make.width.equalTo(skill.labelWidth)
                             
                         }
                     }
@@ -151,7 +147,7 @@ public class TallyCell : UITableViewCell {
                             make.right.equalTo(tallyItemView!).offset(-10)
                         }
                     }
-                    tallyLabel!.text = skill!.skill_name_
+                    tallyLabel!.text = skill.skill_name_
                     
                     lastTallyItemView = tallyItemView
                 }

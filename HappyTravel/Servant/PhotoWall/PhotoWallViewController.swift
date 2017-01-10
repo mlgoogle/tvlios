@@ -24,7 +24,7 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
-    var info:UserInfo? = nil
+    var info:UserInfoModel? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +80,7 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
     
     func didRequest(pageIndex: Int) {
         guard info != nil else {return}
-        let dict = ["uid_": info!.uid,
+        let dict = ["uid_": info!.uid_,
                     "size_": 20,
                     "num_": pageIndex]
         SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in

@@ -726,7 +726,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
 //        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(data!["uid_"] as! Int)")?.first
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
@@ -926,8 +926,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
             guard cashCheck() else { return }
 
-            let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid_]
-            SocketManager.sendData(.GetServantDetailInfo, data: dict)
+            let servant = UserBaseModel()
+            servant.uid_ = (view as! GuideTagCell).userInfo!.uid_
+            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                    let servantPersonalVC = ServantPersonalVC()
+                    servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
+                    self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                }
+            }, error: nil)
             
         }
                 
