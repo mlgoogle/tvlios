@@ -12,7 +12,9 @@ import XCGLogger
 import RealmSwift
 import MJRefresh
 import SVProgressHUD
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, ServantIntroCellDelegate {
+
+
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate { //ServantIntroCellDelegate
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
@@ -28,8 +30,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var serviceCitysModel:CityNameInfoModel?
     
     var citysAlertController:UIAlertController?
-    var recommendServants:Array<UserInfo> = []
-    var subscribeServants:Array<UserInfo> = []
+    var recommendServants:Array<UserInfoModel> = []
+    var subscribeServants:Array<UserInfoModel> = []
     var locality:String?
     var location:CLLocation?
     var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
@@ -595,22 +597,22 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 var uid_str = ""
                 if type == 1 {
                     for servant in servants {
-                        let servantInfo = UserInfo()
-                        servantInfo.setInfo(.Servant, info: servant)
-                        recommendServants.append(servantInfo)
-                        DataManager.updateUserInfo(servantInfo)
-                        uid_str += "\(servantInfo.uid),"
+//                        let servantInfo = UserInfoModel()
+//                        servantInfo.setInfo(.Servant, info: servant)
+//                        recommendServants.append(servantInfo)
+//                        DataManager.updateUserInfo(servantInfo)
+//                        uid_str += "\(servantInfo.uid),"
                     }
                     if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
                         recommendBtn.enabled = true
                     }
                 } else if type == 2 {
                     for servant in servants {
-                        let servantInfo = UserInfo()
-                        servantInfo.setInfo(.Servant, info: servant)
-                        subscribeServants.append(servantInfo)
-                        DataManager.updateUserInfo(servantInfo)
-                        uid_str += "\(servantInfo.uid),"
+//                        let servantInfo = UserInfo()
+//                        servantInfo.setInfo(.Servant, info: servant)
+//                        subscribeServants.append(servantInfo)
+//                        DataManager.updateUserInfo(servantInfo)
+//                        uid_str += "\(servantInfo.uid),"
                     }
                     if header.state == .Refreshing {
                         header.endRefreshing()
@@ -1065,13 +1067,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     //MARK: - ServantIntroCellDeleagte
-    func chatAction(servantInfo: UserInfo?) {
-        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
-        SocketManager.sendData(.GetServantDetailInfo, data: dict)
-
-    }
-    
-    deinit {        
+//    func chatAction(servantInfo: UserInfo?) {
+//        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+//        SocketManager.sendData(.GetServantDetailInfo, data: dict)
+//
+//    }
+//    
+    deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     

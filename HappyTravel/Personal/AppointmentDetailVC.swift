@@ -49,15 +49,16 @@ class AppointmentDetailVC: UIViewController {
      */
     func registerNotification() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppointmentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
+    
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
@@ -200,7 +201,7 @@ class AppointmentDetailVC: UIViewController {
         let commitBtn = UIButton()
         commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
         commitBtn.setTitle("发表评论", forState: .Normal)
-        commitBtn.addTarget(self, action: #selector(AppointmentDetailVC.cancelOrCommitButtonAction), forControlEvents: .TouchUpInside)
+        commitBtn.addTarget(self, action: #selector(cancelOrCommitButtonAction), forControlEvents: .TouchUpInside)
         view.addSubview(commitBtn)
         commitBtn.snp_makeConstraints { (make) in
             make.left.equalTo(view)
@@ -241,11 +242,29 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.section == 0 {
-            let dict:Dictionary<String, AnyObject> = ["uid_": (appointmentInfo?.to_user_)!]
-            SocketManager.sendData(.GetServantDetailInfo, data:dict)
+            let servant = UserBaseModel()
+            servant.uid_ = appointmentInfo!.to_user_
+            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                    if let servantInfo =  DataManager.getData(UserInfoModel.self, filter: "uid_ = \(model.uid_)")?.first {
+                        let servantPersonalVC = ServantPersonalVC()
+                        servantPersonalVC.personalInfo = servantInfo
+                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    } else {
+                        let dic = ["uid_str_" : String(self!.servantDict!["uid_"] as! Int) + "," + "0"]
+                        SocketManager.sendData(.GetUserInfo, data: dic)
+                        // 需要改 GetUserInfo Model，请求成功后执行下面语句
+                        let servantPersonalVC = ServantPersonalVC()
+//                        servantPersonalVC.personalInfo = servantInfo
+                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    }
+                }
+            }, error: nil)
             
         }
     }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         /**
