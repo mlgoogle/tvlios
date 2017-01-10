@@ -80,3 +80,19 @@ class InsuranceSuccessModel: Object {
     
 }
 
+// 发送验证码
+class VerifyCodeRequestModel: Object {
+    
+    dynamic var verify_type_ = 0
+    
+    dynamic var phone_num_:String?
+}
+class VerifyInfoModel: Object {
+    
+    dynamic var timestamp_ = 0
+    
+    dynamic var token_:String?
+}
+
+
+
