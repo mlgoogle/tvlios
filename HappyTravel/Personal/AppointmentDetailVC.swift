@@ -170,8 +170,8 @@ class AppointmentDetailVC: UIViewController {
     }
     func getServantBaseInfo() {
         
-        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
-        SocketManager.sendData(.GetUserInfo, data: dic)
+//        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
+//        SocketManager.sendData(.GetUserInfo, data: dic)
         
     }
     func servantBaseInfoReply(notification: NSNotification) {
@@ -252,12 +252,16 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                         servantPersonalVC.personalInfo = servantInfo
                         self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
                     } else {
-                        let dic = ["uid_str_" : String(self!.servantDict!["uid_"] as! Int) + "," + "0"]
-                        SocketManager.sendData(.GetUserInfo, data: dic)
-                        // 需要改 GetUserInfo Model，请求成功后执行下面语句
-                        let servantPersonalVC = ServantPersonalVC()
-//                        servantPersonalVC.personalInfo = servantInfo
-                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                        let req = UserInfoIDStrRequestModel()
+                        req.uid_str_ = "\(model.uid_)"
+                        APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
+                            if let users = response as? [UserInfoModel] {
+                                DataManager.insertData(users[0])
+                                let servantPersonalVC = ServantPersonalVC()
+                                servantPersonalVC.personalInfo = users[0]
+                                self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                            }
+                        }, error: nil)
                     }
                 }
             }, error: nil)

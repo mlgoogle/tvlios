@@ -995,9 +995,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         DataManager.insertMessage(msg)
         let user = DataManager.getUserInfo(msg.from_uid_)
         if user == nil {
-            let dic = ["uid_str_" : String(msg.from_uid_) + "," + "0"]
-
-            SocketManager.sendData(.GetUserInfo, data: dic)
+            let req = UserInfoIDStrRequestModel()
+            req.uid_str_ = "\(msg.from_uid_)"
+            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                if let users = response as? [UserInfoModel] {
+                    DataManager.insertData(users[0])
+                }
+            }, error: nil)
         }
         if UIApplication.sharedApplication().applicationState == .Background {
 
@@ -1063,9 +1067,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 }
                 let user = DataManager.getUserInfo(pMsg!.from_uid_)
                 if user == nil {
-                    let dic = ["uid_str_" : String(pMsg!.from_uid_) + "," + "0"]
-                    
-                    SocketManager.sendData(.GetUserInfo, data: dic)
+                    let req = UserInfoIDStrRequestModel()
+                    req.uid_str_ = "\(pMsg!.from_uid_)"
+                    APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                        if let users = response as? [UserInfoModel] {
+                            DataManager.insertData(users[0])
+                        }
+                    }, error: nil)
                 }
                 postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
             }
