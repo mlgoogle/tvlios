@@ -36,7 +36,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetRecommendServants = 1007
         // 推荐服务者返回
         case RecommendServants = 1008
-        
         // 请求服务城市列表
         case GetServiceCity = 1009
         // 服务城市列表返回
@@ -46,6 +45,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ModifyPassword = 1011
         // 修改密码返回
         case ModifyPasswordResult = 1012
+        
         // 请求用户信息
         case GetUserInfo = 1013
         // 用户信息返回
@@ -271,6 +271,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CheckAuthenticateResultReply,
                                           .UserInfoResult,
                                           .CheckUserCashReply,
+                                          .ModifyPasswordResult,
                                           .ServantDetailInfo]
     
     var isConnected : Bool {
@@ -321,6 +322,21 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserName)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
+        
+//        CurrentUser.login_ = false
+//        SocketManager.isLogout = true
+////        CurrentUser.login_ = false
+//        CurrentUser.auth_status_ = -1
+//        //result为0非黑卡用户
+//        if UserCenturionCardInfo.result != 0 {
+//            UserCenturionCardInfo.name_ = nil
+//            UserCenturionCardInfo.blackcard_lv_ = 0
+//            UserCenturionCardInfo.blackcard_id_ = 0
+//        }
+//        sock?.socket?.disconnect()
+//        SocketManager.shareInstance.buffer = NSMutableData()
+//        SocketManager.shareInstance.connectSock()
+
         CurrentUser.login_ = false
         SocketManager.isLogout = true
         DataManager.currentUser?.login = false
