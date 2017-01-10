@@ -406,6 +406,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendAction(sender: UIButton?) {
+        
+//        let model = InsurancePayBaseInfo()
+//        model.insurance_price = 14
+//        model.insurance_username_ = String(CurrentUser.uid_)//用户id
+//        APIHelper.commonAPI().insurancePay(model, complete: { (response) in
+//            if let model = response as? InsuranceSuccessModel {
+//                if model.is_success_ == 0{
+//                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
+//                        self.navigationController?.popViewControllerAnimated(true)
+////                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+//                    })
+//                }
+//            }
+//            }, error: { (err) in
+//        })
+
+        
         let recommendVC = RecommendServantsVC()
         recommendVC.servantsInfo = recommendServants
         navigationController?.pushViewController(recommendVC, animated: true)

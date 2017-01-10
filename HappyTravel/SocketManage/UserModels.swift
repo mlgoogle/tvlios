@@ -80,3 +80,20 @@ class ServantNearbyModel: Object {
     
     dynamic var distance_ = 10.1
 }
+
+//请求修改密码
+class modifyPwdBaseInfo: Object {
+    //["uid_": CurrentUser.uid_, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
+    dynamic var uid_:Int64 = 0
+    
+    dynamic var old_passwd_:String?
+    
+    dynamic var new_passwd_:String?
+    
+}
+//密码修改返回
+class modifyPwdModel: Object {
+    //成功返回空，失败见错误码
+}
+
+
