@@ -153,7 +153,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
             if let msg = dict["data"] as? Dictionary<String, AnyObject> {
                 let chatVC = ChatVC()
-                chatVC.servantInfo = DataManager.getUserInfo(msg["from_uid_"] as! Int)
+                chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(msg["from_uid_"] as! Int)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
             }
         }
@@ -323,7 +323,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
-                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
+//                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
+                chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(cell.userInfo!.uid_)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
                 
             }

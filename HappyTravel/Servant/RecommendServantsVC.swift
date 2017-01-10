@@ -125,7 +125,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.isNormal = isNormal
         servantPersonalVC.appointment_id_ = appointment_id_
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+//        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
