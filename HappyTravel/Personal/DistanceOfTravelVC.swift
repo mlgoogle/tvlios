@@ -354,7 +354,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             let recommendVC = RecommendServantsVC()
             recommendVC.isNormal = false
-            recommendVC.appointment_id_ = self.currentApponitmentID
+//            recommendVC.appointment_id_ = self.currentApponitmentID
             recommendVC.servantsInfo = self.servantsArray
             self.navigationController?.pushViewController(recommendVC, animated: true)
             uid_str.removeAtIndex(uid_str.endIndex.predecessor())

@@ -208,8 +208,13 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         guard servantInfo?.uid_ > -1 else {return}
         
         if servantDetail?.service_list_.count == 0 {
-            let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid_]
-            SocketManager.sendData(.GetServantDetailInfo, data: dict)
+            let servant = UserBaseModel()
+            servant.uid_ = servantInfo!.uid_
+            APIHelper.servantAPI().servantDetail(servant, complete: { (response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                }
+            }, error: nil)
         }
         
     }

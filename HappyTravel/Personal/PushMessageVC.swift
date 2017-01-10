@@ -17,7 +17,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
     var table:UITableView?
-    var servantsArray:Array<UserInfo>? = []
+    var servantsArray:Array<UserInfoModel>? = []
     var segmentIndex = 0
     var orderID = 0
     var hotometers:Results<HodometerInfo>?
@@ -70,10 +70,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
                 var uid_str = ""
                 for servant in servants {
-                    let servantInfo = UserInfo()
-                    servantInfo.setInfo(.Servant, info: servant)
-                    servantsArray?.append(servantInfo)
-                    uid_str += "\(servantInfo.uid),"
+//                    let servantInfo = UserInfo()
+//                    servantInfo.setInfo(.Servant, info: servant)
+//                    servantsArray?.append(servantInfo)
+//                    uid_str += "\(servantInfo.uid),"
                     
                 }
                 let recommendVC = RecommendServantsVC()
