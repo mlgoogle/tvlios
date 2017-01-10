@@ -274,7 +274,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
                                           .ServantDetailInfo,
-                                          .ServantDetailInfo,
                                           .MessageVerifyResult,
                                           .ImproveDataResult,
                                           .ServiceDetailReply]
