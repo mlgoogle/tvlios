@@ -27,25 +27,24 @@ func qiniuUploadImage(image: UIImage, imagePath: String, imageName:String, tags:
     //0,将图片存到沙盒中
     let filePath = cacheImage(image, imageName: "/tmp_" + timeStr)
     //1,请求token
-    SocketManager.sendData(.UploadImageToken, data: nil, result: { (response) in
-        let data = response["data"] as! NSDictionary
-        let token = data.valueForKey("img_token_") as! String
-        //2,上传图片
-        let qiniuManager = QNUploadManager()
-        qiniuManager.putFile(filePath, key: imagePath + imageName + "_\(timeStr)", token: token, complete: { (info, key, resp) in
-            try! NSFileManager.defaultManager().removeItemAtPath(filePath)
-            if resp == nil{
-                NSLog(info.debugDescription)
-                complete([tags, "failed"])
-                return
-            }
-            //3,返回URL
-            let respDic: NSDictionary? = resp
-            let value:String? = respDic!.valueForKey("key") as? String
-            let imageUrl = "http://ofr5nvpm7.bkt.clouddn.com/" + value!
-            complete([tags, imageUrl])
-            }, option: nil)
-    })
+    APIHelper.commonAPI().uploadPhotoToken( { (response) in
+        if let model = response as? UploadPhotoModel {
+            let qiniuManager = QNUploadManager()
+            qiniuManager.putFile(filePath, key: imagePath + imageName + "_\(timeStr)", token: model.img_token_, complete: { (info, key, resp) in
+                try! NSFileManager.defaultManager().removeItemAtPath(filePath)
+                if resp == nil{
+                    NSLog(info.debugDescription)
+                    complete([tags, "failed"])
+                    return
+                }
+                //3,返回URL
+                let respDic: NSDictionary? = resp
+                let value:String? = respDic!.valueForKey("key") as? String
+                let imageUrl = "http://ofr5nvpm7.bkt.clouddn.com/" + value!
+                complete([tags, imageUrl])
+                }, option: nil)
+        }
+    }, error: nil)
     
 }
 

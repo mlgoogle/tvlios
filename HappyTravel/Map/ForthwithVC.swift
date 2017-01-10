@@ -535,9 +535,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
-            let dict = ["uid_": CurrentUser.uid_,
-                        "device_token_": dt]
-            SocketManager.sendData(.PutDeviceToken, data: dict)
+            let req = RegDeviceRequestModel()
+            req.device_token_ = dt
+            APIHelper.commonAPI().regDevice(req, complete: nil, error: nil)
         }
         
         let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_

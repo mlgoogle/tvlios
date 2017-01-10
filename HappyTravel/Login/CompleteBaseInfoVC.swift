@@ -81,6 +81,13 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
         SocketManager.sendData(.UploadImageToken, data: nil)
+        APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
+            if let model = response as? UploadPhotoModel {
+                self!.token = model.img_token_
+                SVProgressHUD.dismiss()
+            }
+        }, error: nil)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
