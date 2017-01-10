@@ -274,9 +274,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
                                           .ServantDetailInfo,
-                                          .ServantDetailInfo,
-                                          .SendMessageVerify,
-                                          .SendImproveData]
+                                          .MessageVerifyResult,
+                                          .ImproveDataResult,
+                                          .ServiceDetailReply]
     
     var isConnected : Bool {
         return socket!.isConnected
