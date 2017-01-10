@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0D61E91A1E135893009A7DEC /* PayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61E9191E135893009A7DEC /* PayVC.swift */; };
 		0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */; };
+		0DD80C731E232EC7004C22C8 /* InsuranceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD80C721E232EC7004C22C8 /* InsuranceVC.swift */; };
 		2F1434891D90C5CB002F227B /* OrderInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F1434881D90C5CB002F227B /* OrderInfo.swift */; };
 		2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */; };
 		2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */; };
@@ -350,6 +351,7 @@
 /* Begin PBXFileReference section */
 		0D61E9191E135893009A7DEC /* PayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayVC.swift; sourceTree = "<group>"; };
 		0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonWebVC.swift; path = Common/CommonWebVC.swift; sourceTree = "<group>"; };
+		0DD80C721E232EC7004C22C8 /* InsuranceVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InsuranceVC.swift; path = Personal/InsuranceVC.swift; sourceTree = "<group>"; };
 		16D7D00546FBCA79D486C882 /* Pods-HappyTravelUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F1434881D90C5CB002F227B /* OrderInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderInfo.swift; path = Data/OrderInfo.swift; sourceTree = "<group>"; };
@@ -947,6 +949,7 @@
 				2F6E2D551DC0D1A400AD0BB1 /* Wallet */,
 				2FF72B3D1DAF5791001EEED2 /* CenturionCard */,
 				2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */,
+				0DD80C721E232EC7004C22C8 /* InsuranceVC.swift */,
 			);
 			name = Personal;
 			sourceTree = "<group>";
@@ -1916,6 +1919,7 @@
 				2FBB5E851D51E692007BE4E0 /* ChatBubbleCell.swift in Sources */,
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,
+				0DD80C731E232EC7004C22C8 /* InsuranceVC.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
 				6E5ADC861E1B440A00E6823F /* ChatLocationCell.swift in Sources */,
 				6EA6D4661DE2FA4D0041BF32 /* AppointmentRemarksCell.swift in Sources */,
