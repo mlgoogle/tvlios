@@ -96,4 +96,20 @@ class modifyPwdModel: Object {
     //成功返回空，失败见错误码
 }
 
+//修改个人信息
+class ModifyUserInfoModel: UserBaseModel {
+    
+    dynamic var nickname_:String?
+    
+    dynamic var gender_ = 0
+    
+    dynamic var head_url_:String?
+    
+    dynamic var address_:String?
+    
+    dynamic var longitude_:Float = 0.0
+    
+    dynamic var latitude_:Float = 0.0
+}
+
 
