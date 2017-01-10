@@ -195,7 +195,7 @@ class PersonalHeadCell : UITableViewCell {
 
     }
     
-    func setInfo(userInfo: UserInfo?, detailInfo: Dictionary<String, AnyObject>?) {
+    func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?) {
         let view = contentView.viewWithTag(tags["view"]!)
         
         if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
@@ -207,8 +207,8 @@ class PersonalHeadCell : UITableViewCell {
 //            }
             
             if let headImageView = personalView.viewWithTag(tags["headImageView"]!) as? UIImageView {
-                if userInfo?.headUrl != nil {                    
-                    let headUrl = NSURL(string: userInfo!.headUrl!)
+                if userInfo?.head_url_ != nil {
+                    let headUrl = NSURL(string: userInfo!.head_url_!)
                     headImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                         
                     }
@@ -216,7 +216,7 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let starLevelView = personalView.viewWithTag(tags["starLevelView"]!) {
-                let level = userInfo?.praiseLv
+                let level = userInfo?.praise_lv_
                 for i in 0...4 {
                     if let star = starLevelView.viewWithTag(starLevelView.tag * 10 + i) as? UIImageView {
                         star.image = UIImage.init(named: (level! / Int(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
@@ -225,14 +225,14 @@ class PersonalHeadCell : UITableViewCell {
             }
             
             if let officialAuth = personalView.viewWithTag(tags["officialAuth"]!) as? UIImageView {
-                officialAuth.hidden = !((userInfo?.certification)!)
+                officialAuth.hidden = servantDetail!.is_certification_ == 1
             }
             
             if let limitLab = personalView.viewWithTag(tags["limitLab"]!) as? UILabel {
                 let myLongitude = DataManager.curLocation?.coordinate.longitude ?? 0
                 let myLatitude = DataManager.curLocation?.coordinate.latitude ?? 0
-                let servantLongitude = userInfo?.gpsLocationLon
-                let servantLatitude = userInfo?.gpsLocationLat
+                let servantLongitude = userInfo?.longitude_
+                let servantLatitude = userInfo?.latitude_
                 limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
             }
         }

@@ -126,7 +126,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             })
             
             let servantPersonalVC = ServantPersonalVC()
-            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
+//            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
             navigationController?.pushViewController(servantPersonalVC, animated: true)
         }
        
@@ -148,7 +148,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
         })
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = servantInfo
+//        servantPersonalVC.personalInfo = servantInfo
         navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
     

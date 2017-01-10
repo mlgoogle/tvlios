@@ -55,10 +55,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
      密码修改成功
      */
     func modifyPasswordSucceed() {
-        
         SocketManager.logoutCurrentAccount()
-//        navigationController?.popViewControllerAnimated(false)
-//        SocketManager.logoutCurrentAccount()
         navigationController?.popToRootViewControllerAnimated(true)
     }
     /**
@@ -242,7 +239,6 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
 //        let dict = ["uid_": CurrentUser.uid_, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
 //        SocketManager.sendData(.ModifyPassword, data: dict)
 //        XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
-//        return
         
         let model = modifyPwdBaseInfo()
         model.uid_ = Int64(CurrentUser.uid_)
@@ -250,33 +246,24 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         model.new_passwd_ = newPasswd
         APIHelper.userAPI().modifyPwd(model, complete: { (response) in
             print(response)
-//            if response.type == Int8(0) {
-//                SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
-//                XCGLogger.warning("Modify passwd failed")
-//            } else {
-//                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
-//                
-//                SocketManager.logoutCurrentAccount()
-//                //        navigationController?.popViewControllerAnimated(false)
-//                //        SocketManager.logoutCurrentAccount()
-//                self.navigationController?.popToRootViewControllerAnimated(true)
-//
-//            }
-
-            
-            //成功
-//            SocketManager.logoutCurrentAccount()
-//            navigationController?.popToRootViewControllerAnimated(true)
-            }, error: { (err) in
+            if response == nil {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: {
+                    SocketManager.logoutCurrentAccount()
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                })
                 
-            })
-        
+            }
+        }, error: { (err) in
+                let wainning = SocketRequest.errorString(err.code)
+                SVProgressHUD.showWainningMessage(WainningMessage: wainning, ForDuration: 1.5, completion: nil)
+//                XCGLogger.warning("Modify passwd failed")
+        })
     }
     
     //MARK: - UITextField
-//    func textFieldDidEndEditing(textField: UITextField) {
-//
-//    }
+    func textFieldDidEndEditing(textField: UITextField) {
+
+    }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         return true

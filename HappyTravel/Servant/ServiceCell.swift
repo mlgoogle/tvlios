@@ -25,7 +25,7 @@ public class ServiceCell : UITableViewCell {
                 "svcView": 1005]
     
     var spread = false
-    var servicesInfo:List<ServiceInfo>?
+    var servicesInfo:List<ServiceModel>?
     weak var delegate:ServiceCellDelegate?
     lazy private var dateFormatter:NSDateFormatter = {
         var dateFomatter = NSDateFormatter()
@@ -113,7 +113,7 @@ public class ServiceCell : UITableViewCell {
 
     }
     
-    func setInfo(services: List<ServiceInfo>?, setSpread spd: Bool) {
+    func setInfo(services: List<ServiceModel>?, setSpread spd: Bool) {
         if services!.count != 0 {
             spread = spd
             servicesInfo = services
