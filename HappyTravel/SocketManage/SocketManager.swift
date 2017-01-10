@@ -36,7 +36,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetRecommendServants = 1007
         // 推荐服务者返回
         case RecommendServants = 1008
-        
         // 请求服务城市列表
         case GetServiceCity = 1009
         // 服务城市列表返回
@@ -46,6 +45,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ModifyPassword = 1011
         // 修改密码返回
         case ModifyPasswordResult = 1012
+        
         // 请求用户信息
         case GetUserInfo = 1013
         // 用户信息返回
@@ -287,10 +287,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "61.147.114.78"
-                    let port:UInt16 = 10007
-//                    let ip:String = "192.168.8.111"
-//                    let port:UInt16 = 10001
+//                    let ip:String = "61.147.114.78"
+//                    let port:UInt16 = 10007
+                    let ip:String = "192.168.8.111"
+                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001

@@ -49,7 +49,7 @@ class CommonAPI: SocketAPI {
     }
     //保险支付
     func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        let packet = SocketDataPacket(opcode: .InsurancePayRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
             

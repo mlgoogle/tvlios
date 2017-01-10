@@ -75,3 +75,12 @@ class ServantNearbyModel: Object {
     
     dynamic var distance_ = 10.1
 }
+
+//请求修改密码
+class modifyPwdBaseInfo: Object {
+    //["uid_": CurrentUser.uid_, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
+//    dynamic var uid_
+    
+}
+
+
