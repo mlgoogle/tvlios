@@ -582,6 +582,20 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if model.isKindOfClass(UserInfoModel) {
+            let type = UserInfoModel.self
+            let info = model as! UserInfoModel
+            
+            let userModel = realm.objects(type).filter("uid_ = \(info.uid_)").first
+            
+            try! realm.write({
+                if userModel == nil {
+                    realm.add(model)
+                } else {
+                    userModel?.refreshPropertiesWithModel(info)
+                }
+            })
+            
         } else {
             try! realm.write({
                 realm.add(model)

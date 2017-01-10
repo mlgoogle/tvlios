@@ -23,7 +23,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
     var timer:NSTimer?
-    var servantsArray:Array<UserInfo>? = []
+    var servantsArray:Array<ReServantListModel>? = []
 
     var hotometers:Results<HodometerInfo>?
     var currentApponitmentID = 0
@@ -301,12 +301,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             handleInviteOrderRequest(isRefresh)
         case 1:
             handleAppointmentRequest(isRefresh)
-            break
         case 2:
             handleCenturionCardRequest(isRefresh)
-
-            footer.state = .NoMoreData
-            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
             break
         default:
             break
@@ -316,6 +312,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func handleCenturionCardRequest(isRefresh:Bool) {
+        footer.state = .NoMoreData
+        footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
         APIHelper.consumeAPI().requsetCenturionCardRecordList(CenturionCardRecordRequestModel(), complete: { (response) in
             self.endRefresh()
             }) { (error) in
@@ -337,7 +335,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         let model = HodometerRequestModel()
         model.order_id_ = isRefresh ? 0 : orderID
         APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
-            self.lastRecordId = response as! Int
+            self.orderID = response as! Int
             self.endRefresh()
             }) { (error) in
         }
@@ -348,23 +346,38 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         let model = AppointmentRecommendRequestModel()
         model.uid_str_ = uid_str_
         APIHelper.consumeAPI().requestAppointmentRecommendList(model, complete: { (response) in
-            
             let listModel = response as? AppointmentRecommendListModel
             var uid_str = ""
             for servant in (listModel?.recommend_guide_)! {
-                DataManager.insertData(servant)
+                self.servantsArray?.append(servant)
                 uid_str += "\(servant.uid_),"
             }
             let recommendVC = RecommendServantsVC()
             recommendVC.isNormal = false
-            recommendVC.appointment_id_ = self.currentApponitmentID
-//            recommendVC.servantsInfo = listModel?.recommend_guide_
-//            navigationController?.pushViewController(recommendVC, animated: true)
+//            recommendVC.appointment_id_ = self.currentApponitmentID
+            recommendVC.servantsInfo = self.servantsArray
+            self.navigationController?.pushViewController(recommendVC, animated: true)
             uid_str.removeAtIndex(uid_str.endIndex.predecessor())
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
             SocketManager.sendData(.GetUserInfo, data: dict)
+            self.requestUserInfoByIDStr(uid_str_)
         }) { (error) in
         }
+    }
+    func requestUserInfoByIDStr(uid_str_:String) {
+        
+        let model = UserInfoIDStrRequestModel()
+        model.uid_str_ = uid_str_
+        APIHelper.servantAPI().getUserInfoByString(model, complete: { (response) in
+            let infosArray = response as? Array<UserInfoModel>
+            guard infosArray?.count > 0 else{return}
+            for userInfo in infosArray! {
+                DataManager.insertData(userInfo)
+            }
+            }) { (error) in
+                
+        }
+        
     }
     
     // MARK: - UITableView
@@ -431,19 +444,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
-                    APIHelper.userAPI().cash({ (response) in
-                        if let dict = response as? [String: AnyObject] {
-                            if let cash = dict["user_cash_"] as? Int {
-                                CurrentUser.user_cash_ = cash
-                            }
-                            if let hasPasswd = dict["has_passwd_"] as? Int {
-                                CurrentUser.has_passwd_ = hasPasswd
-                            }
-                        }
-                        }, error: nil)
+                    getCash()
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
-                    
                 }
             }
             break
@@ -452,7 +455,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let object = appointmentList![indexPath.row]
             guard object.status_ > 1  else {
                 if object.recommend_uid_ != nil {
-                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
+//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
+                    requestRecommendListWithUidStr(object.recommend_uid_!)
                 } else {
                     SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
                 }
@@ -469,19 +473,9 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                  *  未支付状态去支付
                  */
             } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
-                APIHelper.userAPI().cash({ (response) in
-                    if let dict = response as? [String: AnyObject] {
-                        if let cash = dict["user_cash_"] as? Int {
-                            CurrentUser.user_cash_ = cash
-                        }
-                        if let hasPasswd = dict["has_passwd_"] as? Int {
-                            CurrentUser.has_passwd_ = hasPasswd
-                        }
-                    }
-                    }, error: nil)
+                getCash()
                 selectedAppointmentInfo = appointmentList![indexPath.row]
                 payForInvitationRequest()
-                
             }
     
             break
@@ -491,7 +485,19 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             break
         }
     }
-    
+
+    func getCash() {
+        APIHelper.userAPI().cash({ (response) in
+            if let dict = response as? [String: AnyObject] {
+                if let cash = dict["user_cash_"] as? Int {
+                    CurrentUser.user_cash_ = cash
+                }
+                if let hasPasswd = dict["has_passwd_"] as? Int {
+                    CurrentUser.has_passwd_ = hasPasswd
+                }
+            }
+            }, error: nil)
+    }
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
         if header.state == .Idle && (footer.state == .Idle || footer.state == .NoMoreData){
@@ -513,7 +519,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         refreshData()
     }
     func refreshData() {
-        
+
         switch segmentIndex {
         case 0:
             inviteList = DataManager.getData(HodometerInfoModel.self)
@@ -551,7 +557,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         if segmentIndex == 1 {
             price = (selectedAppointmentInfo?.order_price_)!
             order_id_ = (selectedAppointmentInfo?.order_id_)!
-
         } else {
             price =  (selectedHodometerInfo?.order_price_)!
             order_id_ = (selectedHodometerInfo?.order_id_)!

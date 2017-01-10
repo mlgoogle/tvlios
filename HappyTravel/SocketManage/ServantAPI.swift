@@ -17,11 +17,21 @@ class ServantAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "guide_list_"))
             }, error: error)
     }
-    
+
     func servantDetail(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .GetServantDetailInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(ServantDetailModel.classForCoder()))
             }, error: error)
+    }
+    
+    func getUserInfoByString(model:UserInfoIDStrRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        
+        let packet = SocketDataPacket(opcode: .GetUserInfo, model: model)
+        startRequest(packet, complete: { (response) in
+            
+            complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "userinfo_list_"))
+            }, error: error)
+        
     }
 }

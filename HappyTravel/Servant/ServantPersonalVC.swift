@@ -472,7 +472,6 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             })
 
             let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-
             alert.addAction(ok)
             alert.addAction(cancel)
             
@@ -484,7 +483,6 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
     }
     
     func daysCancelAction(sender: UIButton?) {
-        
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }

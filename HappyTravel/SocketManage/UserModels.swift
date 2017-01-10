@@ -52,7 +52,10 @@ class UserInfoModel: UserModel {
     
     dynamic var login_:Bool = false
 }
+class ReServantListModel: UserInfoModel {
+    dynamic var heag_bg_url_:String?
 
+}
 
 
 class UploadContactModel: Object {    
@@ -65,7 +68,9 @@ class ContactModel: Object {
     dynamic var phone_num:String?
 }
 
-
+class UserInfoIDStrRequestModel: Object {
+    dynamic var uid_str_:String?
+}
 
 class ServantNearbyModel: Object {
     

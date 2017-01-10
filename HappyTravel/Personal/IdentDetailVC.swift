@@ -212,8 +212,25 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
-            let dict:Dictionary<String, AnyObject> = ["uid_": (hodometerInfo?.to_uid_)!]
-            SocketManager.sendData(.GetServantDetailInfo, data:dict)
+            let servant = UserBaseModel()
+            servant.uid_ = hodometerInfo!.to_uid_
+            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                    if let servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(model.uid_)")?.first {
+                        let servantPersonalVC = ServantPersonalVC()
+                        servantPersonalVC.personalInfo = servantInfo
+                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    } else {
+                        let dic = ["uid_str_" : String(self!.servantDict!["uid_"] as! Int) + "," + "0"]
+                        SocketManager.sendData(.GetUserInfo, data: dic)
+                        // 需要改 GetUserInfo Model，请求成功后执行下面语句
+                        let servantPersonalVC = ServantPersonalVC()
+//                        servantPersonalVC.personalInfo = servantInfo
+                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    }
+                }
+            }, error: nil)
            
         }
     }
