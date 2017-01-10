@@ -52,12 +52,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SendMessageVerify = 1019
         // 发送验证码返回
         case MessageVerifyResult = 1020
-    
         // 请求注册新用户
         case RegisterAccountRequest = 1021
         // 注册新用户返回
         case RegisterAccountReply = 1022
-        
         // 请求修改个人信息
         case SendImproveData = 1023
         // 修改个人信息返回
@@ -70,10 +68,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ServiceDetailRequest = 1027
         // 服务详情信息返回
         case ServiceDetailReply = 1028
+        
         // 请求开票
         case DrawBillRequest = 1029
         // 开票返回
         case DrawBillReply = 1030
+        
         // 请求注册设备推送Token
         case PutDeviceToken = 1031
         // 注册设备推送Token返回
@@ -273,7 +273,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CheckUserCashReply,
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
-                                          .ServantDetailInfo,
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
                                           .SendImproveData]
