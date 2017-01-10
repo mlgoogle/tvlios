@@ -244,7 +244,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             make.height.equalTo(60)
         }
         
-        let segmentItems = ["商务游", "预约", "黑卡消费"]
+        let segmentItems = ["商务游", "预约"] // , "黑卡消费"
         segmentSC = UISegmentedControl(items: segmentItems)
         segmentSC!.tag = 1001
         segmentSC!.addTarget(self, action: #selector(DistanceOfTravelVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)

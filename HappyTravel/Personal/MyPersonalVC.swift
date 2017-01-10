@@ -280,7 +280,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             make.bottom.equalTo(view)
         }
         
-        let itemsTitle = ["黑卡会员", "钱包", "我的消费", "客服", "设置"]
+        let itemsTitle = ["钱包", "我的消费", "客服", "设置"] // "黑卡会员", 
         let itemsIcon = ["side-wallet", "side-wallet", "side-travel", "side-service", "side-settings"]
         for index in 0...itemsTitle.count - 1 {
             let itemBtn = UIButton()
