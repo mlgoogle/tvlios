@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class InvoiceIncludeCell: UITableViewCell {
 
@@ -139,40 +140,63 @@ class InvoiceIncludeCell: UITableViewCell {
      - parameter info:
      - parameter isLast: 最后一个需要隐藏分割线
      */
-    func setupData(info:InvoiceServiceInfo, isLast:Bool) {
+    func setupData(info:Object?, type: String?, isLast:Bool) {
+        guard type != nil else { return }
+        var nickname:String?
+        var serviceName:String?
+        var servicePrice = 0
+        var orderTime = 0
+        if type == "高端游" || type == "商务游" {
+            if let model = info as? InvoiceServiceModel {
+                nickname = model.nick_name_
+                serviceName = model.service_name_
+                servicePrice = model.service_price_
+                orderTime = model.order_time_
+            }
+        } else if type == "黑卡消费" {
+            if let model = info as? InvoiceCenturionCardConsumerModel {
+                nickname = model.nickname
+                serviceName = model.privilege_name_
+                servicePrice = model.privilege_price_
+                orderTime = model.order_time_
+            }
+        } else if type == "黑卡购买" {
+            if let model = info as? InvoiceCenturionCardModel {
+                nickname = model.nickname
+                serviceName = model.privilege_name_
+                servicePrice = model.privilege_price_
+                orderTime = model.order_time_
+            }
+        }
         if nicknameLabel != nil {
             
-            nicknameLabel?.text = info.nick_name_
+            nicknameLabel?.text = nickname
         }
         if serviceNameLabel != nil {
             
-            serviceNameLabel?.text = info.service_name_
+            serviceNameLabel?.text = serviceName
         }
         if serviceTypeLabel != nil {
             
-            serviceTypeLabel?.text = info.service_type_
+            serviceTypeLabel?.text = type
         }
         if servicePriceLabel != nil {
             
-            servicePriceLabel?.text = String(info.service_price_) + "元"
+            servicePriceLabel?.text = String(servicePrice) + "元"
         }
         if serviceDateLabel != nil {
             dateFormatter.dateStyle = .ShortStyle
             dateFormatter.timeStyle = .ShortStyle
-            serviceDateLabel?.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.order_time_)))
+            serviceDateLabel?.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(orderTime)))
         }
         if bottomLine != nil {
             bottomLine?.hidden = isLast
         }
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
