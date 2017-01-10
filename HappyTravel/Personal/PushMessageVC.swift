@@ -264,8 +264,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
             } else {
                 self.orderID = lastID
-                self.endRefresh()
             }
+            self.endRefresh()
         }) { (error) in
         }
     }
@@ -385,7 +385,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     cell.curHodometerInfo?.status_ == HodometerStatus.InvoiceMaked.rawValue ||
                     cell.curHodometerInfo?.status_ == HodometerStatus.Completed.rawValue {
                     let identDetailVC = IdentDetailVC()
-//                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
+                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.WaittingPay.rawValue {
                     APIHelper.userAPI().cash({ (response) in
@@ -398,7 +398,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                             }
                         }
                     }, error: nil)
-//                    payForInvitationRequest(cell.curHodometerInfo)
+                    payForInvitationRequest(cell.curHodometerInfo)
                 }
                 
             }
@@ -415,7 +415,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     
-    func payForInvitationRequest(info: HodometerInfo?) {
+    func payForInvitationRequest(info: HodometerInfoModel?) {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
         if DataManager.currentUser?.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)

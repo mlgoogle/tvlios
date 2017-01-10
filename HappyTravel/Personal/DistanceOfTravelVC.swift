@@ -320,6 +320,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 
         }
     }
+    func handleInviteOrderRequest(isRefresh:Bool) {
+        let model = HodometerRequestModel()
+        model.order_id_ = isRefresh ? 0 : orderID
+        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
+            self.orderID = response as! Int
+            self.endRefresh()
+        }) { (error) in
+        }
+    }
     
     func handleAppointmentRequest(isRefresh:Bool) {
         let model = AppointmentRequestModel()
@@ -331,15 +340,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func handleInviteOrderRequest(isRefresh:Bool) {
-        let model = HodometerRequestModel()
-        model.order_id_ = isRefresh ? 0 : orderID
-        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
-            self.orderID = response as! Int
-            self.endRefresh()
-            }) { (error) in
-        }
-    }
+
     
 
     func requestRecommendListWithUidStr(uid_str_:String) {

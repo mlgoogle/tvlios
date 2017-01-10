@@ -274,7 +274,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ModifyPasswordResult,
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
-                                          .SendImproveData]
+                                          .SendImproveData,
+                                          .AppointmentDetailReply,
+                                          .CheckCommentDetailReplay,
+                                          .EvaluatetripReply]
     
     var isConnected : Bool {
         return socket!.isConnected

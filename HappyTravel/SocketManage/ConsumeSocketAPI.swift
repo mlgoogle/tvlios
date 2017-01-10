@@ -68,4 +68,32 @@ class ConsumeSocketAPI: SocketAPI{
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "recommend_guide_"))
             }, error: error)
     }
+    
+    func requestOrderDetail(model:OrderDetailRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        
+        let packet = SocketDataPacket(opcode: .AppointmentDetailRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
+            complete?(jsonObject)
+            
+            }, error: error)
+        
+    }
+    
+    func requestComment(model:CommentDetaiRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .CheckCommentDetail, model: model)
+        startRequest(packet, complete: { (response) in
+            let model = (response as? SocketJsonResponse)?.responseModel(OrderCommentModel.classForCoder())
+            complete?(model)
+            }, error: error)
+    }
+    
+    func commentForOrder(model:CommentForOrderModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .EvaluateTripRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
+            complete?(jsonObject)
+            }, error: error)
+        
+    }
 }
