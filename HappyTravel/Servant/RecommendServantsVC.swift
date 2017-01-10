@@ -14,10 +14,10 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     var isNormal = true
     
     var servantsTable:UITableView?
-    var servantsInfo:Array<UserInfo>? = []
+    var servantsInfo:Array<ReServantListModel>? = []
     var appointment_id_ = 0
     
-    var servantInfo:Dictionary<Int, UserInfo> = [:]
+    var servantInfo:Dictionary<Int, ReServantListModel> = [:]
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -86,8 +86,8 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ServantIntroCell", forIndexPath: indexPath) as! ServantIntroCell
         cell.delegate = self
-        let userInfo = servantsInfo![indexPath.row]
-        cell.setInfo(userInfo)
+        let servantInfo = servantsInfo![indexPath.row]
+        cell.setInfo(servantInfo)
         return cell
         
     }
@@ -101,10 +101,10 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //MARK: - ServantIntroCellDeleagte
-    func chatAction(servantInfo: UserInfo?) {
-        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+    func chatAction(servantInfo: ReServantListModel?) {
+        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid_]
         SocketManager.sendData(.GetServantDetailInfo, data:dict)
-        self.servantInfo[(servantInfo?.uid)!] = servantInfo
+        self.servantInfo[(servantInfo?.uid_)!] = servantInfo
     }
     /**
      服务者详情回调
@@ -119,6 +119,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
             return
         }
 
+        
         servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
         let user = servantInfo[data!["uid_"] as! Int]
         DataManager.updateUserInfo(user!)

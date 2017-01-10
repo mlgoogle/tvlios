@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 protocol ServantIntroCellDelegate : NSObjectProtocol {
     
-    func chatAction(servantInfo: UserInfo?)
+    func chatAction(servantInfo: ReServantListModel?)
     
 }
 
@@ -19,7 +19,7 @@ class ServantIntroCell: UITableViewCell {
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
     var allLabelWidth:Float = 10.0
-    var servantInfo:UserInfo?
+    var servantInfo:ReServantListModel?
     weak var delegate:ServantIntroCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -271,7 +271,7 @@ class ServantIntroCell: UITableViewCell {
         delegate?.chatAction(servantInfo)
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setInfo(userInfo: ReServantListModel?) {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
@@ -282,19 +282,21 @@ class ServantIntroCell: UITableViewCell {
 //            }
 //            
 //        }
-        let headUrl = NSURL(string: userInfo!.headUrl!)
-        let headView = imageView.viewWithTag(10001) as! UIImageView
-        headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-            
+        if userInfo?.heag_bg_url_ != nil {
+            let headUrl = NSURL(string: (userInfo?.heag_bg_url_)!)
+            let headView = imageView.viewWithTag(10001) as! UIImageView
+            headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                
+            }
         }
         
         if let nickNameLab = view!.viewWithTag(2001) as? UILabel {
-            nickNameLab.text = userInfo?.nickname
+            nickNameLab.text = userInfo?.nickname_
         }
         
         var lastTallyView:UIView?
-        let businessTags = List<Tally>() +  (userInfo?.businessTags)!
-        let tags = businessTags + (userInfo?.travalTags)!
+
+        let tags = userInfo?.travalTags
         let tallyView = view!.viewWithTag(3001)
         for subview in tallyView!.subviews {
             subview.removeFromSuperview()

@@ -44,12 +44,20 @@ extension Object {
     }
 
     func refreshPropertiesWithModel(model:Object) {
+        
+        let cl:Object.Type = model.classForCoder as! Object.Type
+        let obj = cl.init()
         for pro in objectSchema.properties as [Property]!  {
             if model[pro.name] != nil {
                 if let selfModelPro = self[pro.name] as? Object  {
                     guard model[pro.name] != nil else {continue}
                     selfModelPro.refreshPropertiesWithModel(model[pro.name] as! Object)
                 } else  {
+                    if obj[pro.name] != nil{
+                        let objProString = String(obj[pro.name]!)
+                        let modelProString = String(model[pro.name]!)
+                        guard modelProString != objProString  else {continue}
+                    }
                     self[pro.name]  =  model[pro.name]
                 }
             }

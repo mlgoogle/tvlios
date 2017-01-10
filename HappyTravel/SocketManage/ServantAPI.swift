@@ -17,4 +17,6 @@ class ServantAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "guide_list_"))
             }, error: error)
     }
+    
+    
 }

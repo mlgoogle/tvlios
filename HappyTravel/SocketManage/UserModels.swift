@@ -52,7 +52,10 @@ class UserInfoModel: UserModel {
     
     dynamic var login_:Bool = false
 }
+class ReServantListModel: UserInfoModel {
+    dynamic var heag_bg_url_:String?
 
+}
 
 
 class UploadContactModel: Object {    

@@ -258,9 +258,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CenturionCardConsumedReply,
                                           .AppointmentRecommendReply,
                                           .SkillsInfoReply,
-                                          .SkillsInfoReply,
                                           .ServantInfo,
-                                          .CheckAuthenticateResultReply]
+                                          .CheckAuthenticateResultReply,
+                                          .UserInfoResult]
     
     var isConnected : Bool {
         return socket!.isConnected
