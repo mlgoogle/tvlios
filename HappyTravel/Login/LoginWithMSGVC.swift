@@ -274,8 +274,17 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             return
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
-        let dict  = ["verify_type_": 1, "phone_num_": username!]
-        SocketManager.sendData(.SendMessageVerify, data: dict)
+        let req = VerifyCodeRequestModel()
+        req.phone_num_ = username
+        req.verify_type_ = 1
+        APIHelper.commonAPI().verifyCode(req, complete: { [weak self](response) in
+            if let model = response as? VerifyInfoModel {
+                self!.verifyCodeTime = model.timestamp_
+                self!.token = model.token_
+            }
+        }, error: { (err) in
+            SVProgressHUD.showErrorMessage(ErrorMessage: "发送验证码失败，请稍后再试！", ForDuration: 1, completion: nil)
+        })
         sender.userInteractionEnabled = false
         setupCountdown()
     }

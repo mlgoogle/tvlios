@@ -601,8 +601,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
 
         if DataManager.getUserInfo(msg.from_uid_) == nil {
-            //TUDO
-            SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(msg.from_uid_)"])
+            let req = UserInfoIDStrRequestModel()
+            req.uid_str_ = "\(msg.from_uid_)"
+            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                if let users = response as? [UserInfoModel] {
+                    DataManager.insertData(users[0])
+                }
+            }, error: nil)
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
@@ -637,8 +642,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                 }
                 uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-                SocketManager.sendData(.GetUserInfo, data: dict)
+                let req = UserInfoIDStrRequestModel()
+                req.uid_str_ = uid_str
+                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                    if let users = response as? [UserInfoModel] {
+                        DataManager.insertData(users[0])
+                    }
+                }, error: nil)
             }
         }
         

@@ -72,6 +72,13 @@ class UserAPI: SocketAPI {
         let packet = SocketDataPacket(opcode: .RegisterAccountRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(RegisterAccountModel.classForCoder()))
+        }, error: error)
+    }
+    
+    func modifyUserInfo(model: ModifyUserInfoModel, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .SendImproveData, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
 }
