@@ -40,12 +40,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetServiceCity = 1009
         // 服务城市列表返回
         case ServiceCity = 1010
-        
         // 请求修改密码
         case ModifyPassword = 1011
         // 修改密码返回
         case ModifyPasswordResult = 1012
-        
         // 请求用户信息
         case GetUserInfo = 1013
         // 用户信息返回
@@ -54,10 +52,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SendMessageVerify = 1019
         // 发送验证码返回
         case MessageVerifyResult = 1020
+    
         // 请求注册新用户
         case RegisterAccountRequest = 1021
         // 注册新用户返回
         case RegisterAccountReply = 1022
+        
         // 请求修改个人信息
         case SendImproveData = 1023
         // 修改个人信息返回
@@ -272,6 +272,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .UserInfoResult,
                                           .CheckUserCashReply,
                                           .ModifyPasswordResult,
+                                          .RegisterAccountReply,
+                                          .ServantDetailInfo,
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
                                           .SendImproveData]
