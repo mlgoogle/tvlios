@@ -79,7 +79,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let recommendVC = RecommendServantsVC()
                 recommendVC.isNormal = false
                 recommendVC.appointment_id_ = currentAppointmentId
-                recommendVC.servantsInfo = servantsArray
+//                recommendVC.servantsInfo = servantsArray
                 navigationController?.pushViewController(recommendVC, animated: true)
                 uid_str.removeAtIndex(uid_str.endIndex.predecessor())
                 let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]

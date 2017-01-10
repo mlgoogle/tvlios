@@ -145,5 +145,5 @@ class AppointmentRecommendRequestModel: Object {
 }
 
 class AppointmentRecommendListModel: Object{
-   let recommend_guide_ = List<UserInfoModel>()
+   let recommend_guide_ = List<ReServantListModel>()
 }

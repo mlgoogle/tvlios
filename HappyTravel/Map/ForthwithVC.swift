@@ -30,6 +30,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var serviceCitysModel:CityNameInfoModel?
     
     var citysAlertController:UIAlertController?
+
     var recommendServants:Array<UserInfoModel> = []
     var subscribeServants:Array<UserInfoModel> = []
     var locality:String?
@@ -1067,6 +1068,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     //MARK: - ServantIntroCellDeleagte
+    
 //    func chatAction(servantInfo: UserInfo?) {
 //        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
 //        SocketManager.sendData(.GetServantDetailInfo, data: dict)

@@ -14,7 +14,6 @@ class ConsumeSocketAPI: SocketAPI{
         let packet = SocketDataPacket(opcode: .ObtainTripRequest, model: model)
         startRequest(packet, complete: { (response) in
             var lastid = 0
-
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
             if let tripList = jsonObject!["trip_list_"] as? Array<Dictionary<String, AnyObject>> {
                 for trip in tripList {

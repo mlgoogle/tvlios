@@ -269,6 +269,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .SkillsInfoReply,
                                           .ServantInfo,
                                           .CheckAuthenticateResultReply,
+                                          .UserInfoResult,
                                           .CheckUserCashReply,
                                           .ServantDetailInfo]
     
