@@ -42,7 +42,7 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    
+
     func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {
         let model = UserBaseModel()
         model.uid_ = CurrentUser.uid_
@@ -52,4 +52,12 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
+    func cash(complete: CompleteBlock?, error: ErrorBlock?) {
+        let model = UserBaseModel()
+        model.uid_ = CurrentUser.uid_
+        let packet = SocketDataPacket(opcode: .CheckUserCash, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
 }

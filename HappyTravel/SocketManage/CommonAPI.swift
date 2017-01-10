@@ -31,4 +31,30 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
             }, error: error)
     }
+    //城市选择
+    func cityNameInfo(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .GetServiceCity)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(CityNameInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
+    //保险金额
+    func insuranceInfo(model: InsuranceBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
+            
+            }, error: error)
+    }
+    //保险支付
+    func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
+            
+            }, error: error)
+    }
+
+
 }

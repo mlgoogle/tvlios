@@ -68,7 +68,9 @@ class ContactModel: Object {
     dynamic var phone_num:String?
 }
 
-
+class UserInfoIDStrRequestModel: Object {
+    dynamic var uid_str_:String?
+}
 
 class ServantNearbyModel: Object {
     

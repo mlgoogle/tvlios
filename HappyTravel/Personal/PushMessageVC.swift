@@ -79,7 +79,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let recommendVC = RecommendServantsVC()
                 recommendVC.isNormal = false
                 recommendVC.appointment_id_ = currentAppointmentId
-                recommendVC.servantsInfo = servantsArray
+//                recommendVC.servantsInfo = servantsArray
                 navigationController?.pushViewController(recommendVC, animated: true)
                 uid_str.removeAtIndex(uid_str.endIndex.predecessor())
                 let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
@@ -153,7 +153,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if let dict = notification.userInfo as? Dictionary<String, AnyObject> {
             if let msg = dict["data"] as? Dictionary<String, AnyObject> {
                 let chatVC = ChatVC()
-                chatVC.servantInfo = DataManager.getUserInfo(msg["from_uid_"] as! Int)
+                chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(msg["from_uid_"] as! Int)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
             }
         }
@@ -323,7 +323,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
-                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
+//                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
+                chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(cell.userInfo!.uid_)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
                 
             }
@@ -337,7 +338,16 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 //                    identDetailVC.hodometerInfo = cell.curHodometerInfo!
                     navigationController?.pushViewController(identDetailVC, animated: true)
                 } else if status == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+                    APIHelper.userAPI().cash({ (response) in
+                        if let dict = response as? [String: AnyObject] {
+                            if let cash = dict["user_cash_"] as? Int {
+                                CurrentUser.user_cash_ = cash
+                            }
+                            if let hasPasswd = dict["has_passwd_"] as? Int {
+                                CurrentUser.has_passwd_ = hasPasswd
+                            }
+                        }
+                    }, error: nil)
 //                    payForInvitationRequest(cell.curHodometerInfo)
                 }
                 

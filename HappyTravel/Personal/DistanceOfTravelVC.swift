@@ -360,8 +360,24 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             uid_str.removeAtIndex(uid_str.endIndex.predecessor())
             let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
             SocketManager.sendData(.GetUserInfo, data: dict)
+            self.requestUserInfoByIDStr(uid_str_)
         }) { (error) in
         }
+    }
+    func requestUserInfoByIDStr(uid_str_:String) {
+        
+        let model = UserInfoIDStrRequestModel()
+        model.uid_str_ = uid_str_
+        APIHelper.servantAPI().getUserInfoByString(model, complete: { (response) in
+            let infosArray = response as? Array<UserInfoModel>
+            guard infosArray?.count > 0 else{return}
+            for userInfo in infosArray! {
+                DataManager.insertData(userInfo)
+            }
+            }) { (error) in
+                
+        }
+        
     }
     
     // MARK: - UITableView
@@ -428,7 +444,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                      *  未支付状态去支付
                      */
                 } else if cell.curHodometerInfo?.status_ == HodometerStatus.WaittingPay.rawValue {
-                    SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+                    getCash()
                     selectedHodometerInfo = cell.curHodometerInfo
                     payForInvitationRequest()
                 }
@@ -457,7 +473,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                  *  未支付状态去支付
                  */
             } else if object.status_ == HodometerStatus.WaittingPay.rawValue {
-                SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+                getCash()
                 selectedAppointmentInfo = appointmentList![indexPath.row]
                 payForInvitationRequest()
             }
@@ -470,6 +486,18 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
 
+    func getCash() {
+        APIHelper.userAPI().cash({ (response) in
+            if let dict = response as? [String: AnyObject] {
+                if let cash = dict["user_cash_"] as? Int {
+                    CurrentUser.user_cash_ = cash
+                }
+                if let hasPasswd = dict["has_passwd_"] as? Int {
+                    CurrentUser.has_passwd_ = hasPasswd
+                }
+            }
+            }, error: nil)
+    }
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
         if header.state == .Idle && (footer.state == .Idle || footer.state == .NoMoreData){
@@ -511,7 +539,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      */
     func payForInvitationRequest() {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in

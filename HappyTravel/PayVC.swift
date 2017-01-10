@@ -23,15 +23,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         navigationItem.title = "支付"
         //支付结果返回
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
-        //保险金额返回
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.sureInsuranceReply(_:)), name: NotifyDefine.SureInsuranceReply, object: nil)
         initView()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        //请求协议金额
-//        SocketManager.sendData(.SureInsuranceReply, data: ["": "", "": ""])
     }
     
     func initView() {
@@ -84,46 +76,46 @@ class PayVC: UIViewController, UITextFieldDelegate {
             make.top.equalTo(payLab!.snp_bottom).offset(20)
         }
 
-        let insuranceBtn = UIButton()
-        insuranceBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 100)
-        insuranceBtn.setImage(UIImage(named: "pay-unselect"), forState: .Normal)
-        insuranceBtn.setImage(UIImage(named: "pay-selected"), forState: .Selected)
-        insuranceBtn.setTitle("同意购买商务保险,", forState: .Normal)
-        insuranceBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
-        insuranceBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
-        insuranceBtn.contentHorizontalAlignment = .Left
-        insuranceBtn.addTarget(self, action: #selector(sureInsuranceActure(_:)), forControlEvents: .TouchUpInside)
-        self.view.addSubview(insuranceBtn)
-        insuranceBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
-            make.width.equalTo(115)
-            make.height.equalTo(15)
-            make.left.equalTo(self.view).offset(20)
-        }
-        
-        let webBtn = UIButton()
-        webBtn.setTitle("《保险说明》", forState: .Normal)
-        webBtn.tag = 99
-        webBtn.setTitleColor(UIColor.init(decR: 17, decG: 30, decB: 46, a: 1), forState: .Normal)
-        webBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
-        webBtn.contentHorizontalAlignment = .Left
-//        let attrs = [
-//            NSFontAttributeName : UIFont.systemFontOfSize(12.0),
-//            NSForegroundColorAttributeName : UIColor.init(decR: 3, decG: 168, decB: 236, a: 1),
-//            NSUnderlineStyleAttributeName : 1]
-//        let attributedString = NSMutableAttributedString(string:"") //3 168 236
-//        let buttonTitleStr = NSMutableAttributedString(string:"《保险说明》", attributes:attrs)
-//        attributedString.appendAttributedString(buttonTitleStr)
-//        webBtn.setAttributedTitle(attributedString, forState: .Normal)
-        webBtn.addTarget(self, action: #selector(webView(_:)), forControlEvents: .TouchUpInside)
-        self.view.addSubview(webBtn)
-        webBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
-            make.width.equalTo(70)
-            make.height.equalTo(15)
-            make.left.equalTo(insuranceBtn.snp_right)
-        }
-        
+//        let insuranceBtn = UIButton()
+//        insuranceBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 100)
+//        insuranceBtn.setImage(UIImage(named: "pay-unselect"), forState: .Normal)
+//        insuranceBtn.setImage(UIImage(named: "pay-selected"), forState: .Selected)
+//        insuranceBtn.setTitle("同意购买商务保险,", forState: .Normal)
+//        insuranceBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
+//        insuranceBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
+//        insuranceBtn.contentHorizontalAlignment = .Left
+//        insuranceBtn.addTarget(self, action: #selector(sureInsuranceActure(_:)), forControlEvents: .TouchUpInside)
+//        self.view.addSubview(insuranceBtn)
+//        insuranceBtn.snp_makeConstraints { (make) in
+//            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
+//            make.width.equalTo(115)
+//            make.height.equalTo(15)
+//            make.left.equalTo(self.view).offset(20)
+//        }
+//        
+//        let webBtn = UIButton()
+//        webBtn.setTitle("《保险说明》", forState: .Normal)
+//        webBtn.tag = 99
+//        webBtn.setTitleColor(UIColor.init(decR: 17, decG: 30, decB: 46, a: 1), forState: .Normal)
+//        webBtn.titleLabel?.font = UIFont.systemFontOfSize(11.0)
+//        webBtn.contentHorizontalAlignment = .Left
+////        let attrs = [
+////            NSFontAttributeName : UIFont.systemFontOfSize(12.0),
+////            NSForegroundColorAttributeName : UIColor.init(decR: 3, decG: 168, decB: 236, a: 1),
+////            NSUnderlineStyleAttributeName : 1]
+////        let attributedString = NSMutableAttributedString(string:"") //3 168 236
+////        let buttonTitleStr = NSMutableAttributedString(string:"《保险说明》", attributes:attrs)
+////        attributedString.appendAttributedString(buttonTitleStr)
+////        webBtn.setAttributedTitle(attributedString, forState: .Normal)
+//        webBtn.addTarget(self, action: #selector(webView(_:)), forControlEvents: .TouchUpInside)
+//        self.view.addSubview(webBtn)
+//        webBtn.snp_makeConstraints { (make) in
+//            make.top.equalTo(passwdTF!.snp_bottom).offset(20)
+//            make.width.equalTo(70)
+//            make.height.equalTo(15)
+//            make.left.equalTo(insuranceBtn.snp_right)
+//        }
+//        
         
         let sureBtn = UIButton()
         sureBtn.setTitle("确认支付", forState: .Normal)
@@ -137,7 +129,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         sureBtn.snp_makeConstraints { (make) in
             make.left.equalTo(descLab.snp_left)
             make.right.equalTo(descLab.snp_right)
-            make.top.equalTo(webBtn.snp_bottom).offset(10)
+            make.top.equalTo(passwdTF!.snp_bottom).offset(10)
             make.height.equalTo(40)
         }
 
@@ -159,7 +151,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
             warningAlert.addAction(sure)
             self.presentViewController(warningAlert, animated: true, completion: nil)
         } else {
-            if DataManager.currentUser?.cash < price {
+            if CurrentUser.user_cash_ < price {
                 self.moneyIsTooLess()
             } else {
                 let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,

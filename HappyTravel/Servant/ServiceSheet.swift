@@ -12,7 +12,7 @@ protocol ServiceSheetDelegate : NSObjectProtocol {
     
     func cancelAction(sender: UIButton?)
     
-    func sureAction(service: ServiceInfo?, daysCount:Int?)
+    func sureAction(service: ServiceModel?, daysCount:Int?)
 
 }
 
@@ -23,7 +23,8 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
     var selectedIndexPath:NSIndexPath?
     var countsArray:Array<Int> = []
 
-    var servantInfo:UserInfo?
+    var servantInfo:UserInfoModel?
+    var servantDetail:ServantDetailModel?
     
     //记录是邀约？预约？   ture为邀约  false 为预约
     var isNormal = true
@@ -121,18 +122,18 @@ class ServiceSheet: UIView, UITableViewDelegate, UITableViewDataSource{
         }
 //        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row], daysCount: 1)
 
-        delegate?.sureAction(servantInfo?.serviceList[selectedIndexPath!.row], daysCount: countsArray[(selectedIndexPath?.row)!])
+        delegate?.sureAction(servantDetail?.service_list_[selectedIndexPath!.row], daysCount: countsArray[(selectedIndexPath?.row)!])
     }
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return servantInfo?.serviceList.count ?? 0
+        return servantDetail?.service_list_.count ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCellWithIdentifier("singleService", forIndexPath: indexPath) as! SingleServiceInfoCell
-        let service = servantInfo?.serviceList[indexPath.row]
+        let service = servantDetail?.service_list_[indexPath.row]
 
         cell.delegate = self
         

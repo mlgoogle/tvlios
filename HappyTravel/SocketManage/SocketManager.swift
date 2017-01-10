@@ -36,10 +36,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetRecommendServants = 1007
         // 推荐服务者返回
         case RecommendServants = 1008
+        
         // 请求服务城市列表
         case GetServiceCity = 1009
         // 服务城市列表返回
         case ServiceCity = 1010
+        
         // 请求修改密码
         case ModifyPassword = 1011
         // 修改密码返回
@@ -166,6 +168,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case VersionInfoRequest = 1115
         // APP版本信息返回
         case VersionInfoReply = 1116
+        //保险金额请求
+        case InsuranceRequest = 1117
+        //保险金额返回
+        case InsuranceReply = 1118
+        //保险支付
+        case InsurancePayRequest = 1119
+        //保险支付返回
+        case InsurancePayReply = 1120
         //MARK: - 2000+
         
         // 请求邀请服务者
@@ -217,10 +227,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         // 未读消息返回
         case UnreadMessageReply = 2026
         
-        //保险说明(未测试)
-        case SureInsuranceRequest = 3333
-        case SureInsuranceReply = 3334
-        
         case UploadContactRequest = 1111
         case UploadContactReply = 1112
 
@@ -249,6 +255,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     static var completationsDic = [Int16: recevieDataBlock]()
     
     let tmpNewRequestType:[SockOpcode] = [.Logined,
+                                          .ServiceCity,
+                                          .InsuranceReply,
+                                          .InsurancePayReply,
                                           .CenturionCardInfoReply,
                                           .CenturionVIPPriceReply,
                                           .UserCenturionCardInfoReply,
@@ -260,7 +269,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .SkillsInfoReply,
                                           .ServantInfo,
                                           .CheckAuthenticateResultReply,
-                                          .UserInfoResult]
+                                          .UserInfoResult,
+                                          .CheckUserCashReply,
+                                          .ServantDetailInfo]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -556,7 +567,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .UnreadMessageReply:
             unreadMessageReply(jsonBody)
         
-        case .SureInsuranceReply:
+        case .InsuranceReply:
             sureInsuranceReply(jsonBody)
             
             

@@ -20,9 +20,21 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         walletTable?.reloadData()
-        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化钱包环境...")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NotifyDefine.CheckUserCashResult, object: nil)
-        SocketManager.sendData(.CheckUserCash, data: ["uid_":CurrentUser.uid_])
+        
+        APIHelper.userAPI().cash({ [weak self](response) in
+            if let dict = response as? [String: AnyObject] {
+                if let cash = dict["user_cash_"] as? Int {
+                    CurrentUser.user_cash_ = cash
+                }
+                if let hasPasswd = dict["has_passwd_"] as? Int {
+                    CurrentUser.has_passwd_ = hasPasswd
+                }
+                self!.walletTable?.reloadData()
+                return
+            }
+            SVProgressHUD.showWainningMessage(WainningMessage: "初始化钱包环境失败，请稍后再试..", ForDuration: 1.5, completion: nil)
+        }, error: nil)
     }
     
     override func viewDidLoad() {
@@ -174,12 +186,12 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 icon?.image = UIImage.init(named: "cash")
                 title?.text = "余额"
-                let cash: String = String(format:"%.2f元", Double((DataManager.currentUser?.cash)!)/100)
+                let cash: String = String(format:"%.2f元", Double(CurrentUser.user_cash_)/100)
                 subTitleLabel?.text = cash
                 separateLine?.hidden = false
             } else if indexPath.row == 1 {
                 icon?.image = UIImage.init(named: "modify_pass")
-                title?.text = DataManager.currentUser?.has_passwd_ == -1 ? "设置支付密码" : "修改支付密码"
+                title?.text = CurrentUser.has_passwd_ == -1 ? "设置支付密码" : "修改支付密码"
                 subTitleLabel?.text = ""
             }
         } else if indexPath.section == 1 {

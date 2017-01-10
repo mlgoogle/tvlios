@@ -10,7 +10,7 @@ import Foundation
 
 class MessageCell: UITableViewCell {
     
-    var userInfo:UserInfo?
+    var userInfo:UserInfoModel?
     
     var msgInfo:PushMessage?
     var showDetailInfo:UIImageView = {
@@ -179,26 +179,26 @@ class MessageCell: UITableViewCell {
 
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             var uid = 0
-            if message!.from_uid_ == DataManager.currentUser!.uid {
+            if message!.from_uid_ == CurrentUser.uid_ {
                 uid = message!.to_uid_
             } else {
                 uid = message!.from_uid_
             }
-            if let user = DataManager.getUserInfo(uid) {
+            if let user = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(uid)")?.first {
                 userInfo = user
-                headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                headView.kf_setImageWithURL(NSURL(string: userInfo!.head_url_!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
                     
                 }
                 if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = userInfo!.nickname!
+                    nickNameLab.text = userInfo!.nickname_!
                 }
                 
                 if let msgLab = view!.viewWithTag(1004) as? UILabel {
                     var nickname:String?
-                    if message!.from_uid_ == DataManager.currentUser!.uid {
+                    if message!.from_uid_ == CurrentUser.uid_ {
                         nickname = DataManager.currentUser?.nickname
                     } else {
-                        nickname = userInfo?.nickname
+                        nickname = userInfo?.nickname_
                     }
                     msgLab.text = "\(nickname!) : \((message?.content_!)!)"
                 }
@@ -206,23 +206,24 @@ class MessageCell: UITableViewCell {
             
         }
     }
+    
     func setLocationInfo(message: PushMessage?, unreadCnt: Int) {
         let view = contentView.viewWithTag(101)
 
         if let headView = view!.viewWithTag(1001) as? UIImageView {
             var uid = 0
-            if message!.from_uid_ == DataManager.currentUser!.uid {
+            if message!.from_uid_ == CurrentUser.uid_ {
                 uid = message!.to_uid_
             } else {
                 uid = message!.from_uid_
             }
-            if let user = DataManager.getUserInfo(uid) {
+            if let user = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(uid)")?.first {
                 userInfo = user
-                headView.kf_setImageWithURL(NSURL(string: userInfo!.headUrl!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
+                headView.kf_setImageWithURL(NSURL(string: userInfo!.head_url_!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
 
                 }
                 if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = userInfo!.nickname!
+                    nickNameLab.text = userInfo!.nickname_!
                 }
                 
                 if let msgLab = view!.viewWithTag(1004) as? UILabel {
@@ -230,7 +231,7 @@ class MessageCell: UITableViewCell {
                     if message!.from_uid_ == DataManager.currentUser!.uid {
                         nickname = DataManager.currentUser?.nickname
                     } else {
-                        nickname = userInfo?.nickname
+                        nickname = userInfo?.nickname_
                     }
                     msgLab.text = "\(nickname!) : \("[位置分享]")"
                 }

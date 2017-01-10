@@ -91,7 +91,7 @@ class SingleServiceInfoCell: UITableViewCell {
     
     
 
-    func setupInfo(service:ServiceInfo,count:Int, isNormal:Bool) {
+    func setupInfo(service:ServiceModel, count:Int, isNormal:Bool) {
         
         if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
             priceLab.text = "\(Double(service.service_price_) / 100) 元"
@@ -101,15 +101,12 @@ class SingleServiceInfoCell: UITableViewCell {
             descLab.text = "\(service.service_name_!)    \(getServiceDateString(service.service_start_, end: service.service_end_))"
 
         }
-
-        
+   
     }
     
     
     func plus() {
-        
         guard delegate != nil else {
-            
             XCGLogger.error("DaysCountDelegate: delegate为空")
             return
         }
@@ -118,17 +115,15 @@ class SingleServiceInfoCell: UITableViewCell {
     }
     
     func reduce() {
-        
         guard delegate != nil else {
-            
             XCGLogger.error("DaysCountDelegate: delegate为空")
             return
         }
         
         delegate!.countsReduce(self)
 
-        
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

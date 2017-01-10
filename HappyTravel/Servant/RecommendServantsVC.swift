@@ -119,14 +119,14 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
             return
         }
 
-        
-        servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-        let user = servantInfo[data!["uid_"] as! Int]
-        DataManager.updateUserInfo(user!)
+//        
+//        servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+//        let user = servantInfo[data!["uid_"] as! Int]
+//        DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.isNormal = isNormal
         servantPersonalVC.appointment_id_ = appointment_id_
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(data!["uid_"])")!.first
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }

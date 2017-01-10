@@ -24,8 +24,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var annotations:Array<MAPointAnnotation> = []
     var login = false
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
+    
+    var serviceCitysModel:CityNameInfoModel?
+    
     var citysAlertController:UIAlertController?
-    var recommendServants:Array<UserInfo> = []
+    var recommendServants:Array<ReServantListModel> = []
     var subscribeServants:Array<UserInfo> = []
     var locality:String?
     var location:CLLocation?
@@ -175,15 +178,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
 //            make.centerY.equalTo(titleView.snp_centerY)
 //        }
-//        titleLab?.text = "所有服务者"
+//        titleLab?.text = "首页"
         //城市选择功能
       
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
         titleBtn?.setTitle("所有服务者", forState: .Normal)
-        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(S18)
-        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 110, bottom: 0, right: 0)
-
+        titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(16)
+        titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 115, bottom: 0, right: 0)
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
         titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
@@ -296,11 +298,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            make.right.equalTo(mapView!).offset(0.5)
 //            make.height.equalTo(60)
 //        }
-        //大拇指推荐功能，暂时隐藏，后继使用
+//        大拇指推荐功能，暂时隐藏，后继使用
 //        let recommendBtn = UIButton()
 //        recommendBtn.tag = 2001
 //        recommendBtn.backgroundColor = .clearColor()
-//        recommendBtn.backgroundColor = UIColor.redColor()
 //        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
 //        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
 //        mapView?.addSubview(recommendBtn)
@@ -350,20 +351,31 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func screenServices(sender:UIButton) {
         sender.selected = true
         alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-        let nameArray = ["所有服务者", "商务服务者", "休闲服务者"]
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "取消"]
         let typeArray = [999, 0, 1]
-        for i in 0..<3 {
+        for i in 0..<4 {
             let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
-                self.serviceType = typeArray[i]
-                self.screenAction(nameArray[i])
+                if i == 3{
+                    self.titleBtn?.selected = false
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+                else{
+                    self.serviceType = typeArray[i]
+                    self.screenAction(nameArray[i])
+                }
+                
                 
             })
             alertCtrl!.addAction(services)
         }
         
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+//        let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (sender: UIAlertAction) in
+//            self.titleBtn?.selected = false
+//            self.dismissViewControllerAnimated(true, completion: nil)
+            
+//        })
         
-        alertCtrl!.addAction(cancel)
+//        alertCtrl!.addAction(cancel)
         
         presentViewController(alertCtrl!, animated: true, completion: nil)
     }
@@ -371,7 +383,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func screenAction(title:String) {
         self.titleBtn?.setTitle(title, forState: .Normal)
         self.titleBtn?.selected = false
-        
         let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
         let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
         getServantNearby(lat, lon: lon)
@@ -479,7 +490,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
-        
         SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
             if let verInfo = result["data"] as? [String: AnyObject] {
                 UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
@@ -490,7 +500,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
             
         })
-        SocketManager.sendData(.GetServiceCity, data: nil)
+
+//        SocketManager.sendData(.GetServiceCity, data: nil)
+        APIHelper.commonAPI().cityNameInfo({ (response) in
+            if let model = response as? CityNameInfoModel {
+                DataManager.insertData(model)
+                self.serviceCitysModel = model
+            }
+            self.appointmentView.serviceCitysModel = self.serviceCitysModel
+            
+            }, error: { (err) in
+                
+        })
+        
+        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let dict = ["uid_": CurrentUser.uid_,
                         "device_token_": dt]
@@ -574,7 +597,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     for servant in servants {
                         let servantInfo = UserInfo()
                         servantInfo.setInfo(.Servant, info: servant)
-                        recommendServants.append(servantInfo)
+//                        recommendServants.append(servantInfo)
                         DataManager.updateUserInfo(servantInfo)
                         uid_str += "\(servantInfo.uid),"
                     }
@@ -726,7 +749,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
 //        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
         let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getUserInfo(data!["uid_"] as! Int)
+        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(data!["uid_"] as! Int)")?.first
         navigationController?.pushViewController(servantPersonalVC, animated: true)
         
     }
@@ -737,8 +760,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if citysAlertController == nil {
             citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = CitysSelectorSheet()
-            let citys = NSDictionary.init(dictionary: serviceCitys)
-            sheet.citysList = citys.allValues as? Array<CityInfo>
+            sheet.citysList = self.serviceCitysModel
+            sheet.targetCity = self.serviceCitysModel?.service_city_.first
+//            let citys = NSDictionary.init(dictionary: serviceCitys)
+//            sheet.citysList = citys.allValues as? Array<CityInfo>
             sheet.delegate = self
             citysAlertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -921,40 +946,47 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
-            
             guard checkAuthStaus() else { return }
-            
-            // 余额限制查看个人信息
-            if DataManager.currentUser?.has_recharged_ == 0 {
-                let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
-                
-                let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                    XCGLogger.debug("去充值")
-                    
-                    let rechargeVC = RechargeVC()
-                    self.navigationController?.pushViewController(rechargeVC, animated: true)
-                    
-                })
-                
-                let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
-                    
-                })
-                
-                alert.addAction(ok)
-                alert.addAction(cancel)
-                
-                presentViewController(alert, animated: true, completion: {
-                    
-                })
-                
-                return
-            }
+            guard cashCheck() else { return }
 
-            let dict:Dictionary<String, AnyObject> = ["uid_": (view as! GuideTagCell).userInfo!.uid_]
-            SocketManager.sendData(.GetServantDetailInfo, data: dict)
+            let servant = UserBaseModel()
+            servant.uid_ = (view as! GuideTagCell).userInfo!.uid_
+            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                    let servantPersonalVC = ServantPersonalVC()
+                    servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
+                    self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                }
+            }, error: nil)
             
         }
                 
+    }
+    
+    func cashCheck() -> Bool {
+        // 余额限制查看个人信息
+        if CurrentUser.has_recharged_ == 0 {
+            let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
+            
+            let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+                let rechargeVC = RechargeVC()
+                self.navigationController?.pushViewController(rechargeVC, animated: true)
+                
+            })
+            
+            let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+                
+            })
+            
+            alert.addAction(ok)
+            alert.addAction(cancel)
+            
+            presentViewController(alert, animated: true, completion: nil)
+            
+            return false
+        }
+        return true
     }
     
     func checkAuthStaus() -> Bool {
@@ -1017,11 +1049,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
         guard targetCity != nil else { return }
         recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
+        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
+
+//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
         SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
@@ -1031,8 +1065,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     //MARK: - ServantIntroCellDeleagte
-    func chatAction(servantInfo: UserInfo?) {
-        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
+    func chatAction(servantInfo: ReServantListModel?) {
+        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid_]
         SocketManager.sendData(.GetServantDetailInfo, data: dict)
 
     }
