@@ -277,7 +277,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .MessageVerifyResult,
                                           .ImproveDataResult,
                                           .ServiceDetailReply,
-                                          .DeviceTokenResult]
+                                          .DeviceTokenResult,
+                                          .UploadImageTokenReply]
     
     var isConnected : Bool {
         return socket!.isConnected

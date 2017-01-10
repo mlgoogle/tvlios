@@ -69,4 +69,12 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
+    
+    // 请求图片上传token
+    func uploadPhotoToken(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .UploadImageToken)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(UploadPhotoModel.classForCoder()))
+            }, error: error)
+    }
 }

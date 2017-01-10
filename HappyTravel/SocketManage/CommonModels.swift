@@ -100,5 +100,13 @@ class RegDeviceRequestModel: UserBaseModel {
     dynamic var device_token_:String?
 }
 
+// 照片上传
+class UploadPhotoModel: Object {
+    
+    dynamic var img_token_:String?
+    
+    dynamic var valid_time_ = 0
+}
+
 
 

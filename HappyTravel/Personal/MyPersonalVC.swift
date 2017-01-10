@@ -56,8 +56,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         super.viewWillAppear(animated)
         
         initPersonalView()
-        
-//        initImagePick()
     }
     
     public override func viewDidLoad() {
@@ -75,12 +73,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MyPersonalVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
-
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
     }
     
@@ -169,55 +164,15 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     
     func setHeadImage() {
-        
-        
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
         sideMenuController?.toggle()
-//        SocketManager.sendData(.UploadImageToken, data: nil)
-//        
-//        let sheetController = UIAlertController.init(title: "选择图片", message: nil, preferredStyle: .ActionSheet)
-//        let cancelAction:UIAlertAction! = UIAlertAction.init(title: "取消", style: .Cancel) { action in
-//            
-//        }
-//        let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
-//            self.imagePicker?.sourceType = .Camera
-//            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-//        }
-//        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
-//            self.imagePicker?.sourceType = .PhotoLibrary
-//            
-//            self.presentViewController(self.imagePicker!, animated: true, completion: nil)
-//        }
-//        sheetController.addAction(cancelAction)
-//        sheetController.addAction(cameraAction)
-//        sheetController.addAction(labAction)
-//        presentViewController(sheetController, animated: true, completion: nil)
+
     }
     
     func setNickName() {
-        
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil, userInfo: nil)
         sideMenuController?.toggle()
-//        let alert = UIAlertController.init(title: "修改昵称", message: nil, preferredStyle: .Alert)
-//        alert.addTextFieldWithConfigurationHandler({ (textField) in
-//            textField.text = (DataManager.currentUser?.nickname)!
-//        })
-//        let ok = UIAlertAction.init(title: "修改", style: .Default, handler: { (action) in
-//            SVProgressHUD.displayDurationForString("提交修改中，请稍后！")
-//            self.nickName = (alert.textFields?.first?.text)!
-//            let dict:Dictionary<String, AnyObject> = ["uid_": (CurrentUser.uid_)!,
-//                "nickname_": self.nickName!,
-//                "gender_": (DataManager.currentUser?.gender)!,
-//                "head_url_": (DataManager.currentUser?.headUrl)!,
-//                "address_": (DataManager.currentUser?.address)!,
-//                "longitude_": (DataManager.currentUser?.gpsLocationLon)!,
-//                "latitude_": (DataManager.currentUser?.gpsLocationLat)!]
-//            SocketManager.sendData(.SendImproveData, data: dict)
-//        })
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-//        alert.addAction(ok)
-//        alert.addAction(cancel)
-//        presentViewController(alert, animated: true, completion: nil)
+
     }
     
     func initPersonalView() {
@@ -270,7 +225,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.bottom.equalTo(headImageView!.snp_centerY).offset(-2.5)
                 make.height.equalTo(20)
                 make.left.equalTo(headImageView!.snp_right).offset(15)
-//                make.right.equalTo(personalView!.snp_right)
             }
         }
 
@@ -291,32 +245,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             }
         }
         
-//        for i in 0...4 {
-//            var star = starView!.viewWithTag(10003*10 + i) as? UIImageView
-//            if star == nil {
-//                star = UIImageView()
-//                star!.backgroundColor = .clearColor()
-//                star!.tag = 10003*10 + i
-//                star!.contentMode = .ScaleAspectFit
-//                starView!.addSubview(star!)
-//                star!.snp_makeConstraints(closure: { (make) in
-//                    if i == 0 {
-//                        make.left.equalTo(starView!)
-//                    } else {
-//                        make.left.equalTo((starView!.viewWithTag(10003 * 10 + i - 1) as? UIImageView)!.snp_right).offset(10)
-//                    }
-//                    make.top.equalTo(starView!)
-//                    make.bottom.equalTo(starView!)
-//                    make.width.equalTo(17)
-//                })
-//            }
-//            if DataManager.currentUser!.level / Float(i) >= 1 {
-//                star!.image = UIImage.init(named: "my-star-fill")
-//            } else {
-//                star!.image = UIImage.init(named: "my-star-hollow")
-//            }
-//            
-//        }
         var levelIcon = starView!.viewWithTag(100030) as? UIImageView
         if levelIcon == nil {
             levelIcon = UIImageView()
@@ -442,111 +370,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         XCGLogger.debug("无情吐槽")
     }
     
-    
-    // MARK: - UIImagePickreControllerDelegate
-    func initImagePick() {
-        if imagePicker == nil {
-            imagePicker = UIImagePickerController()
-            imagePicker?.delegate = self
-            imagePicker?.allowsEditing = true
-        }
-        
-    }
-    
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        headImageView?.setImage(image.reSizeImage(CGSizeMake(100, 100)), forState: .Normal)
-        
-        imagePicker?.dismissViewControllerAnimated(true, completion: nil)
-        
-        //先把图片转成NSData
-        let data = UIImageJPEGRepresentation(image, 0.5)
-        //图片保存的路径
-        //这里将图片放在沙盒的documents文件夹中
-        
-        //Home目录
-        let homeDirectory = NSHomeDirectory()
-        let documentPath = homeDirectory + "/Documents"
-        //文件管理器
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
-        //把刚刚图片转换的data对象拷贝至沙盒中 并保存为image.png
-        do {
-            try fileManager.createDirectoryAtPath(documentPath, withIntermediateDirectories: true, attributes: nil)
-            
-        }
-        catch _ {
-        }
-        let timestemp:Int = Int(NSDate().timeIntervalSince1970)
-//        let fileName = "/\(CurrentUser.uid_)_\(timestemp).png"
-        let fileName = "/\(CurrentUser.uid_)_\(timestemp).png"
-        headImageName = fileName
-        fileManager.createFileAtPath(documentPath.stringByAppendingString(fileName), contents: data, attributes: nil)
-        //得到选择后沙盒中图片的完整路径
-        let filePath: String = String(format: "%@%@", documentPath, fileName)
-        headImagePath = filePath
-        updateHeadImage()
-    }
-    
-    func updateHeadImage() {
-        if token != nil {
-            let qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
-            let qnManager = QNUploadManager()
-            SVProgressHUD.showProgressMessage(ProgressMessage: "提交中...")
-            
-            qnManager.putFile(headImagePath!, key: "user_center/head\(headImageName!)", token: token!, complete: { (info, key, resp) -> Void in
-                
-                if info.statusCode != 200 || resp == nil {
-                    self.navigationItem.rightBarButtonItem?.enabled = true
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试！", ForDuration: 1, completion: nil)
-                    return
-                }
-                
-                if (info.statusCode == 200 ){
-                    let respDic: NSDictionary? = resp
-                    let value:String? = respDic!.valueForKey("key") as? String
-                    let url = qiniuHost + value!
-                    
-                    let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-                    Alamofire.request(.GET, addr).responseJSON() { response in
-                        let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-                        let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-                        XCGLogger.debug("\(location)")
-                        
-                        let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
-                            "nickname_": CurrentUser.nickname_!,
-                            "gender_": CurrentUser.gender_,
-                            "head_url_": url,
-                            "address_": CurrentUser.address_!,
-                            "longitude_": CurrentUser.longitude_,
-                            "latitude_": CurrentUser.latitude_]
-                        SocketManager.sendData(.SendImproveData, data: dict)
-                        
-                    }
-                }
-                
-            }, option: nil)
-        } else {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法提交，请稍后再试", ForDuration: 1, completion: {
-                SocketManager.sendData(.UploadImageToken, data: nil)
-            })
-        }
-        
-    }
-    //MARK: --
-    
-    //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
-        let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewControllerAnimated(true)
-            })
-            return
-        }
-
-        token = data.valueForKey("img_token_") as? String
-    }
-
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
