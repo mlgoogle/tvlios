@@ -54,11 +54,19 @@ class CommonAPI: SocketAPI {
             }, error: error)
     }
 
-    //获取验证码
+    // 获取验证码
     func verifyCode(model: VerifyCodeRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .SendMessageVerify, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(VerifyInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
+    // 注册设备
+    func regDevice(model: RegDeviceRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .PutDeviceToken, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
 }
