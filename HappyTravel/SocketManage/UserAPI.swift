@@ -42,7 +42,7 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    
+
     func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {
         let model = UserBaseModel()
         model.uid_ = CurrentUser.uid_

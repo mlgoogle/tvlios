@@ -118,7 +118,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     func bottomBarAction(sender: UIButton?) {
         if CurrentUser.has_recharged_ == 0 {
             let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
-            
+
             let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                 let rechargeVC = RechargeVC()
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
@@ -222,6 +222,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 //移除天数选泽,默认一天
 //                weakSelf.performSelector(#selector(ServantPersonalVC.inviteAction), withObject: nil, afterDelay: 0.2)
                 weakSelf.daysSureAction(nil, targetDays: 1)
+                //弹出保险页面
+//                let insuranceVc = InsuranceVC()
+//                insuranceVc.order_price = Int64(service!.service_price_)
+//                self.navigationController?.pushViewController(insuranceVc, animated: true)
                 
             })
         }

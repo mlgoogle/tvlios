@@ -12,13 +12,18 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var table:UITableView?
     var commitBtn:UIButton?
     var agent = false
+    //老版socket
     var serviceCitys:Dictionary<Int, CityInfo> = [:]
+//    var cityInfo:CityInfo?
+    //新版socket
+    var serviceCitysModel:CityNameInfoModel?
+    var cityInfoBase: CityNameBaseInfo?
+    
     var citysAlertController:UIAlertController?
     var dateAlertController:UIAlertController?
     var curIndexPath:NSIndexPath?
     var selectedBtn:UIButton?
     
-    var cityInfo:CityInfo?
     var startDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
     var endDate:NSDate? = NSDate.init(timeIntervalSinceNow: 3600 * 24)
     var gender = false
@@ -251,7 +256,8 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                 make.bottom.equalTo(cell!.contentView).offset(-10)
                 make.right.equalTo(cell!.contentView).offset(-40)
             })
-            cityLab?.text = cityInfo?.cityName! ?? "  请选择"
+//            cityLab?.text = cityInfo?.cityName! ?? "  请选择"
+            cityLab?.text = cityInfoBase?.city_name_ ?? " 请选择"
         }
         
         var citySelector = cell?.contentView.viewWithTag(tags["citySelector"]!) as? UIImageView
@@ -464,9 +470,12 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             if indexPath.row == 0 {
                 citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
                 let sheet = CitysSelectorSheet()
-                let citys = NSDictionary.init(dictionary: serviceCitys)
-                sheet.citysList = citys.allValues as? Array<CityInfo>
-                sheet.targetCity = sheet.citysList?.first
+                
+//                let citys = NSDictionary.init(dictionary: serviceCitys)
+//                sheet.citysList = citys.allValues as? Array<CityInfo>
+//                sheet.targetCity = sheet.citysList?.first
+                sheet.citysList = self.serviceCitysModel
+                sheet.targetCity = self.serviceCitysModel?.service_city_.first
                 sheet.delegate = self
                 citysAlertController!.view.addSubview(sheet)
                 sheet.snp_makeConstraints { (make) in
@@ -523,12 +532,13 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func sureAction(sender: UIButton?, targetCity: CityInfo?) {
+    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         if let cell = table?.cellForRowAtIndexPath(curIndexPath!) {
             if let cityLab = cell.contentView.viewWithTag(tags["cityLab"]!) as? UILabel {
-                cityLab.text = "  \((targetCity?.cityName)!)"
-                cityInfo = targetCity
+//                cityLab.text = "  \((targetCity?.cityName)!)"
+                cityLab.text = targetCity?.city_name_
+                cityInfoBase = targetCity
             }
         }
     }
@@ -583,7 +593,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
 //            alright = false
 //
 //            errMsg = "开始时间不能大于结束时间"
-        } else if cityInfo == nil {
+        } else if cityInfoBase == nil {//cityInfo == nil {
             alright = false
             errMsg = "请选择目标城市"
         } else if skills.count == 0 {
@@ -625,7 +635,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         }
         
         let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "city_code_": cityInfo!.cityCode,
+                                        "city_code_": (cityInfoBase?.city_code_)!,//cityInfo!.cityCode,
                                         "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),
                                         "skills_": skillStr,

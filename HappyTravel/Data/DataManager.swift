@@ -570,12 +570,24 @@ class DataManager: NSObject {
                 realm.delete(realm.objects(type))
                 realm.add(model)
             })
+        } else if  model.isKindOfClass(CityNameInfoModel) {
+            let type = CityNameInfoModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else if model.isKindOfClass(InsuranceInfoModel) {
+            let type = InsuranceInfoModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
         } else {
             try! realm.write({
                 realm.add(model)
             })
         }
-        
+    
     }
     
     static func removeData<T: Object>(type: T.Type, filter: String? = nil) {
