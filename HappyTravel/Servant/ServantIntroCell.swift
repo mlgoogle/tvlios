@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 protocol ServantIntroCellDelegate : NSObjectProtocol {
     
-    func chatAction(servantInfo: UserInfo?)
+    func chatAction(servantInfo: UserInfoModel?)
     
 }
 
@@ -19,7 +19,7 @@ class ServantIntroCell: UITableViewCell {
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
     var allLabelWidth:Float = 10.0
-    var servantInfo:UserInfo?
+    var servantInfo:UserInfoModel?
     weak var delegate:ServantIntroCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -271,7 +271,7 @@ class ServantIntroCell: UITableViewCell {
         delegate?.chatAction(servantInfo)
     }
     
-    func setInfo(userInfo: UserInfo?) {
+    func setInfo(userInfo: UserInfoModel?) {
         servantInfo = userInfo
         let view = contentView.viewWithTag(101)
         let imageView: UIImageView = view!.viewWithTag(1001) as! UIImageView
@@ -282,128 +282,122 @@ class ServantIntroCell: UITableViewCell {
 //            }
 //            
 //        }
-        let headUrl = NSURL(string: userInfo!.headUrl!)
+        let headUrl = NSURL(string: userInfo!.head_url_!)
         let headView = imageView.viewWithTag(10001) as! UIImageView
         headView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             
         }
         
         if let nickNameLab = view!.viewWithTag(2001) as? UILabel {
-            nickNameLab.text = userInfo?.nickname
+            nickNameLab.text = userInfo?.nickname_
         }
         
-        var lastTallyView:UIView?
-        let businessTags = List<Tally>() +  (userInfo?.businessTags)!
-        let tags = businessTags + (userInfo?.travalTags)!
-        let tallyView = view!.viewWithTag(3001)
-        for subview in tallyView!.subviews {
-            subview.removeFromSuperview()
-        }
-        allLabelWidth = 0.0
-        for (index, tag) in tags.enumerate() {
-            
-            
-            if tag.tally == "" || tag.tally == nil {
-                break
+        if let servantDetail = DataManager.getData(ServantDetailModel.self, filter: "uid_ = \(userInfo!.uid_)")?.first {
+            var lastTallyView:UIView?
+            let tags = servantDetail.tags
+            let tallyView = view!.viewWithTag(3001)
+            for subview in tallyView!.subviews {
+                subview.removeFromSuperview()
             }
-            if Int(tag.tally!) == nil {
+            allLabelWidth = 0.0
+            for (index, tag) in tags.enumerate() {
+                guard tag != "" else { break }
+                guard Int(tag) != nil else { break }
                 
-                break
-            }
-            if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(tag.tally!)") {
-                let skill = results.first
-                var tallyItemView = tallyView!.viewWithTag(1001 + index)
-                if tallyItemView == nil {
-                    tallyItemView = UIView()
-                    tallyItemView!.tag = 1001 + index
-                    tallyItemView!.userInteractionEnabled = true
-                    tallyItemView!.backgroundColor = UIColor.clearColor()
-                    tallyItemView!.layer.cornerRadius = 25 / 2.0
-                    tallyItemView?.layer.masksToBounds = true
-                    tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-                    tallyItemView?.layer.borderWidth = 1
-                    tallyView!.addSubview(tallyItemView!)
-                    tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
-                    
-                    
-                    allLabelWidth = allLabelWidth + Float(AtapteWidthValue(10)) + skill!.labelWidth
-                    
-                    tallyItemView!.snp_makeConstraints { (make) in
-                        let previousView = tallyView!.viewWithTag(1001+index-1)
+                if let skill = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(tag)")?.first {
+                    var tallyItemView = tallyView!.viewWithTag(1001 + index)
+                    if tallyItemView == nil {
+                        tallyItemView = UIView()
+                        tallyItemView!.tag = 1001 + index
+                        tallyItemView!.userInteractionEnabled = true
+                        tallyItemView!.backgroundColor = UIColor.clearColor()
+                        tallyItemView!.layer.cornerRadius = 25 / 2.0
+                        tallyItemView?.layer.masksToBounds = true
+                        tallyItemView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+                        tallyItemView?.layer.borderWidth = 1
+                        tallyView!.addSubview(tallyItemView!)
+                        tallyItemView!.translatesAutoresizingMaskIntoConstraints = false
                         
-                        if previousView == nil {
+                        
+                        allLabelWidth = allLabelWidth + Float(AtapteWidthValue(10)) + skill.labelWidth
+                        
+                        tallyItemView!.snp_makeConstraints { (make) in
+                            let previousView = tallyView!.viewWithTag(1001+index-1)
                             
-                            make.top.equalTo(tallyView!).offset(AtapteHeightValue(10))
-                            make.left.equalTo(tallyView!)
-                        } else {
-                            if allLabelWidth + 20 > Float(ScreenWidth) {
+                            if previousView == nil {
                                 
-                                allLabelWidth = 10 + skill!.labelWidth
-                                make.top.equalTo(previousView!.snp_bottom).offset(AtapteHeightValue(10))
+                                make.top.equalTo(tallyView!).offset(AtapteHeightValue(10))
                                 make.left.equalTo(tallyView!)
                             } else {
-                                make.top.equalTo(previousView!)
-                                make.left.equalTo(previousView!.snp_right).offset(AtapteWidthValue(10))
+                                if allLabelWidth + 20 > Float(ScreenWidth) {
+                                    
+                                    allLabelWidth = 10 + skill.labelWidth
+                                    make.top.equalTo(previousView!.snp_bottom).offset(AtapteHeightValue(10))
+                                    make.left.equalTo(tallyView!)
+                                } else {
+                                    make.top.equalTo(previousView!)
+                                    make.left.equalTo(previousView!.snp_right).offset(AtapteWidthValue(10))
+                                }
                             }
+                            make.height.equalTo(25)
+                            make.width.equalTo(skill.labelWidth)
                         }
-                        make.height.equalTo(25)
-                        make.width.equalTo(skill!.labelWidth)
                     }
-                }
-                lastTallyView = tallyItemView
-                
-                var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 100 + 1) as? UILabel
-                if tallyLabel == nil {
-                    tallyLabel = UILabel(frame: CGRectZero)
-                    tallyLabel!.tag = tallyItemView!.tag * 100 + 1
-                    tallyLabel!.font = UIFont.systemFontOfSize(S12)
-                    tallyLabel!.userInteractionEnabled = false
-                    tallyLabel!.backgroundColor = UIColor.clearColor()
-                    tallyLabel?.textAlignment = .Center
-                    tallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-                    tallyItemView!.addSubview(tallyLabel!)
-                    tallyLabel!.snp_makeConstraints { (make) in
-                        make.left.equalTo(tallyItemView!).offset(AtapteWidthValue(10))
-                        make.top.equalTo(tallyItemView!)
-                        make.bottom.equalTo(tallyItemView!)
-                        make.right.equalTo(tallyItemView!).offset(AtapteWidthValue(-10))
+                    lastTallyView = tallyItemView
+                    
+                    var tallyLabel = tallyItemView?.viewWithTag(tallyItemView!.tag * 100 + 1) as? UILabel
+                    if tallyLabel == nil {
+                        tallyLabel = UILabel(frame: CGRectZero)
+                        tallyLabel!.tag = tallyItemView!.tag * 100 + 1
+                        tallyLabel!.font = UIFont.systemFontOfSize(S12)
+                        tallyLabel!.userInteractionEnabled = false
+                        tallyLabel!.backgroundColor = UIColor.clearColor()
+                        tallyLabel?.textAlignment = .Center
+                        tallyLabel?.textColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
+                        tallyItemView!.addSubview(tallyLabel!)
+                        tallyLabel!.snp_makeConstraints { (make) in
+                            make.left.equalTo(tallyItemView!).offset(AtapteWidthValue(10))
+                            make.top.equalTo(tallyItemView!)
+                            make.bottom.equalTo(tallyItemView!)
+                            make.right.equalTo(tallyItemView!).offset(AtapteWidthValue(-10))
+                        }
                     }
+                    tallyLabel!.text = skill.skill_name_
                 }
-                tallyLabel!.text = skill!.skill_name_
             }
-        }
-        if lastTallyView != nil {
-            var tallyBottomView = tallyView?.viewWithTag(3001*10+1)
-            if tallyBottomView == nil {
-                tallyBottomView = UIView()
-                tallyBottomView?.tag = 3001*10+1
-                tallyBottomView?.backgroundColor = UIColor.clearColor()
-                tallyView?.addSubview(tallyBottomView!)
+            if lastTallyView != nil {
+                var tallyBottomView = tallyView?.viewWithTag(3001*10+1)
+                if tallyBottomView == nil {
+                    tallyBottomView = UIView()
+                    tallyBottomView?.tag = 3001*10+1
+                    tallyBottomView?.backgroundColor = UIColor.clearColor()
+                    tallyView?.addSubview(tallyBottomView!)
+                }
+                tallyBottomView?.snp_remakeConstraints(closure: { (make) in
+                    make.top.equalTo(lastTallyView!.snp_bottom)
+                    make.bottom.equalTo(tallyView!)
+                })
             }
-            tallyBottomView?.snp_remakeConstraints(closure: { (make) in
-                make.top.equalTo(lastTallyView!.snp_bottom)
-                make.bottom.equalTo(tallyView!)
-            })
-        }
-        
-        let starLevelView = view!.viewWithTag(4001)
-        for i in 0...4 {
-            if let star = starLevelView?.viewWithTag(starLevelView!.tag * 10 + i) as? UIImageView {
-                star.image = UIImage.init(named: (userInfo!.praiseLv / Int(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
-                
+            
+            let starLevelView = view!.viewWithTag(4001)
+            for i in 0...4 {
+                if let star = starLevelView?.viewWithTag(starLevelView!.tag * 10 + i) as? UIImageView {
+                    star.image = UIImage.init(named: (userInfo!.praise_lv_ / Int(i+1) >= 1) ? "guide-star-fill" : "guide-star-hollow")
+                    
+                }
             }
-        }
-        
-        if let officialAuth = imageView.viewWithTag(10003) as? UIImageView {
-            officialAuth.hidden = !(userInfo?.certification)!
-        }
-        
-        if let limitLab = imageView.viewWithTag(10006) as? UILabel {
-            let myLongitude = DataManager.curLocation?.coordinate.longitude ?? 0
-            let myLatitude = DataManager.curLocation?.coordinate.latitude ?? 0
-            let servantLongitude = userInfo?.gpsLocationLon
-            let servantLatitude = userInfo?.gpsLocationLat
-            limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
+            
+            if let officialAuth = imageView.viewWithTag(10003) as? UIImageView {
+                officialAuth.hidden = servantDetail.is_certification_ != 1
+            }
+            
+            if let limitLab = imageView.viewWithTag(10006) as? UILabel {
+                let myLongitude = DataManager.curLocation?.coordinate.longitude ?? 0
+                let myLatitude = DataManager.curLocation?.coordinate.latitude ?? 0
+                let servantLongitude = userInfo?.longitude_
+                let servantLatitude = userInfo?.latitude_
+                limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
+            }
         }
         
     }

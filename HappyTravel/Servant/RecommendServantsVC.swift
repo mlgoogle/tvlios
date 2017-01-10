@@ -14,10 +14,10 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     var isNormal = true
     
     var servantsTable:UITableView?
-    var servantsInfo:Array<UserInfo>? = []
+    var servantsInfo:Array<UserInfoModel>? = []
     var appointment_id_ = 0
     
-    var servantInfo:Dictionary<Int, UserInfo> = [:]
+    var servantInfo:Dictionary<Int, UserInfoModel> = [:]
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -56,7 +56,7 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func registerNotice(){
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RecommendServantsVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
     }
     
     // MARK: - UITableView
@@ -101,10 +101,21 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //MARK: - ServantIntroCellDeleagte
-    func chatAction(servantInfo: UserInfo?) {
-        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
-        SocketManager.sendData(.GetServantDetailInfo, data:dict)
-        self.servantInfo[(servantInfo?.uid)!] = servantInfo
+    func chatAction(servantInfo: UserInfoModel?) {
+        let servant = UserBaseModel()
+        servant.uid_ = servantInfo!.uid_
+        APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+            if let model = response as? ServantDetailModel {
+                DataManager.insertData(model)
+                let servantPersonalVC = ServantPersonalVC()
+                servantPersonalVC.isNormal = self!.isNormal
+                servantPersonalVC.appointment_id_ = self!.appointment_id_
+                servantPersonalVC.personalInfo = servantInfo
+                self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                
+            }
+        }, error: nil)
+        self.servantInfo[servantInfo!.uid_] = servantInfo
     }
     /**
      服务者详情回调
@@ -119,9 +130,9 @@ class RecommendServantsVC: UIViewController, UITableViewDelegate, UITableViewDat
             return
         }
 
-        servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
-        let user = servantInfo[data!["uid_"] as! Int]
-        DataManager.updateUserInfo(user!)
+//        servantInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data as? Dictionary<String, AnyObject>)
+//        let user = servantInfo[data!["uid_"] as! Int]
+//        DataManager.updateUserInfo(user!)
         let servantPersonalVC = ServantPersonalVC()
         servantPersonalVC.isNormal = isNormal
         servantPersonalVC.appointment_id_ = appointment_id_
