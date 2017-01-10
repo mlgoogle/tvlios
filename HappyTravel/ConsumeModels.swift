@@ -145,8 +145,32 @@ class AppointmentRecommendRequestModel: Object {
 }
 
 class AppointmentRecommendListModel: Object{
-   let recommend_guide_ = List<ReServantListModel>()
+   let recommend_guide_ = List<UserInfoModel>()
 }
+class OrderDetailRequsetModel: Object {
+    dynamic var order_id_ = 0
+    dynamic var order_type_ = 1
+    
+}
+
+class CommentDetaiRequsetModel: Object {
+    dynamic var order_id_ = 0
+}
+
+class OrderCommentModel: Object {
+    dynamic var order_id_ = 0
+    dynamic var service_score_ = 0
+    dynamic var user_score_ = 0
+    dynamic var remarks_:String?
+}
+class CommentForOrderModel: Object {
+    dynamic var from_uid_ = 0
+    dynamic var to_uid_ = 0
+    dynamic var service_score_ = 0
+    dynamic var user_score_ = 0
+    dynamic var remarks_:String?
+}
+
 
 //服务详情
 class InvoiceServiceModel: ServiceModel {

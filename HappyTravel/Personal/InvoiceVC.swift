@@ -145,6 +145,35 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
     }
     
+    
+    func handleCenturionCardRequest(isRefresh:Bool) {
+//        footer.state = .NoMoreData
+//        footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+        APIHelper.consumeAPI().requsetCenturionCardRecordList(CenturionCardRecordRequestModel(), complete: { (response) in
+            self.endRefresh()
+        }) { (error) in
+            
+        }
+    }
+    func handleInviteOrderRequest(isRefresh:Bool) {
+        let model = HodometerRequestModel()
+        model.order_id_ = isRefresh ? 0 : orderID
+        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
+            self.orderID = response as! Int
+            self.endRefresh()
+        }) { (error) in
+        }
+    }
+    func endRefresh() {
+        if header.state == .Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == .Refreshing {
+            footer.endRefreshing()
+        }
+        
+        table?.reloadData()
+    }
     func commitAction(sender: UIButton) {
         let realm = try! Realm()
         selectedOrderList = realm.objects(OpenTicketInfo.self).filter("selected = true")

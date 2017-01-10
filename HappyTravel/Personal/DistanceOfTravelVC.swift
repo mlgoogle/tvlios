@@ -23,7 +23,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var messageInfo:Array<UserInfo>? = []
     var segmentIndex = 0
     var timer:NSTimer?
-    var servantsArray:Array<ReServantListModel>? = []
+    var servantsArray:Array<UserInfoModel>? = []
 
     var hotometers:Results<HodometerInfo>?
     var currentApponitmentID = 0
@@ -46,7 +46,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     var inviteList:Results<HodometerInfoModel>?
     var appointmentList:Results<AppointmentInfoModel>?
     var centurionRecordList:Results<CenturionCardRecordModel>?
-
+    var requestCount = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -320,6 +320,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 
         }
     }
+    func handleInviteOrderRequest(isRefresh:Bool) {
+        let model = HodometerRequestModel()
+        model.order_id_ = isRefresh ? 0 : orderID
+        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
+            self.orderID = response as! Int
+            self.endRefresh()
+        }) { (error) in
+        }
+    }
     
     func handleAppointmentRequest(isRefresh:Bool) {
         let model = AppointmentRequestModel()
@@ -331,39 +340,49 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func handleInviteOrderRequest(isRefresh:Bool) {
-        let model = HodometerRequestModel()
-        model.order_id_ = isRefresh ? 0 : orderID
-        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
-            self.orderID = response as! Int
-            self.endRefresh()
-            }) { (error) in
-        }
-    }
+
     
 
     func requestRecommendListWithUidStr(uid_str_:String) {
         let model = AppointmentRecommendRequestModel()
         model.uid_str_ = uid_str_
         APIHelper.consumeAPI().requestAppointmentRecommendList(model, complete: { (response) in
-            let listModel = response as? AppointmentRecommendListModel
+            let list = response as? Array<UserInfoModel>
             var uid_str = ""
-            for servant in (listModel?.recommend_guide_)! {
+            self.servantsArray?.removeAll()
+            guard list?.count > 0 else {return}
+            for servant in list! {
                 self.servantsArray?.append(servant)
                 uid_str += "\(servant.uid_),"
+                self.requestDetaiInfo(servant.uid_)
             }
-            let recommendVC = RecommendServantsVC()
-            recommendVC.isNormal = false
-//            recommendVC.appointment_id_ = self.currentApponitmentID
-            recommendVC.servantsInfo = self.servantsArray
-            self.navigationController?.pushViewController(recommendVC, animated: true)
-            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-            SocketManager.sendData(.GetUserInfo, data: dict)
-            self.requestUserInfoByIDStr(uid_str_)
+//            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+//            self.requestUserInfoByIDStr(uid_str)
         }) { (error) in
         }
     }
+    func requestDetaiInfo(uid:Int) {
+        
+        let model = UserBaseModel()
+        model.uid_ = uid
+        APIHelper.servantAPI().servantDetail(model, complete: { (response) in
+            self.requestCount += 1
+            if self.requestCount == self.servantsArray?.count {
+                let recommendVC = RecommendServantsVC()
+                recommendVC.isNormal = false
+                recommendVC.appointment_id_ = self.currentApponitmentID
+                recommendVC.servantsInfo = self.servantsArray
+                self.navigationController?.pushViewController(recommendVC, animated: true)
+            }
+            let info = response as? ServantDetailModel
+            guard info != nil else {return}
+            DataManager.insertData(info!)
+            }) { (error) in
+                
+        }
+        
+    }
+    
     func requestUserInfoByIDStr(uid_str_:String) {
         
         let model = UserInfoIDStrRequestModel()
@@ -467,7 +486,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 object.status_ == HodometerStatus.Completed.rawValue {
                 let detailVC = AppointmentDetailVC()
                 detailVC.appointmentInfo = appointmentList![indexPath.row]
-
                 navigationController?.pushViewController(detailVC, animated: true)
                 /**
                  *  未支付状态去支付

@@ -22,7 +22,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var userScore:Int?
     var remark:String?
     var commitBtn: UIButton?
-    
+    var commentModel:OrderCommentModel?
+
     var servantDict:Dictionary<String, AnyObject>?
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -97,67 +98,67 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
     }
     
+//    
+//    func servantDetailInfo(notification: NSNotification) {
+//
+//
+//        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            
+//            if data["error_"] != nil {
+//                XCGLogger.error("Get UserInfo Error:\(data["error"])")
+//                return
+//            }
+//            servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+//            guard servantInfo != nil else {
+//                servantDict = data
+//                getServantBaseInfo()
+//                return
+//            }
+//            
+//            let realm = try! Realm()
+//            try! realm.write({
+//                servantInfo!.setInfo(.Servant, info: data)
+//                
+//            })
+//            
+//            let servantPersonalVC = ServantPersonalVC()
+////            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
+//            navigationController?.pushViewController(servantPersonalVC, animated: true)
+//        }
+//       
+//    }
+//    
+//    func getServantBaseInfo() {
+//        
+////        let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
+////        SocketManager.sendData(.GetUserInfo, data: dic)
+//        
+//    }
+//    func servantBaseInfoReply(notification: NSNotification) {
+//        
+//        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
+//        let realm = try! Realm()
+//        try! realm.write({
+//            
+//            servantInfo!.setInfo(.Servant, info: servantDict)
+//            
+//        })
+//        let servantPersonalVC = ServantPersonalVC()
+////        servantPersonalVC.personalInfo = servantInfo
+//        navigationController?.pushViewController(servantPersonalVC, animated: true)
+//    }
     
-    func servantDetailInfo(notification: NSNotification) {
-
-
-        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            
-            if data["error_"] != nil {
-                XCGLogger.error("Get UserInfo Error:\(data["error"])")
-                return
-            }
-            servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-            guard servantInfo != nil else {
-                servantDict = data
-                getServantBaseInfo()
-                return
-            }
-            
-            let realm = try! Realm()
-            try! realm.write({
-                servantInfo!.setInfo(.Servant, info: data)
-                
-            })
-            
-            let servantPersonalVC = ServantPersonalVC()
-//            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
-            navigationController?.pushViewController(servantPersonalVC, animated: true)
-        }
-       
-    }
-    
-    func getServantBaseInfo() {
-        
-//        let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
-//        SocketManager.sendData(.GetUserInfo, data: dic)
-        
-    }
-    func servantBaseInfoReply(notification: NSNotification) {
-        
-        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-        let realm = try! Realm()
-        try! realm.write({
-            
-            servantInfo!.setInfo(.Servant, info: servantDict)
-            
-        })
-        let servantPersonalVC = ServantPersonalVC()
-//        servantPersonalVC.personalInfo = servantInfo
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
-    }
-    
-    func evaluatetripReply(notification: NSNotification) {
-        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-            self.navigationController?.popViewControllerAnimated(true)
-        })
-    }
-    
+//    func evaluatetripReply(notification: NSNotification) {
+//        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+//            self.navigationController?.popViewControllerAnimated(true)
+//        })
+//    }
+//    
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
@@ -174,7 +175,6 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func commitAction(sender: UIButton) {
-        XCGLogger.info("\(self.commonCell!.serviceStar)   \(self.commonCell!.servantStar)    \(self.commonCell!.comment)")
         
         let dict:Dictionary<String, AnyObject> = ["from_uid_": (hodometerInfo?.from_uid_)!,
                                                   "to_uid_": (hodometerInfo?.to_uid_)!,
@@ -182,7 +182,15 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                                                   "service_score_": (self.commonCell?.serviceStar)!,
                                                   "user_score_": (self.commonCell?.servantStar)!,
                                                   "remarks_": self.commonCell!.comment]
-        SocketManager.sendData(.EvaluateTripRequest, data: dict)
+        
+        let model = CommentForOrderModel(value: dict)
+        
+        APIHelper.consumeAPI().commentForOrder(model, complete: { (response) in
+            
+            self.navigationController?.popViewControllerAnimated(true)
+        }) { (error) in
+            
+        }
     }
     
     // MARK: - UITableView
@@ -202,9 +210,9 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             cell.setInfo(hodometerInfo)
             commonCell = cell
             if serviceScore != nil {
-                cell.serviceSocre = serviceScore
-                cell.userScore = userScore
-                cell.remark = remark
+                cell.serviceSocre = commentModel?.service_score_
+                cell.userScore = commentModel?.user_score_
+                cell.remark = commentModel?.remarks_
             }
             return cell
         }
@@ -245,28 +253,19 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     // MARK: - DATA
     func initData() {
-        let param:[String: AnyObject] = ["order_id_": (hodometerInfo?.order_id_)!]
-        SocketManager.sendData(.CheckCommentDetail, data: param) { [weak self](body) in
-            if let strongSelf = self{
-                let data = body["data"] as! NSDictionary
-                let code = data.valueForKey("code")
-                if code?.intValue == 0 {
-                    SVProgressHUD.showErrorMessage(ErrorMessage: "获取评论信息失败，请稍后再试", ForDuration: 1, completion:nil)
-                    return
-                }
-                
-                if data.valueForKey("error_") != nil{
-                    return
-                }
-                strongSelf.serviceScore = data.valueForKey("service_score_") as? Int
-                strongSelf.userScore = data.valueForKey("user_score_") as? Int
-                strongSelf.remark = data.valueForKey("remarks_") as? String
-                // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0 则可继续提交评论
-                let isCommited = strongSelf.serviceScore != 0 || strongSelf.userScore != 0
-                strongSelf.commitBtn?.enabled = !isCommited
-                SVProgressHUD.dismiss()
-                strongSelf.table?.reloadData()
-            }
+        let model = CommentDetaiRequsetModel()
+        model.order_id_ = (hodometerInfo?.order_id_)!
+        
+        APIHelper.consumeAPI().requestComment(model, complete: { (response) in
+            self.commentModel = response as? OrderCommentModel
+            guard self.commentModel != nil else {return}
+            let isCommited = self.commentModel?.user_score_ != 0 || self.commentModel!.service_score_ != 0
+            self.commitBtn?.enabled = !isCommited
+            self.commitBtn?.setTitle("发表评论", forState: .Normal)
+            self.table?.reloadData()
+            
+        }) { (error) in
+            
         }
     }
     
