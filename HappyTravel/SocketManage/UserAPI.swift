@@ -60,12 +60,19 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    
-    func modifyPwd(model: modifyPwdBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+    //修改密码
+    func modifyPwd(model: ModifyPwdBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ModifyPassword, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
+    }
+    //注册新用户
+    func registerAccount(model: RegisterAccountBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .RegisterAccountRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(RegisterAccountModel.classForCoder()))
+        }, error: error)
     }
     
     func modifyUserInfo(model: ModifyUserInfoModel, complete: CompleteBlock?, error:ErrorBlock?) {

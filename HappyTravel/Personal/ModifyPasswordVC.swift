@@ -240,7 +240,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
 //        SocketManager.sendData(.ModifyPassword, data: dict)
 //        XCGLogger.debug("\(self.oldPasswd!)\n\(self.newPasswd!)\n\(self.verifyPasswd!)")
         
-        let model = modifyPwdBaseInfo()
+        let model = ModifyPwdBaseInfo()
         model.uid_ = Int64(CurrentUser.uid_)
         model.old_passwd_ = oldPasswd
         model.new_passwd_ = newPasswd
