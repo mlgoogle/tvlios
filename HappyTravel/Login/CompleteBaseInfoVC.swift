@@ -186,15 +186,29 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             
             let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
             self.nickname = nicknameField?.text
-            let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
-                "nickname_": self.nickname!,
-                "gender_": self.sex,
-                "head_url_": url,
-                "address_": self.address!,
-                "longitude_": Float.init(location[0])!,
-                "latitude_": Float.init(location[1])!]
             self.headerUrl = url
-            SocketManager.sendData(.SendImproveData, data: dict)
+            
+            let req = ModifyUserInfoModel()
+            req.uid_ = CurrentUser.uid_
+            req.nickname_ = self.nickname
+            req.gender_ = self.sex
+            req.head_url_ = url
+            req.address_ = self.address
+            req.longitude_ = Float.init(location[0])!
+            req.latitude_ = Float.init(location[1])!
+            APIHelper.userAPI().modifyUserInfo(req, complete: { [weak self](response) in
+                SVProgressHUD.dismiss()
+                self!.navigationController?.popViewControllerAnimated(true)
+                CurrentUser.head_url_ = self!.headerUrl
+                CurrentUser.nickname_ = self!.nickname
+                CurrentUser.gender_ = self!.sex
+                CurrentUser.address_ = self!.address
+                CurrentUser.currentBanckCardName_ = self!.nickname
+                CurrentUser.register_status_ = 1
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
+            }, error: { (err) in
+                    
+            })
         }
     }
     
@@ -227,10 +241,10 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompleteBaseInfoVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         
     }
     

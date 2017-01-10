@@ -29,7 +29,6 @@ class ServantAPI: SocketAPI {
         
         let packet = SocketDataPacket(opcode: .GetUserInfo, model: model)
         startRequest(packet, complete: { (response) in
-            
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "userinfo_list_"))
             }, error: error)
         

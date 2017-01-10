@@ -406,6 +406,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendAction(sender: UIButton?) {
+        
+//        let model = InsurancePayBaseInfo()
+//        model.insurance_price = 14
+//        model.insurance_username_ = String(CurrentUser.uid_)//用户id
+//        APIHelper.commonAPI().insurancePay(model, complete: { (response) in
+//            if let model = response as? InsuranceSuccessModel {
+//                if model.is_success_ == 0{
+//                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
+//                        self.navigationController?.popViewControllerAnimated(true)
+////                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+//                    })
+//                }
+//            }
+//            }, error: { (err) in
+//        })
+
+        
         let recommendVC = RecommendServantsVC()
         recommendVC.servantsInfo = recommendServants
         navigationController?.pushViewController(recommendVC, animated: true)
@@ -584,8 +601,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
 
         if DataManager.getUserInfo(msg.from_uid_) == nil {
-            //TUDO
-            SocketManager.sendData(.GetUserInfo, data: ["uid_str_": "\(msg.from_uid_)"])
+            let req = UserInfoIDStrRequestModel()
+            req.uid_str_ = "\(msg.from_uid_)"
+            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                if let users = response as? [UserInfoModel] {
+                    DataManager.insertData(users[0])
+                }
+            }, error: nil)
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
@@ -620,8 +642,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                 }
                 uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-                SocketManager.sendData(.GetUserInfo, data: dict)
+                let req = UserInfoIDStrRequestModel()
+                req.uid_str_ = uid_str
+                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+                    if let users = response as? [UserInfoModel] {
+                        DataManager.insertData(users[0])
+                    }
+                }, error: nil)
             }
         }
         

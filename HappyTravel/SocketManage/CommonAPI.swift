@@ -44,17 +44,21 @@ class CommonAPI: SocketAPI {
         let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
-            
             }, error: error)
     }
     //保险支付
     func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
+        let packet = SocketDataPacket(opcode: .InsurancePayRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
-            
             }, error: error)
     }
 
-
+    //获取验证码
+    func verifyCode(model: VerifyCodeRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .SendMessageVerify, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(VerifyInfoModel.classForCoder()))
+            }, error: error)
+    }
 }
