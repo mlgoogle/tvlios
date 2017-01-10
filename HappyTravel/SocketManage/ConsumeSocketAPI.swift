@@ -96,4 +96,11 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
         
     }
+    
+    func serviceDetail(model: ServiceDetailRequestModel, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .ServiceDetailRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(ServiceDetailModel.classForCoder()))
+            }, error: error)
+    }
 }

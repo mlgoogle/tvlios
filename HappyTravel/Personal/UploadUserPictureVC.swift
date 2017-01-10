@@ -84,31 +84,43 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         SVProgressHUD.showProgressMessage(ProgressMessage: "验证认证环境中，请稍后！")
-        SocketManager.sendData(.UploadImageToken, data: nil)
+        APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
+            if let model = response as? UploadPhotoModel {
+                SVProgressHUD.dismiss()
+                self!.token = model.img_token_!
+            }
+        }, error: nil)
+        
         initTableView()
         initNav()
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UploadUserPictureVC.uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(autoUserCardResult(_:)), name: NotifyDefine.AuthenticateUserCard, object: nil)
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         initImagePick()
     }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
     }
+    
     deinit{
         NSNotificationCenter.defaultCenter().removeObserver(self)
         SVProgressHUD.dismiss()
     }
+    
     //MARK: -- Nav
     func initNav()  {
         title = "上传身份信息"  
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "提交", style: .Plain, target: self, action: #selector(rightItemTapped(_:)))
     }
+    
     func rightItemTapped(item: UIBarButtonItem) {
         for path in photoPaths {
             if path == "" {
@@ -167,18 +179,22 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
             make.left.equalTo(0)
         }
     }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1;
     }
+    
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 //        if section == 1 {
 //            return 30
 //        }
         return 0
     }
+    
 //    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 //        if section == 1 {
 //            let sectionLabel = UILabel.init(text: "    注意：请服务者手持身份证正反图像，进行上传", font: UIFont.systemFontOfSize(13), textColor: colorWithHexString("#999999"))
@@ -187,6 +203,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
 //        }
 //        return UIView()
 //    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UploadCell? = tableView.dequeueReusableCellWithIdentifier("cell") as? UploadCell
         cell?.titleLable.text = titles[indexPath.section]
@@ -194,6 +211,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         cell?.iconImage.image = selectImages[indexPath.section]
         return cell!
     }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         if indexPath.section == 2 {
@@ -226,6 +244,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         imagePicker?.delegate = self
         imagePicker?.allowsEditing = true
     }
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         selectImages[index] = image.reSizeImage(CGSizeMake(162, 125))
         tableView!.reloadData()

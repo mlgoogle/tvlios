@@ -79,7 +79,7 @@ class ServantNearbyModel: Object {
 }
 
 //请求修改密码
-class modifyPwdBaseInfo: Object {
+class ModifyPwdBaseInfo: Object {
     //["uid_": CurrentUser.uid_, "old_passwd_": "\(oldPasswd!)", "new_passwd_": "\(newPasswd!)"]
     dynamic var uid_:Int64 = 0
     
@@ -89,7 +89,7 @@ class modifyPwdBaseInfo: Object {
     
 }
 //密码修改返回
-class modifyPwdModel: Object {
+class ModifyPwdModel: Object {
     //成功返回空，失败见错误码
 }
 
@@ -109,4 +109,21 @@ class ModifyUserInfoModel: UserBaseModel {
     dynamic var latitude_:Float = 0.0
 }
 
+//请求注册新用户
+class RegisterAccountBaseInfo: Object {
+//    dynamic var invitation_phone_num_:String?
+    dynamic var phone_num_:String?
+    dynamic var passwd_:String?
+    dynamic var user_type_:Int = 1//1游客2服务者
+    dynamic var timestamp_:Int64 = 0//服务器下发时间戳
+    dynamic var verify_code_:Int = 0//验证码
+    dynamic var token_:String?
+    
+    
+}
+//注册新用户返回
+class RegisterAccountModel: Object {
+    dynamic var result:Int = 0//0已注册1注册成功
+    dynamic var uid_:Int64 = 0//注册成功才返回
+}
 
