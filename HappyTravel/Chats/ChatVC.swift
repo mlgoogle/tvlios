@@ -31,7 +31,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     var servantInfo:UserInfoModel?
     var servantDetail:ServantDetailModel?
     
-    var msgList:List<PushMessage>?
+    var msgList:List<MessageModel>?
     
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
@@ -163,7 +163,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         
-        msgList = DataManager.getMessage(servantInfo!.uid_)?.msgList
+        msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
         initView()
         
     }
@@ -535,13 +535,26 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         //发送聊天消息包
-        SocketManager.sendData(.SendChatMessage, data: data)
+//        SocketManager.sendData(.SendChatMessage, data: data)
+        
+        let model = ChatModel(value: data)
+        let messageModel = MessageModel(value: data)
+        DataManager.insertData(messageModel)
+        APIHelper.chatAPI().chat(model, complete: { (response) in
+            let chatModel = response as? MessageModel
+            guard chatModel != nil else {return}
+            
+            DataManager.insertData(chatModel!)
+            }) { (error) in
+                
+        }
+        
         let message = PushMessage(value: data)
         DataManager.insertMessage(message)
         
         let numberOfRows = chatTable?.numberOfRowsInSection(0)
         if numberOfRows! == 0 {
-            msgList = DataManager.getMessage(servantInfo!.uid_)?.msgList
+            msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
             chatTable?.reloadData()
         } else {
             chatTable?.beginUpdates()
