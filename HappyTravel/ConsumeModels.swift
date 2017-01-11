@@ -317,3 +317,25 @@ class InvoiceDetailModel: Object {
     dynamic var order_num_:Int = 0
 
 }
+//请求预约行程
+class AppointmentTripBaseInfo: Object {
+    dynamic var uid_:Int64 = 0
+    dynamic var city_code_:Int = 0
+    dynamic var start_time_:Int64 = 0
+    dynamic var end_time_:Int64 = 0
+    dynamic var skills_:String?
+    dynamic var remarks_:String?
+    dynamic var is_other_:Int = 0
+    dynamic var other_name_:String?
+    dynamic var other_gender_:Int = 0
+    dynamic var other_phone_:String?
+    
+}
+//预约行程返回
+class AppointmentTripModel: Object {
+    dynamic var appointment_id_:Int = 0
+}
+
+
+
+

@@ -98,6 +98,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SkillsInfoRequest = 1041
         // 平台技能标签返回
         case SkillsInfoReply = 1042
+        
         // 请求预约
         case AppointmentRequest = 1043
         // 预约返回
@@ -107,7 +108,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case InvoiceDetailRequest = 1045
         // 开票详情返回
         case InvoiceDetailReply = 1046
-        
         // 请求上传图片Token
         case UploadImageToken = 1047
         // 上传图片Token返回
@@ -280,6 +280,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //                                          .DrawBillReply,
                                           .InvoiceInfoReply,
                                           .InvoiceDetailReply,
+                                          .AppointmentReply,
                                           .SendImproveData,
                                           .AppointmentDetailReply,
                                           .CheckCommentDetailReplay,

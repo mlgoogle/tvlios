@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import SVProgressHUD
+
 class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, DateSelectorSheetDelegate , CitysSelectorSheetDelegate, SkillsCellDelegate, SkillTreeVCDelegate {
     
     var table:UITableView?
@@ -634,17 +636,53 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             skillStr = skillStr.substringToIndex(skillStr.endIndex.predecessor())
         }
         
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "city_code_": (cityInfoBase?.city_code_)!,//cityInfo!.cityCode,
-                                        "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
-                                        "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),
-                                        "skills_": skillStr,
-                                        "remarks_": remarksTextView?.text ?? "",
-                                        "is_other_": agent == false ? 0 : 1,
-                                        "other_name_": agent == true ? name! : "",
-                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
-                                        "other_phone_": agent == true ? tel! : ""]
-        SocketManager.sendData(.AppointmentRequest, data: dict)
+//        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
+//                                        "city_code_": (cityInfoBase?.city_code_)!,//cityInfo!.cityCode,
+//                                        "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
+//                                        "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),
+//                                        "skills_": skillStr,
+//                                        "remarks_": remarksTextView?.text ?? "",
+//                                        "is_other_": agent == false ? 0 : 1,
+//                                        "other_name_": agent == true ? name! : "",
+//                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
+//                                        "other_phone_": agent == true ? tel! : ""]
+//        SocketManager.sendData(.AppointmentRequest, data: dict)
+        let model = AppointmentTripBaseInfo()
+        model.uid_ = Int64(CurrentUser.uid_)
+        model.city_code_ = (cityInfoBase?.city_code_)!
+        model.start_time_ = Int64(startDate!.timeIntervalSince1970)
+        model.end_time_ = Int64(startDate!.timeIntervalSince1970)
+        model.skills_ = skillStr
+        model.remarks_ = remarksTextView?.text ?? ""
+        model.is_other_ = agent == false ? 0 : 1
+        model.other_name_ = agent == true ? name! : ""
+        model.other_gender_ = agent == true ? (gender == true ? 1 : 0) : 3
+        model.other_phone_ = agent == true ? tel! : ""
+        unowned let weakSelf = self
+        APIHelper.consumeAPI().appointmentTrip(model, complete: { (response) in
+            if let appointModel = response as? AppointmentTripModel {
+                let appointment_id_ = appointModel.appointment_id_
+                if appointment_id_ == 0 {
+                    //未正确预约
+                    return
+                }
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "预约已成功，请保持开机！祝您生活愉快！谢谢！", ForDuration: 1.5) {
+                    let vc = DistanceOfTravelVC()
+                    vc.segmentIndex = 1
+                    weakSelf.nav?.pushViewController(vc, animated: true)
+                }
+                SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
+                    "to_uid_" : CurrentUser.uid_,
+                    "msg_type_" : 2231,
+                    "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)),
+                    "servant_id_" : "1,2,3,4,5,6",
+                    "appointment_id_" : appointment_id_,
+                    "content_" : "您好，为您刚才的预约推荐服务者"])
+            }
+            
+            }, error: { (err) in
+    })
+    
         commitBtn?.enabled = false
     }
     

@@ -124,5 +124,13 @@ class ConsumeSocketAPI: SocketAPI{
             complete?((response as? SocketJsonResponse)?.responseModel(InvoiceDetailModel.classForCoder()))
             }, error: error)
     }
+    //请求预约行程
+    func appointmentTrip(model: AppointmentTripBaseInfo, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .AppointmentRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(AppointmentTripModel.classForCoder()))
+            }, error: error)
+    }
+
 
 }
