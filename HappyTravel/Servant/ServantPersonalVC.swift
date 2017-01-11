@@ -277,7 +277,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     func receivedResults(notifucation: NSNotification?) {
 
         
-        YD_ContactManager.checkIfUploadContact()
+//        YD_ContactManager.checkIfUploadContact()
 
         let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
         
@@ -312,7 +312,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func invitationResult(notifucation: NSNotification?) {
         
-        YD_ContactManager.checkIfUploadContact()
+//        YD_ContactManager.checkIfUploadContact()
         var msg = ""
         if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
             msg = err.values.first!
