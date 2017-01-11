@@ -504,6 +504,13 @@ class DataManager: NSObject {
     
     //MARK: - DataManagerAPI
     
+    static func insertDatas(models: [Object]) {
+        guard DataManager.initialized != false else { return }
+        for model in models {
+            DataManager.insertData(model)
+        }
+    }
+    
     static func insertData(model: Object) {
         guard DataManager.initialized != false else { return }
         
@@ -609,7 +616,7 @@ class DataManager: NSObject {
         
         let realm = try! Realm()
         try! realm.write({
-            if filter != nil {
+            if filter == nil {
                 let objs = realm.objects(type)
                 if objs.count > 0 {
                     realm.delete(objs)

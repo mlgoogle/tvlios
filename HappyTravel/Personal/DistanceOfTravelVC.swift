@@ -11,11 +11,14 @@ import RealmSwift
 import MJRefresh
 import XCGLogger
 import SVProgressHUD
+
+
 enum OrderType : Int {
     case InviteOrder = 0
     case AppointmentOrder = 1
     case CenturionCardOrder = 2
 }
+
 class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var segmentSC:UISegmentedControl?
@@ -293,8 +296,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func headerRefresh() {
         refreshAction(true)
     }
+    
     func refreshAction(isRefresh:Bool) {
-        
         footer.state = .Idle
         switch segmentIndex {
         case 0:
@@ -323,25 +326,42 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     func handleInviteOrderRequest(isRefresh:Bool) {
         let model = HodometerRequestModel()
         model.order_id_ = isRefresh ? 0 : orderID
-        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
-            self.orderID = response as! Int
-            self.endRefresh()
-        }) { (error) in
+        APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { [weak self](response) in
+            if let models = response as? [HodometerInfoModel] {
+                if model.order_id_ == 0 {
+                    DataManager.removeData(HodometerInfoModel.self)
+                    self!.refreshData()
+                }
+                DataManager.insertDatas(models)
+                self!.orderID = models.last!.order_id_
+                self!.endRefresh()
+            } else {
+                self!.noMoreData()
+            }
+        }) { [weak self](error) in
+            self!.noMoreData()
         }
     }
     
     func handleAppointmentRequest(isRefresh:Bool) {
         let model = AppointmentRequestModel()
         model.last_id_ = isRefresh ? 0 : lastRecordId
-        APIHelper.consumeAPI().requestAppointmentList(model, complete: { (response) in
-            self.lastRecordId = response as! Int
-            self.endRefresh()
-            }) { (error) in
+        APIHelper.consumeAPI().requestAppointmentList(model, complete: { [weak self](response) in
+            if let models = response as? [AppointmentInfoModel] {
+                if model.last_id_ == 0 {
+                    DataManager.removeData(AppointmentInfoModel.self)
+                    self!.refreshData()
+                }
+                DataManager.insertDatas(models)
+                self!.lastRecordId = models.last!.appointment_id_
+                self!.endRefresh()
+            } else {
+                self!.noMoreData()
+            }
+        }) { [weak self](error) in
+            self!.noMoreData()
         }
     }
-    
-
-    
 
     func requestRecommendListWithUidStr(uid_str_:String) {
         let model = AppointmentRecommendRequestModel()
@@ -516,6 +536,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             }, error: nil)
     }
+    
     func segmentChange(sender: AnyObject?) {
         segmentIndex = (sender?.selectedSegmentIndex)!
         if header.state == .Idle && (footer.state == .Idle || footer.state == .NoMoreData){
@@ -523,6 +544,13 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
 
     }
+    
+    func noMoreData() {
+        endRefresh()
+        footer.state = .NoMoreData
+        footer.setTitle("没有更多信息", forState: .NoMoreData)
+    }
+    
     func endRefresh() {
         if header.state == .Refreshing {
             header.endRefreshing()
@@ -536,17 +564,15 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         refreshData()
     }
+    
     func refreshData() {
-
         switch segmentIndex {
         case 0:
             inviteList = DataManager.getData(HodometerInfoModel.self)
-            break
         case 1:
             appointmentList = DataManager.getData(AppointmentInfoModel.self)
         case 2:
             centurionRecordList = DataManager.getData(CenturionCardRecordModel.self)
-            break
         default:
             break
         }
