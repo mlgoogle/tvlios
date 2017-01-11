@@ -155,15 +155,15 @@ class InvoiceBaseInfo: Object {
     dynamic var last_invoice_id_:Int64 = 0//上次获取发票记录的最小Id,第一次上传为0
     
 }
-//开票历史记录详情
-class InvoiceDetailModel: Object {
-    dynamic var invoice_id_:Int64 = 0
-    dynamic var oid_str_:String?
-    dynamic var invoice_status_:Int = 0
-    dynamic var invoice_time_:Int64 = 0
+//开票历史记录基本信息
+class InvoiceHistoryInfoModel: Object {
     dynamic var invoice_price_:Int = 0
+    dynamic var invoice_status_:Int = 0
+    dynamic var oid_str_:String?
+    dynamic var invoice_id_:Int64 = 0
+    dynamic var invoice_time_:Int64 = 0
 }
 //开票历史记录返回
 class InvoiceHistoryModel: Object {
-    let invoice_list = List<InvoiceDetailModel>()
+    let invoice_list_ = List<InvoiceHistoryInfoModel>()
 }

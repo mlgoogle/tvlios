@@ -278,7 +278,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
 //                                          .DrawBillReply,
-//                                          .InvoiceInfoReply,
+                                          .InvoiceInfoReply,
                                           .SendImproveData,
                                           .AppointmentDetailReply,
                                           .CheckCommentDetailReplay,
