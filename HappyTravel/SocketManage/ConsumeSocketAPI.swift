@@ -103,4 +103,26 @@ class ConsumeSocketAPI: SocketAPI{
             complete?((response as? SocketJsonResponse)?.responseModel(ServiceDetailModel.classForCoder()))
             }, error: error)
     }
+    //请求开票
+    func drawBillInfo(model: DrawBillBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .DrawBillRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(DrawBillModel.classForCoder()))
+            }, error: error)
+    }
+    //请求开票历史记录
+    func InvoiceHistoryInfo(model: InvoiceBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InvoiceInfoRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InvoiceHistoryModel.classForCoder()))
+            }, error: error)
+    }
+    //请求发票详情
+    func invoiceDetail(model: InvoiceDetailBaseInfo, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .InvoiceDetailRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InvoiceDetailModel.classForCoder()))
+            }, error: error)
+    }
+
 }

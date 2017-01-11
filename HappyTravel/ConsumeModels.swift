@@ -253,3 +253,67 @@ class ServiceDetailModel: Object {
     
     let black_buy_list_ = List<InvoiceCenturionCardModel>()
 }
+
+//请求开票信息
+class DrawBillBaseInfo: Object {
+    
+    dynamic var oid_str_:String?
+    dynamic var title_:String?
+    dynamic var taxpayer_num_:String?
+    dynamic var company_addr_:String?
+    dynamic var invoice_type_:Int = 0
+    dynamic var user_name_:String?
+    dynamic var user_mobile_:String?
+    dynamic var area_:String?
+    dynamic var addr_detail_:String?
+    dynamic var remarks_:String?
+    dynamic var uid_:String?
+}
+//开票信息返回
+class DrawBillModel: Object {
+    dynamic var oid_str_:String?
+}
+
+//请求开票历史记录
+class InvoiceBaseInfo: Object {
+    
+    dynamic var uid_:Int64 = 0
+    dynamic var count_:Int = 0
+    dynamic var last_invoice_id_:Int64 = 0//上次获取发票记录的最小Id,第一次上传为0
+    
+}
+//开票历史记录列表基本信息
+class InvoiceHistoryInfoModel: Object {
+    dynamic var invoice_price_:Int = 0
+    dynamic var invoice_status_:Int = 0
+    dynamic var oid_str_:String?
+    dynamic var invoice_id_:Int64 = 0
+    dynamic var invoice_time_:Int64 = 0
+}
+//开票历史记录返回列表
+class InvoiceHistoryModel: Object {
+    let invoice_list_ = List<InvoiceHistoryInfoModel>()
+}
+
+
+//请求发票详情
+class InvoiceDetailBaseInfo: Object {
+    dynamic var invoice_id_:Int64 = 0
+}
+//发票信息详情返回
+class InvoiceDetailModel: Object {
+    dynamic var first_time_:Int64 = 0//最早订单时间
+    dynamic var final_time_:Int64 = 0//最晚订单时间
+    dynamic var total_price_:Int = 0
+    dynamic var oid_str_:String?
+    dynamic var title_:String?//发票抬头
+    dynamic var user_name_:String?
+    dynamic var invoice_type_:Int = 0
+    dynamic var area_:String?
+    dynamic var user_mobile_:String?
+    dynamic var invoice_time_:Int64 = 0//发票时间
+    dynamic var invoice_id_:Int64 = 0
+    dynamic var addr_detail_:String?
+    dynamic var order_num_:Int = 0
+
+}

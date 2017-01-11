@@ -595,7 +595,6 @@ class DataManager: NSObject {
                     userModel?.refreshPropertiesWithModel(info)
                 }
             })
-            
         } else  if model.isKindOfClass(MessageModel) {
             let type = ChatSessionModel.self
             let info = model as! MessageModel
@@ -622,7 +621,20 @@ class DataManager: NSObject {
                 }
             })
             
-        }else {
+        }else if model.isKindOfClass(InvoiceHistoryModel) {
+            let type = InvoiceHistoryModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        
+        } else if model.isKindOfClass(InvoiceDetailModel) {
+            let type = InvoiceDetailModel.self
+            try! realm.write({
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+        } else {
             try! realm.write({
                 realm.add(model)
             })
