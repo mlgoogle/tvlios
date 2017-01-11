@@ -561,7 +561,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //        model.title_ =
 //        
 //        
-//        APIHelper.userAPI().drawBillInfo(model, complete: { (response) in
+//        APIHelper.consumeAPI().drawBillInfo(model, complete: { (response) in
 //            if let model = response as? DrawBillModel {
 //                print(model)
 //            }

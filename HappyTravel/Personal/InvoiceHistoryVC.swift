@@ -141,7 +141,7 @@ class InvoiceHistoryVC:UIViewController {
     }
     
     func InvoiceInfoRequest(model: InvoiceBaseInfo) {
-        APIHelper.userAPI().InvoiceHistoryInfo(model, complete: { (response) in
+        APIHelper.consumeAPI().InvoiceHistoryInfo(model, complete: { (response) in
             
             if let historyModel = response as? InvoiceHistoryModel {
                 DataManager.insertData(historyModel)
@@ -187,6 +187,7 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
 //        let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
         let invoiceInfo = historyModel!.invoice_list_[indexPath.row] as InvoiceHistoryInfoModel
         histroyDetailVC.invoice_id_ = Int(invoiceInfo.invoice_id_)
+        histroyDetailVC.invoice_status = Int(invoiceInfo.invoice_status_)
         navigationController?.pushViewController(histroyDetailVC, animated: true)
     }
     
