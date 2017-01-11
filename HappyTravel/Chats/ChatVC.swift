@@ -164,6 +164,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
+        ChatMessageHelper.shared.delegate = self
         initView()
         
     }
@@ -500,7 +501,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if faceButton.selected {
             textView.inputView = faceKeyBoard
-            //            [self emojiOpen];
         }
         
         
@@ -534,24 +534,19 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         //        SocketManager.sendData(.SendChatMessage, data: data_base)
         
         
-        //发送聊天消息包
-//        SocketManager.sendData(.SendChatMessage, data: data)
-        
         let model = ChatModel(value: data)
         let messageModel = MessageModel(value: data)
+//        ChatMessageHelper.shared.reveicedMessage(messageModel)
         DataManager.insertData(messageModel)
         APIHelper.chatAPI().chat(model, complete: { (response) in
-            let chatModel = response as? MessageModel
-            guard chatModel != nil else {return}
-            
-            DataManager.insertData(chatModel!)
             }) { (error) in
                 
         }
-        
-        let message = PushMessage(value: data)
-        DataManager.insertMessage(message)
-        
+        reloadTable()
+        textView.text = ""
+        inputAccessoryView.reloadInputViews()
+    }
+    func reloadTable() {
         let numberOfRows = chatTable?.numberOfRowsInSection(0)
         if numberOfRows! == 0 {
             msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
@@ -562,9 +557,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             chatTable?.endUpdates()
             chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
         }
-        
-        textView.text = ""
-        inputAccessoryView.reloadInputViews()
     }
     
     func menuControllerWillHide(notification: NSNotification) {
@@ -597,8 +589,14 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
 
 
 
-extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate{
+extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate, ReceivedChatDelegate{
     
+    func receivedChatMessgae(message: MessageModel) {
+        
+        guard message.from_uid_ == servantInfo!.uid_ else {return}
+        reloadTable()
+    }
+
     func sendLocation(poiModel: POIInfoModel?) {
         
         sendMessageWithText(modelToString(poiModel!), type: PushMessage.MessageType.Location.rawValue)

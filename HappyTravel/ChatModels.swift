@@ -17,8 +17,11 @@ enum MessageType : Int {
     case OrderAnswer = 2012
     case Appointment = 2231
 }
+
+class UnReadMessageRequestModel: Object {
+    dynamic var uid_ = CurrentUser.uid_
+}
 class ChatModel: Object {
-//    dynamic var doubi = "doubi"
 
     dynamic var from_uid_ = 0
 
@@ -27,11 +30,11 @@ class ChatModel: Object {
     dynamic var msg_time_:Int64 = 0
     
     dynamic var content_:String?
+
     dynamic var msg_type_ = MessageType.Chat.rawValue
 
 }
 class MessageModel: ChatModel {
-//    dynamic var msg_type_ = MessageType.Chat.rawValue
 
     dynamic var push_msg_type_ = MessageType.Chat.rawValue
     

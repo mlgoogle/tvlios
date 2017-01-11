@@ -549,8 +549,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 DataManager.insertData(model)
             }
         }, error: nil)
+        //初始化 receiveMessageBlock
+        ChatMessageHelper.shared
+//        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
+        getUnReadMessage()
+    }
+    
+    func getUnReadMessage() {
         
-        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
+        APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
+            let messsages = response as? [MessageModel]
+            guard messsages?.count > 0 else {return}
+            for message in messsages! {
+                ChatMessageHelper.shared.reveicedMessage(message)
+            }
+            }) { (error) in
+                
+        }
     }
     
     func getServantNearby(lat: Double, lon:Double) {
