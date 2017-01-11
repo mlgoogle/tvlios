@@ -104,10 +104,10 @@ class DataManager: NSObject {
         let realm = try! Realm()
         if uid == -1 {
             var cnt = 0
-            let objs = realm.objects(UserPushMessage.self)
+            let objs = realm.objects(ChatSessionModel.self)
             for obj in objs {
-                if obj.uid != CurrentUser.uid_ {
-                    cnt += obj.unread
+                if obj.uid_ != CurrentUser.uid_ {
+                    cnt += obj.unread_
                 }
                 
             }
@@ -217,13 +217,13 @@ class DataManager: NSObject {
             return
         }
         let realm = try! Realm()
-        let objs = realm.objects(UserPushMessage.self).filter("uid = \(uid)")
+        let objs = realm.objects(ChatSessionModel.self).filter("uid_ = \(uid)")
         try! realm.write({
         
             if UIApplication.sharedApplication().applicationIconBadgeNumber > 0 {
                 UIApplication.sharedApplication().applicationIconBadgeNumber -= 1
             }
-            objs.setValue(0, forKey: "unread")
+            objs.setValue(0, forKey: "unread_")
         })
         
     }
@@ -595,8 +595,33 @@ class DataManager: NSObject {
                     userModel?.refreshPropertiesWithModel(info)
                 }
             })
+        } else  if model.isKindOfClass(MessageModel) {
+            let type = ChatSessionModel.self
+            let info = model as! MessageModel
+            var uid = -1
+            if info.from_uid_ == CurrentUser.uid_ {
+                uid = info.to_uid_
+            } else if info.to_uid_ == CurrentUser.uid_ {
+                uid = info.from_uid_
+            }
+            var chatSession = realm.objects(type).filter("uid_ = \(uid)").first
             
-        } else if model.isKindOfClass(InvoiceHistoryModel) {
+            try! realm.write({
+                if chatSession == nil {
+                    chatSession = ChatSessionModel()
+                    chatSession?.uid_ = uid
+                    chatSession?.msgList.append(info)
+                    chatSession?.msg_time_ = info.msg_time_
+                    realm.add(chatSession!)
+                } else {
+                    chatSession?.msgList.append(info)
+                }
+                if info.from_uid_ != CurrentUser.uid_ {
+                    chatSession?.unread_ += 1
+                }
+            })
+            
+        }else if model.isKindOfClass(InvoiceHistoryModel) {
             let type = InvoiceHistoryModel.self
             try! realm.write({
                 realm.delete(realm.objects(type))

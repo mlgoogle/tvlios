@@ -12,7 +12,7 @@ class MessageCell: UITableViewCell {
     
     var userInfo:UserInfoModel?
     
-    var msgInfo:PushMessage?
+    var msgInfo:MessageModel?
     var showDetailInfo:UIImageView = {
        let imageView = UIImageView()
         imageView.image = UIImage(named: "appointment-detail")
@@ -136,7 +136,7 @@ class MessageCell: UITableViewCell {
     }
 
     
-    func setInfo(message: PushMessage?, unreadCnt: Int) {
+    func setInfo(message: MessageModel?, unreadCnt: Int) {
         msgInfo = message
 
         if msgInfo?.msg_type_ == PushMessage.MessageType.Appointment.rawValue {
@@ -174,7 +174,7 @@ class MessageCell: UITableViewCell {
         
     }
     
-    func setNormalInfo(message: PushMessage?, unreadCnt: Int) {
+    func setNormalInfo(message: MessageModel?, unreadCnt: Int) {
         let view = contentView.viewWithTag(101)
 
         if let headView = view!.viewWithTag(1001) as? UIImageView {
@@ -207,7 +207,7 @@ class MessageCell: UITableViewCell {
         }
     }
     
-    func setLocationInfo(message: PushMessage?, unreadCnt: Int) {
+    func setLocationInfo(message: MessageModel?, unreadCnt: Int) {
         let view = contentView.viewWithTag(101)
 
         if let headView = view!.viewWithTag(1001) as? UIImageView {
@@ -238,26 +238,10 @@ class MessageCell: UITableViewCell {
             }
             
         }
-//        if let timeLab = view!.viewWithTag(1003) as? UILabel {
-//            let dateFormatter = NSDateFormatter()
-//            dateFormatter.timeStyle = .ShortStyle
-//            dateFormatter.dateStyle = .ShortStyle
-//            let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
-//            timeLab.text = dateStr
-//        }
-//        
-//        if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
-//            if unreadCnt > 0 {
-//                unreadCntLab.hidden = false
-//                unreadCntLab.text = "\(unreadCnt)"
-//            } else {
-//                unreadCntLab.hidden = true
-//            }
-//        }
         
     }
     
-    func setAppointmentInfo(message: PushMessage?, unreadCnt: Int) {
+    func setAppointmentInfo(message: MessageModel?, unreadCnt: Int) {
         
         let view = contentView.viewWithTag(101)
         if let headView = view!.viewWithTag(1001) as? UIImageView {
@@ -270,25 +254,6 @@ class MessageCell: UITableViewCell {
 
                 }
         }
-        
-//            if let timeLab = view!.viewWithTag(1003) as? UILabel {
-//                let dateFormatter = NSDateFormatter()
-//                dateFormatter.timeStyle = .ShortStyle
-//                dateFormatter.dateStyle = .ShortStyle
-//                let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
-//                timeLab.text = dateStr
-//            }
-//            
-//            if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
-//                if unreadCnt > 0 {
-//                    unreadCntLab.hidden = false
-//                    unreadCntLab.text = "\(unreadCnt)"
-//                } else {
-//                    unreadCntLab.hidden = true
-//                }
-//            }
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

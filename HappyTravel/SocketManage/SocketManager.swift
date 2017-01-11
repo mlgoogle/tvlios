@@ -289,7 +289,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServiceDetailReply,
                                           .DeviceTokenResult,
                                           .UploadImageTokenReply,
-                                          .WXplaceOrderReply]
+                                          .WXplaceOrderReply,
+                                          .RecvChatMessage,
+                                          .UnreadMessageReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -306,10 +308,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "61.147.114.78"
-                    let port:UInt16 = 10007
-//                    let ip:String = "192.168.8.111"
-//                    let port:UInt16 = 10001
+//                    let ip:String = "61.147.114.78"
+//                    let port:UInt16 = 10007
+                    let ip:String = "192.168.8.111"
+                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001
@@ -433,6 +435,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
+        
         if let op = SocketManager.SockOpcode.init(rawValue: head!.opcode) {
             XCGLogger.info("Recv: \(op)")
         } else {
@@ -1022,11 +1025,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             return
         }
         
-        let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
+        let msg = MessageModel(value: (jsonBody?.dictionaryObject)!)
+        
         //base64解码
-//        msg.content_ = try! decodeBase64Str(msg.content_!)
-        DataManager.insertMessage(msg)
-        let user = DataManager.getUserInfo(msg.from_uid_)
+        DataManager.insertData(msg)
+        let user = DataManager.getData(UserInfoModel.self)?.filter("uid_ = \(msg.from_uid_)").first
         if user == nil {
             let req = UserInfoIDStrRequestModel()
             req.uid_str_ = "\(msg.from_uid_)"
@@ -1038,9 +1041,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         if UIApplication.sharedApplication().applicationState == .Background {
 
-            let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
+            let body = "\((user?.nickname_ ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
             var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-            userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+            userInfo["type"] = msg.msg_type_
             userInfo["data"] = (jsonBody?.dictionaryObject)!
             localNotify(body, userInfo: userInfo)
         } else {
@@ -1089,13 +1092,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func unreadMessageReply(jsonBody: JSON?) {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
-                var pMsg:PushMessage?
+                var pMsg:MessageModel?
                 
                 for msg in msgList.reverse() {
-                    let pushMsg = PushMessage(value: msg)
+                    let pushMsg = MessageModel(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
-                    DataManager.insertMessage(pushMsg)
+//                    DataManager.insertMessage(pushMsg)
+                    DataManager.insertData(pushMsg)
                     pMsg = pushMsg
                 }
                 let user = DataManager.getUserInfo(pMsg!.from_uid_)
