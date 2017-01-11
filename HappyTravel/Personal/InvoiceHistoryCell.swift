@@ -107,7 +107,7 @@ class InvoiceHistoryCell: UITableViewCell {
      - parameter info:
      - parameter last: 最后一个需隐藏
      */
-    func setupDatawith(info:InvoiceHistoryInfo?,last:Bool) {
+    func setupDatawith(info:InvoiceHistoryInfoModel?,last:Bool) {
         if priceLabel != nil {
 
             priceLabel?.text = String(Double(info!.invoice_price_) / 100) + "元"
