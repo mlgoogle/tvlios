@@ -81,4 +81,19 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
+    //请求开票
+    func drawBillInfo(model: DrawBillBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .DrawBillRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(DrawBillModel.classForCoder()))
+            }, error: error)
+    }
+    //开票历史记录
+    func InvoiceHistoryInfo(model: InvoiceBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .InvoiceInfoRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(InvoiceHistoryModel.classForCoder()))
+            }, error: error)
+    }
+    
 }

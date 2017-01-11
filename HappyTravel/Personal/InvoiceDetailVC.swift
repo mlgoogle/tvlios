@@ -556,6 +556,18 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
         invoiceInfoDict!["oid_str_"] = oidStr
         SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
+//        let model = DrawBillBaseInfo()
+//        model.oid_str_ = oidStr
+//        model.title_ =
+//        
+//        
+//        APIHelper.userAPI().drawBillInfo(model, complete: { (response) in
+//            if let model = response as? DrawBillModel {
+//                print(model)
+//            }
+//            }, error: { (err) in
+//        })
+    
     }
     
     //MARK: -- DATA

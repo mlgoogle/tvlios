@@ -113,6 +113,12 @@ class InvoiceHistoryVC:UIViewController {
     
     
     func headerRefresh() {
+//        let model = InvoiceBaseInfo()
+//        model.uid_ = Int64(CurrentUser.uid_)
+//        model.count_ = 10
+//        model.last_invoice_id_ = 0
+//        InvoiceInfoRequest(model)
+        
         SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": CurrentUser.uid_,
                                                         "count_" : 10,
                                               "last_invoice_id_" : 0])
@@ -121,10 +127,41 @@ class InvoiceHistoryVC:UIViewController {
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": CurrentUser.uid_,
-                                                        "count_" : 10,
-                                              "last_invoice_id_" : last_invoice_id_])
+        let model = InvoiceBaseInfo()
+        model.uid_ = Int64(CurrentUser.uid_)
+        model.count_ = 10
+        model.last_invoice_id_ = Int64(last_invoice_id_)
+        InvoiceInfoRequest(model)
+//        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": CurrentUser.uid_,
+//                                                        "count_" : 10,
+//                                              "last_invoice_id_" : last_invoice_id_])
 
+    }
+    
+    func InvoiceInfoRequest(model: InvoiceBaseInfo) {
+        APIHelper.userAPI().InvoiceHistoryInfo(model, complete: { (resposne) in
+            if self.header.state == MJRefreshState.Refreshing {
+                self.header.endRefreshing()
+            }
+            if self.footer.state == MJRefreshState.Refreshing {
+                self.footer.endRefreshing()
+            }
+            
+            let realm = try! Realm()
+            self.historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
+            
+            
+            let lastOrderID = model.last_invoice_id_//notify.userInfo!["lastOrderID"] as! Int
+            if lastOrderID == -1001 {
+                self.footer.state = .NoMoreData
+                self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+                return
+            }
+            self.last_invoice_id_ = Int(lastOrderID)
+            self.tableView?.reloadData()
+
+            }, error: { (err) in
+        })
     }
     
 }

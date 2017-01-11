@@ -130,3 +130,43 @@ class RegisterAccountModel: Object {
     dynamic var uid_:Int64 = 0//注册成功才返回
 }
 
+//请求开票信息
+class DrawBillBaseInfo: Object {
+    
+    dynamic var oid_str_:String?
+    dynamic var title_:String?
+    dynamic var taxpayer_num_:String?
+    dynamic var company_addr_:String?
+    dynamic var invoice_type_:Int = 0
+    dynamic var user_name_:String?
+    dynamic var user_mobile_:String?
+    dynamic var area_:String?
+    dynamic var addr_detail_:String?
+    dynamic var remarks_:String?
+    dynamic var uid_:String?
+}
+//开票信息返回
+class DrawBillModel: Object {
+    dynamic var oid_str_:String?
+}
+
+//请求开票历史记录
+class InvoiceBaseInfo: Object {
+
+    dynamic var uid_:Int64 = 0
+    dynamic var count_:Int = 0
+    dynamic var last_invoice_id_:Int64 = 0//上次获取发票记录的最小Id,第一次上传为0
+    
+}
+//开票历史记录详情
+class InvoiceDetailModel: Object {
+    dynamic var invoice_id_:Int64 = 0
+    dynamic var oid_str_:String?
+    dynamic var invoice_status_:Int = 0
+    dynamic var invoice_time_:Int64 = 0
+    dynamic var invoice_price_:Int = 0
+}
+//开票历史记录返回
+class InvoiceHistoryModel: Object {
+    let invoice_list = List<InvoiceDetailModel>()
+}

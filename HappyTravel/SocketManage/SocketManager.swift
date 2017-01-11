@@ -78,10 +78,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PutDeviceToken = 1031
         // 注册设备推送Token返回
         case DeviceTokenResult = 1032
+        
         // 请求开票记录
         case InvoiceInfoRequest = 1033
         // 开票记录返回
         case InvoiceInfoReply = 1034
+        
         // 请求黑卡会员特权信息
         case CenturionCardInfoRequest = 1035
         // 黑卡会员特权信息返回
@@ -275,6 +277,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .RegisterAccountReply,
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
+//                                          .DrawBillReply,
+//                                          .InvoiceInfoReply,
                                           .SendImproveData]
     
     var isConnected : Bool {
