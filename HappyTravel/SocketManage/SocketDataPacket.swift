@@ -28,7 +28,7 @@ class SocketDataPacket: SockHead {
     init(opcode: SocketManager.SockOpcode, model: Object? = nil, type: PacketType = .User) {
         super.init()
         self.opcode = opcode.rawValue
-        self.type = type.rawValue
+        self.type = Int8((opcode.rawValue)/1000)
         if model != nil {
             self.data = model?.toData()
             self.bodyLen = Int16(self.data?.length ?? 0)

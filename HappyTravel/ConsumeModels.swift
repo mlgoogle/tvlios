@@ -77,6 +77,14 @@ class HodometerInfoModel : Object {
     dynamic var order_addr:String?
     
 }
+
+class InvoiceHodometerInfoModel : HodometerInfoModel {
+    
+    var serviceType:String {
+        return service_type_ == 1 ? "高端游" : "商务游"
+    }
+}
+
 //预约记录
 class AppointmentRequestModel: OrderRequestBaseModel {
     dynamic var last_id_ = 0
@@ -111,6 +119,13 @@ class AppointmentInfoModel: Object {
     dynamic var service_end_ = 0
     dynamic var service_start_ = 0
     dynamic var recommend_uid_:String?
+}
+
+class InvoiceAppointmentInfoModel : AppointmentInfoModel {
+    
+    var serviceType:String {
+        return (service_type_ == 1 ? "高端游" : "商务游") + "(预约)"
+    }
 }
 
 
@@ -252,6 +267,68 @@ class ServiceDetailModel: Object {
     let black_list_ = List<InvoiceCenturionCardConsumerModel>()
     
     let black_buy_list_ = List<InvoiceCenturionCardModel>()
+}
+
+// 按行程开票信息
+class TicketModel: Object {
+    
+    dynamic var order_id_ = 0
+    
+    dynamic var hodometer_:InvoiceHodometerInfoModel?
+    
+    dynamic var centurion_card_:InvoiceCenturionCardConsumerModel?
+    
+    dynamic var appointment_:InvoiceAppointmentInfoModel?
+    
+    var name:String? {
+        if hodometer_ != nil {
+            return hodometer_?.to_name_
+        } else if appointment_ != nil {
+            return appointment_?.to_name_
+        } else {
+            let formatter = NSNumberFormatter.init()
+            formatter.roundingMode = .RoundHalfDown
+            formatter.numberStyle = .SpellOutStyle
+            let lvNum = NSNumber.init(long: centurion_card_!.privilege_lv_)
+            let lvStr = formatter.stringFromNumber(lvNum)
+            return "\(lvStr!)星黑卡消费"
+        }
+    }
+    
+    var content:String? {
+        return (hodometer_?.service_name_ ?? centurion_card_?.privilege_name_) ?? appointment_?.service_name_
+    }
+    
+    var type:String? {
+        return (hodometer_?.serviceType ?? centurion_card_?.serviceType) ?? appointment_?.serviceType
+    }
+    
+    var time:String? {
+        if hodometer_ != nil {
+            return "\(hodometer_!.start_)"
+        } else if appointment_ != nil {
+            return "\(appointment_!.start_time_ )"
+        } else {
+            return "\(centurion_card_!.service_time_)"
+        }
+    }
+    
+    var price:String? {
+        if hodometer_ != nil {
+            return "\(hodometer_!.order_price_ / 100)元"
+        } else if appointment_ != nil {
+            return "\(appointment_!.order_price_ / 100)元"
+        } else {
+            return "\(centurion_card_!.privilege_price_ / 100)元"
+        }
+    }
+    
+    var selected = false
+    
+    override class func ignoredProperties() -> [String] {
+        return ["selected"]
+    }
+    
 }
 
 //请求开票信息

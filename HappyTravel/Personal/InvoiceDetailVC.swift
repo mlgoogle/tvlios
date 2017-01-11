@@ -13,7 +13,7 @@ import SVProgressHUD
 class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate {
     
     var table:UITableView?
-    var selectedOrderList:Results<OpenTicketInfo>?
+    var selectedOrderList:List<TicketModel>?
     var segmentIndex = 0
     var descLab:UILabel?
     var descLabText:String?
