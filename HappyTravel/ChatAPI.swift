@@ -25,8 +25,6 @@ class ChatAPI: SocketAPI {
             let jsonResponse = response as! SocketJsonResponse
             let model = jsonResponse.responseModel(MessageModel.classForCoder())
             if  model != nil {
-                //解码
-                //                model?.content = try! self.decodeBase64Str(model!.content)
                 complete(model)
             }
         }

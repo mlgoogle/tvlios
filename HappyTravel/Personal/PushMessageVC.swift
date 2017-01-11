@@ -353,9 +353,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if segmentIndex == 0 {
-//            let realm = try! Realm()
-//            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
-
             let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
             
             let message = userPushMessage.msgList.last
@@ -364,7 +361,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 currentAppointmentId = (message?.appointment_id_)!
                 if uid_str_ != nil  {
                     requestRecommendListWithUidStr(uid_str_!)
-//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
                 } else {
                     XCGLogger.error("推送服务者id 为空")
                 }
@@ -376,10 +372,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
-//                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
                 chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(cell.userInfo!.uid_)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
-                
+                DataManager.readMessage((cell.userInfo?.uid_)!)
+
             }
         } else if segmentIndex == 1 {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
