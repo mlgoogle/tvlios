@@ -12,9 +12,11 @@ import XCGLogger
 class InvoiceHistoryDetailVC: UIViewController {
     
     var invoice_id_ = 0
+    var invoice_status = 0
     var headerView:InvouiceHistoryDetailHeader?
     var tableView:UITableView?
-    var historyInfo:InvoiceHistoryInfo?
+//    var historyInfo:InvoiceHistoryInfo?
+    var historyDetailModel: InvoiceDetailModel?
     // 每个分区行数
     var rows:Array = [5, 3, 1]
     var titles =  [["发票抬头", "收件人", "联系电话", "所在区域", "收件地址"],
@@ -53,7 +55,19 @@ class InvoiceHistoryDetailVC: UIViewController {
         title = "开票详情"
         
         initViews()
-        SocketManager.sendData(.InvoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
+//        SocketManager.sendData(.InvoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
+        
+        let mode = InvoiceDetailBaseInfo()
+        mode.invoice_id_ = Int64(invoice_id_)
+        APIHelper.consumeAPI().invoiceDetail(mode, complete: { (response) in
+            if let detailMode = response as? InvoiceDetailModel {
+                DataManager.insertData(detailMode)
+                self.historyDetailModel = detailMode
+                self.headerView?.setupInfo(Int(self.historyDetailModel!.invoice_time_), invoiceSatus: self.invoice_status)
+            }
+            self.tableView?.reloadData()
+            }, error: { (err) in
+        })
     }
     
     func initViews() {
@@ -85,14 +99,14 @@ class InvoiceHistoryDetailVC: UIViewController {
      */
     func receivedData(notification:NSNotification) {
         
-        if let dict = notification.userInfo!["data"] {
-            let history = InvoiceHistoryInfo(value: dict)
-            DataManager.updateInvoiceHistoryInfo(history)
-            historyInfo = DataManager.getInvoiceHistoryInfo(invoice_id_)
-            headerView?.setupInfo((historyInfo?.invoice_time_)!, invoiceSatus: historyInfo!.invoice_status_)
-            tableView?.reloadData()
-        }
-        
+//        if let dict = notification.userInfo!["data"] {
+//            let history = InvoiceHistoryInfo(value: dict)
+//            DataManager.updateInvoiceHistoryInfo(history)
+//            historyInfo = DataManager.getInvoiceHistoryInfo(invoice_id_)
+//            headerView?.setupInfo((historyInfo?.invoice_time_)!, invoiceSatus: historyInfo!.invoice_status_)
+//            tableView?.reloadData()
+//        }
+//        
     }
     
 }
@@ -127,8 +141,11 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("detailCustomCell", forIndexPath: indexPath) as! InvoiceHistoryDetailCustomCell
-            if historyInfo != nil {
-                cell.setupData((historyInfo?.order_num_)!, first_time_: (historyInfo?.final_time_)!, final_time_: (historyInfo?.final_time_)!)
+//            if historyInfo != nil {
+//                cell.setupData((historyInfo?.order_num_)!, first_time_: (historyInfo?.final_time_)!, final_time_: (historyInfo?.final_time_)!)
+//            }
+            if historyDetailModel != nil {
+                cell.setupData((historyDetailModel?.order_num_)!, first_time_: Int((historyDetailModel?.final_time_)!), final_time_: Int((historyDetailModel?.final_time_)!))
             }
             return cell
         }
@@ -141,25 +158,25 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
          */
         cell.setTitleLabelText(titles[indexPath.section][indexPath.row], isLast:last)
         
-        if historyInfo != nil {
+        if historyDetailModel != nil {
             var text = ""
             var isPrice = false
             if indexPath.section == 0 {
                 switch indexPath.row {
                 case 0:
-                    text = (historyInfo?.title_)!
+                    text = (historyDetailModel?.title_)!
                     break
                 case 1:
-                    text = (historyInfo?.user_name_)!
+                    text = (historyDetailModel?.user_name_)!
                     break
                 case 2:
-                    text = (historyInfo?.user_mobile_)!
+                    text = (historyDetailModel?.user_mobile_)!
                     break
                 case 3:
-                    text = (historyInfo?.area_)!
+                    text = (historyDetailModel?.area_)!
                     break
                 case 4:
-                    text = (historyInfo?.addr_detail_)!
+                    text = (historyDetailModel?.addr_detail_)!
                     break
                 default:
                     break
@@ -167,16 +184,16 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
             } else {
                 switch indexPath.row {
                 case 0:
-                    if historyInfo?.invoice_type_ > 0  {
-                        text = invoiceTypes[(historyInfo?.invoice_type_)!]!
+                    if historyDetailModel?.invoice_type_ > 0  {
+                        text = invoiceTypes[(historyDetailModel?.invoice_type_)!]!
                     }
                     break
                 case 1:
-                    text = String(historyInfo!.total_price_)
+                    text = String(historyDetailModel!.total_price_)
                     isPrice = true
                     break
                 case 2:
-                    text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((historyInfo?.invoice_time_)!)))
+                    text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double((historyDetailModel?.invoice_time_)!)))
                     break
                 default:
                     break
@@ -209,7 +226,8 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 2 {
 
             let includeVC = InvoiceIncludeServiceVC()
-            includeVC.oid_str_ =  historyInfo?.oid_str_
+//            includeVC.oid_str_ =  historyInfo?.oid_str_
+            includeVC.oid_str_ =  historyDetailModel?.oid_str_
             navigationController?.pushViewController(includeVC, animated: true)
         }
     }

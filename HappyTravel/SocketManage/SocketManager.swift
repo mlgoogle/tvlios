@@ -52,12 +52,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SendMessageVerify = 1019
         // 发送验证码返回
         case MessageVerifyResult = 1020
-    
         // 请求注册新用户
         case RegisterAccountRequest = 1021
         // 注册新用户返回
         case RegisterAccountReply = 1022
-        
         // 请求修改个人信息
         case SendImproveData = 1023
         // 修改个人信息返回
@@ -70,10 +68,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ServiceDetailRequest = 1027
         // 服务详情信息返回
         case ServiceDetailReply = 1028
+        
         // 请求开票
         case DrawBillRequest = 1029
         // 开票返回
         case DrawBillReply = 1030
+        
         // 请求注册设备推送Token
         case PutDeviceToken = 1031
         // 注册设备推送Token返回
@@ -102,10 +102,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case AppointmentRequest = 1043
         // 预约返回
         case AppointmentReply = 1044
+        
         // 请求开票详情
         case InvoiceDetailRequest = 1045
         // 开票详情返回
         case InvoiceDetailReply = 1046
+        
         // 请求上传图片Token
         case UploadImageToken = 1047
         // 上传图片Token返回
@@ -275,6 +277,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .RegisterAccountReply,
                                           .ServantDetailInfo,
                                           .SendMessageVerify,
+//                                          .DrawBillReply,
+                                          .InvoiceInfoReply,
+                                          .InvoiceDetailReply,
                                           .SendImproveData,
                                           .AppointmentDetailReply,
                                           .CheckCommentDetailReplay,
@@ -284,7 +289,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServiceDetailReply,
                                           .DeviceTokenResult,
                                           .UploadImageTokenReply,
-                                          .WXplaceOrderReply]
+                                          .WXplaceOrderReply,
+                                          .RecvChatMessage,
+                                          .UnreadMessageReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -428,6 +435,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if head == nil {
             return false
         }
+        
         if let op = SocketManager.SockOpcode.init(rawValue: head!.opcode) {
             XCGLogger.info("Recv: \(op)")
         } else {
@@ -1017,11 +1025,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             return
         }
         
-        let msg = PushMessage(value: (jsonBody?.dictionaryObject)!)
+        let msg = MessageModel(value: (jsonBody?.dictionaryObject)!)
+        
         //base64解码
-//        msg.content_ = try! decodeBase64Str(msg.content_!)
-        DataManager.insertMessage(msg)
-        let user = DataManager.getUserInfo(msg.from_uid_)
+        DataManager.insertData(msg)
+        let user = DataManager.getData(UserInfoModel.self)?.filter("uid_ = \(msg.from_uid_)").first
         if user == nil {
             let req = UserInfoIDStrRequestModel()
             req.uid_str_ = "\(msg.from_uid_)"
@@ -1033,9 +1041,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         if UIApplication.sharedApplication().applicationState == .Background {
 
-            let body = "\((user?.nickname ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
+            let body = "\((user?.nickname_ ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
             var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-            userInfo["type"] = PushMessage.MessageType.Chat.rawValue
+            userInfo["type"] = msg.msg_type_
             userInfo["data"] = (jsonBody?.dictionaryObject)!
             localNotify(body, userInfo: userInfo)
         } else {
@@ -1084,13 +1092,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func unreadMessageReply(jsonBody: JSON?) {
         if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
             if msgList.count > 0 {
-                var pMsg:PushMessage?
+                var pMsg:MessageModel?
                 
                 for msg in msgList.reverse() {
-                    let pushMsg = PushMessage(value: msg)
+                    let pushMsg = MessageModel(value: msg)
                     //base64解码
 //                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
-                    DataManager.insertMessage(pushMsg)
+//                    DataManager.insertMessage(pushMsg)
+                    DataManager.insertData(pushMsg)
                     pMsg = pushMsg
                 }
                 let user = DataManager.getUserInfo(pMsg!.from_uid_)
