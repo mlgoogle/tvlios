@@ -102,7 +102,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func wxPlaceOrderReply(notification: NSNotification) {
         if let dict = notification.userInfo {
-            jumpToBizPay(dict)
+//            jumpToBizPay(dict)
         }
     }
     
@@ -457,22 +457,27 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func rechargeWithWX() {
          MobClick.event(CommonDefine.BuriedPoint.payWithWechat)
         //金额为分
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "title_": "V领队-余额充值",
-                                        "price_": Int(amount!)!*100]
-        SocketManager.sendData(.WXPlaceOrderRequest, data: dict)
+        let req = WXPlaceOrderRequestModel()
+        req.price_ = Int(amount!)! * 100
+        req.uid_ = CurrentUser.uid_
+        APIHelper.commonAPI().WXPlaceOrder(req, complete: { [weak self](response) in
+            if let model = response as? WXPlcaeOrderModel {
+                XCGLogger.debug(model)
+                self!.jumpToBizPay(model)
+            }
+        }, error: nil)
     
     }
     
-    func jumpToBizPay(dict: [NSObject: AnyObject]) {
-        rechageID = dict["recharge_id_"] as? String
+    func jumpToBizPay(model: WXPlcaeOrderModel) {
+        rechageID = model.recharge_id_
         let req = PayReq()
-        req.partnerId = dict["partnerid"] as? String
-        req.prepayId = dict["prepayid"] as? String
-        req.nonceStr = dict["noncestr"] as? String
-        req.timeStamp = UInt32.init((dict["timestamp"] as? String)!)!
-        req.package = dict["package"] as? String
-        req.sign = dict["sign"] as? String
+        req.partnerId = model.partnerid
+        req.prepayId = model.prepayid
+        req.nonceStr = model.noncestr
+        req.timeStamp = UInt32.init(model.timestamp!)!
+        req.package = model.package
+        req.sign = model.sign
         if WXApi.sendReq(req) {
             XCGLogger.debug("suc")
         } else {

@@ -12,7 +12,7 @@ import RealmSwift
 import XCGLogger
 class AppointmentDetailVC: UIViewController {
     var commitBtn: UIButton?
-    var servantInfo:UserInfo?
+    var servantInfo:UserInfoModel?
     var skillsArray:Array<Dictionary<SkillModel, Bool>> = Array()
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfoModel?
@@ -23,6 +23,8 @@ class AppointmentDetailVC: UIViewController {
     var user_score_ = 0
     var service_score_ = 0
     var remarks_:String?
+    var commentModel:OrderCommentModel?
+    
     lazy private var tableView:UITableView = {
         let tableView = UITableView(frame: CGRectZero, style: .Grouped)
         tableView.estimatedRowHeight = 200
@@ -49,12 +51,12 @@ class AppointmentDetailVC: UIViewController {
      */
     func registerNotification() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
+//                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -79,115 +81,131 @@ class AppointmentDetailVC: UIViewController {
      
      - parameter notification:
      */
-    func evaluatetripReply(notification: NSNotification) {
-        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-            self.navigationController?.popViewControllerAnimated(true)
-        })
-    }
+//    func evaluatetripReply(notification: NSNotification) {
+//        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+//            self.navigationController?.popViewControllerAnimated(true)
+//        })
+//    }
     /**
      
      获取评论信息回调
      - parameter notification:
      */
-    func reveicedCommentInfo(notification: NSNotification) {
-        if let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            guard data["error_"] == nil  else { return }
-            user_score_ = data["user_score_"] as! Int
-            service_score_ = data["service_score_"] as! Int
-            remarks_ = data["remarks_"] as? String
-         
-            // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0
-            let isCommited = user_score_ != 0 || service_score_ != 0
-            commitBtn?.enabled = !isCommited
-            commitBtn?.setTitle("发表评论", forState: .Normal)
-            tableView.reloadData()
-        }
-    }
+//    func reveicedCommentInfo(notification: NSNotification) {
+//        if let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            guard data["error_"] == nil  else { return }
+//            user_score_ = data["user_score_"] as! Int
+//            service_score_ = data["service_score_"] as! Int
+//            remarks_ = data["remarks_"] as? String
+//         
+//            // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0
+//            let isCommited = user_score_ != 0 || service_score_ != 0
+//            commitBtn?.enabled = !isCommited
+//            commitBtn?.setTitle("发表评论", forState: .Normal)
+//            tableView.reloadData()
+//        }
+//    }
     /**
      获取预约详情回调
      
      - parameter notification:
      */
-    func receivedDetailInfo(notification: NSNotification) {
-        
-        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
- 
-            skillsArray.removeAll()
-            if data["skills_"] != nil {
-             let skillStr = data["skills_"] as? String
-             let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
-                for idString in idArray {
-                    if idString == "" {
-                        break
-                    }
-                    if Int(idString) == nil {
-                        
-                        break
-                    }
-                    if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(idString)") {
-                        let skillInfo = results.first
-                        let dict = [skillInfo!:false] as Dictionary<SkillModel, Bool>
-                        skillsArray.append(dict)
-                    }
-                }
-                tableView.reloadData()
-            }
-
-        }
-    }
+//    func receivedDetailInfo(notification: NSNotification) {
+//        
+//        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
+// 
+//            skillsArray.removeAll()
+//            if data["skills_"] != nil {
+//             let skillStr = data["skills_"] as? String
+//             let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
+//                for idString in idArray {
+//                    if idString == "" {
+//                        break
+//                    }
+//                    if Int(idString) == nil {
+//                        
+//                        break
+//                    }
+//                    if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(idString)") {
+//                        let skillInfo = results.first
+//                        let dict = [skillInfo!:false] as Dictionary<SkillModel, Bool>
+//                        skillsArray.append(dict)
+//                    }
+//                }
+//                tableView.reloadData()
+//            }
+//
+//        }
+//    }
     /**
      获取服务者详情回调
      
      - parameter notification:
      */
-    func servantDetailInfo(notification: NSNotification) {
-        
-        if let data = notification.userInfo!["data"] as? [String: AnyObject] {
-        if data["error_"] != nil {
-            XCGLogger.error("Get UserInfo Error:\(data["error"])")
-            return
-        }
-        servantInfo =  DataManager.getUserInfo(data["uid_"] as! Int )
-        guard servantInfo != nil else {
-            
-            servantDict = data
-            getServantBaseInfo()
-            
-            return
-        }
-        
-        let realm = try! Realm()
-        try! realm.write({
-            
-            servantInfo!.setInfo(.Servant, info: data)
-            
-        })
-        
+//    func servantDetailInfo(notification: NSNotification) {
+//        
+//        if let data = notification.userInfo!["data"] as? [String: AnyObject] {
+//        if data["error_"] != nil {
+//            XCGLogger.error("Get UserInfo Error:\(data["error"])")
+//            return
+//        }
+////        servantInfo =  DataManager.getUserInfo(data["uid_"] as! Int )
+//        guard servantInfo != nil else {
+//            
+//            servantDict = data
+//            getServantBaseInfo()
+//            
+//            return
+//        }
+//        
+//        let realm = try! Realm()
+//        try! realm.write({
+//            
+////            servantInfo!.setInfo(.Servant, info: data)
+//            
+//        })
+//        
+//        let servantPersonalVC = ServantPersonalVC()
+////        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
+//        navigationController?.pushViewController(servantPersonalVC, animated: true)
+//        }
+//    }
+//    
+//    func getServantBaseInfo() {
+//        let model = UserInfoIDStrRequestModel()
+//        model.uid_str_ = String(servantDict!["uid_"] as! Int)
+//        
+//    APIHelper.servantAPI().getUserInfoByString(model, complete: { (response) in
+//        let list = response as? Array<UserInfoModel>
+//        guard list?.count > 0 else {return}
+//        for servant in list! {
+//            DataManager.insertData(servant)
+//        }
+//        }) { (error) in
+//            
+//        }
+////        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
+////        SocketManager.sendData(.GetUserInfo, data: dic)
+//        
+//    }
+//    func servantBaseInfoReply(notification: NSNotification) {
+//        
+////        servantInfo =  DataManager.getUserInfo(servantDict!["uid_"] as! Int)
+//        let realm = try! Realm()
+//        try! realm.write({
+//            
+////            servantInfo!.setInfo(.Servant, info: servantDict)
+//            
+//        })
+//        let servantPersonalVC = ServantPersonalVC()
+////        servantPersonalVC.personalInfo = servantInfo
+//        navigationController?.pushViewController(servantPersonalVC, animated: true)
+//    }
+    func pushToNextPage() {
         let servantPersonalVC = ServantPersonalVC()
-//        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
-        }
-    }
-    func getServantBaseInfo() {
-        
-//        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
-//        SocketManager.sendData(.GetUserInfo, data: dic)
-        
-    }
-    func servantBaseInfoReply(notification: NSNotification) {
-        
-        servantInfo =  DataManager.getUserInfo(servantDict!["uid_"] as! Int)
-        let realm = try! Realm()
-        try! realm.write({
-            
-            servantInfo!.setInfo(.Servant, info: servantDict)
-            
-        })
-        let servantPersonalVC = ServantPersonalVC()
-//        servantPersonalVC.personalInfo = servantInfo
+        servantPersonalVC.personalInfo = servantInfo
         navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "预约详情"
@@ -220,10 +238,63 @@ class AppointmentDetailVC: UIViewController {
     }
 
     func initData() {
-        
-        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
-        SocketManager.sendData(.CheckCommentDetail, data: ["order_id_": appointmentInfo!.order_id_])
+
+//        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
+//        SocketManager.sendData(.CheckCommentDetail, data: ["order_id_": appointmentInfo!.order_id_])
+        requestDetail()
+        checkCommentDetail()
     }
+    func requestDetail() {
+        
+        let model = OrderDetailRequsetModel()
+        model.order_id_ = (appointmentInfo?.order_id_)!
+        model.order_type_ = 1//1 为邀约 2为预约
+        APIHelper.consumeAPI().requestOrderDetail(model, complete: { (response) in
+            if  let data = response as? Dictionary<String, AnyObject> {
+                
+                self.skillsArray.removeAll()
+                if data["skills_"] != nil {
+                    let skillStr = data["skills_"] as? String
+                    let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
+                    for idString in idArray {
+                        if idString == "" {
+                            break
+                        }
+                        if Int(idString) == nil {
+                            break
+                        }
+                        if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(idString)") {
+                            let skillInfo = results.first
+                            let dict = [skillInfo!:false] as Dictionary<SkillModel, Bool>
+                            self.skillsArray.append(dict)
+                        }
+                    }
+                    self.tableView.reloadData()
+                }
+                
+            }
+            
+        }) { (error) in
+            
+        }
+    }
+    func checkCommentDetail() {
+        let model = CommentDetaiRequsetModel()
+        model.order_id_ = (appointmentInfo?.order_id_)!
+        
+        APIHelper.consumeAPI().requestComment(model, complete: { (response) in
+            self.commentModel = response as? OrderCommentModel
+            guard self.commentModel != nil else {return}
+            let isCommited = self.commentModel?.user_score_ != 0 || self.commentModel!.service_score_ != 0
+            self.commitBtn?.enabled = !isCommited
+            self.commitBtn?.setTitle("发表评论", forState: .Normal)
+            self.tableView.reloadData()
+            
+            }) { (error) in
+                
+        }
+    }
+    
     func cancelOrCommitButtonAction() {
         
         let dict:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
@@ -232,7 +303,17 @@ class AppointmentDetailVC: UIViewController {
                                                   "service_score_": (self.commonCell?.serviceStar)!,
                                                   "user_score_": (self.commonCell?.servantStar)!,
                                                   "remarks_": self.commonCell!.comment]
-        SocketManager.sendData(.EvaluateTripRequest, data: dict)
+//        SocketManager.sendData(.EvaluateTripRequest, data: dict)
+        
+        
+        let model = CommentForOrderModel(value: dict)
+        
+        APIHelper.consumeAPI().commentForOrder(model, complete: { (response) in
+            
+            self.navigationController?.popViewControllerAnimated(true)
+            }) { (error) in
+                
+        }
     }
 
 }
@@ -307,9 +388,9 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             guard service_score_  != 0 || user_score_ != 0 else {
                 return cell
             }
-            cell.serviceSocre = service_score_
-            cell.userScore = user_score_
-            cell.remark = remarks_
+            cell.serviceSocre = commentModel?.service_score_
+            cell.userScore = commentModel?.user_score_
+            cell.remark = commentModel?.remarks_
 
 
             return cell
@@ -352,28 +433,8 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-     
-        
-        /**
-         *  进入逻辑已修改
-         */
-        return appointmentInfo?.is_other_ == 1 ? 4 : 3
 
-//        /**
-//         *  status_ = 7代表可以评价 所以显示评论cell
-//         */
-//        if appointmentInfo?.status_ == 7 {
-//            /**
-//             如果是代订 则多显示一区
-//             - returns:
-//             */
-//            return appointmentInfo?.is_other_ == 1 ? 4 : 3
-//        }
-//        /**
-//         如果是代订 则多显示一区
-//         - returns:
-//         */
-//        return appointmentInfo?.is_other_ == 1 ? 3 : 2
+        return appointmentInfo?.is_other_ == 1 ? 4 : 3
         
     }
     

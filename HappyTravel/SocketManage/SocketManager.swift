@@ -279,7 +279,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .SendMessageVerify,
 //                                          .DrawBillReply,
 //                                          .InvoiceInfoReply,
-                                          .SendImproveData]
+                                          .SendImproveData,
+                                          .AppointmentDetailReply,
+                                          .CheckCommentDetailReplay,
+                                          .EvaluatetripReply,
+                                          .MessageVerifyResult,
+                                          .ImproveDataResult,
+                                          .ServiceDetailReply,
+                                          .DeviceTokenResult,
+                                          .UploadImageTokenReply,
+                                          .WXplaceOrderReply]
     
     var isConnected : Bool {
         return socket!.isConnected

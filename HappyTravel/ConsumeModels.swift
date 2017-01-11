@@ -145,5 +145,111 @@ class AppointmentRecommendRequestModel: Object {
 }
 
 class AppointmentRecommendListModel: Object{
-   let recommend_guide_ = List<ReServantListModel>()
+   let recommend_guide_ = List<UserInfoModel>()
+}
+class OrderDetailRequsetModel: Object {
+    dynamic var order_id_ = 0
+    dynamic var order_type_ = 1
+    
+}
+
+class CommentDetaiRequsetModel: Object {
+    dynamic var order_id_ = 0
+}
+
+class OrderCommentModel: Object {
+    dynamic var order_id_ = 0
+    dynamic var service_score_ = 0
+    dynamic var user_score_ = 0
+    dynamic var remarks_:String?
+}
+class CommentForOrderModel: Object {
+    dynamic var from_uid_ = 0
+    dynamic var to_uid_ = 0
+    dynamic var service_score_ = 0
+    dynamic var user_score_ = 0
+    dynamic var remarks_:String?
+}
+
+
+//服务详情
+class InvoiceServiceModel: ServiceModel {
+    
+    dynamic var order_time_ = 0
+    
+    dynamic var nick_name_:String?
+    
+    dynamic var service_time_:String?
+    
+    var serviceType:String {
+        return service_type_ == 1 ? "高端游" : "商务游"
+    }
+    
+    private let _orderInfo = LinkingObjects(fromType: ServiceDetailModel.self, property: "service_list_").first
+    var orderInfo:ServiceDetailModel {
+        return _orderInfo!
+    }
+    
+}
+
+class InvoiceCenturionCardConsumerModel: CenturionCardRecordModel {
+    
+    dynamic var service_time_:String?
+    
+    var serviceType:String {
+        return "黑卡消费"
+    }
+    
+    var nickname:String {
+        let formatter = NSNumberFormatter.init()
+        formatter.roundingMode = .RoundHalfDown
+        formatter.numberStyle = .SpellOutStyle
+        let lvNum = NSNumber.init(long: privilege_lv_)
+        let lvStr = formatter.stringFromNumber(lvNum)
+        return "\(lvStr!)星黑卡消费"
+    }
+    
+    private let _orderInfo = LinkingObjects(fromType: ServiceDetailModel.self, property: "black_list_").first
+    var orderInfo:ServiceDetailModel {
+        return _orderInfo!
+    }
+}
+
+class InvoiceCenturionCardModel: CenturionCardRecordModel {
+    
+    dynamic var service_time_:String?
+    
+    var serviceType:String {
+        return "黑卡购买"
+    }
+    
+    var nickname:String {
+        let formatter = NSNumberFormatter.init()
+        formatter.roundingMode = .RoundHalfDown
+        formatter.numberStyle = .SpellOutStyle
+        let lvNum = NSNumber.init(long: privilege_lv_)
+        let lvStr = formatter.stringFromNumber(lvNum)
+        return "\(lvStr!)星黑卡"
+    }
+    
+    private let _orderInfo = LinkingObjects(fromType: ServiceDetailModel.self, property: "black_buy_list_").first
+    var orderInfo:ServiceDetailModel {
+        return _orderInfo!
+    }
+}
+
+class ServiceDetailRequestModel: Object {
+    
+    dynamic var oid_str_:String?
+}
+
+class ServiceDetailModel: Object {
+    
+    dynamic var oid_str_:String?
+    
+    let service_list_ = List<InvoiceServiceModel>()
+    
+    let black_list_ = List<InvoiceCenturionCardConsumerModel>()
+    
+    let black_buy_list_ = List<InvoiceCenturionCardModel>()
 }

@@ -94,5 +94,43 @@ class VerifyInfoModel: Object {
     dynamic var token_:String?
 }
 
+// 注册设备
+class RegDeviceRequestModel: UserBaseModel {
+    
+    dynamic var device_token_:String?
+}
 
+// 照片上传
+class UploadPhotoModel: Object {
+    
+    dynamic var img_token_:String?
+    
+    dynamic var valid_time_ = 0
+}
 
+// 请求支付
+class WXPlaceOrderRequestModel: UserBaseModel {
+    
+    dynamic var title_ = "优悦-余额充值"
+    
+    dynamic var price_ = 0
+}
+
+class WXPlcaeOrderModel: Object {
+    
+    dynamic var recharge_id_:String?
+    
+    dynamic var prepayid:String?
+    
+    dynamic var partnerid:String?
+    
+    dynamic var appid:String?
+    
+    dynamic var noncestr:String?
+    
+    dynamic var package:String?
+    
+    dynamic var sign:String?
+    
+    dynamic var timestamp:String?
+}

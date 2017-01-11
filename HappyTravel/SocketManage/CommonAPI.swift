@@ -54,11 +54,35 @@ class CommonAPI: SocketAPI {
             }, error: error)
     }
 
-    //获取验证码
+    // 获取验证码
     func verifyCode(model: VerifyCodeRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .SendMessageVerify, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(VerifyInfoModel.classForCoder()))
+            }, error: error)
+    }
+    
+    // 注册设备
+    func regDevice(model: RegDeviceRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .PutDeviceToken, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
+    
+    // 请求图片上传token
+    func uploadPhotoToken(complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .UploadImageToken)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(UploadPhotoModel.classForCoder()))
+            }, error: error)
+    }
+    
+    // 请求微信支付
+    func WXPlaceOrder(model: WXPlaceOrderRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .WXPlaceOrderRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(WXPlcaeOrderModel.classForCoder()))
             }, error: error)
     }
 }
