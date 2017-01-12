@@ -87,3 +87,10 @@ class AppointmentServantRequestMdoel: InvitationBaseRequestModel {
 class AppointmentServantReplyMdoel: Object {
     dynamic var is_asked_ = 0
 }
+// 推荐服务者
+class RecommentServantRequestModel: Object {
+    
+    dynamic var city_code_ = 0
+    
+    dynamic var recommend_type_ = 1
+}

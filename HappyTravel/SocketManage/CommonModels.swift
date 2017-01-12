@@ -138,3 +138,24 @@ class WXPlcaeOrderModel: Object {
 class CheckVersionRequestModel: Object {
     dynamic var app_type_ = 0
 }
+class ClientWXPayStatusRequestModel: UserBaseModel {
+    
+    dynamic var recharge_id_ = 0
+    
+    dynamic var pay_result_ = 1
+}
+
+class ClienWXPayStatusModel: Object {
+    
+    dynamic var return_code_ = -1
+    
+    dynamic var user_cash_ = -1
+}
+
+//身份证信息
+class IDverifyRequestModel: UserBaseModel {
+    
+    dynamic var id_card_num_:String?
+    
+    dynamic var id_card_name:String?
+}

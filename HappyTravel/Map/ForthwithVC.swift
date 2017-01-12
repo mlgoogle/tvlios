@@ -953,16 +953,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func sendLocality() {
         mapView!.setZoomLevel(11, animated: true)
         if serviceCitys.count > 0 {
-            for (cityCode, cityInfo) in serviceCitys {
-                if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
-                    var dict = ["city_code_": cityCode, "recommend_type_": 1]
-                    SocketManager.sendData(.GetRecommendServants, data: dict)
-                    dict["recommend_type_"] = 2
-                    SocketManager.sendData(.GetRecommendServants, data: dict)
-                    return
-                }
-            }
-            
+//            for (cityCode, cityInfo) in serviceCitys {
+//                if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
+//                    var dict = ["city_code_": cityCode, "recommend_type_": 1]
+//                    SocketManager.sendData(.GetRecommendServants, data: dict)
+//                    dict["recommend_type_"] = 2
+//                    SocketManager.sendData(.GetRecommendServants, data: dict)
+//                    return
+//                }
+//            }
+        
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
                 mapView!.centerCoordinate = location!.coordinate
@@ -1119,15 +1119,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         guard targetCity != nil else { return }
         recommendServants.removeAll()
         citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
+//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
 
 //        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
-        SocketManager.sendData(.GetRecommendServants, data: dict)
+//        SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
     func headerRefresh() {
-        let dict = ["city_code_": cityCode, "recommend_type_": 2]
-        SocketManager.sendData(.GetRecommendServants, data: dict)
+//        let dict = ["city_code_": cityCode, "recommend_type_": 2]
+//        SocketManager.sendData(.GetRecommendServants, data: dict)
     }
     
     //MARK: - ServantIntroCellDeleagte

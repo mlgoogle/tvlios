@@ -214,7 +214,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if authUserCardCode == 0 || authUserCardCode == 1 {
                     return
                 }
-                let controller = UploadUserPictureVC()
+                let controller = IDVerifyVC()  // UploadUserPictureVC()
                 self.navigationController!.pushViewController(controller, animated: true)
                 break
             case .ClearCache:
