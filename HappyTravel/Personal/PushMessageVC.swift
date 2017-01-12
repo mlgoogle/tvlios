@@ -328,7 +328,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     // MARK: - RefreshChatSessionListDelegate
-
     func refreshChatSeesionList() {
         if segmentIndex == 0 {
             table?.reloadData()
@@ -345,8 +344,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             //消息
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
-//            let realm = try! Realm()
-//            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
             let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread_)
             return cell

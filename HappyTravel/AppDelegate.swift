@@ -242,13 +242,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                     return
                 }
                 switch push_msg_type_! {
-                case PushMessage.MessageType.Appointment.rawValue:
-                    let pushMessage = PushMessage()
-                    pushMessage.setInfo(jsonData.dictionaryObject)
-                    DataManager.insertPushMessage(pushMessage)
+                case MessageType.Appointment.rawValue:
+                    let pushMessage = MessageModel(value: jsonData.dictionaryObject!)
+                    pushMessage.from_uid_ = pushMessage.appointment_id_
+                    DataManager.insertData(pushMessage)
                     
                     break
-                case PushMessage.MessageType.OrderAnswer.rawValue:
+                case MessageType.OrderAnswer.rawValue:
                     DataManager.modfyStatusWithDictonary((jsonData.dictionaryObject)!)
                     break
                 default:

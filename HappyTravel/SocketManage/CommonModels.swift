@@ -134,7 +134,10 @@ class WXPlcaeOrderModel: Object {
     
     dynamic var timestamp:String?
 }
-
+//检查版本号
+class CheckVersionRequestModel: Object {
+    dynamic var app_type_ = 0
+}
 class ClientWXPayStatusRequestModel: UserBaseModel {
     
     dynamic var recharge_id_ = 0

@@ -14,7 +14,7 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate { //ServantIntroCellDelegate
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate{ //ServantIntroCellDelegate
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
@@ -510,6 +510,19 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
+        
+        
+        APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { (response) in
+            if let verInfo = response as? [String: AnyObject] {
+                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+                    if gotoUpdate {
+                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
+                    }
+                })
+            }
+            }) { (error) in
+                
+        }
         SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
             if let verInfo = result["data"] as? [String: AnyObject] {
                 UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
@@ -521,16 +534,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         })
 
-        APIHelper.commonAPI().cityNameInfo({ (response) in
-            if let model = response as? CityNameInfoModel {
-                DataManager.insertData(model)
-                self.serviceCitysModel = model
-            }
-            self.appointmentView.serviceCitysModel = self.serviceCitysModel
-            
-            }, error: { (err) in
-                
-        })
+//        APIHelper.commonAPI().cityNameInfo({ (response) in
+//            if let model = response as? CityNameInfoModel {
+//                DataManager.insertData(model)
+//                self.serviceCitysModel = model
+//            }
+//            self.appointmentView.serviceCitysModel = self.serviceCitysModel
+//            
+//            }, error: { (err) in
+//                
+//        })
         
         
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
@@ -549,7 +562,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }, error: nil)
         //初始化 receiveMessageBlock
-        ChatMessageHelper.shared
+        ChatMessageHelper.shared.refreshDelegate = self
         getUnReadMessage()
     }
     
@@ -561,11 +574,21 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             for message in messsages! {
                 ChatMessageHelper.shared.reveicedMessage(message)
             }
+            self.setUnReadCount()
             }) { (error) in
                 
         }
     }
-    
+    func setUnReadCount() {
+        
+        if DataManager.getUnreadMsgCnt(-1) > 0 {
+            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
+            msgCountLab?.hidden = false
+        }
+    }
+    func refreshChatSeesionList() {
+        setUnReadCount()
+    }
     func getServantNearby(lat: Double, lon:Double) {
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
