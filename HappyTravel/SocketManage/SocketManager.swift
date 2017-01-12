@@ -266,6 +266,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .UploadContactReply,
                                           .ObtainTripReply,
                                           .AppointmentRecordReply,
+                                          
                                           .CenturionCardConsumedReply,
                                           .AppointmentRecommendReply,
                                           .SkillsInfoReply,
@@ -276,6 +277,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
                                           .ServantDetailInfo,
+                                          
                                           .SendMessageVerify,
 //                                          .DrawBillReply,
                                           .InvoiceInfoReply,
@@ -287,6 +289,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .MessageVerifyResult,
                                           .ImproveDataResult,
                                           .ServiceDetailReply,
+                                          
                                           .DeviceTokenResult,
                                           .UploadImageTokenReply,
                                           .WXplaceOrderReply,
