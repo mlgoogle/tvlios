@@ -45,3 +45,15 @@ class ServantDetailModel: Object {
     
     let service_list_ = List<ServiceModel>()
 }
+
+// 发起邀约
+class InvitationRequestModel: Object {
+
+    dynamic var from_uid_ = CurrentUser.uid_
+    
+    dynamic var to_uid_ = -1000
+    
+    dynamic var service_id_ = -1000
+    
+    dynamic var day_count_ = 1
+}

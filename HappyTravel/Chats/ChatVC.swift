@@ -181,6 +181,16 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             navigationItem.rightBarButtonItem = msgItem
         }
         
+        if servantDetail == nil {
+            let servant = UserBaseModel()
+            servant.uid_ = servantInfo!.uid_
+            APIHelper.servantAPI().servantDetail(servant, complete: { (response) in
+                if let model = response as? ServantDetailModel {
+                    DataManager.insertData(model)
+                }
+                }, error: nil)
+        }
+        
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -277,8 +287,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         if alertController == nil {
             alertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = ServiceSheet()
-//            sheet.servantInfo = DataManager.getUserInfo(servantInfo!.uid_)
-            sheet.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servantInfo?.uid_)")?.first
+            sheet.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servantInfo!.uid_)")?.first
+            sheet.servantDetail = DataManager.getData(ServantDetailModel.self, filter: "uid_ = \(servantInfo!.uid_)")?.first
             sheet.delegate = self
             alertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -606,11 +616,26 @@ extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate, Receiv
     
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-        
-        SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
-            "to_uid_": servantInfo!.uid_,
-            "service_id_": selectedServcie!.service_id_,
-            "day_count_":targetDays])
+
+        let req = InvitationRequestModel()
+        req.to_uid_ = servantInfo!.uid_
+        req.service_id_ = selectedServcie!.service_id_
+        req.day_count_ = targetDays
+        APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
+            if let model = response as? HodometerInfoModel {
+                let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                alert.addAction(action)
+                self!.presentViewController(alert, animated: true, completion: nil)
+            }
+            }, error: { [weak self](err) in
+                let msg = "邀约失败，请稍后再试"
+                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                alert.addAction(action)
+                self!.presentViewController(alert, animated: true, completion: nil)
+            })
     }
     
     func daysCancelAction(sender: UIButton?) {
