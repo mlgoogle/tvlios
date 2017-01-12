@@ -46,6 +46,25 @@ class ServantDetailModel: Object {
     let service_list_ = List<ServiceModel>()
 }
 
+//照片墙
+class PhotoWallRequestModel: Object {
+    dynamic var uid_ = 0
+    dynamic var size_ = 0
+    dynamic var num_ = 0
+}
+
+class PhotoModel: Object {
+    dynamic var photo_url_: String?
+    dynamic var thumbnail_url_: String?
+    dynamic var upload_time_: String?
+    
+}
+
+class PhotoWallModel: Object {
+    let photo_list_:List<PhotoModel> = List<PhotoModel>()
+    
+}
+
 // 发起邀约
 class InvitationRequestModel: Object {
 
