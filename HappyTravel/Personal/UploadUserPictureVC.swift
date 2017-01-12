@@ -159,7 +159,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                         model.front_pic_ = self.photoURL["pic1"]
                         model.back_pic_ = self.photoURL["pic0"]
                         weak var weakSelf = self
-                        APIHelper.userAPI().AuthenticateUserCard(model, complete: { (response) in
+                        APIHelper.userAPI().authenticateUserCard(model, complete: { (response) in
                             if let authorModel = response as? AuthenticateUserCardModel {
                                 weakSelf!.review_status = authorModel.review_status_
                                 //更改认证状态为认证中

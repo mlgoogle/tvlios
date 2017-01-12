@@ -178,12 +178,9 @@ class OrderCommentModel: Object {
     dynamic var user_score_ = 0
     dynamic var remarks_:String?
 }
-class CommentForOrderModel: Object {
+class CommentForOrderModel: OrderCommentModel {
     dynamic var from_uid_ = 0
     dynamic var to_uid_ = 0
-    dynamic var service_score_ = 0
-    dynamic var user_score_ = 0
-    dynamic var remarks_:String?
 }
 
 

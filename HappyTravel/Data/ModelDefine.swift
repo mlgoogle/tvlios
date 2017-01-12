@@ -9,15 +9,3 @@
 import Foundation
 import RealmSwift
 
-class PhotoModel: Object {
-    dynamic var photo_url_: String?
-    dynamic var thumbnail_url_: String?
-    dynamic var upload_time_: String?
-    
-}
-
-class PhotoWallModel: Object {
-    let photo_list_:List<PhotoModel> = List<PhotoModel>()
-
-}
-

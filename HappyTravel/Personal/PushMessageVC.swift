@@ -12,7 +12,7 @@ import XCGLogger
 import MJRefresh
 
 
-class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource,RefreshChatSessionListDelegate{
     var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
@@ -36,7 +36,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         
         navigationItem.title = "消息中心"
-        
+        ChatMessageHelper.shared.refreshDelegate = self
         initView()
         segmentChange(segmentSC)
     }
@@ -257,16 +257,15 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         model.order_id_ = isRefresh ? 0 : orderID
         APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
             self.hotometers = DataManager.getData(HodometerInfoModel.self)!.filter("order_id_ != 0").sorted("start_", ascending: false)
-
-            let lastID = response as! Int
-            if lastID == -1000 || self.hotometers?.count <= 10 {
-                self.footer.state = .NoMoreData
-                self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            if let models = response as? [HodometerInfoModel] {
+                DataManager.insertDatas(models)
+                self.orderID = models.last!.order_id_
             } else {
-                self.orderID = lastID
+                self.noMoreData()
             }
             self.endRefresh()
         }) { (error) in
+            self.noMoreData()
         }
     }
     func headerRefresh() {
@@ -292,6 +291,11 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             timer = nil
         }
         table?.reloadData()
+    }
+    func noMoreData() {
+        endRefresh()
+        footer.state = .NoMoreData
+        footer.setTitle("没有更多信息", forState: .NoMoreData)
     }
     func footerRefresh() {
         if segmentIndex == 0 {
@@ -325,7 +329,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.reloadData()
 
     }
+    // MARK: - RefreshChatSessionListDelegate
 
+    func refreshChatSeesionList() {
+        if segmentIndex == 0 {
+            table?.reloadData()
+        }
+    }
 
     
     // MARK: - UITableView

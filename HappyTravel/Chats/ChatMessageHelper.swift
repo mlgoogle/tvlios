@@ -43,7 +43,11 @@ class ChatMessageHelper: NSObject {
                 }
                 if UIApplication.sharedApplication().applicationState == .Background {
                     
-                    let body = "\((userModel?.nickname_ ?? "云巅代号 \(messageModel!.from_uid_) 的用户给您发来消息")): \(messageModel!.content_!)"
+                    var content = messageModel!.content_!
+                    if messageModel?.msg_type_ == MessageType.Location.rawValue {
+                        content = "[位置分享]"
+                    } 
+                    let body = "\((userModel?.nickname_ ?? "云巅代号 \(messageModel!.from_uid_) 的用户给您发来消息")): \(content)"
                     var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
                     userInfo["type"] = messageModel!.msg_type_
                     userInfo["data"] = messageModel?.toDictionary()

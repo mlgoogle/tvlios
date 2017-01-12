@@ -341,13 +341,21 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             let dict = ["uid_": personalInfo!.uid_,
                         "size_": 12,
                         "num_": 1]
-            SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
-                if let data = response["data"] as? [String: AnyObject] {
-                    self.photoModel = PhotoWallModel(value: data)
-                    self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
-                    
-                }
-            })
+            let model = PhotoWallRequestModel(value: dict)
+            APIHelper.servantAPI().requestPhotoWall(model, complete: { (response) in
+                
+                self.photoModel = response as? PhotoWallModel
+                self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
+            }) { (error) in
+                
+            }
+//            SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
+//                if let data = response["data"] as? [String: AnyObject] {
+//                    self.photoModel = PhotoWallModel(value: data)
+//                    self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
+//                    
+//                }
+//            })
         }
         
     }
