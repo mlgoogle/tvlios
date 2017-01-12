@@ -83,13 +83,15 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
         let dict = ["uid_": info!.uid_,
                     "size_": 20,
                     "num_": pageIndex]
-        SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
-            if let data = response["data"] as? [String: AnyObject] {
-                let model = PhotoWallModel(value: data)
-                self.didRequestComplete(model)
-            }
-        })
-        
+        let model = PhotoWallRequestModel(value: dict)
+        APIHelper.servantAPI().requestPhotoWall(model, complete: { (response) in
+            
+            self.didRequestComplete(response as? PhotoWallModel)
+
+            }) { (error) in
+                
+        }
+
     }
 
     func didRequestComplete(data: AnyObject?) {

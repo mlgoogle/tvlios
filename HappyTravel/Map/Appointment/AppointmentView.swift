@@ -636,17 +636,6 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             skillStr = skillStr.substringToIndex(skillStr.endIndex.predecessor())
         }
         
-//        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-//                                        "city_code_": (cityInfoBase?.city_code_)!,//cityInfo!.cityCode,
-//                                        "start_time_":Int(UInt64(startDate!.timeIntervalSince1970)),
-//                                        "end_time_": Int(UInt64(startDate!.timeIntervalSince1970)),
-//                                        "skills_": skillStr,
-//                                        "remarks_": remarksTextView?.text ?? "",
-//                                        "is_other_": agent == false ? 0 : 1,
-//                                        "other_name_": agent == true ? name! : "",
-//                                        "other_gender_": agent == true ? (gender == true ? 1 : 0) : "",
-//                                        "other_phone_": agent == true ? tel! : ""]
-//        SocketManager.sendData(.AppointmentRequest, data: dict)
         let model = AppointmentTripBaseInfo()
         model.uid_ = Int64(CurrentUser.uid_)
         model.city_code_ = (cityInfoBase?.city_code_)!

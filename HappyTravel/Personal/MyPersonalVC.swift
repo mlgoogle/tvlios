@@ -90,7 +90,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         if failedReson != "" {
             return
         }
-        DataManager.currentUser?.authentication = reviewStatus!
+//        DataManager.currentUser?.authentication = reviewStatus!
     }
     
     func improveDataSuccessed(notification: NSNotification) {

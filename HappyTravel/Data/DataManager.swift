@@ -113,7 +113,7 @@ class DataManager: NSObject {
             }
             return cnt
         }
-        return realm.objects(UserPushMessage.self).filter("uid = \(uid)").count
+        return realm.objects(ChatSessionModel.self).filter("uid = \(uid)").count
     }
     
     static func getMessage(uid: Int) -> UserPushMessage? {

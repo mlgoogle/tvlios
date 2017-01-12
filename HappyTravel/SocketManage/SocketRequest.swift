@@ -25,7 +25,7 @@ class SocketRequest {
     }
 
     deinit {
-        XCGLogger.debug(" \(self)")
+//        XCGLogger.debug(" \(self)")
         
     }
     

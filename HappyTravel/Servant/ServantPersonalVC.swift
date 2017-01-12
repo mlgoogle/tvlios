@@ -192,12 +192,29 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             let totalMoney = service_price_oneday! * Int(dayNum)
             let currentCash = CurrentUser.user_cash_
             if currentCash >= totalMoney { // 余额充足
-                SocketManager.sendData(.AppointmentServantRequest, data: ["from_uid_": CurrentUser.uid_,
-                    "to_uid_": personalInfo!.uid_,
-                    "service_id_": service!.service_id_,
-                    "appointment_id_":appointment_id_])
+                let appointmentRequestModel = AppointmentServantRequestMdoel()
+                appointmentRequestModel.appointment_id_ = appointment_id_
+                appointmentRequestModel.service_id_ = service!.service_id_
+                appointmentRequestModel.to_uid_ = personalInfo!.uid_
+                appointmentRequestModel.from_uid_ = CurrentUser.uid_
+                APIHelper.servantAPI().appointment(appointmentRequestModel, complete: { (response) in
+
+                    let model = response as? AppointmentServantReplyMdoel
+                    guard model != nil else {return}
+                    var msg = "预约发起成功，等待对方接受邀请"
+                    if model?.is_asked_ == 1 {
+                        msg = "预约失败，您已经预约过对方"
+                        let alert = UIAlertController.init(title: "预约状态",message: msg,preferredStyle: .Alert)
+                        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in })
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true) {
+                            DataManager.removeData(ChatSessionModel.self, filter: "uid_ = \(self.appointment_id_)")
+                        }
+                    }
+                    }, error: { (error) in
+                })
                 
-            }else{
+            } else {
                 let alert = UIAlertController.init(title: "余额不足", message: "服务价格为\(totalMoney/100)元，还差\((totalMoney - currentCash)/100)元", preferredStyle: .Alert)
                 
                 let ok = UIAlertAction.init(title: "去充值", style: .Default, handler: { (action: UIAlertAction) in
@@ -264,8 +281,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedResults(_:)), name: NotifyDefine.AppointmentServantReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedResults(_:)), name: NotifyDefine.AppointmentServantReply, object: nil)
         
     }
     
@@ -274,80 +291,80 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      
      - parameter notifucation:
      */
-    func receivedResults(notifucation: NSNotification?) {
-
-        
-//        YD_ContactManager.checkIfUploadContact()
-
-        let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
-        
-        var msg = "预约发起成功，等待对方接受邀请"
-        if dict!["is_asked_"] as! Int == 1 {
-            msg = "预约失败，您已经预约过对方"
-
-        }
-        
-        let alert = UIAlertController.init(title: "预约状态",
-                                           message: msg,
-                                           preferredStyle: .Alert)
-        
-
-        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            
-        })
-        
-        alert.addAction(action)
-
-        presentViewController(alert, animated: true) {
-            /**
-             预约完成 删除 推送的预约消息 测试状态 暂时不删
-             */
-//            DataManager.deletePushMessage(appointment_id_)
-        }
-    }
+//    func receivedResults(notifucation: NSNotification?) {
+//
+//        
+////        YD_ContactManager.checkIfUploadContact()
+//
+//        let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
+//        
+//        var msg = "预约发起成功，等待对方接受邀请"
+//        if dict!["is_asked_"] as! Int == 1 {
+//            msg = "预约失败，您已经预约过对方"
+//
+//        }
+//        
+//        let alert = UIAlertController.init(title: "预约状态",
+//                                           message: msg,
+//                                           preferredStyle: .Alert)
+//        
+//
+//        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+//            
+//        })
+//        
+//        alert.addAction(action)
+//
+//        presentViewController(alert, animated: true) {
+//            /**
+//             预约完成 删除 推送的预约消息 测试状态 暂时不删
+//             */
+////            DataManager.deletePushMessage(appointment_id_)
+//        }
+//    }
     /**
      邀约回调
      
      - parameter notifucation:
      */
-    func invitationResult(notifucation: NSNotification?) {
-        
-//        YD_ContactManager.checkIfUploadContact()
-        var msg = ""
-        if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
-            msg = err.values.first!
-        }
-        
-        if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {
-            if msg == "" {
-                msg = order.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
-            }
-            let alert = UIAlertController.init(title: "邀约状态",
-                                               message: msg,
-                                               preferredStyle: .Alert)
-            
-            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                
-            })
-            
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
-            
-        }
-    }
+//    func invitationResult(notifucation: NSNotification?) {
+//        
+////        YD_ContactManager.checkIfUploadContact()
+//        var msg = ""
+//        if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
+//            msg = err.values.first!
+//        }
+//        
+//        if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {
+//            if msg == "" {
+//                msg = order.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+//            }
+//            let alert = UIAlertController.init(title: "邀约状态",
+//                                               message: msg,
+//                                               preferredStyle: .Alert)
+//            
+//            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
+//                
+//            })
+//            alert.addAction(action)
+//            presentViewController(alert, animated: true, completion: nil)
+//            
+//        }
+//    }
     
     func requestPhoto() {
         if personalInfo != nil {
             let dict = ["uid_": personalInfo!.uid_,
                         "size_": 12,
                         "num_": 1]
-            SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
-                if let data = response["data"] as? [String: AnyObject] {
-                    self.photoModel = PhotoWallModel(value: data)
-                    self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
-                    
-                }
-            })
+            let model = PhotoWallRequestModel(value: dict)
+            APIHelper.servantAPI().requestPhotoWall(model, complete: { (response) in
+                
+                self.photoModel = response as? PhotoWallModel
+                self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
+            }) { (error) in
+                
+            }
         }
         
     }
@@ -449,6 +466,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
 
 
 extension ServantPersonalVC:CitysSelectorSheetDelegate {
+    func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
+        let localNotify = UILocalNotification()
+        localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
+        localNotify.timeZone = NSTimeZone.defaultTimeZone()
+        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
+        localNotify.soundName = UILocalNotificationDefaultSoundName
+        if #available(iOS 8.2, *) {
+            localNotify.alertTitle = "优悦出行"
+        } else {
+            // Fallback on earlier versions
+        }
+        localNotify.alertBody = body!
+        localNotify.userInfo = userInfo
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
+        
+    }
+    
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         
@@ -462,19 +496,27 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             req.day_count_ = targetDays
             APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
                 if let model = response as? HodometerInfoModel {
-                    let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                    if UIApplication.sharedApplication().applicationState == .Background {
+                        let body = "系统消息: 您有新的行程消息!"
+                        var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                        userInfo["type"] = PushMessage.MessageType.System.rawValue
+                        userInfo["data"] = model
+                        self!.localNotify(body, userInfo: userInfo)
+                    } else {
+                        let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                        let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                        let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                        alert.addAction(action)
+                        self!.presentViewController(alert, animated: true, completion: nil)
+                    }
+                }
+                }, error: { [weak self](err) in
+                    let msg = "邀约失败，请稍后再试"
                     let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
                     let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
                     alert.addAction(action)
                     self!.presentViewController(alert, animated: true, completion: nil)
-                }
-            }, error: { [weak self](err) in
-                let msg = "邀约失败，请稍后再试"
-                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
-                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
-                alert.addAction(action)
-                self!.presentViewController(alert, animated: true, completion: nil)
-            })
+                })
             
         }else{
             let needChargeNum = Int(ceil(Float(totalMoney - currentCash)/100))

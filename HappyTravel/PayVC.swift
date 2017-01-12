@@ -154,12 +154,54 @@ class PayVC: UIViewController, UITextFieldDelegate {
             if CurrentUser.user_cash_ < price {
                 self.moneyIsTooLess()
             } else {
-                let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                                "order_id_": orderId!,
-                                                "passwd_": passwd!]
-                SocketManager.sendData(.PayForInvitationRequest, data: dict)
+                let req = PayForInvitationRequestModel()
+                req.uid_ = CurrentUser.uid_
+                req.order_id_ = orderId!
+                req.passwd_ = passwd!
+                APIHelper.consumeAPI().payForInvitation(req, complete: { [weak self](response) in
+                    if let model = response as? PayForInvitationModel {
+                        self!.payForInvitationRsp(model)
+                    }
+                    }, error: { (err) in
+                
+                })
             }
         }
+    }
+    
+    func payForInvitationRsp(model: PayForInvitationModel) {
+        var msg = ""
+        switch model.result_ {
+        case 0:
+            MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
+            msg = "预支付成功"
+//            if segmentIndex! == 0 {
+//                SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                    "order_id_": 0,
+//                    "count_": 10])
+//            } else {
+//                SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
+//                    "last_id_": 0,
+//                    "count_": 10])
+//            }
+        case -1:
+            msg = "密码错误"
+        case -2:
+            MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
+            msg = "余额不足"
+            moneyIsTooLess()
+            return
+        default:
+            break
+        }
+        let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
+        let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: {(action) in
+            if model.result_ == 0{
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        })
+        alert.addAction(sure)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -199,15 +241,15 @@ class PayVC: UIViewController, UITextFieldDelegate {
             case 0:
                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
                 msg = "预支付成功"
-                if segmentIndex! == 0 {
-                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                        "order_id_": 0,
-                        "count_": 10])
-                } else {
-                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-                        "last_id_": 0,
-                        "count_": 10])
-                }
+//                if segmentIndex! == 0 {
+//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                        "order_id_": 0,
+//                        "count_": 10])
+//                } else {
+//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
+//                        "last_id_": 0,
+//                        "count_": 10])
+//                }
             case -1:
                 msg = "密码错误"
             case -2:

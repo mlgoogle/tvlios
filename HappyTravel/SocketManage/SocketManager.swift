@@ -149,9 +149,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         // 黑卡VIP价格
         case CenturionVIPPriceReply = 1084
         // 获取黑卡等级升级
-        case getUpCenturionCardOriderRequest = 1085
+        case GetUpCenturionCardOriderRequest = 1085
         // 获取黑卡等级下单
-        case getUpCenturionCardOriderReply = 1086
+        case GetUpCenturionCardOriderReply = 1086
         // 请求验证密码正确性
         case PasswdVerifyRequest = 1087
         // 验证密码正确性返回
@@ -176,6 +176,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case InsurancePayRequest = 1119
         //保险支付返回
         case InsurancePayReply = 1120
+        //请求身份证认证
+        case IDVerifyRequest = 1121
+        //身份证认证返回
+        case IDVerifyReply = 1122
         //MARK: - 2000+
         
         // 请求邀请服务者
@@ -297,7 +301,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .PasswdVerifyReply,
                                           .SetupPaymentCodeReply,
                                           .UnreadMessageReply,
-                                          .InvitationResult]
+                                          .InvitationResult,
+                                          .MSGReadCntResult,
+                                          .PayForInvitationReply,
+                                          .PhotoWallReply,
+                                          .InvitationResult,
+                                          .AppointmentServantReply,
+                                          .VersionInfoReply,
+                                          .ServersManInfoReply,
+                                          .ServersManInfoReply, //.RecommendServants,
+                                          .GetUpCenturionCardOriderReply,
+                                          .ClientWXPayStatusReply,
+                                          .ServerWXPayStatusReply,
+                                          .IDVerifyReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -314,10 +330,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "61.147.114.78"
-                    let port:UInt16 = 10007
-//                    let ip:String = "192.168.8.111"
-//                    let port:UInt16 = 10001
+//                    let ip:String = "61.147.114.78"
+//                    let port:UInt16 = 10007
+                    let ip:String = "192.168.8.111"
+                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001
@@ -348,27 +364,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
         
-//        CurrentUser.login_ = false
-//        SocketManager.isLogout = true
-////        CurrentUser.login_ = false
-//        CurrentUser.auth_status_ = -1
-//        //result为0非黑卡用户
-//        if UserCenturionCardInfo.result != 0 {
-//            UserCenturionCardInfo.name_ = nil
-//            UserCenturionCardInfo.blackcard_lv_ = 0
-//            UserCenturionCardInfo.blackcard_id_ = 0
-//        }
-//        sock?.socket?.disconnect()
-//        SocketManager.shareInstance.buffer = NSMutableData()
-//        SocketManager.shareInstance.connectSock()
-
-        CurrentUser.login_ = false
         SocketManager.isLogout = true
-        DataManager.currentUser?.login = false
-        DataManager.currentUser?.authentication = -1
-        DataManager.currentUser?.centurionCardName = nil
-        DataManager.currentUser?.centurionCardId = 0
-        DataManager.currentUser?.centurionCardLv = 0
+        CurrentUser.login_ = false
+        CurrentUser.auth_status_ = -1
+        UserCenturionCardInfo.name_ = nil
+        UserCenturionCardInfo.blackcard_id_ = 0
+        UserCenturionCardInfo.blackcard_lv_ = 0
+        
         sock?.socket?.disconnect()
         SocketManager.shareInstance.buffer = NSMutableData()
         SocketManager.shareInstance.connectSock()

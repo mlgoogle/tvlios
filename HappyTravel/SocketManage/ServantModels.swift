@@ -46,14 +46,51 @@ class ServantDetailModel: Object {
     let service_list_ = List<ServiceModel>()
 }
 
-// 发起邀约
-class InvitationRequestModel: Object {
+//照片墙
+class PhotoWallRequestModel: Object {
+    dynamic var uid_ = 0
+    dynamic var size_ = 0
+    dynamic var num_ = 0
+}
 
+class PhotoModel: Object {
+    dynamic var photo_url_: String?
+    dynamic var thumbnail_url_: String?
+    dynamic var upload_time_: String?
+    
+}
+
+class PhotoWallModel: Object {
+    let photo_list_:List<PhotoModel> = List<PhotoModel>()
+    
+}
+
+class InvitationBaseRequestModel: Object {
+    
     dynamic var from_uid_ = CurrentUser.uid_
     
     dynamic var to_uid_ = -1000
     
     dynamic var service_id_ = -1000
     
+}
+// 发起邀约
+class InvitationRequestModel: InvitationBaseRequestModel {
+
     dynamic var day_count_ = 1
+}
+//发起预约
+
+class AppointmentServantRequestMdoel: InvitationBaseRequestModel {
+    dynamic var appointment_id_ = 0
+}
+class AppointmentServantReplyMdoel: Object {
+    dynamic var is_asked_ = 0
+}
+// 推荐服务者
+class RecommentServantRequestModel: Object {
+    
+    dynamic var city_code_ = 0
+    
+    dynamic var recommend_type_ = 1
 }

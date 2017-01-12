@@ -12,7 +12,7 @@ import XCGLogger
 import MJRefresh
 
 
-class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource,RefreshChatSessionListDelegate{
     var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
@@ -36,7 +36,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         
         navigationItem.title = "消息中心"
-        
+        ChatMessageHelper.shared.refreshDelegate = self
         initView()
         segmentChange(segmentSC)
     }
@@ -98,9 +98,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case 0:
              MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                                                              "order_id_": 0,
-                                                              "count_": 10])
+//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                                                              "order_id_": 0,
+//                                                              "count_": 10])
         case -1:
             msg = "密码错误"
         case -2:
@@ -257,16 +257,15 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         model.order_id_ = isRefresh ? 0 : orderID
         APIHelper.consumeAPI().requestInviteOrderLsit(model, complete: { (response) in
             self.hotometers = DataManager.getData(HodometerInfoModel.self)!.filter("order_id_ != 0").sorted("start_", ascending: false)
-
-            let lastID = response as! Int
-            if lastID == -1000 || self.hotometers?.count <= 10 {
-                self.footer.state = .NoMoreData
-                self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+            if let models = response as? [HodometerInfoModel] {
+                DataManager.insertDatas(models)
+                self.orderID = models.last!.order_id_
             } else {
-                self.orderID = lastID
+                self.noMoreData()
             }
             self.endRefresh()
         }) { (error) in
+            self.noMoreData()
         }
     }
     func headerRefresh() {
@@ -293,14 +292,17 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         table?.reloadData()
     }
+    func noMoreData() {
+        endRefresh()
+        footer.state = .NoMoreData
+        footer.setTitle("没有更多信息", forState: .NoMoreData)
+    }
     func footerRefresh() {
         if segmentIndex == 0 {
             footer.endRefreshing()
         } else if segmentIndex == 1 {
             handleInviteOrderRequest(false)
-//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                "order_id_": orderID,
-//                "count_": 10])
+
         }
         
     }
@@ -325,7 +327,12 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.reloadData()
 
     }
-
+    // MARK: - RefreshChatSessionListDelegate
+    func refreshChatSeesionList() {
+        if segmentIndex == 0 {
+            table?.reloadData()
+        }
+    }
 
     
     // MARK: - UITableView
@@ -337,8 +344,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             //消息
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
-//            let realm = try! Realm()
-//            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
             let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread_)
             return cell
@@ -410,13 +415,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
      */
     func jumpToPayPasswdVC() {
         let payPasswdVC = PayPasswdVC()
-        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: CurrentUser.has_passwd_)!
         navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     
     func payForInvitationRequest(info: HodometerInfoModel?) {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in

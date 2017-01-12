@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import SVProgressHUD
+
 
 class ConsumeSocketAPI: SocketAPI{
 
@@ -59,18 +61,25 @@ class ConsumeSocketAPI: SocketAPI{
     }
     
     func requestComment(model:CommentDetaiRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CheckCommentDetail, model: model)
+        let packet = SocketDataPacket(opcode: .CheckCommentDetail, model: model ,type: .Chat)
         startRequest(packet, complete: { (response) in
-            let model = (response as? SocketJsonResponse)?.responseModel(OrderCommentModel.classForCoder())
+            var model = (response as? SocketJsonResponse)?.responseModel(OrderCommentModel.classForCoder()) as? OrderCommentModel
+            if model!.service_score_ == 0 && model!.user_score_ == 0 && model!.remarks_ == nil {
+                model = nil
+            }
             complete?(model)
             }, error: error)
     }
     
     func commentForOrder(model:CommentForOrderModel,complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .EvaluateTripRequest, model: model)
+        let packet = SocketDataPacket(opcode: .EvaluateTripRequest, model: model,type: .Chat)
         startRequest(packet, complete: { (response) in
+            
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
-            complete?(jsonObject)
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+                complete?(jsonObject)
+            })
+            
             }, error: error)
         
     }
@@ -110,5 +119,12 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
     }
 
+    //请求预约、邀约付款
+    func payForInvitation(model: PayForInvitationRequestModel, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .PayForInvitationRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(PayForInvitationModel.classForCoder()))
+            }, error: error)
+    }
 
 }

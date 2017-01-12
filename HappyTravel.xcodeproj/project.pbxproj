@@ -67,6 +67,7 @@
 		2FB95D101DED2FD600BBA506 /* PayPasswdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95D0F1DED2FD600BBA506 /* PayPasswdVC.swift */; };
 		2FB95D121DED35A800BBA506 /* passwd_box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB95D111DED35A800BBA506 /* passwd_box@2x.png */; };
 		2FB95D141DED413400BBA506 /* passwd_box@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB95D131DED413400BBA506 /* passwd_box@3x.png */; };
+		2FB9E75D1E2779CA00766040 /* IDVerifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */; };
 		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
@@ -428,6 +429,7 @@
 		2FB95D0F1DED2FD600BBA506 /* PayPasswdVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayPasswdVC.swift; path = Personal/PayPasswdVC.swift; sourceTree = "<group>"; };
 		2FB95D111DED35A800BBA506 /* passwd_box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "passwd_box@2x.png"; sourceTree = "<group>"; };
 		2FB95D131DED413400BBA506 /* passwd_box@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "passwd_box@3x.png"; sourceTree = "<group>"; };
+		2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IDVerifyVC.swift; path = Personal/IDVerifyVC.swift; sourceTree = "<group>"; };
 		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
@@ -817,6 +819,7 @@
 				B341CE151DC2E70D00DF93CB /* UploadUserPictureVC.swift */,
 				2FC25B371D6D874000D48D6A /* SettingsVC.swift */,
 				2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */,
+				2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -824,6 +827,7 @@
 		2F9684141D77D1200028E3F2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				BF9B4CFB1DD6DA7A00EC8E78 /* Share */,
 				2FECFBC91E16271C0065AF60 /* Update */,
 				2FB57FEE1D74026A002C015F /* Data */,
 				BF77CEE01DCED43100F20C6A /* BCFeedback */,
@@ -893,6 +897,7 @@
 				2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */,
 				2FA75CF41D5081CB00609C8E /* HappyTravel */,
 				BF6E9C451DE2FD4500F32CCE /* Resource */,
+				2FA75D291D50DE7100609C8E /* Bridge */,
 				2FA75CF31D5081CB00609C8E /* Products */,
 				D1BF5A800EB0D1063BCBAE20 /* Frameworks */,
 				8AB1BEA3F2B25CF447CA4C2B /* Pods */,
@@ -910,13 +915,11 @@
 		2FA75CF41D5081CB00609C8E /* HappyTravel */ = {
 			isa = PBXGroup;
 			children = (
-				2FA75D291D50DE7100609C8E /* Bridge */,
-				BF9B4CFB1DD6DA7A00EC8E78 /* Share */,
+				2FE7C38D1D64469100994505 /* Common */,
 				2F9684141D77D1200028E3F2 /* Other */,
+				2F9D42101D5C0F1E00D10FBC /* SocketManage */,
 				2FC25AFD1D6A9B8B00D48D6A /* Servant */,
 				2FDAFCEF1D65653F00FD28CB /* Login */,
-				2FE7C38D1D64469100994505 /* Common */,
-				2F9D42101D5C0F1E00D10FBC /* SocketManage */,
 				2FBB5E211D51CC47007BE4E0 /* Chats */,
 				2FA75D2B1D518D2600609C8E /* Personal */,
 				2FA75D241D50A30400609C8E /* Map */,
@@ -949,6 +952,7 @@
 				2FA75D2A1D50DED300609C8E /* Bridging-Header.h */,
 			);
 			name = Bridge;
+			path = HappyTravel;
 			sourceTree = "<group>";
 		};
 		2FA75D2B1D518D2600609C8E /* Personal */ = {
@@ -1416,7 +1420,8 @@
 			children = (
 				BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */,
 			);
-			path = Share;
+			name = Share;
+			path = ../Share;
 			sourceTree = "<group>";
 		};
 		D1BF5A800EB0D1063BCBAE20 /* Frameworks */ = {
@@ -1863,6 +1868,7 @@
 				2FA15A9D1E13BAB5001655A3 /* UserAPI.swift in Sources */,
 				2F65C5851DF41654001EC13A /* ModelDefine.swift in Sources */,
 				2FECFBCB1E1627730065AF60 /* UpdateModule.swift in Sources */,
+				2FB9E75D1E2779CA00766040 /* IDVerifyVC.swift in Sources */,
 				2F9684091D76AAD50028E3F2 /* InvoiceVC.swift in Sources */,
 				6E5ADC8F1E1B440A00E6823F /* YD_Annotation.swift in Sources */,
 				2FA15A981E128E6A001655A3 /* SockModel.swift in Sources */,

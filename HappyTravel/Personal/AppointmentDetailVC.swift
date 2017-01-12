@@ -303,7 +303,6 @@ class AppointmentDetailVC: UIViewController {
                                                   "service_score_": (self.commonCell?.serviceStar)!,
                                                   "user_score_": (self.commonCell?.servantStar)!,
                                                   "remarks_": self.commonCell!.comment]
-//        SocketManager.sendData(.EvaluateTripRequest, data: dict)
         
         
         let model = CommentForOrderModel(value: dict)
@@ -360,7 +359,6 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
-//                cell.setupDataWithInfo(DataManager.getUserInfo(appointmentInfo!.to_user_)!)
                 cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:
@@ -385,7 +383,7 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             commonCell = cell
             cell.setAppointmentInfo(appointmentInfo)
             
-            guard service_score_  != 0 || user_score_ != 0 else {
+            guard commentModel != nil else {
                 return cell
             }
             cell.serviceSocre = commentModel?.service_score_
