@@ -545,6 +545,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //                
 //        })
         
+//        let view = NewPersonMaskView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
+//        UIApplication.sharedApplication().keyWindow?.addSubview(view)
+
         
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
