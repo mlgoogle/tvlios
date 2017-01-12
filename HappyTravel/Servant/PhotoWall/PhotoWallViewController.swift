@@ -91,12 +91,7 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
             }) { (error) in
                 
         }
-//        SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
-//            if let data = response["data"] as? [String: AnyObject] {
-//                let model = PhotoWallModel(value: data)
-//            }
-//        })
-        
+
     }
 
     func didRequestComplete(data: AnyObject?) {

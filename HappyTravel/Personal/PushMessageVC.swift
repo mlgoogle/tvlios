@@ -98,9 +98,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case 0:
              MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
-            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                                                              "order_id_": 0,
-                                                              "count_": 10])
+//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                                                              "order_id_": 0,
+//                                                              "count_": 10])
         case -1:
             msg = "密码错误"
         case -2:
@@ -302,9 +302,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             footer.endRefreshing()
         } else if segmentIndex == 1 {
             handleInviteOrderRequest(false)
-//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                "order_id_": orderID,
-//                "count_": 10])
+
         }
         
     }
@@ -420,13 +418,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
      */
     func jumpToPayPasswdVC() {
         let payPasswdVC = PayPasswdVC()
-        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: CurrentUser.has_passwd_)!
         navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     
     func payForInvitationRequest(info: HodometerInfoModel?) {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in

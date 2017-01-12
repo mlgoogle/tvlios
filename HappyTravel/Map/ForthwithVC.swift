@@ -386,8 +386,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func screenAction(title:String) {
         self.titleBtn?.setTitle(title, forState: .Normal)
         self.titleBtn?.selected = false
-        let lat = DataManager.curLocation?.coordinate.latitude ?? DataManager.currentUser!.gpsLocationLat
-        let lon = DataManager.curLocation?.coordinate.longitude ?? DataManager.currentUser!.gpsLocationLon
+        let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
+        let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
         getServantNearby(lat, lon: lon)
 
     }
@@ -521,7 +521,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         })
 
-//        SocketManager.sendData(.GetServiceCity, data: nil)
         APIHelper.commonAPI().cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
                 DataManager.insertData(model)
@@ -551,7 +550,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }, error: nil)
         //初始化 receiveMessageBlock
         ChatMessageHelper.shared
-//        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
         getUnReadMessage()
     }
     

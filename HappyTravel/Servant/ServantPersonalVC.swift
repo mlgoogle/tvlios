@@ -349,13 +349,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             }) { (error) in
                 
             }
-//            SocketManager.sendData(.PhotoWallRequest, data: dict, result: { (response) in
-//                if let data = response["data"] as? [String: AnyObject] {
-//                    self.photoModel = PhotoWallModel(value: data)
-//                    self.personalTable?.reloadSections(NSIndexSet.init(index: 3), withRowAnimation: .Fade)
-//                    
-//                }
-//            })
         }
         
     }

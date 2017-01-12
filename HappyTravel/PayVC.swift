@@ -175,15 +175,15 @@ class PayVC: UIViewController, UITextFieldDelegate {
         case 0:
             MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
-            if segmentIndex! == 0 {
-                SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                    "order_id_": 0,
-                    "count_": 10])
-            } else {
-                SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-                    "last_id_": 0,
-                    "count_": 10])
-            }
+//            if segmentIndex! == 0 {
+//                SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                    "order_id_": 0,
+//                    "count_": 10])
+//            } else {
+//                SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
+//                    "last_id_": 0,
+//                    "count_": 10])
+//            }
         case -1:
             msg = "密码错误"
         case -2:
@@ -241,15 +241,15 @@ class PayVC: UIViewController, UITextFieldDelegate {
             case 0:
                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
                 msg = "预支付成功"
-                if segmentIndex! == 0 {
-                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-                        "order_id_": 0,
-                        "count_": 10])
-                } else {
-                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-                        "last_id_": 0,
-                        "count_": 10])
-                }
+//                if segmentIndex! == 0 {
+//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//                        "order_id_": 0,
+//                        "count_": 10])
+//                } else {
+//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
+//                        "last_id_": 0,
+//                        "count_": 10])
+//                }
             case -1:
                 msg = "密码错误"
             case -2:

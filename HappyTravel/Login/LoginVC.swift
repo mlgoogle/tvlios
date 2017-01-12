@@ -198,13 +198,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     func login(sender: UIButton?) {
         currentTextField?.resignFirstResponder()
         MobClick.event(CommonDefine.BuriedPoint.loginAction)
-        var dict:Dictionary<String, AnyObject>?
-        if sender?.tag == 20001 {
-            dict = ["phone_num_": "15158110001", "passwd_": "123456", "user_type_": 2]
-            SocketManager.sendData(.Login, data: dict)
-            return
-        }
-        
+
         if sender?.tag == tags["loginWithMSGBtn"]! {
             loginWithMSGVC = LoginWithMSGVC()
             presentViewController(loginWithMSGVC!, animated: false, completion: nil)
@@ -287,8 +281,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         
         return true
     }
-    
-   
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
