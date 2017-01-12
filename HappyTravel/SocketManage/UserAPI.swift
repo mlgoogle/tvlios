@@ -82,11 +82,27 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     //上传身份证照片
-    func AuthenticateUserCard(model: AuthenticateUserCardBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+    func authenticateUserCard(model: AuthenticateUserCardBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .AuthenticateUserCard, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(AuthenticateUserCardModel.classForCoder()))
             }, error: error)
     }
+    //请求验证密码的正确性
+    func passwdVerify(model: PasswdVerifyBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .PasswdVerifyRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
+    //请求修改设置支付密码
+    func setupPaymentCode(model: SetPayCodeBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .SetupPaymentCodeRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
+
+
 
 }
