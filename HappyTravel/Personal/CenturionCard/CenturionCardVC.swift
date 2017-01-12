@@ -227,7 +227,17 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //        chatVC.servantInfo = userInfo
 //        navigationController?.pushViewController(chatVC, animated: true)
         
-        SocketManager.sendData(.ServersManInfoRequest, data: nil)
+        APIHelper.chatAPI().callOfficalSeravnt({ [weak self](response) in
+            if let model = response as? UserInfoModel {
+                let chatVC = ChatVC()
+                chatVC.servantInfo = model
+                self!.navigationController?.pushViewController(chatVC, animated: true)
+            } else {
+                SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
+            }
+            }, error: { (err) in
+                SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
+        })
 
 //        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
 //        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in

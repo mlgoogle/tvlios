@@ -303,7 +303,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .MSGReadCntResult,
                                           .PayForInvitationReply,
                                           .PhotoWallReply,
-                                          .InvitationResult]
+                                          .InvitationResult,
+                                          .ServersManInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
