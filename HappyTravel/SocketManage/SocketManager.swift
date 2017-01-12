@@ -156,12 +156,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PasswdVerifyRequest = 1087
         // 验证密码正确性返回
         case PasswdVerifyReply = 1088
-        
         // 请求设置、修改支付密码
         case SetupPaymentCodeRequest = 1089
         // 设置、修改支付密码返回
         case SetupPaymentCodeReply = 1090
-        
         // 请求照片墙
         case PhotoWallRequest = 1109
         // 照片墙返回
@@ -283,7 +281,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServantDetailInfo,
                                           
                                           .SendMessageVerify,
-//                                          .DrawBillReply,
+                                          .DrawBillReply,
                                           .InvoiceInfoReply,
                                           .InvoiceDetailReply,
                                           .AppointmentReply,
