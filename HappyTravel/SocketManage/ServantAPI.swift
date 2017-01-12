@@ -26,7 +26,6 @@ class ServantAPI: SocketAPI {
     }
     
     func getUserInfoByString(model:UserInfoIDStrRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        
         let packet = SocketDataPacket(opcode: .GetUserInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "userinfo_list_"))
@@ -38,5 +37,12 @@ class ServantAPI: SocketAPI {
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(PhotoWallModel.classForCoder()))
             }, error: error)
+    }
+    func invitaion(model: InvitationRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AskInvitation, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(HodometerInfoModel.classForCoder()))
+            }, error: error)
+        
     }
 }
