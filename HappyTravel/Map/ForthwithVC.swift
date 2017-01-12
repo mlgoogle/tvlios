@@ -336,17 +336,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.height.equalTo(30)
         }
         
-        let centurionCardBtn = UIButton()
-        centurionCardBtn.backgroundColor = UIColor.clearColor()
-        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
-        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
-        mapView?.addSubview(centurionCardBtn)
-        centurionCardBtn.snp_makeConstraints(closure: { (make) in
-            make.right.equalTo(mapView!).offset(-20)
-            make.bottom.equalTo(mapView!).offset(-20)
-            make.width.equalTo(40)
-            make.height.equalTo(40)
-        })
+//        let centurionCardBtn = UIButton()
+//        centurionCardBtn.backgroundColor = UIColor.clearColor()
+//        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
+//        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
+//        mapView?.addSubview(centurionCardBtn)
+//        centurionCardBtn.snp_makeConstraints(closure: { (make) in
+//            make.right.equalTo(mapView!).offset(-20)
+//            make.bottom.equalTo(mapView!).offset(-20)
+//            make.width.equalTo(40)
+//            make.height.equalTo(40)
+//        })
         
         hideKeyboard()
     }
@@ -549,8 +549,23 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 DataManager.insertData(model)
             }
         }, error: nil)
+        //初始化 receiveMessageBlock
+        ChatMessageHelper.shared
+//        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
+        getUnReadMessage()
+    }
+    
+    func getUnReadMessage() {
         
-        SocketManager.sendData(.UnreadMessageRequest, data: ["uid_": CurrentUser.uid_])
+        APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
+            let messsages = response as? [MessageModel]
+            guard messsages?.count > 0 else {return}
+            for message in messsages! {
+                ChatMessageHelper.shared.reveicedMessage(message)
+            }
+            }) { (error) in
+                
+        }
     }
     
     func getServantNearby(lat: Double, lon:Double) {

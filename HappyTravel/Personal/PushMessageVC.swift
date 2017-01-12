@@ -330,16 +330,17 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return segmentIndex == 0 ? DataManager.getMessageCount(-1) : (hotometers?.count ?? 0)
+        return segmentIndex == 0 ? DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false).count : (hotometers?.count ?? 0)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if segmentIndex == 0 {
             //消息
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
-            let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
-            cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread)
+//            let realm = try! Realm()
+//            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
+            let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
+            cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread_)
             return cell
         } else {
             //行程(和我的消费中商务游相同)
@@ -352,16 +353,14 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if segmentIndex == 0 {
-            let realm = try! Realm()
-            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
-
+            let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
+            
             let message = userPushMessage.msgList.last
-            if message?.push_msg_type == 2231 {
+            if message?.push_msg_type_ == 2231 {
                 let uid_str_ = message?.servant_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 if uid_str_ != nil  {
-                    
-//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_": uid_str_!])
+                    requestRecommendListWithUidStr(uid_str_!)
                 } else {
                     XCGLogger.error("推送服务者id 为空")
                 }
@@ -373,10 +372,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MessageCell {
                 let chatVC = ChatVC()
-//                chatVC.servantInfo = DataManager.getUserInfo(cell.userInfo!.uid)
                 chatVC.servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(cell.userInfo!.uid_)")?.first
                 navigationController?.pushViewController(chatVC, animated: true)
-                
+                DataManager.readMessage((cell.userInfo?.uid_)!)
+
             }
         } else if segmentIndex == 1 {
             if let cell = tableView.cellForRowAtIndexPath(indexPath) as? DistanceOfTravelCell {
