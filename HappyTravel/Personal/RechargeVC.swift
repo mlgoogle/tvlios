@@ -101,16 +101,35 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func wxPlaceOrderReply(notification: NSNotification) {
-        if let dict = notification.userInfo {
+//        if let dict = notification.userInfo {
 //            jumpToBizPay(dict)
-        }
+//        }
     }
     
     func wechatPaySuccessed(notification: NSNotification) {
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "recharge_id_": Int(rechageID!)!,
-                                        "pay_result_": 1]
-        SocketManager.sendData(.ClientWXPayStatusRequest, data: dict)
+        let req = ClientWXPayStatusRequestModel()
+        req.uid_ = CurrentUser.uid_
+        req.recharge_id_ = Int(rechageID!)!
+        req.pay_result_ = 1
+        APIHelper.commonAPI().WXPayStatus(req, complete: { [weak self](response) in
+            if let model = response as? ClienWXPayStatusModel {
+                if model.return_code_ == 3 {
+                    MobClick.event(CommonDefine.BuriedPoint.paySuccess)
+                    CurrentUser.user_cash_ = model.user_cash_
+                    let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
+                    
+                    let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                            self!.navigationController?.popViewControllerAnimated(true)
+                        })
+                        
+                    })
+                    
+                    alert.addAction(ok)
+                    self!.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+            }, error: nil)
         
     }
     

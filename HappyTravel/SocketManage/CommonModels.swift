@@ -134,3 +134,17 @@ class WXPlcaeOrderModel: Object {
     
     dynamic var timestamp:String?
 }
+
+class ClientWXPayStatusRequestModel: UserBaseModel {
+    
+    dynamic var recharge_id_ = 0
+    
+    dynamic var pay_result_ = 1
+}
+
+class ClienWXPayStatusModel: Object {
+    
+    dynamic var return_code_ = -1
+    
+    dynamic var user_cash_ = -1
+}

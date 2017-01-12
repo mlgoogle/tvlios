@@ -32,16 +32,26 @@ class ServantAPI: SocketAPI {
             }, error: error)
         
     }
+    
     func requestPhotoWall(model:PhotoWallRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .PhotoWallRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(PhotoWallModel.classForCoder()))
             }, error: error)
     }
+    
     func invitaion(model: InvitationRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .AskInvitation, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(HodometerInfoModel.classForCoder()))
+            }, error: error)
+        
+    }
+    
+    func recommentServants(model: RecommentServantRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .GetRecommendServants, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "recommend_guide_"))
             }, error: error)
         
     }

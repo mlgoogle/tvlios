@@ -149,9 +149,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         // 黑卡VIP价格
         case CenturionVIPPriceReply = 1084
         // 获取黑卡等级升级
-        case getUpCenturionCardOriderRequest = 1085
+        case GetUpCenturionCardOriderRequest = 1085
         // 获取黑卡等级下单
-        case getUpCenturionCardOriderReply = 1086
+        case GetUpCenturionCardOriderReply = 1086
         // 请求验证密码正确性
         case PasswdVerifyRequest = 1087
         // 验证密码正确性返回
@@ -304,7 +304,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .PayForInvitationReply,
                                           .PhotoWallReply,
                                           .InvitationResult,
-                                          .ServersManInfoReply]
+                                          .ServersManInfoReply, //.RecommendServants,
+                                          .GetUpCenturionCardOriderReply,
+                                          .ClientWXPayStatusReply,
+                                          .ServerWXPayStatusReply]
     
     var isConnected : Bool {
         return socket!.isConnected

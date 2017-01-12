@@ -85,4 +85,11 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(WXPlcaeOrderModel.classForCoder()))
             }, error: error)
     }
+    
+    func WXPayStatus(model: ClientWXPayStatusRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .ClientWXPayStatusRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(ClienWXPayStatusModel.classForCoder()))
+            }, error: error)
+    }
 }
