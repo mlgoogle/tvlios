@@ -76,3 +76,11 @@ class InvitationRequestModel: Object {
     
     dynamic var day_count_ = 1
 }
+
+// 推荐服务者
+class RecommentServantRequestModel: Object {
+    
+    dynamic var city_code_ = 0
+    
+    dynamic var recommend_type_ = 1
+}

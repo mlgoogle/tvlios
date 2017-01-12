@@ -101,16 +101,35 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func wxPlaceOrderReply(notification: NSNotification) {
-        if let dict = notification.userInfo {
+//        if let dict = notification.userInfo {
 //            jumpToBizPay(dict)
-        }
+//        }
     }
     
     func wechatPaySuccessed(notification: NSNotification) {
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "recharge_id_": Int(rechageID!)!,
-                                        "pay_result_": 1]
-        SocketManager.sendData(.ClientWXPayStatusRequest, data: dict)
+        let req = ClientWXPayStatusRequestModel()
+        req.uid_ = CurrentUser.uid_
+        req.recharge_id_ = Int(rechageID!)!
+        req.pay_result_ = 1
+        APIHelper.commonAPI().WXPayStatus(req, complete: { [weak self](response) in
+            if let model = response as? ClienWXPayStatusModel {
+                if model.return_code_ == 3 {
+                    MobClick.event(CommonDefine.BuriedPoint.paySuccess)
+                    CurrentUser.user_cash_ = model.user_cash_
+                    let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
+                    
+                    let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
+                            self!.navigationController?.popViewControllerAnimated(true)
+                        })
+                        
+                    })
+                    
+                    alert.addAction(ok)
+                    self!.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+            }, error: nil)
         
     }
     
@@ -442,7 +461,6 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
          MobClick.event(CommonDefine.BuriedPoint.paySureBtn)
         
         if selectedIndex == 1 {
-//            DataManager.currentUser?.cash = 10
             let orderStr = "app_id=2016102102273564&biz_content=%7B%22timeout_express%22%3A%2230m%22%2C%22seller_id%22%3A%22%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%221%22%2C%22body%22%3A%22%E6%88%91%E6%98%AF%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%22%2C%22out_trade_no%22%3A%22BBCXFY4KAL3U6DB%22%7D&charset=utf-8&method=alipay.trade.app.pay&sign_type=RSA&timestamp=2016-09-01%2013%3A49%3A34&version=1.0&sign=imFFzjpv%2BUt8iPLyFmrUqTUceLKWBZmn%2Bixy4siNLs3VmIw5jNddnLf1V0JdtkVQgAUhNWiw8oDTVlv6HuUAHj7Ja0Rz%2BdsYcr4MzTiqy1NHYYvoLUVFOlQGy1QXU6bMzYnhrQnjjkTf0hnNJiy6fVEA7iPRFnWr8cScHgA2JZI%3D"
             AlipaySDK.defaultService().payOrder(orderStr, fromScheme: "ydTravrlAlipay", callback: { (data: [NSObject : AnyObject]!) in
                 XCGLogger.debug("\(data)")

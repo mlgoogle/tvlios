@@ -94,7 +94,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
         touch.numberOfTapsRequired = 1
         touch.cancelsTouchesInView = false
         table?.addGestureRecognizer(touch)

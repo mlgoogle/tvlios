@@ -143,18 +143,6 @@ class AppointmentDetailCell: UITableViewCell {
             make.bottom.equalTo(contentView).offset(AtapteHeightValue(-10))
         }
     }
-    /**
-     之前逻辑有问题 弃用 2016年11月16日19:41:52
-     - parameter info:
-     */
-    func setupDataWithInfo(info:UserInfo) {
-        
-
-        iconImageView.kf_setImageWithURL(NSURL(string: (info.headUrl)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
-        nicknameLabel.text = info.nickname
-        
-    }
-    
     
     /**
      
@@ -164,7 +152,6 @@ class AppointmentDetailCell: UITableViewCell {
     func setApponimentInfo(info:AppointmentInfoModel) {
         nicknameLabel.text = info.to_name_
         iconImageView.kf_setImageWithURL(NSURL(string: (info.to_head_)!), placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
-
 
         serviceTypeLabel.text =  "【" + serviceTypes[info.service_type_]! + "】"
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_time_)))
@@ -191,7 +178,6 @@ class AppointmentDetailCell: UITableViewCell {
         let startTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_)))
         let endTime = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info.start_) + Double(3600 * 24 * info.days_)))
 
-    
         dateLabel.text = startTime + "-" + endTime
         cityLabel.text = info.order_addr
     }

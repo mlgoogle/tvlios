@@ -425,7 +425,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 "wanted_lv_": self!.selectedIndex+1]
 //            SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
             SVProgressHUD.show()
-            SocketManager.sendData(.getUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
+            SocketManager.sendData(.GetUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
                 
                 let data = result["data"] as! NSDictionary
                 if let errorCord = data.valueForKey("error_"){

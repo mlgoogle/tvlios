@@ -359,7 +359,6 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCellWithIdentifier("detailCell", forIndexPath: indexPath) as! AppointmentDetailCell
-//                cell.setupDataWithInfo(DataManager.getUserInfo(appointmentInfo!.to_user_)!)
                 cell.setApponimentInfo(appointmentInfo!)
                 return cell
             case 1:

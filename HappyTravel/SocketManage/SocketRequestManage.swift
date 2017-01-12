@@ -20,6 +20,7 @@ class SocketRequestManage: NSObject {
     private var _socketHelper:SocketManager?
     private var _sessionId:UInt64 = 0
     var receiveChatMsgBlock:CompleteBlock?
+    var receiveRechargeBlock:CompleteBlock?
     
     func start() {
         _lastHeardBeatTime = timeNow()
@@ -58,8 +59,13 @@ class SocketRequestManage: NSObject {
             dispatch_async(dispatch_get_main_queue(), {[weak self] in
                 self?.receiveChatMsgBlock?(response)
             })
-        }
-        else {
+        } else if packet.opcode == SocketManager.SockOpcode.ClientWXPayStatusReply.rawValue ||
+            packet.opcode == SocketManager.SockOpcode.ServerWXPayStatusReply.rawValue {
+            let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
+            dispatch_async(dispatch_get_main_queue(), {[weak self] in
+                self?.receiveRechargeBlock?(response)
+                })
+        } else {
             objc_sync_enter(self)
             _sessionId = packet.sessionID
             let socketReqeust = socketRequests[packet.requestID]
@@ -117,7 +123,7 @@ class SocketRequestManage: NSObject {
         objc_sync_enter(self)
         socketRequests[packet.requestID] = socketReqeust;
         objc_sync_exit(self)
-        XCGLogger.debug("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)) \(packet.requestID) \(packet.sessionID)")
+        XCGLogger.debug("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID) \(packet.sessionID)")
         sendRequest(packet)
     }
     
