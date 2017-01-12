@@ -98,12 +98,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SkillsInfoRequest = 1041
         // 平台技能标签返回
         case SkillsInfoReply = 1042
-        
         // 请求预约
         case AppointmentRequest = 1043
         // 预约返回
         case AppointmentReply = 1044
-        
         // 请求开票详情
         case InvoiceDetailRequest = 1045
         // 开票详情返回
@@ -122,10 +120,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ClientWXPayStatusReply = 1052
         // 微信服务端支付状态返回
         case ServerWXPayStatusReply = 1054
+        
         // 请求上传身份证认证
         case AuthenticateUserCard = 1055
         // 上传身份证认证返回
         case AuthenticateUserCardReply = 1056
+        
         // 请求身份证认证进度
         case CheckAuthenticateResult = 1057
         // 身份证认证进度返回
@@ -290,6 +290,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServiceDetailReply,
                                           .DeviceTokenResult,
                                           .UploadImageTokenReply,
+                                          .AuthenticateUserCardReply,
                                           .WXplaceOrderReply]
     
     var isConnected : Bool {
