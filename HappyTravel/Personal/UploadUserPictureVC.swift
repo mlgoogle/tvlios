@@ -148,12 +148,6 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
-//                        var param = [NSString : AnyObject]()
-//                        param["uid_"] = CurrentUser.uid_
-//                        param["front_pic_"] = self.photoURL["pic1"]
-//                        param["back_pic_"] = self.photoURL["pic0"]
-//                        SocketManager.sendData(.AuthenticateUserCard, data:param)
-//
                         let model = AuthenticateUserCardBaseInfo()
                         model.uid_ = Int64(CurrentUser.uid_)
                         model.front_pic_ = self.photoURL["pic1"]
@@ -328,7 +322,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
         let resultCode = data.valueForKey("review_status_") as? Int
-        DataManager.currentUser?.authentication = resultCode!
+        CurrentUser.auth_status_ = resultCode!
         if resultCode! == 0 {
             SVProgressHUD.dismiss()
             let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)

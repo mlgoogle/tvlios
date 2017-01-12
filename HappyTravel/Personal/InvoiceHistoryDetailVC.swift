@@ -55,7 +55,6 @@ class InvoiceHistoryDetailVC: UIViewController {
         title = "开票详情"
         
         initViews()
-//        SocketManager.sendData(.InvoiceDetailRequest, data: ["invoice_id_" : invoice_id_])
         
         let mode = InvoiceDetailBaseInfo()
         mode.invoice_id_ = Int64(invoice_id_)

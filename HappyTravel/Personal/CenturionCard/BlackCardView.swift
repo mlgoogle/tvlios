@@ -32,7 +32,7 @@ class BlackCardView: UIView {
     }()
     
     lazy var dateLabel: UILabel = {
-        let fromDate: NSDate = NSDate.init(timeIntervalSince1970: NSTimeInterval(DataManager.currentUser!.centurionCardStartTime))
+        let fromDate: NSDate = NSDate.init(timeIntervalSince1970: NSTimeInterval(UserCenturionCardInfo.start_time_))
         let moneth = fromDate.yt_month() > 9 ? "\(fromDate.yt_month())" : "0\(fromDate.yt_month())"
         let day = fromDate.yt_day() > 9 ? "\(fromDate.yt_day())" : "0\(fromDate.yt_day())"
         let label = UILabel.init(text: "\(moneth)/\(day)", font: UIFont.boldSystemFontOfSize(AtapteWidthValue(11)), textColor: colorWithHexString("#dfd1ad"))
@@ -126,7 +126,7 @@ class BlackCardView: UIView {
             make.size.equalTo(CGSizeMake(AtapteWidthValue(50), AtapteWidthValue(50)))
         }
     
-        var blackCardNum = "\(DataManager.currentUser!.centurionCardId)" as NSString
+        var blackCardNum = "\(UserCenturionCardInfo.blackcard_id_)" as NSString
         if blackCardNum.length < 8 {
             for _ in 0...(8-blackCardNum.length) {
                 blackCardNum = "0\(blackCardNum)"

@@ -299,10 +299,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .PasswdVerifyReply,
                                           .SetupPaymentCodeReply,
                                           .UnreadMessageReply,
+                                          .InvitationResult,
+                                          .MSGReadCntResult,
+                                          .PayForInvitationReply,
                                           .PhotoWallReply,
                                           .InvitationResult,
                                           .AppointmentServantReply,
-                                          .VersionInfoReply]
+//                                          .VersionInfoReply,
+                                          .ServersManInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -353,27 +357,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.UserType)
         
-//        CurrentUser.login_ = false
-//        SocketManager.isLogout = true
-////        CurrentUser.login_ = false
-//        CurrentUser.auth_status_ = -1
-//        //result为0非黑卡用户
-//        if UserCenturionCardInfo.result != 0 {
-//            UserCenturionCardInfo.name_ = nil
-//            UserCenturionCardInfo.blackcard_lv_ = 0
-//            UserCenturionCardInfo.blackcard_id_ = 0
-//        }
-//        sock?.socket?.disconnect()
-//        SocketManager.shareInstance.buffer = NSMutableData()
-//        SocketManager.shareInstance.connectSock()
-
-        CurrentUser.login_ = false
         SocketManager.isLogout = true
-        DataManager.currentUser?.login = false
-        DataManager.currentUser?.authentication = -1
-        DataManager.currentUser?.centurionCardName = nil
-        DataManager.currentUser?.centurionCardId = 0
-        DataManager.currentUser?.centurionCardLv = 0
+        CurrentUser.login_ = false
+        CurrentUser.auth_status_ = -1
+        UserCenturionCardInfo.name_ = nil
+        UserCenturionCardInfo.blackcard_id_ = 0
+        UserCenturionCardInfo.blackcard_lv_ = 0
+        
         sock?.socket?.disconnect()
         SocketManager.shareInstance.buffer = NSMutableData()
         SocketManager.shareInstance.connectSock()

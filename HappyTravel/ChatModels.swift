@@ -54,4 +54,9 @@ class ChatSessionModel: Object {
     let msgList = List<MessageModel>()
 }
 
+//返回读取消息数
+class ReadCountRequestModel: UserBaseModel {
+    
+    dynamic var count_ = 0
+}
 

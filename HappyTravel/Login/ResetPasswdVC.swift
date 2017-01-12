@@ -245,16 +245,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
-//        let dict:Dictionary<String, AnyObject>? = ["phone_num_": username!,
-//                                                   "passwd_": passwd!,
-//                                                   "user_type_": 1,
-//                                                   "timestamp_": verifyCodeTime,
-//                                                   "verify_code_": verifyCode,
-//                                                   "token_": token ?? ""]
-//        SocketManager.sendData(.RegisterAccountRequest, data: dict)
-        
-        
-        
+
         let model = RegisterAccountBaseInfo()
         model.phone_num_ = username!
         model.passwd_ = passwd!

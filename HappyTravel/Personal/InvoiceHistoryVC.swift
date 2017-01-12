@@ -119,12 +119,7 @@ class InvoiceHistoryVC:UIViewController {
         model.count_ = 10
         model.last_invoice_id_ = 0
         InvoiceInfoRequest(model)
-        
-//        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": CurrentUser.uid_,
-//                                                        "count_" : 10,
-//                                              "last_invoice_id_" : 0])
-        
-        
+
     }
     
     func footerRefresh() {
@@ -133,10 +128,6 @@ class InvoiceHistoryVC:UIViewController {
         model.count_ = 10
         model.last_invoice_id_ = Int64(last_invoice_id_)
         InvoiceInfoRequest(model)
-        
-//        SocketManager.sendData(.InvoiceInfoRequest, data: ["uid_": CurrentUser.uid_,
-//                                                        "count_" : 10,
-//                                              "last_invoice_id_" : last_invoice_id_])
 
     }
     
@@ -154,10 +145,6 @@ class InvoiceHistoryVC:UIViewController {
             if self.footer.state == MJRefreshState.Refreshing {
                 self.footer.endRefreshing()
             }
-            
-//            let realm = try! Realm()
-//            self.historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
-            
             
             let lastOrderID = model.last_invoice_id_//notify.userInfo!["lastOrderID"] as! Int
             if lastOrderID == -1001 {

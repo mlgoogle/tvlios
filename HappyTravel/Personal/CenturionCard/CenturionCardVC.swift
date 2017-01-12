@@ -60,7 +60,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
         
-        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": DataManager.currentUser!.uid])
+        SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -227,7 +227,17 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //        chatVC.servantInfo = userInfo
 //        navigationController?.pushViewController(chatVC, animated: true)
         
-        SocketManager.sendData(.ServersManInfoRequest, data: nil)
+        APIHelper.chatAPI().callOfficalSeravnt({ [weak self](response) in
+            if let model = response as? UserInfoModel {
+                let chatVC = ChatVC()
+                chatVC.servantInfo = model
+                self!.navigationController?.pushViewController(chatVC, animated: true)
+            } else {
+                SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
+            }
+            }, error: { (err) in
+                SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
+        })
 
 //        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
 //        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
@@ -350,7 +360,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 
         if price?.blackcard_price_ != nil &&
             price?.blackcard_price_ > 0 &&
-           totalPrice - (currentCardInfo?.blackcard_price_)! > DataManager.currentUser?.cash {
+            totalPrice - (currentCardInfo?.blackcard_price_)! > CurrentUser.user_cash_ {
             
             moneyIsTooLess()
             return
@@ -364,12 +374,12 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
      */
     func jumpToPayPasswdVC() {
         let payPasswdVC = PayPasswdVC()
-        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: CurrentUser.has_passwd_)!
         navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     
     func upCenturionCardLv(price:Int) {
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
@@ -403,7 +413,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             /**
              *  余额不足
              */
-            if DataManager.currentUser?.cash < price {
+            if CurrentUser.user_cash_ < price {
                 weakSelf!.moneyIsTooLess()
                 return
             }
@@ -439,35 +449,36 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     func payWithRecord(record:NSDictionary, password:String) {
         SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "order_id_": record.valueForKey("order_id_")!,
-                                        "passwd_": password]
-        unowned let weakSelf = self
-        SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
-            let data = result["data"] as! NSDictionary
-            if let errorCord = data.valueForKey("error_"){
-                let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
-                return
+        let req = PayForInvitationRequestModel()
+        req.uid_ = CurrentUser.uid_
+        req.order_id_ = record.valueForKey("order_id_") as! Int
+        req.passwd_ = password
+        APIHelper.consumeAPI().payForInvitation(req, complete: { [weak self](response) in
+            if let model = response as? PayForInvitationModel {
+                self!.payForBuyCardRsp(model)
             }
-            
-            let orderStatus = data.valueForKey("result_") as? Int
-            if orderStatus == -1 {
-                
-                SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
-            }
-            if orderStatus == -2 {
-                weakSelf.moneyIsTooLess()
-            }
-            if orderStatus == 0 {
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
-                    SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
-                    DataManager.currentUser?.centurionCardLv = weakSelf.selectedIndex + 1
-                    weakSelf.refreshData()
-                })
-            }
-            
-        })
+            }, error: { (err) in
+                SVProgressHUD.dismiss()
+            })
+    }
+    
+    func payForBuyCardRsp(model: PayForInvitationModel) {
+        SVProgressHUD.dismiss()
+        switch model.result_ {
+        case -1:
+            SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+        case -2:
+            moneyIsTooLess()
+        case 0:
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
+                SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
+                UserCenturionCardInfo.blackcard_lv_ = self.selectedIndex + 1
+                self.refreshData()
+            })
+        default:
+            break
+        }
+        
     }
     
     func refreshData() {
