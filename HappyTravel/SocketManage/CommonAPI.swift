@@ -96,7 +96,7 @@ class CommonAPI: SocketAPI {
     
     // 提交身份证信息
     func IDVerify(model: IDverifyRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .UploadImageToken)
+        let packet = SocketDataPacket(opcode: .IDVerifyRequest)
         startRequest(packet, complete: { (response) in
             complete?(nil)
             }, error: error)

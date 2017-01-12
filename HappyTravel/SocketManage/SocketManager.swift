@@ -178,6 +178,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case InsurancePayRequest = 1119
         //保险支付返回
         case InsurancePayReply = 1120
+        //请求身份证认证
+        case IDVerifyRequest = 1121
+        //身份证认证返回
+        case IDVerifyReply = 1122
         //MARK: - 2000+
         
         // 请求邀请服务者
@@ -307,7 +311,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServersManInfoReply, //.RecommendServants,
                                           .GetUpCenturionCardOriderReply,
                                           .ClientWXPayStatusReply,
-                                          .ServerWXPayStatusReply]
+                                          .ServerWXPayStatusReply,
+                                          .IDVerifyReply]
     
     var isConnected : Bool {
         return socket!.isConnected
