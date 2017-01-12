@@ -297,7 +297,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .WXplaceOrderReply,
                                           .RecvChatMessage,
                                           .UnreadMessageReply,
-                                          .InvitationResult]
+                                          .InvitationResult,
+                                          .MSGReadCntResult]
     
     var isConnected : Bool {
         return socket!.isConnected
