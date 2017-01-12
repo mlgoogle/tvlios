@@ -611,70 +611,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         payVc.orderId = order_id_
         payVc.segmentIndex = segmentSC!.selectedSegmentIndex
         self.navigationController?.pushViewController(payVc, animated: true)
-        
-//        let msg = "\n您即将预支付人民币:\(Double(price)/100)元"
-//        
-//        
-//        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
-//        
-//        alert.addTextFieldWithConfigurationHandler({ (textField) in
-//            textField.placeholder = "请输入支付密码"
-//            textField.secureTextEntry = true
-//        })
-//        
-//        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
-//            var errMsg = ""
-//            let passwd = alert.textFields?.first?.text
-//            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-//                errMsg = "请输入支付密码"
-//            }
-//            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-//                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
-//                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
-//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
-//                        weakSelf!.payForInvitationRequest()
-//                    })
-//                })
-//                warningAlert.addAction(sure)
-//                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
-//            } else {
-//                if DataManager.currentUser?.cash < price {
-//                    weakSelf!.moneyIsTooLess()
-//                } else {
-//                    let dict:[String: AnyObject] = ["uid_": (CurrentUser.uid_)!,
-//                                                    "order_id_": order_id_,
-//                                                    "passwd_": passwd!]
-//                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
-//                }
-//                
-//            }
-//            
-//        })
-//        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-//        
-//        alert.addAction(ok)
-//        alert.addAction(cancel)
-//        
-//        presentViewController(alert, animated: true, completion: nil)
-//    }
-//    /**
-//     余额不足操作
-//     */
-//    func moneyIsTooLess() {
-//        let alert = UIAlertController.init(title: "余额不足", message: "\n请前往充值", preferredStyle: .Alert)
-//        
-//        let ok = UIAlertAction.init(title: "前往充值", style: .Default, handler: { (action: UIAlertAction) in
-//            let rechargeVC = RechargeVC()
-//            self.navigationController?.pushViewController(rechargeVC, animated: true)
-//        })
-//        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-//        
-//        alert.addAction(ok)
-//        alert.addAction(cancel)
-//        
-//        presentViewController(alert, animated: true, completion: nil)
     }
     
     /**
@@ -682,7 +618,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
      */
     func jumpToPayPasswdVC() {
         let payPasswdVC = PayPasswdVC()
-        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: (DataManager.currentUser?.has_passwd_)!)!
+        payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: CurrentUser.has_passwd_)!
         navigationController?.pushViewController(payPasswdVC, animated: true)
     }
     

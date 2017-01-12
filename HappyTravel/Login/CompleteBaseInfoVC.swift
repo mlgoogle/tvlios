@@ -56,7 +56,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         navigationItem.title = "完善基本资料"
-        userInfoModel = CurrentUser//DataManager.currentUser
+        userInfoModel = CurrentUser
         initView()
         
     }
@@ -80,18 +80,19 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
-        SocketManager.sendData(.UploadImageToken, data: nil)
         APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
             if let model = response as? UploadPhotoModel {
                 self!.token = model.img_token_
                 SVProgressHUD.dismiss()
             }
-        }, error: nil)
+            }, error: { (err) in
+                SVProgressHUD.dismiss()
+        })
         
     }
     
     override func viewWillDisappear(animated: Bool) {
-        DataManager.currentUser?.registerSstatus = 1
+        CurrentUser.register_status_ = 1
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
@@ -101,15 +102,10 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
         
         guard headImageName != nil || CurrentUser.head_url_ != nil else {
-           
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
         }
-//        guard (DataManager.currentUser?.headUrl?.hasPrefix("http"))! else {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
-//            return
-//        }
-        
+
         let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
         guard nicknameField?.text?.characters.count > 0 else {
             
@@ -151,25 +147,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 let value:String? = respDic!.valueForKey("key") as? String
                 let url = qiniuHost + value!
                 weakSelf.updateBaseInfo(url)
-//                
-//                let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=%E6%9D%AD%E5%B7%9E"
-//                Alamofire.request(.GET, addr).responseJSON() { response in
-//                    let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-//                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-//                    XCGLogger.debug("\(location)")
-//                    
-//                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
-//                    self.nickname = nicknameField?.text
-//                    let dict:Dictionary<String, AnyObject> = ["uid_": CurrentUser.uid_,
-//                        "nickname_": self.nickname!,
-//                        "gender_": self.sex,
-//                        "head_url_": url,
-//                        "address_": self.address!,
-//                        "longitude_": Float.init(location[0])!,
-//                        "latitude_": Float.init(location[1])!]
-//                    self.headerUrl = url
-//                    SocketManager.sendData(.SendImproveData, data: dict)
-//                }
             }
             
         }, option: nil)
@@ -177,13 +154,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     /**
-     
-     上面太长且重用 提取出来
      - parameter url:
      */
     func updateBaseInfo(url:String) {
-        
-        
         let UTF8Adress = address?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
         let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=\(UTF8Adress!)"
         Alamofire.request(.GET, addr).responseJSON() { response in

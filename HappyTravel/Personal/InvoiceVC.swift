@@ -197,10 +197,10 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func footerRefresh() {
-        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-            "order_id_": orderID,
-            "count_": 10])
-        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
+//        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
+//            "order_id_": orderID,
+//            "count_": 10])
+//        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
     }
     
     
