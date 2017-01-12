@@ -110,5 +110,12 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
     }
 
+    //请求预约、邀约付款
+    func payForInvitation(model: PayForInvitationRequestModel, complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .PayForInvitationRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(PayForInvitationModel.classForCoder()))
+            }, error: error)
+    }
 
 }
