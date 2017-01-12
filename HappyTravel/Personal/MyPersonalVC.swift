@@ -116,32 +116,32 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
         
-        APIHelper.commonAPI().centurionCardBaseInfo({ (response) in
-            if let model = response as? CenturionCardBaseInfosModel {
-                DataManager.insertData(model)
-            }
-        }, error: { (err) in
+//        APIHelper.commonAPI().centurionCardBaseInfo({ (response) in
+//            if let model = response as? CenturionCardBaseInfosModel {
+//                DataManager.insertData(model)
+//            }
+//        }, error: { (err) in
+//        
+//        })
         
-        })
-        
-        APIHelper.commonAPI().centurionCardPriceInfo({ (response) in
-            if let model = response as? CenturionCardPriceInfosModel {
-                DataManager.insertData(model)
-            }
-        }, error: { (err) in
-            
-        })
-        
-        let user = UserBaseModel()
-        user.uid_ = CurrentUser.uid_
-        APIHelper.userAPI().userCenturionCardInfo(user, complete: { (response) in
-            if let model = response as? UserCenturionCardInfoModel {
-                DataManager.insertData(model)
-                UserCenturionCardInfo = model
-            }
-        }, error: { (err) in
-        
-        })
+//        APIHelper.commonAPI().centurionCardPriceInfo({ (response) in
+//            if let model = response as? CenturionCardPriceInfosModel {
+//                DataManager.insertData(model)
+//            }
+//        }, error: { (err) in
+//            
+//        })
+//        
+//        let user = UserBaseModel()
+//        user.uid_ = CurrentUser.uid_
+//        APIHelper.userAPI().userCenturionCardInfo(user, complete: { (response) in
+//            if let model = response as? UserCenturionCardInfoModel {
+//                DataManager.insertData(model)
+//                UserCenturionCardInfo = model
+//            }
+//        }, error: { (err) in
+//        
+//        })
         
         APIHelper.userAPI().authStatus({ (response) in
             if let dict = response as? [String: AnyObject] {
