@@ -115,7 +115,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var settingsTable:UITableView?
     var settingOption:[[SettingItem]]?
     var settingOptingValue:[[String]]?
-    var authUserCardCode = (DataManager.currentUser?.authentication)!
+    var authUserCardCode = CurrentUser.auth_status_
     var selectIndex: NSIndexPath?
     var autoStatus: String {
         get{
@@ -149,6 +149,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         authUserCardCode = CurrentUser.auth_status_
+//        settingsTable?.reloadData()
 
         settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }

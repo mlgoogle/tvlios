@@ -79,6 +79,8 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     var photoURL = [NSString: NSString]()
     var photoKeys = [String]()
     var qiniuHost = "http://ofr5nvpm7.bkt.clouddn.com/"
+    //用户认证状态
+    var review_status:Int = -1
     //MARK: -- LIFECYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,11 +148,41 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                     let value:String? = respDic!.valueForKey("key") as? String
                     self.photoURL["pic\(index)"] = self.qiniuHost+value!
                     if self.photoURL.count == 2{
-                        var param = [NSString : AnyObject]()
-                        param["uid_"] = CurrentUser.uid_
-                        param["front_pic_"] = self.photoURL["pic1"]
-                        param["back_pic_"] = self.photoURL["pic0"]
-                        SocketManager.sendData(.AuthenticateUserCard, data:param)
+//                        var param = [NSString : AnyObject]()
+//                        param["uid_"] = CurrentUser.uid_
+//                        param["front_pic_"] = self.photoURL["pic1"]
+//                        param["back_pic_"] = self.photoURL["pic0"]
+//                        SocketManager.sendData(.AuthenticateUserCard, data:param)
+//
+                        let model = AuthenticateUserCardBaseInfo()
+                        model.uid_ = Int64(CurrentUser.uid_)
+                        model.front_pic_ = self.photoURL["pic1"]
+                        model.back_pic_ = self.photoURL["pic0"]
+                        weak var weakSelf = self
+                        APIHelper.userAPI().AuthenticateUserCard(model, complete: { (response) in
+                            if let authorModel = response as? AuthenticateUserCardModel {
+                                weakSelf!.review_status = authorModel.review_status_
+                                //更改认证状态为认证中
+                                CurrentUser.auth_status_ = authorModel.review_status_
+                            }
+                            weakSelf!.navigationItem.rightBarButtonItem?.enabled = true
+                            
+                            if weakSelf!.review_status == 0 {
+                                SVProgressHUD.dismiss()
+                                let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
+                                let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
+                                    alter.dismissViewControllerAnimated(true, completion:nil)
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                }
+                                alter.addAction(backActiong)
+                                weakSelf!.presentViewController(alter, animated: true, completion: nil)
+                            } else {
+                                SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
+                            }
+
+                            
+                            }, error: { (err) in
+                    })
                     }
                 }
                 
