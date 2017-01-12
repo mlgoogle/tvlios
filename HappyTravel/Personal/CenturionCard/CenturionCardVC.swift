@@ -439,35 +439,36 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     func payWithRecord(record:NSDictionary, password:String) {
         SVProgressHUD.showProgressMessage(ProgressMessage: "支付中...")
-        let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                        "order_id_": record.valueForKey("order_id_")!,
-                                        "passwd_": password]
-        unowned let weakSelf = self
-        SocketManager.sendData(.PayForInvitationRequest, data: dict, result: { (result) in
-            let data = result["data"] as! NSDictionary
-            if let errorCord = data.valueForKey("error_"){
-                let errorMsg = CommonDefine.errorMsgs[errorCord as! Int]
-                SVProgressHUD.showErrorMessage(ErrorMessage:errorMsg! , ForDuration: 2, completion: nil)
-                return
+        let req = PayForInvitationRequestModel()
+        req.uid_ = CurrentUser.uid_
+        req.order_id_ = record.valueForKey("order_id_") as! Int
+        req.passwd_ = password
+        APIHelper.consumeAPI().payForInvitation(req, complete: { [weak self](response) in
+            if let model = response as? PayForInvitationModel {
+                self!.payForBuyCardRsp(model)
             }
-            
-            let orderStatus = data.valueForKey("result_") as? Int
-            if orderStatus == -1 {
-                
-                SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
-            }
-            if orderStatus == -2 {
-                weakSelf.moneyIsTooLess()
-            }
-            if orderStatus == 0 {
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
-                    SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
-                    DataManager.currentUser?.centurionCardLv = weakSelf.selectedIndex + 1
-                    weakSelf.refreshData()
-                })
-            }
-            
-        })
+            }, error: { (err) in
+                SVProgressHUD.dismiss()
+            })
+    }
+    
+    func payForBuyCardRsp(model: PayForInvitationModel) {
+        SVProgressHUD.dismiss()
+        switch model.result_ {
+        case -1:
+            SVProgressHUD.showErrorMessage(ErrorMessage: "密码错误", ForDuration: 2, completion: nil)
+        case -2:
+            moneyIsTooLess()
+        case 0:
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功!", ForDuration: 2, completion: {
+                SocketManager.sendData(.UserCenturionCardInfoRequest, data: ["uid_": CurrentUser.uid_])
+                DataManager.currentUser?.centurionCardLv = self.selectedIndex + 1
+                self.refreshData()
+            })
+        default:
+            break
+        }
+        
     }
     
     func refreshData() {

@@ -117,7 +117,7 @@ class SocketRequestManage: NSObject {
         objc_sync_enter(self)
         socketRequests[packet.requestID] = socketReqeust;
         objc_sync_exit(self)
-        XCGLogger.debug("Request \(packet.opcode) \(packet.requestID) \(packet.sessionID)")
+        XCGLogger.debug("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)) \(packet.requestID) \(packet.sessionID)")
         sendRequest(packet)
     }
     

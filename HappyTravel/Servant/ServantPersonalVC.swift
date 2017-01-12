@@ -457,6 +457,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
 
 
 extension ServantPersonalVC:CitysSelectorSheetDelegate {
+    func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
+        let localNotify = UILocalNotification()
+        localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
+        localNotify.timeZone = NSTimeZone.defaultTimeZone()
+        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
+        localNotify.soundName = UILocalNotificationDefaultSoundName
+        if #available(iOS 8.2, *) {
+            localNotify.alertTitle = "优悦出行"
+        } else {
+            // Fallback on earlier versions
+        }
+        localNotify.alertBody = body!
+        localNotify.userInfo = userInfo
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
+        
+    }
+    
     func daysSureAction(sender: UIButton?, targetDays: Int) {
         daysAlertController?.dismissViewControllerAnimated(true, completion: nil)
         
@@ -470,19 +487,27 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             req.day_count_ = targetDays
             APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
                 if let model = response as? HodometerInfoModel {
-                    let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                    if UIApplication.sharedApplication().applicationState == .Background {
+                        let body = "系统消息: 您有新的行程消息!"
+                        var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                        userInfo["type"] = PushMessage.MessageType.System.rawValue
+                        userInfo["data"] = model
+                        self!.localNotify(body, userInfo: userInfo)
+                    } else {
+                        let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                        let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                        let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                        alert.addAction(action)
+                        self!.presentViewController(alert, animated: true, completion: nil)
+                    }
+                }
+                }, error: { [weak self](err) in
+                    let msg = "邀约失败，请稍后再试"
                     let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
                     let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
                     alert.addAction(action)
                     self!.presentViewController(alert, animated: true, completion: nil)
-                }
-            }, error: { [weak self](err) in
-                let msg = "邀约失败，请稍后再试"
-                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
-                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
-                alert.addAction(action)
-                self!.presentViewController(alert, animated: true, completion: nil)
-            })
+                })
             
         }else{
             let needChargeNum = Int(ceil(Float(totalMoney - currentCash)/100))

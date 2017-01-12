@@ -38,4 +38,11 @@ class ChatAPI: SocketAPI {
         }
     }
     
+    //返回读取消息数
+    func feedbackReadCount(model: ReadCountRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .FeedbackMSGReadCnt, model: model, type: .Chat)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
 }
