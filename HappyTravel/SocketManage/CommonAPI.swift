@@ -86,6 +86,13 @@ class CommonAPI: SocketAPI {
             }, error: error)
     }
     
+    //检查版本号
+    func checkVersion(model:CheckVersionRequestModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .VersionInfoRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
     // 请求微信支付状态
     func WXPayStatus(model: ClientWXPayStatusRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ClientWXPayStatusRequest, model: model)

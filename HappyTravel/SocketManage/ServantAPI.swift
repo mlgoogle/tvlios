@@ -47,12 +47,17 @@ class ServantAPI: SocketAPI {
             }, error: error)
         
     }
-    
+    func appointment(model:AppointmentServantRequestMdoel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AppointmentServantRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            let jsonObject = (response as? SocketJsonResponse)?.responseModel(AppointmentServantReplyMdoel.classForCoder())
+            complete?(jsonObject)
+            }, error: error)
+    }
     func recommentServants(model: RecommentServantRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .GetRecommendServants, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "recommend_guide_"))
             }, error: error)
-        
     }
 }
