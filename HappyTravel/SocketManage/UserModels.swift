@@ -127,3 +127,14 @@ class RegisterAccountModel: Object {
     dynamic var uid_:Int64 = 0//注册成功才返回
 }
 
+//请求提交身份证照片
+class AuthenticateUserCardBaseInfo: Object {
+    dynamic var uid_:Int64 = 0
+    dynamic var front_pic_:NSString?
+    dynamic var back_pic_:NSString?
+}
+//提交照片返回信息
+class AuthenticateUserCardModel: Object {
+    
+    dynamic var review_status_:Int = 0
+}
