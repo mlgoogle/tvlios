@@ -344,7 +344,7 @@ class DrawBillBaseInfo: Object {
     dynamic var area_:String?
     dynamic var addr_detail_:String?
     dynamic var remarks_:String?
-    dynamic var uid_:Int64 = Int64(CurrentUser.uid_) ?? 0
+    dynamic var uid_ = CurrentUser.uid_ ?? 0
 }
 //开票信息返回
 class DrawBillModel: Object {

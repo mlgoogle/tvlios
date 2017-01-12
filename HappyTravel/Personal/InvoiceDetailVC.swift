@@ -1,4 +1,4 @@
-//
+
 //  InvoiceDetailVC.swift
 //  HappyTravel
 //
@@ -27,8 +27,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 "commitBtn": 1006,
                 "bottomLine": 1007]
     
-//    var invoiceInfoDict:[String: AnyObject]?
-    var drawModel:DrawBillBaseInfo?
+    var invoiceInfoDict:[String: AnyObject]?
+//    var drawModel:DrawBillBaseInfo?
     
     let invoiceInfo = ["发票抬头",
                        "纳税人号",
@@ -71,6 +71,7 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         table?.separatorStyle = .None
         table?.registerClass(InvoiceCell.self, forCellReuseIdentifier: "InvoiceCell")
         view.addSubview(table!)
+        view.backgroundColor = UIColor.redColor()
         table?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
             make.top.equalTo(view)
@@ -271,27 +272,27 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             }
             textField?.placeholder = invoiceInfo[indexPath.row]
             if textField?.placeholder?.compare("发票抬头") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["title_"] as? String
-                  textField?.text = drawModel?.title_
+                textField?.text = invoiceInfoDict!["title_"] as? String
+//                  textField?.text = drawModel?.title_
             } else if textField?.placeholder?.compare("纳税人号") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["taxpayer_num_"] as? String
-                textField?.text = drawModel?.taxpayer_num_
+                textField?.text = invoiceInfoDict!["taxpayer_num_"] as? String
+//                textField?.text = drawModel?.taxpayer_num_
             } else if textField?.placeholder?.compare("注册地址") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["company_addr_"] as? String
-                textField?.text = drawModel?.company_addr_
+                textField?.text = invoiceInfoDict!["company_addr_"] as? String
+//                textField?.text = drawModel?.company_addr_
             } else if textField?.placeholder?.compare("联 系 人") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["user_name_"] as? String
-                textField?.text = drawModel?.user_name_
+                textField?.text = invoiceInfoDict!["user_name_"] as? String
+//                textField?.text = drawModel?.user_name_
             } else if textField?.placeholder?.compare("联系电话") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["user_mobile_"] as? String
-                textField?.text = drawModel?.user_mobile_
+                textField?.text = invoiceInfoDict!["user_mobile_"] as? String
+//                textField?.text = drawModel?.user_mobile_
                 textField?.keyboardType = .PhonePad
             } else if textField?.placeholder?.compare("所在区域") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["area_"] as? String
-                textField?.text = drawModel?.area_
+                textField?.text = invoiceInfoDict!["area_"] as? String
+//                textField?.text = drawModel?.area_
             } else if textField?.placeholder?.compare("详细地址") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["addr_detail_"] as? String
-                textField?.text = drawModel?.addr_detail_
+                textField?.text = invoiceInfoDict!["addr_detail_"] as? String
+//                textField?.text = drawModel?.addr_detail_
             }
         }
         
@@ -383,7 +384,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 make.top.equalTo(textView!.snp_bottom).offset(10)
             })
             
-            textView?.text = drawModel?.remarks_//invoiceInfoDict!["remark_"] as? String
+//            textView?.text = drawModel?.remarks_
+            textView?.text = invoiceInfoDict!["remark_"] as? String
             if textView?.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
                 textView?.textColor = UIColor.blackColor()
             }
@@ -417,27 +419,27 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             })
             
             if textField?.placeholder?.compare("发票抬头") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["title_"] as? String
-                textField?.text = drawModel?.title_
+                textField?.text = invoiceInfoDict!["title_"] as? String
+//                textField?.text = drawModel?.title_
             } else if textField?.placeholder?.compare("纳税人号") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["taxpayer_num_"] as? String
-                textField?.text = drawModel?.taxpayer_num_
+                textField?.text = invoiceInfoDict!["taxpayer_num_"] as? String
+//                textField?.text = drawModel?.taxpayer_num_
             } else if textField?.placeholder?.compare("注册地址") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["company_addr_"] as? String
-                textField?.text = drawModel?.company_addr_
+                textField?.text = invoiceInfoDict!["company_addr_"] as? String
+//                textField?.text = drawModel?.company_addr_
             } else if textField?.placeholder?.compare("联 系 人") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["user_name_"] as? String
-                textField?.text = drawModel?.user_name_
+                textField?.text = invoiceInfoDict!["user_name_"] as? String
+//                textField?.text = drawModel?.user_name_
             } else if textField?.placeholder?.compare("联系电话") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["user_mobile_"] as? String
-                textField?.text = drawModel?.user_mobile_
+                textField?.text = invoiceInfoDict!["user_mobile_"] as? String
+//                textField?.text = drawModel?.user_mobile_
                 textField?.keyboardType = .PhonePad
             } else if textField?.placeholder?.compare("所在区域") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["area_"] as? String
-                textField?.text = drawModel?.area_
+                textField?.text = invoiceInfoDict!["area_"] as? String
+//                textField?.text = drawModel?.area_
             } else if textField?.placeholder?.compare("详细地址") == .OrderedSame {
-//                textField?.text = invoiceInfoDict!["addr_detail_"] as? String
-                textField?.text = drawModel?.addr_detail_
+                textField?.text = invoiceInfoDict!["addr_detail_"] as? String
+//                textField?.text = drawModel?.addr_detail_
             }
         }
         
@@ -475,26 +477,26 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func textFieldDidEndEditing(textField: UITextField) {
         if textField.placeholder?.compare("发票抬头") == .OrderedSame {
-//            invoiceInfoDict!["title_"] = textField.text
-            drawModel!.title_ = textField.text
+            invoiceInfoDict!["title_"] = textField.text
+//            drawModel!.title_ = textField.text
         } else if textField.placeholder?.compare("纳税人号") == .OrderedSame {
-//            invoiceInfoDict!["taxpayer_num_"] = textField.text
-            drawModel!.taxpayer_num_ = textField.text
+            invoiceInfoDict!["taxpayer_num_"] = textField.text
+//            drawModel!.taxpayer_num_ = textField.text
         } else if textField.placeholder?.compare("注册地址") == .OrderedSame {
-//            invoiceInfoDict!["company_addr_"] = textField.text
-            drawModel!.company_addr_ = textField.text
+            invoiceInfoDict!["company_addr_"] = textField.text
+//            drawModel!.company_addr_ = textField.text
         } else if textField.placeholder?.compare("联 系 人") == .OrderedSame {
-//            invoiceInfoDict!["user_name_"] = textField.text
-            drawModel!.user_name_ = textField.text
+            invoiceInfoDict!["user_name_"] = textField.text
+//            drawModel!.user_name_ = textField.text
         } else if textField.placeholder?.compare("联系电话") == .OrderedSame {
-//            invoiceInfoDict!["user_mobile_"] = textField.text
-            drawModel!.user_mobile_ = textField.text
+            invoiceInfoDict!["user_mobile_"] = textField.text
+//            drawModel!.user_mobile_ = textField.text
         } else if textField.placeholder?.compare("所在区域") == .OrderedSame {
-//            invoiceInfoDict!["area_"] = textField.text
-            drawModel!.area_ = textField.text
+            invoiceInfoDict!["area_"] = textField.text
+//            drawModel!.area_ = textField.text
         } else if textField.placeholder?.compare("详细地址") == .OrderedSame {
-//            invoiceInfoDict!["addr_detail_"] = textField.text
-            drawModel!.addr_detail_ = textField.text
+            invoiceInfoDict!["addr_detail_"] = textField.text
+//            drawModel!.addr_detail_ = textField.text
         }
     }
     
@@ -508,8 +510,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func textViewDidEndEditing(textView: UITextView) {
-//        invoiceInfoDict!["remark_"] = textView.text
-        drawModel!.remarks_ = textView.text
+        invoiceInfoDict!["remark_"] = textView.text
+//        drawModel!.remarks_ = textView.text
         if textView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
             textView.textColor = UIColor.blackColor()
         } else {
@@ -526,8 +528,8 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         if buttonIndex == 0 {
             return
         }
-//        invoiceInfoDict!["invoice_type_"] = buttonIndex
-        drawModel!.invoice_type_ = buttonIndex
+        invoiceInfoDict!["invoice_type_"] = buttonIndex
+//        drawModel!.invoice_type_ = buttonIndex
         XCGLogger.debug("\(buttonIndex)")
         descLab?.text = alertView.buttonTitleAtIndex(buttonIndex)
         descLabText = descLab?.text
@@ -535,39 +537,39 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func commit() {
-        if drawModel!.title_?.characters.count == 0  {//invoiceInfoDict!["title_"]?.length == 0 {
+        if invoiceInfoDict!["title_"]?.length == 0 {
             SVProgressHUD.showWainningMessage(WainningMessage: "请输入发票抬头", ForDuration: 1, completion: nil)
             return
         }
-//        if invoiceInfoDict!["taxpayer_num_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请输入纳税人号", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["company_addr_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请输入注册地址", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["invoice_type_"]?.integerValue == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请选择发票类型", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["user_name_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage:  "请输入联系人", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["user_mobile_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请输入联系电话", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["area_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请输入所在区域", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        if invoiceInfoDict!["addr_detail_"]?.length == 0 {
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请输入详细地址", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        NSUserDefaults.standardUserDefaults().setValue(drawModel, forKey: DrawBillBaseInfo.className())
+        if invoiceInfoDict!["taxpayer_num_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入纳税人号", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["company_addr_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入注册地址", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["invoice_type_"]?.integerValue == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请选择发票类型", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["user_name_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage:  "请输入联系人", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["user_mobile_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入联系电话", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["area_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入所在区域", ForDuration: 1, completion: nil)
+            return
+        }
+        if invoiceInfoDict!["addr_detail_"]?.length == 0 {
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入详细地址", ForDuration: 1, completion: nil)
+            return
+        }
+        NSUserDefaults.standardUserDefaults().setValue(invoiceInfoDict, forKey: UserDefaultKeys.invoiceInfoDict)
         var oidStr = ""
         for (index, orderInfo) in selectedOrderList!.enumerate() {
             oidStr +=  index == 0 ? "\(orderInfo.order_id_)" : ",\(orderInfo.order_id_)"
@@ -581,23 +583,22 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //        invoiceInfoDict!["oid_str_"] = oidStr
 //        SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
         
-//        let model = DrawBillBaseInfo()
-//        model.oid_str_ = oidStr
-//        model.title_ = invoiceInfoDict!["title_"] as? String
-//        model.taxpayer_num_ = invoiceInfoDict!["taxpayer_num_"] as? String
-//        model.company_addr_ = invoiceInfoDict!["company_addr_"] as? String
-//        model.invoice_type_ = (invoiceInfoDict!["invoice_type_"] as? Int)!
-//        model.user_name_ = invoiceInfoDict!["user_name_"] as? String
-//        model.user_mobile_ = invoiceInfoDict!["user_mobile_"] as? String
-//        model.area_ = invoiceInfoDict!["area_"] as? String
-//        model.addr_detail_ = invoiceInfoDict!["addr_detail_"] as? String
-//        model.remarks_ = invoiceInfoDict!["remarks_"] as? String
-        
+        let model = DrawBillBaseInfo()
+        model.oid_str_ = oidStr
+        model.title_ = invoiceInfoDict!["title_"] as? String
+        model.taxpayer_num_ = invoiceInfoDict!["taxpayer_num_"] as? String
+        model.company_addr_ = invoiceInfoDict!["company_addr_"] as? String
+        model.invoice_type_ = (invoiceInfoDict!["invoice_type_"] as? Int)!
+        model.user_name_ = invoiceInfoDict!["user_name_"] as? String
+        model.user_mobile_ = invoiceInfoDict!["user_mobile_"] as? String
+        model.area_ = invoiceInfoDict!["area_"] as? String
+        model.addr_detail_ = invoiceInfoDict!["addr_detail_"] as? String
+        model.remarks_ = invoiceInfoDict!["remarks_"] as? String
         unowned let weakSelf = self
-        APIHelper.consumeAPI().drawBillInfo(drawModel!, complete: { (response) in
+        APIHelper.consumeAPI().drawBillInfo(model, complete: { (response) in
             SVProgressHUD.dismiss()
             if let model = response as? DrawBillModel {
-                if let _ = model.oid_str_ {
+                if  let _ = model.oid_str_ {
                     let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
                     let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                         self.navigationController?.popViewControllerAnimated(true)
@@ -616,32 +617,38 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     //MARK: -- DATA
     func initData() {
-        drawModel = NSUserDefaults.standardUserDefaults().valueForKey(DrawBillBaseInfo.className()) as? DrawBillBaseInfo
-        if drawModel != nil {
-            drawModel?.invoice_type_ = 0
-            drawModel?.uid_ = Int64(CurrentUser.uid_)
-        } else {
-            drawModel = DrawBillBaseInfo()
-        }
         
-//        invoiceInfoDict = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.invoiceInfoDict) as? [String: AnyObject]
-//        if invoiceInfoDict != nil {
-//            invoiceInfoDict!["invoice_type_"] = 0
-//            invoiceInfoDict!["uid_"] = CurrentUser.uid_
-//        }else{
-//            invoiceInfoDict =  ["oid_str_": "",
-//                                "title_": "",
-//                                "taxpayer_num_": "",
-//                                "company_addr_": "",
-//                                "invoice_type_": 0,
-//                                "user_name_": "",
-//                                "user_mobile_": "",
-//                                "area_": "",
-//                                "addr_detail_": "",
-//                                "remarks_": "",
-//                                "uid_": CurrentUser.uid_]
-//
+////        drawModel = DataManager.getData(DrawBillBaseInfo.self)?.first
+//        drawModel = NSUserDefaults.standardUserDefaults().valueForKey(DrawBillBaseInfo.className()) as? DrawBillBaseInfo
+//        if drawModel != nil {
+////            let realm = try! Realm()
+////            try! realm.write({ ()in
+//////                drawModel!.invoice_type_ = 0
+////            })
+//            
+////            drawModel!.uid_ = Int64(CurrentUser.uid_)
+//        } else {
+//            drawModel = DrawBillBaseInfo()
 //        }
+        
+        invoiceInfoDict = NSUserDefaults.standardUserDefaults().valueForKey(UserDefaultKeys.invoiceInfoDict) as? [String: AnyObject]
+        if invoiceInfoDict != nil {
+            invoiceInfoDict!["invoice_type_"] = 0
+            invoiceInfoDict!["uid_"] = CurrentUser.uid_
+        }else{
+            invoiceInfoDict =  ["oid_str_": "",
+                                "title_": "",
+                                "taxpayer_num_": "",
+                                "company_addr_": "",
+                                "invoice_type_": 0,
+                                "user_name_": "",
+                                "user_mobile_": "",
+                                "area_": "",
+                                "addr_detail_": "",
+                                "remarks_": "",
+                                "uid_": CurrentUser.uid_]
+
+        }
         
         
         table?.reloadData()
