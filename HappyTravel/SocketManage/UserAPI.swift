@@ -81,4 +81,12 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
+    //上传身份证照片
+    func AuthenticateUserCard(model: AuthenticateUserCardBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AuthenticateUserCard, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(AuthenticateUserCardModel.classForCoder()))
+            }, error: error)
+    }
+
 }

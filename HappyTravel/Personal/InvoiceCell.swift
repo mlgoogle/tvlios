@@ -10,42 +10,40 @@ import Foundation
 
 class InvoiceCell: UITableViewCell {
     
-    
-    
-    var info:OpenTicketInfo? {
-        didSet{
-            if info == nil {
-                return
-            }
-            if let nameLab = contentView.viewWithTag(tags["nameLab"]!) as? UILabel {
-                nameLab.text = info?.name
-            }
-            
-            if let titleLab = contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
-                titleLab.text = info?.content
-            }
-            
-            if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
-                typeLab.text = info?.type
-            }
-            
-            if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
-                priceLab.text = info?.price
-            }
-            
-            if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateStyle = .ShortStyle
-                dateFormatter.timeStyle = .ShortStyle
-                timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.time)))
-            }
-            
-            if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
-                selectBtn.selected = info!.selected
-            }
-        }
-    }
-    
+    var info:TicketModel?
+//        {
+//        didSet{
+//            if info == nil {
+//                return
+//            }
+//            if let nameLab = contentView.viewWithTag(tags["nameLab"]!) as? UILabel {
+//                nameLab.text = info?.name
+//            }
+//            
+//            if let titleLab = contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
+//                titleLab.text = info?.content
+//            }
+//            
+//            if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
+//                typeLab.text = info?.type
+//            }
+//            
+//            if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
+//                priceLab.text = info?.price
+//            }
+//            
+//            if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
+//                let dateFormatter = NSDateFormatter()
+//                dateFormatter.dateStyle = .ShortStyle
+//                dateFormatter.timeStyle = .ShortStyle
+//                timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.time!)!))
+//            }
+//            
+//            if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+//                selectBtn.selected = info!.selected
+//            }
+//        }
+//    }
     
     
     let tags = ["selectBtn": 1001,
@@ -173,6 +171,36 @@ class InvoiceCell: UITableViewCell {
         }
         
     }
+        
+    func update(info: TicketModel?) {
+        if let nameLab = contentView.viewWithTag(tags["nameLab"]!) as? UILabel {
+            nameLab.text = info?.name
+        }
+        
+        if let titleLab = contentView.viewWithTag(tags["titleLab"]!) as? UILabel {
+            titleLab.text = info?.content
+        }
+        
+        if let typeLab = contentView.viewWithTag(tags["typeLab"]!) as? UILabel {
+            typeLab.text = info?.type
+        }
+        
+        if let priceLab = contentView.viewWithTag(tags["priceLab"]!) as? UILabel {
+            priceLab.text = info?.price
+        }
+        
+        if let timeLab = contentView.viewWithTag(tags["timeLab"]!) as? UILabel {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.timeStyle = .ShortStyle
+            timeLab.text = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: Double(info!.time!)!))
+        }
+        
+        if let selectBtn = contentView.viewWithTag(tags["selectBtn"]!) as? UIButton {
+            selectBtn.selected = info!.selected
+        }
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

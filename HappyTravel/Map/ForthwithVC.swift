@@ -336,17 +336,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.height.equalTo(30)
         }
         
-        let centurionCardBtn = UIButton()
-        centurionCardBtn.backgroundColor = UIColor.clearColor()
-        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
-        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
-        mapView?.addSubview(centurionCardBtn)
-        centurionCardBtn.snp_makeConstraints(closure: { (make) in
-            make.right.equalTo(mapView!).offset(-20)
-            make.bottom.equalTo(mapView!).offset(-20)
-            make.width.equalTo(40)
-            make.height.equalTo(40)
-        })
+//        let centurionCardBtn = UIButton()
+//        centurionCardBtn.backgroundColor = UIColor.clearColor()
+//        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
+//        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
+//        mapView?.addSubview(centurionCardBtn)
+//        centurionCardBtn.snp_makeConstraints(closure: { (make) in
+//            make.right.equalTo(mapView!).offset(-20)
+//            make.bottom.equalTo(mapView!).offset(-20)
+//            make.width.equalTo(40)
+//            make.height.equalTo(40)
+//        })
         
         hideKeyboard()
     }
@@ -473,14 +473,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     func postNotifi()  {
         
-//        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
-        SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-                                                               "to_uid_" : CurrentUser.uid_,
-                                                             "msg_type_" : 2231,
-                                                             "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)),
-                                                           "servant_id_" : "1,2,3,4,5,6",
-                                                       "appointment_id_" : appointment_id_,
-                                                              "content_" : "您好，为您刚才的预约推荐服务者"])
+////        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
+//        SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
+//                                                               "to_uid_" : CurrentUser.uid_,
+//                                                             "msg_type_" : 2231,
+//                                                             "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)),
+//                                                           "servant_id_" : "1,2,3,4,5,6",
+//                                                       "appointment_id_" : appointment_id_,
+//                                                              "content_" : "您好，为您刚才的预约推荐服务者"])
 
     }
     func keyboardWillShow(notification: NSNotification?) {

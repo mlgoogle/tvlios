@@ -18,20 +18,14 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var table:UITableView?
     var messageInfo:Array<UserInfo>? = []
     
-    var orderID = 0
-    var hotometers:Results<HodometerInfo>?
-    var consumes:Results<CenturionCardConsumedInfo>?
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
-    var selectedOrderList:Results<OpenTicketInfo>?
-    var totalInfos:Results<OpenTicketInfo>? {
-        didSet{
-            if totalInfos == nil {
-                return
-            }
-            table?.mj_footer.hidden =  totalInfos!.count <= 10
-        }
-    }
+    
+    var orderID = 0
+    var lastID = 0
+    var selectedOrderList = List<TicketModel>()
+    var totalInfos:Results<TicketModel>?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,40 +52,40 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
     }
     
     func obtainTripReply(notification: NSNotification) {
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
-        }
-        
-        hotometers = DataManager.getHodometerHistory()
-        for info in hotometers! {
-            DataManager.insertOpenTicketWithHodometerInfo(info)
-        }
-        totalInfos = DataManager.getOpenTicketsInfo()
-        table?.reloadData()
+//        if header.state == MJRefreshState.Refreshing {
+//            header.endRefreshing()
+//        }
+//        if footer.state == MJRefreshState.Refreshing {
+//            footer.endRefreshing()
+//        }
+//        
+//        hotometers = DataManager.getHodometerHistory()
+//        for info in hotometers! {
+//            DataManager.insertOpenTicketWithHodometerInfo(info)
+//        }
+//        totalInfos = DataManager.getOpenTicketsInfo()
+//        table?.reloadData()
     }
     
     func centurionCardConsumedReply(notification: NSNotification)  {
-        if header.state == MJRefreshState.Refreshing {
-            header.endRefreshing()
-        }
-        if footer.state == MJRefreshState.Refreshing {
-            footer.endRefreshing()
-        }
-        consumes = DataManager.getCenturionCardConsumed()
-        for info in consumes! {
-            DataManager.insertOpenTicketWithConsumedInfo(info)
-        }
-        totalInfos = DataManager.getOpenTicketsInfo()
-        table?.reloadData()
+//        if header.state == MJRefreshState.Refreshing {
+//            header.endRefreshing()
+//        }
+//        if footer.state == MJRefreshState.Refreshing {
+//            footer.endRefreshing()
+//        }
+//        consumes = DataManager.getCenturionCardConsumed()
+//        for info in consumes! {
+//            DataManager.insertOpenTicketWithConsumedInfo(info)
+//        }
+//        totalInfos = DataManager.getOpenTicketsInfo()
+//        table?.reloadData()
     }
     
     func initView() {
@@ -109,7 +103,7 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let commitBtn = UIButton()
         commitBtn.setBackgroundImage(UIImage.init(named: "bottom-selector-bg"), forState: .Normal)
         commitBtn.setTitle("提交", forState: .Normal)
-        commitBtn.addTarget(self, action: #selector(InvoiceVC.commitAction(_:)), forControlEvents: .TouchUpInside)
+        commitBtn.addTarget(self, action: #selector(commitAction(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(commitBtn)
         commitBtn.snp_makeConstraints { (make) in
             make.left.equalTo(view)
@@ -125,17 +119,81 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             make.bottom.equalTo(commitBtn.snp_top)
         })
         
-        header.setRefreshingTarget(self, refreshingAction: #selector(InvoiceVC.headerRefresh))
+        header.setRefreshingTarget(self, refreshingAction: #selector(headerRefresh))
         table?.mj_header = header
-        footer.setRefreshingTarget(self, refreshingAction: #selector(InvoiceVC.footerRefresh))
-        table?.mj_footer = footer
+//        footer.setRefreshingTarget(self, refreshingAction: #selector(footerRefresh))
+//        table?.mj_footer = footer
     }
     
     func headerRefresh() {
-        SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-            "order_id_": 0,
-            "count_": 10])
-        SocketManager.sendData(.CenturionCardConsumedRequest, data: ["uid_": CurrentUser.uid_])
+        DataManager.removeData(InvoiceHodometerInfoModel.self)
+        DataManager.removeData(InvoiceAppointmentInfoModel.self)
+        DataManager.removeData(TicketModel.self)
+        getHodometerInfos()
+    }
+    
+    func getHodometerInfos() {
+        let req = HodometerRequestModel()
+        req.order_id_ = orderID == 0 ? 0 : orderID
+        APIHelper.consumeAPI().requestInviteOrderLsit(req, rspModel: InvoiceHodometerInfoModel.classForCoder(), complete: { [weak self](response) in
+            if let models = response as? [InvoiceHodometerInfoModel] {
+                for model in models {
+                    DataManager.insertData(model)
+                    if model.status_ == OrderStatus.Completed.rawValue {
+                        let ticket = TicketModel()
+                        ticket.hodometer_ = model
+                        ticket.order_id_ = model.order_id_
+                        DataManager.insertData(ticket)
+                    }
+                }
+                self!.orderID = models.last!.order_id_
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1)), dispatch_get_main_queue(), { () in
+                    self!.getHodometerInfos()
+                })
+            } else {
+                self?.orderID = 0
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1)), dispatch_get_main_queue(), { () in
+                    self?.getAppointmentInfos()
+                })
+            }
+        }) { [weak self](error) in
+            self?.orderID = 0
+        }
+    }
+    
+    func getAppointmentInfos() {
+        let req = AppointmentRequestModel()
+        req.last_id_ = lastID == 0 ? 0 : lastID
+        APIHelper.consumeAPI().requestAppointmentList(req, rspModel: InvoiceAppointmentInfoModel.classForCoder(), complete: { [weak self](response) in
+            if let models = response as? [InvoiceAppointmentInfoModel] {
+                for model in models {
+                    DataManager.insertData(model)
+                    if model.status_ == OrderStatus.Completed.rawValue {
+                        let ticket = TicketModel()
+                        ticket.appointment_ = model
+                        ticket.order_id_ = model.appointment_id_
+                        DataManager.insertData(ticket)
+                    }
+                }
+                self!.lastID = models.last!.appointment_id_
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1)), dispatch_get_main_queue(), { () in
+                    self!.getAppointmentInfos()
+                })
+            } else {
+                self!.lastID = 0
+                self!.noMoreData()
+            }
+        }) { [weak self](error) in
+            self!.lastID = 0
+            self!.noMoreData()
+        }
+    }
+    
+    func noMoreData() {
+        totalInfos = DataManager.getData(TicketModel.self)
+        endRefresh()
+        footer.state = .NoMoreData
+        footer.setTitle("没有更多信息", forState: .NoMoreData)
     }
     
     func footerRefresh() {
@@ -164,6 +222,7 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }) { (error) in
         }
     }
+    
     func endRefresh() {
         if header.state == .Refreshing {
             header.endRefreshing()
@@ -171,13 +230,12 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if footer.state == .Refreshing {
             footer.endRefreshing()
         }
-        
         table?.reloadData()
     }
     func commitAction(sender: UIButton) {
-        let realm = try! Realm()
-        selectedOrderList = realm.objects(OpenTicketInfo.self).filter("selected = true")
-        if selectedOrderList!.count == 0 {
+//        let realm = try! Realm()
+//        selectedOrderList = realm.objects(OpenTicketInfo.self).filter("selected = true")
+        if selectedOrderList.count == 0 {
             SVProgressHUD.showWainningMessage(WainningMessage: "尚未选择开票行程", ForDuration: 1.5, completion: nil)
             return
         }
@@ -198,20 +256,22 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("InvoiceCell", forIndexPath: indexPath) as! InvoiceCell
         let info = totalInfos![indexPath.row]
-        cell.info = info
+        info.selected = selectedOrderList.contains(info)
+        cell.update(info)
         return cell
         
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let info = totalInfos![indexPath.row]
-        let realm = try! Realm()
-        try! realm.write({
-            info.selected = !info.selected
-        })
-        tableView.reloadData()
+        if selectedOrderList.contains(info) {
+            selectedOrderList.removeAtIndex(selectedOrderList.indexOf(info)!)
+        } else {
+            selectedOrderList.append(info)
+        }
+        
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         
     }
-    
     
 }

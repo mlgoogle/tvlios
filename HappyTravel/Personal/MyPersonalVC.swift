@@ -280,7 +280,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             make.bottom.equalTo(view)
         }
         
-        let itemsTitle = ["黑卡会员", "钱包", "我的消费", "客服", "设置"]
+        let itemsTitle = ["钱包", "我的消费", "客服", "设置"] // "黑卡会员", 
         let itemsIcon = ["side-wallet", "side-wallet", "side-travel", "side-service", "side-settings"]
         for index in 0...itemsTitle.count - 1 {
             let itemBtn = UIButton()
@@ -325,23 +325,23 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func importantOptAction(sender: UIButton?) {
         switch sender!.tag {
-        case 10000:
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCenturionCardCenter, object: nil, userInfo: nil)
-            sideMenuController?.toggle()
+//        case 10000:
+//            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCenturionCardCenter, object: nil, userInfo: nil)
+//            sideMenuController?.toggle()
 
-        case 10001:
+        case 10000:
             XCGLogger.defaultInstance().debug("钱包")
              MobClick.event(CommonDefine.BuriedPoint.walletbtn)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
-        case 10002:
+        case 10001:
             XCGLogger.defaultInstance().debug("我的行程")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToDistanceOfTravelVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
-        case 10003:
+        case 10002:
             XCGLogger.defaultInstance().debug("客服")
             callSrevant()
-        case 10004:
+        case 10003:
             XCGLogger.defaultInstance().debug("设置")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToSettingsVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
