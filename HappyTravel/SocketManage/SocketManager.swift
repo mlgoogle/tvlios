@@ -120,12 +120,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ClientWXPayStatusReply = 1052
         // 微信服务端支付状态返回
         case ServerWXPayStatusReply = 1054
-        
         // 请求上传身份证认证
         case AuthenticateUserCard = 1055
         // 上传身份证认证返回
         case AuthenticateUserCardReply = 1056
-        
         // 请求身份证认证进度
         case CheckAuthenticateResult = 1057
         // 身份证认证进度返回
@@ -158,10 +156,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case PasswdVerifyRequest = 1087
         // 验证密码正确性返回
         case PasswdVerifyReply = 1088
+        
         // 请求设置、修改支付密码
         case SetupPaymentCodeRequest = 1089
         // 设置、修改支付密码返回
         case SetupPaymentCodeReply = 1090
+        
         // 请求照片墙
         case PhotoWallRequest = 1109
         // 照片墙返回
@@ -296,6 +296,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .AuthenticateUserCardReply,
                                           .WXplaceOrderReply,
                                           .RecvChatMessage,
+                                          .PasswdVerifyReply,
+                                          .SetupPaymentCodeReply,
                                           .UnreadMessageReply,
                                           .PhotoWallReply,
                                           .InvitationResult]

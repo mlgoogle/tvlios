@@ -157,10 +157,38 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     func nextStep() {
         if step == 0 {
             oldPasswd = textField?.text
-            let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                            "passwd_": oldPasswd!,
-                                            "passwd_type_": 1]
-            SocketManager.sendData(.PasswdVerifyRequest, data: dict)
+//            let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
+//                                            "passwd_": oldPasswd!,
+//                                            "passwd_type_": 1]
+//            SocketManager.sendData(.PasswdVerifyRequest, data: dict)
+            
+            let model = PasswdVerifyBaseInfo()
+            model.uid_ = Int64(CurrentUser.uid_)
+            model.passwd_ = oldPasswd
+            model.passwd_type_ = 1
+            unowned let weakSelf = self
+            APIHelper.userAPI().passwdVerify(model, complete: { (response) in
+                //此时response为空，表示旧密码正确
+                weakSelf.textField?.text = ""
+                for i in 0...5 {
+                    if let btn = weakSelf.view.viewWithTag(weakSelf.tags["passwdBtn"]! * 10 + i) as? UIButton {
+                        btn.setTitle("", forState: .Normal)
+                    }
+                }
+                weakSelf.step += 1
+                weakSelf.tipsLable?.text = weakSelf.tips[weakSelf.step]
+                }, error: { (err) in
+                    weakSelf.textField?.text = ""
+                    for i in 0...5 {
+                        if let btn = weakSelf.view.viewWithTag(weakSelf.tags["passwdBtn"]! * 10 + i) as? UIButton {
+                            btn.setTitle("", forState: .Normal)
+                        }
+                    }
+                    let wainning = SocketRequest.errorString(err.code)
+                    SVProgressHUD.showWainningMessage(WainningMessage: wainning, ForDuration: 1.5, completion: nil)
+                    
+            })
+            
         } else if step == 1 {
             newPasswd = textField?.text
             textField?.text = ""
@@ -173,13 +201,28 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
             tipsLable?.text = tips[step]
         } else if step == 2 {
             if textField?.text == newPasswd {
-                let changeType = DataManager.currentUser?.has_passwd_ == -1 ? 0 : 1
-                let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                                                "new_passwd_": newPasswd!,
-                                                "old_passwd_": oldPasswd ?? "",
-                                                "passwd_type_": 1,
-                                                "change_type_": changeType]
-                SocketManager.sendData(.SetupPaymentCodeRequest, data: dict)
+                let changeType = CurrentUser.has_passwd_ == -1 ? 0 : 1
+//                let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
+//                                                "new_passwd_": newPasswd!,
+//                                                "old_passwd_": oldPasswd ?? "",
+//                                                "passwd_type_": 1,
+//                                                "change_type_": changeType]
+//                SocketManager.sendData(.SetupPaymentCodeRequest, data: dict)
+                let model = SetPayCodeBaseInfo()
+                model.uid_ = Int64(CurrentUser.uid_)
+                model.new_passwd_ = newPasswd!
+                model.old_passwd_ = oldPasswd ?? ""
+                model.passwd_type_ = 1
+                model.change_type_ = changeType
+                weak var weakSelf = self
+                APIHelper.userAPI().setupPaymentCode(model, complete: { (response) in
+                    SVProgressHUD.showWainningMessage(WainningMessage: "支付密码\(weakSelf!.payPasswdStatus == .NotSetup ? "设置" : "修改")成功", ForDuration: 1.5, completion: { () in
+                        weakSelf?.navigationController?.popViewControllerAnimated(true)
+                    })
+                    }, error: { (err) in
+                        let wainning = SocketRequest.errorString(err.code)
+                        SVProgressHUD.showWainningMessage(WainningMessage: wainning, ForDuration: 1.5, completion: nil)
+                })
                 XCGLogger.info("\(oldPasswd ?? "status:\(payPasswdStatus)") <=> \(newPasswd!)")
             } else {
                 weak var weakSelf = self

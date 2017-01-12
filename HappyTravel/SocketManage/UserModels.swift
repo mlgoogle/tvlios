@@ -138,3 +138,17 @@ class AuthenticateUserCardModel: Object {
     
     dynamic var review_status_:Int = 0
 }
+//请求验证密码的正确性
+class PasswdVerifyBaseInfo: Object {
+    dynamic var uid_:Int64 = 0
+    dynamic var passwd_:String?
+    dynamic var passwd_type_:Int = 0//密码类型，1-支付密码 2-登录密码
+}
+//请求设置修改支付密码
+class SetPayCodeBaseInfo: Object {
+    dynamic var uid_:Int64 = 0
+    dynamic var new_passwd_:String?
+    dynamic var old_passwd_:String?
+    dynamic var passwd_type_:Int = 0 //1-支付 2-登录
+    dynamic var change_type_:Int = 0 //0-设置新密码 1-修改密码
+}
