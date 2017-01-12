@@ -113,7 +113,26 @@ class InsuranceVC: UIViewController {
                 if model.is_success_ == 0{
                     SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
                         self.navigationController?.popViewControllerAnimated(true)
-                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+//                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
+//                        let req = InvitationRequestModel()
+//                        req.to_uid_ = personalInfo!.uid_
+//                        req.service_id_ = selectedServcie!.service_id_
+//                        req.day_count_ = targetDays
+//                        APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
+//                            if let model = response as? HodometerInfoModel {
+//                                let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+//                                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+//                                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+//                                alert.addAction(action)
+//                                self!.presentViewController(alert, animated: true, completion: nil)
+//                            }
+//                            }, error: { [weak self](err) in
+//                                let msg = "邀约失败，请稍后再试"
+//                                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+//                                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+//                                alert.addAction(action)
+//                                self!.presentViewController(alert, animated: true, completion: nil)
+//                            })
                     })
                 }
             }

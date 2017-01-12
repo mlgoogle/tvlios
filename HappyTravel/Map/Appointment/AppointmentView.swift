@@ -671,6 +671,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     vc.segmentIndex = 1
                     weakSelf.nav?.pushViewController(vc, animated: true)
                 }
+                /** 测试推送
                 SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
                     "to_uid_" : CurrentUser.uid_,
                     "msg_type_" : 2231,
@@ -678,10 +679,10 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
                     "servant_id_" : "1,2,3,4,5,6",
                     "appointment_id_" : appointment_id_,
                     "content_" : "您好，为您刚才的预约推荐服务者"])
+                 */
             }
-            
-            }, error: { (err) in
-    })
+        }, error: { (err) in
+        })
     
         commitBtn?.enabled = false
     }
