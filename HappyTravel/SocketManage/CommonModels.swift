@@ -148,3 +148,11 @@ class ClienWXPayStatusModel: Object {
     
     dynamic var user_cash_ = -1
 }
+
+//身份证信息
+class IDverifyRequestModel: UserBaseModel {
+    
+    dynamic var id_card_num_:String?
+    
+    dynamic var id_card_name:String?
+}

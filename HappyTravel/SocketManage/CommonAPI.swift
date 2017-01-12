@@ -86,10 +86,19 @@ class CommonAPI: SocketAPI {
             }, error: error)
     }
     
+    // 请求微信支付状态
     func WXPayStatus(model: ClientWXPayStatusRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ClientWXPayStatusRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(ClienWXPayStatusModel.classForCoder()))
+            }, error: error)
+    }
+    
+    // 提交身份证信息
+    func IDVerify(model: IDverifyRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .UploadImageToken)
+        startRequest(packet, complete: { (response) in
+            complete?(nil)
             }, error: error)
     }
 }
