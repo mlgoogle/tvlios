@@ -456,10 +456,26 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
         let currentCash = CurrentUser.user_cash_      // 当前余额
         
         if currentCash >= totalMoney {
-            SocketManager.sendData(.AskInvitation, data: ["from_uid_": CurrentUser.uid_,
-                "to_uid_": personalInfo!.uid_,
-                "service_id_": selectedServcie!.service_id_,
-                "day_count_":targetDays])
+            let req = InvitationRequestModel()
+            req.to_uid_ = personalInfo!.uid_
+            req.service_id_ = selectedServcie!.service_id_
+            req.day_count_ = targetDays
+            APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
+                if let model = response as? HodometerInfoModel {
+                    let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
+                    let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                    let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                    alert.addAction(action)
+                    self!.presentViewController(alert, animated: true, completion: nil)
+                }
+            }, error: { [weak self](err) in
+                let msg = "邀约失败，请稍后再试"
+                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
+                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                alert.addAction(action)
+                self!.presentViewController(alert, animated: true, completion: nil)
+            })
+            
         }else{
             let needChargeNum = Int(ceil(Float(totalMoney - currentCash)/100))
             let alert = UIAlertController.init(title: "余额不足", message: "服务价格为\(totalMoney/100)元，还差\(needChargeNum)元", preferredStyle: .Alert)
