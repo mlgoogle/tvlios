@@ -653,43 +653,43 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendServants(notification: NSNotification?) {
-        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-                let type = data["recommend_type_"] as! Int
-                var uid_str = ""
-                if type == 1 {
-                    for servant in servants {
+//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+//                let type = data["recommend_type_"] as! Int
+//                var uid_str = ""
+//                if type == 1 {
+//                    for servant in servants {
 //                        let servantInfo = UserInfoModel()
 //                        servantInfo.setInfo(.Servant, info: servant)
 //                        recommendServants.append(servantInfo)
 //                        DataManager.updateUserInfo(servantInfo)
 //                        uid_str += "\(servantInfo.uid),"
-                    }
-                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
-                        recommendBtn.enabled = true
-                    }
-                } else if type == 2 {
-                    for servant in servants {
+//                    }
+//                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
+//                        recommendBtn.enabled = true
+//                    }
+//                } else if type == 2 {
+//                    for servant in servants {
 //                        let servantInfo = UserInfo()
 //                        servantInfo.setInfo(.Servant, info: servant)
 //                        subscribeServants.append(servantInfo)
 //                        DataManager.updateUserInfo(servantInfo)
 //                        uid_str += "\(servantInfo.uid),"
-                    }
-                    if header.state == .Refreshing {
-                        header.endRefreshing()
-                    }
-                }
-                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let req = UserInfoIDStrRequestModel()
-                req.uid_str_ = uid_str
-                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                    if let users = response as? [UserInfoModel] {
-                        DataManager.insertData(users[0])
-                    }
-                }, error: nil)
-            }
-        }
+//                    }
+//                    if header.state == .Refreshing {
+//                        header.endRefreshing()
+//                    }
+//                }
+//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+//                let req = UserInfoIDStrRequestModel()
+//                req.uid_str_ = uid_str
+//                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+//                    if let users = response as? [UserInfoModel] {
+//                        DataManager.insertData(users[0])
+//                    }
+//                }, error: nil)
+//            }
+//        }
         
     }
     
@@ -1072,7 +1072,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                             let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[status], preferredStyle: .Alert)
                             let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                                    let controller = UploadUserPictureVC()
+                                    let controller = IDVerifyVC()  // UploadUserPictureVC()
                                     self!.navigationController!.pushViewController(controller, animated: true)
                                 })
                             })
