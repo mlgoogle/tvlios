@@ -300,7 +300,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .SetupPaymentCodeReply,
                                           .UnreadMessageReply,
                                           .PhotoWallReply,
-                                          .InvitationResult]
+                                          .InvitationResult,
+                                          .AppointmentServantReply,
+                                          .VersionInfoReply]
     
     var isConnected : Bool {
         return socket!.isConnected

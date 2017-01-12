@@ -196,7 +196,7 @@ class MessageCell: UITableViewCell {
                 if let msgLab = view!.viewWithTag(1004) as? UILabel {
                     var nickname:String?
                     if message!.from_uid_ == CurrentUser.uid_ {
-                        nickname = DataManager.currentUser?.nickname
+                        nickname = CurrentUser.nickname_
                     } else {
                         nickname = userInfo?.nickname_
                     }

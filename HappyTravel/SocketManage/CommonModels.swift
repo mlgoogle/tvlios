@@ -134,3 +134,7 @@ class WXPlcaeOrderModel: Object {
     
     dynamic var timestamp:String?
 }
+//检查版本号
+class CheckVersionRequestModel: Object {
+    dynamic var app_type_ = 0
+}

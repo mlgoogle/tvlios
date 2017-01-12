@@ -65,14 +65,25 @@ class PhotoWallModel: Object {
     
 }
 
-// 发起邀约
-class InvitationRequestModel: Object {
-
+class InvitationBaseRequestModel: Object {
+    
     dynamic var from_uid_ = CurrentUser.uid_
     
     dynamic var to_uid_ = -1000
     
     dynamic var service_id_ = -1000
     
+}
+// 发起邀约
+class InvitationRequestModel: InvitationBaseRequestModel {
+
     dynamic var day_count_ = 1
+}
+//发起预约
+
+class AppointmentServantRequestMdoel: InvitationBaseRequestModel {
+    dynamic var appointment_id_ = 0
+}
+class AppointmentServantReplyMdoel: Object {
+    dynamic var is_asked_ = 0
 }

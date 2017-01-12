@@ -330,7 +330,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     }
     // MARK: - RefreshChatSessionListDelegate
-
     func refreshChatSeesionList() {
         if segmentIndex == 0 {
             table?.reloadData()
@@ -347,8 +346,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if segmentIndex == 0 {
             //消息
             let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
-//            let realm = try! Realm()
-//            let userPushMessage = realm.objects(UserPushMessage.self).sorted("msg_time_", ascending: false)[indexPath.row]
             let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
             cell.setInfo(userPushMessage.msgList.last, unreadCnt: userPushMessage.unread_)
             return cell
@@ -426,7 +423,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func payForInvitationRequest(info: HodometerInfoModel?) {
          MobClick.event(CommonDefine.BuriedPoint.payForOrder)
-        if DataManager.currentUser?.has_passwd_ == -1 {
+        if CurrentUser.has_passwd_ == -1 {
             let alert = UIAlertController.init(title: "提示", message: "您尚未设置支付密码", preferredStyle: .Alert)
             weak var weakSelf = self
             let gotoSetup = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in

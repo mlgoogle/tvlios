@@ -45,4 +45,11 @@ class ServantAPI: SocketAPI {
             }, error: error)
         
     }
+    func appointment(model:AppointmentServantRequestMdoel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .AppointmentServantRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            let jsonObject = (response as? SocketJsonResponse)?.responseModel(AppointmentServantReplyMdoel.classForCoder())
+            complete?(jsonObject)
+            }, error: error)
+    }
 }

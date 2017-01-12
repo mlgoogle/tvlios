@@ -85,4 +85,12 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(WXPlcaeOrderModel.classForCoder()))
             }, error: error)
     }
+    
+    //检查版本号
+    func checkVersion(model:CheckVersionRequestModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .VersionInfoRequest, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseJsonObject())
+            }, error: error)
+    }
 }

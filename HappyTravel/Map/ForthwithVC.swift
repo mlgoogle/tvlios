@@ -510,16 +510,29 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
-        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
-            if let verInfo = result["data"] as? [String: AnyObject] {
+        
+        
+        APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { (response) in
+            if let verInfo = response as? [String: AnyObject] {
                 UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
                     if gotoUpdate {
                         UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
                     }
                 })
             }
-            
-        })
+            }) { (error) in
+                
+        }
+//        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
+//            if let verInfo = result["data"] as? [String: AnyObject] {
+//                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+//                    if gotoUpdate {
+//                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
+//                    }
+//                })
+//            }
+//            
+//        })
 
 //        SocketManager.sendData(.GetServiceCity, data: nil)
         APIHelper.commonAPI().cityNameInfo({ (response) in
