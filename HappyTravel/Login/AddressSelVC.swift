@@ -65,7 +65,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             sureBtn.setTitle("确定", forState: .Normal)
             sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             sureBtn.backgroundColor = UIColor.clearColor()
-            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), forControlEvents: .TouchUpInside)
+            sureBtn.addTarget(self, action: #selector(sureAction(_:)), forControlEvents: .TouchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
             navigationItem.rightBarButtonItem = sureItem

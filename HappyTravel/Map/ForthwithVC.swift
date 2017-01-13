@@ -395,6 +395,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func loginSuccessed(notification: NSNotification) {
         banGesture(false)
+
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
                 isShowBaseInfo = true

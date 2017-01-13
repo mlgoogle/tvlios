@@ -44,16 +44,20 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         registerNotify()
         startTime = NSDate().timeIntervalSinceNow
-
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
         let endTime = NSDate().timeIntervalSinceNow
         
         let timeCount = endTime - startTime
         MobClick.event(CommonDefine.BuriedPoint.register, durations:Int32(timeCount))
+    }
+    
+    func loginSuccessed(notification: NSNotification) {
+        dismissViewControllerAnimated(false, completion: nil)
+        
     }
     
     func touchWhiteSpace() {
@@ -68,7 +72,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         bgView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
         }
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(LoginWithMSGVC.touchWhiteSpace))
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
         touch.numberOfTapsRequired = 1
         touch.cancelsTouchesInView = false
         bgView.addGestureRecognizer(touch)
@@ -273,7 +277,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             SVProgressHUD.showErrorMessage(ErrorMessage: "请输入正确的手机号", ForDuration: 1.5, completion: nil)
             return
         }
-        SVProgressHUD.showProgressMessage(ProgressMessage: "")
+        
         let req = VerifyCodeRequestModel()
         req.phone_num_ = username
         req.verify_type_ = 1
