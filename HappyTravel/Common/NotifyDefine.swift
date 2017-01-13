@@ -14,10 +14,6 @@ class NotifyDefine: NSObject {
     
     static let LoginFailed = "LoginFailed"
     
-    static let ServantInfo = "ServantInfo"
-    
-    static let RecommendServants = "RecommendServants"
-    
     static let JumpToCenturionCardCenter = "JumpToCenturionCardCenter"
     
     static let JumpToWalletVC = "JumpToWalletVC"
@@ -40,8 +36,6 @@ class NotifyDefine: NSObject {
     
     static let DrawBillReply = "DrawBillReply"
     
-    static let AskInvitationResult = "AskInvitationResult"
-    
     static let ChatMessgaeNotiy = "ChatMessageNotify"
     
     static let UpdateChatVC = "UpdateChatVC"
@@ -63,8 +57,6 @@ class NotifyDefine: NSObject {
     static let UpLoadImageToken = "UpLoadImageToken"
     
     static let WXplaceOrderReply = "WXplaceOrderReply"
-    
-    static let WXPayStatusReply = "WXPayStatusReply"
 
     static let AuthenticateUserCard = "AuthenticateUserCard"
     
@@ -83,14 +75,10 @@ class NotifyDefine: NSObject {
     static let AppointmentRecordReply = "AppointmentRecordReply"
     
     static let CheckCommentDetailResult = "CheckCommentDetailResult"
-    
-    static let PayForInvitationReply = "PayForInvitationReply"
 
     static let AppointmentRecommendReply = "AppointmentRecommendReply"
     
     static let AppointmentDetailReply = "AppointmentDetailReply"
-    
-    static let AppointmentServantReply = "AppointmentServantReply"
     
     static let UserBaseInfoReply = "UserBaseInfoReply"
     

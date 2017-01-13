@@ -300,20 +300,19 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .RecvChatMessage,
                                           .PasswdVerifyReply,
                                           .SetupPaymentCodeReply,
-                                          .UnreadMessageReply,
-                                          .InvitationResult,
-                                          .MSGReadCntResult,
-                                          .PayForInvitationReply,
-                                          .PhotoWallReply,
-                                          .InvitationResult,
-                                          .AppointmentServantReply,
-                                          .VersionInfoReply,
-                                          .ServersManInfoReply,
-                                          .ServersManInfoReply, //.RecommendServants,
-                                          .GetUpCenturionCardOriderReply,
-                                          .ClientWXPayStatusReply,
-                                          .ServerWXPayStatusReply,
-                                          .IDVerifyReply]
+                                          .UnreadMessageReply,  // Done
+                                          .MSGReadCntResult,  // Done
+                                          .PayForInvitationReply,  // Done
+        
+                                          .PhotoWallReply,  // Done
+                                          .InvitationResult,  // Done
+                                          .AppointmentServantReply,  // Done
+                                          .VersionInfoReply,  // Done
+                                          .ServersManInfoReply,  // Suspend
+                                          .GetUpCenturionCardOriderReply, // Suspend
+                                          .ClientWXPayStatusReply,  // Done
+                                          .ServerWXPayStatusReply,  // Done
+                                          .IDVerifyReply]  // Done
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -471,9 +470,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         switch SockOpcode(rawValue: head!.opcode)! {
         
-        case .RecommendServants:
-            recommonServantsReply(jsonBody)
-            
         case .ModifyPasswordResult:
             modifyPasswordReply(head, jsonBody: jsonBody)
             
@@ -513,12 +509,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .WXplaceOrderReply:
             wxPlaceOrderReply(jsonBody)
             
-        case .ClientWXPayStatusReply:
-            clientWXPayStatusReply(jsonBody)
-            
-        case .ServerWXPayStatusReply:
-            serverWXPayStatusReply(jsonBody)
-            
         case .AuthenticateUserCardReply:
             authenticateUserCardReply(jsonBody)
             
@@ -545,18 +535,12 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         // Opcode => 2000+
         
-        case .InvitationResult:
-            invitationReply(jsonBody)
-            
         case .RecvChatMessage:
             chatMessageReply(jsonBody)
             
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
-            
-        case .MSGReadCntResult:
-            break
-            
+        
         case .EvaluatetripReply:
             evaluatetripReply(jsonBody)
             
@@ -569,15 +553,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
 
-        case .AppointmentServantReply:
-            appointmentServantReply(jsonBody)
-
-        case .PayForInvitationReply:
-            payForInvitationReply(jsonBody)
-
-        case .UnreadMessageReply:
-            unreadMessageReply(jsonBody)
-        
         case .InsuranceReply:
             sureInsuranceReply(jsonBody)
             
@@ -739,10 +714,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func recommonServantsReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
     func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
         if head!.type == Int8(0) {
             SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
@@ -828,14 +799,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         postNotification(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
     }
     
-    func clientWXPayStatusReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
-    }
-    
-    func serverWXPayStatusReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
-    }
-    
     func authenticateUserCardReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -893,24 +856,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     // Opcode => 2000+
     
-    func invitationReply(jsonBody: JSON?) {
-        let order = HodometerInfo(value: (jsonBody?.dictionaryObject)!)
-        if order.is_asked_ == 1 {
-            postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-        } else {
-            DataManager.insertHodometerInfo(order)
-            if UIApplication.sharedApplication().applicationState == .Background {
-                let body = "系统消息: 您有新的行程消息!"
-                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                userInfo["type"] = PushMessage.MessageType.System.rawValue
-                userInfo["data"] = (jsonBody?.dictionaryObject)!
-                localNotify(body, userInfo: userInfo)
-            } else {
-                postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-            }
-        }
-    }
-    
     func chatMessageReply(jsonBody: JSON?) {
         //接收聊天信息
         if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
@@ -962,42 +907,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func appointmentServantReply(jsonBody:JSON?) {
-        postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func payForInvitationReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
-    }
-    
-    func unreadMessageReply(jsonBody: JSON?) {
-        if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
-            if msgList.count > 0 {
-                var pMsg:MessageModel?
-                
-                for msg in msgList.reverse() {
-                    let pushMsg = MessageModel(value: msg)
-                    //base64解码
-//                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
-//                    DataManager.insertMessage(pushMsg)
-                    DataManager.insertData(pushMsg)
-                    pMsg = pushMsg
-                }
-                let user = DataManager.getUserInfo(pMsg!.from_uid_)
-                if user == nil {
-                    let req = UserInfoIDStrRequestModel()
-                    req.uid_str_ = "\(pMsg!.from_uid_)"
-                    APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                        if let users = response as? [UserInfoModel] {
-                            DataManager.insertData(users[0])
-                        }
-                    }, error: nil)
-                }
-                postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
-            }
-        }
     }
     
     func decodeBase64Str(base64Str:String) throws -> String{

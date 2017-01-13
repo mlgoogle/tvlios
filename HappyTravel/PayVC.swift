@@ -22,7 +22,6 @@ class PayVC: UIViewController, UITextFieldDelegate {
         view.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         navigationItem.title = "支付"
         //支付结果返回
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PayVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
         initView()
     }
     
@@ -43,15 +42,11 @@ class PayVC: UIViewController, UITextFieldDelegate {
         payLab = UILabel()
         payLab!.text = "￥\(Double(price!)/100)"
         payLab!.textAlignment = .Center
-//        payLab?.numberOfLines = 0
-//        payLab?.lineBreakMode = .ByWordWrapping
         payLab!.font = UIFont.systemFontOfSize(25.0)
-//        payLab?.backgroundColor = UIColor.redColor()
         payLab!.textColor = UIColor.blackColor()
         self.view.addSubview(payLab!)
         payLab?.snp_makeConstraints(closure: { (make) in
             make.top.equalTo(descLab.snp_bottom).offset(20)
-//            make.centerX.equalTo(self.view)
             make.height.equalTo(30)
             make.left.equalTo(descLab.snp_left)
             make.right.equalTo(descLab.snp_right)
@@ -143,11 +138,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         }
         if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
             let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
-            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
-//                    self.payForInvitationRequest()
-                })
-            })
+            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
             warningAlert.addAction(sure)
             self.presentViewController(warningAlert, animated: true, completion: nil)
         } else {
@@ -175,15 +166,6 @@ class PayVC: UIViewController, UITextFieldDelegate {
         case 0:
             MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
             msg = "预支付成功"
-//            if segmentIndex! == 0 {
-//                SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                    "order_id_": 0,
-//                    "count_": 10])
-//            } else {
-//                SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-//                    "last_id_": 0,
-//                    "count_": 10])
-//            }
         case -1:
             msg = "密码错误"
         case -2:
@@ -227,53 +209,6 @@ class PayVC: UIViewController, UITextFieldDelegate {
         
     }
 
-    /**
-     支付回调
-     
-     - parameter notification:
-     */
-    func payForInvitationReply(notification: NSNotification) {
-        
-        
-        if let result = notification.userInfo!["result_"] as? Int {
-            var msg = ""
-            switch result {
-            case 0:
-                MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
-                msg = "预支付成功"
-//                if segmentIndex! == 0 {
-//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                        "order_id_": 0,
-//                        "count_": 10])
-//                } else {
-//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-//                        "last_id_": 0,
-//                        "count_": 10])
-//                }
-            case -1:
-                msg = "密码错误"
-            case -2:
-                MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
-                msg = "余额不足"
-                moneyIsTooLess()
-                return
-            default:
-                break
-            }
-            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: {(action) in
-                if result == 0{
-                self.navigationController?.popViewControllerAnimated(true)
-                }
-            })
-            alert.addAction(sure)
-            presentViewController(alert, animated: true, completion: nil)
-        }
-        
-        
-    }
-
-    
     /**
      余额不足操作
      */

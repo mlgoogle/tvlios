@@ -30,7 +30,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     var citysAlertController:UIAlertController?
 
-    var recommendServants:Array<UserInfoModel> = []
     var subscribeServants:Array<UserInfoModel> = []
     var locality:String?
     var location:CLLocation?
@@ -257,21 +256,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.bottom.equalTo(bottomView.snp_top)
         }
 
-//        大拇指推荐功能，暂时隐藏，后继使用
-//        let recommendBtn = UIButton()
-//        recommendBtn.tag = 2001
-//        recommendBtn.backgroundColor = .clearColor()
-//        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
-//        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
-//        mapView?.addSubview(recommendBtn)
-//        recommendBtn.snp_makeConstraints { (make) in
-//            make.left.equalTo(mapView!).offset(20)
-//            make.top.equalTo(mapView!).offset(20)
-//            make.width.equalTo(30)
-//            make.height.equalTo(30)
-//        }
-//        recommendBtn.enabled = false
-        
         view.addSubview(appointmentView)
         appointmentView.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(mapView!.snp_right).offset(0.5)
@@ -352,37 +336,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
     }
-    
-    func recommendAction(sender: UIButton?) {
-        
-//        let model = InsurancePayBaseInfo()
-//        model.insurance_price = 14
-//        model.insurance_username_ = String(CurrentUser.uid_)//用户id
-//        APIHelper.commonAPI().insurancePay(model, complete: { (response) in
-//            if let model = response as? InsuranceSuccessModel {
-//                if model.is_success_ == 0{
-//                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
-//                        self.navigationController?.popViewControllerAnimated(true)
-////                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
-//                    })
-//                }
-//            }
-//            }, error: { (err) in
-//        })
 
-        
-        let recommendVC = RecommendServantsVC()
-        recommendVC.servantsInfo = recommendServants
-        navigationController?.pushViewController(recommendVC, animated: true)
-    }
-    
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
@@ -394,10 +354,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func hideKeyboard() {
-//        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentView.touchWhiteSpace))
-//        touch.numberOfTapsRequired = 1
-//        touch.cancelsTouchesInView = false
-//        appointmentView.table?.addGestureRecognizer(touch)
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        appointmentView.table?.addGestureRecognizer(touch)
     }
     
     func touchWhiteSpace() {
@@ -591,47 +551,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
-    }
-    
-    func recommendServants(notification: NSNotification?) {
-//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-//                let type = data["recommend_type_"] as! Int
-//                var uid_str = ""
-//                if type == 1 {
-//                    for servant in servants {
-//                        let servantInfo = UserInfoModel()
-//                        servantInfo.setInfo(.Servant, info: servant)
-//                        recommendServants.append(servantInfo)
-//                        DataManager.updateUserInfo(servantInfo)
-//                        uid_str += "\(servantInfo.uid),"
-//                    }
-//                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
-//                        recommendBtn.enabled = true
-//                    }
-//                } else if type == 2 {
-//                    for servant in servants {
-//                        let servantInfo = UserInfo()
-//                        servantInfo.setInfo(.Servant, info: servant)
-//                        subscribeServants.append(servantInfo)
-//                        DataManager.updateUserInfo(servantInfo)
-//                        uid_str += "\(servantInfo.uid),"
-//                    }
-//                    if header.state == .Refreshing {
-//                        header.endRefreshing()
-//                    }
-//                }
-//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//                let req = UserInfoIDStrRequestModel()
-//                req.uid_str_ = uid_str
-//                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-//                    if let users = response as? [UserInfoModel] {
-//                        DataManager.insertData(users[0])
-//                    }
-//                }, error: nil)
-//            }
-//        }
-        
     }
     
     func jumpToCenturionCardCenter() {
