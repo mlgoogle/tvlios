@@ -379,7 +379,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
@@ -660,84 +659,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
-    func reflushServantInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-        let err = data?.keys.contains({ (key) -> Bool in
-            return key == "error_" ? true : false
-        })
-        if (err != false) {
-            XCGLogger.warning("warning:\(data!["error_"] as! Int)")
-            return
-        }
-        if servantsInfo.count == 0 {
-            mapView!.setZoomLevel(11, animated: true)
-        }
-        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
-        annotations.removeAll()
-        for servant in servants {
-            let servantInfo = UserInfo()
-            servantInfo.setInfo(.Servant, info: servant)
-//            servantsInfo[servantInfo.uid] = servantInfo
-            DataManager.updateUserInfo(servantInfo)
-            let latitude = servantInfo.gpsLocationLat
-            let longitude = servantInfo.gpsLocationLon
-            let point = MAPointAnnotation.init()
-            point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-            point.title = "\(servantInfo.uid)"
-            //根据serviceType筛选
-            if serviceType != 999{
-                //不是默认的所有服务者，进行筛选
-                let type = servant["servicetype_"] as? Int
-                //不是类型2和要筛选的服务者，忽略
-                if  type != serviceType && type != 2 {
-                    continue
-                }
-            }
-            
-            annotations.append(point)
-        }
-        if mapView!.annotations.count > 0{
-            mapView?.removeAnnotations(mapView!.annotations)
-        }
-
-        mapView!.addAnnotations(annotations)
-        
-    }
-    
-//    func reflushServantInfo(notification: NSNotification?) {
-//        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-//        let err = data?.keys.contains({ (key) -> Bool in
-//            return key == "error_" ? true : false
-//        })
-//        if (err != false) {
-//            XCGLogger.warning("warning:\(data!["error_"] as! Int)")
-//            return
-//        }
-//        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
-//        var tmpAnnotations = [MAPointAnnotation]()
-//        for servant in servants {
-//            let servantInfo = UserInfo()
-//            servantInfo.setInfo(.Servant, info: servant)
-//            DataManager.updateUserInfo(servantInfo)
-//            let latitude = servantInfo.gpsLocationLat
-//            let longitude = servantInfo.gpsLocationLon
-//            let point = MAPointAnnotation.init()
-//            point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-//            point.title = "\(servantInfo.uid)"
-//            if !servantsInfo.keys.contains(servantInfo.uid) {
-//                servantsInfo[servantInfo.uid] = servantInfo
-//                annotations.append(point)
-//                tmpAnnotations.append(point)
-//            }
-//        }
-//        if tmpAnnotations.count > 0 {
-//            mapView!.addAnnotations(tmpAnnotations)
-//        }
-//    }
-    
     func titleAction(sender: UIButton?) {
-        XCGLogger.debug(sender?.currentTitle)
-        
         if citysAlertController == nil {
             citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = CitysSelectorSheet()

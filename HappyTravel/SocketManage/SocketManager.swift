@@ -271,8 +271,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           
                                           .CenturionCardConsumedReply,  // Suspend
                                           .AppointmentRecommendReply,
-                                          .SkillsInfoReply,
-                                          .ServantInfo,
+                                          .SkillsInfoReply,  // Done
+                                          .ServantInfo,  // Done
                                           .CheckAuthenticateResultReply,
                                           .UserInfoResult,
                                           .CheckUserCashReply,
@@ -470,9 +470,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         switch SockOpcode(rawValue: head!.opcode)! {
-        case .ServantInfo:
-            servantInfoReply(jsonBody)
-            
+        
         case .RecommendServants:
             recommonServantsReply(jsonBody)
             
@@ -502,9 +500,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .DrawBillReply:
             drawBillReply(jsonBody)
-            
-        case .SkillsInfoReply:
-            skillsInfoReply(jsonBody)
             
         case .AppointmentReply:
             appointmentReply(jsonBody)
@@ -747,10 +742,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func servantInfoReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.ServantInfo, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
-    }
-    
     func recommonServantsReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -811,19 +802,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func drawBillReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func skillsInfoReply(jsonBody: JSON?) {
-        if let skillList = jsonBody?.dictionaryObject!["skills_list_"] as? Array<Dictionary<String, AnyObject>> {
-            for skill in skillList {
-                let info = SkillInfo(value: skill)
-                let string:NSString = info.skill_name_!
-                let options:NSStringDrawingOptions = [.UsesLineFragmentOrigin, .UsesFontLeading]
-                let rect = string.boundingRectWithSize(CGSizeMake(0, 24), options: options, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(AtapteWidthValue(12))], context: nil)
-                info.labelWidth = Float(rect.size.width) + 30
-                DataManager.insertData(SkillInfo.self, data: info)
-            }
-        }
     }
     
     func appointmentReply(jsonBody: JSON?) {
