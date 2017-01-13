@@ -203,8 +203,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
 
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -221,7 +221,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         vFrame.origin.y = 0
         view.frame = vFrame
     }
-        
+
     func loginWithAccountAction(sender: UIButton?) {
         dismissViewControllerAnimated(false, completion: nil)
     }

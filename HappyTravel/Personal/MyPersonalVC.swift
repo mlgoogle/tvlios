@@ -74,35 +74,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
-    }
-    
-    //查询认证状态
-    func checkAuthResult(notice: NSNotification) {
-        let data = notice.userInfo!["data"] as! NSDictionary
-        let failedReson = data["failed_reason_"] as? NSString
-        let reviewStatus = data.valueForKey("review_status_")?.integerValue
-        if reviewStatus == -1 {
-            return
-        }
-        if failedReson != "" {
-            return
-        }
-//        DataManager.currentUser?.authentication = reviewStatus!
-    }
-    
-    func improveDataSuccessed(notification: NSNotification) {
-        SVProgressHUD.dismiss()
-        if headImagePath != nil {
-            headImageView?.setImage(UIImage.init(contentsOfFile: headImagePath!), forState: .Normal)
-            CurrentUser.head_url_ = headImagePath
-        }
-        if nickName != nil {
-            nameLabel?.setTitle(nickName!, forState: .Normal)
-            CurrentUser.nickname_ = nickName
-        }
     }
     
     func updateUserInfo() {

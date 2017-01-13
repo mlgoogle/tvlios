@@ -85,7 +85,7 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
         touch.numberOfTapsRequired = 1
         touch.cancelsTouchesInView = false
         table?.addGestureRecognizer(touch)
@@ -96,18 +96,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+
     }
-    
-    
-//    func evaluatetripReply(notification: NSNotification) {
-//        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-//            self.navigationController?.popViewControllerAnimated(true)
-//        })
-//    }
-//    
+
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
@@ -135,10 +128,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let model = CommentForOrderModel(value: dict)
         
         APIHelper.consumeAPI().commentForOrder(model, complete: { (response) in
-            
-            self.navigationController?.popViewControllerAnimated(true)
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
         }) { (error) in
-            
+            SVProgressHUD.showWainningMessage(WainningMessage: "评论失败，请稍后再试", ForDuration: 1.5, completion: nil)
         }
     }
     

@@ -58,7 +58,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
 
     }
     
@@ -230,6 +229,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func headerRefresh() {
         if segmentIndex == 0 {
             header.endRefreshing()
+            table?.reloadData()
         } else if segmentIndex == 1 {
             handleInviteOrderRequest(true)
         }

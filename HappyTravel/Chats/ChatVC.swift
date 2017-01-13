@@ -53,8 +53,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                 toolBar.autoresizingMask = .FlexibleHeight
                 toolBar.backgroundColor = colorWithHexString("#f2f2f2")
                 
-                
-                
                 locationButton = UIButton(type: .Custom)
                 locationButton.setBackgroundImage(UIImage.init(named: "chat_navigation"), forState: .Normal)
                 locationButton.addTarget(self, action: #selector(ChatVC.pushToSelectLocationPage), forControlEvents: UIControlEvents.TouchUpInside)
@@ -67,9 +65,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
                     make.width.equalTo(32)
                 })
 
-                
-  
-                
                 sendButton = UIButton(type: .System)
                 sendButton.enabled = false
                 sendButton.titleLabel?.font = UIFont.systemFontOfSize(S18)
@@ -161,7 +156,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             navigationController?.popViewControllerAnimated(true)
             return
         }
-        
         
         msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
         ChatMessageHelper.shared.delegate = self

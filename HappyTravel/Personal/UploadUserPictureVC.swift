@@ -99,7 +99,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -301,19 +301,25 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         
         photoPaths[index] = filePath
     }
-    //MARK: --
-  
-    //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
+    
+    //认证结果
+    func autoUserCardResult(notice: NSNotification?) {
+        navigationItem.rightBarButtonItem?.enabled = true
         let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: { 
-                    self.navigationController?.popViewControllerAnimated(true)
-            })
-            return
+        let resultCode = data.valueForKey("review_status_") as? Int
+        CurrentUser.auth_status_ = resultCode!
+        if resultCode! == 0 {
+            SVProgressHUD.dismiss()
+            let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
+            let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
+                alter.dismissViewControllerAnimated(true, completion:nil)
+                 self.navigationController?.popViewControllerAnimated(true)
+            }
+            alter.addAction(backActiong)
+            presentViewController(alter, animated: true, completion: nil)
+        } else {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
         }
-        SVProgressHUD.dismiss()
-        token = data.valueForKey("img_token_") as! NSString
     }
+
 }
