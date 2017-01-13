@@ -281,76 +281,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     }
     
     func registerNotify() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedResults(_:)), name: NotifyDefine.AppointmentServantReply, object: nil)
-        
+
     }
-    
-    /**
-     预约回调
-     
-     - parameter notifucation:
-     */
-//    func receivedResults(notifucation: NSNotification?) {
-//
-//        
-////        YD_ContactManager.checkIfUploadContact()
-//
-//        let dict = notifucation?.userInfo!["data"] as? Dictionary<String , AnyObject>
-//        
-//        var msg = "预约发起成功，等待对方接受邀请"
-//        if dict!["is_asked_"] as! Int == 1 {
-//            msg = "预约失败，您已经预约过对方"
-//
-//        }
-//        
-//        let alert = UIAlertController.init(title: "预约状态",
-//                                           message: msg,
-//                                           preferredStyle: .Alert)
-//        
-//
-//        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-//            
-//        })
-//        
-//        alert.addAction(action)
-//
-//        presentViewController(alert, animated: true) {
-//            /**
-//             预约完成 删除 推送的预约消息 测试状态 暂时不删
-//             */
-////            DataManager.deletePushMessage(appointment_id_)
-//        }
-//    }
-    /**
-     邀约回调
-     
-     - parameter notifucation:
-     */
-//    func invitationResult(notifucation: NSNotification?) {
-//        
-////        YD_ContactManager.checkIfUploadContact()
-//        var msg = ""
-//        if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
-//            msg = err.values.first!
-//        }
-//        
-//        if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {
-//            if msg == "" {
-//                msg = order.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
-//            }
-//            let alert = UIAlertController.init(title: "邀约状态",
-//                                               message: msg,
-//                                               preferredStyle: .Alert)
-//            
-//            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-//                
-//            })
-//            alert.addAction(action)
-//            presentViewController(alert, animated: true, completion: nil)
-//            
-//        }
-//    }
     
     func requestPhoto() {
         if personalInfo != nil {
@@ -398,8 +330,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func msgAction(sender: AnyObject?) {
         let msgVC = PushMessageVC()
-//        msgVC.messageInfo = recommendServants
-        
+
         if sender?.isKindOfClass(UIButton) == false {
             navigationController?.pushViewController(msgVC, animated: false)
             if let userInfo = sender as? [NSObject: AnyObject] {

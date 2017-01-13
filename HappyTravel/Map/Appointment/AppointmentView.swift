@@ -145,12 +145,6 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             let tallys = SkillsCell()
             tallys.delegate = self
             tallys.style = .AddNew
-//            if skills.count == 0 {                
-//                let skillInfo = SkillInfo()
-//                skillInfo.skill_name_ = "+"
-//                skillInfo.labelWidth = 24.0
-//                skills.append([skillInfo : false])
-//            }
             tallys.setInfo(skills)
             return tallys
         } else if indexPath.section == 2 {

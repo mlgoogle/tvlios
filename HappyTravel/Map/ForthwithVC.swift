@@ -14,7 +14,7 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate{ //ServantIntroCellDelegate
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
@@ -30,7 +30,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     var citysAlertController:UIAlertController?
 
-    var recommendServants:Array<UserInfoModel> = []
     var subscribeServants:Array<UserInfoModel> = []
     var locality:String?
     var location:CLLocation?
@@ -69,13 +68,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.ServantDetailInfo, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.LoginFailed, object: nil)
+        
     }
+    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
@@ -168,20 +168,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleView.backgroundColor = .clearColor()
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
-        
-//        titleLab = UILabel()
-//        titleLab?.backgroundColor = .clearColor()
-//        titleLab?.textColor = .whiteColor()
-//        titleLab?.font = UIFont.systemFontOfSize(S18)
-//        titleLab?.textAlignment = .Center
-//        titleLab?.userInteractionEnabled = true
-//        titleView.addSubview(titleLab!)
-//        titleLab!.snp_makeConstraints { (make) in
-//            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
-//            make.centerY.equalTo(titleView.snp_centerY)
-//        }
-//        titleLab?.text = "首页"
-        //城市选择功能
       
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
@@ -190,38 +176,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 115, bottom: 0, right: 0)
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
-        titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
+        titleBtn!.addTarget(self, action: #selector(screenServices(_:)), forControlEvents: .TouchUpInside)
         titleView.addSubview(titleBtn!)
         titleBtn!.snp_makeConstraints { (make) in
             make.width.equalTo(130)
             make.centerX.equalTo(titleView)
             make.centerY.equalTo(titleView)
-//            make.left.equalTo(titleLab!.snp_right)
-//            make.width.equalTo(20)
-//            make.centerY.equalTo(titleLab!.snp_centerY)
         }
-        
-//        let segmentBGV = UIImageView()
-//        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
-//        view.addSubview(segmentBGV)
-//
-//        let segmentItems = ["商务游", "高端游"]
-//        segmentSC = UISegmentedControl(items: segmentItems)
-//        segmentSC!.tag = 1001
-//        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-//        segmentSC!.selectedSegmentIndex = 0
-//        segmentSC!.layer.masksToBounds = true
-//        segmentSC?.layer.cornerRadius = 5
-//        segmentSC?.backgroundColor = UIColor.clearColor()
-//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
-//        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-//        view.addSubview(segmentSC!)
-//        segmentSC!.snp_makeConstraints { (make) in
-//            make.center.equalTo(segmentBGV)
-//            make.height.equalTo(30)
-//            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
-//        }
         
         let bottomView = UIImageView()
         bottomView.userInteractionEnabled = true
@@ -238,7 +199,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         bottomSelector.maximumValue = 1
         bottomSelector.value = 0
         bottomSelector.continuous = false
-        bottomSelector.addTarget(self, action: #selector(ForthwithVC.bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
+        bottomSelector.addTarget(self, action: #selector(bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
         bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
         bottomSelector.tintColor = UIColor.whiteColor()
         bottomSelector.minimumTrackTintColor = UIColor.whiteColor()
@@ -294,27 +255,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
-//        segmentBGV.snp_makeConstraints { (make) in
-//            make.top.equalTo(view)
-//            make.left.equalTo(view)
-//            make.right.equalTo(mapView!).offset(0.5)
-//            make.height.equalTo(60)
-//        }
-//        大拇指推荐功能，暂时隐藏，后继使用
-//        let recommendBtn = UIButton()
-//        recommendBtn.tag = 2001
-//        recommendBtn.backgroundColor = .clearColor()
-//        recommendBtn.setImage(UIImage.init(named: "tuijian"), forState: .Normal)
-//        recommendBtn.addTarget(self, action: #selector(ForthwithVC.recommendAction(_:)), forControlEvents: .TouchUpInside)
-//        mapView?.addSubview(recommendBtn)
-//        recommendBtn.snp_makeConstraints { (make) in
-//            make.left.equalTo(mapView!).offset(20)
-//            make.top.equalTo(mapView!).offset(20)
-//            make.width.equalTo(30)
-//            make.height.equalTo(30)
-//        }
-//        recommendBtn.enabled = false
-        
+
         view.addSubview(appointmentView)
         appointmentView.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(mapView!.snp_right).offset(0.5)
@@ -395,38 +336,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
         
     }
-    
-    func recommendAction(sender: UIButton?) {
-        
-//        let model = InsurancePayBaseInfo()
-//        model.insurance_price = 14
-//        model.insurance_username_ = String(CurrentUser.uid_)//用户id
-//        APIHelper.commonAPI().insurancePay(model, complete: { (response) in
-//            if let model = response as? InsuranceSuccessModel {
-//                if model.is_success_ == 0{
-//                    SVProgressHUD.showSuccessMessage(SuccessMessage: "购买成功", ForDuration: 0.5, completion: { () in
-//                        self.navigationController?.popViewControllerAnimated(true)
-////                        SocketManager.sendData(.AskInvitation, data: self.servantInfoDict)
-//                    })
-//                }
-//            }
-//            }, error: { (err) in
-//        })
 
-        
-        let recommendVC = RecommendServantsVC()
-        recommendVC.servantsInfo = recommendServants
-        navigationController?.pushViewController(recommendVC, animated: true)
-    }
-    
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(reflushServantInfo(_:)), name: NotifyDefine.ServantInfo, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
@@ -438,10 +354,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func hideKeyboard() {
-//        let touch = UITapGestureRecognizer.init(target: self, action: #selector(AppointmentView.touchWhiteSpace))
-//        touch.numberOfTapsRequired = 1
-//        touch.cancelsTouchesInView = false
-//        appointmentView.table?.addGestureRecognizer(touch)
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
+        touch.numberOfTapsRequired = 1
+        touch.cancelsTouchesInView = false
+        appointmentView.table?.addGestureRecognizer(touch)
     }
     
     func touchWhiteSpace() {
@@ -578,14 +494,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         setUnReadCount()
     }
     func getServantNearby(lat: Double, lon:Double) {
+        if firstLanch {
+            mapView!.setZoomLevel(11, animated: true)
+        }
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
         APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
-                if self!.servantsInfo.count == 0 {
-                    self!.mapView!.setZoomLevel(11, animated: true)
-                }
                 self!.annotations.removeAll()
                 for servant in models {
                     self!.servantsInfo[servant.uid_] = servant
@@ -639,47 +555,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
     }
     
-    func recommendServants(notification: NSNotification?) {
-//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-//                let type = data["recommend_type_"] as! Int
-//                var uid_str = ""
-//                if type == 1 {
-//                    for servant in servants {
-//                        let servantInfo = UserInfoModel()
-//                        servantInfo.setInfo(.Servant, info: servant)
-//                        recommendServants.append(servantInfo)
-//                        DataManager.updateUserInfo(servantInfo)
-//                        uid_str += "\(servantInfo.uid),"
-//                    }
-//                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
-//                        recommendBtn.enabled = true
-//                    }
-//                } else if type == 2 {
-//                    for servant in servants {
-//                        let servantInfo = UserInfo()
-//                        servantInfo.setInfo(.Servant, info: servant)
-//                        subscribeServants.append(servantInfo)
-//                        DataManager.updateUserInfo(servantInfo)
-//                        uid_str += "\(servantInfo.uid),"
-//                    }
-//                    if header.state == .Refreshing {
-//                        header.endRefreshing()
-//                    }
-//                }
-//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//                let req = UserInfoIDStrRequestModel()
-//                req.uid_str_ = uid_str
-//                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-//                    if let users = response as? [UserInfoModel] {
-//                        DataManager.insertData(users[0])
-//                    }
-//                }, error: nil)
-//            }
-//        }
-        
-    }
-    
     func jumpToCenturionCardCenter() {
         let centurionCardCenter = CenturionCardVC()
         navigationController?.pushViewController(centurionCardCenter, animated: true)
@@ -705,97 +580,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
-    func reflushServantInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-        let err = data?.keys.contains({ (key) -> Bool in
-            return key == "error_" ? true : false
-        })
-        if (err != false) {
-            XCGLogger.warning("warning:\(data!["error_"] as! Int)")
-            return
-        }
-        if servantsInfo.count == 0 {
-            mapView!.setZoomLevel(11, animated: true)
-        }
-        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
-        annotations.removeAll()
-        for servant in servants {
-            let servantInfo = UserInfo()
-            servantInfo.setInfo(.Servant, info: servant)
-//            servantsInfo[servantInfo.uid] = servantInfo
-            DataManager.updateUserInfo(servantInfo)
-            let latitude = servantInfo.gpsLocationLat
-            let longitude = servantInfo.gpsLocationLon
-            let point = MAPointAnnotation.init()
-            point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-            point.title = "\(servantInfo.uid)"
-            //根据serviceType筛选
-            if serviceType != 999{
-                //不是默认的所有服务者，进行筛选
-                let type = servant["servicetype_"] as? Int
-                //不是类型2和要筛选的服务者，忽略
-                if  type != serviceType && type != 2 {
-                    continue
-                }
-            }
-            
-            annotations.append(point)
-        }
-        if mapView!.annotations.count > 0{
-            mapView?.removeAnnotations(mapView!.annotations)
-        }
-
-        mapView!.addAnnotations(annotations)
-        
-    }
-    
-//    func reflushServantInfo(notification: NSNotification?) {
-//        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-//        let err = data?.keys.contains({ (key) -> Bool in
-//            return key == "error_" ? true : false
-//        })
-//        if (err != false) {
-//            XCGLogger.warning("warning:\(data!["error_"] as! Int)")
-//            return
-//        }
-//        let servants = data!["guide_list_"] as! Array<Dictionary<String, AnyObject>>
-//        var tmpAnnotations = [MAPointAnnotation]()
-//        for servant in servants {
-//            let servantInfo = UserInfo()
-//            servantInfo.setInfo(.Servant, info: servant)
-//            DataManager.updateUserInfo(servantInfo)
-//            let latitude = servantInfo.gpsLocationLat
-//            let longitude = servantInfo.gpsLocationLon
-//            let point = MAPointAnnotation.init()
-//            point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-//            point.title = "\(servantInfo.uid)"
-//            if !servantsInfo.keys.contains(servantInfo.uid) {
-//                servantsInfo[servantInfo.uid] = servantInfo
-//                annotations.append(point)
-//                tmpAnnotations.append(point)
-//            }
-//        }
-//        if tmpAnnotations.count > 0 {
-//            mapView!.addAnnotations(tmpAnnotations)
-//        }
-//    }
-    
-    func servantDetailInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-        if data!["error_"] != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
-            return
-        }
-//        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
-        let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(data!["uid_"] as! Int)")?.first
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
-        
-    }
-    
     func titleAction(sender: UIButton?) {
-        XCGLogger.debug(sender?.currentTitle)
-        
         if citysAlertController == nil {
             citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
             let sheet = CitysSelectorSheet()
@@ -1055,7 +840,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         switch error.code {
         case 1:
             checkLocationService()
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
             firstLanch = true
             break
         case 4:
@@ -1068,34 +852,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         
     }
-    // MARK: - ServiceSheetDelegate
-    func cancelAction(sender: UIButton?) {
-        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-    }
     
-    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
-        guard targetCity != nil else { return }
-        recommendServants.removeAll()
-        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
-
-//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
-//        SocketManager.sendData(.GetRecommendServants, data: dict)
-    }
-    
-    func headerRefresh() {
-//        let dict = ["city_code_": cityCode, "recommend_type_": 2]
-//        SocketManager.sendData(.GetRecommendServants, data: dict)
-    }
-    
-    //MARK: - ServantIntroCellDeleagte
-    
-//    func chatAction(servantInfo: UserInfo?) {
-//        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
-//        SocketManager.sendData(.GetServantDetailInfo, data: dict)
-//
-//    }
-//    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
