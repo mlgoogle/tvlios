@@ -420,7 +420,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.info("Send: \(opcode)")
+        XCGLogger.debug("Send: \(opcode)")
         return true
         
     }
