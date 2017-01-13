@@ -191,10 +191,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    func sureInsuranceReply(notification: NSNotification) {
-//        sureInsurancePrice = notification
-        
-    }
+    
     func sureInsuranceActure(sender:UIButton) {
         let isSelected = sender.selected
         sender.selected = !isSelected

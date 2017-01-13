@@ -20,6 +20,7 @@ protocol RefreshChatSessionListDelegate:NSObjectProtocol {
 class ChatMessageHelper: NSObject {
     static let shared = ChatMessageHelper()
     weak var refreshDelegate:RefreshChatSessionListDelegate?
+    weak var refreshMsgCountDelegate:RefreshChatSessionListDelegate?
     weak var delegate:ReceivedChatDelegate?
     override init() {
         super.init()
@@ -78,6 +79,7 @@ class ChatMessageHelper: NSObject {
         DataManager.insertData(messageModel)
         delegate?.receivedChatMessgae(messageModel)
         refreshDelegate?.refreshChatSeesionList()
+        refreshMsgCountDelegate?.refreshChatSeesionList()
     }
     
     func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {

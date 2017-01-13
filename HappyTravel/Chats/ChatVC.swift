@@ -233,20 +233,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.UpdateChatVC, object: nil)
-        
-    }
-    
-    func chatMessage(notification: NSNotification?) {
-        let msg = (notification?.userInfo!["data"])! as! PushMessage
-        if msg.from_uid_ == servantInfo?.uid_ && msg.to_uid_ == CurrentUser.uid_ {
-            chatTable?.beginUpdates()
-            let numberOfRows = chatTable?.numberOfRowsInSection(0)
-            chatTable?.insertRowsAtIndexPaths([NSIndexPath.init(forRow: numberOfRows!, inSection: 0), NSIndexPath.init(forRow: numberOfRows!, inSection: 0)], withRowAnimation: .Fade)
-            chatTable?.endUpdates()
-            chatTable?.scrollToRowAtIndexPath(NSIndexPath.init(forRow: numberOfRows!, inSection: 0), atScrollPosition: .Bottom, animated: true)
-            DataManager.readMessage(msg.from_uid_)
-        }
         
     }
     

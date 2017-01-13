@@ -97,7 +97,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         
     }
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CenturionCardVC.receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CenturionCardVC.receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
     }
     
     func initView() {

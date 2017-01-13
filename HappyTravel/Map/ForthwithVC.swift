@@ -414,16 +414,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }) { (error) in
                 
         }
-        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
-            if let verInfo = result["data"] as? [String: AnyObject] {
+        let req = CheckVersionRequestModel()
+        req.app_type_ = 0
+        APIHelper.commonAPI().checkVersion(req, complete: { (response) in
+            if let verInfo = response as? [String: AnyObject] {
                 UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
                     if gotoUpdate {
                         UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
                     }
                 })
             }
-            
-        })
+            }, error: nil)
 
 
         YD_NewPersonGuideManager.startGuide()
@@ -453,7 +454,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }, error: nil)
         //初始化 receiveMessageBlock
-        ChatMessageHelper.shared.refreshDelegate = self
+        ChatMessageHelper.shared.refreshMsgCountDelegate = self
         getUnReadMessage()
     }
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -465,7 +466,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let messsages = response as? [MessageModel]
             guard messsages?.count > 0 else {return}
             for message in messsages! {
-                ChatMessageHelper.shared.reveicedMessage(message)
+                DataManager.insertData(message)
             }
             self.setUnReadCount()
             }) { (error) in
