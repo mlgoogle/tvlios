@@ -246,6 +246,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func headerRefresh() {
         if segmentIndex == 0 {
             header.endRefreshing()
+            table?.reloadData()
         } else if segmentIndex == 1 {
             handleInviteOrderRequest(true)
         }
