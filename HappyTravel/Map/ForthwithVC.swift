@@ -25,7 +25,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var servantsInfo:Dictionary<Int, UserInfoModel> = [:]
     var annotations:Array<MAPointAnnotation> = []
     var login = false
-    var serviceCitys:Dictionary<Int, CityInfo> = [:]
     
     var serviceCitysModel:CityNameInfoModel?
     
@@ -427,7 +426,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(ForthwithVC.jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(serviceCitys(_:)), name: NotifyDefine.ServiceCitys, object: nil)
         notificationCenter.addObserver(self, selector: #selector(recommendServants(_:)), name: NotifyDefine.RecommendServants, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
@@ -526,17 +524,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             
         })
 
-//        APIHelper.commonAPI().cityNameInfo({ (response) in
-//            if let model = response as? CityNameInfoModel {
-//                DataManager.insertData(model)
-//                self.serviceCitysModel = model
-//            }
-//            self.appointmentView.serviceCitysModel = self.serviceCitysModel
-//            
-//            }, error: { (err) in
-//                
-//        })
-        
+        APIHelper.commonAPI().cityNameInfo({ (response) in
+            if let model = response as? CityNameInfoModel {
+                DataManager.insertData(model)
+                self.serviceCitysModel = model
+                self.appointmentView.serviceCitysModel = self.serviceCitysModel
+            }
+            }, error: { (err) in
+                
+        })
         
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
@@ -644,61 +640,44 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func recommendServants(notification: NSNotification?) {
-        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-                let type = data["recommend_type_"] as! Int
-                var uid_str = ""
-                if type == 1 {
-                    for servant in servants {
+//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
+//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
+//                let type = data["recommend_type_"] as! Int
+//                var uid_str = ""
+//                if type == 1 {
+//                    for servant in servants {
 //                        let servantInfo = UserInfoModel()
 //                        servantInfo.setInfo(.Servant, info: servant)
 //                        recommendServants.append(servantInfo)
 //                        DataManager.updateUserInfo(servantInfo)
 //                        uid_str += "\(servantInfo.uid),"
-                    }
-                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
-                        recommendBtn.enabled = true
-                    }
-                } else if type == 2 {
-                    for servant in servants {
+//                    }
+//                    if let recommendBtn = mapView!.viewWithTag(2001) as? UIButton {
+//                        recommendBtn.enabled = true
+//                    }
+//                } else if type == 2 {
+//                    for servant in servants {
 //                        let servantInfo = UserInfo()
 //                        servantInfo.setInfo(.Servant, info: servant)
 //                        subscribeServants.append(servantInfo)
 //                        DataManager.updateUserInfo(servantInfo)
 //                        uid_str += "\(servantInfo.uid),"
-                    }
-                    if header.state == .Refreshing {
-                        header.endRefreshing()
-                    }
-                }
-                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-                let req = UserInfoIDStrRequestModel()
-                req.uid_str_ = uid_str
-                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                    if let users = response as? [UserInfoModel] {
-                        DataManager.insertData(users[0])
-                    }
-                }, error: nil)
-            }
-        }
+//                    }
+//                    if header.state == .Refreshing {
+//                        header.endRefreshing()
+//                    }
+//                }
+//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
+//                let req = UserInfoIDStrRequestModel()
+//                req.uid_str_ = uid_str
+//                APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
+//                    if let users = response as? [UserInfoModel] {
+//                        DataManager.insertData(users[0])
+//                    }
+//                }, error: nil)
+//            }
+//        }
         
-    }
-    
-    func serviceCitys(notification: NSNotification?) {
-        
-        if let data = notification?.userInfo!["data"] as? [String: AnyObject] {
-            if let citys = data["service_city_"] as? Array<Dictionary<String, AnyObject>> {
-                for city in citys {
-                    let cityInfo = CityInfo()
-                    cityInfo.setInfo(city)
-                    serviceCitys[cityInfo.cityCode] = cityInfo
-                    DataManager.insertData(CityInfo.self, data: cityInfo)
-                }
-            }
-            
-        }
-        appointmentView.serviceCitys = serviceCitys
-
     }
     
     func jumpToCenturionCardCenter() {
@@ -822,8 +801,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let sheet = CitysSelectorSheet()
             sheet.citysList = self.serviceCitysModel
             sheet.targetCity = self.serviceCitysModel?.service_city_.first
-//            let citys = NSDictionary.init(dictionary: serviceCitys)
-//            sheet.citysList = citys.allValues as? Array<CityInfo>
             sheet.delegate = self
             citysAlertController!.view.addSubview(sheet)
             sheet.snp_makeConstraints { (make) in
@@ -945,28 +922,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
     
     func sendLocality() {
-        mapView!.setZoomLevel(11, animated: true)
-        if serviceCitys.count > 0 {
-//            for (cityCode, cityInfo) in serviceCitys {
-//                if (locality! as NSString).rangeOfString(cityInfo.cityName!).length > 0 {
-//                    var dict = ["city_code_": cityCode, "recommend_type_": 1]
-//                    SocketManager.sendData(.GetRecommendServants, data: dict)
-//                    dict["recommend_type_"] = 2
-//                    SocketManager.sendData(.GetRecommendServants, data: dict)
-//                    return
-//                }
-//            }
-        
+        if serviceCitysModel?.service_city_.count > 0 {
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
                 mapView!.centerCoordinate = location!.coordinate
                 firstLanch = false
             }
         } else {
-            performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
+            performSelector(#selector(sendLocality), withObject: nil, afterDelay: 1)
         }
-        
-        
     }
     
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
@@ -1063,7 +1027,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                             let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[status], preferredStyle: .Alert)
                             let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                                    let controller = UploadUserPictureVC()
+                                    let controller = IDVerifyVC()  // UploadUserPictureVC()
                                     self!.navigationController!.pushViewController(controller, animated: true)
                                 })
                             })

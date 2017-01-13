@@ -11,7 +11,7 @@ import XCGLogger
 import SVProgressHUD
 
 
-class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     var table:UITableView?
     let titles:[String]! = ["真实姓名", "身份证号码"]
@@ -57,7 +57,7 @@ class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func rightItemTapped(item: UIBarButtonItem) {
-        item.enabled = false
+        view.endEditing(true)
         guard name != nil && id != nil else {
             SVProgressHUD.showWainningMessage(WainningMessage: "请完善信息", ForDuration: 1.5, completion: nil)
             return
@@ -133,6 +133,7 @@ class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var inputView = cell?.viewWithTag(tags["inputView"]!) as? UITextField
         if inputView == nil {
             inputView = UITextField()
+            inputView?.delegate = self
             inputView?.tag = tags["inputView"]!
             inputView?.backgroundColor = UIColor.clearColor()
             cell?.contentView.addSubview(inputView!)

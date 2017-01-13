@@ -14,10 +14,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     var table:UITableView?
     var commitBtn:UIButton?
     var agent = false
-    //老版socket
-    var serviceCitys:Dictionary<Int, CityInfo> = [:]
-//    var cityInfo:CityInfo?
-    //新版socket
+    
     var serviceCitysModel:CityNameInfoModel?
     var cityInfoBase: CityNameBaseInfo?
     
@@ -472,10 +469,6 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             if indexPath.row == 0 {
                 citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
                 let sheet = CitysSelectorSheet()
-                
-//                let citys = NSDictionary.init(dictionary: serviceCitys)
-//                sheet.citysList = citys.allValues as? Array<CityInfo>
-//                sheet.targetCity = sheet.citysList?.first
                 sheet.citysList = self.serviceCitysModel
                 sheet.targetCity = self.serviceCitysModel?.service_city_.first
                 sheet.delegate = self

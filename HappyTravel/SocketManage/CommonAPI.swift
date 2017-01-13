@@ -103,7 +103,7 @@ class CommonAPI: SocketAPI {
     
     // 提交身份证信息
     func IDVerify(model: IDverifyRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .IDVerifyRequest)
+        let packet = SocketDataPacket(opcode: .IDVerifyRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?(nil)
             }, error: error)
