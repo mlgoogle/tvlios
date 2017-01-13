@@ -455,7 +455,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }, error: nil)
         //初始化 receiveMessageBlock
-        ChatMessageHelper.shared.refreshDelegate = self
+        ChatMessageHelper.shared.refreshMsgCountDelegate = self
         getUnReadMessage()
     }
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -467,7 +467,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let messsages = response as? [MessageModel]
             guard messsages?.count > 0 else {return}
             for message in messsages! {
-                ChatMessageHelper.shared.reveicedMessage(message)
+                DataManager.insertData(message)
             }
             self.setUnReadCount()
             }) { (error) in
