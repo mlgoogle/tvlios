@@ -43,6 +43,7 @@ class RegOrLoginSelVC: UIViewController {
     
     func loginSuccessed(notification: NSNotification) {
         dismissViewControllerAnimated(false, completion: nil)
+        
     }
 
     func initView() {

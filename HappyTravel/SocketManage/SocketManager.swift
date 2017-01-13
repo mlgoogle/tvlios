@@ -276,8 +276,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CheckAuthenticateResultReply,
                                           .UserInfoResult,
                                           .CheckUserCashReply,
-                                          .ModifyPasswordResult,
-                                          .RegisterAccountReply,
+                                          .ModifyPasswordResult,//Done
+                                          .RegisterAccountReply,//Done
                                           .ServantDetailInfo,
                                           
                                           .SendMessageVerify,
@@ -479,17 +479,11 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .RecommendServants:
             recommonServantsReply(jsonBody)
             
-        case .ModifyPasswordResult:
-            modifyPasswordReply(head, jsonBody: jsonBody)
-            
         case .UserInfoResult:
             userInfoReply(jsonBody)
             
         case .MessageVerifyResult:
             messageVerifyReply(jsonBody)
-            
-        case .RegisterAccountReply:
-            registerAccountReply(jsonBody)
             
         case .ImproveDataResult:
             improveDataReply(jsonBody)
@@ -782,17 +776,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func recommonServantsReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
-    
-    func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
-        if head!.type == Int8(0) {
-            SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
-            XCGLogger.warning("Modify passwd failed")
-        } else {
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
-            postNotification(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
-        }
-    }
-    
+        
     func userInfoReply(jsonBody: JSON?) {
         for info in jsonBody!["userinfo_list_"] {
             let user = UserInfo()
@@ -805,10 +789,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func messageVerifyReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func registerAccountReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.RegisterAccountReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func improveDataReply(jsonBody: JSON?) {
