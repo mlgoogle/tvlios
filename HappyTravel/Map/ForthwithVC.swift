@@ -349,7 +349,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(appointmentReply(_:)), name: NotifyDefine.AppointmentReply, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
     }
     
@@ -363,20 +362,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func touchWhiteSpace() {
         view.endEditing(true)
     }
-    
-    func appointmentReply(notification: NSNotification) {
-        
 
-        unowned let weakSelf = self
-        SVProgressHUD.showSuccessMessage(SuccessMessage: "预约已成功，请保持开机！祝您生活愉快！谢谢！", ForDuration: 1.5) {
-            let vc = DistanceOfTravelVC()
-            vc.segmentIndex = 1
-            weakSelf.navigationController?.pushViewController(vc, animated: true)
-
-        }
-        appointment_id_ = notification.userInfo!["appointment_id_"] as! Int
-        performSelector(#selector(ForthwithVC.postNotifi), withObject: nil, afterDelay: 5)
-    }
     func postNotifi()  {
         
 ////        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]

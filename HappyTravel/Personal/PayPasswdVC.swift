@@ -59,21 +59,8 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(passwdVerifyReply(_:)), name: NotifyDefine.PasswdVerifyReply, object: nil)
         notificationCenter.addObserver(self, selector: #selector(passwdVerifyReplyError(_:)), name: NotifyDefine.PasswdVerifyReplyError, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(setupPaymentCodeReply(_:)), name: NotifyDefine.SetupPaymentCodeReply, object: nil)
         notificationCenter.addObserver(self, selector: #selector(setupPaymentCodeReplyError(_:)), name: NotifyDefine.SetupPaymentCodeReplyError, object: nil)
-    }
-    
-    func passwdVerifyReply(notification: NSNotification) {
-        textField?.text = ""
-        for i in 0...5 {
-            if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
-                btn.setTitle("", forState: .Normal)
-            }
-        }
-        step += 1
-        tipsLable?.text = tips[step]
     }
     
     func passwdVerifyReplyError(notification: NSNotification) {
@@ -86,13 +73,6 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
                 }
             }
         }
-    }
-    
-    func setupPaymentCodeReply(notification: NSNotification) {
-        weak var weakSelf = self
-        SVProgressHUD.showWainningMessage(WainningMessage: "支付密码\(payPasswdStatus == .NotSetup ? "设置" : "修改")成功", ForDuration: 1.5, completion: { () in
-            weakSelf?.navigationController?.popViewControllerAnimated(true)
-        })
     }
     
     func setupPaymentCodeReplyError(notification: NSNotification) {

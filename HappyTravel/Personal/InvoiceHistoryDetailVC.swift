@@ -15,7 +15,6 @@ class InvoiceHistoryDetailVC: UIViewController {
     var invoice_status = 0
     var headerView:InvouiceHistoryDetailHeader?
     var tableView:UITableView?
-//    var historyInfo:InvoiceHistoryInfo?
     var historyDetailModel: InvoiceDetailModel?
     // 每个分区行数
     var rows:Array = [5, 3, 1]
@@ -32,22 +31,6 @@ class InvoiceHistoryDetailVC: UIViewController {
         dateFomatter.dateFormat = "YYYY.MM.dd hh:mm"
         return dateFomatter
     }()
-
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-        
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        regitserNotification()
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,26 +71,6 @@ class InvoiceHistoryDetailVC: UIViewController {
         tableView?.registerClass(InvoiceHistoryDetailNormalCell.self, forCellReuseIdentifier: "detailNormalCell")
     }
     
-    func regitserNotification() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceHistoryDetailVC.receivedData(_:)), name: NotifyDefine.InvoiceDetailReply, object: nil)
-    }
-    
-    /**
-     回调
-     - parameter notification:
-     */
-    func receivedData(notification:NSNotification) {
-        
-//        if let dict = notification.userInfo!["data"] {
-//            let history = InvoiceHistoryInfo(value: dict)
-//            DataManager.updateInvoiceHistoryInfo(history)
-//            historyInfo = DataManager.getInvoiceHistoryInfo(invoice_id_)
-//            headerView?.setupInfo((historyInfo?.invoice_time_)!, invoiceSatus: historyInfo!.invoice_status_)
-//            tableView?.reloadData()
-//        }
-//        
-    }
-    
 }
 
 
@@ -140,9 +103,6 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("detailCustomCell", forIndexPath: indexPath) as! InvoiceHistoryDetailCustomCell
-//            if historyInfo != nil {
-//                cell.setupData((historyInfo?.order_num_)!, first_time_: (historyInfo?.final_time_)!, final_time_: (historyInfo?.final_time_)!)
-//            }
             if historyDetailModel != nil {
                 cell.setupData((historyDetailModel?.order_num_)!, first_time_: Int((historyDetailModel?.final_time_)!), final_time_: Int((historyDetailModel?.final_time_)!))
             }
@@ -225,7 +185,6 @@ extension InvoiceHistoryDetailVC:UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 2 {
 
             let includeVC = InvoiceIncludeServiceVC()
-//            includeVC.oid_str_ =  historyInfo?.oid_str_
             includeVC.oid_str_ =  historyDetailModel?.oid_str_
             navigationController?.pushViewController(includeVC, animated: true)
         }

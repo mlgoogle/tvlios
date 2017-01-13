@@ -11,24 +11,13 @@ import MJRefresh
 import RealmSwift
 class InvoiceHistoryVC:UIViewController {
     
-    
-    
     var tableView:UITableView?
-    
-//    var historyData:Results<InvoiceHistoryInfo>?
     var historyModel:InvoiceHistoryModel?
-    
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
-    
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     var last_invoice_id_ = 0
-
-    
-    
-    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -39,48 +28,9 @@ class InvoiceHistoryVC:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "开票记录"
-        
         initView()
-        
     }
-    
-    /**
-      注册通知监听
-     */
-    func registerNotify() {
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceHistoryVC.receivedData), name: NotifyDefine.InvoiceInfoReply, object: nil)
-    }
-    
-    /**
-     回调
-     - parameter notify:
-     */
-//    func receivedData(notify:NSNotification) {
-    
-        
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//    
-//        let realm = try! Realm()
-//        historyData = realm.objects(InvoiceHistoryInfo.self).sorted("invoice_time_", ascending: false)
-//
-//        
-//        let lastOrderID = notify.userInfo!["lastOrderID"] as! Int
-//        if lastOrderID == -1001 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            return
-//        }
-//        last_invoice_id_ = lastOrderID
-//        tableView?.reloadData()
-        
-//    }
-    
+
     /**
      
      初始化UI
@@ -107,7 +57,6 @@ class InvoiceHistoryVC:UIViewController {
         
         footer.setRefreshingTarget(self, refreshingAction: #selector(InvoiceHistoryVC.footerRefresh))
         tableView?.mj_footer = footer
-        registerNotify()
         header.beginRefreshing()
 
     }
@@ -146,7 +95,7 @@ class InvoiceHistoryVC:UIViewController {
                 self.footer.endRefreshing()
             }
             
-            let lastOrderID = model.last_invoice_id_//notify.userInfo!["lastOrderID"] as! Int
+            let lastOrderID = model.last_invoice_id_
             if lastOrderID == -1001 {
                 self.footer.state = .NoMoreData
                 self.footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
@@ -156,6 +105,7 @@ class InvoiceHistoryVC:UIViewController {
             self.tableView?.reloadData()
 
             }, error: { (err) in
+                
         })
     }
     
@@ -167,11 +117,8 @@ class InvoiceHistoryVC:UIViewController {
 // MARK: - TableView
 extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
 
-    
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let histroyDetailVC = InvoiceHistoryDetailVC()
-//        let invoiceInfo = historyData![indexPath.row] as InvoiceHistoryInfo
         let invoiceInfo = historyModel!.invoice_list_[indexPath.row] as InvoiceHistoryInfoModel
         histroyDetailVC.invoice_id_ = Int(invoiceInfo.invoice_id_)
         histroyDetailVC.invoice_status = Int(invoiceInfo.invoice_status_)
@@ -183,7 +130,6 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-//        let count = historyData?.count ?? 0
         let count = historyModel?.invoice_list_.count ?? 0
         footer.hidden = count < 10 ? true : false
         return count
@@ -195,9 +141,6 @@ extension InvoiceHistoryVC:UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
        
         let cell = tableView.dequeueReusableCellWithIdentifier("InvoiceHistory", forIndexPath: indexPath) as! InvoiceHistoryCell
-//        let last = indexPath.row == historyData!.count - 1 ? true : false
-//        cell.setupDatawith(historyData![indexPath.row], last: last)
-
         let last = indexPath.row == historyModel!.invoice_list_.count - 1 ? true : false
         cell.setupDatawith(historyModel!.invoice_list_[indexPath.row], last: last)
 
