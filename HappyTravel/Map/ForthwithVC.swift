@@ -330,8 +330,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func back2MyLocationAction(sender: UIButton) {
         checkLocationService()
-        firstLanch = true
         if location != nil {
+            mapView?.setZoomLevel(11.0, animated: false)
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
         
@@ -457,9 +457,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         ChatMessageHelper.shared.refreshMsgCountDelegate = self
         getUnReadMessage()
     }
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        YD_NewPersonGuideManager.startGuide()
-    }
+
     func getUnReadMessage() {
         
         APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
