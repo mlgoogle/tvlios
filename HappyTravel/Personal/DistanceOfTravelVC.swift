@@ -73,14 +73,11 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-//    
-//    func registerNotify() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
-//
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-//    }
     
+//    func registerNotify() {
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
+//    }
+//    //推荐服务者
 //    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
 //        
 //        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
@@ -106,66 +103,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //            
 //        }
 //    }
-//    
-    
-//    /**
-//     邀约行程回调记录
-//     - parameter notification:
-//     */
-//    func obtainTripReply(notification: NSNotification) {
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        let realm = try! Realm()
-//        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
-//        
-//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-//        if lastOrderID == -1001 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            table?.reloadData()
-//            return
-//        }
-//        orderID = lastOrderID
-//        if segmentIndex == 0 {
-//            table?.reloadData()
-//        }
-//        
-//    }
-//    /**
-//     预约行程记录回调
-//     
-//     - parameter notification: 
-//     */
-//    func receivedAppointmentInfos(notification:NSNotification) {
-//        let realm = try! Realm()
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//            
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
-//        let lastID = notification.userInfo!["lastID"] as! Int
-//        if lastID == -9999 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            table?.reloadData()
-//            return
-//        }
-//        lastRecordId = lastID
-//        if segmentIndex == 1 {
-//            table?.reloadData()
-//        }
-//        
-//    }
-//    
+
     func initView() {
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "segment-bg")
