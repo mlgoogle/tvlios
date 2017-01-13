@@ -240,32 +240,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         notificationCenter.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(menuControllerWillHide(_:)), name: UIMenuControllerWillHideMenuNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.UpdateChatVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(invitationResult(_:)), name: NotifyDefine.AskInvitationResult, object: nil)
         
-    }
-    
-    func invitationResult(notifucation: NSNotification?) {
-        var msg = ""
-        if let err = SocketManager.getError((notifucation?.userInfo as? [String: AnyObject])!) {
-            msg = err.values.first!
-        }
-        
-        if let order = notifucation?.userInfo!["orderInfo"] as? HodometerInfo {
-            if msg == "" {
-                msg = order.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
-            }
-            let alert = UIAlertController.init(title: "邀约状态",
-                                               message: msg,
-                                               preferredStyle: .Alert)
-            
-            let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                
-            })
-            
-            alert.addAction(action)
-            presentViewController(alert, animated: true, completion: nil)
-            
-        }
     }
     
     func chatMessage(notification: NSNotification?) {

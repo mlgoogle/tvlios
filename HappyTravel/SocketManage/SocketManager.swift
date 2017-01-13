@@ -303,16 +303,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .UnreadMessageReply,
                                           .InvitationResult,
                                           .MSGReadCntResult,
-                                          .PayForInvitationReply,
-                                          .PhotoWallReply,
-                                          .InvitationResult,
-                                          .AppointmentServantReply,
-                                          .VersionInfoReply,
-                                          .ServersManInfoReply,
+                                          .PayForInvitationReply,  // Done
+                                          .PhotoWallReply,  // Done
+                                          .InvitationResult,  // Done
+                                          .AppointmentServantReply,  // Done
+                                          .VersionInfoReply,  // Done
+                                          .ServersManInfoReply,  // Suspend
                                           .GetUpCenturionCardOriderReply, // Suspend
                                           .ClientWXPayStatusReply,  // Done
                                           .ServerWXPayStatusReply,  // Done
-                                          .IDVerifyReply]
+                                          .IDVerifyReply]  // Done
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -535,9 +535,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         // Opcode => 2000+
         
-        case .InvitationResult:
-            invitationReply(jsonBody)
-            
         case .RecvChatMessage:
             chatMessageReply(jsonBody)
             
@@ -558,12 +555,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
-
-        case .AppointmentServantReply:
-            appointmentServantReply(jsonBody)
-
-        case .PayForInvitationReply:
-            payForInvitationReply(jsonBody)
 
         case .UnreadMessageReply:
             unreadMessageReply(jsonBody)
@@ -871,24 +862,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     // Opcode => 2000+
     
-    func invitationReply(jsonBody: JSON?) {
-        let order = HodometerInfo(value: (jsonBody?.dictionaryObject)!)
-        if order.is_asked_ == 1 {
-            postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-        } else {
-            DataManager.insertHodometerInfo(order)
-            if UIApplication.sharedApplication().applicationState == .Background {
-                let body = "系统消息: 您有新的行程消息!"
-                var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-                userInfo["type"] = PushMessage.MessageType.System.rawValue
-                userInfo["data"] = (jsonBody?.dictionaryObject)!
-                localNotify(body, userInfo: userInfo)
-            } else {
-                postNotification(NotifyDefine.AskInvitationResult, object: nil, userInfo: ["orderInfo": order])
-            }
-        }
-    }
-    
     func chatMessageReply(jsonBody: JSON?) {
         //接收聊天信息
         if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
@@ -940,14 +913,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func appointmentServantReply(jsonBody:JSON?) {
-        postNotification(NotifyDefine.AppointmentServantReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func payForInvitationReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
     }
     
     func unreadMessageReply(jsonBody: JSON?) {

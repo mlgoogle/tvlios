@@ -36,8 +36,6 @@ class NotifyDefine: NSObject {
     
     static let DrawBillReply = "DrawBillReply"
     
-    static let AskInvitationResult = "AskInvitationResult"
-    
     static let ChatMessgaeNotiy = "ChatMessageNotify"
     
     static let UpdateChatVC = "UpdateChatVC"
@@ -77,14 +75,10 @@ class NotifyDefine: NSObject {
     static let AppointmentRecordReply = "AppointmentRecordReply"
     
     static let CheckCommentDetailResult = "CheckCommentDetailResult"
-    
-    static let PayForInvitationReply = "PayForInvitationReply"
 
     static let AppointmentRecommendReply = "AppointmentRecommendReply"
     
     static let AppointmentDetailReply = "AppointmentDetailReply"
-    
-    static let AppointmentServantReply = "AppointmentServantReply"
     
     static let UserBaseInfoReply = "UserBaseInfoReply"
     

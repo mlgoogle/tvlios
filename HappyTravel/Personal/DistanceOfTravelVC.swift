@@ -79,8 +79,8 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
 //
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-////        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
 //    }
+    
 //    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
 //        
 //        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
@@ -107,47 +107,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //        }
 //    }
 //    
-    /**
-     支付回调
-     
-     - parameter notification: 
-     */
-//    func payForInvitationReply(notification: NSNotification) {
-//        
-//        
-//        if let result = notification.userInfo!["result_"] as? Int {
-//            var msg = ""
-//            switch result {
-//            case 0:
-//                 MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
-//                msg = "预支付成功"
-//                if segmentIndex == 0 {
-//                    SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                        "order_id_": 0,
-//                        "count_": 10])
-//                } else {
-//                    SocketManager.sendData(.AppointmentRecordRequest, data: ["uid_": CurrentUser.uid_,
-//                        "last_id_": 0,
-//                        "count_": 10])
-//                }
-//            case -1:
-//                msg = "密码错误"
-//            case -2:
-//                 MobClick.event(CommonDefine.BuriedPoint.payForOrderFail)
-//                msg = "余额不足"
-//                moneyIsTooLess()
-//                return
-//            default:
-//                break
-//            }
-//            let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-//            let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
-//            alert.addAction(sure)
-//            presentViewController(alert, animated: true, completion: nil)
-//        }
-//        
-//        
-//    }
+    
 //    /**
 //     邀约行程回调记录
 //     - parameter notification:
