@@ -409,6 +409,18 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func loginSuccessed(notification: NSNotification) {
         banGesture(false)
+//        if regOrLoginSelVC!.isShow {
+//            let present = self.presentingViewController;
+//            while (YES) {
+//                if (present.presentingViewController) {
+//                    present = present.presentingViewController;
+//                }else{
+//                    break;
+//                }
+//            }
+//            
+//            [present dismissViewControllerAnimated:YES completion:nil];
+//        }
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
                 isShowBaseInfo = true
