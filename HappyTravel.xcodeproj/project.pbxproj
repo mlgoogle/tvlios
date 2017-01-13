@@ -68,6 +68,7 @@
 		2FB95D121DED35A800BBA506 /* passwd_box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB95D111DED35A800BBA506 /* passwd_box@2x.png */; };
 		2FB95D141DED413400BBA506 /* passwd_box@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB95D131DED413400BBA506 /* passwd_box@3x.png */; };
 		2FB9E75D1E2779CA00766040 /* IDVerifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */; };
+		2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9E75E1E28BC5400766040 /* UIViewControllerExt.swift */; };
 		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
@@ -452,6 +453,7 @@
 		2FB95D111DED35A800BBA506 /* passwd_box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "passwd_box@2x.png"; sourceTree = "<group>"; };
 		2FB95D131DED413400BBA506 /* passwd_box@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "passwd_box@3x.png"; sourceTree = "<group>"; };
 		2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IDVerifyVC.swift; path = Personal/IDVerifyVC.swift; sourceTree = "<group>"; };
+		2FB9E75E1E28BC5400766040 /* UIViewControllerExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExt.swift; path = Common/UIViewControllerExt.swift; sourceTree = "<group>"; };
 		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
@@ -1221,6 +1223,7 @@
 				B341CE121DC2E6F800DF93CB /* UIImageExt.swift */,
 				2FDAFCE91D646EEE00FD28CB /* ColorExt.swift */,
 				BF6E9AF61DE2D86300F32CCE /* NSDateExt.swift */,
+				2FB9E75E1E28BC5400766040 /* UIViewControllerExt.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -2021,6 +2024,7 @@
 				2FF72B981DAF701E001EEED2 /* CenturionCardServicesCell.swift in Sources */,
 				2F9684131D76D5250028E3F2 /* IdentCommentCell.swift in Sources */,
 				2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */,
+				2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */,
 				BF4CF6CA1DDC5EED007B3993 /* BlackCardView.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FCB5D941DC042B8006DEB26 /* SkillInfo.swift in Sources */,

@@ -55,7 +55,6 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
     }
     
     func obtainTripReply(notification: NSNotification) {
@@ -69,21 +68,6 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //        hotometers = DataManager.getHodometerHistory()
 //        for info in hotometers! {
 //            DataManager.insertOpenTicketWithHodometerInfo(info)
-//        }
-//        totalInfos = DataManager.getOpenTicketsInfo()
-//        table?.reloadData()
-    }
-    
-    func centurionCardConsumedReply(notification: NSNotification)  {
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        consumes = DataManager.getCenturionCardConsumed()
-//        for info in consumes! {
-//            DataManager.insertOpenTicketWithConsumedInfo(info)
 //        }
 //        totalInfos = DataManager.getOpenTicketsInfo()
 //        table?.reloadData()

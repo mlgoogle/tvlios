@@ -13,6 +13,7 @@ import MJRefresh
 
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource,RefreshChatSessionListDelegate{
+    
     var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
@@ -46,7 +47,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         registerNotify()
         header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
 
-//        table?.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -56,11 +56,11 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
+
     }
     
 //    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
@@ -91,31 +91,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
 //    }
     
-    func payForInvitationReply(notification: NSNotification) {
-        let result = notification.userInfo!["result_"] as! Int
-        var msg = ""
-        switch result {
-        case 0:
-             MobClick.event(CommonDefine.BuriedPoint.payForOrderSuccess)
-            msg = "预支付成功"
-//            SocketManager.sendData(.ObtainTripRequest, data: ["uid_": CurrentUser.uid_,
-//                                                              "order_id_": 0,
-//                                                              "count_": 10])
-        case -1:
-            msg = "密码错误"
-        case -2:
-            msg = "余额不足"
-            moneyIsTooLess()
-            return
-        default:
-            break
-        }
-        let alert = UIAlertController.init(title: "提示", message: msg, preferredStyle: .Alert)
-        let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: nil)
-        alert.addAction(sure)
-        presentViewController(alert, animated: true, completion: nil)
-        
-    }
     
     func allEndRefreshing() {
         if header.state == MJRefreshState.Refreshing {
@@ -434,57 +409,15 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             presentViewController(alert, animated: true, completion: nil)
             return
         }
+        
         guard info != nil else {return}
-//        weak var weakSelf = self
+
         let payVc = PayVC()
         payVc.price = info?.order_price_
         payVc.orderId = info?.order_id_
         payVc.segmentIndex = segmentSC!.selectedSegmentIndex
         self.navigationController?.pushViewController(payVc, animated: true)
-        
-//        let msg = "\n您即将预支付人民币:\(Double((info?.order_price_)!) / 100)元"
-//        let alert = UIAlertController.init(title: "付款确认", message: msg, preferredStyle: .Alert)
-//        
-//        alert.addTextFieldWithConfigurationHandler({ (textField) in
-//            textField.placeholder = "请输入支付密码"
-//            textField.secureTextEntry = true
-//        })
-//        
-//        let ok = UIAlertAction.init(title: "确认付款", style: .Default, handler: { (action) in
-//            var errMsg = ""
-//            let passwd = alert.textFields?.first?.text
-//            if passwd?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 0 {
-//                errMsg = "请输入支付密码"
-//            }
-//            if errMsg.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-//                let warningAlert = UIAlertController.init(title: "提示", message: errMsg, preferredStyle: .Alert)
-//                let sure = UIAlertAction.init(title: "好的", style: .Cancel, handler: { (action) in
-//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.15)), dispatch_get_main_queue(), { () in
-//                        weakSelf!.payForInvitationRequest(info)
-//                    })
-//                })
-//                warningAlert.addAction(sure)
-//                weakSelf!.presentViewController(warningAlert, animated: true, completion: nil)
-//            } else {
-//                if DataManager.currentUser?.cash < info?.order_price_ {
-//                    weakSelf!.moneyIsTooLess()
-//                } else {
-//                    let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-//                        "order_id_": (info?.order_id_)!,
-//                        "passwd_": passwd!]
-//                    SocketManager.sendData(.PayForInvitationRequest, data: dict)
-//                }
-//                
-//            }
-//            
-//        })
-//        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
-//        
-//        alert.addAction(ok)
-//        alert.addAction(cancel)
-//        
-//        presentViewController(alert, animated: true, completion: nil)
+
     }
     
     func moneyIsTooLess() {

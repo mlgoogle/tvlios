@@ -171,47 +171,15 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ResetPasswdVC.keyboardWillShow(_:)),
+                                                         selector: #selector(keyboardWillShow(_:)),
                                                          name: UIKeyboardWillShowNotification,
                                                          object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ResetPasswdVC.keyboardWillHide(_:)),
+                                                         selector: #selector(keyboardWillHide(_:)),
                                                          name: UIKeyboardWillHideNotification,
                                                          object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(ResetPasswdVC.registerAccountReply(_:)),
-                                                         name: NotifyDefine.RegisterAccountReply,
-                                                         object: nil)
     }
-    
-    func registerAccountReply(notification: NSNotification) {
-        if let dict = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if dict["error_"] != nil {
-                let errorCode = dict["error_"] as! Int
-                let errorMsg = CommonDefine.errorMsgs[errorCode]
-                SVProgressHUD.showErrorMessage(ErrorMessage: errorMsg!, ForDuration: 1, completion: nil)
-                return
-            }
-            SVProgressHUD.dismiss()
-            NSUserDefaults.standardUserDefaults().setObject(username, forKey: CommonDefine.UserName)
-            NSUserDefaults.standardUserDefaults().setObject(passwd, forKey: CommonDefine.Passwd)
-            let loginModel = LoginModel()
-            APIHelper.userAPI().login(loginModel, complete: { (response) in
-                if let user = response as? UserInfoModel {
-                    CurrentUser = user
-                    CurrentUser.login_ = true
-                    self.dismissViewControllerAnimated(false, completion: { () in
-                        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
-                    })
-                }
-            }, error: { (err) in
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
-                XCGLogger.debug(err)
-            })
-        }
-    }
-    
+        
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         var vFrame = view.frame
@@ -258,13 +226,14 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                 NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
                 NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
                 let loginModel = LoginModel()
-                APIHelper.userAPI().login(loginModel, complete: { (response) in
+                APIHelper.userAPI().login(loginModel, complete: { [weak self](response) in
                     if let user = response as? UserInfoModel {
                         CurrentUser = user
                         CurrentUser.login_ = true
-                        self.dismissViewControllerAnimated(false, completion: { () in
+                        self?.dismissAll({ () in
                             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
                         })
+                        
                     }
                     }, error: { (err) in
                         NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
@@ -277,8 +246,6 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                 SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
         })
         
-        
-    
     }
     
     func lastStep() {

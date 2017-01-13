@@ -31,18 +31,19 @@ class RegOrLoginSelVC: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
+        
         isShow = true
     }
  
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
         isShow = false
     }
     
     func loginSuccessed(notification: NSNotification) {
         dismissViewControllerAnimated(false, completion: nil)
+        
     }
 
     func initView() {

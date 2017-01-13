@@ -48,15 +48,6 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ModifyPasswordVC.modifyPasswordSucceed), name: NotifyDefine.ModifyPasswordSucceed, object: nil)
-
-    }
-    /**
-     密码修改成功
-     */
-    func modifyPasswordSucceed() {
-        SocketManager.logoutCurrentAccount()
-        navigationController?.popToRootViewControllerAnimated(true)
     }
     /**
      
@@ -241,9 +232,8 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         model.old_passwd_ = oldPasswd
         model.new_passwd_ = newPasswd
         APIHelper.userAPI().modifyPwd(model, complete: { (response) in
-            print(response)
             if response == nil {
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功,请重新登录", ForDuration: 1.0, completion: {
                     SocketManager.logoutCurrentAccount()
                     self.navigationController?.popToRootViewControllerAnimated(true)
                 })
@@ -252,7 +242,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         }, error: { (err) in
                 let wainning = SocketRequest.errorString(err.code)
                 SVProgressHUD.showWainningMessage(WainningMessage: wainning, ForDuration: 1.5, completion: nil)
-//                XCGLogger.warning("Modify passwd failed")
+                XCGLogger.warning("Modify passwd failed")
         })
     }
     

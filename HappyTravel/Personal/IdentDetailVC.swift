@@ -99,59 +99,8 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdentDetailVC.servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
     }
     
-//    
-//    func servantDetailInfo(notification: NSNotification) {
-//
-//
-//        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            
-//            if data["error_"] != nil {
-//                XCGLogger.error("Get UserInfo Error:\(data["error"])")
-//                return
-//            }
-//            servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-//            guard servantInfo != nil else {
-//                servantDict = data
-//                getServantBaseInfo()
-//                return
-//            }
-//            
-//            let realm = try! Realm()
-//            try! realm.write({
-//                servantInfo!.setInfo(.Servant, info: data)
-//                
-//            })
-//            
-//            let servantPersonalVC = ServantPersonalVC()
-////            servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
-//            navigationController?.pushViewController(servantPersonalVC, animated: true)
-//        }
-//       
-//    }
-//    
-//    func getServantBaseInfo() {
-//        
-////        let dic = ["uid_str_" : String((hodometerInfo?.to_uid_)!) + "," + "0"]
-////        SocketManager.sendData(.GetUserInfo, data: dic)
-//        
-//    }
-//    func servantBaseInfoReply(notification: NSNotification) {
-//        
-//        servantInfo =  DataManager.getUserInfo((hodometerInfo?.to_uid_)!)
-//        let realm = try! Realm()
-//        try! realm.write({
-//            
-//            servantInfo!.setInfo(.Servant, info: servantDict)
-//            
-//        })
-//        let servantPersonalVC = ServantPersonalVC()
-////        servantPersonalVC.personalInfo = servantInfo
-//        navigationController?.pushViewController(servantPersonalVC, animated: true)
-//    }
     
 //    func evaluatetripReply(notification: NSNotification) {
 //        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
@@ -226,18 +175,14 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 if let model = response as? ServantDetailModel {
                     DataManager.insertData(model)
                     if let servantInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(model.uid_)")?.first {
-                        let servantPersonalVC = ServantPersonalVC()
-                        servantPersonalVC.personalInfo = servantInfo
-                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                        self?.jumpToServantPersonal(servantInfo)
                     } else {
                         let req = UserInfoIDStrRequestModel()
                         req.uid_str_ = "\(model.uid_)"
                         APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
                             if let users = response as? [UserInfoModel] {
                                 DataManager.insertData(users[0])
-                                let servantPersonalVC = ServantPersonalVC()
-                                servantPersonalVC.personalInfo = users[0]
-                                self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                                self?.jumpToServantPersonal(users[0])
                             }
                         }, error: nil)
                     }
@@ -247,9 +192,11 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-
-    
-    
+    func jumpToServantPersonal(user: UserInfoModel) {
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = user
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
+    }
 
     // MARK: - DATA
     func initData() {

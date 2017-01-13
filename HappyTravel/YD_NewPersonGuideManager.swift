@@ -14,6 +14,13 @@ class YD_NewPersonGuideManager: NSObject {
     
     static func startGuide() {
         
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let key = "isShowMaskView"
+        
+        let isShowMaskView = userDefaults.valueForKey(key)
+        guard isShowMaskView == nil else {return}
+
         view = NewPersonMaskView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         
         view!.frameXYs = setFrames()
@@ -22,6 +29,7 @@ class YD_NewPersonGuideManager: NSObject {
         view!.guideTypes = setGuideTypes()
         view!.infoTypes = setInfoTypes()
         view!.touchedEndBlock = { () in
+            userDefaults.setBool(true, forKey: key)
             view?.removeFromSuperview()
             view?.hidden = true
             view = nil

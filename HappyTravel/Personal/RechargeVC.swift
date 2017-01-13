@@ -74,30 +74,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
         notificationCenter.addObserver(self, selector: #selector(wxPlaceOrderReply(_:)), name: NotifyDefine.WXplaceOrderReply, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(wxPayStatusReply(_:)), name: NotifyDefine.WXPayStatusReply, object: nil)
-    }
-    
-    func wxPayStatusReply(notification: NSNotification) {
-        if let dict = notification.userInfo {
-            if let code = dict["return_code_"] as? Int {
-                if code == 3 {
-                     MobClick.event(CommonDefine.BuriedPoint.paySuccess)
-                    CurrentUser.user_cash_ = dict["user_cash_"] as! Int
-                    let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
-                    
-                    weak var weakSelf = self
-                    let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                            weakSelf!.navigationController?.popViewControllerAnimated(true)
-                        })
-                        
-                    })
-                    
-                    alert.addAction(ok)
-                    presentViewController(alert, animated: true, completion: nil)
-                }
-            }
-        }
+
     }
     
     func wxPlaceOrderReply(notification: NSNotification) {
