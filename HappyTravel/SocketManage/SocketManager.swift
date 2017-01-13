@@ -281,10 +281,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServantDetailInfo,  // Done
         
                                           .SendMessageVerify,
-                                          .DrawBillReply,
-                                          .InvoiceInfoReply,
-                                          .InvoiceDetailReply,
-                                          .AppointmentReply,
+                                          .DrawBillReply,//Done
+                                          .InvoiceInfoReply,//Done
+                                          .InvoiceDetailReply,//Done
+                                          .AppointmentReply,//Done
                                           .SendImproveData,
                                           .AppointmentDetailReply,
                                           .CheckCommentDetailReplay,
@@ -298,8 +298,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .AuthenticateUserCardReply,
                                           .WXplaceOrderReply,
                                           .RecvChatMessage,
-                                          .PasswdVerifyReply,
-                                          .SetupPaymentCodeReply,
+                                          .PasswdVerifyReply,//Done
+                                          .SetupPaymentCodeReply,//Done
                                           .UnreadMessageReply,  // Done
                                           .MSGReadCntResult,  // Done
                                           .PayForInvitationReply,  // Done
@@ -483,19 +483,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .DeviceTokenResult:
             break
-            
-        case .DrawBillReply:
-            drawBillReply(jsonBody)
-            
-        case .AppointmentReply:
-            appointmentReply(jsonBody)
-            
-        case .InvoiceDetailReply:
-            invoiceDetailReply(jsonBody)
-            
-        case .InvoiceInfoReply:
-            invoiceInfoReply(jsonBody)
-            
+
         case .UploadImageTokenReply:
             uploadImageTokenReply(jsonBody)
             
@@ -519,12 +507,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .AppointmentDetailReply:
             appointmentDetailReply(jsonBody)
-            
-        case .PasswdVerifyReply:
-            passwdVerifyReply(jsonBody)
-            
-        case .SetupPaymentCodeReply:
-            setupPaymentCodeReply(jsonBody)
             
         // Opcode => 2000+
         
@@ -738,39 +720,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         postNotification(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
     }
     
-    func drawBillReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func appointmentReply(jsonBody: JSON?) {
-        guard let appointment_id_ = jsonBody?.dictionaryObject!["appointment_id_"] else {return}
-        postNotification(NotifyDefine.AppointmentReply , object: nil, userInfo: ["appointment_id_":appointment_id_])
-    }
-    
-    func invoiceDetailReply(jsonBody: JSON?) {
-        if jsonBody?.dictionaryObject != nil {
-            postNotification(NotifyDefine.InvoiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
-        }
-    }
-    
-    func invoiceInfoReply(jsonBody: JSON?) {
-        if try! jsonBody?.rawData().length <= 0 {
-            postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
-        } else {
-            if let invoiceList = jsonBody?.dictionaryObject!["invoice_list_"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for invoice in invoiceList {
-                    let historyInfo = InvoiceHistoryInfo(value: invoice)
-                    DataManager.insertInvoiceHistotyInfo(historyInfo)
-                    lastOrderID = historyInfo.invoice_id_
-                }
-                postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            } else {
-                postNotification(NotifyDefine.InvoiceInfoReply, object: nil, userInfo: ["lastOrderID": -1001])
-            }
-        }
-    }
-    
     func uploadImageTokenReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
     }
@@ -825,14 +774,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func appointmentDetailReply(jsonBody:JSON?) {
         postNotification(NotifyDefine.AppointmentDetailReply, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
-    }
-    
-    func passwdVerifyReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.PasswdVerifyReply, object: nil, userInfo: nil)
-    }
-    
-    func setupPaymentCodeReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.SetupPaymentCodeReply, object: nil, userInfo: nil)
     }
     
     // Opcode => 2000+

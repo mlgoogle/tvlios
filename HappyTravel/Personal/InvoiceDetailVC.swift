@@ -94,31 +94,10 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.drawBillReply(_:)), name: NotifyDefine.DrawBillReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(InvoiceDetailVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
-   
-    /**
-     发票请求回调
-     
-     - parameter notification: 
-     */
-    func drawBillReply(notification: NSNotification?) {
-        SVProgressHUD.dismiss()
-        if let dict = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-            if let _ = dict["oid_str_"] as? String {
-                let alert = UIAlertController.init(title: "发票状态", message: "发票信息审核中", preferredStyle: .Alert)
-                let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-                    self.navigationController?.popViewControllerAnimated(true)
-                })
-                
-                alert.addAction(action)
-                presentViewController(alert, animated: true, completion: nil)
-            }
-        }
-    }
-    
+
     func keyboardWillShow(notification: NSNotification?) {
         let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
         let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
@@ -580,8 +559,6 @@ class InvoiceDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSou
 //            })
         }
         SVProgressHUD.showProgressMessage(ProgressMessage: "")
-//        invoiceInfoDict!["oid_str_"] = oidStr
-//        SocketManager.sendData(.DrawBillRequest, data: invoiceInfoDict)
         
         let model = DrawBillBaseInfo()
         model.oid_str_ = oidStr

@@ -60,7 +60,7 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    //修改密码
+    //请求修改密码
     func modifyPwd(model: ModifyPwdBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ModifyPassword, model: model)
         startRequest(packet, complete: { (response) in
