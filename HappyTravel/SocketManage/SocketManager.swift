@@ -285,19 +285,18 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .InvoiceInfoReply,//Done
                                           .InvoiceDetailReply,//Done
                                           .AppointmentReply,//Done
-                                          .SendImproveData,
-                                          .AppointmentDetailReply,
-                                          .CheckCommentDetailReplay,
-                                          .EvaluatetripReply,
-                                          .MessageVerifyResult,
-                                          .ImproveDataResult,
-                                          .ServiceDetailReply,
+                                          .AppointmentDetailReply,  // Done
+                                          .CheckCommentDetailReplay,  // Done
+                                          .EvaluatetripReply,  // Done
+                                          .MessageVerifyResult,  // Done
+                                          .ImproveDataResult,  // Done
+                                          .ServiceDetailReply,  // Done
                                           
-                                          .DeviceTokenResult,
-                                          .UploadImageTokenReply,
-                                          .AuthenticateUserCardReply,
-                                          .WXplaceOrderReply,
-                                          .RecvChatMessage,
+                                          .DeviceTokenResult,  // Done
+                                          .UploadImageTokenReply,  // Done
+                                          .AuthenticateUserCardReply,  // Done
+                                          .WXplaceOrderReply,  // Done
+                                          .RecvChatMessage,  // Done
                                           .PasswdVerifyReply,//Done
                                           .SetupPaymentCodeReply,//Done
                                           .UnreadMessageReply,  // Done
@@ -421,7 +420,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.info("Send: \(opcode)")
+        XCGLogger.debug("Send: \(opcode)")
         return true
         
     }
@@ -469,29 +468,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         switch SockOpcode(rawValue: head!.opcode)! {
-        case .MessageVerifyResult:
-            messageVerifyReply(jsonBody)
-            
-        case .ImproveDataResult:
-            improveDataReply(jsonBody)
-            
+
         case .ObtainTripReply:
             obtainTripReply(jsonBody)
-            
-        case .ServiceDetailReply:
-            serviceDetailReply(jsonBody)
-            
-        case .DeviceTokenResult:
-            break
-
-        case .UploadImageTokenReply:
-            uploadImageTokenReply(jsonBody)
-            
-        case .WXplaceOrderReply:
-            wxPlaceOrderReply(jsonBody)
-            
-        case .AuthenticateUserCardReply:
-            authenticateUserCardReply(jsonBody)
             
         case .CheckAuthenticateResultReply:
             checkAuthenticateResultReply(jsonBody)
@@ -505,28 +484,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .AppointmentRecommendReply:
             appointmentRecommendReply(jsonBody)
             
-        case .AppointmentDetailReply:
-            appointmentDetailReply(jsonBody)
-            
         // Opcode => 2000+
         
-        case .RecvChatMessage:
-            chatMessageReply(jsonBody)
-            
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
         
-        case .EvaluatetripReply:
-            evaluatetripReply(jsonBody)
-            
         case .AnswerInvitationReply:
             answerInvitationReply(jsonBody)
 
         case .ServersManInfoReply:
             serversManInfoReply(jsonBody)
-            
-        case .CheckCommentDetailReplay:
-            checkCommentDetailReplay(jsonBody)
 
         case .InsuranceReply:
             sureInsuranceReply(jsonBody)
@@ -689,15 +656,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    
-    func messageVerifyReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func improveDataReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.ImproveDataSuccessed, object: nil, userInfo: nil)
-    }
-    
     func obtainTripReply(jsonBody: JSON?) {
         if try! jsonBody?.rawData().length <= 0 {
             postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
@@ -714,22 +672,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
             }
         }
-    }
-    
-    func serviceDetailReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
-    }
-    
-    func uploadImageTokenReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
-    }
-    
-    func wxPlaceOrderReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
-    }
-    
-    func authenticateUserCardReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {
@@ -772,10 +714,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         postNotification(NotifyDefine.AppointmentRecommendReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
-    func appointmentDetailReply(jsonBody:JSON?) {
-        postNotification(NotifyDefine.AppointmentDetailReply, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
-    }
-    
     // Opcode => 2000+
     
     func chatMessageReply(jsonBody: JSON?) {
@@ -814,10 +752,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func evaluatetripReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.EvaluatetripReply, object: nil, userInfo: nil)
-    }
-    
     func answerInvitationReply(jsonBody:JSON?) {
         DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
     }
@@ -825,10 +759,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func serversManInfoReply(jsonBody: JSON?) {
         guard jsonBody != nil else { return }
         postNotification(NotifyDefine.ServersManInfoReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
-    }
-    
-    func checkCommentDetailReplay(jsonBody: JSON?) {
-        postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func decodeBase64Str(base64Str:String) throws -> String{

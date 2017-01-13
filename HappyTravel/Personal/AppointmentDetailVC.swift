@@ -49,9 +49,6 @@ class AppointmentDetailVC: UIViewController {
      注册通知监听
      */
     func registerNotification() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
-//                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -70,68 +67,6 @@ class AppointmentDetailVC: UIViewController {
         tableView.contentInset = inset
         tableView.scrollIndicatorInsets =  inset
     }
-    
-    /**
-     发表评论回调
-     
-     - parameter notification:
-     */
-//    func evaluatetripReply(notification: NSNotification) {
-//        SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-//            self.navigationController?.popViewControllerAnimated(true)
-//        })
-//    }
-    /**
-     
-     获取评论信息回调
-     - parameter notification:
-     */
-//    func reveicedCommentInfo(notification: NSNotification) {
-//        if let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            guard data["error_"] == nil  else { return }
-//            user_score_ = data["user_score_"] as! Int
-//            service_score_ = data["service_score_"] as! Int
-//            remarks_ = data["remarks_"] as? String
-//         
-//            // 是否可以评论过滤条件 暂设为 用户打分 和 服务打分 全为0
-//            let isCommited = user_score_ != 0 || service_score_ != 0
-//            commitBtn?.enabled = !isCommited
-//            commitBtn?.setTitle("发表评论", forState: .Normal)
-//            tableView.reloadData()
-//        }
-//    }
-    /**
-     获取预约详情回调
-     
-     - parameter notification:
-     */
-//    func receivedDetailInfo(notification: NSNotification) {
-//        
-//        if  let data = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
-// 
-//            skillsArray.removeAll()
-//            if data["skills_"] != nil {
-//             let skillStr = data["skills_"] as? String
-//             let idArray = (skillStr?.componentsSeparatedByString(","))! as Array<String>
-//                for idString in idArray {
-//                    if idString == "" {
-//                        break
-//                    }
-//                    if Int(idString) == nil {
-//                        
-//                        break
-//                    }
-//                    if let results = DataManager.getData(SkillModel.self, filter: "skill_id_ = \(idString)") {
-//                        let skillInfo = results.first
-//                        let dict = [skillInfo!:false] as Dictionary<SkillModel, Bool>
-//                        skillsArray.append(dict)
-//                    }
-//                }
-//                tableView.reloadData()
-//            }
-//
-//        }
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,17 +100,13 @@ class AppointmentDetailVC: UIViewController {
     }
 
     func initData() {
-
-//        SocketManager.sendData(.AppointmentDetailRequest, data: ["order_id_" : (appointmentInfo?.order_id_)!, "order_type_":1])
-//        SocketManager.sendData(.CheckCommentDetail, data: ["order_id_": appointmentInfo!.order_id_])
         requestDetail()
         checkCommentDetail()
     }
     func requestDetail() {
-        
         let model = OrderDetailRequsetModel()
         model.order_id_ = (appointmentInfo?.order_id_)!
-        model.order_type_ = 1//1 为邀约 2为预约
+        model.order_type_ = 1  //1 为邀约 2为预约
         APIHelper.consumeAPI().requestOrderDetail(model, complete: { (response) in
             if  let data = response as? Dictionary<String, AnyObject> {
                 
@@ -222,8 +153,8 @@ class AppointmentDetailVC: UIViewController {
         }
     }
     
+    // 发表评论
     func cancelOrCommitButtonAction() {
-        
         let dict:Dictionary<String, AnyObject> = ["from_uid_": CurrentUser.uid_,
                                                   "to_uid_": (appointmentInfo?.to_user_)!,
                                                   "order_id_": (appointmentInfo?.order_id_)!,
@@ -231,14 +162,14 @@ class AppointmentDetailVC: UIViewController {
                                                   "user_score_": (self.commonCell?.servantStar)!,
                                                   "remarks_": self.commonCell!.comment]
         
-        
         let model = CommentForOrderModel(value: dict)
         
         APIHelper.consumeAPI().commentForOrder(model, complete: { (response) in
-            
-            self.navigationController?.popViewControllerAnimated(true)
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
+                self.navigationController?.popViewControllerAnimated(true)
+            })
             }) { (error) in
-                
+            SVProgressHUD.showWainningMessage(WainningMessage: "评论失败，请稍后再试", ForDuration: 1.5, completion: nil)
         }
     }
 
