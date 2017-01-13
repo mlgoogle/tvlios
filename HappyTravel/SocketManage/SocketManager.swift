@@ -297,7 +297,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .UploadImageTokenReply,
                                           .AuthenticateUserCardReply,
                                           .WXplaceOrderReply,
-                                          .RecvChatMessage,
+                                          .RecvChatMessage,  // Done
                                           .PasswdVerifyReply,//Done
                                           .SetupPaymentCodeReply,//Done
                                           .UnreadMessageReply,  // Done
@@ -487,9 +487,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .UploadImageTokenReply:
             uploadImageTokenReply(jsonBody)
             
-        case .WXplaceOrderReply:
-            wxPlaceOrderReply(jsonBody)
-            
         case .AuthenticateUserCardReply:
             authenticateUserCardReply(jsonBody)
             
@@ -510,9 +507,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         // Opcode => 2000+
         
-        case .RecvChatMessage:
-            chatMessageReply(jsonBody)
-            
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
         
@@ -722,10 +716,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func uploadImageTokenReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
-    }
-    
-    func wxPlaceOrderReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
     }
     
     func authenticateUserCardReply(jsonBody: JSON?) {

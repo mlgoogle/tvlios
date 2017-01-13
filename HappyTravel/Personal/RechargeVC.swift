@@ -73,16 +73,10 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(wechatPaySuccessed(_:)), name: NotifyDefine.WeChatPaySuccessed, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(wxPlaceOrderReply(_:)), name: NotifyDefine.WXplaceOrderReply, object: nil)
 
     }
     
-    func wxPlaceOrderReply(notification: NSNotification) {
-//        if let dict = notification.userInfo {
-//            jumpToBizPay(dict)
-//        }
-    }
-    
+    // 微信客户端回调(AppDelegate)
     func wechatPaySuccessed(notification: NSNotification) {
         let req = ClientWXPayStatusRequestModel()
         req.uid_ = CurrentUser.uid_
