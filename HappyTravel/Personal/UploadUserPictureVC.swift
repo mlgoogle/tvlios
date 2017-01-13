@@ -99,8 +99,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(autoUserCardResult(_:)), name: NotifyDefine.AuthenticateUserCard, object: nil)
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -302,21 +301,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         
         photoPaths[index] = filePath
     }
-    //MARK: --
-  
-    //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
-        let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: { 
-                    self.navigationController?.popViewControllerAnimated(true)
-            })
-            return
-        }
-        SVProgressHUD.dismiss()
-        token = data.valueForKey("img_token_") as! NSString
-    }
+    
     //认证结果
     func autoUserCardResult(notice: NSNotification?) {
         navigationItem.rightBarButtonItem?.enabled = true

@@ -294,9 +294,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServiceDetailReply,
                                           
                                           .DeviceTokenResult,
-                                          .UploadImageTokenReply,
-                                          .AuthenticateUserCardReply,
-                                          .WXplaceOrderReply,
+                                          .UploadImageTokenReply,  // Done
+                                          .AuthenticateUserCardReply,  // Done
+                                          .WXplaceOrderReply,  // Done
                                           .RecvChatMessage,  // Done
                                           .PasswdVerifyReply,//Done
                                           .SetupPaymentCodeReply,//Done
@@ -484,12 +484,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .DeviceTokenResult:
             break
 
-        case .UploadImageTokenReply:
-            uploadImageTokenReply(jsonBody)
-            
-        case .AuthenticateUserCardReply:
-            authenticateUserCardReply(jsonBody)
-            
         case .CheckAuthenticateResultReply:
             checkAuthenticateResultReply(jsonBody)
             
@@ -712,14 +706,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func serviceDetailReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.ServiceDetailReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
-    }
-    
-    func uploadImageTokenReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.UpLoadImageToken, object: nil, userInfo: ["data":(jsonBody?.dictionaryObject)!])
-    }
-    
-    func authenticateUserCardReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.AuthenticateUserCard, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func checkAuthenticateResultReply(jsonBody: JSON?) {

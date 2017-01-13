@@ -53,10 +53,6 @@ class NotifyDefine: NSObject {
     static let InvoiceDetailReply = "InvoiceDetailReply"
     
     static let ServiceDetailReply = "ServiceDetailReply"
-
-    static let UpLoadImageToken = "UpLoadImageToken"
-
-    static let AuthenticateUserCard = "AuthenticateUserCard"
     
     static let CheckAuthenticateResult = "CheckAuthenticateResult"
     

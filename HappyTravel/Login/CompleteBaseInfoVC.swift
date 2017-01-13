@@ -46,7 +46,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var imagePicker:UIImagePickerController? = nil
     
-//    var userInfo:UserInfo?
     var userInfoModel:UserInfoModel?
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -65,42 +64,35 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         registerNotify()
         
-        
-        
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
             sureBtn.setTitle("完成", forState: .Normal)
             sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             sureBtn.backgroundColor = UIColor.clearColor()
-            sureBtn.addTarget(self, action: #selector(AddressSelVC.sureAction(_:)), forControlEvents: .TouchUpInside)
+            sureBtn.addTarget(self, action: #selector(sureAction(_:)), forControlEvents: .TouchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
             navigationItem.rightBarButtonItem = sureItem
             
         }
         
-        SVProgressHUD.showProgressMessage(ProgressMessage: "初始化上传头像环境，请稍后！")
         APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
             if let model = response as? UploadPhotoModel {
                 self!.token = model.img_token_
-                SVProgressHUD.dismiss()
             }
             }, error: { (err) in
-                SVProgressHUD.dismiss()
+                
         })
         
     }
     
     override func viewWillDisappear(animated: Bool) {
-        CurrentUser.register_status_ = 1
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
     
     func sureAction(sender: UIButton) {
-        
-        
         guard headImageName != nil || CurrentUser.head_url_ != nil else {
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有上传头像哦", ForDuration: 1.5, completion: nil)
             return
@@ -187,7 +179,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 CurrentUser.register_status_ = 1
                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
             }, error: { (err) in
-                    
+                SVProgressHUD.showWainningMessage(WainningMessage: "修改资料失败，请重试", ForDuration: 1.5, completion: nil)
             })
         }
     }
@@ -224,7 +216,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(uploadImageToken(_:)), name: NotifyDefine.UpLoadImageToken, object: nil)
         
     }
     
@@ -571,17 +562,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let filePath: String = String(format: "%@%@", documentPath, fileName)
         headImagePath = filePath
     }
-    //MARK: --
     
-    //上传图片Token
-    func uploadImageToken(notice: NSNotification?) {
-        let data = notice?.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            return
-        }
-        SVProgressHUD.dismiss()
-        token = data.valueForKey("img_token_") as? String
-    }
 }
 
