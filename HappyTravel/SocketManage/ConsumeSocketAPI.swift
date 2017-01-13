@@ -11,14 +11,14 @@ import SVProgressHUD
 
 
 class ConsumeSocketAPI: SocketAPI{
-
+    //请求邀约记录
     func requestInviteOrderLsit(model:HodometerRequestModel, rspModel:AnyClass = HodometerInfoModel.classForCoder(), complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ObtainTripRequest, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(rspModel, listKey: "trip_list_"))
             }, error: error)
     }
-    
+    //请求预约记录
     func requestAppointmentList(model:AppointmentRequestModel, rspModel:AnyClass = AppointmentInfoModel.classForCoder(), complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .AppointmentRecordRequest, model: model)
         startRequest(packet, complete: { (response) in

@@ -20,7 +20,6 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         walletTable?.reloadData()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkUserResultReply(_:)), name: NotifyDefine.CheckUserCashResult, object: nil)
         
         APIHelper.userAPI().cash({ [weak self](response) in
             if let dict = response as? [String: AnyObject] {
@@ -230,20 +229,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    func checkUserResultReply(notice: NSNotification) {
-        let data = notice.userInfo!["data"] as! NSDictionary
-        let code = data.valueForKey("code")
-        if code?.intValue == 0 {
-            SVProgressHUD.showErrorMessage(ErrorMessage: "暂时无法验证，请稍后再试", ForDuration: 1, completion: {
-                self.navigationController?.popViewControllerAnimated(true)
-            })
-            return
-        }
-        SVProgressHUD.dismiss()
-        walletTable?.reloadData()
-    }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
