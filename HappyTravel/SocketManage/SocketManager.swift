@@ -421,7 +421,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.debug("Send: \(opcode)")
+        if opcode != .Heart {
+            XCGLogger.info("Send: \(opcode)")
+        }
         return true
         
     }
@@ -466,25 +468,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         if jsonBody == nil {
             jsonBody = ["code" : 0]
-        }
-        
-        switch SockOpcode(rawValue: head!.opcode)! {
-            
-            
-        // Opcode => 2000+
-        
-        case .ChatRecordResult:
-            chatRecordReply(jsonBody)
-        
-        case .AnswerInvitationReply:
-            answerInvitationReply(jsonBody)
-
-        case .ServersManInfoReply:
-            serversManInfoReply(jsonBody)
-
-            
-        default:
-            break
         }
         
         let blockKey = head!.opcode
@@ -552,6 +535,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func sendHeart() {
         if (CurrentUser.uid_ > -1) && (socket?.isConnected)!{
             SocketManager.sendData(.Heart, data: ["uid_": CurrentUser.uid_])
+        } else {
+            XCGLogger.debug("心跳包异常")
         }
         performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
 
@@ -638,53 +623,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         localNotify.userInfo = userInfo
         UIApplication.sharedApplication().scheduleLocalNotification(localNotify)
         
-    }
-    
-    // Opcode => 2000+
-    
-    func chatMessageReply(jsonBody: JSON?) {
-        //接收聊天信息
-        if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
-            return
-        }
-        
-        let msg = MessageModel(value: (jsonBody?.dictionaryObject)!)
-        
-        //base64解码
-        DataManager.insertData(msg)
-        let user = DataManager.getData(UserInfoModel.self)?.filter("uid_ = \(msg.from_uid_)").first
-        if user == nil {
-            let req = UserInfoIDStrRequestModel()
-            req.uid_str_ = "\(msg.from_uid_)"
-            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                if let users = response as? [UserInfoModel] {
-                    DataManager.insertData(users[0])
-                }
-            }, error: nil)
-        }
-        if UIApplication.sharedApplication().applicationState == .Background {
-
-            let body = "\((user?.nickname_ ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
-            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-            userInfo["type"] = msg.msg_type_
-            userInfo["data"] = (jsonBody?.dictionaryObject)!
-            localNotify(body, userInfo: userInfo)
-        } else {
-            postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
-        }
-    }
-    
-    func chatRecordReply(jsonBody: JSON?) {
-        
-    }
-    
-    func answerInvitationReply(jsonBody:JSON?) {
-        DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
-    }
-    
-    func serversManInfoReply(jsonBody: JSON?) {
-        guard jsonBody != nil else { return }
-        postNotification(NotifyDefine.ServersManInfoReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
     }
     
     func decodeBase64Str(base64Str:String) throws -> String{

@@ -72,6 +72,7 @@ class SocketRequestManage: NSObject {
             socketRequests.removeValueForKey(packet.requestID)
             objc_sync_exit(self)
             let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
+            XCGLogger.info("Response \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID)")
             if (packet.type == 0) {
                 let dict:NSDictionary? = response.responseJson()
                 var errorCode: Int? = dict?["error_"] as? Int
@@ -123,7 +124,7 @@ class SocketRequestManage: NSObject {
         objc_sync_enter(self)
         socketRequests[packet.requestID] = socketReqeust;
         objc_sync_exit(self)
-        XCGLogger.debug("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID) \(packet.sessionID)")
+        XCGLogger.info("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID)")
         sendRequest(packet)
     }
     

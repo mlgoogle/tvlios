@@ -214,8 +214,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 uid_str += "\(servant.uid_),"
                 self.requestDetaiInfo(servant.uid_)
             }
-//            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//            self.requestUserInfoByIDStr(uid_str)
         }) { (error) in
         }
     }
@@ -332,7 +330,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let object = appointmentList![indexPath.row]
             guard object.status_ > 1  else {
                 if object.recommend_uid_ != nil {
-//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
                     requestRecommendListWithUidStr(object.recommend_uid_!)
                 } else {
                     SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
