@@ -175,8 +175,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -228,7 +228,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             if let user = response as? UserInfoModel {
                 CurrentUser = user
                 CurrentUser.login_ = true
-                self.dismissViewControllerAnimated(false, completion: { () in
+                self.dismissAll({ () in
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
                 })
                 
