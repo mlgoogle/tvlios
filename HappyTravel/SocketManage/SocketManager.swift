@@ -258,8 +258,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     static var completationsDic = [Int16: recevieDataBlock]()
     
-    let tmpNewRequestType:[SockOpcode] = [.Logined,
-                                          .ServiceCity,
+    let tmpNewRequestType:[SockOpcode] = [.Logined,  // Done
+                                          .ServiceCity,  // Done
                                           .InsuranceReply,
                                           .InsurancePayReply,
                                           .CenturionCardInfoReply,
@@ -470,13 +470,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         switch SockOpcode(rawValue: head!.opcode)! {
-            
-        case .TestPushNotificationReply:
-            break
-            
-        case .Logined:
-            logined(jsonBody)
-            
         case .ServantInfo:
             servantInfoReply(jsonBody)
             
@@ -485,9 +478,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .RecommendServants:
             recommonServantsReply(jsonBody)
-            
-        case .ServiceCity:
-            servicesCityReply(jsonBody)
             
         case .ModifyPasswordResult:
             modifyPasswordReply(head, jsonBody: jsonBody)
@@ -701,8 +691,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 
     }
     
-   static func showDisConnectErrorInfo() {
-        SVProgressHUD.showWainningMessage(WainningMessage: "网络连接异常，正在尝试重新连接", ForDuration: 1.5) {
+    static func showDisConnectErrorInfo() {
+        SVProgressHUD.showWainningMessage(WainningMessage: "正在重新连接", ForDuration: 1.5) {
         }
     }
     
@@ -772,10 +762,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func logined(jsonBody: JSON?) {
-        postNotification(NotifyDefine.LoginResult, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
-    }
-    
     func servantInfoReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.ServantInfo, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
     }
@@ -795,10 +781,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func recommonServantsReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func servicesCityReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.ServiceCitys, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
