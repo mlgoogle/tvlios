@@ -50,7 +50,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     var serviceType:Int = 999
     //筛选弹框
     var alertCtrl:UIAlertController?
-    
+    weak var rightLabel:UILabel?
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -280,7 +280,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.top.equalTo(bottomView)
             make.bottom.equalTo(bottomView)
         }
-        
+        rightLabel = rightTips
         mapView = MAMapView()
         mapView!.tag = 1002
         mapView!.delegate = self
@@ -545,9 +545,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //                
 //        })
         
-//        let view = NewPersonMaskView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
-//        UIApplication.sharedApplication().keyWindow?.addSubview(view)
-
+        YD_NewPersonGuideManager.startGuide()
         
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
@@ -568,7 +566,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         ChatMessageHelper.shared.refreshDelegate = self
         getUnReadMessage()
     }
-    
+    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        YD_NewPersonGuideManager.startGuide()
+    }
     func getUnReadMessage() {
         
         APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
