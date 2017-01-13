@@ -262,14 +262,14 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .ServiceCity,  // Done
                                           .InsuranceReply,
                                           .InsurancePayReply,
-                                          .CenturionCardInfoReply,
-                                          .CenturionVIPPriceReply,
-                                          .UserCenturionCardInfoReply,
+                                          .CenturionCardInfoReply,  // Suspend
+                                          .CenturionVIPPriceReply,  // Suspend
+                                          .UserCenturionCardInfoReply,  // Suspend
                                           .UploadContactReply,
                                           .ObtainTripReply,
                                           .AppointmentRecordReply,
                                           
-                                          .CenturionCardConsumedReply,
+                                          .CenturionCardConsumedReply,  // Suspend
                                           .AppointmentRecommendReply,
                                           .SkillsInfoReply,
                                           .ServantInfo,
@@ -278,7 +278,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CheckUserCashReply,
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
-                                          .ServantDetailInfo,
+                                          .ServantDetailInfo,  // Done
                                           
                                           .SendMessageVerify,
                                           .DrawBillReply,
@@ -473,9 +473,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .ServantInfo:
             servantInfoReply(jsonBody)
             
-        case .ServantDetailInfo:
-            servantDetailInfoReply(jsonBody)
-            
         case .RecommendServants:
             recommonServantsReply(jsonBody)
             
@@ -505,15 +502,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .DrawBillReply:
             drawBillReply(jsonBody)
-            
-        case .CenturionCardInfoReply:
-            centurionCardInfoReply(jsonBody)
-            
-        case .UserCenturionCardInfoReply:
-            userCenturionCardInfoReply(jsonBody)
-            
-        case .CenturionCardConsumedReply:
-            centurionCardConsumedReply(jsonBody)
             
         case .SkillsInfoReply:
             skillsInfoReply(jsonBody)
@@ -595,9 +583,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .PayForInvitationReply:
             payForInvitationReply(jsonBody)
 
-        case .CenturionVIPPriceReply:
-            saveTheCenturionCardVIPPrice(jsonBody)
-            
         case .UnreadMessageReply:
             unreadMessageReply(jsonBody)
         
@@ -766,19 +751,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         postNotification(NotifyDefine.ServantInfo, object: nil, userInfo: ["data": (jsonBody!.dictionaryObject)!])
     }
     
-    func servantDetailInfoReply(jsonBody: JSON?) {
-        
-        if jsonBody?.dictionaryObject!["error_"] != nil {
-            return
-        }
-        let user = DataManager.getUserInfo(jsonBody?.dictionaryObject!["uid_"] as! Int)
-        let realm = try! Realm()
-        try! realm.write({
-            user?.setInfo(.Servant, info: jsonBody?.dictionaryObject!)
-        })
-        postNotification(NotifyDefine.ServantDetailInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
     func recommonServantsReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -839,41 +811,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func drawBillReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.DrawBillReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func centurionCardInfoReply(jsonBody: JSON?) {
-        if let privilegeList = jsonBody?.dictionaryObject!["privilege_list_"] as? Array<Dictionary<String, AnyObject>> {
-            if privilegeList.count > 0 {
-                DataManager.clearData(CenturionCardServiceInfo.self)
-            }
-            for privilege in privilegeList {
-                let centurionCardServiceInfo = CenturionCardServiceInfo(value: privilege)
-                DataManager.insertCenturionCardServiceInfo(centurionCardServiceInfo)
-            }
-        }
-    }
-    
-    func userCenturionCardInfoReply(jsonBody: JSON?) {
-        DataManager.currentUser?.setInfo(.CurrentUser, info: (jsonBody?.dictionaryObject)!)
-    }
-    
-    func centurionCardConsumedReply(jsonBody: JSON?) {
-        if jsonBody == nil {
-            postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
-        } else {
-            if let orderList = jsonBody?.dictionaryObject!["blackcard_consume_record_"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for order in orderList {
-                    let info = CenturionCardConsumedInfo(value: order)
-                    DataManager.insertCerturionCardConsumedInfo(info)
-                    lastOrderID = info.order_id_
-                }
-                postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            } else {
-                postNotification(NotifyDefine.CenturionCardConsumedReply, object: nil, userInfo: ["lastOrderID": -1001])
-
-            }
-        }
     }
     
     func skillsInfoReply(jsonBody: JSON?) {
@@ -1068,15 +1005,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func payForInvitationReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.PayForInvitationReply, object: nil, userInfo: jsonBody?.dictionaryObject)
-    }
-    
-    func saveTheCenturionCardVIPPrice(jsonBody:JSON?) {
-        if let dataList = jsonBody?.dictionaryObject!["data_list_"] as? Array<Dictionary<String, AnyObject>>{
-            for data in dataList {
-                let price = CentuionCardPriceInfo(value: data)
-                DataManager.insertCenturionCardVIPPriceInfo(price)
-            }
-        }
     }
     
     func unreadMessageReply(jsonBody: JSON?) {

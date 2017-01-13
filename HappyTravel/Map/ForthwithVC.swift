@@ -14,7 +14,7 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate{ //ServantIntroCellDelegate
+public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
@@ -69,13 +69,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.ServantDetailInfo, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.LoginFailed, object: nil)
+        
     }
+    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
@@ -168,20 +169,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleView.backgroundColor = .clearColor()
         titleView.userInteractionEnabled = true
         navigationItem.titleView = titleView
-        
-//        titleLab = UILabel()
-//        titleLab?.backgroundColor = .clearColor()
-//        titleLab?.textColor = .whiteColor()
-//        titleLab?.font = UIFont.systemFontOfSize(S18)
-//        titleLab?.textAlignment = .Center
-//        titleLab?.userInteractionEnabled = true
-//        titleView.addSubview(titleLab!)
-//        titleLab!.snp_makeConstraints { (make) in
-//            make.centerX.equalTo(titleView.snp_centerX)//.offset(-10)//注释掉城市选择功能，将标题居中
-//            make.centerY.equalTo(titleView.snp_centerY)
-//        }
-//        titleLab?.text = "首页"
-        //城市选择功能
       
         titleBtn = UIButton()
         titleBtn!.backgroundColor = .clearColor()
@@ -190,38 +177,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 115, bottom: 0, right: 0)
         titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
         titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
-        titleBtn!.addTarget(self, action: #selector(ForthwithVC.screenServices(_:)), forControlEvents: .TouchUpInside)
+        titleBtn!.addTarget(self, action: #selector(screenServices(_:)), forControlEvents: .TouchUpInside)
         titleView.addSubview(titleBtn!)
         titleBtn!.snp_makeConstraints { (make) in
             make.width.equalTo(130)
             make.centerX.equalTo(titleView)
             make.centerY.equalTo(titleView)
-//            make.left.equalTo(titleLab!.snp_right)
-//            make.width.equalTo(20)
-//            make.centerY.equalTo(titleLab!.snp_centerY)
         }
-        
-//        let segmentBGV = UIImageView()
-//        segmentBGV.image = UIImage.init(named: "head-bg")?.imageWithAlignmentRectInsets(UIEdgeInsetsMake(128, 0, 0, 0))
-//        view.addSubview(segmentBGV)
-//
-//        let segmentItems = ["商务游", "高端游"]
-//        segmentSC = UISegmentedControl(items: segmentItems)
-//        segmentSC!.tag = 1001
-//        segmentSC!.addTarget(self, action: #selector(ForthwithVC.segmentChange), forControlEvents: UIControlEvents.ValueChanged)
-//        segmentSC!.selectedSegmentIndex = 0
-//        segmentSC!.layer.masksToBounds = true
-//        segmentSC?.layer.cornerRadius = 5
-//        segmentSC?.backgroundColor = UIColor.clearColor()
-//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Normal)
-//        segmentSC!.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: UIControlState.Selected)
-//        segmentSC?.tintColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1)
-//        view.addSubview(segmentSC!)
-//        segmentSC!.snp_makeConstraints { (make) in
-//            make.center.equalTo(segmentBGV)
-//            make.height.equalTo(30)
-//            make.width.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
-//        }
         
         let bottomView = UIImageView()
         bottomView.userInteractionEnabled = true
@@ -238,7 +200,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         bottomSelector.maximumValue = 1
         bottomSelector.value = 0
         bottomSelector.continuous = false
-        bottomSelector.addTarget(self, action: #selector(ForthwithVC.bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
+        bottomSelector.addTarget(self, action: #selector(bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
         bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
         bottomSelector.tintColor = UIColor.whiteColor()
         bottomSelector.minimumTrackTintColor = UIColor.whiteColor()
@@ -294,12 +256,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
             make.bottom.equalTo(bottomView.snp_top)
         }
-//        segmentBGV.snp_makeConstraints { (make) in
-//            make.top.equalTo(view)
-//            make.left.equalTo(view)
-//            make.right.equalTo(mapView!).offset(0.5)
-//            make.height.equalTo(60)
-//        }
+
 //        大拇指推荐功能，暂时隐藏，后继使用
 //        let recommendBtn = UIButton()
 //        recommendBtn.tag = 2001
@@ -370,14 +327,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             })
             alertCtrl!.addAction(services)
         }
-        
-//        let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (sender: UIAlertAction) in
-//            self.titleBtn?.selected = false
-//            self.dismissViewControllerAnimated(true, completion: nil)
-            
-//        })
-        
-//        alertCtrl!.addAction(cancel)
         
         presentViewController(alertCtrl!, animated: true, completion: nil)
     }
@@ -586,14 +535,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         setUnReadCount()
     }
     func getServantNearby(lat: Double, lon:Double) {
+        if firstLanch {
+            mapView!.setZoomLevel(11, animated: true)
+        }
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
         APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
-                if self!.servantsInfo.count == 0 {
-                    self!.mapView!.setZoomLevel(11, animated: true)
-                }
                 self!.annotations.removeAll()
                 for servant in models {
                     self!.servantsInfo[servant.uid_] = servant
@@ -785,19 +734,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 //            mapView!.addAnnotations(tmpAnnotations)
 //        }
 //    }
-    
-    func servantDetailInfo(notification: NSNotification?) {
-        let data = notification?.userInfo!["data"] as? [String: AnyObject]
-        if data!["error_"] != nil {
-            XCGLogger.error("Get UserInfo Error:\(data!["error_"])")
-            return
-        }
-//        servantsInfo[data!["uid_"] as! Int]?.setInfo(.Servant, info: data)
-        let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(data!["uid_"] as! Int)")?.first
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
-        
-    }
     
     func titleAction(sender: UIButton?) {
         XCGLogger.debug(sender?.currentTitle)
@@ -1061,7 +997,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         switch error.code {
         case 1:
             checkLocationService()
-//            SVProgressHUD.showWainningMessage(WainningMessage: "请在设置中设置允许V领队定位，我们才能为您推荐服务者", ForDuration: 1.5, completion: nil)
             firstLanch = true
             break
         case 4:
@@ -1074,34 +1009,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         
     }
-    // MARK: - ServiceSheetDelegate
-    func cancelAction(sender: UIButton?) {
-        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-    }
     
-    func sureAction(sender: UIButton?, targetCity: CityNameBaseInfo?) {
-        guard targetCity != nil else { return }
-        recommendServants.removeAll()
-        citysAlertController?.dismissViewControllerAnimated(true, completion: nil)
-//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.city_code_)!, "recommend_type_": 1]
-
-//        let dict:Dictionary<String, AnyObject> = ["city_code_": (targetCity?.cityCode)!, "recommend_type_": 1]
-//        SocketManager.sendData(.GetRecommendServants, data: dict)
-    }
-    
-    func headerRefresh() {
-//        let dict = ["city_code_": cityCode, "recommend_type_": 2]
-//        SocketManager.sendData(.GetRecommendServants, data: dict)
-    }
-    
-    //MARK: - ServantIntroCellDeleagte
-    
-//    func chatAction(servantInfo: UserInfo?) {
-//        let dict:Dictionary<String, AnyObject> = ["uid_": servantInfo!.uid]
-//        SocketManager.sendData(.GetServantDetailInfo, data: dict)
-//
-//    }
-//    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }

@@ -16,8 +16,6 @@ class NotifyDefine: NSObject {
     
     static let ServantInfo = "ServantInfo"
     
-    static let ServantDetailInfo = "ServantDetailInfo"
-    
     static let RecommendServants = "RecommendServants"
     
     static let JumpToCenturionCardCenter = "JumpToCenturionCardCenter"
@@ -37,8 +35,6 @@ class NotifyDefine: NSObject {
     static let ImproveDataNoticeToOthers = "ImproveDataNoticeToOthers"
     
     static let ObtainTripReply = "ObtainTripReply"
-    
-    static let CenturionCardConsumedReply = "CenturionCardConsumedReply"
     
     static let RegisterAccountReply = "RegisterAccountReply"
     
