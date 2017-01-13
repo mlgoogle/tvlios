@@ -330,10 +330,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-//                    let ip:String = "61.147.114.78"
-//                    let port:UInt16 = 10007
-                    let ip:String = "192.168.8.111"
-                    let port:UInt16 = 10001
+                    let ip:String = "61.147.114.78"
+                    let port:UInt16 = 10007
+//                    let ip:String = "192.168.8.111"
+//                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10001
@@ -961,7 +961,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //            if let reason = data["failed_reason_"] as? String {
 //                if reason == "" {
                     if let reviewStatus = data["review_status_"] as? Int {
-                        DataManager.currentUser?.authentication = reviewStatus
+//                        DataManager.currentUser?.authentication = reviewStatus
+                        CurrentUser.auth_status_ = reviewStatus
                     }
 //                }
 //            }
