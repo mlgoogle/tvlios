@@ -203,9 +203,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
 
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.verifyCodeInfoNotify(_:)), name: NotifyDefine.VerifyCodeInfo, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(LoginWithMSGVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func keyboardWillShow(notification: NSNotification?) {
@@ -221,16 +220,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         var vFrame = view.frame
         vFrame.origin.y = 0
         view.frame = vFrame
-    }
-    
-    func verifyCodeInfoNotify(notification: NSNotification?) {
-        SVProgressHUD.dismiss()
-        if let data = notification?.userInfo!["data"] {
-            verifyCodeTime = (data["timestamp_"] as? Int)!
-            token = data["token_"] as? String
-        }else{
-            SVProgressHUD.showErrorMessage(ErrorMessage: "发送验证码失败，请稍后再试！", ForDuration: 1, completion: nil)
-        }
     }
     
     func loginWithAccountAction(sender: UIButton?) {

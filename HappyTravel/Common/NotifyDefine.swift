@@ -24,10 +24,6 @@ class NotifyDefine: NSObject {
     
     static let JumpToCompeleteBaseInfoVC = "JumpToCompeleteBaseInfoVC"
     
-    static let VerifyCodeInfo = "VerifyCodeInfo"
-    
-    static let ImproveDataSuccessed = "ImproveDataSuccessed"
-    
     static let ImproveDataNoticeToOthers = "ImproveDataNoticeToOthers"
     
     static let ObtainTripReply = "ObtainTripReply"
@@ -52,8 +48,6 @@ class NotifyDefine: NSObject {
 
     static let InvoiceDetailReply = "InvoiceDetailReply"
     
-    static let ServiceDetailReply = "ServiceDetailReply"
-    
     static let CheckAuthenticateResult = "CheckAuthenticateResult"
     
     static let ServersManInfoReply = "ServersManInfoReply"
@@ -64,15 +58,9 @@ class NotifyDefine: NSObject {
 
     static let FeedBackNoticeReply = "FeedBackNoticeReply"
 
-    static let EvaluatetripReply = "EvaluatetripReply"
-    
     static let AppointmentRecordReply = "AppointmentRecordReply"
     
-    static let CheckCommentDetailResult = "CheckCommentDetailResult"
-
     static let AppointmentRecommendReply = "AppointmentRecommendReply"
-    
-    static let AppointmentDetailReply = "AppointmentDetailReply"
     
     static let UserBaseInfoReply = "UserBaseInfoReply"
     

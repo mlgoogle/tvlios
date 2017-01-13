@@ -74,7 +74,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(checkAuthResult(_:)), name: NotifyDefine.CheckAuthenticateResult, object: nil)
     }
@@ -91,18 +90,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             return
         }
 //        DataManager.currentUser?.authentication = reviewStatus!
-    }
-    
-    func improveDataSuccessed(notification: NSNotification) {
-        SVProgressHUD.dismiss()
-        if headImagePath != nil {
-            headImageView?.setImage(UIImage.init(contentsOfFile: headImagePath!), forState: .Normal)
-            CurrentUser.head_url_ = headImagePath
-        }
-        if nickName != nil {
-            nameLabel?.setTitle(nickName!, forState: .Normal)
-            CurrentUser.nickname_ = nickName
-        }
     }
     
     func updateUserInfo() {

@@ -202,7 +202,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(InvoiceDetailVC.touchWhiteSpace))
+        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
         touch.numberOfTapsRequired = 1
         touch.cancelsTouchesInView = false
         table?.addGestureRecognizer(touch)
@@ -213,7 +213,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(improveDataSuccessed(_:)), name: NotifyDefine.ImproveDataSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         
@@ -230,18 +229,6 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let inset = UIEdgeInsetsMake(0, 0, 0, 0)
         table?.contentInset = inset
         table?.scrollIndicatorInsets =  inset
-    }
-    
-    func improveDataSuccessed(notification: NSNotification?) {
-        SVProgressHUD.dismiss()
-        navigationController?.popViewControllerAnimated(true)
-        CurrentUser.head_url_ = headerUrl
-        CurrentUser.nickname_ = nickname
-        CurrentUser.gender_ = sex
-        CurrentUser.address_ = address
-        CurrentUser.currentBanckCardName_ = nickname
-        CurrentUser.register_status_ = 1
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
     }
     
     //MARK: - TableView
