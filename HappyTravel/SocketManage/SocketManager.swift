@@ -300,10 +300,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .RecvChatMessage,
                                           .PasswdVerifyReply,
                                           .SetupPaymentCodeReply,
-                                          .UnreadMessageReply,
-                                          .InvitationResult,
-                                          .MSGReadCntResult,
+                                          .UnreadMessageReply,  // Done
+                                          .MSGReadCntResult,  // Done
                                           .PayForInvitationReply,  // Done
+        
                                           .PhotoWallReply,  // Done
                                           .InvitationResult,  // Done
                                           .AppointmentServantReply,  // Done
@@ -540,10 +540,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .ChatRecordResult:
             chatRecordReply(jsonBody)
-            
-        case .MSGReadCntResult:
-            break
-            
+        
         case .EvaluatetripReply:
             evaluatetripReply(jsonBody)
             
@@ -556,9 +553,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case .CheckCommentDetailReplay:
             checkCommentDetailReplay(jsonBody)
 
-        case .UnreadMessageReply:
-            unreadMessageReply(jsonBody)
-        
         case .InsuranceReply:
             sureInsuranceReply(jsonBody)
             
@@ -913,34 +907,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkCommentDetailReplay(jsonBody: JSON?) {
         postNotification(NotifyDefine.CheckCommentDetailResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func unreadMessageReply(jsonBody: JSON?) {
-        if let msgList = jsonBody?.dictionaryObject!["msg_list_"] as? Array<Dictionary<String, AnyObject>> {
-            if msgList.count > 0 {
-                var pMsg:MessageModel?
-                
-                for msg in msgList.reverse() {
-                    let pushMsg = MessageModel(value: msg)
-                    //base64解码
-//                    pushMsg.content_ = try! decodeBase64Str(pushMsg.content_!)
-//                    DataManager.insertMessage(pushMsg)
-                    DataManager.insertData(pushMsg)
-                    pMsg = pushMsg
-                }
-                let user = DataManager.getUserInfo(pMsg!.from_uid_)
-                if user == nil {
-                    let req = UserInfoIDStrRequestModel()
-                    req.uid_str_ = "\(pMsg!.from_uid_)"
-                    APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                        if let users = response as? [UserInfoModel] {
-                            DataManager.insertData(users[0])
-                        }
-                    }, error: nil)
-                }
-                postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": pMsg!])
-            }
-        }
     }
     
     func decodeBase64Str(base64Str:String) throws -> String{
