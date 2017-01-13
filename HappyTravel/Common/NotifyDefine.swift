@@ -9,8 +9,6 @@
 import Foundation
 
 class NotifyDefine: NSObject {
-
-    static let LoginResult = "LoginResult"
     
     static let LoginSuccessed = "LoginSuccesse"
     
@@ -19,8 +17,6 @@ class NotifyDefine: NSObject {
     static let ServantInfo = "ServantInfo"
     
     static let ServantDetailInfo = "ServantDetailInfo"
-    
-    static let ServiceCitys = "ServiceCitys"
     
     static let RecommendServants = "RecommendServants"
     
