@@ -56,7 +56,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
@@ -131,8 +130,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 uid_str += "\(servant.uid_),"
                 self.requestDetaiInfo(servant.uid_)
             }
-            //            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            //            self.requestUserInfoByIDStr(uid_str)
         }) { (error) in
         }
     }
@@ -154,11 +151,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             DataManager.insertData(info!)
         }) { (error) in
         }
-        
-    }
-    func chatMessage(notification: NSNotification?) {
-//        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        table?.reloadData()
         
     }
     

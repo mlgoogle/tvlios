@@ -486,9 +486,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         // Opcode => 2000+
         
-        case .ChatRecordResult:
-            chatRecordReply(jsonBody)
-        
         case .AnswerInvitationReply:
             answerInvitationReply(jsonBody)
 
@@ -664,7 +661,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 var lastOrderID = 0
                 for trip in tripList {
                     let hodotemerInfo = HodometerInfo(value: trip)
-                    DataManager.insertHodometerInfo(hodotemerInfo)
+//                    DataManager.insertHodometerInfo(hodotemerInfo)
                     lastOrderID = hodotemerInfo.order_id_
                 }
                 postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
@@ -690,10 +687,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func checkUserCashReply(jsonBody: JSON?) {
         if let cash = jsonBody?.dictionaryObject!["user_cash_"] as? Int {
-            DataManager.currentUser?.cash = cash
+//            DataManager.currentUser?.cash = cash
         }
         if let hasPasswd = jsonBody?.dictionaryObject!["has_passwd_"] as? Int {
-            DataManager.currentUser?.has_passwd_ = hasPasswd
+//            DataManager.currentUser?.has_passwd_ = hasPasswd
         }
         postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
@@ -703,7 +700,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         if  let recordList = jsonBody?.dictionaryObject!["data_list_"] as? Array<Dictionary<String, AnyObject>> {
             for record in recordList {
                 let recordInfo = AppointmentInfo(value: record)
-                DataManager.insertAppointmentRecordInfo(recordInfo)
+//                DataManager.insertAppointmentRecordInfo(recordInfo)
                 lastID = recordInfo.appointment_id_
             }
         }
@@ -715,46 +712,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
     // Opcode => 2000+
-    
-    func chatMessageReply(jsonBody: JSON?) {
-        //接收聊天信息
-        if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
-            return
-        }
-        
-        let msg = MessageModel(value: (jsonBody?.dictionaryObject)!)
-        
-        //base64解码
-        DataManager.insertData(msg)
-        let user = DataManager.getData(UserInfoModel.self)?.filter("uid_ = \(msg.from_uid_)").first
-        if user == nil {
-            let req = UserInfoIDStrRequestModel()
-            req.uid_str_ = "\(msg.from_uid_)"
-            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                if let users = response as? [UserInfoModel] {
-                    DataManager.insertData(users[0])
-                }
-            }, error: nil)
-        }
-        if UIApplication.sharedApplication().applicationState == .Background {
-
-            let body = "\((user?.nickname_ ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
-            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-            userInfo["type"] = msg.msg_type_
-            userInfo["data"] = (jsonBody?.dictionaryObject)!
-            localNotify(body, userInfo: userInfo)
-        } else {
-            postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
-        }
-    }
-    
-    func chatRecordReply(jsonBody: JSON?) {
-        
-    }
-    
-    func answerInvitationReply(jsonBody:JSON?) {
-        DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
-    }
     
     func serversManInfoReply(jsonBody: JSON?) {
         guard jsonBody != nil else { return }

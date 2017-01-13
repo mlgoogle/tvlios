@@ -32,8 +32,6 @@ class NotifyDefine: NSObject {
     
     static let DrawBillReply = "DrawBillReply"
     
-    static let ChatMessgaeNotiy = "ChatMessageNotify"
-    
     static let UpdateChatVC = "UpdateChatVC"
     
     static let PushMessageNotify = "PushMessageNotify"
