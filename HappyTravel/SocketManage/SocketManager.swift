@@ -274,7 +274,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .SkillsInfoReply,  // Done
                                           .ServantInfo,  // Done
                                           .CheckAuthenticateResultReply,
-                                          .UserInfoResult,
+                                          .UserInfoResult,  // Done
                                           .CheckUserCashReply,
                                           .ModifyPasswordResult,
                                           .RegisterAccountReply,
@@ -476,9 +476,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .ModifyPasswordResult:
             modifyPasswordReply(head, jsonBody: jsonBody)
-            
-        case .UserInfoResult:
-            userInfoReply(jsonBody)
             
         case .MessageVerifyResult:
             messageVerifyReply(jsonBody)
@@ -754,16 +751,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
             postNotification(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
         }
-    }
-    
-    func userInfoReply(jsonBody: JSON?) {
-        for info in jsonBody!["userinfo_list_"] {
-            let user = UserInfo()
-            user.setInfo(.Other, info: info.1.dictionaryObject!)
-            DataManager.updateUserInfo(user)
-        }
-        postNotification(NotifyDefine.UserBaseInfoReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-
     }
     
     func messageVerifyReply(jsonBody: JSON?) {

@@ -52,7 +52,6 @@ class AppointmentDetailVC: UIViewController {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
 //                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
