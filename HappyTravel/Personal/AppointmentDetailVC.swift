@@ -11,14 +11,13 @@ import SVProgressHUD
 import RealmSwift
 import XCGLogger
 class AppointmentDetailVC: UIViewController {
+    
     var commitBtn: UIButton?
-    var servantInfo:UserInfoModel?
     var skillsArray:Array<Dictionary<SkillModel, Bool>> = Array()
     var skills:List<Tally> = List()
     var appointmentInfo:AppointmentInfoModel?
     var commonCell:IdentCommentCell?
     var servantDict:Dictionary<String, AnyObject>?
-
     
     var user_score_ = 0
     var service_score_ = 0
@@ -50,13 +49,9 @@ class AppointmentDetailVC: UIViewController {
      注册通知监听
      */
     func registerNotification() {
-        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantDetailInfo(_:)), name: NotifyDefine.ServantDetailInfo, object: nil)
-        
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedDetailInfo(_:)), name: NotifyDefine.AppointmentDetailReply, object: nil)
 //                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reveicedCommentInfo(_:)), name: NotifyDefine.CheckCommentDetailResult, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(evaluatetripReply(_:)), name: NotifyDefine.EvaluatetripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(servantBaseInfoReply(_:)), name: NotifyDefine.UserBaseInfoReply, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -137,75 +132,7 @@ class AppointmentDetailVC: UIViewController {
 //
 //        }
 //    }
-    /**
-     获取服务者详情回调
-     
-     - parameter notification:
-     */
-//    func servantDetailInfo(notification: NSNotification) {
-//        
-//        if let data = notification.userInfo!["data"] as? [String: AnyObject] {
-//        if data["error_"] != nil {
-//            XCGLogger.error("Get UserInfo Error:\(data["error"])")
-//            return
-//        }
-////        servantInfo =  DataManager.getUserInfo(data["uid_"] as! Int )
-//        guard servantInfo != nil else {
-//            
-//            servantDict = data
-//            getServantBaseInfo()
-//            
-//            return
-//        }
-//        
-//        let realm = try! Realm()
-//        try! realm.write({
-//            
-////            servantInfo!.setInfo(.Servant, info: data)
-//            
-//        })
-//        
-//        let servantPersonalVC = ServantPersonalVC()
-////        servantPersonalVC.personalInfo = DataManager.getUserInfo(data["uid_"] as! Int)
-//        navigationController?.pushViewController(servantPersonalVC, animated: true)
-//        }
-//    }
-//    
-//    func getServantBaseInfo() {
-//        let model = UserInfoIDStrRequestModel()
-//        model.uid_str_ = String(servantDict!["uid_"] as! Int)
-//        
-//    APIHelper.servantAPI().getUserInfoByString(model, complete: { (response) in
-//        let list = response as? Array<UserInfoModel>
-//        guard list?.count > 0 else {return}
-//        for servant in list! {
-//            DataManager.insertData(servant)
-//        }
-//        }) { (error) in
-//            
-//        }
-////        let dic = ["uid_str_" : String(servantDict!["uid_"] as! Int) + "," + "0"]
-////        SocketManager.sendData(.GetUserInfo, data: dic)
-//        
-//    }
-//    func servantBaseInfoReply(notification: NSNotification) {
-//        
-////        servantInfo =  DataManager.getUserInfo(servantDict!["uid_"] as! Int)
-//        let realm = try! Realm()
-//        try! realm.write({
-//            
-////            servantInfo!.setInfo(.Servant, info: servantDict)
-//            
-//        })
-//        let servantPersonalVC = ServantPersonalVC()
-////        servantPersonalVC.personalInfo = servantInfo
-//        navigationController?.pushViewController(servantPersonalVC, animated: true)
-//    }
-    func pushToNextPage() {
-        let servantPersonalVC = ServantPersonalVC()
-        servantPersonalVC.personalInfo = servantInfo
-        navigationController?.pushViewController(servantPersonalVC, animated: true)
-    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "预约详情"
@@ -328,18 +255,14 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
                 if let model = response as? ServantDetailModel {
                     DataManager.insertData(model)
                     if let servantInfo =  DataManager.getData(UserInfoModel.self, filter: "uid_ = \(model.uid_)")?.first {
-                        let servantPersonalVC = ServantPersonalVC()
-                        servantPersonalVC.personalInfo = servantInfo
-                        self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                        self?.jumpToServantPersonalVC(servantInfo)
                     } else {
                         let req = UserInfoIDStrRequestModel()
                         req.uid_str_ = "\(model.uid_)"
                         APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
                             if let users = response as? [UserInfoModel] {
                                 DataManager.insertData(users[0])
-                                let servantPersonalVC = ServantPersonalVC()
-                                servantPersonalVC.personalInfo = users[0]
-                                self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                                self?.jumpToServantPersonalVC(users[0])
                             }
                         }, error: nil)
                     }
@@ -347,6 +270,12 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             }, error: nil)
             
         }
+    }
+    
+    func jumpToServantPersonalVC(user: UserInfoModel) {
+        let servantPersonalVC = ServantPersonalVC()
+        servantPersonalVC.personalInfo = user
+        navigationController?.pushViewController(servantPersonalVC, animated: true)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

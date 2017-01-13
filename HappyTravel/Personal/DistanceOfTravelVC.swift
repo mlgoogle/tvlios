@@ -78,7 +78,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
 //
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.centurionCardConsumedReply(_:)), name: NotifyDefine.CenturionCardConsumedReply, object: nil)
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
 ////        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.payForInvitationReply(_:)), name: NotifyDefine.PayForInvitationReply, object: nil)
 //    }
@@ -177,35 +176,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
 //        }
 //        
 //    }
-//    /**
-//     黑卡消费记录回调
-//     - parameter notification:
-//     */
-//    func centurionCardConsumedReply(notification: NSNotification) {
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        let realm = try! Realm()
-//        consumes = realm.objects(CenturionCardConsumedInfo.self).filter("order_status_ > 3").sorted("order_id_", ascending: false)
-//        
-//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-//        if lastOrderID == -1001 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            table?.reloadData()
-//            return
-//        }
-//        consumedOrderID = lastOrderID
-//        if segmentIndex == 2 {
-//            table?.reloadData()
-//        }
-//        
-//    }
-//    
 //    /**
 //     预约行程记录回调
 //     
