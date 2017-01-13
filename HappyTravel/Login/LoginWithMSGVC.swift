@@ -221,7 +221,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         vFrame.origin.y = 0
         view.frame = vFrame
     }
-    
+
     func loginWithAccountAction(sender: UIButton?) {
         dismissViewControllerAnimated(false, completion: nil)
     }

@@ -53,26 +53,9 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
         
     }
-    
-    func obtainTripReply(notification: NSNotification) {
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        hotometers = DataManager.getHodometerHistory()
-//        for info in hotometers! {
-//            DataManager.insertOpenTicketWithHodometerInfo(info)
-//        }
-//        totalInfos = DataManager.getOpenTicketsInfo()
-//        table?.reloadData()
-    }
-    
+
     func initView() {
         table = UITableView(frame: CGRectZero, style: .Grouped)
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)

@@ -82,7 +82,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
             msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
             msgBtn.backgroundColor = UIColor.clearColor()
-            msgBtn.addTarget(self, action: #selector(ForthwithVC.msgAction(_:)), forControlEvents: .TouchUpInside)
+            msgBtn.addTarget(self, action: #selector(msgAction(_:)), forControlEvents: .TouchUpInside)
             
             let msgItem = UIBarButtonItem.init(customView: msgBtn)
             navigationItem.rightBarButtonItem = msgItem
@@ -345,8 +345,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         notificationCenter.addObserver(self, selector: #selector(jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
-        
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
@@ -416,16 +414,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }) { (error) in
                 
         }
-        SocketManager.sendData(.VersionInfoRequest, data: ["app_type_": 0], result: { (result) in
-            if let verInfo = result["data"] as? [String: AnyObject] {
+        let req = CheckVersionRequestModel()
+        req.app_type_ = 0
+        APIHelper.commonAPI().checkVersion(req, complete: { (response) in
+            if let verInfo = response as? [String: AnyObject] {
                 UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
                     if gotoUpdate {
                         UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
                     }
                 })
             }
-            
-        })
+            }, error: nil)
 
 
         YD_NewPersonGuideManager.startGuide()
@@ -472,6 +471,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 
         }
     }
+    
     func setUnReadCount() {
         
         if DataManager.getUnreadMsgCnt(-1) > 0 {
@@ -479,9 +479,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             msgCountLab?.hidden = false
         }
     }
+    
     func refreshChatSeesionList() {
         setUnReadCount()
     }
+    
     func getServantNearby(lat: Double, lon:Double) {
         if firstLanch {
             mapView!.setZoomLevel(11, animated: true)
@@ -519,29 +521,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }, error: { (err) in
                 print(err)
         })
-    }
-    
-    func chatMessage(notification: NSNotification?) {
-        let msg = (notification?.userInfo!["data"])! as! PushMessage
-
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpdateChatVC, object: nil, userInfo: ["data": msg])
-        
-        if DataManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
-            msgCountLab?.hidden = false
-        }
-
-        if DataManager.getUserInfo(msg.from_uid_) == nil {
-            let req = UserInfoIDStrRequestModel()
-            req.uid_str_ = "\(msg.from_uid_)"
-            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                if let users = response as? [UserInfoModel] {
-                    DataManager.insertData(users[0])
-                }
-            }, error: nil)
-        }
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": msg])
     }
     
     func jumpToCenturionCardCenter() {

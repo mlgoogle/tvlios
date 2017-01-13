@@ -56,41 +56,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func registerNotify() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(chatMessage(_:)), name: NotifyDefine.ChatMessgaeNotiy, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
 
     }
-    
-//    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
-//        
-//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            servantsArray?.removeAll()
-//        
-//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-//                var uid_str = ""
-//                for servant in servants {
-////                    let servantInfo = UserInfo()
-////                    servantInfo.setInfo(.Servant, info: servant)
-////                    servantsArray?.append(servantInfo)
-////                    uid_str += "\(servantInfo.uid),"
-//                    
-//                }
-//                let recommendVC = RecommendServantsVC()
-//                recommendVC.isNormal = false
-//                recommendVC.appointment_id_ = currentAppointmentId
-////                recommendVC.servantsInfo = servantsArray
-//                navigationController?.pushViewController(recommendVC, animated: true)
-//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-//                SocketManager.sendData(.GetUserInfo, data: dict)
-//            }
-//           
-//        }
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushMessageVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-//    }
-    
     
     func allEndRefreshing() {
         if header.state == MJRefreshState.Refreshing {
@@ -99,25 +67,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if footer.state == MJRefreshState.Refreshing {
             footer.endRefreshing()
         }
-        
 
     }
     
-//    func obtainTripReply(notification: NSNotification) {
-//        
-//        allEndRefreshing()
-//        let realm = try! Realm()
-//        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
-//        
-//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-//        if lastOrderID == -1001 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            return
-//        }
-//        orderID = lastOrderID
-//        table?.reloadData()
-//    }
     func requestRecommendListWithUidStr(uid_str_:String) {
         let model = AppointmentRecommendRequestModel()
         model.uid_str_ = uid_str_
@@ -131,8 +83,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 uid_str += "\(servant.uid_),"
                 self.requestDetaiInfo(servant.uid_)
             }
-            //            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-            //            self.requestUserInfoByIDStr(uid_str)
         }) { (error) in
         }
     }
@@ -154,11 +104,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             DataManager.insertData(info!)
         }) { (error) in
         }
-        
-    }
-    func chatMessage(notification: NSNotification?) {
-//        let data = (notification?.userInfo!["data"])! as! Dictionary<String, AnyObject>
-        table?.reloadData()
         
     }
     

@@ -57,7 +57,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
             
             userInfo.setInfo(.Other, info: dict)
             
-            DataManager.updateUserInfo(userInfo)
+//            DataManager.updateUserInfo(userInfo)
             let chatVC = ChatVC()
 //            chatVC.servantInfo = userInfo
             navigationController?.pushViewController(chatVC, animated: true)
@@ -67,7 +67,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
     }
     func registerNotify() {
     
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedData), name: NotifyDefine.ServersManInfoReply, object: nil)
     }
     
     func initView() {

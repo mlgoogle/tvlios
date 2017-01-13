@@ -60,7 +60,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SendImproveData = 1023
         // 修改个人信息返回
         case ImproveDataResult = 1024
-        // 请求行程信息
+        // 请求行程信息(邀约)
         case ObtainTripRequest = 1025
         // 返回行程信息
         case ObtainTripReply = 1026
@@ -230,8 +230,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case UnreadMessageRequest = 2025
         // 未读消息返回
         case UnreadMessageReply = 2026
-        
+        //请求上传通讯录
         case UploadContactRequest = 1111
+        //上传通讯录结果返回
         case UploadContactReply = 1112
 
     }
@@ -260,27 +261,27 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     let tmpNewRequestType:[SockOpcode] = [.Logined,  // Done
                                           .ServiceCity,  // Done
-                                          .InsuranceReply,
-                                          .InsurancePayReply,
+                                          .InsuranceReply,//Suspend
+                                          .InsurancePayReply,//Suspend
                                           .CenturionCardInfoReply,  // Suspend
                                           .CenturionVIPPriceReply,  // Suspend
                                           .UserCenturionCardInfoReply,  // Suspend
-                                          .UploadContactReply,
-                                          .ObtainTripReply,
-                                          .AppointmentRecordReply,
+                                          .UploadContactReply,//Done
+                                          .ObtainTripReply,//Done
+                                          .AppointmentRecordReply,//Done
                                           
                                           .CenturionCardConsumedReply,  // Suspend
-                                          .AppointmentRecommendReply,
+                                          .AppointmentRecommendReply,//Done
                                           .SkillsInfoReply,  // Done
                                           .ServantInfo,  // Done
-                                          .CheckAuthenticateResultReply,
+                                          .CheckAuthenticateResultReply,//Done
                                           .UserInfoResult,  // Done
-                                          .CheckUserCashReply,
+                                          .CheckUserCashReply,//
                                           .ModifyPasswordResult,//Done
                                           .RegisterAccountReply,//Done
                                           .ServantDetailInfo,  // Done
         
-                                          .SendMessageVerify,
+                                          .SendMessageVerify,//Done
                                           .DrawBillReply,//Done
                                           .InvoiceInfoReply,//Done
                                           .InvoiceDetailReply,//Done
@@ -420,7 +421,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         sock?.socket?.writeData(package, withTimeout: 5, tag: sock!.sockTag)
         sock?.sockTag += 1
         
-        XCGLogger.debug("Send: \(opcode)")
+        if opcode != .Heart {
+            XCGLogger.info("Send: \(opcode)")
+        }
         return true
         
     }
@@ -465,42 +468,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         if jsonBody == nil {
             jsonBody = ["code" : 0]
-        }
-        
-        switch SockOpcode(rawValue: head!.opcode)! {
-
-        case .ObtainTripReply:
-            obtainTripReply(jsonBody)
-            
-        case .CheckAuthenticateResultReply:
-            checkAuthenticateResultReply(jsonBody)
-            
-        case .CheckUserCashReply:
-            checkUserCashReply(jsonBody)
-            
-        case .AppointmentRecordReply:
-            appointmentRecordReply(jsonBody)
- 
-        case .AppointmentRecommendReply:
-            appointmentRecommendReply(jsonBody)
-            
-        // Opcode => 2000+
-        
-        case .ChatRecordResult:
-            chatRecordReply(jsonBody)
-        
-        case .AnswerInvitationReply:
-            answerInvitationReply(jsonBody)
-
-        case .ServersManInfoReply:
-            serversManInfoReply(jsonBody)
-
-        case .InsuranceReply:
-            sureInsuranceReply(jsonBody)
-            
-            
-        default:
-            break
         }
         
         let blockKey = head!.opcode
@@ -568,6 +535,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func sendHeart() {
         if (CurrentUser.uid_ > -1) && (socket?.isConnected)!{
             SocketManager.sendData(.Heart, data: ["uid_": CurrentUser.uid_])
+        } else {
+            XCGLogger.debug("心跳包异常")
         }
         performSelector(#selector(SocketManager.sendHeart), withObject: nil, afterDelay: 15)
 
@@ -656,111 +625,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func obtainTripReply(jsonBody: JSON?) {
-        if try! jsonBody?.rawData().length <= 0 {
-            postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
-        } else {
-            if let tripList = jsonBody!.dictionaryObject!["trip_list_"] as? Array<Dictionary<String, AnyObject>> {
-                var lastOrderID = 0
-                for trip in tripList {
-                    let hodotemerInfo = HodometerInfo(value: trip)
-                    DataManager.insertHodometerInfo(hodotemerInfo)
-                    lastOrderID = hodotemerInfo.order_id_
-                }
-                postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": lastOrderID])
-            } else {
-                postNotification(NotifyDefine.ObtainTripReply, object: nil, userInfo: ["lastOrderID": -1001])
-            }
-        }
-    }
-    
-    func checkAuthenticateResultReply(jsonBody: JSON?) {
-        if let data = jsonBody?.dictionaryObject {
-//            if let reason = data["failed_reason_"] as? String {
-//                if reason == "" {
-                    if let reviewStatus = data["review_status_"] as? Int {
-//                        DataManager.currentUser?.authentication = reviewStatus
-                        CurrentUser.auth_status_ = reviewStatus
-                    }
-//                }
-//            }
-        }
-        postNotification(NotifyDefine.CheckAuthenticateResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func checkUserCashReply(jsonBody: JSON?) {
-        if let cash = jsonBody?.dictionaryObject!["user_cash_"] as? Int {
-            DataManager.currentUser?.cash = cash
-        }
-        if let hasPasswd = jsonBody?.dictionaryObject!["has_passwd_"] as? Int {
-            DataManager.currentUser?.has_passwd_ = hasPasswd
-        }
-        postNotification(NotifyDefine.CheckUserCashResult, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func appointmentRecordReply(jsonBody: JSON?) {
-        var lastID = -9999
-        if  let recordList = jsonBody?.dictionaryObject!["data_list_"] as? Array<Dictionary<String, AnyObject>> {
-            for record in recordList {
-                let recordInfo = AppointmentInfo(value: record)
-                DataManager.insertAppointmentRecordInfo(recordInfo)
-                lastID = recordInfo.appointment_id_
-            }
-        }
-        postNotification(NotifyDefine.AppointmentRecordReply, object: nil, userInfo: ["lastID": lastID])
-    }
-    
-    func appointmentRecommendReply(jsonBody:JSON?) {
-        postNotification(NotifyDefine.AppointmentRecommendReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    // Opcode => 2000+
-    
-    func chatMessageReply(jsonBody: JSON?) {
-        //接收聊天信息
-        if ((jsonBody?.dictionaryObject?.indexForKey("code")) != nil) {
-            return
-        }
-        
-        let msg = MessageModel(value: (jsonBody?.dictionaryObject)!)
-        
-        //base64解码
-        DataManager.insertData(msg)
-        let user = DataManager.getData(UserInfoModel.self)?.filter("uid_ = \(msg.from_uid_)").first
-        if user == nil {
-            let req = UserInfoIDStrRequestModel()
-            req.uid_str_ = "\(msg.from_uid_)"
-            APIHelper.servantAPI().getUserInfoByString(req, complete: { (response) in
-                if let users = response as? [UserInfoModel] {
-                    DataManager.insertData(users[0])
-                }
-            }, error: nil)
-        }
-        if UIApplication.sharedApplication().applicationState == .Background {
-
-            let body = "\((user?.nickname_ ?? "云巅代号 \(msg.from_uid_) 的用户给您发来消息")): \(msg.content_!)"
-            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
-            userInfo["type"] = msg.msg_type_
-            userInfo["data"] = (jsonBody?.dictionaryObject)!
-            localNotify(body, userInfo: userInfo)
-        } else {
-            postNotification(NotifyDefine.ChatMessgaeNotiy, object: nil, userInfo: ["data": msg])
-        }
-    }
-    
-    func chatRecordReply(jsonBody: JSON?) {
-        
-    }
-    
-    func answerInvitationReply(jsonBody:JSON?) {
-        DataManager.modfyStatusWithDictonary((jsonBody?.dictionaryObject)!)
-    }
-    
-    func serversManInfoReply(jsonBody: JSON?) {
-        guard jsonBody != nil else { return }
-        postNotification(NotifyDefine.ServersManInfoReply, object: nil, userInfo: ["data" : (jsonBody?.dictionaryObject)!])
-    }
-    
     func decodeBase64Str(base64Str:String) throws -> String{
         //解码
         let data = NSData(base64EncodedString: base64Str, options: NSDataBase64DecodingOptions(rawValue: 0))
@@ -768,9 +632,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         return base64Decoded!
     }
     
-    func sureInsuranceReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.SureInsuranceReply, object: nil, userInfo: jsonBody?.dictionaryObject)
-    }
 }
 
 

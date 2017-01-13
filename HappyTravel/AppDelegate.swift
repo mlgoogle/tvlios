@@ -249,7 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                     
                     break
                 case MessageType.OrderAnswer.rawValue:
-                    DataManager.modfyStatusWithDictonary((jsonData.dictionaryObject)!)
+                    
                     break
                 default:
                     break

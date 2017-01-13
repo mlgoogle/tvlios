@@ -73,99 +73,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-//    
-//    func registerNotify() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.obtainTripReply(_:)), name: NotifyDefine.ObtainTripReply, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppoinmentRecommendServants(_:)), name: NotifyDefine.AppointmentRecommendReply, object: nil)
-//
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DistanceOfTravelVC.receivedAppointmentInfos(_:)), name: NotifyDefine.AppointmentRecordReply, object: nil)
-//    }
     
-//    func receivedAppoinmentRecommendServants(notification:NSNotification?) {
-//        
-//        if let data = notification?.userInfo!["data"] as? Dictionary<String, AnyObject> {
-//            servantsArray?.removeAll()
-//            if let servants = data["recommend_guide_"] as? Array<Dictionary<String, AnyObject>> {
-//                var uid_str = ""
-//                for servant in servants {
-//                    let servantInfo = UserInfo()
-//                    servantInfo.setInfo(.Servant, info: servant)
-//                    servantsArray?.append(servantInfo)
-//                    uid_str += "\(servantInfo.uid),"
-//                    
-//                }
-//                let recommendVC = RecommendServantsVC()
-//                recommendVC.isNormal = false
-//                recommendVC.appointment_id_ = currentApponitmentID
-//                recommendVC.servantsInfo = servantsArray
-//                navigationController?.pushViewController(recommendVC, animated: true)
-//                uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//                let dict:Dictionary<String, AnyObject> = ["uid_str_": uid_str]
-//                SocketManager.sendData(.GetUserInfo, data: dict)
-//            }
-//            
-//        }
-//    }
-//    
-    
-//    /**
-//     邀约行程回调记录
-//     - parameter notification:
-//     */
-//    func obtainTripReply(notification: NSNotification) {
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        let realm = try! Realm()
-//        hotometers = realm.objects(HodometerInfo.self).filter("order_id_ != 0").sorted("start_", ascending: false)
-//        
-//        let lastOrderID = notification.userInfo!["lastOrderID"] as! Int
-//        if lastOrderID == -1001 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            table?.reloadData()
-//            return
-//        }
-//        orderID = lastOrderID
-//        if segmentIndex == 0 {
-//            table?.reloadData()
-//        }
-//        
-//    }
-//    /**
-//     预约行程记录回调
-//     
-//     - parameter notification: 
-//     */
-//    func receivedAppointmentInfos(notification:NSNotification) {
-//        let realm = try! Realm()
-//        if header.state == MJRefreshState.Refreshing {
-//            header.endRefreshing()
-//            
-//        }
-//        if footer.state == MJRefreshState.Refreshing {
-//            footer.endRefreshing()
-//        }
-//        
-//        records = realm.objects(AppointmentInfo.self).sorted("appointment_id_", ascending: false)
-//        let lastID = notification.userInfo!["lastID"] as! Int
-//        if lastID == -9999 {
-//            footer.state = .NoMoreData
-//            footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
-//            table?.reloadData()
-//            return
-//        }
-//        lastRecordId = lastID
-//        if segmentIndex == 1 {
-//            table?.reloadData()
-//        }
-//        
-//    }
-//    
     func initView() {
         let segmentBGV = UIImageView()
         segmentBGV.image = UIImage.init(named: "segment-bg")
@@ -306,8 +214,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
                 uid_str += "\(servant.uid_),"
                 self.requestDetaiInfo(servant.uid_)
             }
-//            uid_str.removeAtIndex(uid_str.endIndex.predecessor())
-//            self.requestUserInfoByIDStr(uid_str)
         }) { (error) in
         }
     }
@@ -424,7 +330,6 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             let object = appointmentList![indexPath.row]
             guard object.status_ > 1  else {
                 if object.recommend_uid_ != nil {
-//                    SocketManager.sendData(.AppointmentRecommendRequest, data: ["uid_str_":  object.recommend_uid_!])
                     requestRecommendListWithUidStr(object.recommend_uid_!)
                 } else {
                     SVProgressHUD.showWainningMessage(WainningMessage: "此预约尚未确定服务者", ForDuration: 1.5, completion: nil)
