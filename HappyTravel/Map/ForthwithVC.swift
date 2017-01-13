@@ -514,7 +514,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     //根据serviceType筛选
                     if self!.serviceType != 999 {
                         //不是默认的所有服务者，进行筛选
-                        let type = servant["servicetype_"] as? Int
+                        let type = servant.servicetype_
                         //不是类型2和要筛选的服务者，忽略
                         if  type != self!.serviceType && type != 2 {
                             continue
@@ -527,7 +527,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 }
                 self!.mapView!.addAnnotations(self!.annotations)
             }
-        }, error: nil)
+            }, error: { (err) in
+                print(err)
+        })
     }
     
     func chatMessage(notification: NSNotification?) {

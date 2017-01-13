@@ -276,10 +276,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .CheckAuthenticateResultReply,
                                           .UserInfoResult,  // Done
                                           .CheckUserCashReply,
-                                          .ModifyPasswordResult,
-                                          .RegisterAccountReply,
+                                          .ModifyPasswordResult,//Done
+                                          .RegisterAccountReply,//Done
                                           .ServantDetailInfo,  // Done
-                                          
+        
                                           .SendMessageVerify,
                                           .DrawBillReply,
                                           .InvoiceInfoReply,
@@ -469,15 +469,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         }
         
         switch SockOpcode(rawValue: head!.opcode)! {
-        
-        case .ModifyPasswordResult:
-            modifyPasswordReply(head, jsonBody: jsonBody)
-            
         case .MessageVerifyResult:
             messageVerifyReply(jsonBody)
-            
-        case .RegisterAccountReply:
-            registerAccountReply(jsonBody)
             
         case .ImproveDataResult:
             improveDataReply(jsonBody)
@@ -714,22 +707,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
-        if head!.type == Int8(0) {
-            SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
-            XCGLogger.warning("Modify passwd failed")
-        } else {
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "密码修改成功", ForDuration: 1.0, completion: nil)
-            postNotification(NotifyDefine.ModifyPasswordSucceed, object: nil, userInfo: nil)
-        }
-    }
     
     func messageVerifyReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.VerifyCodeInfo, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
-    func registerAccountReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.RegisterAccountReply, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
     }
     
     func improveDataReply(jsonBody: JSON?) {
@@ -808,7 +788,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
 //            if let reason = data["failed_reason_"] as? String {
 //                if reason == "" {
                     if let reviewStatus = data["review_status_"] as? Int {
-                        DataManager.currentUser?.authentication = reviewStatus
+//                        DataManager.currentUser?.authentication = reviewStatus
+                        CurrentUser.auth_status_ = reviewStatus
                     }
 //                }
 //            }
