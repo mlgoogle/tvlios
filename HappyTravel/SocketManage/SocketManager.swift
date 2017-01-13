@@ -309,10 +309,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                                           .AppointmentServantReply,
                                           .VersionInfoReply,
                                           .ServersManInfoReply,
-                                          .ServersManInfoReply, //.RecommendServants,
-                                          .GetUpCenturionCardOriderReply,
-                                          .ClientWXPayStatusReply,
-                                          .ServerWXPayStatusReply,
+                                          .GetUpCenturionCardOriderReply, // Suspend
+                                          .ClientWXPayStatusReply,  // Done
+                                          .ServerWXPayStatusReply,  // Done
                                           .IDVerifyReply]
     
     var isConnected : Bool {
@@ -471,9 +470,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         switch SockOpcode(rawValue: head!.opcode)! {
         
-        case .RecommendServants:
-            recommonServantsReply(jsonBody)
-            
         case .ModifyPasswordResult:
             modifyPasswordReply(head, jsonBody: jsonBody)
             
@@ -512,12 +508,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             
         case .WXplaceOrderReply:
             wxPlaceOrderReply(jsonBody)
-            
-        case .ClientWXPayStatusReply:
-            clientWXPayStatusReply(jsonBody)
-            
-        case .ServerWXPayStatusReply:
-            serverWXPayStatusReply(jsonBody)
             
         case .AuthenticateUserCardReply:
             authenticateUserCardReply(jsonBody)
@@ -739,10 +729,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    func recommonServantsReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.RecommendServants, object: nil, userInfo: ["data": (jsonBody?.dictionaryObject)!])
-    }
-    
     func modifyPasswordReply(head: SockHead?, jsonBody: JSON?) {
         if head!.type == Int8(0) {
             SVProgressHUD.showWainningMessage(WainningMessage: "初始密码有误", ForDuration: 1.5, completion: nil)
@@ -826,14 +812,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func wxPlaceOrderReply(jsonBody: JSON?) {
         postNotification(NotifyDefine.WXplaceOrderReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
-    }
-    
-    func clientWXPayStatusReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
-    }
-    
-    func serverWXPayStatusReply(jsonBody: JSON?) {
-        postNotification(NotifyDefine.WXPayStatusReply, object: nil, userInfo: (jsonBody?.dictionaryObject)!)
     }
     
     func authenticateUserCardReply(jsonBody: JSON?) {

@@ -398,8 +398,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      */
     func msgAction(sender: AnyObject?) {
         let msgVC = PushMessageVC()
-//        msgVC.messageInfo = recommendServants
-        
+
         if sender?.isKindOfClass(UIButton) == false {
             navigationController?.pushViewController(msgVC, animated: false)
             if let userInfo = sender as? [NSObject: AnyObject] {

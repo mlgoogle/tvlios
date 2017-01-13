@@ -32,7 +32,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.selectionStyle = .None
         contentView.addSubview(titleLabel)
         contentView.addSubview(remarksTextView)
         remarksTextView.delegate = self

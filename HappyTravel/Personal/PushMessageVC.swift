@@ -13,6 +13,7 @@ import MJRefresh
 
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource,RefreshChatSessionListDelegate{
+    
     var currentAppointmentId = 0
     var segmentSC:UISegmentedControl?
     var selectedIndex = 0
