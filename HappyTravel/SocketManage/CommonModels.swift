@@ -154,8 +154,11 @@ class ClienWXPayStatusModel: Object {
 
 //身份证信息
 class IDverifyRequestModel: UserBaseModel {
+   
     
-    dynamic var id_card_num_:String?
+    dynamic var idcard_urlname_:String?
     
-    dynamic var id_card_name:String?
+    dynamic var idcard_num_:String?
+    
+    dynamic var idcard_name_:String?
 }
