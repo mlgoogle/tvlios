@@ -62,11 +62,19 @@ class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             SVProgressHUD.showWainningMessage(WainningMessage: "请完善信息", ForDuration: 1.5, completion: nil)
             return
         }
+        if id!.characters.count != 18  {
+            SVProgressHUD.showWainningMessage(WainningMessage: "身份证号长度有误", ForDuration: 1.5, completion: nil)
+            return
+        }
+        
+        
         let req = IDverifyRequestModel()
+        req.idcard_urlname_ = name!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
         req.uid_ = CurrentUser.uid_
-        req.id_card_name = name
-        req.id_card_num_ = id
+        req.idcard_name_ = name
+        req.idcard_num_ = id
         APIHelper.commonAPI().IDVerify(req, complete: { [weak self](response) in
+            CurrentUser.auth_status_ = 0
             SVProgressHUD.showWainningMessage(WainningMessage: "提交验证信息成功", ForDuration: 1.5, completion: { () in
                 self!.navigationController?.popViewControllerAnimated(true)
             })
