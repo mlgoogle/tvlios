@@ -39,12 +39,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         commonViewSet()
         
         initPlugins()
-        
+        checkIfShowFlashGuide()
         pushMessageRegister()
-        
         return true
     }
     
+    func checkIfShowFlashGuide() {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if userDefaults.floatForKey("guideVersion") < 1.1 {
+            window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
+            window?.rootViewController = FlashGuideViewController()
+            window?.makeKeyAndVisible()
+        }
+    }
     func initPlugins() {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
             WXApi.registerApp("wx9dc39aec13ee3158", withDescription: "vLeader-1.0(alpha)")

@@ -95,6 +95,10 @@ class RegOrLoginSelVC: UIViewController {
             MobClick.event(CommonDefine.BuriedPoint.loginBtn)
             presentViewController(loginVC!, animated: false, completion: nil)
             
+        } else if sender.tag == tags["regBtn"]! {
+            let vc = LoginWithMSGVC()
+            MobClick.event(CommonDefine.BuriedPoint.rechargeBtn)
+            presentViewController(vc, animated: false, completion: nil)
         }
     }
     

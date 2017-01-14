@@ -676,6 +676,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
     
     func sendLocality() {
+        guard serviceCitysModel?.service_city_ != nil else {return}
+        
         if serviceCitysModel?.service_city_.count > 0 {
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)

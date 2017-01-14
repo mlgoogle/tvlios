@@ -16,6 +16,9 @@ extension UIViewController {
         while present != nil {
             if let tmp = present!.presentingViewController {
                 present = tmp
+                if present!.isKindOfClass(ViewController) {
+                    break
+                }
             } else {
                 break
             }
