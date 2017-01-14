@@ -60,7 +60,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.userInteractionEnabled = true
-        firstLanch = true
         initView()
         
         registerNotify()
@@ -486,9 +485,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
     
     func getServantNearby(lat: Double, lon:Double) {
-        if firstLanch {
-            mapView!.setZoomLevel(11, animated: true)
-        }
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
@@ -624,6 +620,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if location == nil {
             location = userLocation.location
             latDiffValue = 720.0
+            mapView.setZoomLevel(11, animated: false)
+            if location != nil {
+                mapView.centerCoordinate = location!.coordinate
+            }
         } else {
             latDiffValue = location!.coordinate.latitude - userLocation.coordinate.latitude
             lonDiffvalue = location!.coordinate.longitude - userLocation.coordinate.longitude
@@ -636,9 +636,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 geoCoder.reverseGeocodeLocation(userLocation.location) { (placeMarks: [CLPlacemark]?, err: NSError?) in
                     if placeMarks?.count == 1 {
                         self.locality = (placeMarks?[0])!.locality
-                        self.titleLab?.text = self.locality
-                        XCGLogger.debug("Update locality: \(self.locality ?? "")")
-                        self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
+                        NSUserDefaults.standardUserDefaults().setValue(self.locality ?? "", forKey: UserDefaultKeys.homeLocation)
                         if CurrentUser.login_ {
                             self.getServantNearby(DataManager.curLocation!.coordinate.latitude, lon: DataManager.curLocation!.coordinate.longitude)
                         }
@@ -662,9 +660,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                 return
             }
         }
+        firstLanch = false
         
         getServantNearby(mapView.centerCoordinate.latitude, lon: mapView.centerCoordinate.longitude)
-        
+
         lastMapCenter = mapView.centerCoordinate
     }
     
@@ -673,21 +672,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         return Double(valueStr)!
     }
 
-    
-    func sendLocality() {
-        
-        guard serviceCitysModel != nil else {return}
-        if serviceCitysModel?.service_city_.count > 0 {
-            if firstLanch {
-                NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
-                mapView!.centerCoordinate = location!.coordinate
-                firstLanch = false
-            }
-        } else {
-            performSelector(#selector(sendLocality), withObject: nil, afterDelay: 1)
-        }
-    }
-    
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var id = ""
         let lat = annotation.coordinate.latitude
