@@ -464,7 +464,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             let messsages = response as? [MessageModel]
             guard messsages?.count > 0 else {return}
             for message in messsages! {
-                DataManager.insertData(message)
+//                DataManager.insertData(message)
+                ChatMessageHelper.shared.reveicedMessage(message)
             }
             self.setUnReadCount()
             }) { (error) in
