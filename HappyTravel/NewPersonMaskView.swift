@@ -72,6 +72,7 @@ class NewPersonMaskView: UIView {
     func startGuide() {
         count = 0
         guard guideTypes != nil && infoTypes != nil else {return}
+        
         UIApplication.sharedApplication().keyWindow?.addSubview(self)
         guide()
 
