@@ -39,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         commonViewSet()
         
         initPlugins()
-        checkIfShowFlashGuide()
         pushMessageRegister()
+        checkIfShowFlashGuide()
         return true
     }
     
