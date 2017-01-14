@@ -639,7 +639,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         self.titleLab?.text = self.locality
                         XCGLogger.debug("Update locality: \(self.locality ?? "")")
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
-
                         if CurrentUser.login_ {
                             self.getServantNearby(DataManager.curLocation!.coordinate.latitude, lon: DataManager.curLocation!.coordinate.longitude)
                         }
@@ -676,8 +675,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
     
     func sendLocality() {
-        guard serviceCitysModel?.service_city_ != nil else {return}
         
+        guard serviceCitysModel != nil else {return}
         if serviceCitysModel?.service_city_.count > 0 {
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
