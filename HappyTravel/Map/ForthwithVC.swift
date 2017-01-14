@@ -393,6 +393,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func loginSuccessed(notification: NSNotification) {
         banGesture(false)
+        YD_NewPersonGuideManager.startGuide()
 
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
@@ -427,7 +428,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }, error: nil)
 
 
-        YD_NewPersonGuideManager.startGuide()
+        
         APIHelper.commonAPI().cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
                 DataManager.insertData(model)
@@ -676,7 +677,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func sendLocality() {
         
-        guard serviceCitysModel != nil else {return}
+        guard serviceCitysModel?.service_city_.isKindOfClass(List<CityNameBaseInfo>) == true else {
+            performSelector(#selector(sendLocality), withObject: nil, afterDelay: 1)
+
+            return
+        }
+        
+        serviceCitysModel = DataManager.getData(CityNameInfoModel)?.first
+        
         if serviceCitysModel?.service_city_.count > 0 {
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
