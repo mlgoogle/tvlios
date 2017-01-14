@@ -330,8 +330,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func back2MyLocationAction(sender: UIButton) {
         checkLocationService()
-        firstLanch = true
         if location != nil {
+            mapView?.setZoomLevel(11.0, animated: false)
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
         
@@ -457,16 +457,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         ChatMessageHelper.shared.refreshMsgCountDelegate = self
         getUnReadMessage()
     }
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        YD_NewPersonGuideManager.startGuide()
-    }
+
     func getUnReadMessage() {
         
         APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
             let messsages = response as? [MessageModel]
             guard messsages?.count > 0 else {return}
             for message in messsages! {
-                DataManager.insertData(message)
+//                DataManager.insertData(message)
+                ChatMessageHelper.shared.reveicedMessage(message)
             }
             self.setUnReadCount()
             }) { (error) in
@@ -640,7 +639,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                         self.titleLab?.text = self.locality
                         XCGLogger.debug("Update locality: \(self.locality ?? "")")
                         self.performSelector(#selector(ForthwithVC.sendLocality), withObject: nil, afterDelay: 1)
-
                         if CurrentUser.login_ {
                             self.getServantNearby(DataManager.curLocation!.coordinate.latitude, lon: DataManager.curLocation!.coordinate.longitude)
                         }
@@ -677,6 +675,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
     
     func sendLocality() {
+        
+        guard serviceCitysModel != nil else {return}
         if serviceCitysModel?.service_city_.count > 0 {
             if firstLanch {
                 NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
