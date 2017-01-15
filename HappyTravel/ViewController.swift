@@ -11,12 +11,23 @@ import SideMenuController
 
 
 
-class ViewController: SideMenuController {
+class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
+    
+    func initSide() {
+        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
+        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
+        SideMenuController.preferences.drawing.centerPanelShadow = true
+        SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
+        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
+        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
+    }
     
     // 初始化主界面
     func initMainInterface() {
         
         let forthwithVC = ForthwithVC()
+        forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
         forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
@@ -34,23 +45,30 @@ class ViewController: SideMenuController {
             controller.addSideMenuButton()
         })
         
+        startSockThread()
+    }
+    
+    func loadGuide() {
+        let guide = FlashGuideViewController()
+        guide.modalTransitionStyle = .CrossDissolve
+        guide.delegate = self
+        embed(centerViewController: guide)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
-        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
-        SideMenuController.preferences.drawing.centerPanelShadow = true
-        SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
-        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
+        initSide()
         
-        initMainInterface()
-        
-        startSockThread()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if userDefaults.floatForKey("guideVersion") < 1.1 {
+            loadGuide()
+        } else {
+            initMainInterface()
+        }
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -67,6 +85,10 @@ class ViewController: SideMenuController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    func guideEnd() {
+        initMainInterface()
+    }
    
 }
 

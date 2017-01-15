@@ -8,11 +8,18 @@
 
 import UIKit
 
+protocol FlashGuideViewControllerDelegate: NSObjectProtocol {
+    
+    func guideEnd()
+}
+
 class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
 
+    weak var delegate:FlashGuideViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let images:Array<UIImage> = [UIImage(named: "444.jpg")!, UIImage(named: "222.jpg")!, UIImage(named: "333.jpg")!, UIImage(named: "111.jpg")!]
+        let images:Array<UIImage> = [UIImage(named: "start-guide0.jpg")!, UIImage(named: "start-guide1.jpg")!]
         let flashGuideView = FlashGuideView(imagesArray: images)
         flashGuideView.delegate = self
         view.addSubview(flashGuideView)
@@ -21,11 +28,7 @@ class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
     func selectAtLastPage() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setFloat(1.1, forKey: "guideVersion")
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyBoard.instantiateInitialViewController() as! ViewController
-        vc.modalTransitionStyle = .CrossDissolve
-//        presentViewController(vc, animated: true, completion: nil)
-        UIApplication.sharedApplication().keyWindow?.rootViewController = vc
+        delegate?.guideEnd()
     }
     
     
