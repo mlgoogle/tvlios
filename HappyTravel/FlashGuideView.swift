@@ -99,6 +99,8 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
 
         }
         
+        cell.ignoreButton.hidden = indexPath.item == count - 1
+        
         return cell
         
     }
