@@ -402,32 +402,25 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-        
-        APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { (response) in
-            if let verInfo = response as? [String: AnyObject] {
-                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
-                    if gotoUpdate {
-                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
-                    }
-                })
-            }
-            }) { (error) in
-                
+        if firstLanch {
+            APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { (response) in
+                if let verInfo = response as? [String: AnyObject] {
+                    UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
+                        if gotoUpdate {
+                            UIApplication.sharedApplication().openURL(NSURL.init(string: verInfo["DetailedInfo"] as! String)!)
+                            if (verInfo["mustUpdate"] as? Bool)! {
+                                exit(0)
+                            }
+                        }
+                    })
+                }
+                }, error: { (error) in
+                    
+            })
         }
-        let req = CheckVersionRequestModel()
-        req.app_type_ = 0
-        APIHelper.commonAPI().checkVersion(req, complete: { (response) in
-            if let verInfo = response as? [String: AnyObject] {
-                UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
-                    if gotoUpdate {
-                        UIApplication.sharedApplication().openURL(NSURL.init(string: "https://fir.im/youyuechuxing")!)
-                    }
-                })
-            }
-            }, error: nil)
+      
+        YD_NewPersonGuideManager.startGuide()
 
-
-        
         APIHelper.commonAPI().cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
                 DataManager.insertData(model)
