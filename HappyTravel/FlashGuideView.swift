@@ -13,7 +13,7 @@ protocol ShowHomePageActionDelegate:NSObjectProtocol {
     func selectAtLastPage()
 }
 
-class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, FlashGuideCellDelegate {
     
     var images:Array<UIImage>?
     var imagesUrl:Array<String>?
@@ -82,6 +82,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FlashGuideCell", forIndexPath: indexPath) as! FlashGuideCell
+        cell.delegate = self
         var count = 0
         if isImage {
             cell.setImage(images![indexPath.item])
@@ -139,6 +140,10 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.dataSource = self
     }
     
+    
+    func ignore() {
+        delegate?.selectAtLastPage()
+    }
     
     /*
      // Only override drawRect: if you perform custom drawing.
