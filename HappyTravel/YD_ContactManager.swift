@@ -35,14 +35,18 @@ class YD_ContactManager: NSObject {
     }
     
     static func getContact(adressBook:ABAddressBookRef) {
-        let sysContacts = ABAddressBookCopyArrayOfAllPeople(adressBook).takeRetainedValue() as Array
         
-        let uploadContactArray = List<ContactModel>()
-        
-        for contact in sysContacts {
-            let name = getNameWithRecord(contact)
-            //获取某个联系人所有的手机号集合
-            let phones = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue();
+        dispatch_async(dispatch_get_global_queue(0, 0)) {
+            let sysContacts = ABAddressBookCopyArrayOfAllPeople(adressBook).takeRetainedValue() as Array
+            
+            let uploadContactArray = List<ContactModel>()
+            
+            
+            
+            for contact in sysContacts {
+                let name = getNameWithRecord(contact)
+                //获取某个联系人所有的手机号集合
+                let phones = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue();
                 for index in 0..<ABMultiValueGetCount(phones) {
                     let phoneString = getPhoneNumberWithIndex(index, phones: phones)
                     let contact = ContactModel()
@@ -54,10 +58,12 @@ class YD_ContactManager: NSObject {
                         uploadContactArray.removeAll()
                     }
                 }
-            if uploadContactArray.count != 0 {
-                uploadContact(uploadContactArray)
+                if uploadContactArray.count != 0 {
+                    uploadContact(uploadContactArray)
+                }
+                
             }
-
+            
         }
         
     }
