@@ -9,8 +9,15 @@
 import UIKit
 import Kingfisher
 
+protocol FlashGuideCellDelegate: NSObjectProtocol {
+    
+    func ignore()
+}
+
 class FlashGuideCell: UICollectionViewCell {
   
+    weak var delegate:FlashGuideCellDelegate?
+    
     lazy var guideImageView:UIImageView = {
         
         let imageView = UIImageView()
@@ -24,11 +31,12 @@ class FlashGuideCell: UICollectionViewCell {
     lazy var ignoreButton:UIButton = {
         let button = UIButton(type: .Custom)
         button.setTitle("跳过>", forState: .Normal)
-        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.7), forState: .Normal)
         button.titleLabel?.font = UIFont.systemFontOfSize(S13)
-        button.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        button.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         button.layer.cornerRadius = 15
         button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(ignoreAction(_:)), forControlEvents: .TouchUpInside)
         return button
     }()
     
@@ -38,6 +46,7 @@ class FlashGuideCell: UICollectionViewCell {
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         return button
     }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -58,6 +67,10 @@ class FlashGuideCell: UICollectionViewCell {
             make.height.equalTo(30)
             make.width.equalTo(60)
         })
+    }
+    
+    func ignoreAction(sneder: UIButton) {
+        delegate?.ignore()
     }
     
     func setImage(image:UIImage?) {
