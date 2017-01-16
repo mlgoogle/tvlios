@@ -21,6 +21,17 @@ class FlashGuideCell: UICollectionViewCell {
         
     }()
     
+    lazy var ignoreButton:UIButton = {
+        let button = UIButton(type: .Custom)
+        button.setTitle("跳过>", forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(S13)
+        button.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        button.layer.cornerRadius = 15
+        button.layer.masksToBounds = true
+        return button
+    }()
+    
     lazy var showHomeButton:UIButton = {
         let button = UIButton(type: .Custom)
         button.setTitle("点击进入>>>>", forState: .Normal)
@@ -34,11 +45,19 @@ class FlashGuideCell: UICollectionViewCell {
         guideImageView.snp_makeConstraints { (make) in
             make.edges.equalTo(contentView)
         }
-       guideImageView.addSubview(showHomeButton)
+        guideImageView.addSubview(showHomeButton)
         showHomeButton.snp_makeConstraints { (make) in
             make.centerX.equalTo(guideImageView)
             make.bottom.equalTo(-100)
         }
+        
+        guideImageView.addSubview(ignoreButton)
+        ignoreButton.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(40)
+            make.top.equalTo(40)
+            make.height.equalTo(30)
+            make.width.equalTo(60)
+        })
     }
     
     func setImage(image:UIImage?) {

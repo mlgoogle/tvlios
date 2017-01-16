@@ -69,8 +69,8 @@
 		2FB95D141DED413400BBA506 /* passwd_box@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB95D131DED413400BBA506 /* passwd_box@3x.png */; };
 		2FB9E75D1E2779CA00766040 /* IDVerifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */; };
 		2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB9E75E1E28BC5400766040 /* UIViewControllerExt.swift */; };
-		2FB9E7621E2B8F7300766040 /* start-guide0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2FB9E7601E2B8F7300766040 /* start-guide0.jpg */; };
-		2FB9E7631E2B8F7300766040 /* start-guide1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2FB9E7611E2B8F7300766040 /* start-guide1.jpg */; };
+		2FB9E76A1E2C649400766040 /* start-guide0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB9E7681E2C649400766040 /* start-guide0.png */; };
+		2FB9E76B1E2C649400766040 /* start-guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB9E7691E2C649400766040 /* start-guide1.png */; };
 		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
@@ -459,8 +459,8 @@
 		2FB95D131DED413400BBA506 /* passwd_box@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "passwd_box@3x.png"; sourceTree = "<group>"; };
 		2FB9E75C1E2779CA00766040 /* IDVerifyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IDVerifyVC.swift; path = Personal/IDVerifyVC.swift; sourceTree = "<group>"; };
 		2FB9E75E1E28BC5400766040 /* UIViewControllerExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewControllerExt.swift; path = Common/UIViewControllerExt.swift; sourceTree = "<group>"; };
-		2FB9E7601E2B8F7300766040 /* start-guide0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "start-guide0.jpg"; sourceTree = "<group>"; };
-		2FB9E7611E2B8F7300766040 /* start-guide1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "start-guide1.jpg"; sourceTree = "<group>"; };
+		2FB9E7681E2C649400766040 /* start-guide0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "start-guide0.png"; sourceTree = "<group>"; };
+		2FB9E7691E2C649400766040 /* start-guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "start-guide1.png"; sourceTree = "<group>"; };
 		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
@@ -1181,8 +1181,8 @@
 		6E6795DC1E2793A200D4378E /* NewPersonGuide */ = {
 			isa = PBXGroup;
 			children = (
-				2FB9E7601E2B8F7300766040 /* start-guide0.jpg */,
-				2FB9E7611E2B8F7300766040 /* start-guide1.jpg */,
+				2FB9E7681E2C649400766040 /* start-guide0.png */,
+				2FB9E7691E2C649400766040 /* start-guide1.png */,
 				6E6796131E2880A900D4378E /* newperson-appointment@2x.png */,
 				6E6796141E2880A900D4378E /* newperson-appointment@3x.png */,
 				6E6796151E2880A900D4378E /* newperson-appointmentInfo@2x.png */,
@@ -1632,7 +1632,6 @@
 				BF6E9D7C1DE2FD4500F32CCE /* side-bg@2x.png in Resources */,
 				6E67961A1E2880A900D4378E /* newperson-appointmentInfo@3x.png in Resources */,
 				BF6E9D0F1DE2FD4500F32CCE /* nav-personal@2x.png in Resources */,
-				2FB9E7631E2B8F7300766040 /* start-guide1.jpg in Resources */,
 				BF6E9D381DE2FD4500F32CCE /* service-disable@3x.png in Resources */,
 				BF6E9D3D1DE2FD4500F32CCE /* share-wechat@2x.png in Resources */,
 				BF6E9D4B1DE2FD4500F32CCE /* default-head@2x.png in Resources */,
@@ -1652,6 +1651,7 @@
 				6E6796181E2880A900D4378E /* newperson-appointment@3x.png in Resources */,
 				BF6E9D2C1DE2FD4500F32CCE /* middle-level-disable@3x.png in Resources */,
 				BF6E9D1E1DE2FD4500F32CCE /* dingji-level-disable@2x.png in Resources */,
+				2FB9E76B1E2C649400766040 /* start-guide1.png in Resources */,
 				6E67960C1E287A9000D4378E /* newperson-menu@3x.png in Resources */,
 				BF6E9D1C1DE2FD4500F32CCE /* blackCardIcon.png in Resources */,
 				BF6E9D731DE2FD4500F32CCE /* pay-selected@3x.png in Resources */,
@@ -1770,7 +1770,6 @@
 				BF6E9D531DE2FD4500F32CCE /* guide-star-fill@2x.png in Resources */,
 				BF6E9CFF1DE2FD4500F32CCE /* city-selector@3x.png in Resources */,
 				6E6796191E2880A900D4378E /* newperson-appointmentInfo@2x.png in Resources */,
-				2FB9E7621E2B8F7300766040 /* start-guide0.jpg in Resources */,
 				2F5F2D4B1DC19C6300EB5773 /* README.txt in Resources */,
 				BF6E9D241DE2FD4500F32CCE /* hotel@2x.png in Resources */,
 				6E6796031E287A9000D4378E /* newperson-assistant@2x.png in Resources */,
@@ -1791,6 +1790,7 @@
 				6E6796041E287A9000D4378E /* newperson-assistant@3x.png in Resources */,
 				BF6E9D011DE2FD4500F32CCE /* guide-tips@2x.png in Resources */,
 				6E67960E1E287A9000D4378E /* newperson-menuInfo@3x.png in Resources */,
+				2FB9E76A1E2C649400766040 /* start-guide0.png in Resources */,
 				BF6E9D1D1DE2FD4500F32CCE /* centurion-card-tag@2x.png in Resources */,
 				BF6E9D5C1DE2FD4500F32CCE /* invoice@3x.png in Resources */,
 				BF6E9D661DE2FD4500F32CCE /* lv2@2x.png in Resources */,

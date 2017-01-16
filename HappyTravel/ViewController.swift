@@ -63,11 +63,11 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         initSide()
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        if userDefaults.floatForKey("guideVersion") < 1.1 {
+//        if userDefaults.floatForKey("guideVersion") < 1.1 {
             loadGuide()
-        } else {
-            initMainInterface()
-        }
+//        } else {
+//            initMainInterface()
+//        }
 
     }
     
