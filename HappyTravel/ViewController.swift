@@ -48,6 +48,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         startSockThread()
     }
     
+    
     func loadGuide() {
         let guide = FlashGuideViewController()
         guide.modalTransitionStyle = .CrossDissolve
