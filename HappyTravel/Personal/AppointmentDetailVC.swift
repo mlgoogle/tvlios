@@ -143,7 +143,7 @@ class AppointmentDetailVC: UIViewController {
         APIHelper.consumeAPI().requestComment(model, complete: { (response) in
             self.commentModel = response as? OrderCommentModel
             guard self.commentModel != nil else {return}
-            let isCommited = self.commentModel?.user_score_ != 0 || self.commentModel!.service_score_ != 0
+            let isCommited = self.commentModel?.user_score_ != 0 || self.commentModel!.service_score_ != 0 || self.commentModel?.remarks_ != nil
             self.commitBtn?.enabled = !isCommited
             self.commitBtn?.setTitle("发表评论", forState: .Normal)
             self.tableView.reloadData()
@@ -243,7 +243,8 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             commonCell = cell
             cell.setAppointmentInfo(appointmentInfo)
             
-            guard commentModel != nil else {
+            guard commentModel != nil else {return cell}
+            guard commentModel?.service_score_  != 0 || commentModel?.user_score_ != 0 || commentModel?.remarks_ != nil else {
                 return cell
             }
             cell.serviceSocre = commentModel?.service_score_
@@ -275,13 +276,13 @@ extension AppointmentDetailVC:UITableViewDelegate, UITableViewDataSource {
             commonCell = cell
             cell.setAppointmentInfo(appointmentInfo)
 
-            guard service_score_  != 0 || user_score_ != 0 else {
+            guard commentModel != nil else {return cell}
+            guard commentModel?.service_score_  != 0 || commentModel?.user_score_ != 0 || commentModel?.remarks_ != nil else {
                 return cell
             }
-            cell.serviceSocre = service_score_
-            cell.userScore = user_score_
-            cell.remark = remarks_
-
+            cell.serviceSocre = commentModel?.service_score_
+            cell.userScore = commentModel?.user_score_
+            cell.remark = commentModel?.remarks_
             return cell
         }
 

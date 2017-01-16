@@ -214,9 +214,9 @@ class IdentCommentCell: UITableViewCell, UITextViewDelegate {
         XCGLogger.debug("\(sender.tag)")
         let tmp = sender.tag / ((tags["starBGView"]! * 10 + 1) * 10)
         if tmp == 0 {
-            servantStar = sender.tag % ((tags["starBGView"]! * 10) * 10) + 1
+           serviceStar  = sender.tag % ((tags["starBGView"]! * 10) * 10) + 1
         } else {
-            serviceStar = sender.tag % ((tags["starBGView"]! * 10 + 1) * 10) + 1
+            servantStar = sender.tag % ((tags["starBGView"]! * 10 + 1) * 10) + 1
         }
         let tag = sender.tag % 100
         if let bgView = contentView.viewWithTag(tags["bgView"]!) {
