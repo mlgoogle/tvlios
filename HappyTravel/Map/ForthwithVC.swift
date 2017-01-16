@@ -674,26 +674,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     }
 
     
-    func sendLocality() {
-        
-        guard serviceCitysModel?.service_city_.isKindOfClass(List<CityNameBaseInfo>) == true else {
-            performSelector(#selector(sendLocality), withObject: nil, afterDelay: 1)
-
-            return
-        }
-        
-        serviceCitysModel = DataManager.getData(CityNameInfoModel)?.first
-        
-        if serviceCitysModel?.service_city_.count > 0 {
-            if firstLanch {
-                NSUserDefaults.standardUserDefaults().setValue(locality ?? "", forKey: UserDefaultKeys.homeLocation)
-                mapView!.centerCoordinate = location!.coordinate
-                firstLanch = false
-            }
-        } else {
-            performSelector(#selector(sendLocality), withObject: nil, afterDelay: 1)
-        }
-    }
 
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var id = ""
