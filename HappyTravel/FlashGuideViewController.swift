@@ -19,7 +19,7 @@ class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let images:Array<UIImage> = [UIImage(named: "start-guide0.jpg")!, UIImage(named: "start-guide1.jpg")!]
+        let images:Array<UIImage> = [UIImage(named: "start-guide0")!, UIImage(named: "start-guide1")!]
         let flashGuideView = FlashGuideView(imagesArray: images)
         flashGuideView.delegate = self
         view.addSubview(flashGuideView)
