@@ -317,8 +317,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func screenAction(title:String) {
         self.titleBtn?.setTitle(title, forState: .Normal)
         self.titleBtn?.selected = false
-        let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
-        let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
+        let lat = mapView!.centerCoordinate.latitude
+        let lon = mapView!.centerCoordinate.longitude
         getServantNearby(lat, lon: lon)
 
     }

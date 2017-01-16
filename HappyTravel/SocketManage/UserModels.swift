@@ -52,7 +52,7 @@ class UserInfoModel: UserModel {
     
     dynamic var login_:Bool = false
     //请求周边服务者返回信息中的字段
-    dynamic var servicetype_:Int = -1 //0商务，1休闲, 2既是商务又是休闲
+    dynamic var servicetype_:Int = 2 //0商务，1休闲, 2既是商务又是休闲
 }
 
 

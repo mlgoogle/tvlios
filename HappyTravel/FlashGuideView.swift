@@ -91,7 +91,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
             cell.setImageUrl(imagesUrl![indexPath.item])
         }
         if indexPath.item == count - 1 {
-            cell.showHomeButton.hidden = false
+            cell.showHomeButton.hidden = true
             cell.showHomeButton.addTarget(self, action: #selector(FlashGuideView.showHomePage), forControlEvents: .TouchUpInside)
             
         } else {
