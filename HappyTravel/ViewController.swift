@@ -25,7 +25,6 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     
     // 初始化主界面
     func initMainInterface() {
-        
         let forthwithVC = ForthwithVC()
         forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
@@ -47,6 +46,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         
         startSockThread()
     }
+    
     
     func loadGuide() {
         let guide = FlashGuideViewController()

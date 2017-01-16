@@ -45,7 +45,6 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.snp_makeConstraints { (make) in
             make.edges.equalTo(self)
         }
-        
         imagesUrl = imagesUrlArray
         isImage = false
         collectionView.delegate = self

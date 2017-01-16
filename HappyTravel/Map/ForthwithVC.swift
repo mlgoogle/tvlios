@@ -392,6 +392,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     func loginSuccessed(notification: NSNotification) {
         banGesture(false)
+        YD_NewPersonGuideManager.startGuide()
 
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
@@ -417,8 +418,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     
             })
         }
-        
+      
         YD_NewPersonGuideManager.startGuide()
+
         APIHelper.commonAPI().cityNameInfo({ (response) in
             if let model = response as? CityNameInfoModel {
                 DataManager.insertData(model)
@@ -663,6 +665,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let valueStr = String(format: "%.2f",value)
         return Double(valueStr)!
     }
+
+    
 
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var id = ""

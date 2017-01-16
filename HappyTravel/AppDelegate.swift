@@ -39,7 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         commonViewSet()
         
         initPlugins()
-        
         pushMessageRegister()
         return true
     }
