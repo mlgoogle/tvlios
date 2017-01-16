@@ -561,6 +561,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     func onPacketData(data: NSData) {
         let packet: SocketDataPacket = SocketDataPacket(data: data)
+        
+        
         SocketRequestManage.shared.notifyResponsePacket(packet)
     }
     
