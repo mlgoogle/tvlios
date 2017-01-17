@@ -15,7 +15,9 @@ class UserAPI: SocketAPI {
     func autoLogin() -> Bool {
         return NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.Passwd) != nil
     }
-    
+    /**
+     登录
+     */
     func login(model: LoginModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Login, model: model)
         SVProgressHUD.showProgressMessage(ProgressMessage: "登录中...")
@@ -36,6 +38,9 @@ class UserAPI: SocketAPI {
     }
     
 
+    /**
+     上传用户通讯录
+     */
     func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .UploadContactRequest, model: model)
         startRequest(packet, complete: { (response) in
@@ -44,6 +49,12 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
 
+    /**
+     获取用户认证状态
+     
+     - parameter complete:
+     - parameter error:
+     */
     func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {
         let model = UserBaseModel()
         model.uid_ = CurrentUser.uid_
@@ -53,6 +64,12 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
     
+    /**
+     获取用户余额
+     
+     - parameter complete:
+     - parameter error:
+     */
     func cash(complete: CompleteBlock?, error: ErrorBlock?) {
         let model = UserBaseModel()
         model.uid_ = CurrentUser.uid_
@@ -75,7 +92,13 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(RegisterAccountModel.classForCoder()))
         }, error: error)
     }
-    
+    /**
+     修改用户信息
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func modifyUserInfo(model: ModifyUserInfoModel, complete: CompleteBlock?, error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .SendImproveData, model: model)
         startRequest(packet, complete: { (response) in

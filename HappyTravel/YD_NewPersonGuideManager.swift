@@ -80,8 +80,6 @@ class YD_NewPersonGuideManager: NSObject {
     
     static func setInfoTypes() -> Array<GuideDirection>{
         
-        
-        
         return [GuideDirection.Right,GuideDirection.Left,GuideDirection.Right,GuideDirection.Left,GuideDirection.Left]
     }
     static func setGuideTypes() -> Array<GuideDirection>{

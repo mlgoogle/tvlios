@@ -16,8 +16,8 @@ class YD_ContactManager: NSObject {
     static let contacts_list = "contacts_list"
     static let username = "name"
     static let phone_num = "phone_num"
-    static var requestCount = 0
-    static var compeleteCount = 0
+    static var requestCount = 0//记录请求个数
+    static var compeleteCount = 0//记录请求完成次数
     
     static func getPersonAuth() {
         let adressRef = ABAddressBookCreateWithOptions(nil, nil).takeRetainedValue()
@@ -47,6 +47,14 @@ class YD_ContactManager: NSObject {
                 let name = getNameWithRecord(contact)
                 //获取某个联系人所有的手机号集合
                 let phones = ABRecordCopyValue(contact, kABPersonPhoneProperty).takeRetainedValue();
+                
+                /**
+                 *  有可能通讯录数量过多，所以这里分包上传 当数量超过200 上传一次
+                 *
+                 *  @param phones
+                 *
+                 *  @return
+                 */
                 for index in 0..<ABMultiValueGetCount(phones) {
                     let phoneString = getPhoneNumberWithIndex(index, phones: phones)
                     let contact = ContactModel()
@@ -58,10 +66,10 @@ class YD_ContactManager: NSObject {
                         uploadContactArray.removeAll()
                     }
                 }
-                if uploadContactArray.count != 0 {
-                    uploadContact(uploadContactArray)
-                }
                 
+            }
+            if uploadContactArray.count != 0 {
+                uploadContact(uploadContactArray)
             }
             
         }
@@ -70,10 +78,17 @@ class YD_ContactManager: NSObject {
     
     
     static func getPhoneNumberWithIndex(index:Int, phones:ABMultiValue!)-> String {
+        
         var  phoneString = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as! String
+    
+        
+        //过滤其他无用字符
         let setToRemove = NSCharacterSet(charactersInString: "0123456789").invertedSet
+        
         let array = phoneString.componentsSeparatedByCharactersInSet(setToRemove)
+        
         phoneString = array.joinWithSeparator("")
+        
         if phoneString.hasPrefix("86") {
             let index = phoneString.startIndex.advancedBy(2)
             phoneString = phoneString.substringFromIndex(index)
