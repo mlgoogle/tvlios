@@ -40,20 +40,26 @@ class ChatMessageHelper: NSObject {
                             
                     })
                 }
+                
+                self?.reveicedMessage(messageModel!)
+                
                 if UIApplication.sharedApplication().applicationState == .Background {
-                    
                     var content = messageModel!.content_!
                     if messageModel?.msg_type_ == MessageType.Location.rawValue {
                         content = "[位置分享]"
                     }
-                    let body = "\((userModel?.nickname_ ?? "云巅代号 \(messageModel!.from_uid_) 的用户给您发来消息")): \(content)"
+                    var body = ""
+                    if userModel?.nickname_ != nil {
+                        body = "\(userModel!.nickname_!): \(content)"
+                    } else {
+                        body = "您有一条新的消息"
+                    }
                     var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
                     userInfo["type"] = messageModel!.msg_type_
                     userInfo["data"] = messageModel?.toDictionary()
                     self?.localNotify(body, userInfo: userInfo)
                 }
 
-                self?.reveicedMessage(messageModel!)
             }
             
         }
