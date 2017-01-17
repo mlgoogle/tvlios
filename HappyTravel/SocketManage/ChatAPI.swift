@@ -10,6 +10,14 @@ import Foundation
 
 class ChatAPI: SocketAPI {
     
+    
+    /**
+     发送聊天消息
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func chat(model:ChatModel, complete: CompleteBlock?, error: ErrorBlock?) {
         
         let packet = SocketDataPacket(opcode: .SendChatMessage, model: model, type: .Chat)
@@ -19,7 +27,13 @@ class ChatAPI: SocketAPI {
             }, error: error)
     }
     
-    
+    /**
+     请求离线消息
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func requestUnReadMessage(model:UnReadMessageRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         
         let packet = SocketDataPacket(opcode: .UnreadMessageRequest, model: model, type: .Chat)
@@ -27,7 +41,11 @@ class ChatAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModels(MessageModel.classForCoder(), listKey: "msg_list_"))
             }, error: error)
     }
-    
+    /**
+     设置聊天消息接受block
+     
+     - parameter complete: 
+     */
     func setReceiveMsgBlock(complete:CompleteBlock) {
         SocketRequestManage.shared.receiveChatMsgBlock = { (response) in
             let jsonResponse = response as! SocketJsonResponse

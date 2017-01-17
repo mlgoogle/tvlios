@@ -58,21 +58,40 @@ class NewPersonMaskView: UIView {
     }
     
 
+    /**
+     填充蒙版照片信息
+     
+     - parameter guideImages:
+     - parameter infoImages:
+     */
     func setImages(guideImages:Array<String>, infoImages:Array<String>) {
         self.guideImages = guideImages
         self.infoImages = infoImages
     }
+    /**
+     设置需要展示的图片相对于info的位置
+     
+     - parameter guideTypes:
+     - parameter infoTypes:
+     */
     func setTypes(guideTypes:Array<GuideDirection>, infoTypes:Array<GuideDirection>) {
         self.guideTypes = guideTypes
         self.infoTypes = infoTypes
     }
+    /**
+     设置需要展示的图片的位置
+     
+     - parameter frames:
+     */
     func setFrames(frames:Array<CGRect>) {
         frameXYs = frames
     }
+    /**
+     开始蒙版提示
+     */
     func startGuide() {
         count = 0
         guard guideTypes != nil && infoTypes != nil else {return}
-        
         UIApplication.sharedApplication().keyWindow?.addSubview(self)
         guide()
 
