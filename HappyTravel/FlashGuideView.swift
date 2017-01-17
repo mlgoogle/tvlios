@@ -66,7 +66,6 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         }
         images = imagesArray
         isImage = true
-        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.registerClass(FlashGuideCell.self, forCellWithReuseIdentifier: "FlashGuideCell")
