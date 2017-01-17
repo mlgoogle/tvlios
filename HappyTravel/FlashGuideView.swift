@@ -29,7 +29,10 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         layout.scrollDirection = .Horizontal
         let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         collectionView.pagingEnabled = true
+        collectionView.alwaysBounceVertical = false
+        collectionView.alwaysBounceHorizontal = false
         collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.bounces = false
         return collectionView
     }()
     
@@ -45,9 +48,12 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.snp_makeConstraints { (make) in
             make.edges.equalTo(self)
         }
+        
         imagesUrl = imagesUrlArray
         isImage = false
+        collectionView.contentSize = CGSizeMake((UIScreen.mainScreen().bounds.size.width * CGFloat(imagesUrl!.count - 1)), 0)
         collectionView.delegate = self
+        
         collectionView.dataSource = self
         collectionView.registerClass(FlashGuideCell.self, forCellWithReuseIdentifier: "FlashGuideCell")
         collectionView.reloadData()
@@ -60,6 +66,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         }
         images = imagesArray
         isImage = true
+        collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.registerClass(FlashGuideCell.self, forCellWithReuseIdentifier: "FlashGuideCell")
