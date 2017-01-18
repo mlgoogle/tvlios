@@ -328,9 +328,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         do {
             if !socket!.isConnected {
-                #if false  // true: 测试环境    false: 正式环境
+                #if true  // true: 测试环境    false: 正式环境
                     let ip:String = "61.147.114.78"
-                    let port:UInt16 = 10007
+                    let port:UInt16 = 10002
 //                    let ip:String = "192.168.8.111"
 //                    let port:UInt16 = 10001
                 #else
