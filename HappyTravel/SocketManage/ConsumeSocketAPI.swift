@@ -25,7 +25,7 @@ class ConsumeSocketAPI: SocketAPI{
             complete?((response as? SocketJsonResponse)?.responseModels(rspModel, listKey: "data_list_"))
             }, error: error)
     }
-    
+    //请求黑卡消费记录
     func requsetCenturionCardRecordList(model:CenturionCardRecordRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionCardConsumedRequest, model: model)
         startRequest(packet, complete: { (response) in
@@ -41,7 +41,13 @@ class ConsumeSocketAPI: SocketAPI{
             }
             }, error: error)
     }
-    
+    /**
+     请求预约推荐服务者列表
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func requestAppointmentRecommendList(model:AppointmentRecommendRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .AppointmentRecommendRequest, model: model)
         startRequest(packet, complete: { (response) in
@@ -49,6 +55,9 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
     }
     
+    /**
+     请求预约详情
+     */
     func requestOrderDetail(model:OrderDetailRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
         
         let packet = SocketDataPacket(opcode: .AppointmentDetailRequest, model: model)
@@ -59,7 +68,13 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
         
     }
-    
+    /**
+     请求订单评论
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func requestComment(model:CommentDetaiRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CheckCommentDetail, model: model ,type: .Chat)
         startRequest(packet, complete: { (response) in
@@ -70,7 +85,13 @@ class ConsumeSocketAPI: SocketAPI{
             complete?(model)
             }, error: error)
     }
-    
+    /**
+     评论订单
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:
+     */
     func commentForOrder(model:CommentForOrderModel,complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .EvaluateTripRequest, model: model,type: .Chat)
         startRequest(packet, complete: { (response) in
@@ -83,7 +104,13 @@ class ConsumeSocketAPI: SocketAPI{
             }, error: error)
         
     }
-    
+    /**
+     开票所含服务
+     
+     - parameter model:
+     - parameter complete:
+     - parameter error:    
+     */
     func serviceDetail(model: ServiceDetailRequestModel, complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .ServiceDetailRequest, model: model)
         startRequest(packet, complete: { (response) in

@@ -10,21 +10,37 @@ import Foundation
 
 
 class CommonAPI: SocketAPI {
-    
+
+    /**
+     请求技能标签信息
+     
+     - parameter complete:
+     - parameter error:
+     */
     func skills(complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .SkillsInfoRequest)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(SkillsModel.classForCoder()))
             }, error: error)
     }
-    
+    /**
+     请求黑卡信息
+     
+     - parameter complete:
+     - parameter error:
+     */
     func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
             }, error: error)
     }
-    
+    /**
+     请求黑卡价格信息
+     
+     - parameter complete:
+     - parameter error:    
+     */
     func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
         startRequest(packet, complete: { (response) in
