@@ -49,6 +49,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     //筛选弹框
     var alertCtrl:UIAlertController?
     weak var rightLabel:UILabel?
+    
+    var forcedUpdate = true
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -123,6 +126,22 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         }
 
         appointmentView.commitBtn?.enabled = true
+        
+        if forcedUpdate {
+            APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { [weak self](response) in
+                if let verInfo = response as? [String: AnyObject] {
+                    self?.forcedUpdate = verInfo["mustUpdate"] as! Bool
+                    UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: verInfo["mustUpdate"] as! Bool, result: { (gotoUpdate) in
+                        if gotoUpdate {
+                            UIApplication.sharedApplication().openURL(NSURL.init(string: verInfo["DetailedInfo"] as! String)!)
+                        }
+                    })
+                }
+                }, error: { (error) in
+                    
+            })
+        }
+        
     }
     
     func banGesture(ban: Bool) {
@@ -402,23 +421,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             }
         }
         
-        if firstLanch {
-            APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { (response) in
-                if let verInfo = response as? [String: AnyObject] {
-                    UpdateManager.checking4Update(verInfo["newVersion"] as! String, buildVer: verInfo["buildVersion"] as! String, forced: (verInfo["mustUpdate"] as? Bool)!, result: { (gotoUpdate) in
-                        if gotoUpdate {
-                            UIApplication.sharedApplication().openURL(NSURL.init(string: verInfo["DetailedInfo"] as! String)!)
-                            if (verInfo["mustUpdate"] as? Bool)! {
-                                exit(0)
-                            }
-                        }
-                    })
-                }
-                }, error: { (error) in
-                    
-            })
-        }
-      
         YD_NewPersonGuideManager.startGuide()
 
         APIHelper.commonAPI().cityNameInfo({ (response) in
@@ -434,6 +436,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
             req.device_token_ = dt
+            req.uid_ = CurrentUser.uid_
             APIHelper.commonAPI().regDevice(req, complete: nil, error: nil)
         }
         
