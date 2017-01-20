@@ -61,6 +61,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         super.viewDidLoad()
         view.userInteractionEnabled = true
         initView()
+        YD_ContactManager.checkIfUploadContact()
         
         registerNotify()
     }
