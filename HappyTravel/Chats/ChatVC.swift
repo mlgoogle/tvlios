@@ -274,7 +274,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         unowned let weakSelf = self
         
         selectedServcie = service
-        YD_ContactManager.checkIfUploadContact()
+//        YD_ContactManager.checkIfUploadContact()
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
             weakSelf.daysSureAction(nil, targetDays: 1)

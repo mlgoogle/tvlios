@@ -56,9 +56,30 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         super.init(frame: frame)
         
         initView()
-       
+       registerNotification()
+    }
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    func registerNotification() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    func keyboardWillShow(notification: NSNotification?) {
+        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
+        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets = inset
+        
+        
+        table?.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: (table!.numberOfSections - 1)), atScrollPosition: .Bottom, animated: true)
     }
     
+    func keyboardWillHide(notification: NSNotification?) {
+        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
+        table?.contentInset = inset
+        table?.scrollIndicatorInsets =  inset
+    }
     func initView() {
         table = UITableView(frame: CGRectZero, style: .Grouped)
         table?.delegate = self
@@ -622,14 +643,18 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
             
             skillStr = skillStr.substringToIndex(skillStr.endIndex.predecessor())
         }
+        var remarkText = remarksTextView?.text
         
+        if remarkText == "建议填写时间、地点等" {
+            remarkText = ""
+        }
         let model = AppointmentTripBaseInfo()
         model.uid_ = Int64(CurrentUser.uid_)
         model.city_code_ = (cityInfoBase?.city_code_)!
         model.start_time_ = Int64(startDate!.timeIntervalSince1970)
         model.end_time_ = Int64(startDate!.timeIntervalSince1970)
         model.skills_ = skillStr
-        model.remarks_ = remarksTextView?.text ?? ""
+        model.remarks_ = remarkText ?? ""
         model.is_other_ = agent == false ? 0 : 1
         model.other_name_ = agent == true ? name! : ""
         model.other_gender_ = agent == true ? (gender == true ? 1 : 0) : 3
@@ -663,6 +688,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         commitBtn?.enabled = false
     }
     
+
     // MARK: - SkillTreeVCDelegate
     func endEdit(skills: Array<Dictionary<SkillModel, Bool>>) {
         self.skills = skills
