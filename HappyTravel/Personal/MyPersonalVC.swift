@@ -252,9 +252,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             make.bottom.equalTo(view)
         }
         
-        let itemsTitle = ["钱包", "我的消费", "客服", "设置"] // "黑卡会员", 
-        let itemsIcon = ["side-wallet", "side-wallet", "side-travel", "side-service", "side-settings"]
-        for index in 0...itemsTitle.count - 1 {
+        let itemsTitle = ["钱包", "我的消费", "客服", "设置"]
+        let itemsIcon = ["side-wallet", "side-travel", "side-service", "side-settings"]
+        for index in 0..<itemsTitle.count {
             let itemBtn = UIButton()
             itemBtn.tag = 10000 + index
             itemBtn.backgroundColor = UIColor.clearColor()
@@ -264,7 +264,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             itemBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
             itemBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
             itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
-            itemBtn.addTarget(self, action: #selector(MyPersonalVC.importantOptAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            itemBtn.addTarget(self, action: #selector(importantOptAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
             importantNavVew.addSubview(itemBtn)
             itemBtn.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(importantNavVew.snp_left).offset(35)
@@ -278,13 +278,13 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         let feedbackBtn = UIButton()
         feedbackBtn.tag = 10011
         feedbackBtn.backgroundColor = UIColor.clearColor()
-        feedbackBtn.setImage(UIImage.init(named: "side-complain"), forState: UIControlState.Normal)
+        feedbackBtn.setImage(UIImage.init(named: "side-complain"), forState: .Normal)
         feedbackBtn.setTitle("无情吐槽", forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
-        feedbackBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+        feedbackBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        feedbackBtn.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
+        feedbackBtn.contentHorizontalAlignment = .Left
         feedbackBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
-        feedbackBtn.addTarget(self, action: #selector(MyPersonalVC.feedbackAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        feedbackBtn.addTarget(self, action: #selector(feedbackAction(_:)), forControlEvents: .TouchUpInside)
         importantNavVew.addSubview(feedbackBtn)
         feedbackBtn.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(importantNavVew.snp_left).offset(35)
@@ -302,19 +302,15 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //            sideMenuController?.toggle()
 
         case 10000:
-            XCGLogger.defaultInstance().debug("钱包")
              MobClick.event(CommonDefine.BuriedPoint.walletbtn)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10001:
-            XCGLogger.defaultInstance().debug("我的行程")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToDistanceOfTravelVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10002:
-            XCGLogger.defaultInstance().debug("客服")
             callSrevant()
         case 10003:
-            XCGLogger.defaultInstance().debug("设置")
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToSettingsVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         default:
