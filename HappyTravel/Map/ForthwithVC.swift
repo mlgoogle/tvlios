@@ -159,7 +159,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
             
             guard !isShowLocationInfo else {return}
-            let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许V领队使用定位服务", preferredStyle: .Alert)
+            let alert = UIAlertController.init(title: "提示", message: "定位服务异常：请确定定位服务已开启，并允许优悦出行使用定位服务", preferredStyle: .Alert)
             let goto = UIAlertAction.init(title: "前往设置", style: .Default, handler: { (action) in
                 if #available(iOS 10, *) {
                     UIApplication.sharedApplication().openURL(NSURL.init(string: UIApplicationOpenSettingsURLString)!)
@@ -759,9 +759,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     if let status = dict["review_status_"] as? Int {
                         CurrentUser.auth_status_ = status
                         if status != 1 {
-                            let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为V领队的正式游客",
+                            let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为优悦出行的正式游客",
                                 0: "尊敬的游客，您的认证尚未通过审核，在审核成功后将为您开通查看服务者信息的权限",
-                                2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为V领队的正式游客"]
+                                2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为优悦出行的正式游客"]
                             let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[status], preferredStyle: .Alert)
                             let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in

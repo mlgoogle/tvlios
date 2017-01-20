@@ -154,7 +154,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func handleCenturionCardRequest(isRefresh:Bool) {
         footer.state = .NoMoreData
-        footer.setTitle("多乎哉 不多矣", forState: .NoMoreData)
+        footer.setTitle("没有更多信息", forState: .NoMoreData)
         APIHelper.consumeAPI().requsetCenturionCardRecordList(CenturionCardRecordRequestModel(), complete: { (response) in
             self.endRefresh()
             }) { (error) in
