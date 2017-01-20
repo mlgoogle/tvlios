@@ -19,7 +19,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
     }()
     
     
-    var remarksTextView:UITextView = {
+   lazy var remarksTextView:UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFontOfSize(S15)
         textView.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
@@ -27,6 +27,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
         textView.layer.cornerRadius = 5
         textView.layer.masksToBounds = true
         textView.returnKeyType = .Done
+        textView.text = "建议填写时间、地点等"
         return textView
     }()
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -61,6 +62,7 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n")
         {
@@ -69,6 +71,17 @@ class AppointmentRemarksCell: UITableViewCell, UITextViewDelegate {
         }
         
         return true;
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "建议填写时间、地点等"
+        }
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView.text == "建议填写时间、地点等" {
+            textView.text = ""
+        }
     }
     override func awakeFromNib() {
         super.awakeFromNib()

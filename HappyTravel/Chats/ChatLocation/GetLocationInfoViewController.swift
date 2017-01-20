@@ -206,7 +206,6 @@ extension GetLocationInfoViewController:MAMapViewDelegate, AMapSearchDelegate{
             guard placeMarks?.count > 0 else {return}
             for placeMark in placeMarks! {
                 
-                print("name == \(placeMark.name)\n")
 
                 self.city = placeMark.locality
                 let poiModel = POIInfoModel()

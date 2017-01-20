@@ -54,11 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             var key = "62f33d0af1098f28ceed54c86ea21890"
             if let id = NSBundle.mainBundle().bundleIdentifier {
                 if id == "com.yundian.enterprise.trip" {
-                    key = "62f33d0af1098f28ceed54c86ea21890"
-//                    key = "11feec2b7ad127ae156d72aa08f2342e"
+                    key = "4bb6a0b7762c3f6881048a57d9d64bef"
                 } else if id == "com.yundian.trip" {
-//                    key = "50bb1e806f1d2c1a797e6e789563e334"
-                    key = "7c6f2b0d4d35fce64803e99efb2fbd55"
+                    key = "62f33d0af1098f28ceed54c86ea21890"
                 }
             }
             AMapServices.sharedServices().apiKey = key
@@ -114,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         //注册消息推送
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
             GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
-        
             let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
