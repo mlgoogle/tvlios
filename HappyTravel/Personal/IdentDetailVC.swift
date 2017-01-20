@@ -152,11 +152,14 @@ class IdentDetailVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let cell = tableView.dequeueReusableCellWithIdentifier("IdentCommentCell", forIndexPath: indexPath) as! IdentCommentCell
             cell.setInfo(hodometerInfo)
             commonCell = cell
-            if commentModel != nil {
-                cell.serviceSocre = commentModel?.service_score_
-                cell.userScore = commentModel?.user_score_
-                cell.remark = commentModel?.remarks_
+            
+            guard commentModel != nil else {return cell}
+            guard commentModel?.service_score_  != 0 || commentModel?.user_score_ != 0 || commentModel?.remarks_ != nil else {
+                return cell
             }
+            cell.serviceSocre = commentModel?.service_score_
+            cell.userScore = commentModel?.user_score_
+            cell.remark = commentModel?.remarks_
             return cell
         }
         

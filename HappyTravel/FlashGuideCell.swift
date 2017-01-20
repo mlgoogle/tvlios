@@ -9,8 +9,15 @@
 import UIKit
 import Kingfisher
 
+protocol FlashGuideCellDelegate: NSObjectProtocol {
+    
+    func ignore()
+}
+
 class FlashGuideCell: UICollectionViewCell {
   
+    weak var delegate:FlashGuideCellDelegate?
+    
     lazy var guideImageView:UIImageView = {
         
         let imageView = UIImageView()
@@ -21,12 +28,25 @@ class FlashGuideCell: UICollectionViewCell {
         
     }()
     
+    lazy var ignoreButton:UIButton = {
+        let button = UIButton(type: .Custom)
+        button.setTitle("跳过>", forState: .Normal)
+        button.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.7), forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(S13)
+        button.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        button.layer.cornerRadius = 15
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(ignoreAction(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }()
+    
     lazy var showHomeButton:UIButton = {
         let button = UIButton(type: .Custom)
         button.setTitle("点击进入>>>>", forState: .Normal)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         return button
     }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -34,11 +54,23 @@ class FlashGuideCell: UICollectionViewCell {
         guideImageView.snp_makeConstraints { (make) in
             make.edges.equalTo(contentView)
         }
-       guideImageView.addSubview(showHomeButton)
+        guideImageView.addSubview(showHomeButton)
         showHomeButton.snp_makeConstraints { (make) in
             make.centerX.equalTo(guideImageView)
             make.bottom.equalTo(-100)
         }
+        
+        guideImageView.addSubview(ignoreButton)
+        ignoreButton.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(40)
+            make.top.equalTo(40)
+            make.height.equalTo(30)
+            make.width.equalTo(60)
+        })
+    }
+    
+    func ignoreAction(sneder: UIButton) {
+        delegate?.ignore()
     }
     
     func setImage(image:UIImage?) {

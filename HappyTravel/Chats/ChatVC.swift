@@ -158,7 +158,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         msgList = DataManager.getData(ChatSessionModel.self)?.filter("uid_ = \(servantInfo!.uid_)").first?.msgList
-        ChatMessageHelper.shared.delegate = self
         initView()
         
     }
@@ -166,7 +165,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        
+        ChatMessageHelper.shared.delegate = self
+
         //如果是客服聊天则直接return
 //        guard servantInfo?.uid > -1 && servantInfo?.uid != 50 else {return} // uid:50 客服临时账号
         guard servantInfo?.uid_ > -1 else {return} // uid:50 客服临时账号
@@ -174,7 +174,6 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
             let msgItem = UIBarButtonItem.init(title: "立即邀约", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(ChatVC.invitationAction(_:)))
             navigationItem.rightBarButtonItem = msgItem
         }
-        
         if servantDetail == nil {
             let servant = UserBaseModel()
             servant.uid_ = servantInfo!.uid_
@@ -189,6 +188,8 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        ChatMessageHelper.shared.delegate = nil
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
     }
@@ -273,7 +274,7 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         unowned let weakSelf = self
         
         selectedServcie = service
-        
+        YD_ContactManager.checkIfUploadContact()
         alertController?.dismissViewControllerAnimated(true, completion: {
             //移除天数选择,默认一天
             weakSelf.daysSureAction(nil, targetDays: 1)
@@ -553,8 +554,10 @@ public class ChatVC : UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
     }
-    
+
+
 }
+
 
 
 
@@ -563,6 +566,7 @@ extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate, Receiv
     func receivedChatMessgae(message: MessageModel) {
         
         guard message.from_uid_ == servantInfo!.uid_ else {return}
+        DataManager.readMessage(message.from_uid_)
         reloadTable()
     }
 

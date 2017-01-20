@@ -198,7 +198,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 appointmentRequestModel.to_uid_ = personalInfo!.uid_
                 appointmentRequestModel.from_uid_ = CurrentUser.uid_
                 APIHelper.servantAPI().appointment(appointmentRequestModel, complete: { (response) in
-
+                    YD_ContactManager.checkIfUploadContact()
                     let model = response as? AppointmentServantReplyMdoel
                     guard model != nil else {return}
                     var msg = "预约发起成功，等待对方接受邀请"
@@ -212,6 +212,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                         }
                     }
                     }, error: { (error) in
+                        YD_ContactManager.checkIfUploadContact()
+                        let msg = "预约失败，请稍后再试"
+                        let alert = UIAlertController.init(title: "预约状态", message: msg, preferredStyle: .Alert)
+                        let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                        alert.addAction(action)
+                        self.presentViewController(alert, animated: true, completion: nil)
                 })
                 
             } else {
@@ -426,6 +432,7 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
             req.service_id_ = selectedServcie!.service_id_
             req.day_count_ = targetDays
             APIHelper.servantAPI().invitaion(req, complete: { [weak self](response) in
+                YD_ContactManager.checkIfUploadContact()
                 if let model = response as? HodometerInfoModel {
                     if UIApplication.sharedApplication().applicationState == .Background {
                         let body = "系统消息: 您有新的行程消息!"
@@ -442,6 +449,8 @@ extension ServantPersonalVC:CitysSelectorSheetDelegate {
                     }
                 }
                 }, error: { [weak self](err) in
+                    YD_ContactManager.checkIfUploadContact()
+
                     let msg = "邀约失败，请稍后再试"
                     let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
                     let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)

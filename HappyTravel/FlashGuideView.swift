@@ -13,7 +13,7 @@ protocol ShowHomePageActionDelegate:NSObjectProtocol {
     func selectAtLastPage()
 }
 
-class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
+class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, FlashGuideCellDelegate {
     
     var images:Array<UIImage>?
     var imagesUrl:Array<String>?
@@ -29,7 +29,10 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         layout.scrollDirection = .Horizontal
         let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         collectionView.pagingEnabled = true
+        collectionView.alwaysBounceVertical = false
+        collectionView.alwaysBounceHorizontal = false
         collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.bounces = false
         return collectionView
     }()
     
@@ -48,7 +51,9 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         
         imagesUrl = imagesUrlArray
         isImage = false
+        collectionView.contentSize = CGSizeMake((UIScreen.mainScreen().bounds.size.width * CGFloat(imagesUrl!.count - 1)), 0)
         collectionView.delegate = self
+        
         collectionView.dataSource = self
         collectionView.registerClass(FlashGuideCell.self, forCellWithReuseIdentifier: "FlashGuideCell")
         collectionView.reloadData()
@@ -82,6 +87,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FlashGuideCell", forIndexPath: indexPath) as! FlashGuideCell
+        cell.delegate = self
         var count = 0
         if isImage {
             cell.setImage(images![indexPath.item])
@@ -91,13 +97,15 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
             cell.setImageUrl(imagesUrl![indexPath.item])
         }
         if indexPath.item == count - 1 {
-            cell.showHomeButton.hidden = false
+            cell.showHomeButton.hidden = true
             cell.showHomeButton.addTarget(self, action: #selector(FlashGuideView.showHomePage), forControlEvents: .TouchUpInside)
             
         } else {
             cell.showHomeButton.hidden = true
 
         }
+        
+        cell.ignoreButton.hidden = indexPath.item == count - 1
         
         return cell
         
@@ -137,6 +145,10 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.dataSource = self
     }
     
+    
+    func ignore() {
+        delegate?.selectAtLastPage()
+    }
     
     /*
      // Only override drawRect: if you perform custom drawing.
