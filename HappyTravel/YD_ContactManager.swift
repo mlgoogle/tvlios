@@ -43,6 +43,9 @@ class YD_ContactManager: NSObject {
             
             
             
+            let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", "^1[3|4|5|7|8][0-9]\\d{8}$")
+
+
             for contact in sysContacts {
                 let name = getNameWithRecord(contact)
                 //获取某个联系人所有的手机号集合
@@ -57,6 +60,9 @@ class YD_ContactManager: NSObject {
                  */
                 for index in 0..<ABMultiValueGetCount(phones) {
                     let phoneString = getPhoneNumberWithIndex(index, phones: phones)
+                    if predicate.evaluateWithObject(phoneString) == false {
+                        continue
+                    }
                     let contact = ContactModel()
                     contact.name = name
                     contact.phone_num = phoneString
@@ -128,8 +134,8 @@ class YD_ContactManager: NSObject {
         let currentTimeInterval = NSDate().timeIntervalSince1970
         let timeDistance = currentTimeInterval - timeCount
         //60 * 60 * 24 * 30 = 2592000 一个月上传一次
+        getPersonAuth()
         if timeDistance > 2592000 {
-            getPersonAuth()
             return true
         }
         return false
