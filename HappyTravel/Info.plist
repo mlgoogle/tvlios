@@ -91,12 +91,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>访问相机</string>
+	<key>NSContactsUsageDescription</key>
+	<string>访问通讯录</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>NSLocationWhenInUseUsageDescription</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>访问相册</string>
-	<key>NSContactsUsageDescription</key>
-	<string>访问通讯录</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

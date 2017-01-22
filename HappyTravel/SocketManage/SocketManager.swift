@@ -320,7 +320,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     
     override init() {
         super.init()
-        
         socket = GCDAsyncSocket.init(delegate: self, delegateQueue: dispatch_get_main_queue())
         connectSock()
     }
@@ -329,10 +328,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         do {
             if !socket!.isConnected {
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "61.147.114.78"
-                    let port:UInt16 = 10003
-//                    let ip:String = "192.168.8.111"
-//                    let port:UInt16 = 10001
+//                    let ip:String = "61.147.114.78"
+//                    let port:UInt16 = 10003
+                    let ip:String = "192.168.8.111"
+                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10002
@@ -341,11 +340,8 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                 try socket?.connectToHost(ip, onPort: port, withTimeout: 5)
             }
         } catch GCDAsyncSocketError.ClosedError {
-            
         } catch GCDAsyncSocketError.ConnectTimeoutError {
-            
         } catch {
-            
         }
     }
     
@@ -601,13 +597,13 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func socket(sock: GCDAsyncSocket, shouldTimeoutWriteWithTag tag: Int, elapsed: NSTimeInterval, bytesDone length: UInt) -> NSTimeInterval {
         return 0
     }
+
     
     deinit {
         socket?.disconnect()
     }
     
     // MARK: -
-    
     func localNotify(body: String?, userInfo: [NSObject: AnyObject]?) {
         let localNotify = UILocalNotification()
         localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
