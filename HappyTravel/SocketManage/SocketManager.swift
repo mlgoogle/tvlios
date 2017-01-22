@@ -577,13 +577,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 
-                if tmpNewRequestType.contains(SockOpcode.init(rawValue: head.opcode)!) {
-                    let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
-                    onPacketData(packetData)
-                } else {
-                    let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
-                    recvData(head, body: bodyData)
+                if let sockOpcode = SockOpcode.init(rawValue: head.opcode) {
+                    if tmpNewRequestType.contains(sockOpcode) {
+                        let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
+                        onPacketData(packetData)
+                    } else {
+                        let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
+                        recvData(head, body: bodyData)
+                    }
                 }
+                
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
             } else {
                 break
