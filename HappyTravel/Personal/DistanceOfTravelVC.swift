@@ -168,16 +168,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             if let models = response as? [HodometerInfoModel] {
                 if model.order_id_ == 0 {
                     DataManager.removeData(HodometerInfoModel.self)
-                    self!.refreshData()
+                    self?.refreshData()
                 }
                 DataManager.insertDatas(models)
-                self!.orderID = models.last!.order_id_
-                self!.endRefresh()
+                self?.orderID = models.last!.order_id_
+                self?.endRefresh()
             } else {
-                self!.noMoreData()
+                self?.noMoreData()
             }
         }) { [weak self](error) in
-            self!.noMoreData()
+            self?.noMoreData()
         }
     }
     
@@ -188,16 +188,16 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
             if let models = response as? [AppointmentInfoModel] {
                 if model.last_id_ == 0 {
                     DataManager.removeData(AppointmentInfoModel.self)
-                    self!.refreshData()
+                    self?.refreshData()
                 }
                 DataManager.insertDatas(models)
-                self!.lastRecordId = models.last!.appointment_id_
-                self!.endRefresh()
+                self?.lastRecordId = models.last!.appointment_id_
+                self?.endRefresh()
             } else {
-                self!.noMoreData()
+                self?.noMoreData()
             }
         }) { [weak self](error) in
-            self!.noMoreData()
+            self?.noMoreData()
         }
     }
 

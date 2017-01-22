@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         registerUMAnalytics()
     }
     func registerUMAnalytics() {
+        MobClick.setCrashReportEnabled(false)
         UMAnalyticsConfig.sharedInstance().appKey = "584e18ca1c5dd07e7d001a19"
         UMAnalyticsConfig.sharedInstance().channelId = ""
         MobClick.startWithConfigure(UMAnalyticsConfig.sharedInstance())
@@ -73,8 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         MobClick.setAppVersion(version)
         //日志加密设置
         MobClick.setEncryptEnabled(true)
-        
-        MobClick.setCrashReportEnabled(false)
+
         
 
         
