@@ -231,7 +231,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             if let model = response as? UserInfoModel {
                 let chatVC = ChatVC()
                 chatVC.servantInfo = model
-                self!.navigationController?.pushViewController(chatVC, animated: true)
+                self?.navigationController?.pushViewController(chatVC, animated: true)
             } else {
                 SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
             }
@@ -414,7 +414,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              *  余额不足
              */
             if CurrentUser.user_cash_ < price {
-                weakSelf!.moneyIsTooLess()
+                weakSelf?.moneyIsTooLess()
                 return
             }
             /**
@@ -422,7 +422,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
              */
             
             let dict:[String: AnyObject] = ["uid_": CurrentUser.uid_,
-                "wanted_lv_": self!.selectedIndex+1]
+                "wanted_lv_": self!.selectedIndex + 1]
 //            SVProgressHUD.showProgressMessage(ProgressMessage: "获取订单信息...")
             SVProgressHUD.show()
             SocketManager.sendData(.GetUpCenturionCardOriderRequest, data: dict) { [weak self](result) in
@@ -455,7 +455,7 @@ class CenturionCardVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         req.passwd_ = password
         APIHelper.consumeAPI().payForInvitation(req, complete: { [weak self](response) in
             if let model = response as? PayForInvitationModel {
-                self!.payForBuyCardRsp(model)
+                self?.payForBuyCardRsp(model)
             }
             }, error: { (err) in
                 SVProgressHUD.dismiss()

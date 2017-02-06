@@ -488,9 +488,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         servantNearbyModel.longitude_ = lon
         APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
-                self!.annotations.removeAll()
+                self?.annotations.removeAll()
                 for servant in models {
-                    self!.servantsInfo[servant.uid_] = servant
+                    self?.servantsInfo[servant.uid_] = servant
                     DataManager.insertData(servant)
                     let latitude = servant.latitude_
                     let longitude = servant.longitude_
@@ -498,20 +498,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
                     point.title = "\(servant.uid_)"
                     //根据serviceType筛选
-                    if self!.serviceType != 999 {
+                    if self?.serviceType != 999 {
                         //不是默认的所有服务者，进行筛选
                         let type = servant.servicetype_
                         //不是类型2和要筛选的服务者，忽略
-                        if  type != self!.serviceType && type != 2 {
+                        if  type != self?.serviceType && type != 2 {
                             continue
                         }
                     }
-                    self!.annotations.append(point)
+                    self?.annotations.append(point)
                 }
-                if self!.mapView!.annotations.count > 0{
-                    self!.mapView?.removeAnnotations(self!.mapView!.annotations)
+                if self?.mapView!.annotations.count > 0{
+                    self?.mapView?.removeAnnotations(self?.mapView!.annotations)
                 }
-                self!.mapView!.addAnnotations(self!.annotations)
+                self?.mapView!.addAnnotations(self?.annotations)
             }
             }, error: { (err) in
                 print(err)
@@ -719,7 +719,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     DataManager.insertData(model)
                     let servantPersonalVC = ServantPersonalVC()
                     servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-                    self!.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
                 }
             }, error: nil)
             
@@ -767,7 +767,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                             let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
                                     let controller = IDVerifyVC()  // UploadUserPictureVC()
-                                    self!.navigationController!.pushViewController(controller, animated: true)
+                                    self?.navigationController!.pushViewController(controller, animated: true)
                                 })
                             })
                             alert.view.tintColor = UIColor.grayColor()
@@ -778,7 +778,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                                 alert.addAction(ok)
                             }
                             alert.addAction(cancel)
-                            self!.presentViewController(alert, animated: true, completion: nil)
+                            self?.presentViewController(alert, animated: true, completion: nil)
                         }
                     }
                 }

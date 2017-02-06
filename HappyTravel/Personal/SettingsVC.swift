@@ -242,6 +242,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var size = 0.00
         for file in files! {
             let filePath = path?.stringByAppendingString("/\(file)")
+            guard filePath != nil else {return 0}
             let fileAtrributes = try! NSFileManager.defaultManager().attributesOfItemAtPath(filePath!)
             for (attrKey,attrVale) in fileAtrributes {
                 if attrKey == NSFileSize {
@@ -275,10 +276,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if let dict = response as? [String: AnyObject] {
                 if let status = dict["review_status_"] as? Int {
                     CurrentUser.auth_status_ = status
-                    self!.authUserCardCode = status
-                    self!.settingOptingValue![0][2] = self!.autoStatus
+                    self?.authUserCardCode = status
+                    self?.settingOptingValue![0][2] = self!.autoStatus
                     dispatch_async(dispatch_get_main_queue(), {
-                        self!.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+                        self?.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
                     })
                 }
             }

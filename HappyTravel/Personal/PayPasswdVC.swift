@@ -186,7 +186,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
                 model.change_type_ = changeType
                 weak var weakSelf = self
                 APIHelper.userAPI().setupPaymentCode(model, complete: { (response) in
-                    SVProgressHUD.showWainningMessage(WainningMessage: "支付密码\(weakSelf!.payPasswdStatus == .NotSetup ? "设置" : "修改")成功", ForDuration: 1.5, completion: { () in
+                    SVProgressHUD.showWainningMessage(WainningMessage: "支付密码\(weakSelf?.payPasswdStatus == .NotSetup ? "设置" : "修改")成功", ForDuration: 1.5, completion: { () in
                         weakSelf?.navigationController?.popViewControllerAnimated(true)
                     })
                     }, error: { (err) in

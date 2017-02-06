@@ -232,7 +232,7 @@ class CenturionCardDetailVC: UIViewController, UITableViewDelegate, UITableViewD
                 if let model = response as? UserInfoModel {
                     let chatVC = ChatVC()
                     chatVC.servantInfo = model
-                    self!.navigationController?.pushViewController(chatVC, animated: true)
+                    self?.navigationController?.pushViewController(chatVC, animated: true)
                 } else {
                     SVProgressHUD.showWainningMessage(WainningMessage: "当前没有在线服务管家", ForDuration: 1.5, completion: nil)
                 }

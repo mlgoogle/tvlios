@@ -44,9 +44,9 @@ class InvoiceIncludeServiceVC: UIViewController {
         req.oid_str_ = oid_str_
         APIHelper.consumeAPI().serviceDetail(req, complete: { [weak self](response) in
             if let model = response as? ServiceDetailModel {
-                model.oid_str_ = self!.oid_str_
-                self!.services = model
-                self!.tableView?.reloadData()
+                model.oid_str_ = self?.oid_str_
+                self?.services = model
+                self?.tableView?.reloadData()
             }
         }, error: nil)
 

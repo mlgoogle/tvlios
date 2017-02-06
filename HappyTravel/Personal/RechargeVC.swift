@@ -91,13 +91,13 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     
                     let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                            self!.navigationController?.popViewControllerAnimated(true)
+                            self?.navigationController?.popViewControllerAnimated(true)
                         })
                         
                     })
                     
                     alert.addAction(ok)
-                    self!.presentViewController(alert, animated: true, completion: nil)
+                    self?.presentViewController(alert, animated: true, completion: nil)
                 }
             }
             }, error: nil)
@@ -452,7 +452,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         APIHelper.commonAPI().WXPlaceOrder(req, complete: { [weak self](response) in
             if let model = response as? WXPlcaeOrderModel {
                 XCGLogger.debug(model)
-                self!.jumpToBizPay(model)
+                self?.jumpToBizPay(model)
             }
         }, error: nil)
     
