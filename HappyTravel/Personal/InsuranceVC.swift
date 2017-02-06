@@ -124,14 +124,14 @@ class InsuranceVC: UIViewController {
 //                                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
 //                                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
 //                                alert.addAction(action)
-//                                self!.presentViewController(alert, animated: true, completion: nil)
+//                                self?.presentViewController(alert, animated: true, completion: nil)
 //                            }
 //                            }, error: { [weak self](err) in
 //                                let msg = "邀约失败，请稍后再试"
 //                                let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
 //                                let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
 //                                alert.addAction(action)
-//                                self!.presentViewController(alert, animated: true, completion: nil)
+//                                self?.presentViewController(alert, animated: true, completion: nil)
 //                            })
                     })
                 }

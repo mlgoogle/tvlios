@@ -38,8 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
         commonViewSet()
         
-        initPlugins()
         pushMessageRegister()
+        initPlugins()
         return true
     }
     
@@ -111,7 +111,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func pushMessageRegister() {
         //注册消息推送
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
-            GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
+            
+            
+            var appid = "d2YVUlrbRU6yF0PFQJfPkA"
+            var appkey =  "yEIPB4YFxw64Ag9yJpaXT9"
+            var appSecret = "TMQWRB2KrG7QAipcBKGEyA"
+            if let id = NSBundle.mainBundle().bundleIdentifier {
+                if id == "com.yundian.trip" {
+                    appid = "rx572izgdt5Sdfomxbel1"
+                    appkey = "LBW2Ex5cT79VIHunoC6Zg6"
+                    appSecret = "hYTWpJOK8L6ge1etzQnlV2"
+                }
+                
+            }
+            
+            GeTuiSdk.startSdkWithAppId(appid, appKey: appkey, appSecret: appSecret, delegate: self)
+//            GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
             let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
             UIApplication.sharedApplication().registerForRemoteNotifications()

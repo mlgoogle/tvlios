@@ -272,8 +272,8 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         req.verify_type_ = 1
         APIHelper.commonAPI().verifyCode(req, complete: { [weak self](response) in
             if let model = response as? VerifyInfoModel {
-                self!.verifyCodeTime = model.timestamp_
-                self!.token = model.token_
+                self?.verifyCodeTime = model.timestamp_
+                self?.token = model.token_
             }
         }, error: { (err) in
             SVProgressHUD.showErrorMessage(ErrorMessage: "发送验证码失败，请稍后再试！", ForDuration: 1, completion: nil)

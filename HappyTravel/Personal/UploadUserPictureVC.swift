@@ -89,7 +89,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
         APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
             if let model = response as? UploadPhotoModel {
                 SVProgressHUD.dismiss()
-                self!.token = model.img_token_!
+                self?.token = model.img_token_!
             }
         }, error: nil)
         
@@ -154,13 +154,13 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                         weak var weakSelf = self
                         APIHelper.userAPI().authenticateUserCard(model, complete: { (response) in
                             if let authorModel = response as? AuthenticateUserCardModel {
-                                weakSelf!.review_status = authorModel.review_status_
+                                weakSelf?.review_status = authorModel.review_status_
                                 //更改认证状态为认证中
                                 CurrentUser.auth_status_ = authorModel.review_status_
                             }
-                            weakSelf!.navigationItem.rightBarButtonItem?.enabled = true
+                            weakSelf?.navigationItem.rightBarButtonItem?.enabled = true
                             
-                            if weakSelf!.review_status == 0 {
+                            if weakSelf?.review_status == 0 {
                                 SVProgressHUD.dismiss()
                                 let alter: UIAlertController = UIAlertController.init(title: "提交成功", message: nil, preferredStyle: .Alert)
                                 let backActiong: UIAlertAction = UIAlertAction.init(title: "确定", style: .Default) { (action) in
@@ -168,7 +168,7 @@ class UploadUserPictureVC: UIViewController,UITableViewDelegate,UITableViewDataS
                                     self.navigationController?.popViewControllerAnimated(true)
                                 }
                                 alter.addAction(backActiong)
-                                weakSelf!.presentViewController(alter, animated: true, completion: nil)
+                                weakSelf?.presentViewController(alter, animated: true, completion: nil)
                             } else {
                                 SVProgressHUD.showErrorMessage(ErrorMessage: "提交失败，请稍后再试", ForDuration: 1, completion: nil)
                             }

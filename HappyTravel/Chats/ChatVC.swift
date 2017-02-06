@@ -607,13 +607,13 @@ extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate, Receiv
                     var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
                     userInfo["type"] = PushMessage.MessageType.System.rawValue
                     userInfo["data"] = model
-                    self!.localNotify(body, userInfo: userInfo)
+                    self?.localNotify(body, userInfo: userInfo)
                 } else {
                     let msg = model.is_asked_ == 0 ? "邀约发起成功，等待对方接受邀请" : "邀约失败，您已经邀约过对方"
                     let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
                     let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
                     alert.addAction(action)
-                    self!.presentViewController(alert, animated: true, completion: nil)
+                    self?.presentViewController(alert, animated: true, completion: nil)
                 }
             }
             }, error: { [weak self](err) in
@@ -621,7 +621,7 @@ extension ChatVC:CitysSelectorSheetDelegate, SendLocationMessageDelegate, Receiv
                 let alert = UIAlertController.init(title: "邀约状态", message: msg, preferredStyle: .Alert)
                 let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
                 alert.addAction(action)
-                self!.presentViewController(alert, animated: true, completion: nil)
+                self?.presentViewController(alert, animated: true, completion: nil)
             })
     }
     

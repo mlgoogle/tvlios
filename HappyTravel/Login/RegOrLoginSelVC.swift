@@ -90,6 +90,7 @@ class RegOrLoginSelVC: UIViewController {
     }
     
     func regOrLoginSelAction(sender: UIButton) {
+        YD_ContactManager.checkIfUploadContact()
         if sender.tag == tags["loginBtn"]! {
             loginVC = LoginVC()
             MobClick.event(CommonDefine.BuriedPoint.loginBtn)

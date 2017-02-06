@@ -114,9 +114,9 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         DataManager.insertData(ticket)
                     }
                 }
-                self!.orderID = models.last!.order_id_
+                self?.orderID = models.last!.order_id_
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1)), dispatch_get_main_queue(), { () in
-                    self!.getHodometerInfos()
+                    self?.getHodometerInfos()
                 })
             } else {
                 self?.orderID = 0
@@ -143,17 +143,17 @@ class InvoiceVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         DataManager.insertData(ticket)
                     }
                 }
-                self!.lastID = models.last!.appointment_id_
+                self?.lastID = models.last!.appointment_id_
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1)), dispatch_get_main_queue(), { () in
-                    self!.getAppointmentInfos()
+                    self?.getAppointmentInfos()
                 })
             } else {
-                self!.lastID = 0
-                self!.noMoreData()
+                self?.lastID = 0
+                self?.noMoreData()
             }
         }) { [weak self](error) in
-            self!.lastID = 0
-            self!.noMoreData()
+            self?.lastID = 0
+            self?.noMoreData()
         }
     }
     

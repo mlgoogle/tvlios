@@ -78,7 +78,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         
         APIHelper.commonAPI().uploadPhotoToken( { [weak self](response) in
             if let model = response as? UploadPhotoModel {
-                self!.token = model.img_token_
+                self?.token = model.img_token_
             }
             }, error: { (err) in
                 
@@ -152,35 +152,45 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let UTF8Adress = address?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLHostAllowedCharacterSet())
         let addr = "http://restapi.amap.com/v3/geocode/geo?key=389880a06e3f893ea46036f030c94700&s=rsv3&city=35&address=\(UTF8Adress!)"
         Alamofire.request(.GET, addr).responseJSON() { response in
-            let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
-            let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
-            XCGLogger.debug("\(location)")
             
-            let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
-            self.nickname = nicknameField?.text
-            self.headerUrl = url
+            if let info = (response.result.value as? Dictionary<String, AnyObject>) {
+                
+                if let array = info["geocodes"] as? Array<Dictionary<String, AnyObject>> {
+                    
+                    let geocodes = array.first
+                    
+                    let location = (geocodes!["location"] as! String).componentsSeparatedByString(",")
+                    XCGLogger.debug("\(location)")
+                    
+                    let nicknameField = self.cells[1]?.contentView.viewWithTag(self.tags["nicknameField"]!) as? UITextField
+                    self.nickname = nicknameField?.text
+                    self.headerUrl = url
+                    
+                    let req = ModifyUserInfoModel()
+                    req.uid_ = CurrentUser.uid_
+                    req.nickname_ = self.nickname
+                    req.gender_ = self.sex
+                    req.head_url_ = url
+                    req.address_ = self.address
+                    req.longitude_ = Float.init(location[0])!
+                    req.latitude_ = Float.init(location[1])!
+                    APIHelper.userAPI().modifyUserInfo(req, complete: { [weak self](response) in
+                        SVProgressHUD.dismiss()
+                        self?.navigationController?.popViewControllerAnimated(true)
+                        CurrentUser.head_url_ = self?.headerUrl
+                        CurrentUser.nickname_ = self?.nickname
+                        CurrentUser.gender_ = self!.sex
+                        CurrentUser.address_ = self?.address
+                        CurrentUser.currentBanckCardName_ = self?.nickname
+                        CurrentUser.register_status_ = 1
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
+                        }, error: { (err) in
+                            SVProgressHUD.showWainningMessage(WainningMessage: "修改资料失败，请重试", ForDuration: 1.5, completion: nil)
+                    })
+                }
+            }
+            //            let geocodes = ((response.result.value as? Dictionary<String, AnyObject>)!["geocodes"] as! Array<Dictionary<String, AnyObject>>).first
             
-            let req = ModifyUserInfoModel()
-            req.uid_ = CurrentUser.uid_
-            req.nickname_ = self.nickname
-            req.gender_ = self.sex
-            req.head_url_ = url
-            req.address_ = self.address
-            req.longitude_ = Float.init(location[0])!
-            req.latitude_ = Float.init(location[1])!
-            APIHelper.userAPI().modifyUserInfo(req, complete: { [weak self](response) in
-                SVProgressHUD.dismiss()
-                self!.navigationController?.popViewControllerAnimated(true)
-                CurrentUser.head_url_ = self!.headerUrl
-                CurrentUser.nickname_ = self!.nickname
-                CurrentUser.gender_ = self!.sex
-                CurrentUser.address_ = self!.address
-                CurrentUser.currentBanckCardName_ = self!.nickname
-                CurrentUser.register_status_ = 1
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.ImproveDataNoticeToOthers, object: nil, userInfo: nil)
-            }, error: { (err) in
-                SVProgressHUD.showWainningMessage(WainningMessage: "修改资料失败，请重试", ForDuration: 1.5, completion: nil)
-            })
         }
     }
     

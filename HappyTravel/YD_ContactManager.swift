@@ -36,7 +36,13 @@ class YD_ContactManager: NSObject {
     
     static func getContact(adressBook:ABAddressBookRef) {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        
+        /// 创建GCD信号量 初始值设置为1
+        let semaphore = dispatch_semaphore_create(1)
+        let queue = dispatch_get_global_queue(0, 0)
+        
+        dispatch_async(queue) {
+            
             let sysContacts = ABAddressBookCopyArrayOfAllPeople(adressBook).takeRetainedValue() as Array
             
             let uploadContactArray = List<ContactModel>()
@@ -58,24 +64,32 @@ class YD_ContactManager: NSObject {
                  *
                  *  @return
                  */
-                for index in 0..<ABMultiValueGetCount(phones) {
-                    let phoneString = getPhoneNumberWithIndex(index, phones: phones)
-                    if predicate.evaluateWithObject(phoneString) == false {
-                        continue
-                    }
-                    let contact = ContactModel()
-                    contact.name = name
-                    contact.phone_num = phoneString
-                    uploadContactArray.append(contact)
-                    if uploadContactArray.count > 200 {
-                        uploadContact(uploadContactArray)
-                        uploadContactArray.removeAll()
+                
+                    for index in 0..<ABMultiValueGetCount(phones) {
+                        let phoneString = getPhoneNumberWithIndex(index, phones: phones)
+                        if predicate.evaluateWithObject(phoneString) == false {
+                            continue
+                        }
+                        let contact = ContactModel()
+                        contact.name = name
+                        contact.phone_num = phoneString
+                        uploadContactArray.append(contact)
+                        if uploadContactArray.count > 200 {
+                            uploadContact(uploadContactArray,semaphore: semaphore)
+                            uploadContactArray.removeAll()
+                            /**
+                             *  信号量值-1 卡死这个线程
+                             */
+                            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                        }
                     }
                 }
-                
-            }
+            
+            
+            
             if uploadContactArray.count != 0 {
-                uploadContact(uploadContactArray)
+                uploadContact(uploadContactArray, semaphore: semaphore)
+                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
             }
             
         }
@@ -148,12 +162,14 @@ class YD_ContactManager: NSObject {
     }
 
     
-    static func uploadContact(array:List<ContactModel>) {
+    static func uploadContact(array:List<ContactModel>, semaphore:dispatch_semaphore_t) {
         let uploadContactModel = UploadContactModel()
         requestCount += 1
         uploadContactModel.uid = CurrentUser.uid_
         uploadContactModel.contacts_list = array
         APIHelper.userAPI().uploadContact(uploadContactModel, complete: { (response) in
+            //上传完成后 信号量 +1 继续执行
+            dispatch_semaphore_signal(semaphore)
             compeleteCount += 1
             if compeleteCount == requestCount {
                 insertUploadTimeRecord()

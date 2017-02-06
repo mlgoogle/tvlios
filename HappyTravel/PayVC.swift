@@ -151,7 +151,7 @@ class PayVC: UIViewController, UITextFieldDelegate {
                 req.passwd_ = passwd!
                 APIHelper.consumeAPI().payForInvitation(req, complete: { [weak self](response) in
                     if let model = response as? PayForInvitationModel {
-                        self!.payForInvitationRsp(model)
+                        self?.payForInvitationRsp(model)
                     }
                     }, error: { (err) in
                 

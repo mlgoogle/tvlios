@@ -29,7 +29,7 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if let hasPasswd = dict["has_passwd_"] as? Int {
                     CurrentUser.has_passwd_ = hasPasswd
                 }
-                self!.walletTable?.reloadData()
+                self?.walletTable?.reloadData()
                 return
             }
             SVProgressHUD.showWainningMessage(WainningMessage: "初始化钱包环境失败，请稍后再试..", ForDuration: 1.5, completion: nil)

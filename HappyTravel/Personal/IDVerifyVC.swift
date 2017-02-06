@@ -76,7 +76,7 @@ class IDVerifyVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         APIHelper.commonAPI().IDVerify(req, complete: { [weak self](response) in
             CurrentUser.auth_status_ = 0
             SVProgressHUD.showWainningMessage(WainningMessage: "提交验证信息成功", ForDuration: 1.5, completion: { () in
-                self!.navigationController?.popViewControllerAnimated(true)
+                self?.navigationController?.popViewControllerAnimated(true)
             })
         }, error: { (err) in
             SVProgressHUD.showWainningMessage(WainningMessage: "提交验证信息失败，请稍后再试", ForDuration: 1.5, completion: nil)
