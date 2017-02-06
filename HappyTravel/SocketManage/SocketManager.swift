@@ -327,6 +327,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     func connectSock() {
         do {
             if !socket!.isConnected {
+
                 #if true  // true: 测试环境    false: 正式环境
 //                    let ip:String = "61.147.114.78"
 //                    let port:UInt16 = 10007
@@ -573,13 +574,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 
-                if tmpNewRequestType.contains(SockOpcode.init(rawValue: head.opcode)!) {
-                    let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
-                    onPacketData(packetData)
-                } else {
-                    let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
-                    recvData(head, body: bodyData)
+                if let sockOpcode = SockOpcode.init(rawValue: head.opcode) {
+                    if tmpNewRequestType.contains(sockOpcode) {
+                        let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
+                        onPacketData(packetData)
+                    } else {
+                        let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
+                        recvData(head, body: bodyData)
+                    }
                 }
+                
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
             } else {
                 break
