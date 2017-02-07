@@ -246,7 +246,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                 str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
                 let data = str.dataUsingEncoding(NSUTF8StringEncoding)
                 let jsonData = JSON.init(data: data!)
-                let push_msg_type_ = jsonData.dictionaryObject!["push_msg_type_"] as? Int
+                let push_msg_type_ = jsonData.dictionaryObject!["msg_type_"] as? Int
                 
                 if push_msg_type_ == nil {
                     return

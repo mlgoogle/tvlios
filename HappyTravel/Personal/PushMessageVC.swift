@@ -282,7 +282,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let userPushMessage = DataManager.getData(ChatSessionModel.self)!.sorted("msg_time_", ascending: false)[indexPath.row]
             
             let message = userPushMessage.msgList.last
-            if message?.push_msg_type_ == 2231 {
+            if message?.msg_type_ == MessageType.Appointment.rawValue {
                 let uid_str_ = message?.servant_id_
                 currentAppointmentId = (message?.appointment_id_)!
                 if uid_str_ != nil  {
