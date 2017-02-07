@@ -167,7 +167,7 @@ class AppointmentRecordCell: DistanceOfTravelCell {
         }
         
         if let statusLab = view!.viewWithTag(1006) as? UILabel {
-            statusLab.text = statusDict[OrderStatus(rawValue: (recordInfo?.status_)!)!]
+            statusLab.text = recordInfo?.recommend_uid_ != nil && recordInfo?.recommend_uid_ != "" ? "等待选择" : statusDict[OrderStatus(rawValue: (recordInfo?.status_)!)!]
             statusLab.textColor = statusColor[OrderStatus(rawValue: (recordInfo?.status_)!)!]
         }
         /**

@@ -202,6 +202,7 @@ class DistanceOfTravelVC: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func requestRecommendListWithUidStr(uid_str_:String) {
+        requestCount = 0
         let model = AppointmentRecommendRequestModel()
         model.uid_str_ = uid_str_
         APIHelper.consumeAPI().requestAppointmentRecommendList(model, complete: { (response) in
