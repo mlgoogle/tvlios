@@ -72,7 +72,7 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
         table?.scrollIndicatorInsets = inset
         
         
-        table?.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: (table!.numberOfSections - 1)), atScrollPosition: .Bottom, animated: true)
+        table?.scrollToRowAtIndexPath(NSIndexPath(forRow: curIndexPath?.row ?? 0, inSection: curIndexPath?.section ?? 0), atScrollPosition: .Bottom, animated: true)
     }
     
     func keyboardWillHide(notification: NSNotification?) {
@@ -516,6 +516,13 @@ class AppointmentView: UIView, UITableViewDelegate, UITableViewDataSource, UITex
     }
     
     //MARK: - UITextField
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if let cell = textField.superview?.superview as? UITableViewCell {
+            curIndexPath = table?.indexPathForCell(cell)
+        }
+        return true
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
         if textField.placeholder == "预约对象姓名" {
             name = textField.text
