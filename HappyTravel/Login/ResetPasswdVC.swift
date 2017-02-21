@@ -221,7 +221,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         model.verify_code_ = verifyCode
         model.token_ = token ?? ""
         APIHelper.userAPI().registerAccount(model, complete: { (response) in
-//            if let model = response as? RegisterAccountModel {
+            if let model = response as? RegisterAccountModel {
                 SVProgressHUD.dismiss()
                 NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
                 NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
@@ -240,7 +240,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
                         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
                         XCGLogger.debug(err)
                 })
-
+            }
             }, error: { (err) in
                 let warning = SocketRequest.errorString(err.code)
                 SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)

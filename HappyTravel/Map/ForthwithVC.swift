@@ -710,7 +710,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
             guard checkAuthStaus() else { return }
-            guard cashCheck() else { return }
+//            guard cashCheck() else { return }
 
             let servant = UserBaseModel()
             servant.uid_ = (view as! GuideTagCell).userInfo!.uid_

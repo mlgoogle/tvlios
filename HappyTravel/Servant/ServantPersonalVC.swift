@@ -116,6 +116,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
      - parameter sender:
      */
     func bottomBarAction(sender: UIButton?) {
+        /*
         if CurrentUser.has_recharged_ == 0 {
             let alert = UIAlertController.init(title: "余额不足", message: "服务者的最低价格为200元，还需充值200元", preferredStyle: .Alert)
 
@@ -132,7 +133,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             presentViewController(alert, animated: true, completion: nil)
             return
         }
-
+        */
+        
         if sender?.tag == 1001 {
             let chatVC = ChatVC()
             chatVC.servantInfo = personalInfo
@@ -197,20 +199,24 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 appointmentRequestModel.service_id_ = service!.service_id_
                 appointmentRequestModel.to_uid_ = personalInfo!.uid_
                 appointmentRequestModel.from_uid_ = CurrentUser.uid_
-                APIHelper.servantAPI().appointment(appointmentRequestModel, complete: { (response) in
+                APIHelper.servantAPI().appointment(appointmentRequestModel, complete: { [weak self](response) in
 //                    YD_ContactManager.checkIfUploadContact()
-                    let model = response as? AppointmentServantReplyMdoel
-                    guard model != nil else {return}
-                    var msg = "预约发起成功，等待对方接受邀请"
-                    if model?.is_asked_ == 1 {
-                        msg = "预约失败，您已经预约过对方"
-                        let alert = UIAlertController.init(title: "预约状态",message: msg,preferredStyle: .Alert)
-                        let action = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in })
-                        alert.addAction(action)
-                        self.presentViewController(alert, animated: true) {
-                            DataManager.removeData(ChatSessionModel.self, filter: "uid_ = \(self.appointment_id_)")
+                    if let model = response as? AppointmentServantReplyMdoel {
+                        if UIApplication.sharedApplication().applicationState == .Background {
+                            let body = "系统消息: 您有新的行程消息!"
+                            var userInfo:[NSObject: AnyObject] = [NSObject: AnyObject]()
+                            userInfo["type"] = PushMessage.MessageType.System.rawValue
+                            userInfo["data"] = model
+                            self?.localNotify(body, userInfo: userInfo)
+                        } else {
+                            let msg = model.is_asked_ == 0 ? "预约发起成功，等待对方接受邀请" : "预约失败，您已经邀约过对方"
+                            let alert = UIAlertController.init(title: "预约状态", message: msg, preferredStyle: .Alert)
+                            let action = UIAlertAction.init(title: "确定", style: .Default, handler: nil)
+                            alert.addAction(action)
+                            self?.presentViewController(alert, animated: true, completion: nil)
                         }
                     }
+                    
                     }, error: { (error) in
 //                        YD_ContactManager.checkIfUploadContact()
                         let msg = "预约失败，请稍后再试"

@@ -182,7 +182,7 @@ class InvoiceIncludeCell: UITableViewCell {
         }
         if servicePriceLabel != nil {
             
-            servicePriceLabel?.text = String(servicePrice) + "元"
+            servicePriceLabel?.text = String(servicePrice / 100) + "元"
         }
         if serviceDateLabel != nil {
             dateFormatter.dateStyle = .ShortStyle
