@@ -87,45 +87,6 @@ func isTelNumber(num:NSString)->Bool
     }  
 }
 
-// 将POIInfoModel转成字符串传给服务端
-func modelToString(poiModel:POIInfoModel)-> String {
-    
-    if poiModel.name == nil {
-        poiModel.name = "位置分享"
-    }
-    if poiModel.detail == nil {
-        poiModel.detail = "位置分享"
-    }
-    return poiModel.name! + "," + poiModel.detail! + "|" + String(poiModel.latiude) + "," + String(poiModel.longtiude)
-}
-
-// 将服务端传回的字符串转成POIInfoModel
-
-func stringToModel(content:String) -> POIInfoModel {
-    
-    let model = POIInfoModel()
-    
-    let infoArray = content.componentsSeparatedByString("|")
-    
-    let addressString = infoArray.first
-    let locationString = infoArray.last
-    
-    model.name = addressString?.componentsSeparatedByString(",").first
-    model.detail = addressString?.componentsSeparatedByString(",").last
-    
-    guard locationString != nil else {return model}
-    
-    if locationString?.componentsSeparatedByString(",").first != nil {
-        model.latiude = Double((locationString?.componentsSeparatedByString(",").first)!)!
-    }
-    if locationString?.componentsSeparatedByString(",").last != nil {
-        model.longtiude = Double((locationString?.componentsSeparatedByString(",").last)!)!
-    }
-    
-    return model
-    
-}
-
 
 class CommonDefine: NSObject {
     

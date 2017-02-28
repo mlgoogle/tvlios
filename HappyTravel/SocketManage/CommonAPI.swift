@@ -11,65 +11,6 @@ import Foundation
 
 class CommonAPI: SocketAPI {
 
-    /**
-     请求技能标签信息
-     
-     - parameter complete:
-     - parameter error:
-     */
-    func skills(complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .SkillsInfoRequest)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(SkillsModel.classForCoder()))
-            }, error: error)
-    }
-    /**
-     请求黑卡信息
-     
-     - parameter complete:
-     - parameter error:
-     */
-    func centurionCardBaseInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CenturionCardInfoRequest)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardBaseInfosModel.classForCoder()))
-            }, error: error)
-    }
-    /**
-     请求黑卡价格信息
-     
-     - parameter complete:
-     - parameter error:    
-     */
-    func centurionCardPriceInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CenturionVIPPriceRequest)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(CenturionCardPriceInfosModel.classForCoder()))
-            }, error: error)
-    }
-    //城市选择
-    func cityNameInfo(complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .GetServiceCity)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(CityNameInfoModel.classForCoder()))
-            }, error: error)
-    }
-    
-    //保险金额
-    func insuranceInfo(model: InsuranceBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsuranceRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceInfoModel.classForCoder()))
-            }, error: error)
-    }
-    //保险支付
-    func insurancePay(model: InsurancePayBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .InsurancePayRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(InsuranceSuccessModel.classForCoder()))
-            }, error: error)
-    }
-
     // 获取验证码
     func verifyCode(model: VerifyCodeRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .SendMessageVerify, model: model)
@@ -117,11 +58,4 @@ class CommonAPI: SocketAPI {
             }, error: error)
     }
     
-    // 提交身份证信息
-    func IDVerify(model: IDverifyRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .IDVerifyRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?(nil)
-            }, error: error)
-    }
 }

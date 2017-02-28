@@ -28,12 +28,6 @@ class GuideTagCell: MAAnnotationView {
         if headView == nil {
             headView = UIImageView()
             headView?.tag = 1001
-//            headView?.layer.cornerRadius = 25
-//            headView?.layer.masksToBounds = true
-////            headView?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
-//            headView?.layer.borderColor = UIColor.whiteColor().CGColor
-//            headView?.layer.borderWidth = 1
-//            headView?.backgroundColor = UIColor.grayColor()
             addSubview(headView!)
             headView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)

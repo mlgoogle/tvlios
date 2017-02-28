@@ -30,14 +30,6 @@ class UserAPI: SocketAPI {
         })
     }
     
-    func userCenturionCardInfo(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .UserCenturionCardInfoRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(UserCenturionCardInfoModel.classForCoder()))
-            }, error: error)
-    }
-    
-
     /**
      上传用户通讯录
      */
@@ -49,21 +41,6 @@ class UserAPI: SocketAPI {
             }, error: error)
     }
 
-    /**
-     获取用户认证状态
-     
-     - parameter complete:
-     - parameter error:
-     */
-    func authStatus(complete: CompleteBlock?, error: ErrorBlock?) {
-        let model = UserBaseModel()
-        model.uid_ = CurrentUser.uid_
-        let packet = SocketDataPacket(opcode: .CheckAuthenticateResult, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseJsonObject())
-            }, error: error)
-    }
-    
     /**
      获取用户余额
      
@@ -105,13 +82,7 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-    //上传身份证照片
-    func authenticateUserCard(model: AuthenticateUserCardBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .AuthenticateUserCard, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(AuthenticateUserCardModel.classForCoder()))
-            }, error: error)
-    }
+    
     //请求验证密码的正确性
     func passwdVerify(model: PasswdVerifyBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .PasswdVerifyRequest, model: model)
@@ -126,7 +97,5 @@ class UserAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
-
-
 
 }

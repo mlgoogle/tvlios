@@ -74,10 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         MobClick.setAppVersion(version)
         //日志加密设置
         MobClick.setEncryptEnabled(true)
-
-        
-
-        
+   
     }
     
     func commonViewSet() {
@@ -111,8 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func pushMessageRegister() {
         //注册消息推送
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
-            
-            
             var appid = "d2YVUlrbRU6yF0PFQJfPkA"
             var appkey =  "yEIPB4YFxw64Ag9yJpaXT9"
             var appSecret = "TMQWRB2KrG7QAipcBKGEyA"
@@ -126,7 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             }
             
             GeTuiSdk.startSdkWithAppId(appid, appKey: appkey, appSecret: appSecret, delegate: self)
-//            GeTuiSdk.startSdkWithAppId("d2YVUlrbRU6yF0PFQJfPkA", appKey: "yEIPB4YFxw64Ag9yJpaXT9", appSecret: "TMQWRB2KrG7QAipcBKGEyA", delegate: self)
             let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
@@ -136,21 +130,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
 
     //MARK: - OpenURL
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-//        AlipaySDK.defaultService().processOrderWithPaymentResult(url) { (data: [NSObject : AnyObject]!) in
-//            XCGLogger.debug("\(data)")
-//        }
-        
         return WXApi.handleOpenURL(url, delegate: self)
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        
-        
         return WXApi.handleOpenURL(url, delegate: self)
     }
 
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        
         return WXApi.handleOpenURL(url, delegate: self)
     }
     
@@ -162,35 +149,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func applicationDidEnterBackground(application: UIApplication) {
         
-//       bgTask = application.beginBackgroundTaskWithExpirationHandler {
-//            application.endBackgroundTask(self.bgTask!)
-//        self.bgTask = UIBackgroundTaskInvalid
-//        }
-//        
-//        GeTuiSdk.destroy()
-//        var timeRemain = 0 as NSTimeInterval
-//        
-//        let isInvalid  = bgTask == UIBackgroundTaskInvalid
-//        let isTimeOut = timeRemain > (10 * 60)
-//        
-//        repeat {
-//            NSThread.sleepForTimeInterval(5)
-//            if bgTask != UIBackgroundTaskInvalid {
-//                timeRemain = application.backgroundTimeRemaining
-//            }
-//        } while isInvalid && isTimeOut
-//        
-        
-        
     }
+    
     func applicationWillEnterForeground(application: UIApplication) {
-//        dispatch_async(dispatch_get_main_queue()) { 
-//            
-//            if self.bgTask != UIBackgroundTaskInvalid {
-//                application.endBackgroundTask(self.bgTask!)
-//                self.bgTask = UIBackgroundTaskInvalid
-//            }
-//        }
+
     }
     //MARK: - Notify
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -211,16 +173,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         XCGLogger.error("\(error)")
     }
 
-    
-
-    
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         let vcs = window?.rootViewController?.childViewControllers[1].childViewControllers[0].childViewControllers
         for vc in vcs! {
             if vc.isKindOfClass(ForthwithVC) {
                 if let _ = notification.userInfo!["data"] as? Dictionary<String, AnyObject> {
                     vc.navigationController?.popToRootViewControllerAnimated(false)
-                    (vc as! ForthwithVC).msgAction(notification.userInfo)
                     
                 }
                 
@@ -228,7 +186,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             }
         }
     }
-    
     
     /**
      
@@ -239,34 +196,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         application.applicationIconBadgeNumber = 0
         completionHandler(UIBackgroundFetchResult.NewData)
-        
-        if let info = userInfo["aps"] as? [String: AnyObject] {
-            if let messageDict  = info["category"] as? String {
-                var str = messageDict.stringByReplacingOccurrencesOfString("\n", withString: "", options: .LiteralSearch, range: nil)
-                str = str.stringByReplacingOccurrencesOfString(" ", withString: "", options: .LiteralSearch, range: nil)
-                let data = str.dataUsingEncoding(NSUTF8StringEncoding)
-                let jsonData = JSON.init(data: data!)
-                let push_msg_type_ = jsonData.dictionaryObject!["msg_type_"] as? Int
-                
-                if push_msg_type_ == nil {
-                    return
-                }
-                switch push_msg_type_! {
-                case MessageType.Appointment.rawValue:
-                    let pushMessage = MessageModel(value: jsonData.dictionaryObject!)
-                    pushMessage.from_uid_ = pushMessage.appointment_id_
-                    DataManager.insertData(pushMessage)
-                    
-                    break
-                case MessageType.OrderAnswer.rawValue:
-                    
-                    break
-                default:
-                    break
-                }
-            }
-            
-        }
         
     }
     

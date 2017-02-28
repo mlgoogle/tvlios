@@ -12,7 +12,6 @@ class MessageCell: UITableViewCell {
     
     var userInfo:UserInfoModel?
     
-    var msgInfo:MessageModel?
     var showDetailInfo:UIImageView = {
        let imageView = UIImageView()
         imageView.image = UIImage(named: "appointment-detail")
@@ -135,127 +134,6 @@ class MessageCell: UITableViewCell {
         }
     }
 
-    
-    func setInfo(message: MessageModel?, unreadCnt: Int) {
-        msgInfo = message
-
-        if msgInfo?.msg_type_ == PushMessage.MessageType.Appointment.rawValue {
-            
-            showDetailInfo.hidden = false
-            setAppointmentInfo(message, unreadCnt: unreadCnt)
-        } else if msgInfo?.msg_type_ ==  PushMessage.MessageType.Location.rawValue {
-            showDetailInfo.hidden = true
-            setLocationInfo(message, unreadCnt: unreadCnt)
-        } else {
-            showDetailInfo.hidden = true
-
-            setNormalInfo(message, unreadCnt: unreadCnt)
-        }
-        
-        let view = contentView.viewWithTag(101)
-
-        if let timeLab = view!.viewWithTag(1003) as? UILabel {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.timeStyle = .ShortStyle
-            dateFormatter.dateStyle = .ShortStyle
-            let dateStr = dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: NSNumber.init(longLong: message!.msg_time_).doubleValue))
-            timeLab.text = dateStr
-        }
-        
-        if let unreadCntLab = view!.viewWithTag(1103) as? UILabel {
-            
-            if unreadCnt > 0 {
-                unreadCntLab.hidden = false
-                unreadCntLab.text = "\(unreadCnt)"
-            } else {
-                unreadCntLab.hidden = true
-            }
-        }
-        
-    }
-    
-    func setNormalInfo(message: MessageModel?, unreadCnt: Int) {
-        let view = contentView.viewWithTag(101)
-
-        if let headView = view!.viewWithTag(1001) as? UIImageView {
-            var uid = 0
-            if message!.from_uid_ == CurrentUser.uid_ {
-                uid = message!.to_uid_
-            } else {
-                uid = message!.from_uid_
-            }
-            if let user = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(uid)")?.first {
-                userInfo = user
-                headView.kf_setImageWithURL(NSURL(string: userInfo!.head_url_!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-                    
-                }
-                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = userInfo!.nickname_!
-                }
-                
-                if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                    var nickname:String?
-                    if message!.from_uid_ == CurrentUser.uid_ {
-                        nickname = CurrentUser.nickname_
-                    } else {
-                        nickname = userInfo?.nickname_
-                    }
-                    msgLab.text = "\(nickname!) : \((message?.content_!)!)"
-                }
-            }
-            
-        }
-    }
-    
-    func setLocationInfo(message: MessageModel?, unreadCnt: Int) {
-        let view = contentView.viewWithTag(101)
-
-        if let headView = view!.viewWithTag(1001) as? UIImageView {
-            var uid = 0
-            if message!.from_uid_ == CurrentUser.uid_ {
-                uid = message!.to_uid_
-            } else {
-                uid = message!.from_uid_
-            }
-            if let user = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(uid)")?.first {
-                userInfo = user
-                headView.kf_setImageWithURL(NSURL(string: userInfo!.head_url_!), placeholderImage: UIImage(named: "touxiang_women"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
-
-                }
-                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = userInfo!.nickname_!
-                }
-                
-                if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                    var nickname:String?
-                    if message!.from_uid_ == CurrentUser.uid_ {
-                        nickname = CurrentUser.nickname_
-                    } else {
-                        nickname = userInfo?.nickname_
-                    }
-                    msgLab.text = "\(nickname!) : \("[位置分享]")"
-                }
-            }
-            
-        }
-        
-    }
-    
-    func setAppointmentInfo(message: MessageModel?, unreadCnt: Int) {
-        
-        let view = contentView.viewWithTag(101)
-        if let headView = view!.viewWithTag(1001) as? UIImageView {
-            headView.image = UIImage(named: "touxiang_women")
-                if let nickNameLab = view!.viewWithTag(1002) as? UILabel {
-                    nickNameLab.text = "预约推荐"
-                }
-                if let msgLab = view!.viewWithTag(1004) as? UILabel {
-                    msgLab.text = message?.content_
-
-                }
-        }
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
