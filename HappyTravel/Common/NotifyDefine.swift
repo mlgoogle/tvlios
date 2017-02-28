@@ -14,11 +14,9 @@ class NotifyDefine: NSObject {
     
     static let LoginFailed = "LoginFailed"
     
-    static let JumpToCenturionCardCenter = "JumpToCenturionCardCenter"
-    
     static let JumpToWalletVC = "JumpToWalletVC"
     
-    static let JumpToDistanceOfTravelVC = "JumpToDistanceOfTravelVC"
+    static let JumpToMessageCenter = "JumpToMessageCenter"
     
     static let JumpToSettingsVC = "JumpToSettingsVC"
     

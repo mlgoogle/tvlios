@@ -104,8 +104,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     enum SettingItem: String {
         case UserNum = "当前帐号"
         case ChangPwd = "密码修改"
-        case AuthUser = "个人认证"
-        case NoLeft = "阅后即焚"
         case ClearCache = "清除缓存"
         case UpdateVerison = "更新版本"
         case AboutUs = "关于我们"
@@ -117,23 +115,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var settingOptingValue:[[String]]?
     var authUserCardCode = CurrentUser.auth_status_
     var selectIndex: NSIndexPath?
-    var autoStatus: String {
-        get{
-            switch Int(authUserCardCode) {
-            case -1:
-                return "申请认证"
-            case 0:
-                return "认证中"
-            case 1:
-                return "已认证"
-            case 2:
-                return "认证失败，重新认证"
-            default:
-                return ""
-            }
-        }
-    }
-    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -209,13 +190,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let modifyPasswordVC = ModifyPasswordVC()
                 navigationController?.pushViewController(modifyPasswordVC, animated: true)
                 break
-            case .AuthUser:
-                if authUserCardCode == 0 || authUserCardCode == 1 {
-                    return
-                }
-                let controller = IDVerifyVC()  // UploadUserPictureVC()
-                self.navigationController!.pushViewController(controller, animated: true)
-                break
             case .ClearCache:
                 clearCacleSizeCompletion({
                     self.settingOptingValue![(self.selectIndex?.section)!][(self.selectIndex?.row)!] = String(format: "%.2f M",self.calculateCacle())
@@ -272,28 +246,15 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func initData() {
-        APIHelper.userAPI().authStatus({ [weak self](response) in
-            if let dict = response as? [String: AnyObject] {
-                if let status = dict["review_status_"] as? Int {
-                    CurrentUser.auth_status_ = status
-                    self?.authUserCardCode = status
-                    self?.settingOptingValue![0][2] = self!.autoStatus
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self?.settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
-                    })
-                }
-            }
-        }, error: nil)
-        
         var number = CurrentUser.phone_num_ ?? "***********"
         let startIndex = "...".endIndex
         let endIndex = ".......".endIndex
         number.replaceRange(startIndex..<endIndex, with: "****")
     
-        settingOption = [[.UserNum, .ChangPwd, .AuthUser ],
+        settingOption = [[.UserNum, .ChangPwd],
                          [.ClearCache, .UpdateVerison, .AboutUs],
                          [.LogoutUser]]
-        settingOptingValue = [[number, "", autoStatus],
+        settingOptingValue = [[number, ""],
                               [String(format: "%.2fM",calculateCacle()), "已是最新版本", ""],
                               [""]]
     }

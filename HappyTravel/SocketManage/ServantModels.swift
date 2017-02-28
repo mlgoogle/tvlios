@@ -10,21 +10,6 @@ import Foundation
 import RealmSwift
 
 
-class ServiceModel: Object {
-    
-    dynamic var service_id_ = -1
-    
-    dynamic var service_name_:String?
-    
-    dynamic var service_price_ = 0
-    
-    dynamic var service_type_ = 0
-    
-    dynamic var service_start_ = 0
-    
-    dynamic var service_end_ = 0
-}
-
 class ServantDetailModel: Object {
  
     dynamic var uid_ = -1
@@ -43,7 +28,6 @@ class ServantDetailModel: Object {
         return []
     }
     
-    let service_list_ = List<ServiceModel>()
 }
 
 //照片墙
@@ -63,34 +47,4 @@ class PhotoModel: Object {
 class PhotoWallModel: Object {
     let photo_list_:List<PhotoModel> = List<PhotoModel>()
     
-}
-
-class InvitationBaseRequestModel: Object {
-    
-    dynamic var from_uid_ = CurrentUser.uid_
-    
-    dynamic var to_uid_ = -1000
-    
-    dynamic var service_id_ = -1000
-    
-}
-// 发起邀约
-class InvitationRequestModel: InvitationBaseRequestModel {
-
-    dynamic var day_count_ = 1
-}
-//发起预约
-
-class AppointmentServantRequestMdoel: InvitationBaseRequestModel {
-    dynamic var appointment_id_ = 0
-}
-class AppointmentServantReplyMdoel: Object {
-    dynamic var is_asked_ = 0
-}
-// 推荐服务者
-class RecommentServantRequestModel: Object {
-    
-    dynamic var city_code_ = 0
-    
-    dynamic var recommend_type_ = 1
 }

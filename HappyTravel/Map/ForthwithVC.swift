@@ -14,34 +14,25 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorSheetDelegate, RefreshChatSessionListDelegate {
+public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     var titleLab:UILabel?
     var titleBtn:UIButton?
     var msgCountLab:UILabel?
-    var segmentSC:UISegmentedControl?
     var mapView:MAMapView?
-    let header:MJRefreshStateHeader = MJRefreshStateHeader()
     var servantsInfo:Dictionary<Int, UserInfoModel> = [:]
     var annotations:Array<MAPointAnnotation> = []
     var login = false
     
-    var serviceCitysModel:CityNameInfoModel?
-    
-    var citysAlertController:UIAlertController?
-
     var subscribeServants:Array<UserInfoModel> = []
     var locality:String?
     var location:CLLocation?
     var regOrLoginSelVC:RegOrLoginSelVC? = RegOrLoginSelVC()
     var cityCode = 0
     var firstLanch = true
-    let bottomSelector = UISlider()
-    let appointmentView = AppointmentView()
     var lastMapCenter: CLLocationCoordinate2D?
     var feedBack: YWFeedbackKit = YWFeedbackKit.init(appKey: "23519848")
     //延时测试用
-    var appointment_id_ = 0
     var isShowBaseInfo = false
     var isShowLocationInfo = false
     //服务者类型 0商务，1休闲, 999所有服务者，默认为所有服务者（服务端发送的serviceType_ 0商务，1休闲, 2既是商务又是休闲）
@@ -76,20 +67,24 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
     }
     
+    func favListAction(sender: UIButton) {
+        XCGLogger.debug("关注列表")
+    }
+    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
-            let msgBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
-            msgBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
-            msgBtn.backgroundColor = UIColor.clearColor()
-            msgBtn.addTarget(self, action: #selector(msgAction(_:)), forControlEvents: .TouchUpInside)
+            let favBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
+            favBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
+            favBtn.backgroundColor = UIColor.clearColor()
+            favBtn.addTarget(self, action: #selector(favListAction(_:)), forControlEvents: .TouchUpInside)
             
-            let msgItem = UIBarButtonItem.init(customView: msgBtn)
-            navigationItem.rightBarButtonItem = msgItem
-
+            let favItem = UIBarButtonItem.init(customView: favBtn)
+            navigationItem.rightBarButtonItem = favItem
+            
             msgCountLab = UILabel()
             msgCountLab!.backgroundColor = UIColor.redColor()
             msgCountLab!.text = ""
@@ -99,24 +94,15 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             msgCountLab!.layer.cornerRadius = 18 / 2.0
             msgCountLab!.layer.masksToBounds = true
             msgCountLab!.hidden = true
-            msgBtn.addSubview(msgCountLab!)
+            favBtn.addSubview(msgCountLab!)
             msgCountLab!.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(msgBtn).offset(5)
-                make.top.equalTo(msgBtn).offset(-2)
+                make.right.equalTo(favBtn).offset(5)
+                make.top.equalTo(favBtn).offset(-2)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })
-            
         }
         
-        if DataManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
-            msgCountLab?.hidden = false
-        } else {
-            msgCountLab?.hidden = true
-        }
-        
-        UIApplication.sharedApplication().applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         if CurrentUser.login_ == false {
             if APIHelper.userAPI().autoLogin() {
                 banGesture(true)
@@ -126,8 +112,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
         }
 
-        appointmentView.commitBtn?.enabled = true
-        
         if forcedUpdate {
             APIHelper.commonAPI().checkVersion(CheckVersionRequestModel(), complete: { [weak self](response) in
                 if let verInfo = response as? [String: AnyObject] {
@@ -152,7 +136,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        appointmentView.nav = navigationController
         checkLocationService()
     }
     
@@ -203,63 +186,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.centerY.equalTo(titleView)
         }
         
-        let bottomView = UIImageView()
-        bottomView.userInteractionEnabled = true
-        bottomView.image = UIImage.init(named: "bottom-selector-bg")
-        view.addSubview(bottomView)
-        bottomView.snp_makeConstraints { (make) in
-            make.left.equalTo(view)
-            make.bottom.equalTo(view)
-            make.right.equalTo(view)
-            make.height.equalTo(65)
-        }
-        
-        bottomSelector.minimumValue = 0
-        bottomSelector.maximumValue = 1
-        bottomSelector.value = 0
-        bottomSelector.continuous = false
-        bottomSelector.addTarget(self, action: #selector(bottomSelectorAction(_:)), forControlEvents: .ValueChanged)
-        bottomSelector.setThumbImage(UIImage.init(named: "bottom_selector_selected"), forState: .Normal)
-        bottomSelector.tintColor = UIColor.whiteColor()
-        bottomSelector.minimumTrackTintColor = UIColor.whiteColor()
-        bottomSelector.maximumTrackTintColor = UIColor.whiteColor()
-        bottomView.addSubview(bottomSelector)
-        bottomSelector.snp_makeConstraints { (make) in
-            make.center.equalTo(bottomView)
-            make.width.equalTo(ScreenWidth / 2.0)
-            make.height.equalTo(65)
-        }
-        
-        let leftTips = UILabel()
-        leftTips.backgroundColor = UIColor.clearColor()
-        leftTips.textAlignment = NSTextAlignment.Right
-        leftTips.text = "现在"
-        leftTips.userInteractionEnabled = true
-        leftTips.font = UIFont.systemFontOfSize(S13)
-        leftTips.textColor = UIColor.whiteColor()
-        bottomView.addSubview(leftTips)
-        leftTips.snp_makeConstraints { (make) in
-            make.left.equalTo(bottomView)
-            make.right.equalTo(bottomSelector.snp_left).offset(-10)
-            make.top.equalTo(bottomView)
-            make.bottom.equalTo(bottomView)
-        }
-        
-        let rightTips = UILabel()
-        rightTips.backgroundColor = UIColor.clearColor()
-        rightTips.textAlignment = NSTextAlignment.Left
-        rightTips.text = "预约"
-        rightTips.userInteractionEnabled = true
-        rightTips.font = UIFont.systemFontOfSize(S13)
-        rightTips.textColor = UIColor.whiteColor()
-        bottomView.addSubview(rightTips)
-        rightTips.snp_makeConstraints { (make) in
-            make.left.equalTo(bottomSelector.snp_right).offset(10)
-            make.right.equalTo(bottomView)
-            make.top.equalTo(bottomView)
-            make.bottom.equalTo(bottomView)
-        }
-        rightLabel = rightTips
         mapView = MAMapView()
         mapView!.tag = 1002
         mapView!.delegate = self
@@ -272,17 +198,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.top.equalTo(view)
             make.left.equalTo(view).offset(0.5)
             make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            make.bottom.equalTo(bottomView.snp_top)
+            make.bottom.equalTo(view)
         }
 
-        view.addSubview(appointmentView)
-        appointmentView.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(mapView!.snp_right).offset(0.5)
-            make.top.equalTo(view)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            make.bottom.equalTo(bottomView.snp_top)
-        })
-        
         let back2MyLocationBtn = UIButton()
         back2MyLocationBtn.backgroundColor = .clearColor()
         back2MyLocationBtn.setImage(UIImage.init(named: "mine_location"), forState: .Normal)
@@ -295,19 +213,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
             make.height.equalTo(30)
         }
         
-//        let centurionCardBtn = UIButton()
-//        centurionCardBtn.backgroundColor = UIColor.clearColor()
-//        centurionCardBtn.setBackgroundImage(UIImage.init(named: "centurion_card_recommon"), forState: .Normal)
-//        centurionCardBtn.addTarget(self, action: #selector(jumpToCenturionCardVC(_:)), forControlEvents: .TouchUpInside)
-//        mapView?.addSubview(centurionCardBtn)
-//        centurionCardBtn.snp_makeConstraints(closure: { (make) in
-//            make.right.equalTo(mapView!).offset(-20)
-//            make.bottom.equalTo(mapView!).offset(-20)
-//            make.width.equalTo(40)
-//            make.height.equalTo(40)
-//        })
-        
-        hideKeyboard()
     }
     
     func screenServices(sender:UIButton) {
@@ -343,10 +248,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
 
     }
     
-    func jumpToCenturionCardVC(sender: UIButton) {
-        jumpToCenturionCardCenter()
-    }
-    
     func back2MyLocationAction(sender: UIButton) {
         checkLocationService()
         if location != nil {
@@ -359,50 +260,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
     func registerNotify() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(jumpToCenturionCardCenter), name: NotifyDefine.JumpToCenturionCardCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToWalletVC), name: NotifyDefine.JumpToWalletVC, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(jumpToMessageCenter), name: NotifyDefine.JumpToMessageCenter, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(jumpToDistanceOfTravelVC), name: NotifyDefine.JumpToDistanceOfTravelVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
-    }
-    
-    func hideKeyboard() {
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
-        touch.numberOfTapsRequired = 1
-        touch.cancelsTouchesInView = false
-        appointmentView.table?.addGestureRecognizer(touch)
-    }
-    
-    func touchWhiteSpace() {
-        view.endEditing(true)
-    }
-
-    func postNotifi()  {
-        
-////        let dict = ["servantID":"1,2,3,4,5,6", "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)), "appointment_id_" : appointment_id_]
-//        SocketManager.sendData(.TestPushNotification, data: ["from_uid_" : -1,
-//                                                               "to_uid_" : CurrentUser.uid_,
-//                                                             "msg_type_" : 2231,
-//                                                             "msg_time_" : Int(Int64(NSDate().timeIntervalSince1970)),
-//                                                           "servant_id_" : "1,2,3,4,5,6",
-//                                                       "appointment_id_" : appointment_id_,
-//                                                              "content_" : "您好，为您刚才的预约推荐服务者"])
-
-    }
-    func keyboardWillShow(notification: NSNotification?) {
-        let frame = notification!.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue()
-        let inset = UIEdgeInsetsMake(0, 0, frame.size.height, 0)
-        appointmentView.table?.contentInset = inset
-        appointmentView.table?.scrollIndicatorInsets = inset
-    }
-    
-    func keyboardWillHide(notification: NSNotification?) {
-        let inset = UIEdgeInsetsMake(0, 0, 0, 0)
-        appointmentView.table?.contentInset = inset
-        appointmentView.table?.scrollIndicatorInsets =  inset
     }
     
     func loginFailed(notification: NSNotification) {
@@ -424,16 +286,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         
         YD_NewPersonGuideManager.startGuide()
 
-        APIHelper.commonAPI().cityNameInfo({ (response) in
-            if let model = response as? CityNameInfoModel {
-                DataManager.insertData(model)
-                self.serviceCitysModel = model
-                self.appointmentView.serviceCitysModel = self.serviceCitysModel
-            }
-            }, error: { (err) in
-                
-        })
-        
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
             req.device_token_ = dt
@@ -445,43 +297,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
         getServantNearby(lat, lon: lon)
         
-        APIHelper.commonAPI().skills( { (response) in
-            if let model = response as? SkillsModel {
-                DataManager.insertData(model)
-            }
-        }, error: nil)
-        //初始化 receiveMessageBlock
-        ChatMessageHelper.shared.refreshMsgCountDelegate = self
-        getUnReadMessage()
     }
 
-    func getUnReadMessage() {
-        
-        APIHelper.chatAPI().requestUnReadMessage(UnReadMessageRequestModel(), complete: { (response) in
-            let messsages = response as? [MessageModel]
-            guard messsages?.count > 0 else {return}
-            for message in messsages! {
-//                DataManager.insertData(message)
-                ChatMessageHelper.shared.reveicedMessage(message)
-            }
-            self.setUnReadCount()
-            }) { (error) in
-                
-        }
-    }
-    
-    func setUnReadCount() {
-        
-        if DataManager.getUnreadMsgCnt(-1) > 0 {
-            msgCountLab?.text = "\(DataManager.getUnreadMsgCnt(-1))"
-            msgCountLab?.hidden = false
-        }
-    }
-    
-    func refreshChatSeesionList() {
-        setUnReadCount()
-    }
-    
     func getServantNearby(lat: Double, lon:Double) {
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
@@ -518,24 +335,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         })
     }
     
-    func jumpToCenturionCardCenter() {
-        let centurionCardCenter = CenturionCardVC()
-        navigationController?.pushViewController(centurionCardCenter, animated: true)
-    }
-    
     func jumpToWalletVC() {
         let walletVC = WalletVC()
         navigationController?.pushViewController(walletVC, animated: true)
     }
+    
+    func jumpToMessageCenter() {
+        let msgVC = PushMessageVC()
+        navigationController?.pushViewController(msgVC, animated: true)
+    }
+    
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
-    }
-    
-    func jumpToDistanceOfTravelVC() {
-        let distanceOfTravelVC = DistanceOfTravelVC()
-        navigationController?.pushViewController(distanceOfTravelVC, animated: true)
     }
     
     func jumpToSettingsVC() {
@@ -543,71 +356,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
-    func titleAction(sender: UIButton?) {
-        if citysAlertController == nil {
-            citysAlertController = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
-            let sheet = CitysSelectorSheet()
-            sheet.citysList = self.serviceCitysModel
-            sheet.targetCity = self.serviceCitysModel?.service_city_.first
-            sheet.delegate = self
-            citysAlertController!.view.addSubview(sheet)
-            sheet.snp_makeConstraints { (make) in
-                make.left.equalTo(citysAlertController!.view).offset(-10)
-                make.right.equalTo(citysAlertController!.view).offset(10)
-                make.bottom.equalTo(citysAlertController!.view).offset(10)
-                make.top.equalTo(citysAlertController!.view).offset(-10)
-            }
-        }
-        
-        presentViewController(citysAlertController!, animated: true, completion: nil)
-    }
-    
-    func msgAction(sender: AnyObject?) {
-        let msgVC = PushMessageVC()
-
-        if sender?.isKindOfClass(UIButton) == false {
-            navigationController?.pushViewController(msgVC, animated: false)
-            if let userInfo = sender as? [NSObject: AnyObject] {
-                let type = userInfo["type"] as? Int
-                if type == PushMessage.MessageType.Chat.rawValue {
-                    performSelector(#selector(ForthwithVC.postPushMessageNotify(_:)), withObject: userInfo["data"], afterDelay: 0.5)
-                }
-            }
-            
-        } else {
-            navigationController?.pushViewController(msgVC, animated: true)
-        }
-        
-    }
-    
     func postPushMessageNotify(data: AnyObject?) {
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.PushMessageNotify, object: nil, userInfo: ["data": data!])
-    }
-    
-    func bottomSelectorAction(sender: AnyObject?) {
-        let bottomSelector = sender as! UISlider
-        if bottomSelector.value > 0.5 {
-            bottomSelector.setValue(1, animated: true)
-            mapView!.snp_updateConstraints { (make) in
-                make.width.equalTo(0)
-            }
-
-        } else {
-            bottomSelector.setValue(0, animated: false)
-            mapView!.snp_updateConstraints { (make) in
-                make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
-            }
-        }
-        XCGLogger.defaultInstance().debug("\(bottomSelector.value)")
-    }
-    
-    func segmentChange(sender: AnyObject?) {
-        if sender?.selectedSegmentIndex == 0 {
-            
-        } else if sender?.selectedSegmentIndex == 1 {
-            
-        }
-        
     }
     
     // MARK MAP
@@ -670,8 +420,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         return Double(valueStr)!
     }
 
-    
-
     public func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var id = ""
         let lat = annotation.coordinate.latitude
@@ -686,32 +434,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
                     }
                     annotationView!.setInfo(servantInfo)
                     return annotationView
-                } /*else if servantInfo.userType == UserInfo.UserType.MeetLocation.rawValue {
-                    id = "Meet"
-                    var annotationView:MeetTagCell? = mapView.dequeueReusableAnnotationViewWithIdentifier(id) as? MeetTagCell
-                    if annotationView == nil{
-                        annotationView = MeetTagCell.init(annotation: annotation, reuseIdentifier: id) as MeetTagCell
-                    }
-                    annotationView!.setInfo(servantInfo)
-                    return annotationView
-                }*/
-         
+                }
             }
         }
         
         return nil
     }
     
-    public func mapView(mapView: MAMapView!, didAddAnnotationViews views: [AnyObject]!) {
-
-    }
-    
     public func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
-            guard checkAuthStaus() else { return }
-//            guard cashCheck() else { return }
-
+            
             let servant = UserBaseModel()
             servant.uid_ = (view as! GuideTagCell).userInfo!.uid_
             APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
@@ -752,43 +485,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate, CitysSelectorShee
         return true
     }
     
-    func checkAuthStaus() -> Bool {
-        // 认证状态限制查看个人信息
-        if CurrentUser.auth_status_ != 1 {
-            APIHelper.userAPI().authStatus({ [weak self](response) in
-                if let dict = response as? [String: AnyObject] {
-                    if let status = dict["review_status_"] as? Int {
-                        CurrentUser.auth_status_ = status
-                        if status != 1 {
-                            let msgs = [-1: "尊敬的游客，您尚未申请认证，请立即前往认证，成为优悦出行的正式游客",
-                                0: "尊敬的游客，您的认证尚未通过审核，在审核成功后将为您开通查看服务者信息的权限",
-                                2: "尊敬的游客，您的认证未通过审核，请立即前往认证，成为优悦出行的正式游客"]
-                            let alert = UIAlertController.init(title: "查看服务者信息失败", message: msgs[status], preferredStyle: .Alert)
-                            let ok = UIAlertAction.init(title: "立即申请", style: .Default, handler: { (action) in
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.3)), dispatch_get_main_queue(), { () in
-                                    let controller = IDVerifyVC()  // UploadUserPictureVC()
-                                    self?.navigationController!.pushViewController(controller, animated: true)
-                                })
-                            })
-                            alert.view.tintColor = UIColor.grayColor()
-                            let cancel = UIAlertAction.init(title: status != 0 ? "算了吧" : "好的", style: .Default, handler: { (action) in
-                                
-                            })
-                            if status != 0{
-                                alert.addAction(ok)
-                            }
-                            alert.addAction(cancel)
-                            self?.presentViewController(alert, animated: true, completion: nil)
-                        }
-                    }
-                }
-            }, error: nil)
-            
-            return false
-        }
-        return true
-    }
-   
     public func mapView(mapView: MAMapView!, didFailToLocateUserWithError error: NSError!) {
         
         switch error.code {

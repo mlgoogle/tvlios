@@ -71,47 +71,20 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 2
-        } else if section == 1 {
-            return 2
         }
         return 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 10
-        } else {
-            return 40
-        }
+        return 10
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
-    }
-    
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 {
-            let view = UIView()
-            view.backgroundColor = .clearColor()
-            let label = UILabel()
-            label.backgroundColor = .clearColor()
-            label.text = "发票管理"
-            label.font = .systemFontOfSize(S15)
-            label.textColor = UIColor.grayColor()
-            view.addSubview(label)
-            label.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(view).offset(AtapteWidthValue(20))
-                make.top.equalTo(view)
-                make.right.equalTo(view)
-                make.bottom.equalTo(view)
-            })
-            return view
-        }
-        return nil
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -193,15 +166,6 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 title?.text = CurrentUser.has_passwd_ == -1 ? "设置支付密码" : "修改支付密码"
                 subTitleLabel?.text = ""
             }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                icon?.image = UIImage.init(named: "invoice")
-                title?.text = "按行程开票"
-                separateLine?.hidden = false
-            } else if indexPath.row == 1 {
-                icon?.image = UIImage.init(named: "invoice-history")
-                title?.text = "开票记录"
-            }
         }
         
         return cell!
@@ -217,14 +181,6 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 let payPasswdVC = PayPasswdVC()
                 payPasswdVC.payPasswdStatus = PayPasswdStatus(rawValue: CurrentUser.has_passwd_)!
                 navigationController?.pushViewController(payPasswdVC, animated: true)
-            }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                let invoiceVC = InvoiceVC()
-                navigationController?.pushViewController(invoiceVC, animated: true)
-            } else if indexPath.row == 1 {
-                let invoiceHistotyVC = InvoiceHistoryVC()
-                navigationController?.pushViewController(invoiceHistotyVC, animated: true)
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)

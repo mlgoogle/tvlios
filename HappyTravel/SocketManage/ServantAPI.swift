@@ -64,45 +64,5 @@ class ServantAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(PhotoWallModel.classForCoder()))
             }, error: error)
     }
-    /**
-     邀约
-     
-     - parameter model:
-     - parameter complete:
-     - parameter error:
-     */
-    func invitaion(model: InvitationRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .AskInvitation, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(HodometerInfoModel.classForCoder()))
-            }, error: error)
-        
-    }
-    /**
-     预约
-     
-     - parameter model:
-     - parameter complete:
-     - parameter error:
-     */
-    func appointment(model:AppointmentServantRequestMdoel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .AppointmentServantRequest, model: model)
-        startRequest(packet, complete: { (response) in
-            let jsonObject = (response as? SocketJsonResponse)?.responseModel(AppointmentServantReplyMdoel.classForCoder())
-            complete?(jsonObject)
-            }, error: error)
-    }
-    /**
-     请求推荐服务者
-     
-     - parameter model:
-     - parameter complete:
-     - parameter error:    
-     */
-    func recommentServants(model: RecommentServantRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .GetRecommendServants, model: model)
-        startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "recommend_guide_"))
-            }, error: error)
-    }
+    
 }

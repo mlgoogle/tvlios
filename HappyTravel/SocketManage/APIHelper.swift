@@ -30,8 +30,5 @@ class APIHelper {
     class func servantAPI() -> ServantAPI {
         return _servantAPI
     }
-    private static var _chatAPI = ChatAPI()
-    class func chatAPI() -> ChatAPI {
-        return _chatAPI
-    }
+    
 }

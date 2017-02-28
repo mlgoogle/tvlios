@@ -88,40 +88,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
         
-//        APIHelper.commonAPI().centurionCardBaseInfo({ (response) in
-//            if let model = response as? CenturionCardBaseInfosModel {
-//                DataManager.insertData(model)
-//            }
-//        }, error: { (err) in
-//        
-//        })
-        
-//        APIHelper.commonAPI().centurionCardPriceInfo({ (response) in
-//            if let model = response as? CenturionCardPriceInfosModel {
-//                DataManager.insertData(model)
-//            }
-//        }, error: { (err) in
-//            
-//        })
-//        
-//        let user = UserBaseModel()
-//        user.uid_ = CurrentUser.uid_
-//        APIHelper.userAPI().userCenturionCardInfo(user, complete: { (response) in
-//            if let model = response as? UserCenturionCardInfoModel {
-//                DataManager.insertData(model)
-//                UserCenturionCardInfo = model
-//            }
-//        }, error: { (err) in
-//        
-//        })
-        
-        APIHelper.userAPI().authStatus({ (response) in
-            if let dict = response as? [String: AnyObject] {
-                if let status = dict["review_status_"] as? Int {
-                    CurrentUser.auth_status_ = status
-                }
-            }
-        }, error: nil)
         APIHelper.userAPI().cash({ (response) in
             if let dict = response as? [String: AnyObject] {
                 if let cash = dict["user_cash_"] as? Int {
@@ -252,7 +218,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             make.bottom.equalTo(view)
         }
         
-        let itemsTitle = ["钱包", "我的消费", "客服", "设置"]
+        let itemsTitle = ["钱包", "消息中心", "客服", "设置"]
         let itemsIcon = ["side-wallet", "side-travel", "side-service", "side-settings"]
         for index in 0..<itemsTitle.count {
             let itemBtn = UIButton()
@@ -297,16 +263,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func importantOptAction(sender: UIButton?) {
         switch sender!.tag {
-//        case 10000:
-//            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToCenturionCardCenter, object: nil, userInfo: nil)
-//            sideMenuController?.toggle()
-
         case 10000:
-             MobClick.event(CommonDefine.BuriedPoint.walletbtn)
+            MobClick.event(CommonDefine.BuriedPoint.walletbtn)
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToWalletVC, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10001:
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToDistanceOfTravelVC, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.JumpToMessageCenter, object: nil, userInfo: nil)
             sideMenuController?.toggle()
         case 10002:
             callSrevant()

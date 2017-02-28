@@ -32,14 +32,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case GetServantDetailInfo = 1005
         // 服务者详情返回
         case ServantDetailInfo = 1006
-        // 请求推荐服务者
-        case GetRecommendServants = 1007
-        // 推荐服务者返回
-        case RecommendServants = 1008
-        // 请求服务城市列表
-        case GetServiceCity = 1009
-        // 服务城市列表返回
-        case ServiceCity = 1010
         // 请求修改密码
         case ModifyPassword = 1011
         // 修改密码返回
@@ -60,52 +52,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case SendImproveData = 1023
         // 修改个人信息返回
         case ImproveDataResult = 1024
-        // 请求行程信息(邀约)
-        case ObtainTripRequest = 1025
-        // 返回行程信息
-        case ObtainTripReply = 1026
-        // 请求服务详情信息
-        case ServiceDetailRequest = 1027
-        // 服务详情信息返回
-        case ServiceDetailReply = 1028
-        
-        // 请求开票
-        case DrawBillRequest = 1029
-        // 开票返回
-        case DrawBillReply = 1030
-        
         // 请求注册设备推送Token
         case PutDeviceToken = 1031
         // 注册设备推送Token返回
         case DeviceTokenResult = 1032
-        // 请求开票记录
-        case InvoiceInfoRequest = 1033
-        // 开票记录返回
-        case InvoiceInfoReply = 1034
-        // 请求黑卡会员特权信息
-        case CenturionCardInfoRequest = 1035
-        // 黑卡会员特权信息返回
-        case CenturionCardInfoReply = 1036
-        // 请求当前用户黑卡信息
-        case UserCenturionCardInfoRequest = 1037
-        // 当前用户黑卡信息返回
-        case UserCenturionCardInfoReply = 1038
-        // 请求黑卡消费记录
-        case CenturionCardConsumedRequest = 1039
-        // 黑卡消费记录返回
-        case CenturionCardConsumedReply = 1040
-        // 请求平台技能标签
-        case SkillsInfoRequest = 1041
-        // 平台技能标签返回
-        case SkillsInfoReply = 1042
-        // 请求预约
-        case AppointmentRequest = 1043
-        // 预约返回
-        case AppointmentReply = 1044
-        // 请求开票详情
-        case InvoiceDetailRequest = 1045
-        // 开票详情返回
-        case InvoiceDetailReply = 1046
         // 请求上传图片Token
         case UploadImageToken = 1047
         // 上传图片Token返回
@@ -120,38 +70,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case ClientWXPayStatusReply = 1052
         // 微信服务端支付状态返回
         case ServerWXPayStatusReply = 1054
-        // 请求上传身份证认证
-        case AuthenticateUserCard = 1055
-        // 上传身份证认证返回
-        case AuthenticateUserCardReply = 1056
-        // 请求身份证认证进度
-        case CheckAuthenticateResult = 1057
-        // 身份证认证进度返回
-        case CheckAuthenticateResultReply = 1058
         // 请求当前用户余额信息
         case CheckUserCash = 1067
         // 当前用户余额信息返回
         case CheckUserCashReply = 1068
-        // 请求预约记录
-        case AppointmentRecordRequest = 1069
-        // 预约记录返回
-        case AppointmentRecordReply = 1070
-        //请求预约推荐服务者
-        case AppointmentRecommendRequest = 1079
-        //预约推荐服务者返回
-        case AppointmentRecommendReply = 1080
-        // 请求预约 、邀约详情
-        case AppointmentDetailRequest = 1081
-        // 预约详情、邀约返回
-        case AppointmentDetailReply = 1082
-        // 黑卡VIP价格
-        case CenturionVIPPriceRequest = 1083
-        // 黑卡VIP价格
-        case CenturionVIPPriceReply = 1084
-        // 获取黑卡等级升级
-        case GetUpCenturionCardOriderRequest = 1085
-        // 获取黑卡等级下单
-        case GetUpCenturionCardOriderReply = 1086
         // 请求验证密码正确性
         case PasswdVerifyRequest = 1087
         // 验证密码正确性返回
@@ -168,68 +90,16 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         case VersionInfoRequest = 1115
         // APP版本信息返回
         case VersionInfoReply = 1116
-        //保险金额请求
-        case InsuranceRequest = 1117
-        //保险金额返回
-        case InsuranceReply = 1118
-        //保险支付
-        case InsurancePayRequest = 1119
-        //保险支付返回
-        case InsurancePayReply = 1120
-        //请求身份证认证
-        case IDVerifyRequest = 1121
-        //身份证认证返回
-        case IDVerifyReply = 1122
         //MARK: - 2000+
         
-        // 请求邀请服务者
-        case AskInvitation = 2001
-        // 邀请服务者返回
-        case InvitationResult = 2002
-        // 请求发送聊天信息
-        case SendChatMessage = 2003
-        // 发送聊天信息返回
-        case RecvChatMessage = 2004
-        // 请求聊天记录
-        case GetChatRecord = 2005
-        // 聊天记录返回
-        case ChatRecordResult = 2006
-        // 请求提交读取消息数量
-        case FeedbackMSGReadCnt = 2007
-        // 提交读取消息数量返回
-        case MSGReadCntResult = 2008
         // 请求评价订单
         case EvaluateTripRequest = 2009
         // 评价订单返回
         case EvaluatetripReply = 2010
-        //
-        case AnswerInvitationRequest = 2011
-        // 收到服务者回复
-        case AnswerInvitationReply = 2012
-        // 请求联系客服
-        case ServersManInfoRequest = 2013
-        // 联系客服返回
-        case ServersManInfoReply = 2014
         // 请求评价详情
         case CheckCommentDetail = 2015
         // 评价详情返回
         case CheckCommentDetailReplay = 2016
-        // 测试推送
-        case TestPushNotification = 2019
-        case TestPushNotificationReply = 2020
-        
-        // 预约导游服务
-        case AppointmentServantRequest = 2021
-        // 预约导游服务返回
-        case AppointmentServantReply = 2022
-        // 请求邀约、预约付款
-        case PayForInvitationRequest = 2017
-        // 邀约、预约付款返回
-        case PayForInvitationReply = 2018
-        // 请求未读消息
-        case UnreadMessageRequest = 2025
-        // 未读消息返回
-        case UnreadMessageReply = 2026
         //请求上传通讯录
         case UploadContactRequest = 1111
         //上传通讯录结果返回
@@ -258,61 +128,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     typealias recevieDataBlock = ([NSObject : AnyObject]) ->()
     
     static var completationsDic = [Int16: recevieDataBlock]()
-    
-    let tmpNewRequestType:[SockOpcode] = [.Logined,  // Done
-                                          .ServiceCity,  // Done
-                                          .InsuranceReply,//Suspend
-                                          .InsurancePayReply,//Suspend
-                                          .CenturionCardInfoReply,  // Suspend
-                                          .CenturionVIPPriceReply,  // Suspend
-                                          .UserCenturionCardInfoReply,  // Suspend
-                                          .UploadContactReply,//Done
-                                          .ObtainTripReply,//Done
-                                          .AppointmentRecordReply,//Done
-                                          
-                                          .CenturionCardConsumedReply,  // Suspend
-                                          .AppointmentRecommendReply,//Done
-                                          .SkillsInfoReply,  // Done
-                                          .ServantInfo,  // Done
-                                          .CheckAuthenticateResultReply,//Done
-                                          .UserInfoResult,  // Done
-                                          .CheckUserCashReply,//
-                                          .ModifyPasswordResult,//Done
-                                          .RegisterAccountReply,//Done
-                                          .ServantDetailInfo,  // Done
-        
-                                          .SendMessageVerify,//Done
-                                          .DrawBillReply,//Done
-                                          .InvoiceInfoReply,//Done
-                                          .InvoiceDetailReply,//Done
-                                          .AppointmentReply,//Done
-                                          .AppointmentDetailReply,  // Done
-                                          .CheckCommentDetailReplay,  // Done
-                                          .EvaluatetripReply,  // Done
-                                          .MessageVerifyResult,  // Done
-                                          .ImproveDataResult,  // Done
-                                          .ServiceDetailReply,  // Done
-                                          
-                                          .DeviceTokenResult,  // Done
-                                          .UploadImageTokenReply,  // Done
-                                          .AuthenticateUserCardReply,  // Done
-                                          .WXplaceOrderReply,  // Done
-                                          .RecvChatMessage,  // Done
-                                          .PasswdVerifyReply,//Done
-                                          .SetupPaymentCodeReply,//Done
-                                          .UnreadMessageReply,  // Done
-                                          .MSGReadCntResult,  // Done
-                                          .PayForInvitationReply,  // Done
-        
-                                          .PhotoWallReply,  // Done
-                                          .InvitationResult,  // Done
-                                          .AppointmentServantReply,  // Done
-                                          .VersionInfoReply,  // Done
-                                          .ServersManInfoReply,  // Suspend
-                                          .GetUpCenturionCardOriderReply, // Suspend
-                                          .ClientWXPayStatusReply,  // Done
-                                          .ServerWXPayStatusReply,  // Done
-                                          .IDVerifyReply]  // Done
     
     var isConnected : Bool {
         return socket!.isConnected
@@ -362,10 +177,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
         SocketManager.isLogout = true
         CurrentUser.login_ = false
-        CurrentUser.auth_status_ = -1
-//        UserCenturionCardInfo.name_ = nil
-//        UserCenturionCardInfo.blackcard_id_ = 0
-//        UserCenturionCardInfo.blackcard_lv_ = 0
         
         sock?.socket?.disconnect()
         SocketManager.shareInstance.buffer = NSMutableData()
@@ -425,56 +236,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         
     }
     
-    static func sendData(opcode: SockOpcode, data: AnyObject?, result: recevieDataBlock?) {
-        SocketManager.sendData(opcode, data: data)
-        if result != nil {
-            completationsDic[opcode.rawValue+1] = result
-        }
-    }
-    
     func sendData(packet: SocketDataPacket) {
         socket?.writeData(packet.pack()!, withTimeout: 5, tag: sockTag)
         sockTag += 1
-    }
-    
-    func recvData(head: SockHead?, body:AnyObject?) ->Bool {
-        if head == nil {
-            return false
-        }
-        
-        if let op = SocketManager.SockOpcode.init(rawValue: head!.opcode) {
-            XCGLogger.info("Recv: \(op)")
-        } else {
-            XCGLogger.info("Recv opcode: \(head!.opcode)")
-            return  true
-        }
-        
-        var jsonBody:JSON?
-        if body != nil && (body as! NSData).length > 0 {
-            jsonBody = JSON.init(data: body as! NSData)
-            guard jsonBody?.dictionaryObject != nil else {
-                XCGLogger.warning("Recv: body length greater than zero, but jsonBody.dictinaryObject is nil.")
-                return false
-                }
-            if let err = SocketManager.getError((jsonBody?.dictionaryObject)!) {
-                if !sockErrorHandling(SockOpcode(rawValue: head!.opcode)!, err: err) {
-                    return true
-                }
-            }
-        }
-        
-        if jsonBody == nil {
-            jsonBody = ["code" : 0]
-        }
-        
-        let blockKey = head!.opcode
-        if SocketManager.completationsDic[blockKey] != nil {
-            let completation = SocketManager.completationsDic[blockKey]
-            completation!(["data": jsonBody!.dictionaryObject!])
-            SocketManager.completationsDic.removeValueForKey(blockKey)
-        }
-        
-        return true
     }
     
     func sockErrorHandling(opcode: SockOpcode, err: [Int: String]) -> Bool {
@@ -574,14 +338,9 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     return
                 }
                 
-                if let sockOpcode = SockOpcode.init(rawValue: head.opcode) {
-                    if tmpNewRequestType.contains(sockOpcode) {
-                        let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
-                        onPacketData(packetData)
-                    } else {
-                        let bodyData = buffer.subdataWithRange(NSMakeRange(headLen, bodyLen))
-                        recvData(head, body: bodyData)
-                    }
+                if SockOpcode.init(rawValue: head.opcode) != nil {
+                    let packetData = buffer.subdataWithRange(NSMakeRange(0, packageLen))
+                    onPacketData(packetData)
                 }
                 
                 buffer.setData(buffer.subdataWithRange(NSMakeRange(packageLen, buffer.length - packageLen)))
@@ -612,7 +371,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
         let localNotify = UILocalNotification()
         localNotify.fireDate = NSDate().dateByAddingTimeInterval(0.1)
         localNotify.timeZone = NSTimeZone.defaultTimeZone()
-        localNotify.applicationIconBadgeNumber = DataManager.getUnreadMsgCnt(-1)
         localNotify.soundName = UILocalNotificationDefaultSoundName
         if #available(iOS 8.2, *) {
             localNotify.alertTitle = "优悦出行"
@@ -633,6 +391,4 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
     }
     
 }
-
-
 

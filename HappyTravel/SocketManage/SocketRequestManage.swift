@@ -54,12 +54,7 @@ class SocketRequestManage: NSObject {
     }
 
     func notifyResponsePacket(packet: SocketDataPacket) {
-        if packet.opcode == SocketManager.SockOpcode.RecvChatMessage.rawValue {
-            let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
-            dispatch_async(dispatch_get_main_queue(), {[weak self] in
-                self?.receiveChatMsgBlock?(response)
-            })
-        } else if packet.opcode == SocketManager.SockOpcode.ClientWXPayStatusReply.rawValue ||
+        if packet.opcode == SocketManager.SockOpcode.ClientWXPayStatusReply.rawValue ||
             packet.opcode == SocketManager.SockOpcode.ServerWXPayStatusReply.rawValue {
             let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
             dispatch_async(dispatch_get_main_queue(), {[weak self] in
