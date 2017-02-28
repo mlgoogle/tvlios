@@ -233,6 +233,14 @@ class DataManager: NSObject {
                 realm.add(model)
             })
 
+        } else if model.isKindOfClass(ServantDetailModel) {
+            let type = ServantDetailModel.self
+            try! realm.write({
+                realm.delete(realm.objects(ServiceModel.self))
+                realm.delete(realm.objects(type))
+                realm.add(model)
+            })
+            
         } else {
             try! realm.write({
                 realm.add(model)
