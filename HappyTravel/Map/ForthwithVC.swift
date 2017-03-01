@@ -78,7 +78,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
 
         if navigationItem.rightBarButtonItem == nil {
             let favBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
-            favBtn.setImage(UIImage.init(named: "nav-msg"), forState: .Normal)
+            favBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
             favBtn.backgroundColor = UIColor.clearColor()
             favBtn.addTarget(self, action: #selector(favListAction(_:)), forControlEvents: .TouchUpInside)
             
@@ -172,6 +172,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         navigationItem.titleView = titleView
       
         titleBtn = UIButton()
+        titleBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
         titleBtn!.backgroundColor = .clearColor()
         titleBtn?.setTitle("所有服务者", forState: .Normal)
         titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(16)

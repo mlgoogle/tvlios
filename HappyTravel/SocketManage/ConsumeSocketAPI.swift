@@ -20,7 +20,7 @@ class ConsumeSocketAPI: SocketAPI{
      - parameter error:
      */
     func requestComment(model:CommentDetaiRequsetModel,complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .CheckCommentDetail, model: model ,type: .Chat)
+        let packet = SocketDataPacket(opcode: .CommentDetail, model: model ,type: .Chat)
         startRequest(packet, complete: { (response) in
             var model = (response as? SocketJsonResponse)?.responseModel(OrderCommentModel.classForCoder()) as? OrderCommentModel
             if model!.service_score_ == 0 && model!.user_score_ == 0 && model!.remarks_ == nil {
@@ -37,7 +37,7 @@ class ConsumeSocketAPI: SocketAPI{
      - parameter error:
      */
     func commentForOrder(model:CommentForOrderModel,complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .EvaluateTripRequest, model: model,type: .Chat)
+        let packet = SocketDataPacket(opcode: .EvaluateTrip, model: model,type: .Chat)
         startRequest(packet, complete: { (response) in
             
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()

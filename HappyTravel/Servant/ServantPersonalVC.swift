@@ -11,8 +11,9 @@ import UIKit
 import Kingfisher
 import XCGLogger
 import RealmSwift
+import SVProgressHUD
 
-public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, PhotosCellDelegate {
+public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableViewDataSource, PersonalHeadCellDelegate, PhotosCellDelegate {
     //记录是邀约？预约？   ture为邀约  false 为预约
     var isNormal = true
     
@@ -23,6 +24,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     var alertController:UIAlertController?
     
     var photoModel:PhotoWallModel?
+    
+    var follow = false
     
     
     required public init?(coder aDecoder: NSCoder) {
@@ -103,6 +106,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
+        updateFollowStatus()
         requestPhoto()
 
         guard isNormal else { return }
@@ -134,7 +138,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("PersonalHeadCell", forIndexPath: indexPath) as! PersonalHeadCell
-            cell.setInfo(personalInfo, servantDetail: detailInfo , detailInfo: nil)
+            cell.delegate = self
+            cell.setInfo(personalInfo, servantDetail: detailInfo , detailInfo: nil, follow: follow)
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
@@ -160,5 +165,34 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     // MARK ServiceCellDelegate
     func spreadAction(sender: AnyObject?) {
         
+    }
+    
+    // MARK - PersonalHeadCellDelegate
+    func followAction() {
+        let req = FollowModel()
+        req.follow_to_ = personalInfo?.uid_ ?? -1
+        req.follow_type_ = !follow ? 1 : 2
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            if let model = response as? FollowedModel {
+                if model.result_ == 0 {
+                    self?.updateFollowStatus()
+                } else {
+                    SVProgressHUD.showWainningMessage(WainningMessage: req.follow_type_ == 1 ? "关注失败" : "取消关注失败", ForDuration: 1.5, completion: nil)
+                }
+            }
+        }, error: nil)
+        
+    }
+    
+    func updateFollowStatus() {
+        let req = FollowModel()
+        req.follow_to_ = personalInfo?.uid_ ?? -1
+        req.follow_type_ = 3
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            if let model = response as? FollowedModel {
+                self?.follow = !Bool(model.result_)
+                self?.personalTable?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 0, inSection: 0)], withRowAnimation: .None)
+            }
+        }, error: nil)
     }
 }

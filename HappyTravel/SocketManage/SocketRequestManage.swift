@@ -54,8 +54,8 @@ class SocketRequestManage: NSObject {
     }
 
     func notifyResponsePacket(packet: SocketDataPacket) {
-        if packet.opcode == SocketManager.SockOpcode.ClientWXPayStatusReply.rawValue ||
-            packet.opcode == SocketManager.SockOpcode.ServerWXPayStatusReply.rawValue {
+        if packet.opcode == SockOpcode.ClientWXPayStatusReply.rawValue ||
+            packet.opcode == SockOpcode.ServerWXPayStatusReply.rawValue {
             let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
             dispatch_async(dispatch_get_main_queue(), {[weak self] in
                 self?.receiveRechargeBlock?(response)
@@ -67,7 +67,7 @@ class SocketRequestManage: NSObject {
             socketRequests.removeValueForKey(packet.requestID)
             objc_sync_exit(self)
             let response:SocketJsonResponse = SocketJsonResponse(packet:packet)
-            XCGLogger.info("Response \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID)")
+            XCGLogger.info("Response \(SockOpcode(rawValue: packet.opcode-1)!) \(packet.requestID)")
             if (packet.type == 0) {
                 let dict:NSDictionary? = response.responseJson()
                 var errorCode: Int? = dict?["error_"] as? Int
@@ -119,7 +119,7 @@ class SocketRequestManage: NSObject {
         objc_sync_enter(self)
         socketRequests[packet.requestID] = socketReqeust;
         objc_sync_exit(self)
-        XCGLogger.info("Request \(SocketManager.SockOpcode(rawValue: packet.opcode)!) \(packet.requestID)")
+        XCGLogger.info("Request \(SockOpcode(rawValue: packet.opcode)!) \(packet.requestID)")
         sendRequest(packet)
     }
     

@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 
 
-
 enum PacketType: Int8 {
     case Error = 0
     case User = 1
@@ -25,7 +24,7 @@ class SocketDataPacket: SockHead {
         super.init(data: data)
     }
     
-    init(opcode: SocketManager.SockOpcode, model: Object? = nil, type: PacketType = .User) {
+    init(opcode: SockOpcode, model: Object? = nil, type: PacketType = .User) {
         super.init()
         self.opcode = opcode.rawValue
         self.type = Int8((opcode.rawValue)/1000)

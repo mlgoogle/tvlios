@@ -15,12 +15,12 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     
     func initSide() {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
-        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
         SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
-        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
+        SideMenuController.preferences.animating.statusBarBehaviour = .FadeAnimation
+        SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
     }
     
     // 初始化主界面
@@ -29,8 +29,8 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
-        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
-        forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
+//        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
+//        forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
         
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]

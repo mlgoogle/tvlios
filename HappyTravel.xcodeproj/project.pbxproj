@@ -30,6 +30,8 @@
 		2F9684251D77D2FD0028E3F2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9684241D77D2FD0028E3F2 /* CoreMotion.framework */; };
 		2F9684271D791CCB0028E3F2 /* RechargeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684261D791CCB0028E3F2 /* RechargeVC.swift */; };
 		2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684381D7D06220028E3F2 /* DataManager.swift */; };
+		2F9B049E1E667E3400751D2E /* FollowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B049D1E667E3400751D2E /* FollowModels.swift */; };
+		2F9B04A01E667EBC00751D2E /* FollowAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B049F1E667EBC00751D2E /* FollowAPI.swift */; };
 		2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */; };
 		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
 		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
@@ -330,6 +332,8 @@
 		2F9684261D791CCB0028E3F2 /* RechargeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RechargeVC.swift; path = Personal/RechargeVC.swift; sourceTree = "<group>"; };
 		2F9684381D7D06220028E3F2 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataManager.swift; path = Data/DataManager.swift; sourceTree = "<group>"; };
 		2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		2F9B049D1E667E3400751D2E /* FollowModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowModels.swift; path = SocketManage/FollowModels.swift; sourceTree = "<group>"; };
+		2F9B049F1E667EBC00751D2E /* FollowAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowAPI.swift; path = SocketManage/FollowAPI.swift; sourceTree = "<group>"; };
 		2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketManager.swift; path = SocketManage/SocketManager.swift; sourceTree = "<group>"; };
 		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
 		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
@@ -724,6 +728,7 @@
 				2FECFBE21E1F709A0065AF60 /* CommonModels.swift */,
 				2FA991561E23B65700F10B0A /* ServantModels.swift */,
 				6E6795F11E27973E00D4378E /* ConsumeModels.swift */,
+				2F9B049D1E667E3400751D2E /* FollowModels.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -737,6 +742,7 @@
 				2FECFBE01E1F6D020065AF60 /* SocketAPI.swift */,
 				6E1CCC301E1E6CBA00374B75 /* ConsumeSocketAPI.swift */,
 				2FA991541E238FFC00F10B0A /* ServantAPI.swift */,
+				2F9B049F1E667EBC00751D2E /* FollowAPI.swift */,
 			);
 			name = SocketAPI;
 			sourceTree = "<group>";
@@ -1715,9 +1721,11 @@
 				2F5B68D61D81084500EFC2DC /* LoginWithMSGVC.swift in Sources */,
 				2FA15A951E128B3E001655A3 /* SocketResponse.swift in Sources */,
 				2FD995961DD32842000CB006 /* SockHead.swift in Sources */,
+				2F9B049E1E667E3400751D2E /* FollowModels.swift in Sources */,
 				2FB95D101DED2FD600BBA506 /* PayPasswdVC.swift in Sources */,
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
 				2FA991571E23B65700F10B0A /* ServantModels.swift in Sources */,
+				2F9B04A01E667EBC00751D2E /* FollowAPI.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
 				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
