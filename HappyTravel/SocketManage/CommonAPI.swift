@@ -13,7 +13,7 @@ class CommonAPI: SocketAPI {
 
     // 获取验证码
     func verifyCode(model: VerifyCodeRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .SendMessageVerify, model: model)
+        let packet = SocketDataPacket(opcode: .MessageVerify, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(VerifyInfoModel.classForCoder()))
             }, error: error)
@@ -21,7 +21,7 @@ class CommonAPI: SocketAPI {
     
     // 注册设备
     func regDevice(model: RegDeviceRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .PutDeviceToken, model: model)
+        let packet = SocketDataPacket(opcode: .RegisterDevice, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
@@ -37,7 +37,7 @@ class CommonAPI: SocketAPI {
     
     // 请求微信支付
     func WXPlaceOrder(model: WXPlaceOrderRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .WXPlaceOrderRequest, model: model)
+        let packet = SocketDataPacket(opcode: .WXPlaceOrder, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(WXPlcaeOrderModel.classForCoder()))
             }, error: error)
@@ -45,7 +45,7 @@ class CommonAPI: SocketAPI {
     
     //检查版本号
     func checkVersion(model:CheckVersionRequestModel,complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .VersionInfoRequest, model: model)
+        let packet = SocketDataPacket(opcode: .VersionInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)

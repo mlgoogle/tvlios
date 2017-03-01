@@ -61,6 +61,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor.whiteColor()
+        
         initView()
         
         registerNotify()
@@ -118,7 +120,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         if personalView == nil {
             personalView = UIView()
             personalView!.tag = 1001
-            personalView!.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 51/255.0, alpha: 1)
+            personalView!.backgroundColor = UIColor.init(red: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1)
             personalView!.userInteractionEnabled = true
             view.addSubview(personalView!)
             personalView!.snp_makeConstraints { (make) in
@@ -135,7 +137,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             headImageView!.backgroundColor = .clearColor()
             headImageView!.layer.masksToBounds = true
             headImageView!.layer.cornerRadius = 40
-            headImageView!.layer.borderColor = UIColor.whiteColor().CGColor
+            headImageView!.layer.borderColor = UIColor.grayColor().CGColor
             headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
             personalView!.addSubview(headImageView!)
@@ -155,7 +157,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             nameLabel!.tag = 10002
             nameLabel!.backgroundColor = .clearColor()
             nameLabel!.titleLabel?.textAlignment = .Left
-            nameLabel!.titleLabel?.textColor = .whiteColor()
+            nameLabel!.titleLabel?.textColor = .blackColor()
             nameLabel!.titleLabel?.font = .systemFontOfSize(AtapteWidthValue(20))
             nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), forControlEvents: .TouchUpInside)
             personalView!.addSubview(nameLabel!)
@@ -209,7 +211,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         let importantNavVew = UIImageView()
         importantNavVew.tag = 1002
         importantNavVew.userInteractionEnabled = true
-        importantNavVew.image = UIImage.init(named: "side-bg")
+//        importantNavVew.image = UIImage.init(named: "side-bg")
+        importantNavVew.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.1)
         view.addSubview(importantNavVew)
         importantNavVew.snp_makeConstraints { (make) in
             make.left.equalTo((personalView?.snp_left)!)
@@ -226,7 +229,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             itemBtn.backgroundColor = UIColor.clearColor()
             itemBtn.setImage(UIImage.init(named: itemsIcon[index]), forState: UIControlState.Normal)
             itemBtn.setTitle(itemsTitle[index], forState: UIControlState.Normal)
-            itemBtn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            itemBtn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             itemBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
             itemBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
             itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
@@ -246,7 +249,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         feedbackBtn.backgroundColor = UIColor.clearColor()
         feedbackBtn.setImage(UIImage.init(named: "side-complain"), forState: .Normal)
         feedbackBtn.setTitle("无情吐槽", forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        feedbackBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         feedbackBtn.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
         feedbackBtn.contentHorizontalAlignment = .Left
         feedbackBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)

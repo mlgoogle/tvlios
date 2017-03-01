@@ -79,30 +79,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
     
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
-        bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
-        bar.tintColor = UIColor.whiteColor()
+//        bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
+        bar.tintColor = UIColor.blackColor()
+//        bar.backgroundColor = UIColor.whiteColor()
+        bar.barTintColor = UIColor.whiteColor()
         
-        let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.blackColor()]
         bar.titleTextAttributes = attr
         bar.translucent = false
-        bar.shadowImage = UIImage()
-        bar.layer.masksToBounds = true
+//        bar.shadowImage = UIImage()
+//        bar.layer.masksToBounds = true
         
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        UITabBar.appearance().hidden = true
         
-        let tabbar = UITabBar.appearance()
-        tabbar.barTintColor = UIColor.init(red: 33/255.0, green: 59/255.0, blue: 76/255.0, alpha: 1)
-        tabbar.hidden = true
+//        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
         
-        var attrTabbarItem = [NSFontAttributeName: UIFont.systemFontOfSize(20),
-                              NSForegroundColorAttributeName: UIColor.init(red: 33/255.0, green: 235/255.0, blue: 233/255.0, alpha: 1)]
-        let tabbarItem = UITabBarItem.appearance()
-        tabbarItem.titlePositionAdjustment = UIOffsetMake(CGFloat(-10),CGFloat(-10))
-        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Selected)
-        attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
-        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
+//        let tabbar = UITabBar.appearance()
+//        tabbar.barTintColor = UIColor.init(red: 33/255.0, green: 59/255.0, blue: 76/255.0, alpha: 1)
+//        tabbar.hidden = true
         
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
+//        var attrTabbarItem = [NSFontAttributeName: UIFont.systemFontOfSize(20),
+//                              NSForegroundColorAttributeName: UIColor.init(red: 33/255.0, green: 235/255.0, blue: 233/255.0, alpha: 1)]
+//        let tabbarItem = UITabBarItem.appearance()
+//        tabbarItem.titlePositionAdjustment = UIOffsetMake(CGFloat(-10),CGFloat(-10))
+//        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Selected)
+//        attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
+//        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
+//        
+//        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
     }
     
     func pushMessageRegister() {

@@ -31,4 +31,8 @@ class APIHelper {
         return _servantAPI
     }
     
+    private static var _followAPI = FollowAPI()
+    class func followAPI() -> FollowAPI {
+        return _followAPI
+    }
 }

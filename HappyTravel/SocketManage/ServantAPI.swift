@@ -18,7 +18,7 @@ class ServantAPI: SocketAPI {
      - parameter error:
      */
     func servantNearby(model: ServantNearbyModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .GetServantInfo, model: model)
+        let packet = SocketDataPacket(opcode: .ServantBaseInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "guide_list_"))
             }, error: error)
@@ -32,7 +32,7 @@ class ServantAPI: SocketAPI {
      - parameter error:
      */
     func servantDetail(model: UserBaseModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .GetServantDetailInfo, model: model)
+        let packet = SocketDataPacket(opcode: .ServantDetailInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(ServantDetailModel.classForCoder()))
             }, error: error)
@@ -45,7 +45,7 @@ class ServantAPI: SocketAPI {
      - parameter error:
      */
     func getUserInfoByString(model:UserInfoIDStrRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .GetUserInfo, model: model)
+        let packet = SocketDataPacket(opcode: .UserInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "userinfo_list_"))
             }, error: error)
@@ -59,7 +59,7 @@ class ServantAPI: SocketAPI {
      - parameter error:
      */
     func requestPhotoWall(model:PhotoWallRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .PhotoWallRequest, model: model)
+        let packet = SocketDataPacket(opcode: .PhotoWall, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(PhotoWallModel.classForCoder()))
             }, error: error)

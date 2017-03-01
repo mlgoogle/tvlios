@@ -58,35 +58,7 @@ class PayPasswdVC : UIViewController, UITextFieldDelegate {
     }
     
     func registerNotify() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(passwdVerifyReplyError(_:)), name: NotifyDefine.PasswdVerifyReplyError, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(setupPaymentCodeReplyError(_:)), name: NotifyDefine.SetupPaymentCodeReplyError, object: nil)
-    }
-    
-    func passwdVerifyReplyError(notification: NSNotification) {
-        if let err = notification.userInfo!["err"] as? [Int: String] {
-            SVProgressHUD.showWainningMessage(WainningMessage: err.values.first!, ForDuration: 1.5, completion: nil)
-            textField?.text = ""
-            for i in 0...5 {
-                if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
-                    btn.setTitle("", forState: .Normal)
-                }
-            }
-        }
-    }
-    
-    func setupPaymentCodeReplyError(notification: NSNotification) {
-        if let err = notification.userInfo!["err"] as? [Int: String] {
-            SVProgressHUD.showWainningMessage(WainningMessage: err.values.first!, ForDuration: 1.5, completion: nil)
-            textField?.text = ""
-            for i in 0...5 {
-                if let btn = view.viewWithTag(tags["passwdBtn"]! * 10 + i) as? UIButton {
-                    btn.setTitle("", forState: .Normal)
-                }
-            }
-            step = payPasswdStatus == .NotSetup ? 1 : 0
-            tipsLable?.text = tips[step]
-        }
+        
     }
     
     func initView() {

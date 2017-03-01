@@ -31,9 +31,5 @@ class NotifyDefine: NSObject {
     static let WeChatShareResult = "WeChatShareResult"
 
     static let FeedBackNoticeReply = "FeedBackNoticeReply"
-
-    static let PasswdVerifyReplyError = "PasswdVerifyReplyError"
-    
-    static let SetupPaymentCodeReplyError = "SetupPaymentCodeReplyError"
     
 }

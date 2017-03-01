@@ -8,8 +8,14 @@
 
 import Foundation
 
+protocol PersonalHeadCellDelegate: NSObjectProtocol {
+    
+    func followAction()
+}
+
 class PersonalHeadCell : UITableViewCell {
     
+    weak var delegate:PersonalHeadCellDelegate?
     static var PI:Double = 3.1415926535898
     static var EARTH_R:Double = 6371.393000
     
@@ -21,12 +27,15 @@ class PersonalHeadCell : UITableViewCell {
                 "zhimaAuth": 1006,
                 "authTips": 1007,
                 "limitLab": 1008,
-                "limitIcon": 1009]
+                "limitIcon": 1009,
+                "followBtn": 1010]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .None
         contentView.backgroundColor = UIColor.clearColor()
+        userInteractionEnabled = true
+        contentView.userInteractionEnabled = true
         
         let width = UIScreen.mainScreen().bounds.size.width
         
@@ -193,9 +202,32 @@ class PersonalHeadCell : UITableViewCell {
             limitIcon?.image = UIImage.init(named: "limit")
         }
 
+        var followBtn = personalView?.viewWithTag(tags["followBtn"]!) as? UIButton
+        if followBtn == nil {
+            followBtn = UIButton()
+            followBtn?.tag = tags["followBtn"]!
+            followBtn?.setTitle("+关注", forState: .Normal)
+            followBtn?.setTitle("已关注", forState: .Selected)
+            followBtn?.backgroundColor = UIColor.redColor()
+            followBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
+            followBtn?.addTarget(self, action: #selector(follow), forControlEvents: .TouchUpInside)
+            personalView?.addSubview(followBtn!)
+            followBtn?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(limitIcon!)
+                make.bottom.equalTo(limitIcon!.snp_top).offset(-10)
+                make.width.equalTo(65)
+                make.height.equalTo(30)
+            })
+        }
+        followBtn?.selected = false
+        
     }
     
-    func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?) {
+    func follow(sender: UIButton) {
+        delegate?.followAction()
+    }
+    
+    func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?, follow: Bool) {
         let view = contentView.viewWithTag(tags["view"]!)
         
         if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
@@ -235,8 +267,11 @@ class PersonalHeadCell : UITableViewCell {
                 let servantLatitude = userInfo?.latitude_
                 limitLab.text = "\(String(format: "%.2f", CalcDistance(myLongitude, lat1: myLatitude, lon2: servantLongitude!, lat2: servantLatitude!))) Km"
             }
+            
+            if let followBtn = personalView.viewWithTag(tags["followBtn"]!) as? UIButton {
+                followBtn.selected = follow
+            }
         }
-        
         
     }
     

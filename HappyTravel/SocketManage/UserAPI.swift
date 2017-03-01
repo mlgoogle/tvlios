@@ -34,7 +34,7 @@ class UserAPI: SocketAPI {
      上传用户通讯录
      */
     func uploadContact(model: UploadContactModel, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .UploadContactRequest, model: model)
+        let packet = SocketDataPacket(opcode: .UploadContact, model: model)
         startRequest(packet, complete: { (response) in
             
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
@@ -50,7 +50,7 @@ class UserAPI: SocketAPI {
     func cash(complete: CompleteBlock?, error: ErrorBlock?) {
         let model = UserBaseModel()
         model.uid_ = CurrentUser.uid_
-        let packet = SocketDataPacket(opcode: .CheckUserCash, model: model)
+        let packet = SocketDataPacket(opcode: .UserCash, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
@@ -64,7 +64,7 @@ class UserAPI: SocketAPI {
     }
     //注册新用户
     func registerAccount(model: RegisterAccountBaseInfo, complete: CompleteBlock?, error: ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .RegisterAccountRequest, model: model)
+        let packet = SocketDataPacket(opcode: .Register, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(RegisterAccountModel.classForCoder()))
         }, error: error)
@@ -77,7 +77,7 @@ class UserAPI: SocketAPI {
      - parameter error:
      */
     func modifyUserInfo(model: ModifyUserInfoModel, complete: CompleteBlock?, error:ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .SendImproveData, model: model)
+        let packet = SocketDataPacket(opcode: .ModifyPersonalInfo, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
@@ -85,14 +85,14 @@ class UserAPI: SocketAPI {
     
     //请求验证密码的正确性
     func passwdVerify(model: PasswdVerifyBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .PasswdVerifyRequest, model: model)
+        let packet = SocketDataPacket(opcode: .PasswdVerify, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
     }
     //请求修改设置支付密码
     func setupPaymentCode(model: SetPayCodeBaseInfo, complete: CompleteBlock?, error:ErrorBlock?) {
-        let packet = SocketDataPacket(opcode: .SetupPaymentCodeRequest, model: model)
+        let packet = SocketDataPacket(opcode: .SetupPaymentCode, model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseJsonObject())
             }, error: error)
