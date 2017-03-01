@@ -29,6 +29,10 @@ class FollowedModel: Object {
 class FollowListRequestModel: UserBaseModel {
     
     dynamic var follow_type_ = 1 // 1：我关注的人
+    
+    dynamic var page_num_ = 0
+    
+    dynamic var page_count_ = 10
 }
 // 关注列表子集
 class FollowListCellModel: UserBaseModel {
@@ -45,4 +49,15 @@ class FollowListCellModel: UserBaseModel {
 class FollowListModel: Object {
     
     let follow_list_ = List<FollowListCellModel>()
+}
+
+
+// 关注数
+class FollowCountRequestModel: UserBaseModel {
+    
+}
+// 关注数请求结果
+class FollowCountModel: Object {
+    
+    dynamic var follow_count_ = 0
 }

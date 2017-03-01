@@ -14,10 +14,7 @@ import MJRefresh
 
 class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var currentAppointmentId = 0
-    var selectedIndex = 0
     var table:UITableView?
-    var servantsArray:Array<UserInfoModel>? = []
     var timer:NSTimer?
     var isFirstTime = true
     var requestCount = 0

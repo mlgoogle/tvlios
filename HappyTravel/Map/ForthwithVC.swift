@@ -67,8 +67,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         
     }
     
-    func favListAction(sender: UIButton) {
-        XCGLogger.debug("关注列表")
+    func followListAction(sender: UIButton) {
+        let vc = FollowListVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -77,13 +78,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
-            let favBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
-            favBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
-            favBtn.backgroundColor = UIColor.clearColor()
-            favBtn.addTarget(self, action: #selector(favListAction(_:)), forControlEvents: .TouchUpInside)
+            let followBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
+            followBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
+            followBtn.backgroundColor = UIColor.clearColor()
+            followBtn.addTarget(self, action: #selector(followListAction(_:)), forControlEvents: .TouchUpInside)
             
-            let favItem = UIBarButtonItem.init(customView: favBtn)
-            navigationItem.rightBarButtonItem = favItem
+            let followItem = UIBarButtonItem.init(customView: followBtn)
+            navigationItem.rightBarButtonItem = followItem
             
             msgCountLab = UILabel()
             msgCountLab!.backgroundColor = UIColor.redColor()
@@ -94,10 +95,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             msgCountLab!.layer.cornerRadius = 18 / 2.0
             msgCountLab!.layer.masksToBounds = true
             msgCountLab!.hidden = true
-            favBtn.addSubview(msgCountLab!)
+            followBtn.addSubview(msgCountLab!)
             msgCountLab!.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(favBtn).offset(5)
-                make.top.equalTo(favBtn).offset(-2)
+                make.right.equalTo(followBtn).offset(5)
+                make.top.equalTo(followBtn).offset(-2)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })

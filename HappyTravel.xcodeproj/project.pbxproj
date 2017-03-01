@@ -32,6 +32,8 @@
 		2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9684381D7D06220028E3F2 /* DataManager.swift */; };
 		2F9B049E1E667E3400751D2E /* FollowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B049D1E667E3400751D2E /* FollowModels.swift */; };
 		2F9B04A01E667EBC00751D2E /* FollowAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B049F1E667EBC00751D2E /* FollowAPI.swift */; };
+		2F9B04A31E66B08600751D2E /* FollowListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B04A21E66B08500751D2E /* FollowListVC.swift */; };
+		2F9B04A51E66B31100751D2E /* FollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9B04A41E66B31100751D2E /* FollowCell.swift */; };
 		2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */; };
 		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
 		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
@@ -334,6 +336,8 @@
 		2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		2F9B049D1E667E3400751D2E /* FollowModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowModels.swift; path = SocketManage/FollowModels.swift; sourceTree = "<group>"; };
 		2F9B049F1E667EBC00751D2E /* FollowAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowAPI.swift; path = SocketManage/FollowAPI.swift; sourceTree = "<group>"; };
+		2F9B04A21E66B08500751D2E /* FollowListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowListVC.swift; path = Personal/FollowListVC.swift; sourceTree = "<group>"; };
+		2F9B04A41E66B31100751D2E /* FollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowCell.swift; path = Personal/FollowCell.swift; sourceTree = "<group>"; };
 		2F9D420E1D5C0F1400D10FBC /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketManager.swift; path = SocketManage/SocketManager.swift; sourceTree = "<group>"; };
 		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
 		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
@@ -704,6 +708,15 @@
 			path = Alipay;
 			sourceTree = "<group>";
 		};
+		2F9B04A11E66B06800751D2E /* Follow */ = {
+			isa = PBXGroup;
+			children = (
+				2F9B04A21E66B08500751D2E /* FollowListVC.swift */,
+				2F9B04A41E66B31100751D2E /* FollowCell.swift */,
+			);
+			name = Follow;
+			sourceTree = "<group>";
+		};
 		2F9D42101D5C0F1E00D10FBC /* SocketManage */ = {
 			isa = PBXGroup;
 			children = (
@@ -810,6 +823,7 @@
 		2FA75D2B1D518D2600609C8E /* Personal */ = {
 			isa = PBXGroup;
 			children = (
+				2F9B04A11E66B06800751D2E /* Follow */,
 				2F6E2D581DC0D23C00AD0BB1 /* Settings */,
 				2F6E2D571DC0D21E00AD0BB1 /* MessageCenter */,
 				2F6E2D551DC0D1A400AD0BB1 /* Wallet */,
@@ -1714,6 +1728,7 @@
 				2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */,
 				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
+				2F9B04A51E66B31100751D2E /* FollowCell.swift in Sources */,
 				2FA991531E237CC900F10B0A /* APIHelper.swift in Sources */,
 				2F9684271D791CCB0028E3F2 /* RechargeVC.swift in Sources */,
 				2FECFBCD1E165F1D0065AF60 /* UpdateManager.swift in Sources */,
@@ -1726,6 +1741,7 @@
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
 				2FA991571E23B65700F10B0A /* ServantModels.swift in Sources */,
 				2F9B04A01E667EBC00751D2E /* FollowAPI.swift in Sources */,
+				2F9B04A31E66B08600751D2E /* FollowListVC.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
 				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
