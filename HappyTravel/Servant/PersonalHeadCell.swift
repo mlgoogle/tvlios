@@ -11,6 +11,7 @@ import Foundation
 protocol PersonalHeadCellDelegate: NSObjectProtocol {
     
     func followAction()
+    func wenXin()
 }
 
 class PersonalHeadCell : UITableViewCell {
@@ -28,7 +29,8 @@ class PersonalHeadCell : UITableViewCell {
                 "authTips": 1007,
                 "limitLab": 1008,
                 "limitIcon": 1009,
-                "followBtn": 1010]
+                "followBtn": 1010,
+                "wenXin": 1011]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -221,10 +223,30 @@ class PersonalHeadCell : UITableViewCell {
         }
         followBtn?.selected = false
         
+        var wenXinBtn = personalView?.viewWithTag(tags["wenXin"]!) as? UIButton
+        if wenXinBtn == nil {
+            wenXinBtn = UIButton()
+            wenXinBtn?.tag = tags["wenXin"]!
+            wenXinBtn?.setTitle("微信", forState: .Normal)
+//            followBtn?.setTitle("已关注", forState: .Selected)
+            wenXinBtn?.backgroundColor = UIColor.redColor()
+            wenXinBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
+            wenXinBtn?.addTarget(self, action: #selector(wenXin), forControlEvents: .TouchUpInside)
+            personalView?.addSubview(wenXinBtn!)
+            wenXinBtn?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(followBtn!)
+                make.bottom.equalTo(followBtn!.snp_top).offset(-10)
+                make.width.equalTo(65)
+                make.height.equalTo(30)
+            })
+        }
     }
     
     func follow(sender: UIButton) {
         delegate?.followAction()
+    }
+    func wenXin(sender: UIButton){
+        delegate?.wenXin()
     }
     
     func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?, follow: Bool) {
