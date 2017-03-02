@@ -186,7 +186,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     func wenXin() {
         
-      navigationController?.pushViewController(RelationAidVC(), animated: true)
+      let relationAid = RelationAidVC()
+      relationAid.userInfo  = personalInfo!
+      navigationController?.pushViewController(relationAid, animated: true)
     }
     
     func updateFollowStatus() {
