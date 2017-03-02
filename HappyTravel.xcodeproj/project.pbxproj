@@ -291,6 +291,15 @@
 		BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */; };
 		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
+		D03BD6F31E66DDCC006D22CF /* RelationAidVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */; };
+		D0D003D61E67EAFC00D8ED04 /* iconV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */; };
+		D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */; };
+		D0D003D81E67EAFC00D8ED04 /* packUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */; };
+		D0D003D91E67EAFC00D8ED04 /* packUp@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D11E67EAFC00D8ED04 /* packUp@3x.png */; };
+		D0D003DA1E67EAFC00D8ED04 /* powerBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D21E67EAFC00D8ED04 /* powerBackground@2x.png */; };
+		D0D003DB1E67EAFC00D8ED04 /* powerBackground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */; };
+		D0D003DC1E67EAFC00D8ED04 /* unfold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */; };
+		D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -601,6 +610,15 @@
 		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
 		BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
+		D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationAidVC.swift; sourceTree = "<group>"; };
+		D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@2x.png"; sourceTree = "<group>"; };
+		D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@3x.png"; sourceTree = "<group>"; };
+		D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "packUp@2x.png"; sourceTree = "<group>"; };
+		D0D003D11E67EAFC00D8ED04 /* packUp@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "packUp@3x.png"; sourceTree = "<group>"; };
+		D0D003D21E67EAFC00D8ED04 /* powerBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powerBackground@2x.png"; sourceTree = "<group>"; };
+		D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powerBackground@3x.png"; sourceTree = "<group>"; };
+		D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@2x.png"; sourceTree = "<group>"; };
+		D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -842,6 +860,7 @@
 				2FC25B001D6A9C7600D48D6A /* PhotosCell.swift */,
 				2FC25B011D6A9C7600D48D6A /* ServantPersonalVC.swift */,
 				2FC25B041D6A9C7600D48D6A /* TallyCell.swift */,
+				D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */,
 			);
 			name = Servant;
 			sourceTree = "<group>";
@@ -947,6 +966,7 @@
 		BF6E9C451DE2FD4500F32CCE /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				D0D003CD1E67EAC000D8ED04 /* Aid */,
 				2F4EEC3E1D969159004DFFC8 /* HappyTravel.entitlements */,
 				6E6795DC1E2793A200D4378E /* NewPersonGuide */,
 				BF6E9C461DE2FD4500F32CCE /* BottomSelector */,
@@ -1205,6 +1225,21 @@
 			path = ../Share;
 			sourceTree = "<group>";
 		};
+		D0D003CD1E67EAC000D8ED04 /* Aid */ = {
+			isa = PBXGroup;
+			children = (
+				D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */,
+				D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */,
+				D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */,
+				D0D003D11E67EAFC00D8ED04 /* packUp@3x.png */,
+				D0D003D21E67EAFC00D8ED04 /* powerBackground@2x.png */,
+				D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */,
+				D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */,
+				D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */,
+			);
+			path = Aid;
+			sourceTree = "<group>";
+		};
 		D1BF5A800EB0D1063BCBAE20 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1323,6 +1358,7 @@
 				BF6E9D0F1DE2FD4500F32CCE /* nav-personal@2x.png in Resources */,
 				BF6E9D381DE2FD4500F32CCE /* service-disable@3x.png in Resources */,
 				BF6E9D3D1DE2FD4500F32CCE /* share-wechat@2x.png in Resources */,
+				D0D003D61E67EAFC00D8ED04 /* iconV@2x.png in Resources */,
 				BF6E9D4B1DE2FD4500F32CCE /* default-head@2x.png in Resources */,
 				BF6E9D0B1DE2FD4500F32CCE /* mine_location@3x.png in Resources */,
 				BF6E9D4D1DE2FD4500F32CCE /* defaultBg1.png in Resources */,
@@ -1363,12 +1399,14 @@
 				6E6796051E287A9000D4378E /* newperson-assistantInfo@2x.png in Resources */,
 				BF6E9D311DE2FD4500F32CCE /* primary-level@3x.png in Resources */,
 				BF6E9D3B1DE2FD4500F32CCE /* share-wechat-moment@2x.png in Resources */,
+				D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */,
 				BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */,
 				BF6E9D721DE2FD4500F32CCE /* pay-selected@2x.png in Resources */,
 				BF6E9CFC1DE2FD4500F32CCE /* address-selector-normal@2x.png in Resources */,
 				BF6E9D751DE2FD4500F32CCE /* pay-unselect@3x.png in Resources */,
 				BF6E9D5B1DE2FD4500F32CCE /* invoice@2x.png in Resources */,
 				BF6E9D091DE2FD4500F32CCE /* meet-tips@2x.png in Resources */,
+				D0D003DA1E67EAFC00D8ED04 /* powerBackground@2x.png in Resources */,
 				BF6E9D261DE2FD4500F32CCE /* indirector@3x.png in Resources */,
 				BF6E9D571DE2FD4500F32CCE /* indirector@2x.png in Resources */,
 				BF6E9D191DE2FD4500F32CCE /* bg-baseinfo@2x.png in Resources */,
@@ -1385,11 +1423,13 @@
 				BF6E9D0C1DE2FD4500F32CCE /* recommend@2x.png in Resources */,
 				2F9F53BC1E67CB1100E77BF1 /* contactAssistant_slideCertifiedIcon@3x.png in Resources */,
 				BF6E9D891DE2FD4500F32CCE /* touxiang_men@3x.png in Resources */,
+				D0D003DB1E67EAFC00D8ED04 /* powerBackground@3x.png in Resources */,
 				BF6E9D221DE2FD4500F32CCE /* hotel-disable@2x.png in Resources */,
 				BF6E9CFB1DE2FD4500F32CCE /* segment-bg@3x.png in Resources */,
 				6E6796091E287A9000D4378E /* newperson-locationInfo@2x.png in Resources */,
 				BF6E9D6F1DE2FD4500F32CCE /* my-star-fill@3x.png in Resources */,
 				BF6E9D4F1DE2FD4500F32CCE /* guide-auth@2x.png in Resources */,
+				D0D003DC1E67EAFC00D8ED04 /* unfold@2x.png in Resources */,
 				BF6E9D351DE2FD4500F32CCE /* service-agent@2x.png in Resources */,
 				BF6E9D481DE2FD4500F32CCE /* yellowStart.png in Resources */,
 				BF6E9D2A1DE2FD4500F32CCE /* meeting@3x.png in Resources */,
@@ -1460,6 +1500,7 @@
 				BF6E9CF01DE2FD4500F32CCE /* bottom-selector-bg@2x.png in Resources */,
 				BF6E9D391DE2FD4500F32CCE /* service@2x.png in Resources */,
 				BF6E9D4A1DE2FD4500F32CCE /* default-big-photo.png in Resources */,
+				D0D003D91E67EAFC00D8ED04 /* packUp@3x.png in Resources */,
 				BF6E9D3C1DE2FD4500F32CCE /* share-wechat-moment@3x.png in Resources */,
 				6E6796121E287A9000D4378E /* newperson-messageInfo@3x.png in Resources */,
 				BF6E9D281DE2FD4500F32CCE /* meeting-disable@3x.png in Resources */,
@@ -1500,10 +1541,12 @@
 				BF6E9D0A1DE2FD4500F32CCE /* mine_location@2x.png in Resources */,
 				BF6E9D421DE2FD4500F32CCE /* share@3x.png in Resources */,
 				BF6E9D8F1DE2FD4500F32CCE /* wechat-pay@3x.png in Resources */,
+				D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */,
 				BF6E9D701DE2FD4500F32CCE /* my-star-hollow@2x.png in Resources */,
 				BF6E9CF31DE2FD4500F32CCE /* bottom_selector_selected@2x.png in Resources */,
 				BF6E9D691DE2FD4500F32CCE /* lv3@3x.png in Resources */,
 				BF6E9D2E1DE2FD4500F32CCE /* middle-level@3x.png in Resources */,
+				D0D003D81E67EAFC00D8ED04 /* packUp@2x.png in Resources */,
 				BF6E9D081DE2FD4500F32CCE /* map_meet@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1686,6 +1729,7 @@
 				2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */,
 				2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */,
 				2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */,
+				D03BD6F31E66DDCC006D22CF /* RelationAidVC.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,

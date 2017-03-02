@@ -187,6 +187,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
     }
     
+    func wenXin() {
+        
+      let relationAid = RelationAidVC()
+      relationAid.userInfo  = personalInfo!
+      navigationController?.pushViewController(relationAid, animated: true)
+    }
+    
     func updateFollowStatus() {
         let req = FollowModel()
         req.follow_to_ = personalInfo?.uid_ ?? -1

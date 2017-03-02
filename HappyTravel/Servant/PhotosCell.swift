@@ -101,6 +101,7 @@ public class PhotosCell : UITableViewCell {
                 let col = index % 4
                 if index != 0 {
                     previousView = view?.viewWithTag(1003 * 10 + index - 1) as? UIImageView
+                    
                 }
                 photoView?.snp_makeConstraints(closure: { (make) in
                     if col == 0 {
