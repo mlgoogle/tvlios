@@ -203,6 +203,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     func updateFollowCount() {
         let req = FollowCountRequestModel()
         req.uid_ = personalInfo!.uid_
+        req.type_ = 2
         APIHelper.followAPI().followCount(req, complete: { [weak self](response) in
             if let model = response as? FollowCountModel {
                 self?.followCount = model.follow_count_

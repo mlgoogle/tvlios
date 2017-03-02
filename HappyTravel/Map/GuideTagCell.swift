@@ -33,6 +33,9 @@ class GuideTagCell: MAAnnotationView {
         bgView.snp_makeConstraints(closure: { (make) in
             make.centerX.equalTo(self)
             make.top.equalTo(self)
+            make.left.equalTo(self)
+            make.right.equalTo(self)
+            make.bottom.equalTo(self)
             make.width.equalTo(67)
             make.height.equalTo(77)
         })
