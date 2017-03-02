@@ -27,6 +27,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
     
     var follow = false
     
+    var followCount = 0
+    
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -107,6 +109,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         super.viewWillAppear(animated)
         registerNotify()
         updateFollowStatus()
+        updateFollowCount()
         requestPhoto()
 
         guard isNormal else { return }
@@ -139,7 +142,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("PersonalHeadCell", forIndexPath: indexPath) as! PersonalHeadCell
             cell.delegate = self
-            cell.setInfo(personalInfo, servantDetail: detailInfo , detailInfo: nil, follow: follow)
+            cell.setInfo(personalInfo, servantDetail: detailInfo , detailInfo: nil, follow: follow, followCnt: followCount)
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("TallyCell", forIndexPath: indexPath) as! TallyCell
@@ -200,6 +203,18 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
                 self?.follow = !Bool(model.result_)
                 self?.personalTable?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 0, inSection: 0)], withRowAnimation: .None)
             }
+            self?.updateFollowCount()
         }, error: nil)
+    }
+    
+    func updateFollowCount() {
+        let req = FollowCountRequestModel()
+        req.uid_ = personalInfo!.uid_
+        APIHelper.followAPI().followCount(req, complete: { [weak self](response) in
+            if let model = response as? FollowCountModel {
+                self?.followCount = model.follow_count_
+                self?.personalTable?.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: 0, inSection: 0)], withRowAnimation: .None)
+            }
+            }, error: nil)
     }
 }

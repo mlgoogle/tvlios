@@ -67,8 +67,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         
     }
     
-    func favListAction(sender: UIButton) {
-        XCGLogger.debug("关注列表")
+    func followListAction(sender: UIButton) {
+        let vc = FollowListVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -77,13 +78,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
         if navigationItem.rightBarButtonItem == nil {
-            let favBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
-            favBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
-            favBtn.backgroundColor = UIColor.clearColor()
-            favBtn.addTarget(self, action: #selector(favListAction(_:)), forControlEvents: .TouchUpInside)
+            let followBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
+            followBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
+            followBtn.backgroundColor = UIColor.clearColor()
+            followBtn.addTarget(self, action: #selector(followListAction(_:)), forControlEvents: .TouchUpInside)
             
-            let favItem = UIBarButtonItem.init(customView: favBtn)
-            navigationItem.rightBarButtonItem = favItem
+            let followItem = UIBarButtonItem.init(customView: followBtn)
+            navigationItem.rightBarButtonItem = followItem
             
             msgCountLab = UILabel()
             msgCountLab!.backgroundColor = UIColor.redColor()
@@ -94,10 +95,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             msgCountLab!.layer.cornerRadius = 18 / 2.0
             msgCountLab!.layer.masksToBounds = true
             msgCountLab!.hidden = true
-            favBtn.addSubview(msgCountLab!)
+            followBtn.addSubview(msgCountLab!)
             msgCountLab!.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(favBtn).offset(5)
-                make.top.equalTo(favBtn).offset(-2)
+                make.right.equalTo(followBtn).offset(5)
+                make.top.equalTo(followBtn).offset(-2)
                 make.width.equalTo(18)
                 make.height.equalTo(18)
             })
@@ -191,7 +192,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         mapView!.tag = 1002
         mapView!.delegate = self
         mapView!.userTrackingMode = .Follow
-        mapView!.setZoomLevel(11, animated: true)
+        mapView!.setZoomLevel(13, animated: true)
         mapView!.showsUserLocation = true
         mapView!.showsCompass = true
         view.addSubview(mapView!)
@@ -252,7 +253,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     func back2MyLocationAction(sender: UIButton) {
         checkLocationService()
         if location != nil {
-            mapView?.setZoomLevel(11.0, animated: false)
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
         
@@ -369,7 +369,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         if location == nil {
             location = userLocation.location
             latDiffValue = 720.0
-            mapView.setZoomLevel(11, animated: false)
+            mapView.setZoomLevel(13, animated: false)
             if location != nil {
                 mapView.centerCoordinate = location!.coordinate
             }

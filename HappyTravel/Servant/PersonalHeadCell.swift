@@ -30,7 +30,8 @@ class PersonalHeadCell : UITableViewCell {
                 "limitLab": 1008,
                 "limitIcon": 1009,
                 "followBtn": 1010,
-                "wenXin": 1011]
+                "wenXin": 1012,
+                "followCntBtn": 1011]
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -223,6 +224,23 @@ class PersonalHeadCell : UITableViewCell {
         }
         followBtn?.selected = false
         
+        var followCntBtn = personalView?.viewWithTag(tags["followCntBtn"]!) as? UIButton
+        if followCntBtn == nil {
+            followCntBtn = UIButton()
+            followCntBtn?.tag = tags["followCntBtn"]!
+            followCntBtn?.setTitle("0", forState: .Normal)
+            followCntBtn?.backgroundColor = UIColor.greenColor()
+            followCntBtn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
+            personalView?.addSubview(followCntBtn!)
+            followCntBtn?.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(followBtn!)
+                make.bottom.equalTo(followBtn!.snp_top).offset(-10)
+                make.width.equalTo(65)
+                make.height.equalTo(30)
+            })
+        }
+            
+
         var wenXinBtn = personalView?.viewWithTag(tags["wenXin"]!) as? UIButton
         if wenXinBtn == nil {
             wenXinBtn = UIButton()
@@ -235,13 +253,13 @@ class PersonalHeadCell : UITableViewCell {
             personalView?.addSubview(wenXinBtn!)
             wenXinBtn?.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(followBtn!)
-                make.bottom.equalTo(followBtn!.snp_top).offset(-10)
+                make.bottom.equalTo(followCntBtn!.snp_top).offset(-10)
                 make.width.equalTo(65)
                 make.height.equalTo(30)
             })
         }
     }
-    
+
     func follow(sender: UIButton) {
         delegate?.followAction()
     }
@@ -249,7 +267,7 @@ class PersonalHeadCell : UITableViewCell {
         delegate?.wenXin()
     }
     
-    func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?, follow: Bool) {
+    func setInfo(userInfo: UserInfoModel?, servantDetail: ServantDetailModel?, detailInfo: Dictionary<String, AnyObject>?, follow: Bool, followCnt: Int) {
         let view = contentView.viewWithTag(tags["view"]!)
         
         if let personalView = view!.viewWithTag(tags["personalView"]!) as? UIImageView {
@@ -292,6 +310,10 @@ class PersonalHeadCell : UITableViewCell {
             
             if let followBtn = personalView.viewWithTag(tags["followBtn"]!) as? UIButton {
                 followBtn.selected = follow
+            }
+            
+            if let followCntBtn = personalView.viewWithTag(tags["followCntBtn"]!) as? UIButton {
+                followCntBtn.setTitle("\(followCnt)", forState: .Normal)
             }
         }
         

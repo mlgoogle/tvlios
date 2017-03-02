@@ -63,6 +63,8 @@ enum SockOpcode: Int16 {
     case FollowStatus = 1125
     // 关注列表
     case FollowList = 1127
+    // 关注数
+    case FollowCount = 1129
     
     //MARK: - 2000+
     // 请求评价订单
