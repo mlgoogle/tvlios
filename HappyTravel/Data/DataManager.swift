@@ -38,13 +38,14 @@ class DataManager: NSObject {
         path = path.stringByAppendingPathComponent("\(uid)")
         path = path.stringByAppendingPathExtension("realm")!
         config.fileURL = NSURL(string: path as String)
-        config.schemaVersion = 2
+        config.schemaVersion = 3
         config.migrationBlock = {migration, oldSchemaVersion in
-//            if oldSchemaVersion < 2 {
-//                migration.enumerate(AppointmentInfo.className()) { oldObject, newObject in
-//                    newObject!["recommend_uid_"] = "1,2"
-//                }
-//            }
+            if oldSchemaVersion < 3 {
+                migration.enumerate(UserInfoModel.className()) { oldObject, newObject in
+                    newObject!["recommend_uid_"] = 0.0
+                    newObject!["follow_count_"] = 0
+                }
+            }
         }
         config.deleteRealmIfMigrationNeeded = true
         Realm.Configuration.defaultConfiguration = config
