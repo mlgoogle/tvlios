@@ -129,7 +129,7 @@ class FollowCell: UITableViewCell {
             make.centerX.equalTo(followTitle)
             make.bottom.equalTo(contentView.snp_centerY).offset(-2.5)
             make.width.equalTo(50)
-            make.height.equalTo(12)
+            make.height.equalTo(16)
         })
     }
     

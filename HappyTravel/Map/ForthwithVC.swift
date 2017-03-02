@@ -35,8 +35,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     //延时测试用
     var isShowBaseInfo = false
     var isShowLocationInfo = false
-    //服务者类型 0商务，1休闲, 999所有服务者，默认为所有服务者（服务端发送的serviceType_ 0商务，1休闲, 2既是商务又是休闲）
-    var serviceType:Int = 999
+    // 筛选类型
+    
+    enum FilterType: Int {
+        case All = 0
+        case Bussiness = 1
+        case Leisure = 2
+        case Score = 3
+        case Follow = 4
+    }
+    var filterType:FilterType = .All
     //筛选弹框
     var alertCtrl:UIAlertController?
     weak var rightLabel:UILabel?
@@ -220,16 +228,14 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     func screenServices(sender:UIButton) {
         sender.selected = true
         alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "取消"]
-        let typeArray = [999, 0, 1]
-        for i in 0..<4 {
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "好评率/评分", "关注人数", "取消"]
+        for i in 0..<nameArray.count {
             let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
-                if i == 3{
+                if i == nameArray.count-1 {
                     self.titleBtn?.selected = false
                     self.dismissViewControllerAnimated(true, completion: nil)
-                }
-                else{
-                    self.serviceType = typeArray[i]
+                } else {
+                    self.filterType = FilterType.init(rawValue: i)!
                     self.screenAction(nameArray[i])
                 }
                 
@@ -315,15 +321,28 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     let point = MAPointAnnotation.init()
                     point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
                     point.title = "\(servant.uid_)"
+                    
+                    let type = servant.servicetype_
                     //根据serviceType筛选
-                    if self?.serviceType != 999 {
-                        //不是默认的所有服务者，进行筛选
-                        let type = servant.servicetype_
-                        //不是类型2和要筛选的服务者，忽略
-                        if  type != self?.serviceType && type != 2 {
+                    switch self!.filterType {
+                    case .All:
+                        break
+                    case .Bussiness:
+                        if type == 1 {
                             continue
                         }
+                    case .Leisure:
+                        if type == 0 {
+                            continue
+                        }
+                    case .Score:
+                        
+                        break
+                    case .Follow:
+                        
+                        break
                     }
+                    
                     self?.annotations.append(point)
                 }
                 if self?.mapView!.annotations.count > 0{

@@ -36,7 +36,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        updateFollowCount()
         header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
@@ -69,6 +69,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func headerRefresh() {
+        footer.state = .Idle
         pageCount = 0
         let req = FollowListRequestModel()
         req.uid_ = CurrentUser.uid_
@@ -175,6 +176,17 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         })
         
+    }
+    
+    func updateFollowCount() {
+        let req = FollowCountRequestModel()
+        req.uid_ = CurrentUser.uid_
+        req.type_ = 1
+        APIHelper.followAPI().followCount(req, complete: { [weak self](response) in
+            if let model = response as? FollowCountModel {
+                self?.followedCount = model.follow_count_
+            }
+            }, error: nil)
     }
     
     deinit {

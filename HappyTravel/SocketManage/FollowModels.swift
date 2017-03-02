@@ -55,6 +55,7 @@ class FollowListModel: Object {
 // 关注数
 class FollowCountRequestModel: UserBaseModel {
     
+    dynamic var type_ = 1 // 1：uid_关注的人数 2：uid_被关注的数量
 }
 // 关注数请求结果
 class FollowCountModel: Object {
