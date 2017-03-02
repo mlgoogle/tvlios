@@ -16,58 +16,61 @@ class FollowCell: UITableViewCell {
         imageView.contentMode = .ScaleAspectFill
         imageView.backgroundColor = UIColor.grayColor()
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 30
-        imageView.layer.borderColor = UIColor.redColor().CGColor
-        imageView.layer.borderWidth = 1
+        imageView.layer.cornerRadius = 20.5
         return imageView
     }()
     
     lazy var vip:UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage.init(named: "attentionList_certified")
         imageView.userInteractionEnabled = true
         imageView.contentMode = .ScaleAspectFill
-        imageView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        imageView.backgroundColor = colorWithHexString("#fca311")
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 7
-        imageView.layer.borderColor = UIColor.redColor().CGColor
-        imageView.layer.borderWidth = 1
+        imageView.layer.cornerRadius = 5
         return imageView
     }()
     
     lazy var nickname:UILabel = {
-        let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S15), textColor: colorWithHexString("#666666"))
+        let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S16), textColor: colorWithHexString("#333333"))
         return label
     }()
     
-    lazy var leisure:UILabel = {
-        let label = UILabel.init(text: "休闲", font: UIFont.systemFontOfSize(S12), textColor: colorWithHexString("#dd0011"))
-        label.layer.borderWidth = 1
-        label.layer.borderColor = colorWithHexString("#dd0011").CGColor
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 5
-        label.textAlignment = .Center
-        return label
+    lazy var business:UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage.init(named: "attentionList_serviceTag"), forState: .Normal)
+        button.setTitle("商务", forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(S10)
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 5, -1)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        return button
     }()
     
-    lazy var business:UILabel = {
-        let label = UILabel.init(text: "商务", font: UIFont.systemFontOfSize(S12), textColor: colorWithHexString("#dd0011"))
-        label.layer.borderWidth = 1
-        label.layer.borderColor = colorWithHexString("#dd0011").CGColor
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 5
+    lazy var leisure:UIButton = {
+        let button = UIButton()
+        button.setBackgroundImage(UIImage.init(named: "attentionList_serviceTag"), forState: .Normal)
+        button.setTitle("休闲", forState: .Normal)
+        button.titleLabel?.font = UIFont.systemFontOfSize(S10)
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 5, -1)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        return button
+    }()
+    
+    lazy var followTitle:UILabel = {
+        let label = UILabel.init(text: "被关注数", font: UIFont.systemFontOfSize(S10), textColor: colorWithHexString("#666666"))
         label.textAlignment = .Center
         return label
     }()
     
     lazy var follow:UILabel = {
-        let label = UILabel.init(text: "关注数:", font: UIFont.systemFontOfSize(S15), textColor: colorWithHexString("#666666"))
-        label.textAlignment = .Right
+        let label = UILabel.init(text: "", font: UIFont.systemFontOfSize(S16), textColor: colorWithHexString("#333333"))
+        label.textAlignment = .Center
         return label
     }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        accessoryType = .DisclosureIndicator
         selectionStyle = .None
         initView()
     }
@@ -75,51 +78,58 @@ class FollowCell: UITableViewCell {
     func initView() {
         contentView.addSubview(head)
         head.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(contentView).offset(20)
-            make.top.equalTo(contentView).offset(20)
-            make.bottom.equalTo(contentView).offset(-20)
-            make.width.equalTo(60)
-            make.height.equalTo(60)
+            make.left.equalTo(contentView).offset(15)
+            make.top.equalTo(contentView).offset(13)
+            make.bottom.equalTo(contentView).offset(-13)
+            make.width.equalTo(41)
+            make.height.equalTo(41)
         })
         
         contentView.addSubview(vip)
         vip.snp_makeConstraints(closure: { (make) in
-            make.right.equalTo(head)
-            make.bottom.equalTo(head)
-            make.width.equalTo(14)
-            make.height.equalTo(14)
+            make.right.equalTo(head).offset(-3)
+            make.bottom.equalTo(head).offset(-1)
+            make.width.equalTo(10)
+            make.height.equalTo(10)
         })
         
         contentView.addSubview(nickname)
         nickname.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(head.snp_right).offset(10)
-            make.bottom.equalTo(head)
-            make.width.equalTo(80)
-            make.height.equalTo(30)
-        })
-        
-        contentView.addSubview(leisure)
-        leisure.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(nickname.snp_right).offset(10)
-            make.bottom.equalTo(head.snp_centerY).offset(-5)
-            make.width.equalTo(40)
-            make.height.equalTo(25)
+            make.left.equalTo(head.snp_right).offset(5)
+            make.centerY.equalTo(contentView)
+            make.height.equalTo(16)
         })
         
         contentView.addSubview(business)
         business.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(nickname.snp_right).offset(10)
-            make.top.equalTo(head.snp_centerY).offset(5)
-            make.width.equalTo(40)
-            make.height.equalTo(25)
+            make.left.equalTo(nickname.snp_right).offset(14)
+            make.centerY.equalTo(nickname.snp_centerY)
+            make.width.equalTo(29)
+            make.height.equalTo(23)
+        })
+        
+        contentView.addSubview(leisure)
+        leisure.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(business.snp_right).offset(5)
+            make.centerY.equalTo(business)
+            make.width.equalTo(29)
+            make.height.equalTo(23)
+        })
+        
+        contentView.addSubview(followTitle)
+        followTitle.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(-10)
+            make.top.equalTo(contentView.snp_centerY).offset(2.5)
+            make.width.equalTo(50)
+            make.height.equalTo(10)
         })
         
         contentView.addSubview(follow)
         follow.snp_makeConstraints(closure: { (make) in
-            make.right.equalTo(contentView).offset(-10)
-            make.top.equalTo(head)
-            make.left.equalTo(business.snp_right).offset(10)
-            make.height.equalTo(25)
+            make.centerX.equalTo(followTitle)
+            make.bottom.equalTo(contentView.snp_centerY).offset(-2.5)
+            make.width.equalTo(50)
+            make.height.equalTo(12)
         })
     }
     
@@ -130,7 +140,7 @@ class FollowCell: UITableViewCell {
         
         nickname.text = info.nickname_ ?? "加载失败"
         
-        follow.text = "关注数: \(info.follow_count_)"
+        follow.text = "\(info.follow_count_)"
         
     }
     

@@ -192,7 +192,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         mapView!.tag = 1002
         mapView!.delegate = self
         mapView!.userTrackingMode = .Follow
-        mapView!.setZoomLevel(11, animated: true)
+        mapView!.setZoomLevel(13, animated: true)
         mapView!.showsUserLocation = true
         mapView!.showsCompass = true
         view.addSubview(mapView!)
@@ -253,7 +253,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     func back2MyLocationAction(sender: UIButton) {
         checkLocationService()
         if location != nil {
-            mapView?.setZoomLevel(11.0, animated: false)
             mapView?.setCenterCoordinate(location!.coordinate, animated: true)
         }
         
@@ -370,7 +369,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         if location == nil {
             location = userLocation.location
             latDiffValue = 720.0
-            mapView.setZoomLevel(11, animated: false)
+            mapView.setZoomLevel(13, animated: false)
             if location != nil {
                 mapView.centerCoordinate = location!.coordinate
             }

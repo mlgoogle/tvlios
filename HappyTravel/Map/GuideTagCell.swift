@@ -12,6 +12,11 @@ class GuideTagCell: MAAnnotationView {
     
     var userInfo:UserInfoModel?
     
+    lazy var bgView:UIImageView = {
+        let imageView = UIImageView()
+        return imageView
+    }()
+    
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         initView()
@@ -24,16 +29,26 @@ class GuideTagCell: MAAnnotationView {
     }
     
     func initView() {
+        addSubview(bgView)
+        bgView.snp_makeConstraints(closure: { (make) in
+            make.centerX.equalTo(self)
+            make.top.equalTo(self)
+            make.width.equalTo(67)
+            make.height.equalTo(77)
+        })
+        
         var headView = viewWithTag(1001) as? UIImageView
         if headView == nil {
             headView = UIImageView()
+            headView?.layer.masksToBounds = true
+            headView?.layer.cornerRadius = 30.5
             headView?.tag = 1001
-            addSubview(headView!)
+            bgView.addSubview(headView!)
             headView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)
-                make.top.equalTo(self)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.top.equalTo(self).offset(3)
+                make.width.equalTo(61)
+                make.height.equalTo(61)
             })
             headView?.image = UIImage.init(named: "default-head")
             image = UIImage.init(named: "")
@@ -79,8 +94,13 @@ class GuideTagCell: MAAnnotationView {
     
     func setInfo(info: UserInfoModel?) {
         userInfo = info
-        if let headView = viewWithTag(1001) as? UIImageView {
-            headView.image = UIImage.init(named: userInfo!.gender_ == 1 ? "map-head-male" : "map-head-female")
+        if let headView = bgView.viewWithTag(1001) as? UIImageView {
+            if userInfo?.head_url_ != nil {
+                headView.kf_setImageWithURL(NSURL.init(string: userInfo!.head_url_!))
+            } else {
+                headView.image = UIImage.init(named: userInfo!.gender_ == 1 ? "map-head-male" : "map-head-female")
+            }
+            
         }
         
     }

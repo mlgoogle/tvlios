@@ -18,9 +18,17 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     var isFirstTime = true
     var pageCount = 0
     var follows = [FollowListCellModel]()
+    var followedCount = 0
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
+    
+    lazy var headView:UILabel = {
+        let label = UILabel.init(text: "关注的人数: ", font: UIFont.systemFontOfSize(S16), textColor: colorWithHexString("#666666"))
+        label.textAlignment = .Left
+        label.backgroundColor = colorWithHexString("#f2f2f2")
+        return label
+    }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -43,7 +51,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         table.dataSource = self
         table.estimatedRowHeight = 80
         table.rowHeight = UITableViewAutomaticDimension
-        table.separatorStyle = .None
+        table.separatorStyle = .SingleLine
         table.registerClass(FollowCell.self, forCellReuseIdentifier: "FollowCell")
         view.addSubview(table)
         table.snp_makeConstraints(closure: { (make) in
@@ -123,15 +131,16 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     // MARK: - UITableView
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 46
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "已关注: X人"
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        headView.text = "    关注的人数: \(followedCount)人"
+        return headView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -146,6 +155,25 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let req = UserInfoIDStrRequestModel()
+        req.uid_str_ = "\(follows[indexPath.row].uid_)"
+        APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
+            if let models = response as? [UserInfoModel] {
+                DataManager.insertDatas(models)
+                let servant = UserBaseModel()
+                servant.uid_ = self!.follows[indexPath.row].uid_
+                APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                    if let model = response as? ServantDetailModel {
+                        DataManager.insertData(model)
+                        let servantPersonalVC = ServantPersonalVC()
+                        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
+                        self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
+                    }
+                    }, error: nil)
+            }
+        }, error: { (err) in
+        
+        })
         
     }
     
