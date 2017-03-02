@@ -21,7 +21,14 @@ class FollowAPI: SocketAPI {
     func followList(model: FollowListRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .FollowList, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(FollowListModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseModels(FollowListCellModel.classForCoder(), listKey: "follow_list_"))
+            }, error: error)
+    }
+    
+    func followCount(model: FollowCountRequestModel, complete: CompleteBlock?, error: ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .FollowCount, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(FollowCountModel.classForCoder()))
             }, error: error)
     }
 }
