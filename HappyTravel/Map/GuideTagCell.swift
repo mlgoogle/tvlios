@@ -20,7 +20,7 @@ class GuideTagCell: MAAnnotationView {
     override init!(annotation: MAAnnotation!, reuseIdentifier: String!) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         initView()
-        centerOffset.y = 5
+        centerOffset.y = -77
         
     }
     
