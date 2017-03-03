@@ -106,3 +106,16 @@ class ClienWXPayStatusModel: Object {
     
     dynamic var user_cash_ = -1
 }
+
+//判断余额是否足够
+class PayOrderStatusModel: Object{
+    dynamic var result_ = -1
+    dynamic var order_id_ = 0
+}
+
+//获取微信联系方式
+class getRelationStatusModel: Object{
+    dynamic var result_ = -1
+    dynamic var wx_url_: String?
+    dynamic var wx_num_: String?
+}
