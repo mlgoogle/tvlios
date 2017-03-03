@@ -41,9 +41,7 @@ class ConsumeSocketAPI: SocketAPI{
         startRequest(packet, complete: { (response) in
             
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-                complete?(jsonObject)
-            })
+            complete?(jsonObject)
             
             }, error: error)
         

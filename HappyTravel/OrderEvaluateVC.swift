@@ -7,23 +7,20 @@
 //
 
 import UIKit
-
+import SVProgressHUD
 class OrderEvaluateVC: UIViewController {
 
     var userInfo: UserInfoModel = UserInfoModel()
+    var detailInfo:ServantDetailModel = ServantDetailModel()
+    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
     
     let sumImageView: UIView = UIView()
     let sumBtnView: UIView = UIView()
     let vImage: UIImageView = UIImageView()
     var aidImageView:UIImageView = UIImageView()
     var aidName:UILabel = UILabel()
-    let leftLine: UILabel = UILabel()
-    let rightLine: UILabel = UILabel()
-    let describeLabel:UILabel = UILabel()
-    
     let textView: UITextView = UITextView()
     let placeholderLabel: UILabel = UILabel()
-    
     var evaluateBtn: UIButton = UIButton()
     
     override func viewDidLoad() {
@@ -47,9 +44,6 @@ class OrderEvaluateVC: UIViewController {
         sumImageView.addSubview(aidImageView)
         sumImageView.addSubview(vImage)
         view.addSubview(aidName)
-        view.addSubview(leftLine)
-        view.addSubview(rightLine)
-        view.addSubview(describeLabel)
         view.addSubview(evaluateBtn)
         
         sumImageView.snp_makeConstraints { (make) in
@@ -109,7 +103,7 @@ class OrderEvaluateVC: UIViewController {
                 make.left.equalTo(sumBtnView).offset(i * 44)
             })
             starBtn.setBackgroundImage(UIImage.init(named: "guide-star-hollow"), forState: UIControlState.Normal)
-//            "guide-star-fill" : "guide-star-hollow"
+//starSelector  starUnselector
             starBtn.addTarget(self, action: #selector(starBtnDidClick), forControlEvents: UIControlEvents.TouchUpInside)
         }
       textView.snp_makeConstraints { (make) in
@@ -210,18 +204,53 @@ class OrderEvaluateVC: UIViewController {
             btn5!.setBackgroundImage(UIImage.init(named: "guide-star-hollow"), forState: UIControlState.Normal)
         }
         if tag == 10004{
-            btn1!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
-            btn2!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
-            btn3!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
-            btn4!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
-            btn5!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
+                btn1!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
+                btn2!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
+                btn3!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
+                btn4!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
+                btn5!.setBackgroundImage(UIImage.init(named: "guide-star-fill"), forState: UIControlState.Normal)
         }
-
-        
-        
     }
     
+    //点击评价的按钮
     func evaluateDidClick() {
+        var starInt:Int = 0
+        switch selectorBtn.tag {
+        case 10000:
+            starInt = 1
+            break
+        case 10001:
+            starInt = 2
+            break
+        case 10002:
+            starInt = 3
+            break
+        case 10003:
+            starInt = 4
+            break
+        case 10004:
+            starInt = 5
+            break
+        default:
+            break
+        }
+        if textView.text.characters.count < 255 {
+            let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
+                                              "to_uid_": detailInfo.uid_,
+                                              "order_id_": payStatus.order_id_,
+                                              "service_score_": starInt,
+                                              "user_score_": starInt,
+                                              "remarks_": textView.text]
+            let model = CommentForOrderModel(value: dict)
+            APIHelper.consumeAPI().commentForOrder(model, complete: { [weak self](response) in
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "评价成功", ForDuration: 1.0, completion: {
+                    SVProgressHUD.dismiss()
+                    self!.navigationController?.popViewControllerAnimated(true)
+                })
+            }) { (error) in
+            }
+        }
+  
         
     }
 

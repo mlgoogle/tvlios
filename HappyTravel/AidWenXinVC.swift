@@ -12,7 +12,9 @@ class AidWenXinVC: UIViewController {
 
     var getRelation:getRelationStatusModel = getRelationStatusModel()
     var userInfo: UserInfoModel = UserInfoModel()
-    
+    var detailInfo:ServantDetailModel = ServantDetailModel()
+    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
+    var bool: Bool = false
     var qrCode :UIImageView = UIImageView()
     var accountLabel: UILabel = UILabel()
     var accountName: UILabel = UILabel()
@@ -95,12 +97,15 @@ class AidWenXinVC: UIViewController {
         evaluateBtn.layer.cornerRadius = 22
         evaluateBtn.layer.masksToBounds = true
         evaluateBtn.addTarget(self, action: #selector(evaluateDidClick), forControlEvents: UIControlEvents.TouchUpInside)
+        evaluateBtn.hidden = bool
     }
     
     //点击评价按钮
     func evaluateDidClick() {
         let orderEvaluate = OrderEvaluateVC()
         orderEvaluate.userInfo = userInfo
+        orderEvaluate.detailInfo = detailInfo
+        orderEvaluate.payStatus = payStatus
         navigationController?.pushViewController(orderEvaluate, animated: true)
         
     }

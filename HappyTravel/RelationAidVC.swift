@@ -12,6 +12,7 @@ class RelationAidVC: UIViewController {
     
     var userInfo: UserInfoModel = UserInfoModel()
     var detailInfo:ServantDetailModel = ServantDetailModel()
+    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
 
     var imageV : UIImageView?
     var vImage : UIImageView?
@@ -414,6 +415,7 @@ class RelationAidVC: UIViewController {
             let model = PayOrderModel(value: dict)
             APIHelper.consumeAPI().payOrder(model, complete: {[weak self](response) in
                 if let model = response as? PayOrderStatusModel{
+                    self!.payStatus = model
                     if model.result_ == 0 {
                         
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
@@ -421,12 +423,14 @@ class RelationAidVC: UIViewController {
                                                              "uid_to_": self!.detailInfo.uid_]
                         let getModel = getRelationModel(value: getDict)
                         
-                        APIHelper.consumeAPI().getRelation(getModel, complete: { (response) in
+                        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
                             if let model = response as? getRelationStatusModel{
                                 let aidWeiXin = AidWenXinVC()
                                 aidWeiXin.getRelation = model
                                 aidWeiXin.userInfo = (self?.userInfo)!
+                                aidWeiXin.detailInfo = (self?.detailInfo)!
+                                aidWeiXin.payStatus = (self?.payStatus)!
                                 self!.navigationController?.pushViewController(aidWeiXin, animated: true)
                             }
                            
