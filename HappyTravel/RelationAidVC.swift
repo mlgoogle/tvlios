@@ -386,7 +386,6 @@ class RelationAidVC: UIViewController {
     //确定支付按钮点击
     func confireDidClick() {
         wenXinView.hidden = false
-//        tabBarController?.view.addSubview(shadow)
         let window = UIApplication.sharedApplication().keyWindow
         window?.addSubview(shadow)
         shadow.snp_makeConstraints { (make) in
@@ -403,8 +402,6 @@ class RelationAidVC: UIViewController {
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
-        shadowDidClick()
-        
         
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
@@ -426,6 +423,7 @@ class RelationAidVC: UIViewController {
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
                             if let model = response as? getRelationStatusModel{
+                                self!.shadowDidClick()
                                 let aidWeiXin = AidWenXinVC()
                                 aidWeiXin.getRelation = model
                                 aidWeiXin.userInfo = (self?.userInfo)!

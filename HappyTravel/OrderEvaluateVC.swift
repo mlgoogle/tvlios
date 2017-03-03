@@ -88,8 +88,7 @@ class OrderEvaluateVC: UIViewController {
         sumBtnView.snp_makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(aidName.snp_bottom).offset(15)
-            make.left.equalTo(view).offset(85)
-            make.right.equalTo(view).offset(-85)
+            make.width.equalTo(205)
             make.height.equalTo(29)
         }
         for i in 0...4 {
