@@ -49,4 +49,24 @@ class ConsumeSocketAPI: SocketAPI{
         
     }
     
+    //支付微信号显示的信息费用
+    func payOrder(model: PayOrderModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .payOrder, model: model, type: .Chat)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(PayOrderStatusModel.classForCoder()))
+            }, error: error)
+
+    }
+    
+    //支付成功后获取微信联系方式
+    func getRelation(model: getRelationModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .getRelation, model: model, type: .User)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(getRelationStatusModel.classForCoder()))
+            }, error: error)
+        
+        
+    }
+    
+    
 }

@@ -300,6 +300,8 @@
 		D0D003DB1E67EAFC00D8ED04 /* powerBackground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */; };
 		D0D003DC1E67EAFC00D8ED04 /* unfold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */; };
 		D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */; };
+		D0D003DF1E68F8C300D8ED04 /* AidWenXinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */; };
+		D0D003E11E6915B400D8ED04 /* OrderEvaluateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -619,6 +621,8 @@
 		D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powerBackground@3x.png"; sourceTree = "<group>"; };
 		D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@2x.png"; sourceTree = "<group>"; };
 		D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@3x.png"; sourceTree = "<group>"; };
+		D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AidWenXinVC.swift; sourceTree = "<group>"; };
+		D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderEvaluateVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -861,6 +865,8 @@
 				2FC25B011D6A9C7600D48D6A /* ServantPersonalVC.swift */,
 				2FC25B041D6A9C7600D48D6A /* TallyCell.swift */,
 				D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */,
+				D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */,
+				D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */,
 			);
 			name = Servant;
 			sourceTree = "<group>";
@@ -1699,6 +1705,7 @@
 				2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */,
 				2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */,
 				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
+				D0D003DF1E68F8C300D8ED04 /* AidWenXinVC.swift in Sources */,
 				2FA15A9D1E13BAB5001655A3 /* UserAPI.swift in Sources */,
 				6E67964A1E28BB9300D4378E /* YD_NewPersonGuideManager.swift in Sources */,
 				2FECFBCB1E1627730065AF60 /* UpdateModule.swift in Sources */,
@@ -1733,6 +1740,7 @@
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
 				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,
+				D0D003E11E6915B400D8ED04 /* OrderEvaluateVC.swift in Sources */,
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
 				2FECFBE31E1F709A0065AF60 /* CommonModels.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,

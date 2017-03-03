@@ -7,11 +7,12 @@
 //
 
 import UIKit
-
+import SVProgressHUD
 class RelationAidVC: UIViewController {
     
     var userInfo: UserInfoModel = UserInfoModel()
-    
+    var detailInfo:ServantDetailModel = ServantDetailModel()
+
     var imageV : UIImageView?
     var vImage : UIImageView?
     private lazy var scrollView: UIScrollView = {
@@ -58,6 +59,7 @@ class RelationAidVC: UIViewController {
     let userTextField: UITextField = UITextField()
     let confireBtn: UIButton = UIButton()
     let shadow: UIButton = UIButton()
+    let grayLine: UIView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -321,11 +323,11 @@ class RelationAidVC: UIViewController {
     }
     //显示用户输入微信号
     func setupUITextFiled() {
-//        view.addSubview(wenXinView)
         let window = UIApplication.sharedApplication().keyWindow
         window?.addSubview(wenXinView)
         wenXinView.addSubview(userTextField)
         wenXinView.addSubview(confireBtn)
+        wenXinView.addSubview(grayLine)
         wenXinView.hidden = true
         wenXinView.snp_makeConstraints { (make) in
             make.center.equalTo(window!)
@@ -351,6 +353,7 @@ class RelationAidVC: UIViewController {
         userTextField.attributedPlaceholder = attributedStr
         userTextField.leftView = UIView.init(frame: CGRectMake(0, 0, 14, 0))
         userTextField.leftViewMode = .Always
+        userTextField.textAlignment = .Center
         
         confireBtn.snp_makeConstraints { (make) in
             make.left.equalTo(wenXinView)
@@ -363,6 +366,14 @@ class RelationAidVC: UIViewController {
         confireBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
         confireBtn.addTarget(self, action: #selector(confireBtnClick), forControlEvents: UIControlEvents.TouchUpInside)
         confireBtn.layer.borderColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1).CGColor
+        
+        grayLine.snp_makeConstraints { (make) in
+            make.left.equalTo(wenXinView)
+            make.right.equalTo(wenXinView)
+            make.bottom.equalTo(confireBtn.snp_top)
+            make.height.equalTo(1)
+        }
+        grayLine.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         
     }
     
@@ -391,7 +402,53 @@ class RelationAidVC: UIViewController {
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
-       
+        shadowDidClick()
+        
+        
+        if userTextField.text?.characters.count != 0 {
+            let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
+                                              "to_uid_": detailInfo.uid_,
+                                              "service_prince_": 188,
+                                              "wx_id_": userTextField.text ?? ""]
+            
+            let model = PayOrderModel(value: dict)
+            APIHelper.consumeAPI().payOrder(model, complete: {[weak self](response) in
+                if let model = response as? PayOrderStatusModel{
+                    if model.result_ == 0 {
+                        
+                        let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
+                                                             "uid_form_": CurrentUser.uid_,
+                                                             "uid_to_": self!.detailInfo.uid_]
+                        let getModel = getRelationModel(value: getDict)
+                        
+                        APIHelper.consumeAPI().getRelation(getModel, complete: { (response) in
+                            
+                            if let model = response as? getRelationStatusModel{
+                                let aidWeiXin = AidWenXinVC()
+                                aidWeiXin.getRelation = model
+                                aidWeiXin.userInfo = (self?.userInfo)!
+                                self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+                            }
+                           
+                            
+                            }, error: { (error) in
+                                
+                        })
+                        
+                    }
+                }
+                
+            }) { (error) in
+                
+            }
+        }
+        else{
+            SVProgressHUD.showWainningMessage(WainningMessage: "请输入微信号方便助理跟你取得联系", ForDuration: 1.5, completion: {
+                SVProgressHUD.dismiss()
+            })
+        
+        }
+    
         
     }
 }
@@ -405,10 +462,10 @@ extension RelationAidVC : UIScrollViewDelegate,UITextFieldDelegate{
         var scale:CGFloat = 1.0
         if offsetY < 0  // 下拉
         {
-            scale = min(1.5, 1.0 - offsetY / 300.0)
+            scale = min(1.5, 1.0 - offsetY / 200.0)
         } else if offsetY > 0
         {
-            scale = max(0.45, 1 - offsetY / 300);
+            scale = max(0.45, 1 - offsetY / 200);
         }
         imageV?.transform = CGAffineTransformMakeScale(scale, scale)
         vImage?.transform = CGAffineTransformMakeScale(scale, scale)
