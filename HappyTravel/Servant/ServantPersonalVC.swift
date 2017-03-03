@@ -191,6 +191,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
         
       let relationAid = RelationAidVC()
       relationAid.userInfo  = personalInfo!
+      relationAid.detailInfo = detailInfo!
       navigationController?.pushViewController(relationAid, animated: true)
     }
     
