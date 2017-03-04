@@ -208,8 +208,7 @@ class RelationAidVC: UIViewController {
         introText.font = UIFont.systemFontOfSize(14)
         introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         introText.numberOfLines = 0
-        introText.text = "1212222222222222222222222222222222222222222222222222222222222222211111111111111111111111111"
-        
+        introText.text = "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文"
         unfoldButton.snp_makeConstraints { (make) in
             make.top.equalTo(introText.snp_bottom).offset(10)
             make.centerX.equalTo(introLabel)
@@ -219,6 +218,7 @@ class RelationAidVC: UIViewController {
         unfoldButton.setTitleColor(UIColor.init(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1), forState: UIControlState.Normal)
         unfoldButton.setImage(UIImage.init(named: "unfold"), forState: UIControlState.Normal)
         unfoldButton.titleLabel?.font = UIFont.systemFontOfSize(11)
+        unfoldButton.addTarget(self, action: #selector(unfoldBtnDidClick), forControlEvents: UIControlEvents.TouchUpInside)
         let imageSize:CGSize = unfoldButton.imageView!.frame.size
         let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
         unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
@@ -352,9 +352,8 @@ class RelationAidVC: UIViewController {
         attributes[NSFontAttributeName] = UIFont.systemFontOfSize(13)
         let attributedStr = NSAttributedString.init(string: userTextField.placeholder!, attributes: attributes)
         userTextField.attributedPlaceholder = attributedStr
-        userTextField.leftView = UIView.init(frame: CGRectMake(0, 0, 14, 0))
-        userTextField.leftViewMode = .Always
         userTextField.textAlignment = .Center
+        userTextField.contentVerticalAlignment = .Center
         
         confireBtn.snp_makeConstraints { (make) in
             make.left.equalTo(wenXinView)
@@ -453,6 +452,49 @@ class RelationAidVC: UIViewController {
     
         
     }
+    
+    //展开按钮的点击
+    let selectorBtn: UIButton = UIButton()
+    func unfoldBtnDidClick(sender: UIButton) {
+//        unfoldButton.selected =
+        unfoldButton.selected = selectorBtn.selected
+        selectorBtn.selected = !sender.selected
+        if unfoldButton.selected {
+            unfoldButton.setImage(UIImage(named: "packUp"), forState: UIControlState.Selected)
+            unfoldButton.setTitle("收起", forState: UIControlState.Selected)
+            let imageSize:CGSize = unfoldButton.imageView!.frame.size
+            let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
+            unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
+            unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(114)
+            })
+            introView.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(175)
+            })
+            view.layoutIfNeeded()
+            
+        }
+        else{
+            unfoldButton.setTitle("展开", forState: UIControlState.Normal)
+            unfoldButton.setTitleColor(UIColor.init(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1), forState: UIControlState.Normal)
+            unfoldButton.setImage(UIImage.init(named: "unfold"), forState: UIControlState.Normal)
+            let imageSize:CGSize = unfoldButton.imageView!.frame.size
+            let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
+            unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
+            unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(54)
+            })
+            introView.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(115)
+                })
+            view.layoutIfNeeded()
+            
+        }
+    }
+    
+    
 }
 
 

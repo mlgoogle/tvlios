@@ -114,8 +114,10 @@ class OrderEvaluateVC: UIViewController {
         }
         textView.autocorrectionType = .No
         textView.delegate = self
-        textView.backgroundColor = UIColor(colorLiteralRed: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1)
+        textView.backgroundColor = UIColor(colorLiteralRed: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1)
         textView.editable = true
+        textView.layer.borderColor = UIColor(colorLiteralRed: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1).CGColor
+        textView.layer.borderWidth = 1.0
         textView.font = UIFont.systemFontOfSize(14)
         
         placeholderLabel.snp_makeConstraints { (make) in
@@ -249,6 +251,11 @@ class OrderEvaluateVC: UIViewController {
             }) { (error) in
             }
         }
+        else{
+            SVProgressHUD.showErrorMessage(ErrorMessage: "只能输入255个字,你输入的字数超过限制", ForDuration: 1.0, completion: { 
+                SVProgressHUD.dismiss()
+            })
+        }
   
         
     }
@@ -268,6 +275,16 @@ extension OrderEvaluateVC: UITextViewDelegate{
         else{
             placeholderLabel.text = ""
         }
+    }
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if range.location >= 255 {
+            return false
+        }
+        var newLength: Int = 0
+        if let count: Int = textView.text.characters.count{
+            newLength = count + text.characters.count - range.length
+        }
+        return newLength < 255
     }
     
     
