@@ -13,14 +13,13 @@ import SideMenuController
 
 class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     
-    func initSide() {
-        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "nav-personal")
+    required init?(coder aDecoder: NSCoder) {
+        SideMenuController.preferences.drawing.menuButtonImage = UIImage.init(named:"nav-personal")
         SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width / 3.0 * 2
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.7
         SideMenuController.preferences.drawing.centerPanelShadow = true
-        SideMenuController.preferences.drawing.centerPanelOverlayColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .FadeAnimation
-        SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
+        SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
+        super.init(coder: aDecoder)
     }
     
     // 初始化主界面
@@ -29,9 +28,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = UINavigationController(rootViewController: forthwithVC)
-//        forthwithNC.navigationBar.setBackgroundImage(UIImage.init(named: "nav_clear"), forBarPosition: .Any, barMetrics: .Default)
-//        forthwithNC.navigationBar.shadowImage = UIImage.init(named: "nav_clear")
-        
+
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]
         
@@ -59,8 +56,6 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        initSide()
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
         if userDefaults.floatForKey("guideVersion") < 1.1 {
