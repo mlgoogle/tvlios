@@ -57,21 +57,24 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     func addData() {
-        APIHelper.servantAPI().servantDetail(<#T##model: UserBaseModel##UserBaseModel#>, complete: <#T##CompleteBlock?##CompleteBlock?##(AnyObject?) -> ()#>, error: <#T##ErrorBlock?##ErrorBlock?##(NSError) -> ()#>)
+        
+        let servantInfo:ServantInfoModel = ServantInfoModel()
+        servantInfo.uid_ = (personalInfo?.uid_)!
+        servantInfo.page_num_ = 0
+        servantInfo.page_size_ = 10
+        
+        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            
+            print(response)
+            
+            }, error: {
+                (error) in
+                
+                print(error)
+        })
+        
     }
     
-    /**
-     APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
-     if let models = response as? [UserInfoModel] {
-     self?.annotations.removeAll()
-     for servant in models {
-     self?.servantsInfo[servant.uid_] = servant
-     DataManager.insertData(servant)
-     let latitude = servant.latitude_
-     let longitude = servant.longitude_
-     let point = MAPointAnnotation.init()
-     
-     */
     // 加载页面
     func initViews(){
         tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight), style: .Grouped)

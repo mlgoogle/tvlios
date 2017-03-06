@@ -21,6 +21,8 @@ class ServantHeaderView: UIView {
     var nameLabel:UILabel?
     var attentionNum:UILabel?
     var starsView:UIView?
+    var tagView:UIView?// 标签条
+    
     
     var headerDelegate:ServantHeaderViewDelegate?
     
@@ -78,6 +80,9 @@ class ServantHeaderView: UIView {
         nameLabel!.font = UIFont.systemFontOfSize(18)
         nameLabel!.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
         middleView.addSubview(nameLabel!)
+        
+        tagView = UIView.init(frame: CGRectMake((nameLabel?.Left)!, (nameLabel?.Bottom)! + 3, (nameLabel?.Width)!, (headerView?.Height)! - (nameLabel?.Bottom)! - 3))
+        middleView.addSubview(tagView!)
         
         attentionNum = UILabel.init(frame: CGRectMake(nameLabel!.Right + 10, nameLabel!.Top, middleView.Width - nameLabel!.Right - 30, 20))
         attentionNum!.textAlignment = .Center
