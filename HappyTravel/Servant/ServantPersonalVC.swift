@@ -219,4 +219,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate, UITableV
             }
             }, error: nil)
     }
+    
+    func textPush() {
+        // 测试一下修改上传
+    }
 }
