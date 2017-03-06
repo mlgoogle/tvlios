@@ -66,7 +66,7 @@ class ConsumeSocketAPI: SocketAPI{
     
     //订单消息列表
     func orderList(model: OrderListRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .OrderList, model: model)
+        let packet = SocketDataPacket(opcode: .OrderList, model: model, type: .User)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(OrderListCellModel.classForCoder(), listKey: "order_msg_list_"))
             
