@@ -114,8 +114,23 @@ class PayOrderStatusModel: Object{
 }
 
 //获取微信联系方式
-class getRelationStatusModel: Object{
+class GetRelationStatusModel: Object{
     dynamic var result_ = -1
     dynamic var wx_url_: String?
     dynamic var wx_num_: String?
+    dynamic var service_price_: String?
 }
+//订单消息列表子集
+class OrderListCellModel: UserModel{
+    dynamic var order_id_ = 0
+    dynamic var to_uid_ = 0
+    dynamic var to_uid_nickename_:String?
+    dynamic var order_time_: String?
+    dynamic var is_evaluate_ = -1
+}
+//订单消息列表请求结果
+class OrderListModel: Object{
+    let order_msg_list_ = List<OrderListCellModel>()
+}
+
+

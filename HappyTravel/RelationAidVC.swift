@@ -408,7 +408,7 @@ class RelationAidVC: UIViewController {
                                               "service_prince_": 188,
                                               "wx_id_": userTextField.text ?? ""]
             
-            let model = PayOrderModel(value: dict)
+            let model = PayOrderRequestModel(value: dict)
             APIHelper.consumeAPI().payOrder(model, complete: {[weak self](response) in
                 if let model = response as? PayOrderStatusModel{
                     self!.payStatus = model
@@ -417,18 +417,20 @@ class RelationAidVC: UIViewController {
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
                                                              "uid_to_": self!.detailInfo.uid_]
-                        let getModel = getRelationModel(value: getDict)
+                        let getModel = GetRelationRequestModel(value: getDict)
                         
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
-                            if let model = response as? getRelationStatusModel{
+                            if let model = response as? GetRelationStatusModel{
                                 self!.shadowDidClick()
-                                let aidWeiXin = AidWenXinVC()
-                                aidWeiXin.getRelation = model
-                                aidWeiXin.userInfo = (self?.userInfo)!
-                                aidWeiXin.detailInfo = (self?.detailInfo)!
-                                aidWeiXin.payStatus = (self?.payStatus)!
-                                self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: { 
+                                    let aidWeiXin = AidWenXinVC()
+                                    aidWeiXin.getRelation = model
+                                    aidWeiXin.userInfo = (self?.userInfo)!
+                                    aidWeiXin.detailInfo = (self?.detailInfo)!
+                                    aidWeiXin.payStatus = (self?.payStatus)!
+                                    self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+                                })
                             }
                            
                             

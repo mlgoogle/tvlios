@@ -10,7 +10,7 @@ import UIKit
 import SVProgressHUD
 class AidWenXinVC: UIViewController {
 
-    var getRelation:getRelationStatusModel = getRelationStatusModel()
+    var getRelation:GetRelationStatusModel = GetRelationStatusModel()
     var userInfo: UserInfoModel = UserInfoModel()
     var detailInfo:ServantDetailModel = ServantDetailModel()
     var payStatus: PayOrderStatusModel = PayOrderStatusModel()
