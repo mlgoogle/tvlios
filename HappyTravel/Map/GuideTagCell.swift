@@ -14,6 +14,7 @@ class GuideTagCell: MAAnnotationView {
     
     lazy var bgView:UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage.init(named: "map-head-bg")
         return imageView
     }()
     
@@ -29,6 +30,8 @@ class GuideTagCell: MAAnnotationView {
     }
     
     func initView() {
+        image = UIImage.init(named: "map-head-bg")
+        
         addSubview(bgView)
         bgView.snp_makeConstraints(closure: { (make) in
             make.centerX.equalTo(self)
@@ -49,50 +52,13 @@ class GuideTagCell: MAAnnotationView {
             bgView.addSubview(headView!)
             headView?.snp_makeConstraints(closure: { (make) in
                 make.centerX.equalTo(self)
-                make.top.equalTo(self).offset(3)
+                make.top.equalTo(self).offset(6)
                 make.width.equalTo(61)
                 make.height.equalTo(61)
             })
             headView?.image = UIImage.init(named: "default-head")
-            image = UIImage.init(named: "")
         }
         
-        var guideTipsView = viewWithTag(1002) as? UIImageView
-        if guideTipsView == nil {
-            guideTipsView = UIImageView()
-            guideTipsView?.tag = 1002
-            guideTipsView?.layer.cornerRadius = 5
-            guideTipsView?.layer.masksToBounds = true
-            guideTipsView?.backgroundColor = UIColor.clearColor()
-            addSubview(guideTipsView!)
-            guideTipsView?.snp_makeConstraints(closure: { (make) in
-                make.centerX.equalTo(self)
-                make.bottom.equalTo(headView!.snp_top).offset(-2)
-                make.width.equalTo(120)
-                make.height.equalTo(41)
-            })
-            guideTipsView?.image = UIImage.init(named: "guide-tips")
-            image = UIImage.init(named: "")
-        }
-        
-        var guideTipsLab = viewWithTag(10021) as? UILabel
-        if guideTipsLab == nil {
-            guideTipsLab = UILabel()
-            guideTipsLab?.tag = 10021
-            guideTipsLab?.font = UIFont.systemFontOfSize(S15)
-            guideTipsLab?.textColor = UIColor.whiteColor()
-            guideTipsLab?.textAlignment = NSTextAlignment.Center
-            guideTipsLab?.backgroundColor = UIColor.clearColor()
-            guideTipsView?.addSubview(guideTipsLab!)
-            guideTipsLab?.snp_makeConstraints(closure: { (make) in
-                make.centerX.equalTo(guideTipsView!)
-                make.top.equalTo(guideTipsView!)
-                make.height.equalTo(30)
-                make.width.equalTo(guideTipsView!)
-            })
-        }
-        guideTipsLab?.text = "最低服务200元"
-        guideTipsView?.hidden = true
     }
     
     func setInfo(info: UserInfoModel?) {
