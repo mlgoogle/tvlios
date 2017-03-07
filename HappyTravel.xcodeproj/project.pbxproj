@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */; };
+		1A16F4961E6D16BB00360573 /* PersonalHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F48E1E6D16BB00360573 /* PersonalHeadCell.swift */; };
+		1A16F4971E6D16BB00360573 /* PhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F48F1E6D16BB00360573 /* PhotosCell.swift */; };
+		1A16F4991E6D16BB00360573 /* ServantFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4911E6D16BB00360573 /* ServantFooterView.swift */; };
+		1A16F49A1E6D16BB00360573 /* ServantHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4921E6D16BB00360573 /* ServantHeaderView.swift */; };
+		1A16F49B1E6D16BB00360573 /* ServantPersonalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4931E6D16BB00360573 /* ServantPersonalCell.swift */; };
+		1A16F49C1E6D16BB00360573 /* ServantPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4941E6D16BB00360573 /* ServantPersonalVC.swift */; };
+		1A16F49D1E6D16BB00360573 /* TallyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4951E6D16BB00360573 /* TallyCell.swift */; };
+		1A16F4A41E6D16F400360573 /* PhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4A11E6D16F400360573 /* PhotoPreviewView.swift */; };
+		1A16F4A51E6D16F400360573 /* PhotoWallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4A21E6D16F400360573 /* PhotoWallCell.swift */; };
+		1A16F4A61E6D16F400360573 /* PhotoWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4A31E6D16F400360573 /* PhotoWallViewController.swift */; };
+		1A16F4A81E6D1FEB00360573 /* UIViewEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A16F4A71E6D1FEB00360573 /* UIViewEx.swift */; };
 		2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */; };
 		2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */; };
 		2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2B07871DD389FC00FF6A75 /* BMB2Object.swift */; };
@@ -20,9 +31,6 @@
 		2F65C5721DF2EE5A001EC13A /* centurion_card_recommon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5701DF2EE5A001EC13A /* centurion_card_recommon@3x.png */; };
 		2F65C5751DF2EE69001EC13A /* modify_pass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */; };
 		2F65C5761DF2EE69001EC13A /* modify_pass@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */; };
-		2F65C57F1DF415BA001EC13A /* PhotoPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */; };
-		2F65C5811DF415BA001EC13A /* PhotoWallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */; };
-		2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */; };
 		2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F65C5861DF417E9001EC13A /* CommonMethod.swift */; };
 		2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */; };
 		2F9684181D77D1200028E3F2 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2F9684161D77D1200028E3F2 /* AlipaySDK.bundle */; };
@@ -78,10 +86,6 @@
 		2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */; };
 		2FBA71F31D6E92B200839E51 /* PushMessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */; };
 		2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBA71F41D6E93CF00839E51 /* MessageCell.swift */; };
-		2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25AFF1D6A9C7600D48D6A /* PersonalHeadCell.swift */; };
-		2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B001D6A9C7600D48D6A /* PhotosCell.swift */; };
-		2FC25B081D6A9C7600D48D6A /* ServantPersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B011D6A9C7600D48D6A /* ServantPersonalVC.swift */; };
-		2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B041D6A9C7600D48D6A /* TallyCell.swift */; };
 		2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */; };
 		2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC25B371D6D874000D48D6A /* SettingsVC.swift */; };
 		2FD995961DD32842000CB006 /* SockHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD995951DD32842000CB006 /* SockHead.swift */; };
@@ -300,7 +304,6 @@
 		BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */; };
 		BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */; };
 		C31F1EF5AAE26D79A24CCF57 /* Pods_HappyTravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */; };
-		D03BD6F31E66DDCC006D22CF /* RelationAidVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */; };
 		D0D003D61E67EAFC00D8ED04 /* iconV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */; };
 		D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */; };
 		D0D003D81E67EAFC00D8ED04 /* packUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */; };
@@ -320,6 +323,17 @@
 /* Begin PBXFileReference section */
 		0DD80C6C1E15F452004C22C8 /* CommonWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonWebVC.swift; path = Common/CommonWebVC.swift; sourceTree = "<group>"; };
 		16D7D00546FBCA79D486C882 /* Pods-HappyTravelUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyTravelUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HappyTravelUITests/Pods-HappyTravelUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A16F48E1E6D16BB00360573 /* PersonalHeadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersonalHeadCell.swift; path = Servant/PersonalHeadCell.swift; sourceTree = "<group>"; };
+		1A16F48F1E6D16BB00360573 /* PhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosCell.swift; path = Servant/PhotosCell.swift; sourceTree = "<group>"; };
+		1A16F4911E6D16BB00360573 /* ServantFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantFooterView.swift; path = Servant/ServantFooterView.swift; sourceTree = "<group>"; };
+		1A16F4921E6D16BB00360573 /* ServantHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantHeaderView.swift; path = Servant/ServantHeaderView.swift; sourceTree = "<group>"; };
+		1A16F4931E6D16BB00360573 /* ServantPersonalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantPersonalCell.swift; path = Servant/ServantPersonalCell.swift; sourceTree = "<group>"; };
+		1A16F4941E6D16BB00360573 /* ServantPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantPersonalVC.swift; path = Servant/ServantPersonalVC.swift; sourceTree = "<group>"; };
+		1A16F4951E6D16BB00360573 /* TallyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TallyCell.swift; path = Servant/TallyCell.swift; sourceTree = "<group>"; };
+		1A16F4A11E6D16F400360573 /* PhotoPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPreviewView.swift; sourceTree = "<group>"; };
+		1A16F4A21E6D16F400360573 /* PhotoWallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallCell.swift; sourceTree = "<group>"; };
+		1A16F4A31E6D16F400360573 /* PhotoWallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallViewController.swift; sourceTree = "<group>"; };
+		1A16F4A71E6D1FEB00360573 /* UIViewEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViewEx.swift; path = Common/UIViewEx.swift; sourceTree = "<group>"; };
 		1F6E3CC0A9DF857EE39FA984 /* Pods_HappyTravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HappyTravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F26A6A61D824DAB00FFA6A7 /* RegOrLoginSelVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegOrLoginSelVC.swift; path = Login/RegOrLoginSelVC.swift; sourceTree = "<group>"; };
 		2F26A6A81D82667F00FFA6A7 /* CompleteBaseInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompleteBaseInfoVC.swift; path = Login/CompleteBaseInfoVC.swift; sourceTree = "<group>"; };
@@ -337,9 +351,6 @@
 		2F65C5701DF2EE5A001EC13A /* centurion_card_recommon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "centurion_card_recommon@3x.png"; sourceTree = "<group>"; };
 		2F65C5731DF2EE69001EC13A /* modify_pass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modify_pass@2x.png"; sourceTree = "<group>"; };
 		2F65C5741DF2EE69001EC13A /* modify_pass@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modify_pass@3x.png"; sourceTree = "<group>"; };
-		2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoPreviewView.swift; sourceTree = "<group>"; };
-		2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallCell.swift; sourceTree = "<group>"; };
-		2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoWallViewController.swift; sourceTree = "<group>"; };
 		2F65C5861DF417E9001EC13A /* CommonMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommonMethod.swift; path = Common/CommonMethod.swift; sourceTree = "<group>"; };
 		2F6959DB1D52DE9B0072B7FF /* MyPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyPersonalVC.swift; path = Personal/MyPersonalVC.swift; sourceTree = "<group>"; };
 		2F9684161D77D1200028E3F2 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
@@ -404,10 +415,6 @@
 		2FBA71F01D6D9F8C00839E51 /* ModifyPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModifyPasswordVC.swift; path = Personal/ModifyPasswordVC.swift; sourceTree = "<group>"; };
 		2FBA71F21D6E92B200839E51 /* PushMessageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushMessageVC.swift; path = Personal/PushMessageVC.swift; sourceTree = "<group>"; };
 		2FBA71F41D6E93CF00839E51 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageCell.swift; path = Personal/MessageCell.swift; sourceTree = "<group>"; };
-		2FC25AFF1D6A9C7600D48D6A /* PersonalHeadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersonalHeadCell.swift; path = Servant/PersonalHeadCell.swift; sourceTree = "<group>"; };
-		2FC25B001D6A9C7600D48D6A /* PhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosCell.swift; path = Servant/PhotosCell.swift; sourceTree = "<group>"; };
-		2FC25B011D6A9C7600D48D6A /* ServantPersonalVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServantPersonalVC.swift; path = Servant/ServantPersonalVC.swift; sourceTree = "<group>"; };
-		2FC25B041D6A9C7600D48D6A /* TallyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TallyCell.swift; path = Servant/TallyCell.swift; sourceTree = "<group>"; };
 		2FC25B211D6BEC8A00D48D6A /* WalletVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletVC.swift; path = Personal/WalletVC.swift; sourceTree = "<group>"; };
 		2FC25B371D6D874000D48D6A /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsVC.swift; path = Personal/SettingsVC.swift; sourceTree = "<group>"; };
 		2FD995951DD32842000CB006 /* SockHead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SockHead.swift; path = SocketManage/SockHead.swift; sourceTree = "<group>"; };
@@ -634,7 +641,6 @@
 		BF77CEE81DCED43100F20C6A /* YWHybridWebViewFMWK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YWHybridWebViewFMWK.framework; sourceTree = "<group>"; };
 		BF9B4CFC1DD6DF2A00EC8E78 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		BFDF605A1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForthwithVCFeedBackExt.swift; path = Map/ForthwithVCFeedBackExt.swift; sourceTree = "<group>"; };
-		D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationAidVC.swift; sourceTree = "<group>"; };
 		D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@2x.png"; sourceTree = "<group>"; };
 		D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@3x.png"; sourceTree = "<group>"; };
 		D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "packUp@2x.png"; sourceTree = "<group>"; };
@@ -673,6 +679,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A16F4A01E6D16F400360573 /* PhotoWall */ = {
+			isa = PBXGroup;
+			children = (
+				1A16F4A11E6D16F400360573 /* PhotoPreviewView.swift */,
+				1A16F4A21E6D16F400360573 /* PhotoWallCell.swift */,
+				1A16F4A31E6D16F400360573 /* PhotoWallViewController.swift */,
+			);
+			name = PhotoWall;
+			path = Servant/PhotoWall;
+			sourceTree = "<group>";
+		};
 		2F5F2D441DC19C3300EB5773 /* WeChatSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,17 +700,6 @@
 				2F5F2D491DC19C6300EB5773 /* WXApiObject.h */,
 			);
 			name = WeChatSDK;
-			sourceTree = "<group>";
-		};
-		2F65C5771DF415B9001EC13A /* PhotoWall */ = {
-			isa = PBXGroup;
-			children = (
-				2F65C5791DF415B9001EC13A /* PhotoPreviewView.swift */,
-				2F65C57B1DF415B9001EC13A /* PhotoWallCell.swift */,
-				2F65C57D1DF415B9001EC13A /* PhotoWallViewController.swift */,
-			);
-			name = PhotoWall;
-			path = Servant/PhotoWall;
 			sourceTree = "<group>";
 		};
 		2F6E2D551DC0D1A400AD0BB1 /* Wallet */ = {
@@ -885,14 +891,14 @@
 		2FC25AFD1D6A9B8B00D48D6A /* Servant */ = {
 			isa = PBXGroup;
 			children = (
-				2F65C5771DF415B9001EC13A /* PhotoWall */,
-				2FC25AFF1D6A9C7600D48D6A /* PersonalHeadCell.swift */,
-				2FC25B001D6A9C7600D48D6A /* PhotosCell.swift */,
-				2FC25B011D6A9C7600D48D6A /* ServantPersonalVC.swift */,
-				2FC25B041D6A9C7600D48D6A /* TallyCell.swift */,
-				D03BD6F21E66DDCC006D22CF /* RelationAidVC.swift */,
-				D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */,
-				D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */,
+				1A16F4A01E6D16F400360573 /* PhotoWall */,
+				1A16F4941E6D16BB00360573 /* ServantPersonalVC.swift */,
+				1A16F4921E6D16BB00360573 /* ServantHeaderView.swift */,
+				1A16F4911E6D16BB00360573 /* ServantFooterView.swift */,
+				1A16F4931E6D16BB00360573 /* ServantPersonalCell.swift */,
+				1A16F48F1E6D16BB00360573 /* PhotosCell.swift */,
+				1A16F48E1E6D16BB00360573 /* PersonalHeadCell.swift */,
+				1A16F4951E6D16BB00360573 /* TallyCell.swift */,
 			);
 			name = Servant;
 			sourceTree = "<group>";
@@ -985,6 +991,7 @@
 			isa = PBXGroup;
 			children = (
 				2FF72BA81DB86E44001EEED2 /* ButtonEx.swift */,
+				1A16F4A71E6D1FEB00360573 /* UIViewEx.swift */,
 				BF3841F11DC9826800DF50AC /* SVProgressHUDExt.swift */,
 				B341CE111DC2E6F800DF93CB /* LabelEx.swift */,
 				B341CE121DC2E6F800DF93CB /* UIImageExt.swift */,
@@ -1753,16 +1760,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E700B761E2A54AD00B30BC0 /* FlashGuideCell.swift in Sources */,
-				2FC25B081D6A9C7600D48D6A /* ServantPersonalVC.swift in Sources */,
 				2F9684391D7D06220028E3F2 /* DataManager.swift in Sources */,
 				2F65C5871DF417E9001EC13A /* CommonMethod.swift in Sources */,
-				2F65C5831DF415BA001EC13A /* PhotoWallViewController.swift in Sources */,
-				D0D003DF1E68F8C300D8ED04 /* AidWenXinVC.swift in Sources */,
 				2FA15A9D1E13BAB5001655A3 /* UserAPI.swift in Sources */,
 				6E67964A1E28BB9300D4378E /* YD_NewPersonGuideManager.swift in Sources */,
 				2FECFBCB1E1627730065AF60 /* UpdateModule.swift in Sources */,
 				6E6795F21E27973E00D4378E /* ConsumeModels.swift in Sources */,
 				2FA15A981E128E6A001655A3 /* SockModel.swift in Sources */,
+				1A16F4971E6D16BB00360573 /* PhotosCell.swift in Sources */,
+				1A16F4991E6D16BB00360573 /* ServantFooterView.swift in Sources */,
 				6E6796491E28BB9300D4378E /* NewPersonMaskView.swift in Sources */,
 				2F2B07881DD389FC00FF6A75 /* BMB2Object.swift in Sources */,
 				2FBA71F11D6D9F8C00839E51 /* ModifyPasswordVC.swift in Sources */,
@@ -1770,12 +1776,11 @@
 				2FE7C3791D63FD4700994505 /* ForthwithVC.swift in Sources */,
 				2F26A6A91D82667F00FFA6A7 /* CompleteBaseInfoVC.swift in Sources */,
 				2FDAFCEA1D646EEE00FD28CB /* ColorExt.swift in Sources */,
+				1A16F49D1E6D16BB00360573 /* TallyCell.swift in Sources */,
 				2FECFBE11E1F6D020065AF60 /* SocketAPI.swift in Sources */,
-				2FC25B071D6A9C7600D48D6A /* PhotosCell.swift in Sources */,
 				6E700B751E2A54AD00B30BC0 /* FlashGuideView.swift in Sources */,
 				2FA991551E238FFC00F10B0A /* ServantAPI.swift in Sources */,
 				6E700B741E2A54AD00B30BC0 /* FlashGuideViewController.swift in Sources */,
-				2F65C57F1DF415BA001EC13A /* PhotoPreviewView.swift in Sources */,
 				2FB57FF41D74330E002C015F /* PushMessage.swift in Sources */,
 				2F26A6A71D824DAB00FFA6A7 /* RegOrLoginSelVC.swift in Sources */,
 				6E85F7551E0932C400B4AF3D /* UIViewController+Analysis.swift in Sources */,
@@ -1783,16 +1788,13 @@
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
 				6E1CCC2F1E1E622C00374B75 /* YD_ContactManager.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
-				2FC25B0B1D6A9C7600D48D6A /* TallyCell.swift in Sources */,
-				2F65C5811DF415BA001EC13A /* PhotoWallCell.swift in Sources */,
+				1A16F4A51E6D16F400360573 /* PhotoWallCell.swift in Sources */,
+				1A16F49B1E6D16BB00360573 /* ServantPersonalCell.swift in Sources */,
 				2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */,
 				2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */,
 				2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */,
-				D03BD6F31E66DDCC006D22CF /* RelationAidVC.swift in Sources */,
 				2FBA71F51D6E93CF00839E51 /* MessageCell.swift in Sources */,
-				2FC25B061D6A9C7600D48D6A /* PersonalHeadCell.swift in Sources */,
 				2FB57D1F1D82A3F300F1BAE3 /* AddressSelVC.swift in Sources */,
-				D0D003E11E6915B400D8ED04 /* OrderEvaluateVC.swift in Sources */,
 				2F4EEC401D9938C1004DFFC8 /* CommonDefine.swift in Sources */,
 				2FECFBE31E1F709A0065AF60 /* CommonModels.swift in Sources */,
 				BF3841F21DC9826800DF50AC /* SVProgressHUDExt.swift in Sources */,
@@ -1800,12 +1802,14 @@
 				BFDF605B1DCEE72A0073C24C /* ForthwithVCFeedBackExt.swift in Sources */,
 				BF6E9AF71DE2D86300F32CCE /* NSDateExt.swift in Sources */,
 				2F6959DC1D52DE9B0072B7FF /* MyPersonalVC.swift in Sources */,
+				1A16F4A41E6D16F400360573 /* PhotoPreviewView.swift in Sources */,
 				B341CE131DC2E6F800DF93CB /* LabelEx.swift in Sources */,
 				2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */,
 				BF9B4CFD1DD6DF2A00EC8E78 /* ShareViewController.swift in Sources */,
 				2FDAFCF11D65698E00FD28CB /* NotifyDefine.swift in Sources */,
 				2F9B04A51E66B31100751D2E /* FollowCell.swift in Sources */,
 				2FA991531E237CC900F10B0A /* APIHelper.swift in Sources */,
+				1A16F4961E6D16BB00360573 /* PersonalHeadCell.swift in Sources */,
 				2F9684271D791CCB0028E3F2 /* RechargeVC.swift in Sources */,
 				2FECFBCD1E165F1D0065AF60 /* UpdateManager.swift in Sources */,
 				2FA75CF81D5081CB00609C8E /* ViewController.swift in Sources */,
@@ -1816,13 +1820,17 @@
 				2FB95D101DED2FD600BBA506 /* PayPasswdVC.swift in Sources */,
 				2FE7C37A1D63FD4700994505 /* GuideTagCell.swift in Sources */,
 				2FA991571E23B65700F10B0A /* ServantModels.swift in Sources */,
+				1A16F4A61E6D16F400360573 /* PhotoWallViewController.swift in Sources */,
 				2F9B04A01E667EBC00751D2E /* FollowAPI.swift in Sources */,
 				2F9B04A31E66B08600751D2E /* FollowListVC.swift in Sources */,
 				B341CE141DC2E6F800DF93CB /* UIImageExt.swift in Sources */,
 				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
+				1A16F4A81E6D1FEB00360573 /* UIViewEx.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
+				1A16F49A1E6D16BB00360573 /* ServantHeaderView.swift in Sources */,
 				2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */,
+				1A16F49C1E6D16BB00360573 /* ServantPersonalVC.swift in Sources */,
 				2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */,
 				2FECFBDF1E1F6C1D0065AF60 /* CommonAPI.swift in Sources */,
 				2FF2F36B1D811421001CE92B /* ResetPasswdVC.swift in Sources */,
