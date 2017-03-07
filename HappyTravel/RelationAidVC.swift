@@ -12,6 +12,7 @@ class RelationAidVC: UIViewController {
     
     var userInfo: UserInfoModel = UserInfoModel()
     var detailInfo:ServantDetailModel = ServantDetailModel()
+    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
 
     var imageV : UIImageView?
     var vImage : UIImageView?
@@ -207,8 +208,7 @@ class RelationAidVC: UIViewController {
         introText.font = UIFont.systemFontOfSize(14)
         introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         introText.numberOfLines = 0
-        introText.text = "1212222222222222222222222222222222222222222222222222222222222222211111111111111111111111111"
-        
+        introText.text = "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文"
         unfoldButton.snp_makeConstraints { (make) in
             make.top.equalTo(introText.snp_bottom).offset(10)
             make.centerX.equalTo(introLabel)
@@ -218,6 +218,7 @@ class RelationAidVC: UIViewController {
         unfoldButton.setTitleColor(UIColor.init(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1), forState: UIControlState.Normal)
         unfoldButton.setImage(UIImage.init(named: "unfold"), forState: UIControlState.Normal)
         unfoldButton.titleLabel?.font = UIFont.systemFontOfSize(11)
+        unfoldButton.addTarget(self, action: #selector(unfoldBtnDidClick), forControlEvents: UIControlEvents.TouchUpInside)
         let imageSize:CGSize = unfoldButton.imageView!.frame.size
         let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
         unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
@@ -351,9 +352,8 @@ class RelationAidVC: UIViewController {
         attributes[NSFontAttributeName] = UIFont.systemFontOfSize(13)
         let attributedStr = NSAttributedString.init(string: userTextField.placeholder!, attributes: attributes)
         userTextField.attributedPlaceholder = attributedStr
-        userTextField.leftView = UIView.init(frame: CGRectMake(0, 0, 14, 0))
-        userTextField.leftViewMode = .Always
         userTextField.textAlignment = .Center
+        userTextField.contentVerticalAlignment = .Center
         
         confireBtn.snp_makeConstraints { (make) in
             make.left.equalTo(wenXinView)
@@ -385,7 +385,6 @@ class RelationAidVC: UIViewController {
     //确定支付按钮点击
     func confireDidClick() {
         wenXinView.hidden = false
-//        tabBarController?.view.addSubview(shadow)
         let window = UIApplication.sharedApplication().keyWindow
         window?.addSubview(shadow)
         shadow.snp_makeConstraints { (make) in
@@ -402,8 +401,6 @@ class RelationAidVC: UIViewController {
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
-        shadowDidClick()
-        
         
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
@@ -411,23 +408,29 @@ class RelationAidVC: UIViewController {
                                               "service_prince_": 188,
                                               "wx_id_": userTextField.text ?? ""]
             
-            let model = PayOrderModel(value: dict)
+            let model = PayOrderRequestModel(value: dict)
             APIHelper.consumeAPI().payOrder(model, complete: {[weak self](response) in
                 if let model = response as? PayOrderStatusModel{
+                    self!.payStatus = model
                     if model.result_ == 0 {
                         
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
                                                              "uid_to_": self!.detailInfo.uid_]
-                        let getModel = getRelationModel(value: getDict)
+                        let getModel = GetRelationRequestModel(value: getDict)
                         
-                        APIHelper.consumeAPI().getRelation(getModel, complete: { (response) in
+                        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
-                            if let model = response as? getRelationStatusModel{
-                                let aidWeiXin = AidWenXinVC()
-                                aidWeiXin.getRelation = model
-                                aidWeiXin.userInfo = (self?.userInfo)!
-                                self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+                            if let model = response as? GetRelationStatusModel{
+                                self!.shadowDidClick()
+                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: { 
+                                    let aidWeiXin = AidWenXinVC()
+                                    aidWeiXin.getRelation = model
+                                    aidWeiXin.userInfo = (self?.userInfo)!
+                                    aidWeiXin.detailInfo = (self?.detailInfo)!
+                                    aidWeiXin.payStatus = (self?.payStatus)!
+                                    self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+                                })
                             }
                            
                             
@@ -451,6 +454,49 @@ class RelationAidVC: UIViewController {
     
         
     }
+    
+    //展开按钮的点击
+    let selectorBtn: UIButton = UIButton()
+    func unfoldBtnDidClick(sender: UIButton) {
+//        unfoldButton.selected =
+        unfoldButton.selected = selectorBtn.selected
+        selectorBtn.selected = !sender.selected
+        if unfoldButton.selected {
+            unfoldButton.setImage(UIImage(named: "packUp"), forState: UIControlState.Selected)
+            unfoldButton.setTitle("收起", forState: UIControlState.Selected)
+            let imageSize:CGSize = unfoldButton.imageView!.frame.size
+            let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
+            unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
+            unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(114)
+            })
+            introView.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(175)
+            })
+            view.layoutIfNeeded()
+            
+        }
+        else{
+            unfoldButton.setTitle("展开", forState: UIControlState.Normal)
+            unfoldButton.setTitleColor(UIColor.init(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1), forState: UIControlState.Normal)
+            unfoldButton.setImage(UIImage.init(named: "unfold"), forState: UIControlState.Normal)
+            let imageSize:CGSize = unfoldButton.imageView!.frame.size
+            let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
+            unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
+            unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(54)
+            })
+            introView.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(115)
+                })
+            view.layoutIfNeeded()
+            
+        }
+    }
+    
+    
 }
 
 
