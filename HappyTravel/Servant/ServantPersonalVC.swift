@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MJRefresh
+import SVProgressHUD
 
 
 /**
@@ -35,12 +36,24 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
     
+    // 头视图
+    var headerView:ServantHeaderView?
+    
+    // 是否关注状态
+    var follow = false
+    
+    
     
     // MARK: - 函数方法
     
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        // 查询关注状态并更新UI
+        updateFollowStatus()
+        // 查询粉丝数
+        updateFollowCount()
     }
     
     override public func viewWillDisappear(animated: Bool) {
@@ -63,15 +76,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         servantInfo.page_num_ = 0
         servantInfo.page_size_ = 10
         
-        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
-            
-            print(response)
-            
-            }, error: {
-                (error) in
-                
-                print(error)
-        })
+//        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+//            
+//            print(response)
+//            
+//            }, error: {
+//                (error) in
+//                
+//                print(error)
+//        })
         
     }
     
@@ -151,9 +164,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
-        header.didAddNewUI(personalInfo!)
-        return header
+        headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
+        headerView!.headerDelegate = self
+        headerView!.didAddNewUI(personalInfo!)
+        return headerView
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -200,11 +214,90 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     
     // MARK: - 加微信和关注按钮
-    func attentionAction() {
-        // 加关注
+    func attentionAction(sender: UIButton) {
+        
+        if sender.selected {
+            // 取消关注
+            dismissAttention()
+        }else {
+            // 加关注
+            addAttention()
+        }
     }
+    
     func addMyWechatAccount() {
         // 加微信
+    }
+    
+    // 查询关注状态
+    func updateFollowStatus() {
+        
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 3
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = true
+            }else {
+                self!.follow = false
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            
+            }, error: nil)
+    }
+    
+    // 加关注
+    func addAttention() {
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 1
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = true
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            self?.updateFollowCount()
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "关注成功", ForDuration: 1.5, completion: {
+            })
+            
+            }, error: nil)
+    }
+    // 取关
+    func dismissAttention() {
+        
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 2
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = false
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            self?.updateFollowCount()
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "取消关注成功", ForDuration: 1.5, completion: {
+            })
+            
+            }, error: nil)
+    }
+    
+    // 查询粉丝数量
+    func updateFollowCount() {
+        let req = FollowCountRequestModel()
+        req.uid_ = personalInfo!.uid_
+        req.type_ = 2
+        APIHelper.followAPI().followCount(req, complete: {(response) in
+            
+            let model = response as! FollowCountModel
+            let count = model.follow_count_
+            self.headerView?.updateFansCount(count)
+            
+            }, error: nil)
     }
     
     override public func didReceiveMemoryWarning() {

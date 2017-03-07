@@ -14,7 +14,9 @@ class FollowAPI: SocketAPI {
     func followStatus(model: FollowModel, complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .FollowStatus, model: model)
         startRequest(packet, complete: { (response) in
+            
             complete?((response as? SocketJsonResponse)?.responseModel(FollowedModel.classForCoder()))
+            
             }, error: error)
     }
     
