@@ -179,8 +179,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         view.addSubview(mapView!)
         mapView!.snp_makeConstraints { (make) in
             make.top.equalTo(view)
-            make.left.equalTo(view).offset(0.5)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
             make.bottom.equalTo(view)
         }
 
