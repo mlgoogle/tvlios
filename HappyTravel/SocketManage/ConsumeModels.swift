@@ -25,16 +25,22 @@ class CommentForOrderModel: OrderCommentModel {
     dynamic var to_uid_ = 0
 }
 
-class PayOrderModel: Object {
+class PayOrderRequestModel: Object {
     dynamic var from_uid_ = 0
     dynamic var to_uid_ = 0
     dynamic var service_prince_ = 0
     dynamic var wx_id_: String?
 }
-class getRelationModel: Object {
+class GetRelationRequestModel: Object {
     dynamic var order_id_ = 0
     dynamic var uid_form_ = 0
     dynamic var uid_to_ = 0
+}
+class OrderListRequestModel: Object {
+    dynamic var uid_ = 0
+    dynamic var uid_type_ = 0
+    dynamic var page_num_ = 0
+    dynamic var page_count_ = 10
 }
 
 //邀约、预约付款

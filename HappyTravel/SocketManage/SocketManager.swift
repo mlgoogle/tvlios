@@ -74,9 +74,11 @@ enum SockOpcode: Int16 {
     // 请求评价详情
     case CommentDetail = 2015
     //支付微信号显示的信息费用
-    case payOrder = 2027
+    case PayOrder = 2027
     //获取微信联系方式
-    case getRelation = 1133
+    case GetRelation = 1133
+    //订单消息列表
+    case OrderList = 1141
     
     
 }

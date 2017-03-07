@@ -41,17 +41,15 @@ class ConsumeSocketAPI: SocketAPI{
         startRequest(packet, complete: { (response) in
             
             let jsonObject = (response as? SocketJsonResponse)?.responseJsonObject()
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "评论成功", ForDuration: 0.5, completion: { () in
-                complete?(jsonObject)
-            })
+            complete?(jsonObject)
             
             }, error: error)
         
     }
     
     //支付微信号显示的信息费用
-    func payOrder(model: PayOrderModel,complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .payOrder, model: model, type: .Chat)
+    func payOrder(model: PayOrderRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .PayOrder, model: model, type: .Chat)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(PayOrderStatusModel.classForCoder()))
             }, error: error)
@@ -59,14 +57,20 @@ class ConsumeSocketAPI: SocketAPI{
     }
     
     //支付成功后获取微信联系方式
-    func getRelation(model: getRelationModel,complete: CompleteBlock?, error: ErrorBlock?){
-        let packet = SocketDataPacket(opcode: .getRelation, model: model, type: .User)
+    func getRelation(model: GetRelationRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .GetRelation, model: model, type: .User)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(getRelationStatusModel.classForCoder()))
+            complete?((response as? SocketJsonResponse)?.responseModel(GetRelationStatusModel.classForCoder()))
             }, error: error)
-        
-        
     }
     
+    //订单消息列表
+    func orderList(model: OrderListRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .OrderList, model: model, type: .User)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModels(OrderListCellModel.classForCoder(), listKey: "order_msg_list_"))
+            
+            }, error: error)
+    }
     
 }
