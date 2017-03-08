@@ -209,6 +209,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         // 加微信
         let relationAid = RelationAidVC()
         relationAid.userInfo  = personalInfo!
+        //detailInfo为nil 暂时注销
 //        relationAid.detailInfo = detailInfo!
         navigationController?.pushViewController(relationAid, animated: true)
     }
