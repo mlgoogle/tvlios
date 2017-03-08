@@ -13,10 +13,7 @@ import SVProgressHUD
 
 
 /**
- * 13132696374
- * 18625090746
- * 15868912093
- * 15158114927
+ * 15158110304
  */
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate{
     
@@ -31,7 +28,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     var topTitle:UILabel?
     
     var tableView:UITableView?
-    var dataArray:NSMutableArray?
+    var dynamicListModel:ServantDynamicListModel?
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
@@ -68,23 +65,27 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         addData()
     }
-    
+    // 15158110034
+    // 查询动态列表
     func addData() {
         
         let servantInfo:ServantInfoModel = ServantInfoModel()
         servantInfo.uid_ = (personalInfo?.uid_)!
         servantInfo.page_num_ = 0
-        servantInfo.page_size_ = 10
         
-//        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
-//            
-//            print(response)
-//            
-//            }, error: {
-//                (error) in
-//                
-//                print(error)
-//        })
+        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            
+            // 没有动态
+            if response == nil {
+                self?.tableView?.reloadData()
+            }else {
+                // 有动态
+                self!.dynamicListModel = (response as! ServantDynamicListModel)
+                
+                self?.tableView?.reloadData()
+            }
+            
+            }, error: nil)
         
     }
     
@@ -96,7 +97,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.separatorStyle = .None
-        tableView?.registerClass(ServantPersonalCell.self, forCellReuseIdentifier: "ServantPersonalCell")
+        tableView?.estimatedRowHeight = 120
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.separatorStyle = .None
+        // 只有一条文字的Cell展示
+        tableView?.registerClass(ServantOneLabelCell.self, forCellReuseIdentifier: "ServantOneLabelCell")
+        // 只有一张图片的Cell展示
+        tableView?.registerClass(ServantOnePicCell.self, forCellReuseIdentifier: "ServantOnePicCell")
+        // 复合Cell展示
+        tableView?.registerClass(ServantPicAndLabelCell.self, forCellReuseIdentifier: "ServantPicAndLabelCell")
         view.addSubview(tableView!)
         
         tableView?.snp_makeConstraints(closure: { (make) in
@@ -152,13 +161,39 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // MARK: - UITableViewDelegate
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+//        return (dataArray?.count)!
+        if dynamicListModel == nil {
+            return 0
+        }
+        return (dynamicListModel?.dynamic_list_.count)!
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServantPersonalCell", forIndexPath: indexPath) as! ServantPersonalCell
+//        /*  只有文字的cell  */
+//        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOneLabelCell", forIndexPath: indexPath) as! ServantOneLabelCell
+//        cell.selectionStyle = .None
+//        if indexPath.row < dynamicListModel?.dynamic_list_.count {
+//            
+//            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+//            cell.nameLabel?.text = personalInfo?.nickname_
+//            
+//            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+//            let textString = dynamicModel.dynamic_text_
+//            cell.detailLabel?.text = textString
+//        }
         
+        /*  只有一张图片的cell  */
+        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOnePicCell", forIndexPath: indexPath) as! ServantOnePicCell
+        cell.selectionStyle = .None
+        if indexPath.row < dynamicListModel?.dynamic_list_.count {
+            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+            cell.nameLabel?.text = personalInfo?.nickname_
+            
+            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+            let imageUrls = dynamicModel.dynamic_url_
+            cell.updateImg(imageUrls!)
+        }
         return cell
     }
     
@@ -187,7 +222,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     
-    
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 55
     }
@@ -206,12 +240,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         }else {
             let alpha:CGFloat = 1 - ((64 - offsetY) / 64)
             topView?.backgroundColor = color.colorWithAlphaComponent(alpha)
-            topTitle?.text = "导航标题~~"
+            
+            let titleString = personalInfo?.nickname_
+            topTitle?.text = titleString
             leftBtn?.setImage(UIImage.init(named: "nav-back-select"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
     }
-    
     
     // MARK: - 加微信和关注按钮
     func attentionAction(sender: UIButton) {

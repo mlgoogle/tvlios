@@ -144,6 +144,11 @@ class ServantHeaderView: UIView {
         rightBtn.setImage(UIImage.init(named: "Wechat"), forState: .Normal)
         self.addSubview(rightBtn)
         rightBtn.addTarget(self, action: #selector(ServantHeaderView.addWechat), forControlEvents: .TouchUpInside)
+        
+        let lineView:UIView = UIView.init(frame: CGRectMake(0, rightBtn.Bottom + 20 , ScreenWidth, 1))
+        lineView.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
+        self.addSubview(lineView)
+        
     }
     
     // 更新UI数据
