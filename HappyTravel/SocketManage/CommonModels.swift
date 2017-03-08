@@ -118,7 +118,7 @@ class GetRelationStatusModel: Object{
     dynamic var result_ = -1
     dynamic var wx_url_: String?
     dynamic var wx_num_: String?
-    dynamic var service_price_: String?
+    dynamic var service_price_ = 0
 }
 //订单消息列表子集
 class OrderListCellModel: UserModel{
@@ -127,10 +127,12 @@ class OrderListCellModel: UserModel{
     dynamic var to_uid_nickename_:String?
     dynamic var order_time_: String?
     dynamic var is_evaluate_ = -1
+    dynamic var to_uid_url_: String?
 }
 //订单消息列表请求结果
 class OrderListModel: Object{
     let order_msg_list_ = List<OrderListCellModel>()
 }
+
 
 

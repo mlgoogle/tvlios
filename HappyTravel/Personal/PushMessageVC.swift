@@ -20,6 +20,10 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var requestCount = 0
     var pageCount = 0
     var orders = [OrderListCellModel]()
+    var isRefresh:Bool = false
+    
+    var allDataDict:[String : Array<OrderListCellModel>] = Dictionary()
+    var dateArray:[String] = Array()
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
@@ -30,16 +34,21 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "消息中心"
         initView()
+    
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         registerNotify()
-        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
-
+        if isRefresh {
+            
+        }else{
+            header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
+        }
+        
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -50,7 +59,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushMessageNotify(_:)), name: NotifyDefine.PushMessageNotify, object: nil)
-
+        
     }
     
     func allEndRefreshing() {
@@ -60,7 +69,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         if footer.state == MJRefreshState.Refreshing {
             footer.endRefreshing()
         }
-
+        
     }
     
     func pushMessageNotify(notification: NSNotification) {
@@ -99,9 +108,15 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let req = OrderListRequestModel()
         req.uid_ = CurrentUser.uid_
         APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
-            if let models = response as? [OrderListCellModel]{
-               self?.orders = models
+            if response != nil{
                 self!.footer.hidden = false
+            }
+            if let models = response as? [OrderListCellModel]{
+                self!.allDataDict.removeAll()
+                self!.dateArray.removeAll()
+                self!.setupDataWithModels(models)
+                
+                self?.orders = models
                 self?.endRefresh()
             }
             if self?.orders.count < 10 {
@@ -110,7 +125,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             
             },error:{ [weak self](error) in
                 self?.endRefresh()
-        })
+            })
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(endRefresh), userInfo: nil, repeats: false)
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
     }
@@ -141,6 +156,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         req.page_num_ = pageCount
         APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
             if let models = response as? [OrderListCellModel]{
+                self!.setupDataWithModels(models)
                 self?.orders += models
                 self?.endRefresh()
             }
@@ -149,37 +165,99 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             }
             },error: { [weak self](error) in
                 self?.endRefresh()
-        })
+            })
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(endRefresh), userInfo: nil, repeats: false)
         NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
         
     }
     
-//    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return 3
-//    }
     // MARK: - UITableView
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+            return dateArray.count
+        }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orders.count
+        let array = allDataDict[dateArray[section]]
+        return array == nil ? 0 : array!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
         cell.accessoryType = .DisclosureIndicator
-        cell.updeat(orders[indexPath.row])
+        let array = allDataDict[dateArray[indexPath.section]]
+        cell.updeat(array![indexPath.row])
         return cell
-        
     }
+    
+    func setupDataWithModels(models:[OrderListCellModel]){
+        let dateFormatter = NSDateFormatter()
+        var dateString: String?
+        for model in models{
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let date = dateFormatter.dateFromString(model.order_time_!)
+            if date == nil {
+                continue
+            }
+            else{
+                dateFormatter.dateFormat = "EEE MM-dd"
+                dateString = dateFormatter.stringFromDate(date!)
+            }
+           
+            /*
+             - 判断 model 对应的分组 是否已经有当天数据信息
+             - 如果已经有信息则直接将model 插入当天信息array
+             - 反之，创建当天分组array 插入数据
+             */
+            if dateArray.contains(dateString!){
+                allDataDict[dateString!]?.append(model)
+            }
+            else{
+                var list:[OrderListCellModel] = Array()
+                list.append(model)
+                dateArray.append(dateString!)
+                allDataDict[dateString!] = list
+            }
+        }
+    }
+    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        let array = allDataDict[dateArray[indexPath.section]]
+        let getDict: [String : AnyObject] = ["order_id_": array![indexPath.row].order_id_,
+                                             "uid_form_": CurrentUser.uid_,
+                                             "uid_to_": array![indexPath.row].to_uid_]
+        let getModel = GetRelationRequestModel(value: getDict)
         
-        
+        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
+            
+            if let model = response as? GetRelationStatusModel{
+                    let aidWeiXin = AidWenXinVC()
+                    aidWeiXin.getRelation = model
+                    aidWeiXin.nickname = array![indexPath.row].to_uid_nickename_
+                    aidWeiXin.toUid = array![indexPath.row].to_uid_
+                    aidWeiXin.orderId = array![indexPath.row].order_id_
+                    aidWeiXin.isEvaluate = array![indexPath.row].is_evaluate_ == 0 ? false : true
+                    aidWeiXin.bool = false
+                    aidWeiXin.toUidUrl =  array![indexPath.row].to_uid_url_
+                    aidWeiXin.isRefresh = { ()->() in
+                    self!.isRefresh = true
+                    }
+                    self!.navigationController?.pushViewController(aidWeiXin, animated: true)
+            }
+            
+            
+            }, error: { (error) in
+                
+        })
     }
+    
     //MARK: -- 返回组标题索引
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.text = "最近30天内的订单消息"
+        label.text = dateArray[section]
         label.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         label.font = UIFont.systemFontOfSize(13)
         let sumView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 34))
@@ -189,20 +267,19 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             make.height.equalTo(13)
             make.top.equalTo(sumView).offset(10)
             make.bottom.equalTo(sumView.snp_bottom).offset(-10)
-            
         }
         return sumView
-}
+    }
     //组头高
-     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 34
     }
     //组尾高
-     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
-
-
+    
+    
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
         if timer != nil {

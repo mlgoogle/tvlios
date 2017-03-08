@@ -27,7 +27,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         let forthwithVC = ForthwithVC()
         forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
-        let forthwithNC = UINavigationController(rootViewController: forthwithVC)
+        let forthwithNC = BaseNavigationController(rootViewController: forthwithVC)
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]
