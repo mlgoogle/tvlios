@@ -65,8 +65,20 @@ class ServantAPI: SocketAPI {
             }, error: error)
     }
     
-    
-    
+    /**
+     助理获取动态数据列表
+     
+     - parameter model:
+     
+     - returns:
+     */
+    func requestDynamicList(model:ServantInfoModel,complete: CompleteBlock?, error: ErrorBlock?) {
+        
+        let packet = SocketDataPacket(opcode: .DynamicList, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(servantDynamicListModel))
+            }, error: error)
+    }
     
     
     

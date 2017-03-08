@@ -57,7 +57,7 @@ class FollowCell: UITableViewCell {
     }()
     
     lazy var followTitle:UILabel = {
-        let label = UILabel.init(text: "被关注数", font: UIFont.systemFontOfSize(S10), textColor: colorWithHexString("#666666"))
+        let label = UILabel.init(text: "粉丝数", font: UIFont.systemFontOfSize(S10), textColor: colorWithHexString("#666666"))
         label.textAlignment = .Center
         return label
     }()

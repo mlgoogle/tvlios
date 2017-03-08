@@ -85,33 +85,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
-        if navigationItem.rightBarButtonItem == nil {
-            let followBtn = UIButton.init(frame: CGRectMake(0, 0, 30, 30))
-            followBtn.setImage(UIImage.init(named: "nav-personal"), forState: .Normal)
-            followBtn.backgroundColor = UIColor.clearColor()
-            followBtn.addTarget(self, action: #selector(followListAction(_:)), forControlEvents: .TouchUpInside)
-            
-            let followItem = UIBarButtonItem.init(customView: followBtn)
-            navigationItem.rightBarButtonItem = followItem
-            
-            msgCountLab = UILabel()
-            msgCountLab!.backgroundColor = UIColor.redColor()
-            msgCountLab!.text = ""
-            msgCountLab!.textColor = UIColor.whiteColor()
-            msgCountLab!.textAlignment = .Center
-            msgCountLab!.font = UIFont.systemFontOfSize(S10)
-            msgCountLab!.layer.cornerRadius = 18 / 2.0
-            msgCountLab!.layer.masksToBounds = true
-            msgCountLab!.hidden = true
-            followBtn.addSubview(msgCountLab!)
-            msgCountLab!.snp_makeConstraints(closure: { (make) in
-                make.right.equalTo(followBtn).offset(5)
-                make.top.equalTo(followBtn).offset(-2)
-                make.width.equalTo(18)
-                make.height.equalTo(18)
-            })
-        }
-        
         if CurrentUser.login_ == false {
             if APIHelper.userAPI().autoLogin() {
                 banGesture(true)
@@ -186,13 +159,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         titleBtn?.setTitle("所有服务者", forState: .Normal)
         titleBtn?.titleLabel?.font = UIFont.systemFontOfSize(16)
         titleBtn?.imageEdgeInsets = UIEdgeInsets(top: 0, left: 115, bottom: 0, right: 0)
-        titleBtn!.setImage(UIImage.init(named: "address-selector-normal"), forState: .Normal)
-        titleBtn!.setImage(UIImage.init(named: "address-selector-selected"), forState: .Selected)
+        titleBtn!.setImage(UIImage.init(named: "servant-filter-unselect"), forState: .Normal)
+        titleBtn!.setImage(UIImage.init(named: "servant-filter-select"), forState: .Selected)
         titleBtn!.addTarget(self, action: #selector(screenServices(_:)), forControlEvents: .TouchUpInside)
         titleView.addSubview(titleBtn!)
         titleBtn!.snp_makeConstraints { (make) in
             make.width.equalTo(130)
-            make.centerX.equalTo(titleView)
+            make.centerX.equalTo(titleView).offset(-30)
             make.centerY.equalTo(titleView)
         }
         
@@ -206,29 +179,47 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         view.addSubview(mapView!)
         mapView!.snp_makeConstraints { (make) in
             make.top.equalTo(view)
-            make.left.equalTo(view).offset(0.5)
-            make.width.equalTo(UIScreen.mainScreen().bounds.size.width - 1)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
             make.bottom.equalTo(view)
         }
 
+        let followBtn = UIButton()
+        followBtn.setBackgroundImage(UIImage.init(named: "follow-list"), forState: .Normal)
+        followBtn.backgroundColor = UIColor.clearColor()
+        followBtn.setTitle("关注列表", forState: .Normal)
+        followBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        followBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
+        followBtn.addTarget(self, action: #selector(followListAction(_:)), forControlEvents: .TouchUpInside)
+        mapView?.addSubview(followBtn)
+        followBtn.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(mapView!)
+            make.top.equalTo(mapView!).offset(49)
+            make.width.equalTo(91)
+            make.height.equalTo(41)
+        })
+        
+        
         let back2MyLocationBtn = UIButton()
-        back2MyLocationBtn.backgroundColor = .clearColor()
+        back2MyLocationBtn.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        back2MyLocationBtn.layer.masksToBounds = true
+        back2MyLocationBtn.layer.cornerRadius = 3
         back2MyLocationBtn.setImage(UIImage.init(named: "mine_location"), forState: .Normal)
         back2MyLocationBtn.addTarget(self, action: #selector(ForthwithVC.back2MyLocationAction(_:)), forControlEvents: .TouchUpInside)
         mapView?.addSubview(back2MyLocationBtn)
         back2MyLocationBtn.snp_makeConstraints { (make) in
-            make.left.equalTo(mapView!).offset(20)
-            make.bottom.equalTo(mapView!).offset(-20)
-            make.width.equalTo(30)
-            make.height.equalTo(30)
+            make.left.equalTo(mapView!).offset(15)
+            make.bottom.equalTo(mapView!).offset(-80)
+            make.width.equalTo(31)
+            make.height.equalTo(31)
         }
         
     }
     
     func screenServices(sender:UIButton) {
-        sender.selected = true
+        titleBtn?.selected = true
         alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
-        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "好评率/评分", "关注人数", "取消"]
+        let nameArray = ["所有服务者", "商务服务者", "休闲服务者", "取消"]
         for i in 0..<nameArray.count {
             let services = UIAlertAction.init(title: nameArray[i], style: .Default, handler: { (sender: UIAlertAction) in
                 if i == nameArray.count-1 {
@@ -238,7 +229,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     self.filterType = FilterType.init(rawValue: i)!
                     self.screenAction(nameArray[i])
                 }
-                
                 
             })
             alertCtrl!.addAction(services)
