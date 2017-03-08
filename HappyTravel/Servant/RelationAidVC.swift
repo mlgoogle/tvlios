@@ -428,7 +428,7 @@ class RelationAidVC: UIViewController {
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
                                     aidWeiXin.detailInfo = (self?.detailInfo)!
-                                    aidWeiXin.payStatus = (self?.payStatus)!
+                                    aidWeiXin.bool = true
                                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
                                 })
                             }

@@ -10,9 +10,10 @@ import UIKit
 import SVProgressHUD
 class OrderEvaluateVC: UIViewController {
 
-    var userInfo: UserInfoModel = UserInfoModel()
-    var detailInfo:ServantDetailModel = ServantDetailModel()
-    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
+    var toUidUrl: String?
+    var order_id_:Int = 0
+    var to_uid_: Int = 0
+    var nickname: String?
     
     let sumImageView: UIView = UIView()
     let sumBtnView: UIView = UIView()
@@ -22,6 +23,8 @@ class OrderEvaluateVC: UIViewController {
     let textView: UITextView = UITextView()
     let placeholderLabel: UILabel = UILabel()
     var evaluateBtn: UIButton = UIButton()
+    
+    var evaluate: (()->())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +58,8 @@ class OrderEvaluateVC: UIViewController {
         aidImageView.snp_makeConstraints { (make) in
             make.edges.equalTo(sumImageView)
         }
-        if userInfo.head_url_ != nil {
-            let headUrl = NSURL(string: userInfo.head_url_!)
+        if toUidUrl != nil {
+            let headUrl = NSURL(string: toUidUrl!)
             aidImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
@@ -83,7 +86,7 @@ class OrderEvaluateVC: UIViewController {
         aidName.textAlignment = .Center
         aidName.font = UIFont.systemFontOfSize(18)
         aidName.textColor = UIColor.init(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
-        aidName.text = userInfo.nickname_
+        aidName.text = nickname
         
         sumBtnView.snp_makeConstraints { (make) in
             make.centerX.equalTo(view)
@@ -237,15 +240,16 @@ class OrderEvaluateVC: UIViewController {
         }
         if textView.text.characters.count < 255 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
-                                              "to_uid_": detailInfo.uid_,
-                                              "order_id_": payStatus.order_id_,
+                                              "to_uid_": to_uid_,
+                                              "order_id_": order_id_,
                                               "service_score_": starInt,
                                               "user_score_": starInt,
                                               "remarks_": textView.text]
             let model = CommentForOrderModel(value: dict)
             APIHelper.consumeAPI().commentForOrder(model, complete: { [weak self](response) in
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "评价成功", ForDuration: 1.0, completion: {
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "评价成功", ForDuration: 0.5, completion: {
                     SVProgressHUD.dismiss()
+                    self!.evaluate!()
                     self!.navigationController?.popViewControllerAnimated(true)
                 })
             }) { (error) in

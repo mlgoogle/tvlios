@@ -153,6 +153,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         header.didAddNewUI(personalInfo!)
+        header.headerDelegate = self
         return header
     }
     
@@ -203,8 +204,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func attentionAction() {
         // 加关注
     }
+    
     func addMyWechatAccount() {
         // 加微信
+        let relationAid = RelationAidVC()
+        relationAid.userInfo  = personalInfo!
+//        relationAid.detailInfo = detailInfo!
+        navigationController?.pushViewController(relationAid, animated: true)
     }
     
     override public func didReceiveMemoryWarning() {
