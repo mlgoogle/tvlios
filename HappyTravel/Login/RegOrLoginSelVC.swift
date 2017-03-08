@@ -94,12 +94,15 @@ class RegOrLoginSelVC: UIViewController {
         if sender.tag == tags["loginBtn"]! {
             loginVC = LoginVC()
             MobClick.event(CommonDefine.BuriedPoint.loginBtn)
-            presentViewController(loginVC!, animated: false, completion: nil)
+            let navController = UINavigationController.init(rootViewController: loginVC!)
+            presentViewController(navController, animated: false, completion: nil)
             
         } else if sender.tag == tags["regBtn"]! {
             let vc = LoginWithMSGVC()
+            vc.title = "注册"
             MobClick.event(CommonDefine.BuriedPoint.rechargeBtn)
-            presentViewController(vc, animated: false, completion: nil)
+            let navController = UINavigationController.init(rootViewController: vc)
+            presentViewController(navController, animated: false, completion: nil)
         }
     }
     
