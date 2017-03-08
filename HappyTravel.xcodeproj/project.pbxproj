@@ -307,9 +307,9 @@
 		D079A9B91E6FD6BC008BA1C2 /* return@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D079A9B71E6FD6BC008BA1C2 /* return@2x.png */; };
 		D079A9BA1E6FD6BC008BA1C2 /* return@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D079A9B81E6FD6BC008BA1C2 /* return@3x.png */; };
 		D079A9BC1E6FD80A008BA1C2 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9BB1E6FD80A008BA1C2 /* BaseNavigationController.swift */; };
-		D079A9C61E6FE20D008BA1C2 /* AidWenXinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9C31E6FE20D008BA1C2 /* AidWenXinVC.swift */; };
-		D079A9C71E6FE20D008BA1C2 /* OrderEvaluateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9C41E6FE20D008BA1C2 /* OrderEvaluateVC.swift */; };
-		D079A9C81E6FE20D008BA1C2 /* RelationAidVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9C51E6FE20D008BA1C2 /* RelationAidVC.swift */; };
+		D079A9CC1E6FE2AB008BA1C2 /* AidWenXinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9C91E6FE2AB008BA1C2 /* AidWenXinVC.swift */; };
+		D079A9CD1E6FE2AB008BA1C2 /* OrderEvaluateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9CA1E6FE2AB008BA1C2 /* OrderEvaluateVC.swift */; };
+		D079A9CE1E6FE2AB008BA1C2 /* RelationAidVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D079A9CB1E6FE2AB008BA1C2 /* RelationAidVC.swift */; };
 		D0D003D61E67EAFC00D8ED04 /* iconV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */; };
 		D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */; };
 		D0D003D81E67EAFC00D8ED04 /* packUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */; };
@@ -648,9 +648,9 @@
 		D079A9B71E6FD6BC008BA1C2 /* return@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "return@2x.png"; sourceTree = "<group>"; };
 		D079A9B81E6FD6BC008BA1C2 /* return@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "return@3x.png"; sourceTree = "<group>"; };
 		D079A9BB1E6FD80A008BA1C2 /* BaseNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
-		D079A9C31E6FE20D008BA1C2 /* AidWenXinVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AidWenXinVC.swift; path = Servant/AidWenXinVC.swift; sourceTree = "<group>"; };
-		D079A9C41E6FE20D008BA1C2 /* OrderEvaluateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderEvaluateVC.swift; path = Servant/OrderEvaluateVC.swift; sourceTree = "<group>"; };
-		D079A9C51E6FE20D008BA1C2 /* RelationAidVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelationAidVC.swift; path = Servant/RelationAidVC.swift; sourceTree = "<group>"; };
+		D079A9C91E6FE2AB008BA1C2 /* AidWenXinVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AidWenXinVC.swift; path = Servant/AidWenXinVC.swift; sourceTree = "<group>"; };
+		D079A9CA1E6FE2AB008BA1C2 /* OrderEvaluateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderEvaluateVC.swift; path = Servant/OrderEvaluateVC.swift; sourceTree = "<group>"; };
+		D079A9CB1E6FE2AB008BA1C2 /* RelationAidVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelationAidVC.swift; path = Servant/RelationAidVC.swift; sourceTree = "<group>"; };
 		D0D003CE1E67EAFC00D8ED04 /* iconV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@2x.png"; sourceTree = "<group>"; };
 		D0D003CF1E67EAFC00D8ED04 /* iconV@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iconV@3x.png"; sourceTree = "<group>"; };
 		D0D003D01E67EAFC00D8ED04 /* packUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "packUp@2x.png"; sourceTree = "<group>"; };
@@ -908,9 +908,9 @@
 				1A16F48F1E6D16BB00360573 /* PhotosCell.swift */,
 				1A16F48E1E6D16BB00360573 /* PersonalHeadCell.swift */,
 				1A16F4951E6D16BB00360573 /* TallyCell.swift */,
-				D079A9C31E6FE20D008BA1C2 /* AidWenXinVC.swift */,
-				D079A9C41E6FE20D008BA1C2 /* OrderEvaluateVC.swift */,
-				D079A9C51E6FE20D008BA1C2 /* RelationAidVC.swift */,
+				D079A9C91E6FE2AB008BA1C2 /* AidWenXinVC.swift */,
+				D079A9CA1E6FE2AB008BA1C2 /* OrderEvaluateVC.swift */,
+				D079A9CB1E6FE2AB008BA1C2 /* RelationAidVC.swift */,
 			);
 			name = Servant;
 			sourceTree = "<group>";
@@ -1803,12 +1803,12 @@
 				BF3841F01DC88ED100DF50AC /* UserDefaultKeys.swift in Sources */,
 				2FC25B381D6D874000D48D6A /* SettingsVC.swift in Sources */,
 				D079A9BC1E6FD80A008BA1C2 /* BaseNavigationController.swift in Sources */,
-				D079A9C71E6FE20D008BA1C2 /* OrderEvaluateVC.swift in Sources */,
+				D079A9CD1E6FE2AB008BA1C2 /* OrderEvaluateVC.swift in Sources */,
 				6E1CCC2F1E1E622C00374B75 /* YD_ContactManager.swift in Sources */,
 				2FDAFCEE1D65653900FD28CB /* LoginVC.swift in Sources */,
 				1A16F4A51E6D16F400360573 /* PhotoWallCell.swift in Sources */,
 				1A16F49B1E6D16BB00360573 /* ServantPersonalCell.swift in Sources */,
-				D079A9C61E6FE20D008BA1C2 /* AidWenXinVC.swift in Sources */,
+				D079A9CC1E6FE2AB008BA1C2 /* AidWenXinVC.swift in Sources */,
 				2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */,
 				2FA15A9A1E13B661001655A3 /* ModelHelper.swift in Sources */,
 				2FB9E75F1E28BC5400766040 /* UIViewControllerExt.swift in Sources */,
@@ -1846,7 +1846,7 @@
 				0DD80C6D1E15F452004C22C8 /* CommonWebVC.swift in Sources */,
 				1A16F4A81E6D1FEB00360573 /* UIViewEx.swift in Sources */,
 				2FA15A9F1E13BB50001655A3 /* UserModels.swift in Sources */,
-				D079A9C81E6FE20D008BA1C2 /* RelationAidVC.swift in Sources */,
+				D079A9CE1E6FE2AB008BA1C2 /* RelationAidVC.swift in Sources */,
 				2F9D420F1D5C0F1400D10FBC /* SocketManager.swift in Sources */,
 				1A16F49A1E6D16BB00360573 /* ServantHeaderView.swift in Sources */,
 				2FC25B221D6BEC8A00D48D6A /* WalletVC.swift in Sources */,
