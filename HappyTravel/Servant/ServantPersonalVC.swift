@@ -203,6 +203,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(personalInfo!)
         return headerView
+//=======
+//        let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
+//        header.didAddNewUI(personalInfo!)
+//        header.headerDelegate = self
+//        return header
+//>>>>>>> 7b53b1e0ad1a2ca4edb76c6b2d3f14f538d616b2
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -262,6 +268,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     func addMyWechatAccount() {
         // 加微信
+        let relationAid = RelationAidVC()
+        relationAid.userInfo  = personalInfo!
+        //detailInfo为nil 暂时注销
+//        relationAid.detailInfo = detailInfo!
+        navigationController?.pushViewController(relationAid, animated: true)
     }
     
     // 查询关注状态

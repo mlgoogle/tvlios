@@ -38,6 +38,14 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         initView()
         
+        let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
+        leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
+        leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
+    }
+    func didBack() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,39 +73,27 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     }
     
     func initView() {
-        let bgView = UIImageView()
-        bgView.userInteractionEnabled = true
-        bgView.image = UIImage.init(named: "login-bg")
-        view.addSubview(bgView)
-        bgView.snp_makeConstraints { (make) in
-            make.edges.equalTo(view)
-        }
-        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
-        touch.numberOfTapsRequired = 1
-        touch.cancelsTouchesInView = false
-        bgView.addGestureRecognizer(touch)
-        
-        let blurEffect = UIBlurEffect(style: .Dark)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        bgView.addSubview(blurView)
-        blurView.snp_makeConstraints { (make) in
-            make.edges.equalTo(bgView)
-        }
+//        let bgView = UIImageView()
+//        bgView.userInteractionEnabled = true
+//        bgView.image = UIImage.init(named: "login-bg")
+//        view.addSubview(bgView)
+//        bgView.snp_makeConstraints { (make) in
+//            make.edges.equalTo(view)
+//        }
+//        let touch = UITapGestureRecognizer.init(target: self, action: #selector(touchWhiteSpace))
+//        touch.numberOfTapsRequired = 1
+//        touch.cancelsTouchesInView = false
+//        bgView.addGestureRecognizer(touch)
+//        
+//        let blurEffect = UIBlurEffect(style: .Dark)
+//        let blurView = UIVisualEffectView(effect: blurEffect)
+//        bgView.addSubview(blurView)
+//        blurView.snp_makeConstraints { (make) in
+//            make.edges.equalTo(bgView)
+//        }
         
         let width = UIScreen.mainScreen().bounds.size.width / 3.0
-        let logo = UIImageView()
-        logo.backgroundColor = UIColor.grayColor()
-        logo.layer.cornerRadius = width / 2.0
-        logo.layer.masksToBounds = true
-        logo.image = UIImage.init(named: "logo")
-        view.addSubview(logo)
-        logo.snp_makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.top.equalTo(view).offset(100)
-            make.width.equalTo(width)
-            make.height.equalTo(width)
-        }
-        
+
         let usernameField = UITextField()
         usernameField.tag = tags["usernameField"]!
         usernameField.secureTextEntry = false
@@ -112,7 +108,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         view.addSubview(usernameField)
         usernameField.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view).offset(60)
-            make.top.equalTo(logo.snp_bottom).offset(60)
+            make.top.equalTo(view).offset(60)
             make.right.equalTo(view).offset(-60)
             make.height.equalTo(35)
         })
@@ -151,26 +147,26 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             make.height.equalTo(35)
         })
         
-        for i in 0...3 {
-            let fieldUnderLine = UIView()
-            fieldUnderLine.tag = tags["fieldUnderLine"]! + i
-            fieldUnderLine.backgroundColor = UIColor.grayColor()
-            view.addSubview(fieldUnderLine)
-            fieldUnderLine.snp_makeConstraints(closure: { (make) in
-                if i < 2 {
-                    make.left.equalTo(usernameField)
-                } else {
-                    make.left.equalTo(getVerifyCodeBtn)
-                }
-                if i == 0 || i == 2 {
-                    make.right.equalTo(usernameField)
-                } else if i == 1 {
-                    make.right.equalTo(verifyCodeField)
-                }
-                make.bottom.equalTo(i == 0 ? usernameField : verifyCodeField).offset(1)
-                make.height.equalTo(1)
-            })
-        }
+//        for i in 0...3 {
+//            let fieldUnderLine = UIView()
+//            fieldUnderLine.tag = tags["fieldUnderLine"]! + i
+//            fieldUnderLine.backgroundColor = UIColor.grayColor()
+//            view.addSubview(fieldUnderLine)
+//            fieldUnderLine.snp_makeConstraints(closure: { (make) in
+//                if i < 2 {
+//                    make.left.equalTo(usernameField)
+//                } else {
+//                    make.left.equalTo(getVerifyCodeBtn)
+//                }
+//                if i == 0 || i == 2 {
+//                    make.right.equalTo(usernameField)
+//                } else if i == 1 {
+//                    make.right.equalTo(verifyCodeField)
+//                }
+//                make.bottom.equalTo(i == 0 ? usernameField : verifyCodeField).offset(1)
+//                make.height.equalTo(1)
+//            })
+//        }
         
         let nextBtn = UIButton()
         nextBtn.tag = tags["nextBtn"]!
@@ -187,19 +183,19 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             make.top.equalTo(verifyCodeField.snp_bottom).offset(60)
             make.height.equalTo(45)
         }
-        
-        let loginWithAccountBtn = UIButton()
-        loginWithAccountBtn.tag = tags["loginWithAccountBtn"]!
-        loginWithAccountBtn.backgroundColor = .clearColor()
-        loginWithAccountBtn.setTitle("使用账号密码登录", forState: .Normal)
-        loginWithAccountBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
-        loginWithAccountBtn.addTarget(self, action: #selector(LoginWithMSGVC.loginWithAccountAction(_:)), forControlEvents: .TouchUpInside)
-        view.addSubview(loginWithAccountBtn)
-        loginWithAccountBtn.snp_makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.bottom.equalTo(view).offset(-60)
-            make.height.equalTo(25)
-        }
+//        
+//        let loginWithAccountBtn = UIButton()
+//        loginWithAccountBtn.tag = tags["loginWithAccountBtn"]!
+//        loginWithAccountBtn.backgroundColor = .clearColor()
+//        loginWithAccountBtn.setTitle("使用账号密码登录", forState: .Normal)
+//        loginWithAccountBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
+//        loginWithAccountBtn.addTarget(self, action: #selector(LoginWithMSGVC.loginWithAccountAction(_:)), forControlEvents: .TouchUpInside)
+//        view.addSubview(loginWithAccountBtn)
+//        loginWithAccountBtn.snp_makeConstraints { (make) in
+//            make.centerX.equalTo(view)
+//            make.bottom.equalTo(view).offset(-60)
+//            make.height.equalTo(25)
+//        }
     }
 
     func registerNotify() {

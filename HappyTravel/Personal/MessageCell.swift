@@ -20,8 +20,12 @@ class MessageCell: UITableViewCell {
     let titleLabel:UILabel = UILabel()
     func updeat(info: OrderListCellModel){
         //时间戳的转换
-        
-        titleLabel.text = info.order_time_! + "成功购买" + info.to_uid_nickename_! + "的商务信息"
+        let dateFormatter = NSDateFormatter()
+         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = dateFormatter.dateFromString(info.order_time_!)
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateString = dateFormatter.stringFromDate(date!)
+        titleLabel.text = dateString + "成功购买" + info.to_uid_nickename_! + "的商务信息"
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,13 +37,13 @@ class MessageCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         titleLabel.snp_makeConstraints { (make) in
             make.left.equalTo(contentView).offset(15)
-            make.right.equalTo(contentView).offset(-36)
+            make.right.equalTo(contentView).offset(-25)
             make.height.equalTo(16)
             make.top.equalTo(contentView).offset(14)
         }
-        titleLabel.text = "2017/02/27成功购买“淘梦优然”的商务123131231231"
+//        titleLabel.text = "2017/02/27成功购买“淘梦优然”的商务123131231231"
         titleLabel.font = UIFont.systemFontOfSize(16)
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .Left
         
         
         

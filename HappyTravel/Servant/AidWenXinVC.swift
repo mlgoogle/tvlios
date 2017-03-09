@@ -12,20 +12,36 @@ class AidWenXinVC: UIViewController {
 
     var getRelation:GetRelationStatusModel = GetRelationStatusModel()
     var userInfo: UserInfoModel = UserInfoModel()
+    var nickname: String?
+    var toUidUrl: String?
     var detailInfo:ServantDetailModel = ServantDetailModel()
-    var payStatus: PayOrderStatusModel = PayOrderStatusModel()
+    var orderId:Int = 0
+    var toUid: Int = 0
     var bool: Bool = false
+    var isEvaluate: Bool = false
     var qrCode :UIImageView = UIImageView()
     var accountLabel: UILabel = UILabel()
     var accountName: UILabel = UILabel()
     var copyBtn: UIButton = UIButton()
     var evaluateBtn: UIButton = UIButton()
     
+    var isRefresh: (()->())?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         title = "助理微信"
         setupUI()
+        
+        let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
+        leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
+        leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
+    }
+    func didBack() {
+        isRefresh!()
+        navigationController?.popViewControllerAnimated(true)
+        
     }
 
     func setupUI(){
@@ -57,7 +73,7 @@ class AidWenXinVC: UIViewController {
         }
         accountLabel.textAlignment = .Center
         accountLabel.font = UIFont.systemFontOfSize(18)
-        accountLabel.text = userInfo.nickname_! + "微信账号"
+        accountLabel.text = bool ? userInfo.nickname_! + "微信账号" : nickname! + "微信账号"
         accountLabel.textColor = UIColor.init(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
         
         accountName.snp_makeConstraints { (make) in
@@ -97,17 +113,33 @@ class AidWenXinVC: UIViewController {
         evaluateBtn.layer.cornerRadius = 22
         evaluateBtn.layer.masksToBounds = true
         evaluateBtn.addTarget(self, action: #selector(evaluateDidClick), forControlEvents: UIControlEvents.TouchUpInside)
+        evaluateBtn.enabled = true
         evaluateBtn.hidden = bool
+        
+        isEvaluate(isEvaluate)
     }
+    func isEvaluate(bool: Bool){
+        
+        if isEvaluate {
+            evaluateBtn.setTitle("已评价", forState: UIControlState.Normal)
+            evaluateBtn.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
+            evaluateBtn.enabled = false
+        }
+    }
+
     
     //点击评价按钮
     func evaluateDidClick() {
         let orderEvaluate = OrderEvaluateVC()
-        orderEvaluate.userInfo = userInfo
-        orderEvaluate.detailInfo = detailInfo
-        orderEvaluate.payStatus = payStatus
+        orderEvaluate.toUidUrl = toUidUrl
+        orderEvaluate.to_uid_ = toUid
+        orderEvaluate.order_id_ = orderId
+        orderEvaluate.nickname = nickname
+        orderEvaluate.evaluate = {[weak self]() ->() in
+            self!.isEvaluate = true
+            self!.isEvaluate(self!.isEvaluate)
+        }
         navigationController?.pushViewController(orderEvaluate, animated: true)
-        
     }
     //点击复制助理微信号按钮
     func copyBtnDidClick() {
