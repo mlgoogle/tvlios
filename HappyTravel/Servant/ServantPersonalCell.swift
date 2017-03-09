@@ -8,11 +8,19 @@
 
 import UIKit
 
+protocol ServantPersonalCellDelegate {
+    
+    func servantIsLikedAction(sender:UIButton,model:servantDynamicModel)
+}
+
 class ServantPersonalCell: UITableViewCell {
     
     var headerView:UIImageView?
     var nameLabel:UILabel?
     var thumbUpBtn:UIButton?
+    var delegate:ServantPersonalCellDelegate?
+    var personModel:servantDynamicModel?
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -53,8 +61,12 @@ class ServantPersonalCell: UITableViewCell {
         
         thumbUpBtn = UIButton.init(type: .Custom)
         thumbUpBtn?.backgroundColor = UIColor.clearColor()
+        thumbUpBtn?.setTitleColor(UIColor.init(decR: 153, decG: 153, decB: 153, a: 1), forState: .Normal)
+        thumbUpBtn?.setTitleColor(UIColor.init(decR: 252, decG: 163, decB: 17, a: 1), forState: .Selected)
+        thumbUpBtn?.titleLabel?.font = UIFont.systemFontOfSize(12)
         thumbUpBtn?.setImage(UIImage.init(named: "thumbUp-normal"), forState: .Normal)
         thumbUpBtn?.setImage(UIImage.init(named: "thumbUp-selected"), forState: .Selected)
+        thumbUpBtn?.addTarget(self, action: #selector(ServantPersonalCell.islikeAction(_:)), forControlEvents: .TouchUpInside)
         self.addSubview(thumbUpBtn!)
         
         thumbUpBtn?.snp_makeConstraints(closure: { (make) in
@@ -73,6 +85,10 @@ class ServantPersonalCell: UITableViewCell {
             make.height.equalTo(1)
             make.bottom.equalTo(-1)
         }
+    }
+    
+    func islikeAction(sender:UIButton) {
+        delegate?.servantIsLikedAction(sender, model: personModel!)
     }
 }
 
@@ -100,12 +116,24 @@ class ServantOnePicCell: ServantPersonalCell {
         })
     }
     
-    func updateImg(urls:String) {
+    func updateImage(model:servantDynamicModel) {
         
-        let urlArray = urls.componentsSeparatedByString(",")
-        let url = urlArray[0] 
+        personModel = model
         
-        imgView?.kf_setImageWithURL(NSURL.init(string: url))
+        let isliked = model.is_liked_
+        let likeCount = model.dynamic_like_count_
+        if isliked == 0 {
+            thumbUpBtn?.selected = false
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Normal)
+        }else {
+            thumbUpBtn?.selected = true
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
+        }
+        
+        
+        
+        let imageUrls = model.dynamic_url_
+        imgView?.kf_setImageWithURL(NSURL.init(string: imageUrls!))
     }
 }
 
@@ -134,9 +162,31 @@ class ServantOneLabelCell: ServantPersonalCell {
             make.bottom.equalTo(-45)
         })
     }
+    
+    func updateLabelText(model:servantDynamicModel) {
+        
+        personModel = model
+        
+        let isliked = model.is_liked_
+        let likeCount = model.dynamic_like_count_
+        if isliked == 0 {
+            thumbUpBtn?.selected = false
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Normal)
+        }else {
+            thumbUpBtn?.selected = true
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
+        }
+        
+        let textString = model.dynamic_text_
+        detailLabel?.text = textString
+    }
 }
 
 class ServantPicAndLabelCell: ServantPersonalCell {
+    
+    var detailLabel:UILabel?
+    var imageContianer:UIView?
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -144,6 +194,121 @@ class ServantPicAndLabelCell: ServantPersonalCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        addLabelAndImgView()
+    }
+    
+    func addLabelAndImgView() {
+        
+        detailLabel = UILabel.init()
+        detailLabel?.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
+        detailLabel?.textAlignment = .Left
+        detailLabel?.numberOfLines = 0
+        detailLabel?.font = UIFont.systemFontOfSize(16)
+        self.addSubview(detailLabel!)
+        
+        detailLabel?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo((headerView?.snp_right)!).offset(5)
+            make.right.equalTo(-15)
+            make.top.equalTo((nameLabel?.snp_bottom)!)
+        })
+        
+        imageContianer = UIView.init()
+        imageContianer?.backgroundColor = UIColor.whiteColor()
+        self.addSubview(imageContianer!)
+        
+        imageContianer?.snp_makeConstraints(closure: { (make) in
+            
+            make.left.equalTo((headerView?.snp_right)!).offset(5)
+            make.top.equalTo((detailLabel?.snp_bottom)!).offset(10)
+            make.right.equalTo(-15)
+            make.bottom.equalTo(-45)
+        })
+        
+    }
+    
+    func updateUI(model:servantDynamicModel) {
+        
+        personModel = model
+        
+        let isliked = model.is_liked_
+        let likeCount = model.dynamic_like_count_
+        if isliked == 0 {
+            thumbUpBtn?.selected = false
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Normal)
+        }else {
+            thumbUpBtn?.selected = true
+            thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
+        }
+        
+        let detailString = model.dynamic_text_
+        detailLabel?.text = detailString
+        
+        let imgUrlString = model.dynamic_url_
+        let urlArray = imgUrlString!.componentsSeparatedByString(",")
+        
+        let count = urlArray.count
+        print(count)
+        
+        let imageWidth = (self.Width - (headerView?.Right)! - 30) / 3.0
+        
+        for i in 0..<count {
+            
+            let imageUrl = urlArray[i]
+            let row = i / 3 // 行
+            let col = i % 3 // 列
+            
+            print(row, col)
+            
+            let imgV:UIImageView = UIImageView.init()
+            imageContianer?.addSubview(imgV)
+            // 加图片链接
+            imgV.kf_setImageWithURL(NSURL.init(string: imageUrl))
+            // 加约束
+            imgV.snp_makeConstraints(closure: { (make) in
+                make.width.height.equalTo(imageWidth)
+                
+                switch row {
+                    case 0:
+                        make.top.equalTo((imageContianer?.snp_top)!)
+                        break
+                    
+                    case 1:
+                        make.top.equalTo((imageContianer?.snp_top)!).offset(imageWidth + 5)
+                        break
+                        
+                    case 2:
+                        make.top.equalTo((imageContianer?.snp_top)!).offset(2*imageWidth + 10)
+                        break
+                    
+                    default:
+                        break
+                }
+                
+                switch col {
+                    case 0:
+                        make.left.equalTo((imageContianer?.snp_left)!)
+                        break
+                    
+                    case 1:
+                        make.left.equalTo((imageContianer?.snp_left)!).offset(imageWidth + 5)
+                        break
+                    
+                    case 2:
+                        make.left.equalTo((imageContianer?.snp_left)!).offset(2*imageWidth + 10)
+                        make.right.equalTo((imageContianer?.snp_right)!)
+                        break
+                    
+                    default:
+                        break
+                }
+                
+                if i == count - 1 {
+                    make.bottom.equalTo((imageContianer?.snp_bottom)!).offset(-5)
+                }
+                
+            })
+        }
     }
 }
 
