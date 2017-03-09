@@ -88,7 +88,13 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
     }
     func didBack() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if isForget {
+            navigationController?.popViewControllerAnimated(true)
+        }
+        else{
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -203,12 +209,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         verifyCodeField.attributedPlaceholder = NSAttributedString.init(string: "请输入验证码", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
         verifyCodeField.textColor = UIColor.blackColor()
         verifyCodeField.setValue(UIFont.systemFontOfSize(14), forKeyPath: "_placeholderLabel.font")
-        verifyCodeField.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(verifyImage.snp_right).offset(16)
-            make.top.equalTo(verifyView)
-            make.right.equalTo(getVerifyCodeBtn.snp_left).offset(-10)
-            make.height.equalTo(51)
-        })
+    
         
         getVerifyCodeBtn.tag = tags["getVerifyCodeBtn"]!
         getVerifyCodeBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
@@ -218,13 +219,18 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         getVerifyCodeBtn.layer.cornerRadius = 18
         getVerifyCodeBtn.layer.masksToBounds = true
         getVerifyCodeBtn.addTarget(self, action: #selector(LoginWithMSGVC.getVerifyCodeAction(_:)), forControlEvents: .TouchUpInside)
-        view.addSubview(getVerifyCodeBtn)
         getVerifyCodeBtn.snp_makeConstraints { (make) in
             make.right.equalTo(verifyView).offset(-15)
             make.top.equalTo(verifyView).offset(8)
             make.width.equalTo(101)
             make.height.equalTo(36)
         }
+        verifyCodeField.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo(verifyImage.snp_right).offset(16)
+            make.top.equalTo(verifyView)
+            make.right.equalTo(getVerifyCodeBtn.snp_left).offset(-10)
+            make.height.equalTo(51)
+        })
         
         //输入登录密码视图
         enterPasswordView.snp_makeConstraints { (make) in
