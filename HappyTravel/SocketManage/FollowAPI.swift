@@ -33,4 +33,13 @@ class FollowAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(FollowCountModel.classForCoder()))
             }, error: error)
     }
+    
+    
+    
+    func servantThumbup(model:ServantThumbUpModel,complete:CompleteBlock?,error:ErrorBlock?) {
+        let packet = SocketDataPacket(opcode: .ThumbUp, model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(ServantThumbUpResultModel.classForCoder()))
+            }, error: error)
+    }
 }
