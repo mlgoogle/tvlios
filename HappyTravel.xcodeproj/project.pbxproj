@@ -1409,7 +1409,7 @@
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 96YGS7NXK5;
+						DevelopmentTeam = V6UZGER6DK;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2039,8 +2039,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: yong ming lu (FD5S65ADL4)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: yong ming lu (FD5S65ADL4)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2058,7 +2058,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "5ec3b678-c027-4a3f-a774-8bacd54659d4";
+				PROVISIONING_PROFILE = "2a1af68f-a9a3-495d-aa76-0f17d8dd7972";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2073,8 +2073,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: yong ming lu (96YGS7NXK5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: yong ming lu (96YGS7NXK5)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2092,7 +2092,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "0cb00ebc-07a8-4968-907a-b92473e7f25d";
+				PROVISIONING_PROFILE = "2a1af68f-a9a3-495d-aa76-0f17d8dd7972";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
