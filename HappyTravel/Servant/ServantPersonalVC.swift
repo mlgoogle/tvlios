@@ -15,7 +15,7 @@ import SVProgressHUD
 /**
  * 15158110304
  */
-public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate{
+public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
     var personalInfo:UserInfoModel?
@@ -170,31 +170,55 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-//        /*  只有文字的cell  */
-//        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOneLabelCell", forIndexPath: indexPath) as! ServantOneLabelCell
-//        cell.selectionStyle = .None
-//        if indexPath.row < dynamicListModel?.dynamic_list_.count {
-//            
-//            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
-//            cell.nameLabel?.text = personalInfo?.nickname_
-//            
-//            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
-//            let textString = dynamicModel.dynamic_text_
-//            cell.detailLabel?.text = textString
-//        }
-        
-        /*  只有一张图片的cell  */
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOnePicCell", forIndexPath: indexPath) as! ServantOnePicCell
-        cell.selectionStyle = .None
         if indexPath.row < dynamicListModel?.dynamic_list_.count {
-            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
-            cell.nameLabel?.text = personalInfo?.nickname_
             
-            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
-            let imageUrls = dynamicModel.dynamic_url_
-            cell.updateImg(imageUrls!)
+            let model:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+            let detailText:String = model.dynamic_text_!
+            let urlStr = model.dynamic_url_
+            let urlArray = urlStr!.componentsSeparatedByString(",")
+            
+            if urlStr?.characters.count == 0 {
+                // 只有文字的Cell
+                let cell = tableView.dequeueReusableCellWithIdentifier("ServantOneLabelCell", forIndexPath: indexPath) as! ServantOneLabelCell
+                cell.delegate = self
+                cell.selectionStyle = .None
+                
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+                cell.nameLabel?.text = personalInfo?.nickname_
+                
+                cell.updateLabelText(model)
+                
+                return cell
+                
+            }else if detailText.characters.count  == 0 && urlArray.count == 1 {
+                // 只有一张图片的cell
+                let cell = tableView.dequeueReusableCellWithIdentifier("ServantOnePicCell", forIndexPath: indexPath) as! ServantOnePicCell
+                cell.delegate = self
+                cell.selectionStyle = .None
+                
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+                cell.nameLabel?.text = personalInfo?.nickname_
+                
+                cell.updateImage(model)
+                return cell
+                
+            }else {
+                // 复合cell
+                let cell = tableView.dequeueReusableCellWithIdentifier("ServantPicAndLabelCell", forIndexPath: indexPath) as! ServantPicAndLabelCell
+                cell.delegate = self
+                cell.selectionStyle = .None
+                
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+                cell.nameLabel?.text = personalInfo?.nickname_
+                
+                cell.updateUI(model)
+                
+                return cell
+            }
+            
         }
-        return cell
+        
+        return UITableViewCell.init()
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -203,12 +227,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(personalInfo!)
         return headerView
-//=======
-//        let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
-//        header.didAddNewUI(personalInfo!)
-//        header.headerDelegate = self
-//        return header
-//>>>>>>> 7b53b1e0ad1a2ca4edb76c6b2d3f14f538d616b2
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -351,4 +369,22 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
     }
     
+    // 点赞
+    func servantIsLikedAction(sender: UIButton, model: servantDynamicModel) {
+        
+        let req = ServantThumbUpModel()
+        req.dynamic_id_ = model.dynamic_id_
+        
+        APIHelper.followAPI().servantThumbup(req, complete: { (response) in
+            
+            let result = response as! ServantThumbUpResultModel
+            
+            if result.result_ == 0 {
+                sender.selected = true
+            }else if result.result_ == 1 {
+                sender.selected = false
+            }
+            
+            }, error: nil)
+    }
 }

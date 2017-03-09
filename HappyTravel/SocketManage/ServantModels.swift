@@ -51,6 +51,18 @@ class ServantDynamicListModel: Object {
     let dynamic_list_:List<servantDynamicModel> = List<servantDynamicModel>()
 }
 
+// 点赞model
+class ServantThumbUpModel:Object {
+    dynamic var dynamic_id_ = 0
+    dynamic var like_uid_ = CurrentUser.uid_
+}
+
+class ServantThumbUpResultModel: Object {
+    
+    dynamic var result_ = -1
+    dynamic var dynamic_like_count_ = 0
+}
+
 //照片墙
 class PhotoWallRequestModel: Object {
     dynamic var uid_ = 0

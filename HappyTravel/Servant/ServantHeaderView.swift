@@ -24,8 +24,6 @@ class ServantHeaderView: UIView {
     var tagView:UIView?// 标签条
     var leftBtn:UIButton?
     
-    
-    
     var headerDelegate:ServantHeaderViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
