@@ -9,13 +9,11 @@
 import Foundation
 import UIKit
 import MJRefresh
+import SVProgressHUD
 
 
 /**
- * 13132696374
- * 18625090746
- * 15868912093
- * 15158114927
+ * 15158110304
  */
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate{
     
@@ -30,10 +28,17 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     var topTitle:UILabel?
     
     var tableView:UITableView?
-    var dataArray:NSMutableArray?
+    var dynamicListModel:ServantDynamicListModel?
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
+    
+    // 头视图
+    var headerView:ServantHeaderView?
+    
+    // 是否关注状态
+    var follow = false
+    
     
     
     // MARK: - 函数方法
@@ -41,6 +46,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        // 查询关注状态并更新UI
+        updateFollowStatus()
+        // 查询粉丝数
+        updateFollowCount()
     }
     
     override public func viewWillDisappear(animated: Bool) {
@@ -55,23 +65,27 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         addData()
     }
-    
+    // 15158110034
+    // 查询动态列表
     func addData() {
         
         let servantInfo:ServantInfoModel = ServantInfoModel()
         servantInfo.uid_ = (personalInfo?.uid_)!
         servantInfo.page_num_ = 0
-        servantInfo.page_size_ = 10
         
         APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
             
-            print(response)
-            
-            }, error: {
-                (error) in
+            // 没有动态
+            if response == nil {
+                self?.tableView?.reloadData()
+            }else {
+                // 有动态
+                self!.dynamicListModel = (response as! ServantDynamicListModel)
                 
-                print(error)
-        })
+                self?.tableView?.reloadData()
+            }
+            
+            }, error: nil)
         
     }
     
@@ -83,7 +97,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.separatorStyle = .None
-        tableView?.registerClass(ServantPersonalCell.self, forCellReuseIdentifier: "ServantPersonalCell")
+        tableView?.estimatedRowHeight = 120
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.separatorStyle = .None
+        // 只有一条文字的Cell展示
+        tableView?.registerClass(ServantOneLabelCell.self, forCellReuseIdentifier: "ServantOneLabelCell")
+        // 只有一张图片的Cell展示
+        tableView?.registerClass(ServantOnePicCell.self, forCellReuseIdentifier: "ServantOnePicCell")
+        // 复合Cell展示
+        tableView?.registerClass(ServantPicAndLabelCell.self, forCellReuseIdentifier: "ServantPicAndLabelCell")
         view.addSubview(tableView!)
         
         tableView?.snp_makeConstraints(closure: { (make) in
@@ -139,21 +161,54 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // MARK: - UITableViewDelegate
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+//        return (dataArray?.count)!
+        if dynamicListModel == nil {
+            return 0
+        }
+        return (dynamicListModel?.dynamic_list_.count)!
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServantPersonalCell", forIndexPath: indexPath) as! ServantPersonalCell
+//        /*  只有文字的cell  */
+//        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOneLabelCell", forIndexPath: indexPath) as! ServantOneLabelCell
+//        cell.selectionStyle = .None
+//        if indexPath.row < dynamicListModel?.dynamic_list_.count {
+//            
+//            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+//            cell.nameLabel?.text = personalInfo?.nickname_
+//            
+//            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+//            let textString = dynamicModel.dynamic_text_
+//            cell.detailLabel?.text = textString
+//        }
         
+        /*  只有一张图片的cell  */
+        let cell = tableView.dequeueReusableCellWithIdentifier("ServantOnePicCell", forIndexPath: indexPath) as! ServantOnePicCell
+        cell.selectionStyle = .None
+        if indexPath.row < dynamicListModel?.dynamic_list_.count {
+            cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
+            cell.nameLabel?.text = personalInfo?.nickname_
+            
+            let dynamicModel:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+            let imageUrls = dynamicModel.dynamic_url_
+            cell.updateImg(imageUrls!)
+        }
         return cell
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
-        header.didAddNewUI(personalInfo!)
-        return header
+        headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
+        headerView!.headerDelegate = self
+        headerView!.didAddNewUI(personalInfo!)
+        return headerView
+//=======
+//        let header:ServantHeaderView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
+//        header.didAddNewUI(personalInfo!)
+//        header.headerDelegate = self
+//        return header
+//>>>>>>> 7b53b1e0ad1a2ca4edb76c6b2d3f14f538d616b2
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -171,7 +226,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
     }
-    
     
     
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -192,19 +246,104 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         }else {
             let alpha:CGFloat = 1 - ((64 - offsetY) / 64)
             topView?.backgroundColor = color.colorWithAlphaComponent(alpha)
-            topTitle?.text = "导航标题~~"
+            
+            let titleString = personalInfo?.nickname_
+            topTitle?.text = titleString
             leftBtn?.setImage(UIImage.init(named: "nav-back-select"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
     }
     
-    
     // MARK: - 加微信和关注按钮
-    func attentionAction() {
-        // 加关注
+    func attentionAction(sender: UIButton) {
+        
+        if sender.selected {
+            // 取消关注
+            dismissAttention()
+        }else {
+            // 加关注
+            addAttention()
+        }
     }
+    
     func addMyWechatAccount() {
         // 加微信
+        let relationAid = RelationAidVC()
+        relationAid.userInfo  = personalInfo!
+        //detailInfo为nil 暂时注销
+//        relationAid.detailInfo = detailInfo!
+        navigationController?.pushViewController(relationAid, animated: true)
+    }
+    
+    // 查询关注状态
+    func updateFollowStatus() {
+        
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 3
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = true
+            }else {
+                self!.follow = false
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            
+            }, error: nil)
+    }
+    
+    // 加关注
+    func addAttention() {
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 1
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = true
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            self?.updateFollowCount()
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "关注成功", ForDuration: 1.5, completion: {
+            })
+            
+            }, error: nil)
+    }
+    // 取关
+    func dismissAttention() {
+        
+        let req = FollowModel()
+        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_type_ = 2
+        APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
+            
+            let model:FollowedModel = response as! FollowedModel
+            if model.result_ == 0 {
+                self!.follow = false
+            }
+            self!.headerView!.uploadAttentionStatus(self!.follow)
+            self?.updateFollowCount()
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "取消关注成功", ForDuration: 1.5, completion: {
+            })
+            
+            }, error: nil)
+    }
+    
+    // 查询粉丝数量
+    func updateFollowCount() {
+        let req = FollowCountRequestModel()
+        req.uid_ = personalInfo!.uid_
+        req.type_ = 2
+        APIHelper.followAPI().followCount(req, complete: {(response) in
+            
+            let model = response as! FollowCountModel
+            let count = model.follow_count_
+            self.headerView?.updateFansCount(count)
+            
+            }, error: nil)
     }
     
     override public func didReceiveMemoryWarning() {
