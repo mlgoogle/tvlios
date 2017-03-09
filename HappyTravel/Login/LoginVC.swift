@@ -127,7 +127,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             make.left.equalTo(photoNumberView).offset(15)
             make.top.equalTo(photoNumberView).offset(16)
             make.height.equalTo(20)
-            make.width.equalTo(15)
+            make.width.equalTo(14)
         }
         photoImage.image = UIImage.init(named:"photoNumber")
         
@@ -224,14 +224,15 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         let loginWithMSGBtn = UIButton()
         loginWithMSGBtn.tag = tags["loginWithMSGBtn"]!
         loginWithMSGBtn.backgroundColor = .clearColor()
-        loginWithMSGBtn.setTitle("使用手机短信登录", forState: .Normal)
-        loginWithMSGBtn.setTitleColor(UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1), forState: .Normal)
+        loginWithMSGBtn.setTitle("忘记密码", forState: .Normal)
+        loginWithMSGBtn.setTitleColor(UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1), forState: .Normal)
+        loginWithMSGBtn.titleLabel?.font = UIFont.systemFontOfSize(13)
         loginWithMSGBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(loginWithMSGBtn)
         loginWithMSGBtn.snp_makeConstraints { (make) in
             make.centerX.equalTo(view)
-            make.bottom.equalTo(view).offset(-60)
-            make.height.equalTo(25)
+            make.top.equalTo(loginBtn.snp_bottom).offset(20)
+            make.height.equalTo(13)
         }
     }
     
@@ -250,7 +251,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             eyeBtn.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(16)
                 make.top.equalTo(enterPasswordView).offset(18)
-            })
+            })  
         }
         else{
             passwdField.secureTextEntry = true
@@ -261,8 +262,6 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             })
         }
         selectorBtn.selected = !sender.selected
-        
-        
     }
     
     func registerNotify() {
@@ -292,7 +291,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
 
         if sender?.tag == tags["loginWithMSGBtn"]! {
             loginWithMSGVC = LoginWithMSGVC()
-            presentViewController(loginWithMSGVC!, animated: false, completion: nil)
+            loginWithMSGVC?.title = "忘记密码"
+            loginWithMSGVC!.isForget = true
+//            presentViewController(loginWithMSGVC!, animated: false, completion: nil)
+            navigationController?.pushViewController(loginWithMSGVC!, animated: true)
             return
         }
         
