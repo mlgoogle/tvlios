@@ -33,21 +33,22 @@ class ServantDetailModel: Object {
 // 助理model，用于获取助理动态
 class ServantInfoModel:Object {
     dynamic var uid_ = 0
+    dynamic var view_uid_ = CurrentUser.uid_
     dynamic var page_num_ = 0
-    dynamic var page_size_ = 0
+    dynamic var page_count_ = 15
 }
 
 class servantDynamicModel: Object {
     dynamic var dynamic_id_ = 0
-    dynamic var dynamic_text_ = 0
-    dynamic var dynamic_url_ = 0
+    dynamic var dynamic_text_:String?
+    dynamic var dynamic_url_:String?
     dynamic var dynamic_like_count_ = 0
     dynamic var is_liked_ = 0
     
 }
 
-class servantDynamicListModel: Object {
-    let dynamic_List_:List<servantDynamicModel> = List<servantDynamicModel>()
+class ServantDynamicListModel: Object {
+    let dynamic_list_:List<servantDynamicModel> = List<servantDynamicModel>()
 }
 
 //照片墙

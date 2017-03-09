@@ -11,7 +11,7 @@ import Foundation
 
 protocol ServantHeaderViewDelegate : NSObjectProtocol {
     
-    func attentionAction()
+    func attentionAction(sender:UIButton)
     func addMyWechatAccount()
 }
 
@@ -22,6 +22,8 @@ class ServantHeaderView: UIView {
     var attentionNum:UILabel?
     var starsView:UIView?
     var tagView:UIView?// 标签条
+    var leftBtn:UIButton?
+    
     
     
     var headerDelegate:ServantHeaderViewDelegate?
@@ -109,21 +111,23 @@ class ServantHeaderView: UIView {
     // 设置底部按钮
     func bottomBtns() {
         
-        let leftBtn:UIButton = UIButton.init(type: .Custom)
-        leftBtn.frame = CGRectMake(15, 315, (ScreenWidth - 40)/2.0, 44)
-        leftBtn.layer.masksToBounds = true
-        leftBtn.layer.cornerRadius = 22.0
-        leftBtn.backgroundColor = UIColor.whiteColor()
-        leftBtn.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
-        leftBtn.layer.borderWidth = 1.0
-        leftBtn.setTitleColor(UIColor.init(decR: 51, decG: 51, decB: 51, a: 1), forState: .Normal)
-        leftBtn.titleLabel?.font = UIFont.systemFontOfSize(14)
-        leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
-        leftBtn.addTarget(self, action: #selector(ServantHeaderView.payAttention), forControlEvents: .TouchUpInside)
+        leftBtn = UIButton.init(type: .Custom)
+        leftBtn!.frame = CGRectMake(15, 315, (ScreenWidth - 40)/2.0, 44)
+        leftBtn!.layer.masksToBounds = true
+        leftBtn!.layer.cornerRadius = 22.0
+        leftBtn!.backgroundColor = UIColor.whiteColor()
+        leftBtn!.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
+        leftBtn!.layer.borderWidth = 1.0
+        leftBtn!.setTitleColor(UIColor.init(decR: 51, decG: 51, decB: 51, a: 1), forState: .Normal)
+        leftBtn!.titleLabel?.font = UIFont.systemFontOfSize(14)
+        leftBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
+        leftBtn!.addTarget(self, action: #selector(ServantHeaderView.payAttention(_:)), forControlEvents: .TouchUpInside)
         // 具体判断是关注还是取消关注
-        leftBtn.setTitle("关注", forState: .Normal)
-        leftBtn.setImage(UIImage.init(named: "Add"), forState: .Normal)
-        self.addSubview(leftBtn)
+        leftBtn!.setTitle("关注", forState: .Normal)
+        leftBtn!.setImage(UIImage.init(named: "Add"), forState: .Normal)
+        leftBtn!.setTitle("取消关注", forState: .Selected)
+        leftBtn!.setImage(UIImage.init(named: "Delete"), forState: .Selected)
+        self.addSubview(leftBtn!)
         
         
         let rightBtn:UIButton = UIButton.init(type: .Custom)
@@ -140,6 +144,11 @@ class ServantHeaderView: UIView {
         rightBtn.setImage(UIImage.init(named: "Wechat"), forState: .Normal)
         self.addSubview(rightBtn)
         rightBtn.addTarget(self, action: #selector(ServantHeaderView.addWechat), forControlEvents: .TouchUpInside)
+        
+        let lineView:UIView = UIView.init(frame: CGRectMake(0, rightBtn.Bottom + 20 , ScreenWidth, 1))
+        lineView.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
+        self.addSubview(lineView)
+        
     }
     
     // 更新UI数据
@@ -164,11 +173,30 @@ class ServantHeaderView: UIView {
         }
         
         // 根据状态调整按钮标题
-        
+        if detailInfo.register_status_ == 0 {
+            leftBtn?.selected = false
+        }else {
+            leftBtn?.selected = true
+        }
     }
     
-    func payAttention() {
-        headerDelegate?.attentionAction()
+    // 更新是否关注状态
+    func uploadAttentionStatus(status:Bool) {
+        
+        if status {
+            leftBtn?.selected = true
+        }else {
+            leftBtn?.selected = false
+        }
+    }
+    // 更新粉丝数量
+    func updateFansCount(count:Int) {
+        attentionNum?.text = String(count)
+    }
+    
+    func payAttention(sender:UIButton) {
+        
+        headerDelegate?.attentionAction(sender)
     }
     
     func addWechat() {
