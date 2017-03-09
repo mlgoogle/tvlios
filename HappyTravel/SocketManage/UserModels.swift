@@ -117,7 +117,7 @@ class ModifyUserInfoModel: UserBaseModel {
 
 //请求注册新用户
 class RegisterAccountBaseInfo: Object {
-//    dynamic var invitation_phone_num_:String?
+    dynamic var invitation_phone_num_:String?
     dynamic var phone_num_:String?
     dynamic var passwd_:String?
     dynamic var user_type_:Int = 1//1游客2服务者

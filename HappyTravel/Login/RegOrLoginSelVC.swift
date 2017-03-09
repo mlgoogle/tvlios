@@ -49,7 +49,7 @@ class RegOrLoginSelVC: UIViewController {
     func initView() {
         let bgView = UIImageView()
         bgView.userInteractionEnabled = true
-        bgView.image = UIImage.init(named: "login-bg")
+        bgView.image = UIImage.init(named: "background_bg")
         view.addSubview(bgView)
         bgView.snp_makeConstraints { (make) in
             make.edges.equalTo(view)
@@ -57,34 +57,37 @@ class RegOrLoginSelVC: UIViewController {
         
         let loginBtn = UIButton()
         loginBtn.tag = tags["loginBtn"]!
-        loginBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
+        loginBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+        loginBtn.titleLabel?.font = UIFont.systemFontOfSize(18)
         loginBtn.setTitle("登录", forState: .Normal)
         loginBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
-        loginBtn.layer.cornerRadius = 30 / 2.0
+        loginBtn.layer.cornerRadius = 45 / 2.0
         loginBtn.layer.masksToBounds = true
         loginBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(loginBtn)
         loginBtn.snp_makeConstraints { (make) in
-            make.left.equalTo(view).offset(45)
-            make.width.equalTo(90)
-            make.bottom.equalTo(view).offset(-80)
-            make.height.equalTo(30)
+            make.centerX.equalTo(view)
+            make.left.equalTo(view).offset(62)
+            make.right.equalTo(view).offset(-63)
+            make.height.equalTo(45)
+            make.top.equalTo(view).offset(285)
         }
         
         let regBtn = UIButton()
         regBtn.tag = tags["regBtn"]!
-        regBtn.backgroundColor = UIColor.init(red: 20/255.0, green: 31/255.0, blue: 49/255.0, alpha: 1)
+        regBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
         regBtn.setTitle("注册", forState: .Normal)
         regBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
-        regBtn.layer.cornerRadius = 30 / 2.0
+        regBtn.layer.cornerRadius = 45 / 2.0
         regBtn.layer.masksToBounds = true
         regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(regBtn)
         regBtn.snp_makeConstraints { (make) in
-            make.right.equalTo(view).offset(-45)
-            make.width.equalTo(90)
-            make.bottom.equalTo(view).offset(-80)
-            make.height.equalTo(30)
+            make.centerX.equalTo(view)
+            make.left.equalTo(view).offset(62)
+            make.right.equalTo(view).offset(-63)
+            make.height.equalTo(45)
+            make.top.equalTo(loginBtn.snp_bottom).offset(30)
         }
         
     }

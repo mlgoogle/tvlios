@@ -16,10 +16,13 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
                 "registBtn": 1003,
                 "fieldUnderLine": 10040,
                 "loginWithAccountBtn": 1005,
-                "getVerifyCodeBtn": 1006]
+                "getVerifyCodeBtn": 1006,
+                "passwdField": 1007,
+                "reInPasswdField": 1008]
     
     var username:String?
     var passwd:String?
+    var repasswd:String?
     var verifyCode:String?
     var verifyCodeTime = 0
     var token:String?
@@ -249,6 +252,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
         passwordImage.image = UIImage.init(named:"password")
         
+        passwdField.tag = tags["passwdField"]!
         passwdField.secureTextEntry = true
         passwdField.delegate = self
         passwdField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
@@ -294,7 +298,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         }
         reInPasswdImage.image = UIImage.init(named:"password")
         
-//        reInPasswdField.tag = tags["reInPasswdField"]!
+        reInPasswdField.tag = tags["reInPasswdField"]!
         reInPasswdField.secureTextEntry = true
         reInPasswdField.delegate = self
         reInPasswdField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
@@ -548,13 +552,119 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             return
         }
         
-        resetPasswdVC = ResetPasswdVC()
-        resetPasswdVC!.verifyCodeTime = verifyCodeTime
-        resetPasswdVC!.token = token
-        resetPasswdVC?.username = username
-        resetPasswdVC?.verifyCode = Int(verifyCode!)!
-        presentViewController(resetPasswdVC!, animated: false, completion: nil)
+        if  passwd == nil || passwd?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+            return
+        }
+        
+        if  repasswd == nil || repasswd?.characters.count == 0 {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "请再次输入密码", ForDuration: 1, completion: nil)
+            return
+        }
+        
+        if passwd != repasswd {
+            SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
+            return
+        }
+        SVProgressHUD.showProgressMessage(ProgressMessage: "")
+        
+        let model = RegisterAccountBaseInfo()
+            model.phone_num_ = username!
+            model.passwd_ = passwd!
+            model.timestamp_ = Int64(verifyCodeTime)
+            model.verify_code_ = Int(verifyCode!)!
+            model.token_ = token ?? ""
+            model.invitation_phone_num_  = verifyCode
+            APIHelper.userAPI().registerAccount(model, complete: { (response) in
+                    if let model = response as? RegisterAccountModel {
+                        SVProgressHUD.dismiss()
+                        NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
+                        NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
+                        let loginModel = LoginModel()
+                        APIHelper.userAPI().login(loginModel, complete: { [weak self](response) in
+                            if let user = response as? UserInfoModel {
+                                CurrentUser = user
+                                CurrentUser.login_ = true
+                                self?.dismissAll({ () in
+                                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+                                })
+        
+                            }
+                            }, error: { (err) in
+                                NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+                                XCGLogger.debug(err)
+                        })
+                    }
+                    }, error: { (err) in
+                        let warning = SocketRequest.errorString(err.code)
+                        SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
+                })
+
+        
+        
+//        resetPasswdVC = ResetPasswdVC()
+//        resetPasswdVC!.verifyCodeTime = verifyCodeTime
+//        resetPasswdVC!.token = token
+//        resetPasswdVC?.username = username
+//        resetPasswdVC?.verifyCode = Int(verifyCode!)!
+//        presentViewController(resetPasswdVC!, animated: false, completion: nil)
     }
+    
+//    func sureAction(sender: UIButton?) {
+//        MobClick.event(CommonDefine.BuriedPoint.registerSure)
+//        if  passwd == nil || passwd?.characters.count == 0 {
+//            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
+//            return
+//        }
+//        
+//        if  repasswd == nil || repasswd?.characters.count == 0 {
+//            SVProgressHUD.showErrorMessage(ErrorMessage: "请重新输入密码", ForDuration: 1, completion: nil)
+//            return
+//        }
+//        
+//        if passwd != repasswd {
+//            SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
+//            return
+//        }
+//        
+//        SVProgressHUD.showProgressMessage(ProgressMessage: "")
+//        
+//        let model = RegisterAccountBaseInfo()
+//        model.phone_num_ = username!
+//        model.passwd_ = passwd!
+//        model.timestamp_ = Int64(verifyCodeTime)
+//        model.verify_code_ = verifyCode
+//        model.token_ = token ?? ""
+//        APIHelper.userAPI().registerAccount(model, complete: { (response) in
+//            if let model = response as? RegisterAccountModel {
+//                SVProgressHUD.dismiss()
+//                NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
+//                NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
+//                let loginModel = LoginModel()
+//                APIHelper.userAPI().login(loginModel, complete: { [weak self](response) in
+//                    if let user = response as? UserInfoModel {
+//                        CurrentUser = user
+//                        CurrentUser.login_ = true
+//                        self?.dismissAll({ () in
+//                            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
+//                        })
+//                        
+//                    }
+//                    }, error: { (err) in
+//                        NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
+//                        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
+//                        XCGLogger.debug(err)
+//                })
+//            }
+//            }, error: { (err) in
+//                let warning = SocketRequest.errorString(err.code)
+//                SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
+//        })
+//        
+//    }
+    
+    
     
     //MARK: - UITextField
     func textFieldShouldClear(textField: UITextField) -> Bool {
@@ -564,6 +674,11 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             break
         case tags["verifyCodeField"]!:
             verifyCode = ""
+        case tags["passwdField"]!:
+            passwd = ""
+            break
+        case tags["reInPasswdField"]!:
+            repasswd = ""
         default:
             break
         }
@@ -579,6 +694,12 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
             username = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         } else if textField.tag == tags["verifyCodeField"]! {
             verifyCode = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        }
+        else if textField.tag == tags["reInPasswdField"]! {
+            repasswd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        } else if textField.tag == tags["passwdField"]! {
+            passwd = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            
         }
         
         return true

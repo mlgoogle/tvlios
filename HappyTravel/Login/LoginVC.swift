@@ -224,7 +224,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         let loginWithMSGBtn = UIButton()
         loginWithMSGBtn.tag = tags["loginWithMSGBtn"]!
         loginWithMSGBtn.backgroundColor = .clearColor()
-        loginWithMSGBtn.setTitle("忘记密码", forState: .Normal)
+        loginWithMSGBtn.setTitle("忘记密码?", forState: .Normal)
         loginWithMSGBtn.setTitleColor(UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1), forState: .Normal)
         loginWithMSGBtn.titleLabel?.font = UIFont.systemFontOfSize(13)
         loginWithMSGBtn.addTarget(self, action: #selector(LoginVC.login(_:)), forControlEvents: .TouchUpInside)
