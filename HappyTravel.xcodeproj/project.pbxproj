@@ -59,6 +59,8 @@
 		2F9F53DA1E6E504200E77BF1 /* servant-filter-select@2x@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D01E6E504200E77BF1 /* servant-filter-select@2x@3x.png */; };
 		2F9F53DB1E6E504200E77BF1 /* servant-filter-unselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D11E6E504200E77BF1 /* servant-filter-unselect@2x.png */; };
 		2F9F53DC1E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */; };
+		2F9F53DF1E6E960000E77BF1 /* map-head-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */; };
+		2F9F53E01E6E960000E77BF1 /* map-head-default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */; };
 		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
 		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
 		2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A921E12890E001655A3 /* SocketDataPacket.swift */; };
@@ -312,8 +314,6 @@
 		D0D003DB1E67EAFC00D8ED04 /* powerBackground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */; };
 		D0D003DC1E67EAFC00D8ED04 /* unfold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */; };
 		D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */; };
-		D0D003DF1E68F8C300D8ED04 /* AidWenXinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */; };
-		D0D003E11E6915B400D8ED04 /* OrderEvaluateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */; };
 		D0D003E61E696D5F00D8ED04 /* starSelector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003E21E696D5F00D8ED04 /* starSelector@2x.png */; };
 		D0D003E71E696D5F00D8ED04 /* starSelector@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003E31E696D5F00D8ED04 /* starSelector@3x.png */; };
 		D0D003E81E696D5F00D8ED04 /* starUnselector@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D003E41E696D5F00D8ED04 /* starUnselector@2x.png */; };
@@ -385,6 +385,8 @@
 		2F9F53D01E6E504200E77BF1 /* servant-filter-select@2x@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-select@2x@3x.png"; sourceTree = "<group>"; };
 		2F9F53D11E6E504200E77BF1 /* servant-filter-unselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-unselect@2x.png"; sourceTree = "<group>"; };
 		2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-unselect@2x@3x.png"; sourceTree = "<group>"; };
+		2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@2x.png"; sourceTree = "<group>"; };
+		2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@3x.png"; sourceTree = "<group>"; };
 		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
 		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
 		2FA15A921E12890E001655A3 /* SocketDataPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketDataPacket.swift; path = SocketManage/SocketDataPacket.swift; sourceTree = "<group>"; };
@@ -649,8 +651,6 @@
 		D0D003D31E67EAFC00D8ED04 /* powerBackground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "powerBackground@3x.png"; sourceTree = "<group>"; };
 		D0D003D41E67EAFC00D8ED04 /* unfold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@2x.png"; sourceTree = "<group>"; };
 		D0D003D51E67EAFC00D8ED04 /* unfold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unfold@3x.png"; sourceTree = "<group>"; };
-		D0D003DE1E68F8C300D8ED04 /* AidWenXinVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AidWenXinVC.swift; sourceTree = "<group>"; };
-		D0D003E01E6915B400D8ED04 /* OrderEvaluateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderEvaluateVC.swift; sourceTree = "<group>"; };
 		D0D003E21E696D5F00D8ED04 /* starSelector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starSelector@2x.png"; sourceTree = "<group>"; };
 		D0D003E31E696D5F00D8ED04 /* starSelector@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starSelector@3x.png"; sourceTree = "<group>"; };
 		D0D003E41E696D5F00D8ED04 /* starUnselector@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "starUnselector@2x.png"; sourceTree = "<group>"; };
@@ -1051,6 +1051,8 @@
 		BF6E9C551DE2FD4500F32CCE /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */,
+				2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */,
 				2F9F53C91E6E504200E77BF1 /* follow-list@2x.png */,
 				2F9F53CA1E6E504200E77BF1 /* follow-list@3x.png */,
 				2F9F53CB1E6E504200E77BF1 /* map-head-bg@2x.png */,
@@ -1537,6 +1539,7 @@
 				BF6E9D6B1DE2FD4500F32CCE /* lv4@3x.png in Resources */,
 				BF6E9D7E1DE2FD4500F32CCE /* side-service@2x.png in Resources */,
 				BF6E9D471DE2FD4500F32CCE /* whiteStart.png in Resources */,
+				2F9F53DF1E6E960000E77BF1 /* map-head-default@2x.png in Resources */,
 				BF6E9D171DE2FD4500F32CCE /* advanced-level@2x.png in Resources */,
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
 				BF6E9D881DE2FD4500F32CCE /* touxiang_men@2x.png in Resources */,
@@ -1605,6 +1608,7 @@
 				BF6E9D0A1DE2FD4500F32CCE /* mine_location@2x.png in Resources */,
 				BF6E9D421DE2FD4500F32CCE /* share@3x.png in Resources */,
 				BF6E9D8F1DE2FD4500F32CCE /* wechat-pay@3x.png in Resources */,
+				2F9F53E01E6E960000E77BF1 /* map-head-default@3x.png in Resources */,
 				D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */,
 				BF6E9D701DE2FD4500F32CCE /* my-star-hollow@2x.png in Resources */,
 				2F9F53DA1E6E504200E77BF1 /* servant-filter-select@2x@3x.png in Resources */,
