@@ -45,7 +45,7 @@ class ServantHeaderView: UIView {
     
     // 设置顶部图片
     func topBgImage() {
-        let bgImgView:UIImageView = UIImageView.init(frame: CGRectMake(0, 20, ScreenWidth, 220))
+        let bgImgView:UIImageView = UIImageView.init(frame: CGRectMake(0, 0, ScreenWidth, 200))
         self.addSubview(bgImgView)
         bgImgView.snp_makeConstraints { (make) in
             make.left.top.right.equalTo(self)

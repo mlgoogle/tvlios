@@ -12,9 +12,6 @@ import MJRefresh
 import SVProgressHUD
 
 
-/**
- * 15158110304
- */
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
@@ -61,9 +58,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         super.viewDidLoad()
         
         initViews()
-//        addData()
     }
-    // 15158110034
+    
     // 加载页面
     func initViews(){
         tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight), style: .Grouped)
@@ -75,6 +71,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.estimatedRowHeight = 120
         tableView?.rowHeight = UITableViewAutomaticDimension
         tableView?.separatorStyle = .None
+        tableView?.showsVerticalScrollIndicator = false
+        tableView?.showsHorizontalScrollIndicator = false
         // 只有一条文字的Cell展示
         tableView?.registerClass(ServantOneLabelCell.self, forCellReuseIdentifier: "ServantOneLabelCell")
         // 只有一张图片的Cell展示
@@ -96,6 +94,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         topView = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 64))
         topView?.backgroundColor = UIColor.clearColor()
         view.addSubview(topView!)
+        // 挡住 header
+        let topbar = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 20))
+        topbar.backgroundColor = UIColor.whiteColor()
+        topView?.addSubview(topbar)
         
         leftBtn = UIButton.init(frame: CGRectMake(15, 27, 30, 30))
         leftBtn!.layer.masksToBounds = true
@@ -188,7 +190,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 399))
+        headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(personalInfo!)
         return headerView
@@ -196,13 +198,19 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        return 399
+        return 379
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-//        let footer:ServantFooterView = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "Ta很神秘，还未发布任何动态")
-        let footer:ServantFooterView = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
+        var footer:ServantFooterView?
+        
+        if dataArray.count == 0 {
+            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "Ta很神秘，还未发布任何动态")
+        }else {
+            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
+        }
+        
         return footer
     }
     
@@ -304,7 +312,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func noMoreData() {
         endRefresh()
         footer.state = .NoMoreData
-        footer.setTitle("没有更多信息", forState: .NoMoreData)
+        footer.setTitle("", forState: .NoMoreData)
     }
     
     // MARK: - 加微信和关注按钮
