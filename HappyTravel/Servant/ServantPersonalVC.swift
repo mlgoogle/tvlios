@@ -240,10 +240,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         let footer:ServantFooterView = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
         return footer
     }
-    
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
+//    
+//    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//    }
     
     
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -383,8 +383,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 sender.selected = true
                 let likecount = result.dynamic_like_count_
                 sender.setTitle(String(likecount), forState: .Selected)
+            }else if result.result_ == 1 {
+                sender.selected = false
+                let likecount = result.dynamic_like_count_
+                sender.setTitle(String(likecount), forState: .Normal)
             }
+            
+            self.addData()
             
             }, error: nil)
     }
+    
+    
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        print(self.dynamicListModel)
+        
+    }
+    
+    
 }
