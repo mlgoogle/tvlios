@@ -382,9 +382,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             if result.result_ == 0 {
                 sender.selected = true
                 let likecount = result.dynamic_like_count_
-                sender.titleLabel?.text = String(likecount)
-            }else if result.result_ == 1 {
-                sender.selected = false
+                sender.setTitle(String(likecount), forState: .Selected)
             }
             
             }, error: nil)
