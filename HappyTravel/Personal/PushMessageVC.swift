@@ -101,8 +101,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.mj_footer = footer
     }
     
+    //上拉刷新
     func headerRefresh() {
-        
         footer.state = .Idle
         pageCount = 0
         let req = OrderListRequestModel()
@@ -149,6 +149,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         footer.state = .NoMoreData
         footer.setTitle("没有更多信息", forState: .NoMoreData)
     }
+    //下拉刷新
     func footerRefresh() {
         pageCount += 1
         let req = OrderListRequestModel()
