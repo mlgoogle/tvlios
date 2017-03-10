@@ -12,9 +12,6 @@ import MJRefresh
 import SVProgressHUD
 
 
-/**
- * 15158110304
- */
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
@@ -28,29 +25,26 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     var topTitle:UILabel?
     
     var tableView:UITableView?
-    var dynamicListModel:ServantDynamicListModel?
     
     let header:MJRefreshStateHeader = MJRefreshStateHeader()
     let footer:MJRefreshAutoStateFooter = MJRefreshAutoStateFooter()
-    
     // 头视图
     var headerView:ServantHeaderView?
-    
     // 是否关注状态
     var follow = false
+    var fansCount = 0
     
     
+    var pageNum:Int = 0
+    var dataArray = [servantDynamicModel]()
+    var timer:NSTimer? // 刷新用
     
     // MARK: - 函数方法
     
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        // 查询关注状态并更新UI
-        updateFollowStatus()
-        // 查询粉丝数
-        updateFollowCount()
+        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
     override public func viewWillDisappear(animated: Bool) {
@@ -60,33 +54,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        // 查询关注状态并更新UI
+        updateFollowStatus()
+        // 查询粉丝数
+        updateFollowCount()
         
         initViews()
-        
-        addData()
-    }
-    // 15158110034
-    // 查询动态列表
-    func addData() {
-        
-        let servantInfo:ServantInfoModel = ServantInfoModel()
-        servantInfo.uid_ = (personalInfo?.uid_)!
-        servantInfo.page_num_ = 0
-        
-        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
-            
-            // 没有动态
-            if response == nil {
-                self?.tableView?.reloadData()
-            }else {
-                // 有动态
-                self!.dynamicListModel = (response as! ServantDynamicListModel)
-                
-                self?.tableView?.reloadData()
-            }
-            
-            }, error: nil)
-        
     }
     
     // 加载页面
@@ -100,6 +73,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.estimatedRowHeight = 120
         tableView?.rowHeight = UITableViewAutomaticDimension
         tableView?.separatorStyle = .None
+        tableView?.showsVerticalScrollIndicator = false
+        tableView?.showsHorizontalScrollIndicator = false
         // 只有一条文字的Cell展示
         tableView?.registerClass(ServantOneLabelCell.self, forCellReuseIdentifier: "ServantOneLabelCell")
         // 只有一张图片的Cell展示
@@ -114,11 +89,17 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         header.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.headerRefresh))
         footer.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.footerRefresh))
+        tableView?.mj_header = header
+        tableView?.mj_footer = footer
         
         // 设置顶部 topView
         topView = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 64))
         topView?.backgroundColor = UIColor.clearColor()
         view.addSubview(topView!)
+        // 挡住 header
+        let topbar = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 20))
+        topbar.backgroundColor = UIColor.whiteColor()
+        topView?.addSubview(topbar)
         
         leftBtn = UIButton.init(frame: CGRectMake(15, 27, 30, 30))
         leftBtn!.layer.masksToBounds = true
@@ -139,15 +120,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         topTitle?.font = UIFont.systemFontOfSize(17)
         topTitle?.textAlignment = .Center
         topTitle?.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
-        
-    }
-    
-    // 刷新数据
-    func headerRefresh() {
-    }
-    
-    // 加载数据
-    func footerRefresh() {
     }
     
     func backAction() {
@@ -161,18 +133,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // MARK: - UITableViewDelegate
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return (dataArray?.count)!
-        if dynamicListModel == nil {
-            return 0
-        }
-        return (dynamicListModel?.dynamic_list_.count)!
+        
+        return dataArray.count
     }
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if indexPath.row < dynamicListModel?.dynamic_list_.count {
+        if indexPath.row < dataArray.count {
             
-            let model:servantDynamicModel = (dynamicListModel?.dynamic_list_[indexPath.row])!
+            let model:servantDynamicModel = dataArray[indexPath.row]
             let detailText:String = model.dynamic_text_!
             let urlStr = model.dynamic_url_
             let urlArray = urlStr!.componentsSeparatedByString(",")
@@ -226,6 +195,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(personalInfo!)
+        headerView?.updateFansCount(self.fansCount)
+        headerView?.uploadAttentionStatus(self.follow)
         return headerView
     }
     
@@ -236,13 +207,15 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-//        let footer:ServantFooterView = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "Ta很神秘，还未发布任何动态")
-        let footer:ServantFooterView = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
-        return footer
-    }
-    
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var footer:ServantFooterView?
         
+        if dataArray.count == 0 {
+            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "Ta很神秘，还未发布任何动态")
+        }else {
+            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
+        }
+        
+        return footer
     }
     
     
@@ -270,6 +243,80 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             leftBtn?.setImage(UIImage.init(named: "nav-back-select"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
+    }
+    // MARK: 数据
+    
+    // 刷新数据
+    func headerRefresh() {
+        
+        footer.state = .Idle
+        pageNum = 0
+        let servantInfo:ServantInfoModel = ServantInfoModel()
+        servantInfo.uid_ = (personalInfo?.uid_)!
+        servantInfo.page_num_ = pageNum
+        servantInfo.page_count_ = 10
+        
+        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            
+            if let models = response as? [servantDynamicModel] {
+                self?.dataArray = models
+                self?.endRefresh()
+            }
+            if self?.dataArray.count < 10 {
+                self?.noMoreData()
+            }
+            }, error: { [weak self](error) in
+                self?.endRefresh()
+            })
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(endRefresh), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+        
+    }
+    
+    // 加载数据
+    func footerRefresh() {
+        
+        pageNum += 1
+        let servantInfo:ServantInfoModel = ServantInfoModel()
+        servantInfo.uid_ = (personalInfo?.uid_)!
+        servantInfo.page_num_ = pageNum
+        servantInfo.page_count_ = 10
+        
+        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            
+            if let models = response as? [servantDynamicModel] {
+                self?.dataArray += models
+                self?.endRefresh()
+            } else {
+                self?.noMoreData()
+            }
+            }, error: { [weak self](error) in
+                self?.endRefresh()
+            })
+        timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(endRefresh), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
+    }
+    
+    // 停止刷新
+    func endRefresh() {
+        if header.state == .Refreshing {
+            header.endRefreshing()
+        }
+        if footer.state == .Refreshing {
+            footer.endRefreshing()
+        }
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+        tableView!.reloadData()
+    }
+    
+    func noMoreData() {
+        endRefresh()
+        footer.state = .NoMoreData
+        footer.setTitle("", forState: .NoMoreData)
     }
     
     // MARK: - 加微信和关注按钮
@@ -307,8 +354,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             }else {
                 self!.follow = false
             }
-            self!.headerView!.uploadAttentionStatus(self!.follow)
-            
             }, error: nil)
     }
     
@@ -359,8 +404,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             let model = response as! FollowCountModel
             let count = model.follow_count_
+            self.fansCount = count
             self.headerView?.updateFansCount(count)
-            
             }, error: nil)
     }
     
@@ -381,10 +426,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             if result.result_ == 0 {
                 sender.selected = true
+                let likecount = result.dynamic_like_count_
+                sender.setTitle(String(likecount), forState: .Selected)
             }else if result.result_ == 1 {
                 sender.selected = false
+                let likecount = result.dynamic_like_count_
+                sender.setTitle(String(likecount), forState: .Normal)
             }
+            
+            model.is_liked_ = result.result_
+            self.tableView?.reloadData()
             
             }, error: nil)
     }
+    
+    
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    }
+    
+    
 }

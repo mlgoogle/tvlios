@@ -76,9 +76,7 @@ class ServantAPI: SocketAPI {
         
         let packet = SocketDataPacket(opcode: .DynamicList, model: model)
         startRequest(packet, complete: { (response) in
-            complete?((response as? SocketJsonResponse)?.responseModel(ServantDynamicListModel.classForCoder()))
-            
-            }, error:error)
+            complete?((response as? SocketJsonResponse)?.responseModels(servantDynamicModel.classForCoder(), listKey: "dynamic_list_"))
+            }, error: error)
     }
-    
 }
