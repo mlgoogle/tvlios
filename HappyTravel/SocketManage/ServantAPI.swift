@@ -81,6 +81,4 @@ class ServantAPI: SocketAPI {
             }, error:error)
     }
     
-    
-    
 }
