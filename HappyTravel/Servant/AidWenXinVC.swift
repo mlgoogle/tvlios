@@ -37,10 +37,36 @@ class AidWenXinVC: UIViewController{
         leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
         leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
+        let getDict: [String : AnyObject] = ["order_id_": orderId,
+                                             "uid_form_": CurrentUser.uid_,
+                                             "uid_to_": toUid]
+        let getModel = GetRelationRequestModel(value: getDict)
+        
+        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
+            
+            if let model = response as? GetRelationStatusModel{
+                if model.result_ == 0{
+                    self!.isEvaluate = false
+                    self!.isEvaluate(self!.isEvaluate)
+                }
+                if model.result_ == 2 {
+                    self!.isEvaluate = true
+                    self!.isEvaluate(self!.isEvaluate)
+                }
+                
+            }
+            }, error: { (error) in
+                
+        })
+
     }
     func didBack() {
         isRefresh!()
         navigationController?.popViewControllerAnimated(true)
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     
     func setupUI(){
@@ -122,6 +148,11 @@ class AidWenXinVC: UIViewController{
             evaluateBtn.setTitle("已评价", forState: UIControlState.Normal)
             evaluateBtn.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
             evaluateBtn.enabled = false
+        }
+        else{
+            evaluateBtn.setTitle("评价", forState: UIControlState.Normal)
+            evaluateBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+            evaluateBtn.enabled = true
         }
     }
     //点击评价按钮

@@ -51,6 +51,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     var forcedUpdate = true
     
+    var redDotImage : UIImageView = UIImageView()
+    var redBool : Bool = false
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -64,7 +67,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         view.userInteractionEnabled = true
         initView()
 //        YD_ContactManager.checkIfUploadContact()  // 暂时取消
-        
         registerNotify()
     }
     
@@ -77,11 +79,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     func followListAction(sender: UIButton) {
         let vc = FollowListVC()
+        redDotImage.image = nil
         navigationController?.pushViewController(vc, animated: true)
     }
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
@@ -91,7 +95,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             } else {
                 self.presentViewController(self.regOrLoginSelVC!, animated: false, completion: nil)
             }
-
         }
 
         if forcedUpdate {
@@ -119,7 +122,19 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         checkLocationService()
+        //红点
+        if redBool {
+            
+        }
+        else{
+            redDotImage.frame = CGRect(x: 33, y: 30, width: 5, height: 5)
+            redDotImage.image = UIImage.init(named:"redDot")
+            navigationController?.view.addSubview(redDotImage)
+        }
+        
     }
+    
+    
     
     func checkLocationService() {
         if CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
@@ -262,6 +277,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         notificationCenter.addObserver(self, selector: #selector(jumpToCompeleteBaseInfoVC), name: NotifyDefine.JumpToCompeleteBaseInfoVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToSettingsVC), name: NotifyDefine.JumpToSettingsVC, object: nil)
         notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
     }
     
     func loginFailed(notification: NSNotification) {
@@ -270,6 +289,34 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     }
     
     func loginSuccessed(notification: NSNotification) {
+        //登录的时候请求订单数据
+        var count = 0
+        let req = OrderListRequestModel()
+        req.uid_ = CurrentUser.uid_
+        APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+            if let models = response as? [OrderListCellModel]{
+                for model in models{
+                    if model.is_evaluate_ == 0{
+                        count = count + 1
+                    }
+                    else{
+                        continue
+                    }
+                }
+                if count == 0 {
+//                    self!.redDotImage.hidden = true
+                    self!.redDotImage.image = nil
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
+                }
+                else{
+//                    self?.redDotImage.hidden = false
+                    self!.redDotImage.image = UIImage.init(named:"redDot")
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
+                }
+            }
+            },error:{ [weak self](error) in
+            })
+
         banGesture(false)
         YD_NewPersonGuideManager.startGuide()
 
@@ -277,6 +324,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             if !isShowBaseInfo {
                 isShowBaseInfo = true
                 let completeBaseInfoVC = CompleteBaseInfoVC()
+                redDotImage.image = nil
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
@@ -300,6 +348,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
+        
         APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
                 self?.annotations.removeAll()
@@ -347,23 +396,37 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     func jumpToWalletVC() {
         let walletVC = WalletVC()
+        redDotImage.image = nil
         navigationController?.pushViewController(walletVC, animated: true)
     }
     
     func jumpToMessageCenter() {
         let msgVC = PushMessageVC()
+        redDotImage.image = nil
         navigationController?.pushViewController(msgVC, animated: true)
     }
     
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
+        redDotImage.image = nil
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
     }
     
     func jumpToSettingsVC() {
         let settingsVC = SettingsVC()
+        redDotImage.image = nil
         navigationController?.pushViewController(settingsVC, animated: true)
+    }
+    
+    func orderListEvaluate(notification: NSNotification?) {
+        redBool = true
+        redDotImage.image = nil
+    }
+    
+    func orderListNotEvaluate(notification: NSNotification?) {
+        redDotImage.hidden = false
+        redDotImage.image = UIImage.init(named:"redDot")
     }
     
     func postPushMessageNotify(data: AnyObject?) {
@@ -462,6 +525,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     DataManager.insertData(model)
                     let servantPersonalVC = ServantPersonalVC()
                     servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
+                    self!.redDotImage.image = nil
                     self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
                 }
             }, error: nil)
@@ -477,6 +541,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             
             let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                 let rechargeVC = RechargeVC()
+                self.redDotImage.image = nil
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
                 
             })

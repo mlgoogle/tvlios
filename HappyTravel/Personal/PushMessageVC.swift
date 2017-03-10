@@ -244,7 +244,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     aidWeiXin.bool = false
                     aidWeiXin.toUidUrl =  array![indexPath.row].to_uid_url_
                     aidWeiXin.isRefresh = { ()->() in
-                    self!.isRefresh = true
+                        self!.isRefresh = true
                     }
                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
             }
