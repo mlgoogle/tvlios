@@ -16,7 +16,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     required init?(coder aDecoder: NSCoder) {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage.init(named:"nav-personal")
         SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.7
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.8
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
         super.init(coder: aDecoder)

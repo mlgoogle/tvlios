@@ -289,7 +289,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         let relationAid = RelationAidVC()
         relationAid.userInfo  = personalInfo!
         //detailInfo为nil 暂时注销
-//        relationAid.detailInfo = detailInfo!
+//        relationAid.to_uid = (detailInfo?.uid_)!
         navigationController?.pushViewController(relationAid, animated: true)
     }
     
