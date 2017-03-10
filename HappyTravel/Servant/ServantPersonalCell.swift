@@ -252,6 +252,11 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         
         let imageWidth = (self.Width - (headerView?.Right)! - 30) / 3.0
         
+        // 移除子视图，防止cell复用
+        for subView in (imageContianer?.subviews)! {
+            subView.removeFromSuperview()
+        }
+        
         for i in 0..<count {
             
             let imageUrl = urlArray[i]
