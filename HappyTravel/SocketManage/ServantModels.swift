@@ -48,7 +48,7 @@ class servantDynamicModel: Object {
 }
 
 class ServantDynamicListModel: Object {
-    let dynamic_list_:List<servantDynamicModel> = List<servantDynamicModel>()
+    let dynamic_list_ = List<servantDynamicModel>()
 }
 
 // 点赞model
