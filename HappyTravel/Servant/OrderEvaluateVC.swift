@@ -63,7 +63,7 @@ class OrderEvaluateVC: UIViewController {
             aidImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
-        aidImageView.layer.cornerRadius = AtapteWidthValue(83) / 2
+        aidImageView.layer.cornerRadius = 83 / 2
         aidImageView.layer.masksToBounds = true
         aidImageView.layer.borderWidth = 1
         aidImageView.layer.borderColor = UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1).CGColor

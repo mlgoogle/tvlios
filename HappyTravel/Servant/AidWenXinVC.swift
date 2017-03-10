@@ -8,7 +8,7 @@
 
 import UIKit
 import SVProgressHUD
-class AidWenXinVC: UIViewController {
+class AidWenXinVC: UIViewController{
 
     var getRelation:GetRelationStatusModel = GetRelationStatusModel()
     var userInfo: UserInfoModel = UserInfoModel()
@@ -41,11 +41,9 @@ class AidWenXinVC: UIViewController {
     func didBack() {
         isRefresh!()
         navigationController?.popViewControllerAnimated(true)
-        
     }
-
+    
     func setupUI(){
-
         view.addSubview(qrCode)
         view.addSubview(accountLabel)
         view.addSubview(accountName)
@@ -64,7 +62,6 @@ class AidWenXinVC: UIViewController {
             qrCode.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
-        
         
         accountLabel.snp_makeConstraints { (make) in
             make.centerX.equalTo(qrCode)
@@ -118,6 +115,7 @@ class AidWenXinVC: UIViewController {
         
         isEvaluate(isEvaluate)
     }
+    //是否已评价
     func isEvaluate(bool: Bool){
         
         if isEvaluate {
@@ -126,8 +124,6 @@ class AidWenXinVC: UIViewController {
             evaluateBtn.enabled = false
         }
     }
-
-    
     //点击评价按钮
     func evaluateDidClick() {
         let orderEvaluate = OrderEvaluateVC()
@@ -157,7 +153,6 @@ class AidWenXinVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation

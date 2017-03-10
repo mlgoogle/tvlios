@@ -11,9 +11,9 @@ import SVProgressHUD
 class RelationAidVC: UIViewController {
     
     var userInfo: UserInfoModel = UserInfoModel()
-    var detailInfo:ServantDetailModel = ServantDetailModel()
     var payStatus: PayOrderStatusModel = PayOrderStatusModel()
-
+    var to_uid: Int = -1
+    
     var imageV : UIImageView?
     var vImage : UIImageView?
     private lazy var scrollView: UIScrollView = {
@@ -81,7 +81,7 @@ class RelationAidVC: UIViewController {
             imageV!.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
-        imageV?.layer.cornerRadius = AtapteWidthValue(77) / 2
+        imageV?.layer.cornerRadius = 77 / 2
         imageV?.layer.masksToBounds = true
         imageV?.layer.borderWidth = 1
         imageV?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
@@ -153,6 +153,7 @@ class RelationAidVC: UIViewController {
         
         
     }
+    
     //显示简介内容
     func setupUIMessage() {
         //金额
@@ -208,7 +209,7 @@ class RelationAidVC: UIViewController {
         introText.font = UIFont.systemFontOfSize(14)
         introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         introText.numberOfLines = 0
-        introText.text = "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文"
+        introText.text = "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文"
         unfoldButton.snp_makeConstraints { (make) in
             make.top.equalTo(introText.snp_bottom).offset(10)
             make.centerX.equalTo(introLabel)
@@ -322,6 +323,7 @@ class RelationAidVC: UIViewController {
         
         
     }
+    
     //显示用户输入微信号
     func setupUITextFiled() {
         let window = UIApplication.sharedApplication().keyWindow
@@ -394,6 +396,7 @@ class RelationAidVC: UIViewController {
         shadow.addTarget(self, action: #selector(shadowDidClick), forControlEvents: UIControlEvents.TouchUpInside)
         window!.bringSubviewToFront(wenXinView)
     }
+    
     //点击阴影
     func shadowDidClick() {
         wenXinView.hidden = true
@@ -401,10 +404,10 @@ class RelationAidVC: UIViewController {
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
-        
+
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
-                                              "to_uid_": detailInfo.uid_,
+                                              "to_uid_": 51,   //to_uid
                                               "service_prince_": 188,
                                               "wx_id_": userTextField.text ?? ""]
             
@@ -416,7 +419,7 @@ class RelationAidVC: UIViewController {
                         
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
-                                                             "uid_to_": self!.detailInfo.uid_]
+                                                             "uid_to_": 51]  //to_uid
                         let getModel = GetRelationRequestModel(value: getDict)
                         
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
@@ -427,7 +430,10 @@ class RelationAidVC: UIViewController {
                                     let aidWeiXin = AidWenXinVC()
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
-                                    aidWeiXin.detailInfo = (self?.detailInfo)!
+//                                    aidWeiXin.detailInfo = (self?.detailInfo)!
+                                    aidWeiXin.isRefresh = {()->() in
+                                        
+                                    }
                                     aidWeiXin.bool = true
                                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
                                 })
@@ -455,10 +461,10 @@ class RelationAidVC: UIViewController {
         
     }
     
-    //展开按钮的点击
+    
     let selectorBtn: UIButton = UIButton()
+    //展开按钮的点击
     func unfoldBtnDidClick(sender: UIButton) {
-//        unfoldButton.selected =
         unfoldButton.selected = selectorBtn.selected
         selectorBtn.selected = !sender.selected
         if unfoldButton.selected {
