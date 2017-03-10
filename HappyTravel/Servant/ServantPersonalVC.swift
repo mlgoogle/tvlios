@@ -32,6 +32,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     var headerView:ServantHeaderView?
     // 是否关注状态
     var follow = false
+    var fansCount = 0
+    
     
     var pageNum:Int = 0
     var dataArray = [servantDynamicModel]()
@@ -42,10 +44,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        // 查询关注状态并更新UI
-        updateFollowStatus()
-        // 查询粉丝数
-        updateFollowCount()
         header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
@@ -56,6 +54,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        // 查询关注状态并更新UI
+        updateFollowStatus()
+        // 查询粉丝数
+        updateFollowCount()
         
         initViews()
     }
@@ -193,6 +195,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(personalInfo!)
+        headerView?.updateFansCount(self.fansCount)
+        headerView?.uploadAttentionStatus(self.follow)
         return headerView
     }
     
@@ -350,8 +354,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             }else {
                 self!.follow = false
             }
-            self!.headerView!.uploadAttentionStatus(self!.follow)
-            
             }, error: nil)
     }
     
@@ -402,8 +404,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             let model = response as! FollowCountModel
             let count = model.follow_count_
+            self.fansCount = count
             self.headerView?.updateFansCount(count)
-            
             }, error: nil)
     }
     
