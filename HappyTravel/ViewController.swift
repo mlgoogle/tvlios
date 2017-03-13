@@ -19,9 +19,11 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.8
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
+        
         super.init(coder: aDecoder)
+        
     }
-    
+ 
     // 初始化主界面
     func initMainInterface() {
         let forthwithVC = ForthwithVC()
@@ -31,9 +33,7 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]
-        
         let myPersonalVC = MyPersonalVC.shareInstance
-        
         embed(sideViewController: myPersonalVC)
         embed(centerViewController: tabBarController)
         
