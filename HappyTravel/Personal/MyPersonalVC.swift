@@ -17,6 +17,7 @@ import SVProgressHUD
 import Alamofire
 
 public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var starView:UIImageView?
     
     var headImageView:UIButton?
 
@@ -131,17 +132,21 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
         }
         
-        var starView = view!.viewWithTag(10003)
+//        var starView = view!.viewWithTag(10003)
         if starView == nil {
-            starView = UIView()
+            starView = UIImageView()
             starView!.tag = 10003
-            starView!.backgroundColor = UIColor.init(red: 237/255.0, green: 237/255.0, blue: 237/255.0, alpha: 1)
+            starView?.image = UIImage.init(named: "side-headBase")
             view.addSubview(starView!)
             starView!.snp_makeConstraints { (make) in
-                make.left.equalTo(view)
-                make.right.equalTo(view)
-                make.height.equalTo(1)
-                make.top.equalTo(view).offset(130)
+//                make.left.equalTo(view)
+//                make.right.equalTo(view)
+//                make.height.equalTo(1)
+//                make.top.equalTo(view).offset(130)
+                make.centerX.equalTo(view)
+                make.top.equalTo(view.snp_top).offset(74)
+                make.height.equalTo(91)
+                make.width.equalTo(91)
             }
         }
 
@@ -151,21 +156,21 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             headImageView!.tag = 10001
             headImageView!.backgroundColor = .clearColor()
             headImageView!.layer.masksToBounds = true
-            headImageView!.layer.cornerRadius = 91 / 2
-            headImageView!.layer.borderColor = UIColor.grayColor().CGColor
+            headImageView!.layer.cornerRadius = 82 / 2
+            headImageView!.layer.borderColor = UIColor.clearColor().CGColor
             headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
             view.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
-                make.centerX.equalTo(view)
-                make.top.equalTo(view.snp_top).offset(74)
-                make.height.equalTo(91)
-                make.width.equalTo(91)
+                make.center.equalTo(starView!)
+//                make.top.equalTo(view.snp_top).offset(74)
+                make.height.equalTo(82)
+                make.width.equalTo(82)
             }
         }
         
         let url = NSURL(string: CurrentUser.head_url_ ?? "https://")
-        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "defaultIcon"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {
             nameLabel = UIButton()
@@ -192,12 +197,12 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func initImportantNav() {
         let itemsTitle = ["我的钱包", "我的消费", "客服", "设置"]
-//        let itemsIcon = ["side-wallet", "side-travel", "side-service", "side-settings"]
+        let itemsIcon = ["side-wallet", "side-travel", "side-service", "side-settings"]
         
         for index in 0..<itemsTitle.count {
             let itemBtn = UIButton()
-            let lineView = UIView()
-            lineView.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+            let iconView = UIImageView()
+            iconView.image = UIImage.init(named: itemsIcon[index])
   
             itemBtn.tag = 10000 + index
             itemBtn.backgroundColor = UIColor.clearColor()
@@ -207,36 +212,42 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             itemBtn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             itemBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
             itemBtn.addTarget(self, action: #selector(importantOptAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            itemBtn.contentHorizontalAlignment = .Left
             if itemBtn.tag == 10001 {
                 consumeBtn = itemBtn
                 switch UIScreen.mainScreen().bounds.width {
                 case 320.0:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -14, left: 0, bottom: 0, right: -UIScreen.mainScreen().bounds.width/3 - 32) //5s
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/4 - 12, bottom: 0, right: 0) //5s
                 case 375.0:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: 0, bottom: 0, right: -UIScreen.mainScreen().bounds.width/3 - 14) // 6/6s
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 5, bottom: 0, right: 0) // 6/6s
                 default:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: -UIScreen.mainScreen().bounds.width/3 - 2) // 6sp
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 14, bottom: 0, right: 0) // 6sp
                 }
                 itemBtn.setImage(nil, forState: UIControlState.Normal)
             }
             
             view.addSubview(itemBtn)
-            view.addSubview(lineView)
-
-            itemBtn.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(view.snp_left)
-                make.right.equalTo(view.snp_right)
-                make.centerX.equalTo(view)
-                make.top.equalTo(nameLabel!.snp_bottom).offset(60 + 54 * index)
-                make.height.equalTo(16)
-            })
-            lineView.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(itemBtn.snp_bottom).offset(5)
-                make.height.equalTo(2)
-                make.width.equalTo(51)
-                make.centerX.equalTo(view)
+            view.addSubview(iconView)
+            
+            iconView.snp_makeConstraints(closure: { (make) in
+//                make.top.equalTo(itemBtn.snp_bottom).offset(5)
+//                make.height.equalTo(2)
+//                make.width.equalTo(51)
+//                make.centerX.equalTo(view)
+                make.left.equalTo(view).offset(30)
+                make.height.equalTo(18)
+                make.width.equalTo(18)
+                make.top.equalTo((nameLabel?.snp_bottom)!).offset(56 + 47 * index)
                 
             })
+            itemBtn.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(iconView.snp_right).offset(10)
+                make.right.equalTo(view.snp_right)
+                make.centerY.equalTo(iconView)
+//                make.top.equalTo(nameLabel!.snp_bottom).offset(60 + 54 * index)
+                make.height.equalTo(16)
+            })
+           
 
             
 
@@ -247,29 +258,23 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         feedbackBtn.backgroundColor = UIColor.clearColor()
         feedbackBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
         feedbackBtn.setTitle("无情吐槽", forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1), forState: .Normal)
+        feedbackBtn.setTitleColor(UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1), forState: .Normal)
         feedbackBtn.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
         feedbackBtn.addTarget(self, action: #selector(feedbackAction(_:)), forControlEvents: .TouchUpInside)
+        feedbackBtn.setImage(UIImage.init(named: "side-spitIcon"), forState: UIControlState.Normal)
+        feedbackBtn.contentHorizontalAlignment = .Left
+        
+        feedbackBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left:57, bottom: 0, right: 0)
+        feedbackBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 0)
+
+        
         view.addSubview(feedbackBtn)
         feedbackBtn.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(view)
             make.right.equalTo(view)
-            make.bottom.equalTo(view)
+            make.bottom.equalTo(view).offset(-31)
             make.height.equalTo(51)
         })
-        
-        let grayLine = UIView()
-        grayLine.backgroundColor = UIColor.init(red: 237/255.0, green: 237/255.0, blue: 237/255.0, alpha: 1)
-        view.addSubview(grayLine)
-        grayLine.snp_makeConstraints { (make) in
-            make.left.equalTo(view)
-            make.right.equalTo(view)
-            make.height.equalTo(1)
-            make.bottom.equalTo(feedbackBtn.snp_top)
-        }
-        
-  
-        
         
     }
     

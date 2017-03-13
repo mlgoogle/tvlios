@@ -428,7 +428,6 @@ class RelationAidVC: UIViewController {
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
                             if let model = response as? GetRelationStatusModel{
-                                self!.shadowDidClick()
                                 //支付完成的时候请求订单数据,显示小红点
                                 var count = 0
                                 let req = OrderListRequestModel()
@@ -454,7 +453,9 @@ class RelationAidVC: UIViewController {
                                     },error:{ [weak self](error) in
                                     })
 
-                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: { 
+                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: {
+                                    self!.shadowDidClick()
+                                    
                                     let aidWeiXin = AidWenXinVC()
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
