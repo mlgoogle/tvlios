@@ -78,6 +78,15 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
+    }
+    func orderListEvaluate(notification: NSNotification?) {
+        consumeBtn.setImage(nil, forState: UIControlState.Normal)
+    }
+    
+    func orderListNotEvaluate(notification: NSNotification?) {
+        consumeBtn.setImage(UIImage.init(named: "redDot"), forState: UIControlState.Normal)
     }
     
     func updateUserInfo() {
@@ -208,7 +217,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 default:
                     itemBtn.imageEdgeInsets = UIEdgeInsets(top: -10, left: 0, bottom: 0, right: -UIScreen.mainScreen().bounds.width/3 - 2) // 6sp
                 }
-                itemBtn.setImage(UIImage.init(named: "redDot"), forState: UIControlState.Normal)
+                itemBtn.setImage(nil, forState: UIControlState.Normal)
             }
             
             view.addSubview(itemBtn)

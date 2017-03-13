@@ -19,7 +19,7 @@ class ServantFooterView: UIView {
         
         super.init(frame: frame)
         
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         detailWord = detail
         addViews()
     }

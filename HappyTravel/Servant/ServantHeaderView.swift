@@ -104,6 +104,36 @@ class ServantHeaderView: UIView {
         starsView = UIView.init(frame: CGRectMake((middleView.Width - 140)/2.0, line.Bottom + 8, 140, 20))
         starsView?.backgroundColor = UIColor.whiteColor()
         middleView.addSubview(starsView!)
+        
+        let sw:UIButton = UIButton.init(type: .Custom)
+        sw.setBackgroundImage(UIImage.init(named: "attentionList_serviceTag"), forState: .Normal)
+        sw.setTitle("商务", forState: .Normal)
+        sw.titleLabel?.font = UIFont.systemFontOfSize(S10)
+        sw.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 5, -1)
+        sw.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        middleView.addSubview(sw)
+        
+        sw.snp_makeConstraints { (make) in
+            make.left.equalTo((nameLabel?.snp_left)!)
+            make.top.equalTo((nameLabel?.snp_bottom)!)
+            make.width.equalTo(27)
+            make.height.equalTo(25)
+        }
+        
+        let xx:UIButton = UIButton.init(type: .Custom)
+        xx.setBackgroundImage(UIImage.init(named: "attentionList_serviceTag"), forState: .Normal)
+        xx.setTitle("休闲", forState: .Normal)
+        xx.titleLabel?.font = UIFont.systemFontOfSize(S10)
+        xx.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 5, -1)
+        xx.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        middleView.addSubview(xx)
+        
+        xx.snp_makeConstraints { (make) in
+            make.left.equalTo(sw.snp_right).offset(5)
+            make.top.equalTo((nameLabel?.snp_bottom)!)
+            make.width.equalTo(27)
+            make.height.equalTo(25)
+        }
     }
     
     // 设置底部按钮
