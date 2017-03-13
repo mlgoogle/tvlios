@@ -86,6 +86,18 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        //红点
+        if redBool {
+            //            redDotImage.hidden = true
+            redDotImage.removeFromSuperview()
+        }
+        else{
+            redDotImage.frame = CGRect(x: 33, y: 30, width: 5, height: 5)
+            redDotImage.image = UIImage.init(named:"redDot")
+            redDotImage.hidden = false
+            redDotImage.tag = 10
+            tabBarController!.view.addSubview(redDotImage)
+        }
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
 
@@ -122,16 +134,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         checkLocationService()
-        //红点
-        if redBool {
-            
-        }
-        else{
-            redDotImage.frame = CGRect(x: 33, y: 30, width: 5, height: 5)
-            redDotImage.image = UIImage.init(named:"redDot")
-            navigationController?.view.addSubview(redDotImage)
-        }
-        
     }
     
     
@@ -425,7 +427,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     }
     
     func orderListNotEvaluate(notification: NSNotification?) {
-        redDotImage.hidden = false
+//        redDotImage.hidden = false
+        redBool = false
         redDotImage.image = UIImage.init(named:"redDot")
     }
     

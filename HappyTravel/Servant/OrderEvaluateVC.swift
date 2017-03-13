@@ -32,6 +32,9 @@ class OrderEvaluateVC: UIViewController {
         title = "订单评价"
         setupUI()
         // Do any additional setup after loading the view.
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
 
     override func didReceiveMemoryWarning() {

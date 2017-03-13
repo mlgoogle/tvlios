@@ -68,6 +68,9 @@ class RelationAidVC: UIViewController {
         
         view.addSubview(scrollView)
         setupUI()
+        
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     //头像视图view

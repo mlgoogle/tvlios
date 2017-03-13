@@ -57,6 +57,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.title = "完善基本资料"
         userInfoModel = CurrentUser
         initView()
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         
     }
     
