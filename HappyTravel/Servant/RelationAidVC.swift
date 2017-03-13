@@ -410,7 +410,7 @@ class RelationAidVC: UIViewController {
 
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
-                                              "to_uid_": 71,   //to_uid
+                                              "to_uid_": to_uid,   //to_uid
                                               "service_prince_": 188,
                                               "wx_id_": userTextField.text ?? ""]
             
@@ -422,7 +422,7 @@ class RelationAidVC: UIViewController {
                         
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
-                                                             "uid_to_": 71]  //to_uid
+                                                             "uid_to_": self!.to_uid]  //to_uid
                         let getModel = GetRelationRequestModel(value: getDict)
                         
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
@@ -470,7 +470,7 @@ class RelationAidVC: UIViewController {
                            
                             
                             }, error: { (error) in
-                                
+                                SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
                         })
                         
                     }

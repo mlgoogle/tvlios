@@ -195,6 +195,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
+    //数据分组处理
     func setupDataWithModels(models:[OrderListCellModel]){
         let dateFormatter = NSDateFormatter()
         var dateString: String?
@@ -205,7 +206,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 continue
             }
             else{
-                dateFormatter.dateFormat = "EEE MM-dd"
+                dateFormatter.dateFormat = "MM"
                 dateString = dateFormatter.stringFromDate(date!)
             }
            
@@ -261,7 +262,18 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     //MARK: -- 返回组标题索引
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.text = dateArray[section]
+        let date = NSDate()
+        let timeFormatter = NSDateFormatter()
+        timeFormatter.dateFormat = "MM'at' HH:mm:ss.SSS"
+        let strNowTime = timeFormatter.stringFromDate(date) as String
+        let timeArray = strNowTime.componentsSeparatedByString(".")
+        let NYR = timeArray[0].componentsSeparatedByString("at")
+        
+        if NYR[0] == dateArray[0] {
+            label.text = "最近30天内的订单消息"
+        }else{
+           label.text = dateArray[section] + "月"
+        }
         label.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         label.font = UIFont.systemFontOfSize(13)
         let sumView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 34))
