@@ -60,6 +60,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         updateFollowCount()
         
         initViews()
+        
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     // 加载页面
@@ -336,7 +340,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         let relationAid = RelationAidVC()
         relationAid.userInfo  = personalInfo!
         //detailInfo为nil 暂时注销
-//        relationAid.to_uid = (detailInfo?.uid_)!
+        relationAid.to_uid = (personalInfo?.uid_)!
         navigationController?.pushViewController(relationAid, animated: true)
     }
     
