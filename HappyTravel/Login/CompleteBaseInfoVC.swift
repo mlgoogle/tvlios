@@ -71,7 +71,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
             sureBtn.setTitle("完成", forState: .Normal)
             sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            sureBtn.backgroundColor = UIColor.clearColor()
+            sureBtn.backgroundColor = UIColor.orangeColor()
             sureBtn.addTarget(self, action: #selector(sureAction(_:)), forControlEvents: .TouchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
