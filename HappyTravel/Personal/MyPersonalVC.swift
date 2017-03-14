@@ -144,9 +144,9 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //                make.height.equalTo(1)
 //                make.top.equalTo(view).offset(130)
                 make.centerX.equalTo(view)
-                make.top.equalTo(view.snp_top).offset(74)
-                make.height.equalTo(91)
-                make.width.equalTo(91)
+                make.top.equalTo(view).offset(74)
+                make.height.equalTo(77)
+                make.width.equalTo(77)
             }
         }
 
@@ -156,16 +156,16 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             headImageView!.tag = 10001
             headImageView!.backgroundColor = .clearColor()
             headImageView!.layer.masksToBounds = true
-            headImageView!.layer.cornerRadius = 82 / 2
-            headImageView!.layer.borderColor = UIColor.clearColor().CGColor
-            headImageView!.layer.borderWidth = 1
+            headImageView!.layer.cornerRadius = 67 / 2
+//            headImageView!.layer.borderColor = UIColor.clearColor().CGColor
+//            headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
             view.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.center.equalTo(starView!)
 //                make.top.equalTo(view.snp_top).offset(74)
-                make.height.equalTo(82)
-                make.width.equalTo(82)
+                make.height.equalTo(67)
+                make.width.equalTo(67)
             }
         }
         

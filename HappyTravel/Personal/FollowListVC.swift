@@ -42,6 +42,9 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewDidLoad() {
         initView()
+        //隐藏小红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     func initView() {
