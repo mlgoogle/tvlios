@@ -57,21 +57,14 @@ class RegOrLoginSelVC: UIViewController {
         
         let loginBtn = UIButton()
         loginBtn.tag = tags["loginBtn"]!
-        loginBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+        loginBtn.backgroundColor = UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1)
         loginBtn.titleLabel?.font = UIFont.systemFontOfSize(18)
         loginBtn.setTitle("登录", forState: .Normal)
-        loginBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
+        loginBtn.setTitleColor(UIColor.init(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1).colorWithAlphaComponent(0.8), forState: .Normal)
         loginBtn.layer.cornerRadius = 45 / 2.0
         loginBtn.layer.masksToBounds = true
         loginBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(loginBtn)
-        loginBtn.snp_makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.left.equalTo(view).offset(62)
-            make.right.equalTo(view).offset(-63)
-            make.height.equalTo(45)
-            make.top.equalTo(view).offset(285)
-        }
         
         let regBtn = UIButton()
         regBtn.tag = tags["regBtn"]!
@@ -82,12 +75,21 @@ class RegOrLoginSelVC: UIViewController {
         regBtn.layer.masksToBounds = true
         regBtn.addTarget(self, action: #selector(RegOrLoginSelVC.regOrLoginSelAction(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(regBtn)
-        regBtn.snp_makeConstraints { (make) in
-            make.centerX.equalTo(view)
-            make.left.equalTo(view).offset(62)
-            make.right.equalTo(view).offset(-63)
+        
+        loginBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(30)
+            make.right.equalTo(regBtn.snp_left).offset(-20)
             make.height.equalTo(45)
-            make.top.equalTo(loginBtn.snp_bottom).offset(30)
+            make.bottom.equalTo(view).offset(-50)
+            make.width.equalTo(regBtn.snp_width)
+        }
+
+        regBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(loginBtn.snp_right).offset(20)
+            make.right.equalTo(view).offset(-30)
+            make.height.equalTo(45)
+            make.bottom.equalTo(loginBtn.snp_bottom)
+            make.width.equalTo(loginBtn.snp_width)
         }
         
     }
