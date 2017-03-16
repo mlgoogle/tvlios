@@ -43,7 +43,7 @@ class MessageCell: UITableViewCell {
         }
 //        titleLabel.text = "2017/02/27成功购买“淘梦优然”的商务123131231231"
         titleLabel.font = UIFont.systemFontOfSize(16)
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .Left
         
         
         
