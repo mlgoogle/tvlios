@@ -50,8 +50,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }else{
             header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
         }
-        
-        
     }
     
     override func viewWillDisappear(animated: Bool) {

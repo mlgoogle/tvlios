@@ -435,7 +435,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         timeSecond = 60
         let button = view.viewWithTag(tags["getVerifyCodeBtn"]!) as! UIButton
         button.setTitle("60s", forState: .Normal)
-        button.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.5), forState: .Normal)
+        button.setTitleColor(UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1), forState: .Normal)
 
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LoginWithMSGVC.timerAction), userInfo: nil, repeats: true)
     }
