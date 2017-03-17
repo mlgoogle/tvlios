@@ -34,4 +34,5 @@
 
 #import <Realm/RLMSchema.h>
 
+#import "BLGuidePage.h"
 #endif /* Bridging_Header_h */

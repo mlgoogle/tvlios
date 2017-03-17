@@ -428,17 +428,17 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             let result = response as! ServantThumbUpResultModel
             
+            let likecount = result.dynamic_like_count_
             if result.result_ == 0 {
                 sender.selected = true
-                let likecount = result.dynamic_like_count_
                 sender.setTitle(String(likecount), forState: .Selected)
+                model.is_liked_ = 1
             }else if result.result_ == 1 {
                 sender.selected = false
-                let likecount = result.dynamic_like_count_
                 sender.setTitle(String(likecount), forState: .Normal)
+                model.is_liked_ = 0
             }
-            
-            model.is_liked_ = result.result_
+            model.dynamic_like_count_ = likecount
             self.tableView?.reloadData()
             
             }, error: nil)
