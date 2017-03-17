@@ -142,6 +142,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         checkLocationService()
+        
+        YD_NewPersonGuideManager.startGuide()
     }
     
     
@@ -303,7 +305,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         var count = 0
         let req = OrderListRequestModel()
         req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+        APIHelper.consumeAPI().orderList(req, complete: { (response) in
             if let models = response as? [OrderListCellModel]{
                 for model in models{
                     if model.is_evaluate_ == 0{
@@ -322,7 +324,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                 }
             }
-            },error:{ [weak self](error) in
+            },error:{ (error) in
             })
 
         banGesture(false)

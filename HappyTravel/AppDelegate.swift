@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
         pushMessageRegister()
         initPlugins()
+        
         return true
     }
     
