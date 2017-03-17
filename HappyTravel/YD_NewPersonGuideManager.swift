@@ -12,24 +12,24 @@ class YD_NewPersonGuideManager: NSObject {
 
     static var view:NewPersonMaskView?
     
-    static func startGuide() {
-        
-        
+    static func startGuide(tag: String, mainGuideInfos:[[String: Any?]], secGuideInfos:[[String: Any?]]?) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        let key = "isShowMaskView"
-        
-        let isShowMaskView = userDefaults.valueForKey(key)
-        guard isShowMaskView == nil else {return}
+        let isShowMaskView = userDefaults.valueForKey(tag)
+//        guard isShowMaskView == nil else {return}
         guard view == nil else {return}
         view = NewPersonMaskView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
         
-        view!.frameXYs = setFrames()
-        view!.guideImages = setGuideImages()
-        view!.infoImages = setInfoImages()
-        view!.guideTypes = setGuideTypes()
-        view!.infoTypes = setInfoTypes()
+//        view!.frameXYs = position
+//        view!.guideImages = mainGuideImg
+//        view!.infoImages = secGuideImg
+        
+        view?.mainGuideInfos = mainGuideInfos
+        view?.secGuideInfos = secGuideInfos
+        
+//        view!.guideTypes = setGuideTypes()
+//        view!.infoTypes = setInfoTypes()
         view!.touchedEndBlock = { () in
-            userDefaults.setBool(true, forKey: key)
+            userDefaults.setBool(true, forKey: tag)
             view?.removeFromSuperview()
             view?.hidden = true
             view = nil
@@ -47,7 +47,7 @@ class YD_NewPersonGuideManager: NSObject {
             
             switch index {
             case 0:
-                rect = CGRectMake(10, 20, 0, 0)
+                rect = CGRectMake(65, 305, 0, 0)
             case 1:
                 rect = CGRectMake(UIScreen.mainScreen().bounds.size.width - 90, 20, 0, 0)
                 
@@ -68,24 +68,25 @@ class YD_NewPersonGuideManager: NSObject {
     }
     
     static func setInfoImages() -> Array<String>{
-        let infoNames = ["newperson-menuInfo","newperson-messageInfo","newperson-locationInfo","newperson-assistantInfo","newperson-appointmentInfo"]
-        
+//        let infoNames = ["newperson-menuInfo","newperson-messageInfo","newperson-locationInfo","newperson-assistantInfo","newperson-appointmentInfo"]
+        let infoNames = [String]()
         return infoNames
     }
     static func setGuideImages() -> Array<String>{
         
-        let guideNames = ["newperson-menu","newperson-message","newperson-location","newperson-assistant","newperson-appointment"]
+//        let guideNames = ["newperson-menu","newperson-message","newperson-location","newperson-assistant","newperson-appointment"]
+        let guideNames = ["guide-map-1"]
         return guideNames
     }
     
     static func setInfoTypes() -> Array<GuideDirection>{
-        
-        return [GuideDirection.Right,GuideDirection.Left,GuideDirection.Right,GuideDirection.Left,GuideDirection.Left]
+        return [GuideDirection.Top]
+//        return [GuideDirection.Right,GuideDirection.Left,GuideDirection.Right,GuideDirection.Left,GuideDirection.Left]
     }
     static func setGuideTypes() -> Array<GuideDirection>{
         
-        
-        return [GuideDirection.Top,GuideDirection.Top,GuideDirection.Bottom,GuideDirection.Top,GuideDirection.Bottom]
+        return [GuideDirection.Top]
+//        return [GuideDirection.Top,GuideDirection.Top,GuideDirection.Bottom,GuideDirection.Top,GuideDirection.Bottom]
     }
     
 }

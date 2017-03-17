@@ -41,6 +41,9 @@ class NewPersonMaskView: UIView {
     var infoImages: Array<String>?
     var guideImages: Array<String>?
     
+    var mainGuideInfos:[[String: Any?]]?
+    var secGuideInfos:[[String: Any?]]?
+    
     /// 在文字信息下面 或者上面
     var guideTypes:Array<GuideDirection>?
     
@@ -91,15 +94,55 @@ class NewPersonMaskView: UIView {
      */
     func startGuide() {
         count = 0
-        guard guideTypes != nil && infoTypes != nil else {return}
+//        guard guideTypes != nil && infoTypes != nil else {return}
+        guard mainGuideInfos != nil else { return }
         UIApplication.sharedApplication().keyWindow?.addSubview(self)
         guide()
 
     }
     func guide() {
-        guideImageView.image = UIImage(named: guideImages![count])
-        infoImageView.image = UIImage(named: infoImages![count])
-        setGuideImageViewFrameXY(frameXYs![count], showViewType: guideTypes![count], infoType: infoTypes![count])
+//        guideImageView.image = UIImage(named: guideImages![count])
+//        infoImageView.image = UIImage(named: infoImages![count])
+
+        resetView(guideImageView, infos: mainGuideInfos!)
+        
+        if secGuideInfos != nil {
+//            if let imgName = secGuideInfos![count].keys.first {
+//                infoImageView.image = UIImage(named: imgName)
+//                infoImageView.snp_remakeConstraints(closure: { (make) in
+//                    make.edges.equalTo(secGuideInfos![count][imgName]!)
+//                })
+//            }
+            resetView(infoImageView, infos: secGuideInfos!)
+        }
+//        setGuideImageViewFrameXY(frameXYs![count], showViewType: guideTypes![count], infoType: infoTypes![count])
+    }
+    
+    func resetView(imgView: UIImageView, infos: [[String: Any?]]) {
+        if let imgName = infos[count]["image"] as? String {
+            imgView.image = UIImage(named: imgName)
+            imgView.snp_remakeConstraints(closure: { (make) in
+                if let size = infos[count]["size"] as? CGSize {
+                    make.size.equalTo(size)
+                }
+                let view = infos[count]["view"] as? UIView
+                if let insets = infos[count]["insets"] as? UIEdgeInsets {
+                    if insets.left != 8888 {
+                        make.left.equalTo(view ?? self).offset(insets.left)
+                    }
+                    if insets.right != 8888 {
+                        make.right.equalTo(view ?? self).offset(insets.right)
+                    }
+                    if insets.top != 8888 {
+                        make.top.equalTo(view ?? self).offset(insets.top)
+                    }
+                    if insets.bottom != 8888 {
+                        make.bottom.equalTo(view ?? self).offset(insets.bottom)
+                    }
+                }
+                
+            })
+        }
     }
     
     func setGuideImageViewFrameXY(frame:CGRect, showViewType:GuideDirection?, infoType:GuideDirection?) {
@@ -124,7 +167,7 @@ class NewPersonMaskView: UIView {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
         count += 1
-        if count == guideImages!.count {
+        if count == mainGuideInfos!.count {
             delegate?.touchedEndMaskView!()
             touchedEndBlock?()
             return

@@ -61,6 +61,10 @@
 		2F9F53DC1E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */; };
 		2F9F53DF1E6E960000E77BF1 /* map-head-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */; };
 		2F9F53E01E6E960000E77BF1 /* map-head-default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */; };
+		2F9F53E31E7BE86000E77BF1 /* guide-map-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53E11E7BE86000E77BF1 /* guide-map-1@2x.png */; };
+		2F9F53E41E7BE86000E77BF1 /* guide-servant-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53E21E7BE86000E77BF1 /* guide-servant-1@2x.png */; };
+		2F9F53E71E7BE87000E77BF1 /* guide-map-1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53E51E7BE87000E77BF1 /* guide-map-1@3x.png */; };
+		2F9F53E81E7BE87000E77BF1 /* guide-servant-1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53E61E7BE87000E77BF1 /* guide-servant-1@3x.png */; };
 		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
 		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
 		2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A921E12890E001655A3 /* SocketDataPacket.swift */; };
@@ -410,6 +414,10 @@
 		2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-unselect@2x@3x.png"; sourceTree = "<group>"; };
 		2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@2x.png"; sourceTree = "<group>"; };
 		2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@3x.png"; sourceTree = "<group>"; };
+		2F9F53E11E7BE86000E77BF1 /* guide-map-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-map-1@2x.png"; sourceTree = "<group>"; };
+		2F9F53E21E7BE86000E77BF1 /* guide-servant-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-servant-1@2x.png"; sourceTree = "<group>"; };
+		2F9F53E51E7BE87000E77BF1 /* guide-map-1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-map-1@3x.png"; sourceTree = "<group>"; };
+		2F9F53E61E7BE87000E77BF1 /* guide-servant-1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-servant-1@3x.png"; sourceTree = "<group>"; };
 		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
 		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
 		2FA15A921E12890E001655A3 /* SocketDataPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketDataPacket.swift; path = SocketManage/SocketDataPacket.swift; sourceTree = "<group>"; };
@@ -997,6 +1005,10 @@
 		6E6795DC1E2793A200D4378E /* NewPersonGuide */ = {
 			isa = PBXGroup;
 			children = (
+				2F9F53E51E7BE87000E77BF1 /* guide-map-1@3x.png */,
+				2F9F53E61E7BE87000E77BF1 /* guide-servant-1@3x.png */,
+				2F9F53E11E7BE86000E77BF1 /* guide-map-1@2x.png */,
+				2F9F53E21E7BE86000E77BF1 /* guide-servant-1@2x.png */,
 				2FB9E7681E2C649400766040 /* start-guide0.png */,
 				2FB9E7691E2C649400766040 /* start-guide1.png */,
 				6E6796131E2880A900D4378E /* newperson-appointment@2x.png */,
@@ -1542,10 +1554,12 @@
 				BF6E9D3B1DE2FD4500F32CCE /* share-wechat-moment@2x.png in Resources */,
 				D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */,
 				BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */,
+				2F9F53E31E7BE86000E77BF1 /* guide-map-1@2x.png in Resources */,
 				BF6E9D721DE2FD4500F32CCE /* pay-selected@2x.png in Resources */,
 				D079A9E21E6FF388008BA1C2 /* password@2x.png in Resources */,
 				BF6E9CFC1DE2FD4500F32CCE /* address-selector-normal@2x.png in Resources */,
 				BF6E9D751DE2FD4500F32CCE /* pay-unselect@3x.png in Resources */,
+				2F9F53E71E7BE87000E77BF1 /* guide-map-1@3x.png in Resources */,
 				BF6E9D5B1DE2FD4500F32CCE /* invoice@2x.png in Resources */,
 				BF6E9D091DE2FD4500F32CCE /* meet-tips@2x.png in Resources */,
 				D0D003DA1E67EAFC00D8ED04 /* powerBackground@2x.png in Resources */,
@@ -1647,6 +1661,7 @@
 				6E6796191E2880A900D4378E /* newperson-appointmentInfo@2x.png in Resources */,
 				D0D003E71E696D5F00D8ED04 /* starSelector@3x.png in Resources */,
 				2F5F2D4B1DC19C6300EB5773 /* README.txt in Resources */,
+				2F9F53E81E7BE87000E77BF1 /* guide-servant-1@3x.png in Resources */,
 				BF6E9D241DE2FD4500F32CCE /* hotel@2x.png in Resources */,
 				6E6796031E287A9000D4378E /* newperson-assistant@2x.png in Resources */,
 				BF6E9D071DE2FD4500F32CCE /* map-head-male@3x.png in Resources */,
@@ -1693,6 +1708,7 @@
 				6E6796101E287A9000D4378E /* newperson-message@3x.png in Resources */,
 				BF6E9D821DE2FD4500F32CCE /* star-common-fill@2x.png in Resources */,
 				BF6E9D051DE2FD4500F32CCE /* map-head-female@3x.png in Resources */,
+				2F9F53E41E7BE86000E77BF1 /* guide-servant-1@2x.png in Resources */,
 				2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */,
 				BF6E9D131DE2FD4500F32CCE /* cash@2x.png in Resources */,
 				BF6E9CF11DE2FD4500F32CCE /* bottom_selector_normal@2x.png in Resources */,
