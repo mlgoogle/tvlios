@@ -11,10 +11,7 @@ import SideMenuController
 
 
 
-class ViewController: SideMenuController,GuidePageDelegate {
-    
-    var guidePage:BLGuidePage?
-    
+class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage.init(named:"nav-personal")
@@ -50,22 +47,24 @@ class ViewController: SideMenuController,GuidePageDelegate {
     
     func loadGuide() {
         
-        let pageArray:NSArray = ["guide01.jpg","guide02.jpg"]
-        guidePage = BLGuidePage.init(imageArray: pageArray as [AnyObject])
-        guidePage!.delegate = self
-        view.addSubview(guidePage!)
+        let guide = FlashGuideViewController()
+        guide.modalTransitionStyle = .CrossDissolve
+        guide.delegate = self
+        embed(centerViewController: guide)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        if userDefaults.floatForKey("guideVersion") < 1.1 {
-            loadGuide()
-        } else {
-            initMainInterface()
-        }
+//        let userDefaults = NSUserDefaults.standardUserDefaults()
+//        if userDefaults.floatForKey("guideVersion") < 1.1 {
+//            loadGuide()
+//        } else {
+//            initMainInterface()
+//        }
+        
+        loadGuide()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -82,17 +81,9 @@ class ViewController: SideMenuController,GuidePageDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func lastImageClicked() {
-        
-//        let userDefault = NSUserDefaults.standardUserDefaults()
-//        userDefault .setValue(2, forKey: "guideVersion")
-        
+    
+    func guideEnd() {
         initMainInterface()
-        UIView.animateWithDuration(1.5, animations: {
-            self.guidePage?.alpha = 0
-            }) { (finished) in
-                self.guidePage?.removeFromSuperview()
-        }
     }
 }
 

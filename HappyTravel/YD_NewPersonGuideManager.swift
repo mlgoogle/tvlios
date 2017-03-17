@@ -48,15 +48,6 @@ class YD_NewPersonGuideManager: NSObject {
             switch index {
             case 0:
                 rect = CGRectMake(10, 20, 0, 0)
-            case 1:
-                rect = CGRectMake(UIScreen.mainScreen().bounds.size.width - 90, 20, 0, 0)
-                
-            case 2:
-                rect = CGRectMake(10, UIScreen.mainScreen().bounds.size.height - 80 - 50, 0, 0)
-            case 3:
-                rect = CGRectMake(UIScreen.mainScreen().bounds.size.width / 2 - 70, 100, 0, 0)
-            case 4:
-                rect = CGRectMake(UIScreen.mainScreen().bounds.size.width - 150, UIScreen.mainScreen().bounds.size.height - 75, 0, 0)
             default:
                 break
             }
@@ -68,13 +59,13 @@ class YD_NewPersonGuideManager: NSObject {
     }
     
     static func setInfoImages() -> Array<String>{
-        let infoNames = ["newperson-menuInfo","newperson-messageInfo","newperson-locationInfo","newperson-assistantInfo","newperson-appointmentInfo"]
+        let infoNames = [""]
         
         return infoNames
     }
     static func setGuideImages() -> Array<String>{
         
-        let guideNames = ["newperson-menu","newperson-message","newperson-location","newperson-assistant","newperson-appointment"]
+        let guideNames = ["newPersonGuide"]
         return guideNames
     }
     
