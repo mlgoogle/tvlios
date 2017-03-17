@@ -11,7 +11,10 @@ import SideMenuController
 
 
 
-class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
+class ViewController: SideMenuController,GuidePageDelegate {
+    
+    var guidePage:BLGuidePage?
+    
     
     required init?(coder aDecoder: NSCoder) {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage.init(named:"nav-personal")
@@ -46,11 +49,11 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     
     
     func loadGuide() {
-        let guide = FlashGuideViewController()
-        guide.modalTransitionStyle = .CrossDissolve
-        guide.delegate = self
-        embed(centerViewController: guide)
         
+        let pageArray:NSArray = ["guide01.jpg","guide02.jpg"]
+        guidePage = BLGuidePage.init(imageArray: pageArray as [AnyObject])
+        guidePage!.delegate = self
+        view.addSubview(guidePage!)
     }
     
     override func viewDidLoad() {
@@ -63,7 +66,6 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         } else {
             initMainInterface()
         }
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -80,10 +82,17 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func guideEnd() {
+    func lastImageClicked() {
+        
+//        let userDefault = NSUserDefaults.standardUserDefaults()
+//        userDefault .setValue(2, forKey: "guideVersion")
+        
         initMainInterface()
+        UIView.animateWithDuration(1.5, animations: {
+            self.guidePage?.alpha = 0
+            }) { (finished) in
+                self.guidePage?.removeFromSuperview()
+        }
     }
-   
 }
 
