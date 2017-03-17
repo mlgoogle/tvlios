@@ -8,7 +8,7 @@
 
 import UIKit
 import SVProgressHUD
-class AidWenXinVC: UIViewController {
+class AidWenXinVC: UIViewController{
 
     var getRelation:GetRelationStatusModel = GetRelationStatusModel()
     var userInfo: UserInfoModel = UserInfoModel()
@@ -32,20 +32,47 @@ class AidWenXinVC: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
         title = "助理微信"
         setupUI()
+        //隐藏小红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         
         let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
         leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
         leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
+        let getDict: [String : AnyObject] = ["order_id_": orderId,
+                                             "uid_form_": CurrentUser.uid_,
+                                             "uid_to_": toUid]
+        let getModel = GetRelationRequestModel(value: getDict)
+        
+        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
+            
+            if let model = response as? GetRelationStatusModel{
+                if model.result_ == 0{
+                    self!.isEvaluate = false
+                    self!.isEvaluate(self!.isEvaluate)
+                }
+                if model.result_ == 2 {
+                    self!.isEvaluate = true
+                    self!.isEvaluate(self!.isEvaluate)
+                }
+                
+            }
+            }, error: { (error) in
+                
+        })
+
     }
     func didBack() {
         isRefresh!()
         navigationController?.popViewControllerAnimated(true)
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
-
+    
     func setupUI(){
-
         view.addSubview(qrCode)
         view.addSubview(accountLabel)
         view.addSubview(accountName)
@@ -64,7 +91,6 @@ class AidWenXinVC: UIViewController {
             qrCode.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
-        
         
         accountLabel.snp_makeConstraints { (make) in
             make.centerX.equalTo(qrCode)
@@ -118,6 +144,7 @@ class AidWenXinVC: UIViewController {
         
         isEvaluate(isEvaluate)
     }
+    //是否已评价
     func isEvaluate(bool: Bool){
         
         if isEvaluate {
@@ -125,9 +152,12 @@ class AidWenXinVC: UIViewController {
             evaluateBtn.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
             evaluateBtn.enabled = false
         }
+        else{
+            evaluateBtn.setTitle("评价", forState: UIControlState.Normal)
+            evaluateBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+            evaluateBtn.enabled = true
+        }
     }
-
-    
     //点击评价按钮
     func evaluateDidClick() {
         let orderEvaluate = OrderEvaluateVC()
@@ -157,7 +187,6 @@ class AidWenXinVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation

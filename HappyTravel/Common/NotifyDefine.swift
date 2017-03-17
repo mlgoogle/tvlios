@@ -32,4 +32,8 @@ class NotifyDefine: NSObject {
 
     static let FeedBackNoticeReply = "FeedBackNoticeReply"
     
+    static let OrderList = "OrderList"
+    static let OrderListNo = "OrderListNo"
+    
+    
 }

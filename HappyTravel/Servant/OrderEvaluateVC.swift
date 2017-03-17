@@ -32,6 +32,9 @@ class OrderEvaluateVC: UIViewController {
         title = "订单评价"
         setupUI()
         // Do any additional setup after loading the view.
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +66,7 @@ class OrderEvaluateVC: UIViewController {
             aidImageView.kf_setImageWithURL(headUrl, placeholderImage: UIImage(named: "default-head"), optionsInfo: nil, progressBlock: nil) { (image, error, cacheType, imageURL) in
             }
         }
-        aidImageView.layer.cornerRadius = AtapteWidthValue(83) / 2
+        aidImageView.layer.cornerRadius = 83 / 2
         aidImageView.layer.masksToBounds = true
         aidImageView.layer.borderWidth = 1
         aidImageView.layer.borderColor = UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1).CGColor
@@ -248,6 +251,31 @@ class OrderEvaluateVC: UIViewController {
             let model = CommentForOrderModel(value: dict)
             APIHelper.consumeAPI().commentForOrder(model, complete: { [weak self](response) in
                 SVProgressHUD.showSuccessMessage(SuccessMessage: "评价成功", ForDuration: 0.5, completion: {
+                    //评价完的时候请求订单数据,更新个人中心我的消费红点显示
+                    var count = 0
+                    let req = OrderListRequestModel()
+                    req.uid_ = CurrentUser.uid_
+                    APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+                        if let models = response as? [OrderListCellModel]{
+                            for model in models{
+                                if model.is_evaluate_ == 0{
+                                    count = count + 1
+                                }
+                                else{
+                                    continue
+                                }
+                            }
+                            if count == 0 {
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
+                            }
+                            else{
+                                
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
+                            }
+                        }
+                        },error:{ [weak self](error) in
+                        })
+
                     SVProgressHUD.dismiss()
                     self!.evaluate!()
                     self!.navigationController?.popViewControllerAnimated(true)

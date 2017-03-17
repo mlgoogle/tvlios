@@ -17,6 +17,7 @@ import SVProgressHUD
 import Alamofire
 
 public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    var starView:UIImageView?
     
     var headImageView:UIButton?
 
@@ -34,6 +35,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     var token:String?
     
+    var consumeBtn: UIButton = UIButton()
 
     class var shareInstance : MyPersonalVC {
         struct Static {
@@ -77,6 +79,15 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     func registerNotify() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginSuccessed(_:)), name: NotifyDefine.LoginSuccessed, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUserInfo), name: NotifyDefine.ImproveDataNoticeToOthers, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
+    }
+    func orderListEvaluate(notification: NSNotification?) {
+        consumeBtn.setImage(nil, forState: UIControlState.Normal)
+    }
+    
+    func orderListNotEvaluate(notification: NSNotification?) {
+        consumeBtn.setImage(UIImage.init(named: "redDot"), forState: UIControlState.Normal)
     }
     
     func updateUserInfo() {
@@ -118,148 +129,151 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     func initPersonalView() {
         var personalView = view.viewWithTag(1001)
         if personalView == nil {
-            personalView = UIView()
-            personalView!.tag = 1001
-            personalView!.backgroundColor = UIColor.init(red: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1)
-            personalView!.userInteractionEnabled = true
-            view.addSubview(personalView!)
-            personalView!.snp_makeConstraints { (make) in
-                make.top.equalTo(view)
-                make.left.equalTo(view)
-                make.right.equalTo(view)
-                make.height.equalTo(SideMenuController.preferences.drawing.sidePanelWidth / 4.0 * 3)
+
+        }
+        
+//        var starView = view!.viewWithTag(10003)
+        if starView == nil {
+            starView = UIImageView()
+            starView!.tag = 10003
+            starView?.image = UIImage.init(named: "side-headBase")
+            view.addSubview(starView!)
+            starView!.snp_makeConstraints { (make) in
+//                make.left.equalTo(view)
+//                make.right.equalTo(view)
+//                make.height.equalTo(1)
+//                make.top.equalTo(view).offset(130)
+                make.centerX.equalTo(view)
+                make.top.equalTo(view).offset(74)
+                make.height.equalTo(77)
+                make.width.equalTo(77)
             }
         }
+
         
         if headImageView == nil {
             headImageView = UIButton()
             headImageView!.tag = 10001
             headImageView!.backgroundColor = .clearColor()
             headImageView!.layer.masksToBounds = true
-            headImageView!.layer.cornerRadius = 40
-            headImageView!.layer.borderColor = UIColor.grayColor().CGColor
-            headImageView!.layer.borderWidth = 1
+            headImageView!.layer.cornerRadius = 67 / 2
+//            headImageView!.layer.borderColor = UIColor.clearColor().CGColor
+//            headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
-            personalView!.addSubview(headImageView!)
+            view.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
-                make.centerY.equalTo(personalView!.snp_centerY)
-                make.left.equalTo(personalView!.snp_left).offset(33)
-                make.height.equalTo(80)
-                make.width.equalTo(80)
+                make.center.equalTo(starView!)
+//                make.top.equalTo(view.snp_top).offset(74)
+                make.height.equalTo(67)
+                make.width.equalTo(67)
             }
         }
         
         let url = NSURL(string: CurrentUser.head_url_ ?? "https://")
-        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "default-head"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+        headImageView?.kf_setImageWithURL(url, forState: .Normal, placeholderImage: Image.init(named: "defaultIcon"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
         
         if nameLabel == nil {
             nameLabel = UIButton()
             nameLabel!.tag = 10002
-            nameLabel!.backgroundColor = .clearColor()
-            nameLabel!.titleLabel?.textAlignment = .Left
-            nameLabel!.titleLabel?.textColor = .blackColor()
-            nameLabel!.titleLabel?.font = .systemFontOfSize(AtapteWidthValue(20))
+            nameLabel!.backgroundColor = UIColor.clearColor()
+            nameLabel!.titleLabel?.textAlignment = .Center
+            nameLabel?.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+            nameLabel!.titleLabel?.font = UIFont.systemFontOfSize(16)
             nameLabel?.addTarget(self, action: #selector(MyPersonalVC.setNickName), forControlEvents: .TouchUpInside)
-            personalView!.addSubview(nameLabel!)
+            view.addSubview(nameLabel!)
             nameLabel!.snp_makeConstraints { (make) in
-                make.bottom.equalTo(headImageView!.snp_centerY).offset(-2.5)
-                make.height.equalTo(20)
-                make.left.equalTo(headImageView!.snp_right).offset(15)
+                make.top.equalTo((headImageView?.snp_bottom)!).offset(15)
+                make.centerX.equalTo(headImageView!)
+                make.height.equalTo(16)
             }
         }
+
 
         nameLabel?.setTitle(CurrentUser.nickname_ ?? "未登录", forState: .Normal)
         nickName = CurrentUser.nickname_
         
-        var starView = personalView!.viewWithTag(10003)
-        if starView == nil {
-            starView = UIView()
-            starView!.tag = 10003
-            starView!.backgroundColor = .clearColor()
-            personalView!.addSubview(starView!)
-            starView!.snp_makeConstraints { (make) in
-                make.left.equalTo(nameLabel!)
-                make.top.equalTo(nameLabel!.snp_bottom).offset(10)
-                make.right.equalTo(personalView!)
-                make.height.equalTo(AtapteWidthValue(24))
-            }
-        }
-        
-        var levelIcon = starView!.viewWithTag(100030) as? UIImageView
-        if levelIcon == nil {
-            levelIcon = UIImageView()
-            levelIcon!.backgroundColor = UIColor.clearColor()
-            levelIcon!.tag = 100030
-            levelIcon?.contentMode = .ScaleAspectFit
-            starView!.addSubview(levelIcon!)
-            levelIcon?.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(starView!)
-                make.top.equalTo(starView!)
-                make.bottom.equalTo(starView!)
-                make.width.equalTo(AtapteWidthValue(24))
-            })
-        }
-        
-        let imageName = "lv" + "\(Int(CurrentUser.levle_))"
-        levelIcon!.image = UIImage.init(named:imageName)
         
     }
     
     func initImportantNav() {
-        let personalView = view.viewWithTag(1001)
-        
-        let importantNavVew = UIImageView()
-        importantNavVew.tag = 1002
-        importantNavVew.userInteractionEnabled = true
-//        importantNavVew.image = UIImage.init(named: "side-bg")
-        importantNavVew.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.1)
-        view.addSubview(importantNavVew)
-        importantNavVew.snp_makeConstraints { (make) in
-            make.left.equalTo((personalView?.snp_left)!)
-            make.right.equalTo((personalView?.snp_right)!)
-            make.top.equalTo((personalView?.snp_bottom)!)
-            make.bottom.equalTo(view)
-        }
-        
-        let itemsTitle = ["钱包", "消息中心", "客服", "设置"]
+        let itemsTitle = ["我的钱包", "我的消费", "客服", "设置"]
         let itemsIcon = ["side-wallet", "side-travel", "side-service", "side-settings"]
+        
         for index in 0..<itemsTitle.count {
             let itemBtn = UIButton()
+            let iconView = UIImageView()
+            iconView.image = UIImage.init(named: itemsIcon[index])
+  
             itemBtn.tag = 10000 + index
             itemBtn.backgroundColor = UIColor.clearColor()
-            itemBtn.setImage(UIImage.init(named: itemsIcon[index]), forState: UIControlState.Normal)
+            itemBtn.titleLabel?.textAlignment = .Center
+            itemBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
             itemBtn.setTitle(itemsTitle[index], forState: UIControlState.Normal)
             itemBtn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             itemBtn.setTitleColor(UIColor.grayColor(), forState: UIControlState.Highlighted)
-            itemBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-            itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
             itemBtn.addTarget(self, action: #selector(importantOptAction(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-            importantNavVew.addSubview(itemBtn)
-            itemBtn.snp_makeConstraints(closure: { (make) in
-                make.left.equalTo(importantNavVew.snp_left).offset(35)
-                make.right.equalTo(importantNavVew.snp_right)
-                make.top.equalTo(importantNavVew.snp_top).offset(25 + 50 * index)
-                make.height.equalTo(25)
+            itemBtn.contentHorizontalAlignment = .Left
+            if itemBtn.tag == 10001 {
+                consumeBtn = itemBtn
+                switch UIScreen.mainScreen().bounds.width {
+                case 320.0:
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/4 - 12, bottom: 0, right: 0) //5s
+                case 375.0:
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 5, bottom: 0, right: 0) // 6/6s
+                default:
+                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 14, bottom: 0, right: 0) // 6sp
+                }
+                itemBtn.setImage(nil, forState: UIControlState.Normal)
+            }
+            
+            view.addSubview(itemBtn)
+            view.addSubview(iconView)
+            
+            iconView.snp_makeConstraints(closure: { (make) in
+//                make.top.equalTo(itemBtn.snp_bottom).offset(5)
+//                make.height.equalTo(2)
+//                make.width.equalTo(51)
+//                make.centerX.equalTo(view)
+                make.left.equalTo(view).offset(30)
+                make.height.equalTo(18)
+                make.width.equalTo(18)
+                make.top.equalTo((nameLabel?.snp_bottom)!).offset(56 + 47 * index)
+                
             })
+            itemBtn.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(iconView.snp_right).offset(10)
+                make.right.equalTo(view.snp_right)
+                make.centerY.equalTo(iconView)
+//                make.top.equalTo(nameLabel!.snp_bottom).offset(60 + 54 * index)
+                make.height.equalTo(16)
+            })
+           
+
+            
 
         }
         
         let feedbackBtn = UIButton()
         feedbackBtn.tag = 10011
         feedbackBtn.backgroundColor = UIColor.clearColor()
-        feedbackBtn.setImage(UIImage.init(named: "side-complain"), forState: .Normal)
+        feedbackBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
         feedbackBtn.setTitle("无情吐槽", forState: UIControlState.Normal)
-        feedbackBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        feedbackBtn.setTitleColor(UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1), forState: .Normal)
         feedbackBtn.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
-        feedbackBtn.contentHorizontalAlignment = .Left
-        feedbackBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
         feedbackBtn.addTarget(self, action: #selector(feedbackAction(_:)), forControlEvents: .TouchUpInside)
-        importantNavVew.addSubview(feedbackBtn)
+        feedbackBtn.setImage(UIImage.init(named: "side-spitIcon"), forState: UIControlState.Normal)
+        feedbackBtn.contentHorizontalAlignment = .Left
+        
+        feedbackBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left:57, bottom: 0, right: 0)
+        feedbackBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 0)
+
+        
+        view.addSubview(feedbackBtn)
         feedbackBtn.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(importantNavVew.snp_left).offset(35)
-            make.right.equalTo(importantNavVew.snp_right)
-            make.bottom.equalTo(importantNavVew.snp_bottom).offset(-10)
-            make.height.equalTo(20)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.bottom.equalTo(view).offset(-31)
+            make.height.equalTo(51)
         })
         
     }

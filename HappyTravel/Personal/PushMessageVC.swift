@@ -36,6 +36,9 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         navigationItem.title = "消息中心"
         initView()
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     
     }
     
@@ -47,8 +50,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }else{
             header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
         }
-        
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -101,8 +102,8 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.mj_footer = footer
     }
     
+    //上拉刷新
     func headerRefresh() {
-        
         footer.state = .Idle
         pageCount = 0
         let req = OrderListRequestModel()
@@ -149,6 +150,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         footer.state = .NoMoreData
         footer.setTitle("没有更多信息", forState: .NoMoreData)
     }
+    //下拉刷新
     func footerRefresh() {
         pageCount += 1
         let req = OrderListRequestModel()
@@ -191,6 +193,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
+    //数据分组处理
     func setupDataWithModels(models:[OrderListCellModel]){
         let dateFormatter = NSDateFormatter()
         var dateString: String?
@@ -201,7 +204,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 continue
             }
             else{
-                dateFormatter.dateFormat = "EEE MM-dd"
+                dateFormatter.dateFormat = "MM"
                 dateString = dateFormatter.stringFromDate(date!)
             }
            
@@ -243,7 +246,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     aidWeiXin.bool = false
                     aidWeiXin.toUidUrl =  array![indexPath.row].to_uid_url_
                     aidWeiXin.isRefresh = { ()->() in
-                    self!.isRefresh = true
+                        self!.isRefresh = true
                     }
                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
             }
@@ -257,7 +260,18 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     //MARK: -- 返回组标题索引
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.text = dateArray[section]
+        let date = NSDate()
+        let timeFormatter = NSDateFormatter()
+        timeFormatter.dateFormat = "MM'at' HH:mm:ss.SSS"
+        let strNowTime = timeFormatter.stringFromDate(date) as String
+        let timeArray = strNowTime.componentsSeparatedByString(".")
+        let NYR = timeArray[0].componentsSeparatedByString("at")
+        
+        if NYR[0] == dateArray[0] {
+            label.text = "最近30天内的订单消息"
+        }else{
+           label.text = dateArray[section] + "月"
+        }
         label.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         label.font = UIFont.systemFontOfSize(13)
         let sumView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 34))

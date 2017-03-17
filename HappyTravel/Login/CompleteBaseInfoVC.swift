@@ -57,6 +57,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.title = "完善基本资料"
         userInfoModel = CurrentUser
         initView()
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         
     }
     
@@ -68,7 +71,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
             sureBtn.setTitle("完成", forState: .Normal)
             sureBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            sureBtn.backgroundColor = UIColor.clearColor()
+            sureBtn.backgroundColor = UIColor.orangeColor()
             sureBtn.addTarget(self, action: #selector(sureAction(_:)), forControlEvents: .TouchUpInside)
             
             let sureItem = UIBarButtonItem.init(customView: sureBtn)
