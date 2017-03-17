@@ -11,12 +11,12 @@ import SideMenuController
 
 
 
-class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
+class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage.init(named:"nav-personal")
         SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.8
+        SideMenuController.preferences.drawing.sidePanelWidth = UIScreen.mainScreen().bounds.size.width * 0.75
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
         
@@ -46,11 +46,11 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     
     
     func loadGuide() {
+        
         let guide = FlashGuideViewController()
         guide.modalTransitionStyle = .CrossDissolve
         guide.delegate = self
         embed(centerViewController: guide)
-        
     }
     
     override func viewDidLoad() {
@@ -58,12 +58,12 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        if userDefaults.floatForKey("guideVersion") < 1.1 {
+        if userDefaults.floatForKey("guideVersion") < 1.2 {
             loadGuide()
         } else {
             initMainInterface()
         }
-
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -84,6 +84,5 @@ class ViewController: SideMenuController, FlashGuideViewControllerDelegate {
     func guideEnd() {
         initMainInterface()
     }
-   
 }
 

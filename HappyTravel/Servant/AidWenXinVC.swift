@@ -32,9 +32,10 @@ class AidWenXinVC: UIViewController{
         view.backgroundColor = UIColor.whiteColor()
         title = "助理微信"
         setupUI()
-        
+        //隐藏小红点
         let viewHidden = tabBarController?.view.viewWithTag(10)
         viewHidden?.hidden = true
+        
         let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
         leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
         leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)

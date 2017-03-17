@@ -60,6 +60,10 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         updateFollowCount()
         
         initViews()
+        
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     // 加载页面
@@ -257,6 +261,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         servantInfo.page_count_ = 10
         
         APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1",
+                                                                                    "insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
             if let models = response as? [servantDynamicModel] {
                 self?.dataArray = models
@@ -336,7 +342,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         let relationAid = RelationAidVC()
         relationAid.userInfo  = personalInfo!
         //detailInfo为nil 暂时注销
-//        relationAid.to_uid = (detailInfo?.uid_)!
+        relationAid.to_uid = (personalInfo?.uid_)!
         navigationController?.pushViewController(relationAid, animated: true)
     }
     
@@ -424,17 +430,17 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             let result = response as! ServantThumbUpResultModel
             
+            let likecount = result.dynamic_like_count_
             if result.result_ == 0 {
                 sender.selected = true
-                let likecount = result.dynamic_like_count_
                 sender.setTitle(String(likecount), forState: .Selected)
+                model.is_liked_ = 1
             }else if result.result_ == 1 {
                 sender.selected = false
-                let likecount = result.dynamic_like_count_
                 sender.setTitle(String(likecount), forState: .Normal)
+                model.is_liked_ = 0
             }
-            
-            model.is_liked_ = result.result_
+            model.dynamic_like_count_ = likecount
             self.tableView?.reloadData()
             
             }, error: nil)

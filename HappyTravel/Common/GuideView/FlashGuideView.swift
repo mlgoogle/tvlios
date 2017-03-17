@@ -108,9 +108,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         cell.ignoreButton.hidden = indexPath.item == count - 1
         
         return cell
-        
     }
-    
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
@@ -128,12 +126,9 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         
     }
     
-    
     func showHomePage() {
         delegate?.selectAtLastPage()
-
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -145,17 +140,8 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.dataSource = self
     }
     
-    
     func ignore() {
         delegate?.selectAtLastPage()
     }
-    
-    /*
-     // Only override drawRect: if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func drawRect(rect: CGRect) {
-     // Drawing code
-     }
-     */
 
 }

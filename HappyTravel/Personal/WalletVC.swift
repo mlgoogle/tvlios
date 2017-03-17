@@ -42,6 +42,10 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.title = "钱包"
         
         initView()
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
+
     }
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)

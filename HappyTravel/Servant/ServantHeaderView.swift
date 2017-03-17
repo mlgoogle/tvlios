@@ -22,7 +22,7 @@ class ServantHeaderView: UIView {
     var attentionNum:UILabel?
     var starsView:UIView?
     var tagView:UIView?// 标签条
-    var leftBtn:UIButton?
+    var attenBtn:UIButton?
     
     var headerDelegate:ServantHeaderViewDelegate?
     
@@ -57,14 +57,14 @@ class ServantHeaderView: UIView {
     // 设置中间卡片
     func middleView() {
         
-        let middleView:UIView = UIView.init(frame: CGRectMake(30, 150, ScreenWidth - 60, 125))
+        let middleView:UIView = UIView.init(frame: CGRectMake(30, 150, ScreenWidth - 60, 145))
         self.addSubview(middleView)
         
         middleView.snp_makeConstraints { (make) in
             make.left.equalTo(self).offset(30)
             make.right.equalTo(self).offset(-30)
-            make.top.equalTo(self).offset(170)
-            make.height.equalTo(125)
+            make.top.equalTo(self).offset(150)
+            make.height.equalTo(145)
         }
         
         middleView.backgroundColor = UIColor.whiteColor()
@@ -76,34 +76,39 @@ class ServantHeaderView: UIView {
         headerView!.layer.cornerRadius = 30
         middleView.addSubview(headerView!)
         
-        nameLabel = UILabel.init(frame: CGRectMake(85, 15,ScreenWidth - 230 , 30))
+        attenBtn = UIButton.init(type: .Custom)
+        middleView.addSubview(attenBtn!)
+        attenBtn!.snp_makeConstraints { (make) in
+            make.top.equalTo(middleView).offset(20)
+            make.right.equalTo(middleView).offset(-15)
+            make.width.equalTo(75)
+            make.height.equalTo(33)
+        }
+        attenBtn!.layer.masksToBounds = true
+        attenBtn!.layer.cornerRadius = 16.5
+        attenBtn!.layer.borderWidth = 1
+        attenBtn?.setImage(UIImage.init(named: "Add"), forState: .Normal)
+        attenBtn?.setImage(UIImage.init(named: "nav-translucent-bg"), forState: .Selected)
+        attenBtn?.setTitle("关注", forState: .Normal)
+        attenBtn?.setTitle("已关注", forState: .Selected)
+        attenBtn?.titleLabel?.font = UIFont.systemFontOfSize(14)
+        attenBtn?.setTitleColor(UIColor.init(decR: 252, decG: 163, decB: 17, a: 1), forState: .Normal)
+        attenBtn?.setTitleColor(UIColor.init(decR: 252, decG: 163, decB: 17, a: 1), forState: .Selected)
+        attenBtn?.addTarget(self, action: #selector(ServantHeaderView.payAttention(_:)), forControlEvents: .TouchUpInside)
+        
+        nameLabel = UILabel.init()
         nameLabel!.font = UIFont.systemFontOfSize(18)
         nameLabel!.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
         middleView.addSubview(nameLabel!)
-        
+        nameLabel?.snp_makeConstraints(closure: { (make) in
+            make.left.equalTo((headerView?.snp_right)!).offset(10)
+            make.right.equalTo((attenBtn?.snp_left)!).offset(-10)
+            make.top.equalTo((headerView?.snp_top)!)
+            make.height.equalTo(30)
+        })
+
         tagView = UIView.init(frame: CGRectMake((nameLabel?.Left)!, (nameLabel?.Bottom)! + 3, (nameLabel?.Width)!, (headerView?.Height)! - (nameLabel?.Bottom)! - 3))
         middleView.addSubview(tagView!)
-        
-        attentionNum = UILabel.init(frame: CGRectMake(nameLabel!.Right + 10, nameLabel!.Top, middleView.Width - nameLabel!.Right - 30, 20))
-        attentionNum!.textAlignment = .Center
-        attentionNum!.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
-        attentionNum!.font = UIFont.systemFontOfSize(14)
-        middleView.addSubview(attentionNum!)
-        
-        let attenLabel:UILabel = UILabel.init(frame: CGRectMake(attentionNum!.Left, attentionNum!.Bottom + 3, attentionNum!.Width, 15))
-        attenLabel.textColor = UIColor.init(decR: 102, decG: 102, decB: 102, a: 1)
-        attenLabel.textAlignment = .Center
-        attenLabel.text = "粉丝数"
-        attenLabel.font = UIFont.systemFontOfSize(10)
-        middleView.addSubview(attenLabel)
-        
-        let line:UIView = UIView.init(frame: CGRectMake(15, middleView.Height - 34, middleView.Width - 30, 1.0))
-        line.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
-        middleView.addSubview(line)
-        
-        starsView = UIView.init(frame: CGRectMake((middleView.Width - 140)/2.0, line.Bottom + 8, 140, 20))
-        starsView?.backgroundColor = UIColor.whiteColor()
-        middleView.addSubview(starsView!)
         
         let sw:UIButton = UIButton.init(type: .Custom)
         sw.setBackgroundImage(UIImage.init(named: "attentionList_serviceTag"), forState: .Normal)
@@ -134,48 +139,77 @@ class ServantHeaderView: UIView {
             make.width.equalTo(27)
             make.height.equalTo(25)
         }
+        
+        attentionNum = UILabel.init()
+        attentionNum!.textAlignment = .Center
+        attentionNum!.textColor = UIColor.init(decR: 102, decG: 102, decB: 102, a: 1)
+        attentionNum!.font = UIFont.systemFontOfSize(12)
+        attentionNum?.text = "0粉丝"
+        middleView.addSubview(attentionNum!)
+        attentionNum?.snp_makeConstraints(closure: { (make) in
+            make.top.equalTo((attenBtn?.snp_bottom)!).offset(8)
+            make.left.right.equalTo(attenBtn!)
+            make.height.equalTo(15)
+        })
+        
+        let lineLabel:UILabel = UILabel.init()
+        middleView.addSubview(lineLabel)
+        lineLabel.text = "好评度"
+        lineLabel.font = UIFont.systemFontOfSize(11)
+        lineLabel.textColor = UIColor.init(decR: 102, decG: 102, decB: 102, a: 1)
+        lineLabel.textAlignment = .Center
+        // 自适应宽度
+        let attribute:NSMutableAttributedString = NSMutableAttributedString.init(string: "好评度")
+        attribute.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(11), range: NSMakeRange(0, attribute.length))
+        let option:NSStringDrawingOptions = .UsesLineFragmentOrigin
+        let boundingRect:CGRect = attribute.boundingRectWithSize(CGSizeMake(200, 15), options: option, context: nil)
+        lineLabel.frame = CGRectMake(middleView.Width / 2.0 - boundingRect.width / 2.0 , middleView.Height - 54, boundingRect.width, 15)
+        
+        let leftLine = UIView.init(frame: CGRectMake(15, lineLabel.Top + 7.5, lineLabel.Left - 25, 1))
+        leftLine.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
+        middleView.addSubview(leftLine)
+        
+        let rightLine = UIView.init(frame: CGRectMake(lineLabel.Right + 10, leftLine.Top, middleView.Width - lineLabel.Right - 25, 1))
+        rightLine.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
+        middleView.addSubview(rightLine)
+        
+        starsView = UIView.init(frame: CGRectMake((middleView.Width - 140)/2.0, lineLabel.Bottom + 8, 140, 20))
+        starsView?.backgroundColor = UIColor.whiteColor()
+        middleView.addSubview(starsView!)
+        
     }
     
     // 设置底部按钮
     func bottomBtns() {
         
-        leftBtn = UIButton.init(type: .Custom)
-        leftBtn!.frame = CGRectMake(15, 315, (ScreenWidth - 40)/2.0, 44)
-        leftBtn!.layer.masksToBounds = true
-        leftBtn!.layer.cornerRadius = 22.0
-        leftBtn!.backgroundColor = UIColor.whiteColor()
-        leftBtn!.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
-        leftBtn!.layer.borderWidth = 1.0
-        leftBtn!.setTitleColor(UIColor.init(decR: 51, decG: 51, decB: 51, a: 1), forState: .Normal)
-        leftBtn!.titleLabel?.font = UIFont.systemFontOfSize(14)
-        leftBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
-        leftBtn!.addTarget(self, action: #selector(ServantHeaderView.payAttention(_:)), forControlEvents: .TouchUpInside)
-        // 具体判断是关注还是取消关注
-        leftBtn!.setTitle("关注", forState: .Normal)
-        leftBtn!.setImage(UIImage.init(named: "Add"), forState: .Normal)
-        leftBtn!.setTitle("取消关注", forState: .Selected)
-        leftBtn!.setImage(UIImage.init(named: "Delete"), forState: .Selected)
-        self.addSubview(leftBtn!)
+        let wechatBtn = UIButton.init(type: .Custom)
+        self.addSubview(wechatBtn)
         
+        wechatBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(self).offset(30)
+            make.right.equalTo(self).offset(-30)
+            make.height.equalTo(44)
+            make.bottom.equalTo(self).offset(-20)
+        }
+        wechatBtn.backgroundColor = UIColor.init(decR: 140, decG: 197, decB: 30, a: 1)
+        wechatBtn.layer.masksToBounds = true
+        wechatBtn.layer.cornerRadius = 22
         
-        let rightBtn:UIButton = UIButton.init(type: .Custom)
-        rightBtn.frame = CGRectMake(ScreenWidth / 2.0 + 5 , 315, (ScreenWidth - 40)/2.0, 44)
-        rightBtn.layer.masksToBounds = true
-        rightBtn.layer.cornerRadius = 22.0
-        rightBtn.backgroundColor = UIColor.whiteColor()
-        rightBtn.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
-        rightBtn.layer.borderWidth = 1.0
-        rightBtn.setTitleColor(UIColor.init(decR: 51, decG: 51, decB: 51, a: 1), forState: .Normal)
-        rightBtn.titleLabel?.font = UIFont.systemFontOfSize(14)
-        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
-        rightBtn.setTitle("加我微信", forState: .Normal)
-        rightBtn.setImage(UIImage.init(named: "Wechat"), forState: .Normal)
-        self.addSubview(rightBtn)
-        rightBtn.addTarget(self, action: #selector(ServantHeaderView.addWechat), forControlEvents: .TouchUpInside)
+        wechatBtn.setImage(UIImage.init(named: "wechat-white"), forState: .Normal)
+        wechatBtn.setTitle("加我微信", forState: .Normal)
+        wechatBtn.titleLabel?.font = UIFont.systemFontOfSize(16)
+        wechatBtn.titleLabel?.textColor = UIColor.whiteColor()
+        wechatBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
+        wechatBtn.addTarget(self, action: #selector(ServantHeaderView.addWechat), forControlEvents: .TouchUpInside)
         
-        let lineView:UIView = UIView.init(frame: CGRectMake(0, rightBtn.Bottom + 20 , ScreenWidth, 1))
+        let lineView:UIView = UIView.init(frame: CGRectMake(0, wechatBtn.Bottom + 19, ScreenWidth, 1))
         lineView.backgroundColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1)
         self.addSubview(lineView)
+        lineView.snp_makeConstraints { (make) in
+            make.left.right.equalTo(0)
+            make.height.equalTo(1)
+            make.bottom.equalTo(self).offset(0)
+        }
         
     }
     
@@ -202,9 +236,11 @@ class ServantHeaderView: UIView {
         
         // 根据状态调整按钮标题
         if detailInfo.register_status_ == 0 {
-            leftBtn?.selected = false
+            attenBtn?.selected = false
+            attenBtn?.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
         }else {
-            leftBtn?.selected = true
+            attenBtn?.selected = true
+            attenBtn?.layer.borderColor = UIColor.init(decR: 252, decG: 163, decB: 17, a: 1).CGColor
         }
     }
     
@@ -212,14 +248,16 @@ class ServantHeaderView: UIView {
     func uploadAttentionStatus(status:Bool) {
         
         if status {
-            leftBtn?.selected = true
+            attenBtn?.selected = true
+            attenBtn?.layer.borderColor = UIColor.init(decR: 252, decG: 163, decB: 17, a: 1).CGColor
         }else {
-            leftBtn?.selected = false
+            attenBtn?.selected = false
+            attenBtn?.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
         }
     }
     // 更新粉丝数量
     func updateFansCount(count:Int) {
-        attentionNum?.text = String(count)
+        attentionNum?.text = String(count) + "粉丝"
     }
     
     func payAttention(sender:UIButton) {

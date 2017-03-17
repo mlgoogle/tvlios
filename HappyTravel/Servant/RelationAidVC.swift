@@ -410,7 +410,7 @@ class RelationAidVC: UIViewController {
 
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
-                                              "to_uid_": 71,   //to_uid
+                                              "to_uid_": to_uid,   //to_uid
                                               "service_prince_": 188,
                                               "wx_id_": userTextField.text ?? ""]
             
@@ -422,13 +422,12 @@ class RelationAidVC: UIViewController {
                         
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
-                                                             "uid_to_": 71]  //to_uid
+                                                             "uid_to_": self!.to_uid]  //to_uid
                         let getModel = GetRelationRequestModel(value: getDict)
                         
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
                             if let model = response as? GetRelationStatusModel{
-                                self!.shadowDidClick()
                                 //支付完成的时候请求订单数据,显示小红点
                                 var count = 0
                                 let req = OrderListRequestModel()
@@ -454,7 +453,9 @@ class RelationAidVC: UIViewController {
                                     },error:{ [weak self](error) in
                                     })
 
-                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: { 
+                                SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: {
+                                    self!.shadowDidClick()
+                                    
                                     let aidWeiXin = AidWenXinVC()
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
@@ -469,7 +470,7 @@ class RelationAidVC: UIViewController {
                            
                             
                             }, error: { (error) in
-                                
+                                SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
                         })
                         
                     }

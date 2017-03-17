@@ -19,7 +19,7 @@ class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let images:Array<UIImage> = [UIImage(named: "start-guide0")!, UIImage(named: "start-guide1")!]
+        let images:Array<UIImage> = [UIImage(named: "guide01.jpg")!, UIImage(named: "guide02.jpg")!]
         let flashGuideView = FlashGuideView(imagesArray: images)
         flashGuideView.delegate = self
         view.addSubview(flashGuideView)
@@ -27,7 +27,7 @@ class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
     
     func selectAtLastPage() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setFloat(1.1, forKey: "guideVersion")
+        userDefaults.setFloat(1.2, forKey: "guideVersion")
         delegate?.guideEnd()
     }
     

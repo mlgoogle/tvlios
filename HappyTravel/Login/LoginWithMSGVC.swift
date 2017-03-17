@@ -40,8 +40,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     let enterPasswordView:UIView = UIView()
     //再次输入登录密码视图
     let reInPasswdView:UIView = UIView()
-    //输入邀请码视图
-    let inviteCodeView: UIView = UIView()
     
     //手机号码图片
     let photoImage: UIImageView = UIImageView()
@@ -64,8 +62,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
     let verifyCodeField = UITextField()
     //再次输入密码文本框
     let reInPasswdField = UITextField()
-    //输入邀请码文本框
-    let inviteCodeField = UITextField()
     
     //发送验证码按钮
     let getVerifyCodeBtn = UIButton()
@@ -130,9 +126,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         view.addSubview(verifyView)
         view.addSubview(enterPasswordView)
         view.addSubview(reInPasswdView)
-        view.addSubview(inviteCodeView)
-        inviteCodeView.addSubview(inviteCodeField)
-        inviteCodeView.addSubview(inviteCodeImage)
         reInPasswdView.addSubview(reInPasswdField)
         reInPasswdView.addSubview(reInPasswdImage)
         verifyView.addSubview(verifyImage)
@@ -318,42 +311,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         })
         
         
-        //请输入邀请码视图
-        inviteCodeView.snp_makeConstraints { (make) in
-            make.top.equalTo(reInPasswdView.snp_bottom).offset(10)
-            make.right.equalTo(reInPasswdView)
-            make.left.equalTo(reInPasswdView)
-            make.height.equalTo(51)
-        }
-        inviteCodeView.backgroundColor = UIColor.whiteColor()
-        
-        inviteCodeImage.snp_makeConstraints { (make) in
-            make.left.equalTo(inviteCodeView).offset(15)
-            make.top.equalTo(inviteCodeView).offset(16)
-            make.height.equalTo(20)
-            make.width.equalTo(18)
-        }
-        inviteCodeImage.image = UIImage.init(named:"inviteCode")
-        
-        inviteCodeField.secureTextEntry = false
-        inviteCodeField.delegate = self
-        inviteCodeField.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        inviteCodeField.rightViewMode = .WhileEditing
-        inviteCodeField.clearButtonMode = .WhileEditing
-        inviteCodeField.backgroundColor = UIColor.clearColor()
-        inviteCodeField.textAlignment = .Left
-        inviteCodeField.keyboardType = .PhonePad
-        inviteCodeField.attributedPlaceholder = NSAttributedString.init(string: "请输入邀请码（非必填项）", attributes: [NSForegroundColorAttributeName: UIColor.grayColor()])
-        inviteCodeField.textColor = UIColor.blackColor()
-        inviteCodeField.setValue(UIFont.systemFontOfSize(14), forKeyPath: "_placeholderLabel.font")
-        inviteCodeField.snp_makeConstraints(closure: { (make) in
-            make.left.equalTo(inviteCodeImage.snp_right).offset(16)
-            make.top.equalTo(inviteCodeView).offset(0)
-            make.right.equalTo(inviteCodeView).offset(0)
-            make.height.equalTo(51)
-        })
-        inviteCodeView.hidden = isForget
-        
         //三根线的约束
         oneLine.snp_makeConstraints { (make) in
             make.bottom.equalTo(photoNumberView)
@@ -384,21 +341,14 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         registBtn.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
         if isForget {
             registBtn.setTitle("确定", forState: .Normal)
-            registBtn.snp_makeConstraints { (make) in
-                make.left.equalTo(view).offset(15)
-                make.right.equalTo(view).offset(-15)
-                make.top.equalTo(reInPasswdView.snp_bottom).offset(40)
-                make.height.equalTo(45)
-            }
-            
         }else{
            registBtn.setTitle("注册", forState: .Normal)
-            registBtn.snp_makeConstraints { (make) in
-                make.left.equalTo(view).offset(15)
-                make.right.equalTo(view).offset(-15)
-                make.top.equalTo(inviteCodeView.snp_bottom).offset(40)
-                make.height.equalTo(45)
-            }
+        }
+        registBtn.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(15)
+            make.right.equalTo(view).offset(-15)
+            make.top.equalTo(reInPasswdView.snp_bottom).offset(40)
+            make.height.equalTo(45)
         }
         
         registBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
@@ -485,7 +435,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         timeSecond = 60
         let button = view.viewWithTag(tags["getVerifyCodeBtn"]!) as! UIButton
         button.setTitle("60s", forState: .Normal)
-        button.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.5), forState: .Normal)
+        button.setTitleColor(UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1), forState: .Normal)
 
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(LoginWithMSGVC.timerAction), userInfo: nil, repeats: true)
     }
@@ -601,8 +551,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
                         SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
                 })
 
-        
-        
 //        resetPasswdVC = ResetPasswdVC()
 //        resetPasswdVC!.verifyCodeTime = verifyCodeTime
 //        resetPasswdVC!.token = token
@@ -610,61 +558,6 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
 //        resetPasswdVC?.verifyCode = Int(verifyCode!)!
 //        presentViewController(resetPasswdVC!, animated: false, completion: nil)
     }
-    
-//    func sureAction(sender: UIButton?) {
-//        MobClick.event(CommonDefine.BuriedPoint.registerSure)
-//        if  passwd == nil || passwd?.characters.count == 0 {
-//            SVProgressHUD.showErrorMessage(ErrorMessage: "请输入密码", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        
-//        if  repasswd == nil || repasswd?.characters.count == 0 {
-//            SVProgressHUD.showErrorMessage(ErrorMessage: "请重新输入密码", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        
-//        if passwd != repasswd {
-//            SVProgressHUD.showErrorMessage(ErrorMessage: "两次输入密码不一致", ForDuration: 1, completion: nil)
-//            return
-//        }
-//        
-//        SVProgressHUD.showProgressMessage(ProgressMessage: "")
-//        
-//        let model = RegisterAccountBaseInfo()
-//        model.phone_num_ = username!
-//        model.passwd_ = passwd!
-//        model.timestamp_ = Int64(verifyCodeTime)
-//        model.verify_code_ = verifyCode
-//        model.token_ = token ?? ""
-//        APIHelper.userAPI().registerAccount(model, complete: { (response) in
-//            if let model = response as? RegisterAccountModel {
-//                SVProgressHUD.dismiss()
-//                NSUserDefaults.standardUserDefaults().setObject(self.username, forKey: CommonDefine.UserName)
-//                NSUserDefaults.standardUserDefaults().setObject(self.passwd, forKey: CommonDefine.Passwd)
-//                let loginModel = LoginModel()
-//                APIHelper.userAPI().login(loginModel, complete: { [weak self](response) in
-//                    if let user = response as? UserInfoModel {
-//                        CurrentUser = user
-//                        CurrentUser.login_ = true
-//                        self?.dismissAll({ () in
-//                            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginSuccessed, object: nil, userInfo: nil)
-//                        })
-//                        
-//                    }
-//                    }, error: { (err) in
-//                        NSUserDefaults.standardUserDefaults().removeObjectForKey(CommonDefine.Passwd)
-//                        NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.LoginFailed, object: nil, userInfo: nil)
-//                        XCGLogger.debug(err)
-//                })
-//            }
-//            }, error: { (err) in
-//                let warning = SocketRequest.errorString(err.code)
-//                SVProgressHUD.showErrorMessage(ErrorMessage: warning, ForDuration: 1, completion: nil)
-//        })
-//        
-//    }
-    
-    
     
     //MARK: - UITextField
     func textFieldShouldClear(textField: UITextField) -> Bool {

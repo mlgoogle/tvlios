@@ -51,7 +51,20 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     var forcedUpdate = true
     
-    var redDotImage : UIImageView = UIImageView()
+    var redDotImage:UIImageView = { () -> (UIImageView)in
+        let imageView = UIImageView()
+        imageView.image = UIImage.init(named:"redDot")
+        imageView.tag = 10
+        switch UIScreen.mainScreen().bounds.size.width{
+        case 414:
+            imageView.frame = CGRect(x: 36, y: 30, width: 5, height: 5)
+        break
+        default:
+            imageView.frame = CGRect(x: 33, y: 30, width: 5, height: 5)
+        break
+        }
+        return imageView
+    }()
     var redBool : Bool = false
     
     required public init?(coder aDecoder: NSCoder) {
@@ -79,7 +92,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     
     func followListAction(sender: UIButton) {
         let vc = FollowListVC()
-        redDotImage.image = nil
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -88,14 +100,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         
         //红点
         if redBool {
-            //            redDotImage.hidden = true
             redDotImage.removeFromSuperview()
         }
         else{
-            redDotImage.frame = CGRect(x: 33, y: 30, width: 5, height: 5)
-            redDotImage.image = UIImage.init(named:"redDot")
             redDotImage.hidden = false
-            redDotImage.tag = 10
             tabBarController!.view.addSubview(redDotImage)
         }
 
@@ -134,6 +142,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         checkLocationService()
+        
+
     }
     
     
@@ -295,7 +305,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         var count = 0
         let req = OrderListRequestModel()
         req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+        APIHelper.consumeAPI().orderList(req, complete: { (response) in
             if let models = response as? [OrderListCellModel]{
                 for model in models{
                     if model.is_evaluate_ == 0{
@@ -306,35 +316,26 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     }
                 }
                 if count == 0 {
-//                    self!.redDotImage.hidden = true
-                    self!.redDotImage.image = nil
+                    
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
                 }
                 else{
-//                    self?.redDotImage.hidden = false
-                    self!.redDotImage.image = UIImage.init(named:"redDot")
+ 
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                 }
             }
-            },error:{ [weak self](error) in
+            },error:{ (error) in
             })
 
         banGesture(false)
-        YD_NewPersonGuideManager.startGuide("map-guide", mainGuideInfos: [["image" :"guide-map-1",
-                                                                            "view": nil,
-                                                                            "size": CGSizeMake(173, 153),
-                                                                            "insets": UIEdgeInsetsMake(0, 0, -300, -80)]], secGuideInfos: nil)
         
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
                 isShowBaseInfo = true
                 let completeBaseInfoVC = CompleteBaseInfoVC()
-                redDotImage.image = nil
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
-        
-//        YD_NewPersonGuideManager.startGuide()
 
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
@@ -397,30 +398,32 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             }, error: { (err) in
                 print(err)
         })
+        
+        YD_NewPersonGuideManager.startGuide("map-guide", mainGuideInfos: [["image" :"guide-map-1",
+                                                                            "view": nil,
+                                                                            "size": CGSizeMake(173, 153),
+                                                                            "insets": UIEdgeInsetsMake(8888, 8888, -300, -80)]], secGuideInfos: nil)
+        
     }
     
     func jumpToWalletVC() {
         let walletVC = WalletVC()
-        redDotImage.image = nil
         navigationController?.pushViewController(walletVC, animated: true)
     }
     
     func jumpToMessageCenter() {
         let msgVC = PushMessageVC()
-        redDotImage.image = nil
         navigationController?.pushViewController(msgVC, animated: true)
     }
     
     func jumpToCompeleteBaseInfoVC() {
         let completeBaseInfoVC = CompleteBaseInfoVC()
-        redDotImage.image = nil
         navigationController?.pushViewController(completeBaseInfoVC, animated: true)
 
     }
     
     func jumpToSettingsVC() {
         let settingsVC = SettingsVC()
-        redDotImage.image = nil
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
@@ -430,7 +433,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     }
     
     func orderListNotEvaluate(notification: NSNotification?) {
-//        redDotImage.hidden = false
         redBool = false
         redDotImage.image = UIImage.init(named:"redDot")
     }
@@ -531,7 +533,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     DataManager.insertData(model)
                     let servantPersonalVC = ServantPersonalVC()
                     servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-                    self!.redDotImage.image = nil
+//                    self!.redDotImage.image = nil
                     self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
                 }
             }, error: nil)
@@ -547,7 +549,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             
             let ok = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
                 let rechargeVC = RechargeVC()
-                self.redDotImage.image = nil
+//                self.redDotImage.image = nil
                 self.navigationController?.pushViewController(rechargeVC, animated: true)
                 
             })

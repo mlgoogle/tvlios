@@ -125,6 +125,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.title = "设置"
         initData()
         initView()
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {

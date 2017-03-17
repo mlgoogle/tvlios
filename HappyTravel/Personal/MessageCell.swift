@@ -25,7 +25,7 @@ class MessageCell: UITableViewCell {
         let date = dateFormatter.dateFromString(info.order_time_!)
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.stringFromDate(date!)
-        titleLabel.text = dateString + "成功购买" + info.to_uid_nickename_! + "的商务信息"
+        titleLabel.text = dateString + "成功购买" + " ''" + info.to_uid_nickename_! + "'' " + "的商务信息"
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

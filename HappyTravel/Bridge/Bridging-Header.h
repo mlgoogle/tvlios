@@ -33,5 +33,4 @@
 #import <UMMobClick/MobClick.h>
 
 #import <Realm/RLMSchema.h>
-
 #endif /* Bridging_Header_h */
