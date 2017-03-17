@@ -65,9 +65,9 @@ class GuideTagCell: MAAnnotationView {
         userInfo = info
         if let headView = bgView.viewWithTag(1001) as? UIImageView {
             if userInfo?.head_url_ != nil {
-                headView.kf_setImageWithURL(NSURL.init(string: userInfo!.head_url_!))
+                headView.kf_setImageWithURL(NSURL.init(string: userInfo!.head_url_!), placeholderImage: UIImage.init(named: "map-head-default"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
             } else {
-                headView.image = UIImage.init(named: userInfo!.gender_ == 1 ? "map-head-male" : "map-head-female")
+                headView.image = UIImage.init(named: "map-head-default")
             }
             
         }

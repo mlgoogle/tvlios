@@ -27,7 +27,7 @@ class FlashGuideViewController: UIViewController , ShowHomePageActionDelegate{
     
     func selectAtLastPage() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setFloat(1.1, forKey: "guideVersion")
+        userDefaults.setFloat(1.2, forKey: "guideVersion")
         delegate?.guideEnd()
     }
     
