@@ -59,6 +59,12 @@
 		2F9F53DA1E6E504200E77BF1 /* servant-filter-select@2x@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D01E6E504200E77BF1 /* servant-filter-select@2x@3x.png */; };
 		2F9F53DB1E6E504200E77BF1 /* servant-filter-unselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D11E6E504200E77BF1 /* servant-filter-unselect@2x.png */; };
 		2F9F53DC1E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */; };
+		2F9F53DF1E6E960000E77BF1 /* map-head-default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */; };
+		2F9F53E01E6E960000E77BF1 /* map-head-default@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */; };
+		2F9F53EB1E7BFAE000E77BF1 /* guide-map-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53E91E7BFAE000E77BF1 /* guide-map-1@2x.png */; };
+		2F9F53EC1E7BFAE000E77BF1 /* guide-servant-1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53EA1E7BFAE000E77BF1 /* guide-servant-1@2x.png */; };
+		2F9F53EF1E7BFAEC00E77BF1 /* guide-map-1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53ED1E7BFAEC00E77BF1 /* guide-map-1@3x.png */; };
+		2F9F53F01E7BFAEC00E77BF1 /* guide-servant-1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F9F53EE1E7BFAEC00E77BF1 /* guide-servant-1@3x.png */; };
 		2FA15A901E12845E001655A3 /* SocketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8E1E12845E001655A3 /* SocketRequest.swift */; };
 		2FA15A911E12845E001655A3 /* SocketRequestManage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */; };
 		2FA15A931E12890E001655A3 /* SocketDataPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA15A921E12890E001655A3 /* SocketDataPacket.swift */; };
@@ -477,6 +483,12 @@
 		2F9F53D01E6E504200E77BF1 /* servant-filter-select@2x@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-select@2x@3x.png"; sourceTree = "<group>"; };
 		2F9F53D11E6E504200E77BF1 /* servant-filter-unselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-unselect@2x.png"; sourceTree = "<group>"; };
 		2F9F53D21E6E504200E77BF1 /* servant-filter-unselect@2x@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "servant-filter-unselect@2x@3x.png"; sourceTree = "<group>"; };
+		2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@2x.png"; sourceTree = "<group>"; };
+		2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-head-default@3x.png"; sourceTree = "<group>"; };
+		2F9F53E91E7BFAE000E77BF1 /* guide-map-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-map-1@2x.png"; sourceTree = "<group>"; };
+		2F9F53EA1E7BFAE000E77BF1 /* guide-servant-1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-servant-1@2x.png"; sourceTree = "<group>"; };
+		2F9F53ED1E7BFAEC00E77BF1 /* guide-map-1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-map-1@3x.png"; sourceTree = "<group>"; };
+		2F9F53EE1E7BFAEC00E77BF1 /* guide-servant-1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide-servant-1@3x.png"; sourceTree = "<group>"; };
 		2FA15A8E1E12845E001655A3 /* SocketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequest.swift; path = SocketManage/SocketRequest.swift; sourceTree = "<group>"; };
 		2FA15A8F1E12845E001655A3 /* SocketRequestManage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketRequestManage.swift; path = SocketManage/SocketRequestManage.swift; sourceTree = "<group>"; };
 		2FA15A921E12890E001655A3 /* SocketDataPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketDataPacket.swift; path = SocketManage/SocketDataPacket.swift; sourceTree = "<group>"; };
@@ -1266,6 +1278,8 @@
 		BF6E9C551DE2FD4500F32CCE /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				2F9F53DD1E6E960000E77BF1 /* map-head-default@2x.png */,
+				2F9F53DE1E6E960000E77BF1 /* map-head-default@3x.png */,
 				2F9F53C91E6E504200E77BF1 /* follow-list@2x.png */,
 				2F9F53CA1E6E504200E77BF1 /* follow-list@3x.png */,
 				2F9F53CB1E6E504200E77BF1 /* map-head-bg@2x.png */,
@@ -1938,6 +1952,10 @@
 		E9AA26091E7B7ED800345277 /* GuidePage */ = {
 			isa = PBXGroup;
 			children = (
+				2F9F53ED1E7BFAEC00E77BF1 /* guide-map-1@3x.png */,
+				2F9F53EE1E7BFAEC00E77BF1 /* guide-servant-1@3x.png */,
+				2F9F53E91E7BFAE000E77BF1 /* guide-map-1@2x.png */,
+				2F9F53EA1E7BFAE000E77BF1 /* guide-servant-1@2x.png */,
 				E9AA260A1E7B7ED800345277 /* guide01.jpg */,
 				E9AA260B1E7B7ED800345277 /* guide02.jpg */,
 				E9250B391E7BDBC500F937A7 /* newPersonGuide.png */,
@@ -2019,7 +2037,7 @@
 				TargetAttributes = {
 					2FA75CF11D5081CB00609C8E = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = V6UZGER6DK;
+						DevelopmentTeam = 96YGS7NXK5;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2133,6 +2151,7 @@
 				BF6E9CF71DE2FD4500F32CCE /* blackCardBg.png in Resources */,
 				BF6E9D1A1DE2FD4500F32CCE /* bg-card-detail@2x.png in Resources */,
 				BF6E9D251DE2FD4500F32CCE /* hotel@3x.png in Resources */,
+				2F9F53EB1E7BFAE000E77BF1 /* guide-map-1@2x.png in Resources */,
 				BF6E9D311DE2FD4500F32CCE /* primary-level@3x.png in Resources */,
 				D079A9DD1E6FF388008BA1C2 /* eyeInvisible@3x.png in Resources */,
 				BF6E9D3B1DE2FD4500F32CCE /* share-wechat-moment@2x.png in Resources */,
@@ -2212,6 +2231,7 @@
 				2F9F53BF1E67CB9E00E77BF1 /* attentionList_certified@2x.png in Resources */,
 				BF6E9D521DE2FD4500F32CCE /* guide-detail-arrows@2x.png in Resources */,
 				BF6E9D361DE2FD4500F32CCE /* service-agent@3x.png in Resources */,
+				2F9F53EF1E7BFAEC00E77BF1 /* guide-map-1@3x.png in Resources */,
 				BF6E9D601DE2FD4500F32CCE /* login-bg@2x.png in Resources */,
 				BF6E9D321DE2FD4500F32CCE /* primary-levle@2x.png in Resources */,
 				E9250B3D1E7BDBC500F937A7 /* newPersonGuide@2x.png in Resources */,
@@ -2219,6 +2239,7 @@
 				BF6E9D851DE2FD4500F32CCE /* star-common-hollow@3x.png in Resources */,
 				BF6E9D651DE2FD4500F32CCE /* lv1@3x.png in Resources */,
 				BF6E9D121DE2FD4500F32CCE /* alipay@3x.png in Resources */,
+				2F9F53F01E7BFAEC00E77BF1 /* guide-servant-1@3x.png in Resources */,
 				BF6E9D041DE2FD4500F32CCE /* map-head-female@2x.png in Resources */,
 				BF6E9D781DE2FD4500F32CCE /* search@2x.png in Resources */,
 				E95ED3861E7B918900EB515B /* newperson-appointmentInfo@3x.png in Resources */,
@@ -2231,6 +2252,7 @@
 				BF6E9D631DE2FD4500F32CCE /* lv0.png in Resources */,
 				BF6E9D6B1DE2FD4500F32CCE /* lv4@3x.png in Resources */,
 				BF6E9D471DE2FD4500F32CCE /* whiteStart.png in Resources */,
+				2F9F53DF1E6E960000E77BF1 /* map-head-default@2x.png in Resources */,
 				BF6E9D171DE2FD4500F32CCE /* advanced-level@2x.png in Resources */,
 				D079A9E11E6FF388008BA1C2 /* inviteCode@3x.png in Resources */,
 				2FA75CFD1D5081CB00609C8E /* Assets.xcassets in Resources */,
@@ -2296,6 +2318,7 @@
 				BF6E9D821DE2FD4500F32CCE /* star-common-fill@2x.png in Resources */,
 				BF6E9D051DE2FD4500F32CCE /* map-head-female@3x.png in Resources */,
 				2FA75CFB1D5081CB00609C8E /* Main.storyboard in Resources */,
+				2F9F53EC1E7BFAE000E77BF1 /* guide-servant-1@2x.png in Resources */,
 				BF6E9D131DE2FD4500F32CCE /* cash@2x.png in Resources */,
 				BF6E9CF11DE2FD4500F32CCE /* bottom_selector_normal@2x.png in Resources */,
 				2F9F53D31E6E504200E77BF1 /* follow-list@2x.png in Resources */,
@@ -2303,6 +2326,7 @@
 				BF6E9D0A1DE2FD4500F32CCE /* mine_location@2x.png in Resources */,
 				BF6E9D421DE2FD4500F32CCE /* share@3x.png in Resources */,
 				BF6E9D8F1DE2FD4500F32CCE /* wechat-pay@3x.png in Resources */,
+				2F9F53E01E6E960000E77BF1 /* map-head-default@3x.png in Resources */,
 				E9250B3C1E7BDBC500F937A7 /* newPersonGuide.png in Resources */,
 				D0D003DD1E67EAFC00D8ED04 /* unfold@3x.png in Resources */,
 				E95ED3911E7B918900EB515B /* newperson-menuInfo@2x.png in Resources */,
@@ -2725,7 +2749,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: yong ming lu (FD5S65ADL4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2744,7 +2768,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "2a1af68f-a9a3-495d-aa76-0f17d8dd7972";
+				PROVISIONING_PROFILE = "5ec3b678-c027-4a3f-a774-8bacd54659d4";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2759,7 +2783,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: yong ming lu (FD5S65ADL4)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2778,7 +2802,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yundian.trip;
 				PRODUCT_NAME = HappyTravel;
-				PROVISIONING_PROFILE = "2a1af68f-a9a3-495d-aa76-0f17d8dd7972";
+				PROVISIONING_PROFILE = "5ec3b678-c027-4a3f-a774-8bacd54659d4";
 				SWIFT_OBJC_BRIDGING_HEADER = "./HappyTravel/Bridge/Bridging-Header.h";
 				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = 1;

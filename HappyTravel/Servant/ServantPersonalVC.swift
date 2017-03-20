@@ -261,6 +261,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         servantInfo.page_count_ = 10
         
         APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1",
+                                                                                    "insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
             if let models = response as? [servantDynamicModel] {
                 self?.dataArray = models

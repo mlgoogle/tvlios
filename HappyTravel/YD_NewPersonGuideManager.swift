@@ -12,71 +12,21 @@ class YD_NewPersonGuideManager: NSObject {
 
     static var view:NewPersonMaskView?
     
-    static func startGuide() {
-        
-        
+    static func startGuide(tag: String, mainGuideInfos:[[String: Any?]], secGuideInfos:[[String: Any?]]?) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        let key = "isShowMaskView"
-        
-        let isShowMaskView = userDefaults.valueForKey(key)
+        let isShowMaskView = userDefaults.valueForKey(tag)
         guard isShowMaskView == nil else {return}
         guard view == nil else {return}
         view = NewPersonMaskView.init(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height))
-        
-        view!.frameXYs = setFrames()
-        view!.guideImages = setGuideImages()
-        view!.infoImages = setInfoImages()
-        view!.guideTypes = setGuideTypes()
-        view!.infoTypes = setInfoTypes()
+        view?.mainGuideInfos = mainGuideInfos
+        view?.secGuideInfos = secGuideInfos
         view!.touchedEndBlock = { () in
-            userDefaults.setBool(true, forKey: key)
+            userDefaults.setBool(true, forKey: tag)
             view?.removeFromSuperview()
             view?.hidden = true
             view = nil
         }
         view?.startGuide()
-    }
-    
-    static func setFrames() -> Array<CGRect>{
-   
-        var array = Array<CGRect>()
-        
-        for index in 0...(setInfoTypes().count - 1) {
-            
-            var rect = CGRectZero
-            
-            switch index {
-            case 0:
-                rect = CGRectMake(10, 20, 0, 0)
-            default:
-                break
-            }
-            array.append(rect)
-
-        }
-        
-        return array
-    }
-    
-    static func setInfoImages() -> Array<String>{
-        let infoNames = [""]
-        
-        return infoNames
-    }
-    static func setGuideImages() -> Array<String>{
-        
-        let guideNames = ["newPersonGuide"]
-        return guideNames
-    }
-    
-    static func setInfoTypes() -> Array<GuideDirection>{
-        
-        return [GuideDirection.Right,GuideDirection.Left,GuideDirection.Right,GuideDirection.Left,GuideDirection.Left]
-    }
-    static func setGuideTypes() -> Array<GuideDirection>{
-        
-        
-        return [GuideDirection.Top,GuideDirection.Top,GuideDirection.Bottom,GuideDirection.Top,GuideDirection.Bottom]
     }
     
 }

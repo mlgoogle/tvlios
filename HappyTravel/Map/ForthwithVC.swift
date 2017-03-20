@@ -143,7 +143,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         super.viewDidAppear(true)
         checkLocationService()
         
-        YD_NewPersonGuideManager.startGuide()
+
     }
     
     
@@ -328,8 +328,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             })
 
         banGesture(false)
-        YD_NewPersonGuideManager.startGuide()
-
+        
         if CurrentUser.register_status_ == 0 {
             if !isShowBaseInfo {
                 isShowBaseInfo = true
@@ -337,8 +336,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                 self.navigationController?.pushViewController(completeBaseInfoVC, animated: true)
             }
         }
-        
-        YD_NewPersonGuideManager.startGuide()
 
         if let dt = NSUserDefaults.standardUserDefaults().objectForKey(CommonDefine.DeviceToken) as? String {
             let req = RegDeviceRequestModel()
@@ -401,6 +398,12 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             }, error: { (err) in
                 print(err)
         })
+        
+        YD_NewPersonGuideManager.startGuide("map-guide", mainGuideInfos: [["image" :"guide-map-1",
+                                                                            "view": nil,
+                                                                            "size": CGSizeMake(173, 153),
+                                                                            "insets": UIEdgeInsetsMake(8888, 8888, -300, -80)]], secGuideInfos: nil)
+        
     }
     
     func jumpToWalletVC() {
