@@ -57,14 +57,12 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-//        let userDefaults = NSUserDefaults.standardUserDefaults()
-//        if userDefaults.floatForKey("guideVersion") < 1.1 {
-//            loadGuide()
-//        } else {
-//            initMainInterface()
-//        }
-        
-        loadGuide()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if userDefaults.floatForKey("guideVersion") < 1.1 {
+            loadGuide()
+        } else {
+            initMainInterface()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
