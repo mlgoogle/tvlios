@@ -44,7 +44,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
     override public func viewWillDisappear(animated: Bool) {
@@ -64,6 +63,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         //隐藏红点
         let viewHidden = tabBarController?.view.viewWithTag(10)
         viewHidden?.hidden = true
+        
+        header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
     // 加载页面
@@ -417,7 +418,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
     }
     
     // 点赞
