@@ -444,8 +444,28 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             }, error: nil)
     }
     
-    
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    // 图片点击放大
+    func servantImageDidClicked(model: servantDynamicModel, index: Int) {
+        // 解析图片链接
+        let urlString:String = model.dynamic_url_!
+        let imageUrls:NSArray = urlString.componentsSeparatedByString(",")
+        
+        // 显示图片
+        PhotoBroswerVC.show(self, type: PhotoBroswerVCTypePush , index: UInt(index)) {() -> [AnyObject]! in
+            
+            let photoArray:NSMutableArray = NSMutableArray()
+            let count:Int = imageUrls.count
+            
+            for i  in 0..<count {
+                
+                let model: PhotoModel = PhotoModel.init()
+                model.mid = UInt(i) + 1
+                model.image_HD_U = imageUrls.objectAtIndex(i) as! String
+                photoArray.addObject(model)
+            }
+            
+            return photoArray as [AnyObject]
+        }
     }
     
     

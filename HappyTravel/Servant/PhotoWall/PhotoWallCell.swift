@@ -10,7 +10,7 @@ import Foundation
 
 protocol PhotoWallCellDelegate: NSObjectProtocol {
     
-    func touchedPhotoItem(photoInfo: PhotoModel)
+    func touchedPhotoItem(photoInfo: PhModel)
     
 }
 
@@ -18,7 +18,7 @@ class PhotoWallCell: UITableViewCell {
     
     weak var delegate: PhotoWallCellDelegate?
     
-    var photos:[PhotoModel]?
+    var photos:[PhModel]?
     
     var rightPhoto: UIImageView?
     var centerPhoto: UIImageView?
@@ -121,7 +121,7 @@ class PhotoWallCell: UITableViewCell {
     }
     
     func update(data: AnyObject!) {
-        photos = data as? [PhotoModel]
+        photos = data as? [PhModel]
         if photos != nil {
             leftPhoto?.hidden = photos!.count > 0 ? false : true
             centerPhoto?.hidden = photos!.count > 1 ? false : true

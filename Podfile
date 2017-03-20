@@ -29,7 +29,7 @@ target 'HappyTravel' do
     pod 'GTSDK', '~> 1.4.3'
     pod 'MJRefresh', '~> 3.1.12'
     
-    pod 'SVProgressHUD', '~> 2.0.3'
+    pod 'SVProgressHUD'
 
     pod 'UMengAnalytics-NO-IDFA'
     pod 'Qiniu', '~> 7.1'

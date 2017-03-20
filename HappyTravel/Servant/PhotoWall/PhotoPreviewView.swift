@@ -16,11 +16,11 @@ class PhotoPreviewView: UIView {
         return view
     }
     
-    var photoInfo:PhotoModel?
+    var photoInfo:PhModel?
     
     var photo:UIImageView?
     
-    static func showOnline(photoInfo: PhotoModel) {
+    static func showOnline(photoInfo: PhModel) {
         let view = PhotoPreviewView.defaultView()
         view.setPhotoInfoModel(photoInfo)
         UIApplication.sharedApplication().keyWindow?.addSubview(view)
@@ -60,7 +60,7 @@ class PhotoPreviewView: UIView {
         })
     }
     
-    func setPhotoInfoModel(info: PhotoModel) {
+    func setPhotoInfoModel(info: PhModel) {
         photoInfo = info
         photo?.kf_setImageWithURL(NSURL(string: photoInfo!.thumbnail_url_!))
         if photoInfo?.photo_url_ != nil {
