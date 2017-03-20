@@ -411,7 +411,7 @@ class RelationAidVC: UIViewController {
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
                                               "to_uid_": to_uid,   //to_uid
-                                              "service_prince_": 188,
+                                              "service_prince_": 18800,
                                               "wx_id_": userTextField.text ?? ""]
             
             let model = PayOrderRequestModel(value: dict)
