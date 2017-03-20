@@ -133,7 +133,7 @@ class AidWenXinVC: UIViewController{
         }
         accountName.textAlignment = .Center
         accountName.font = UIFont.systemFontOfSize(12)
-        accountName.text = "widjk-156841355423"
+        accountName.text = getRelation.wx_num_
         accountName.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         
         copyBtn.snp_makeConstraints { (make) in

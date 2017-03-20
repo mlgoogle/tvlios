@@ -244,20 +244,22 @@ class RelationAidVC: UIViewController {
         unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
         unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
         
-        introText.snp_makeConstraints { (make) in
-            make.top.equalTo(introLine.snp_bottom).offset(15)
-            make.left.equalTo(introView).offset(30)
-            make.right.equalTo(introView).offset(-30)
-//            make.height.equalTo(54)
-            make.bottom.equalTo(unfoldButton.snp_top).offset(-10)
-        }
+
         introText.textAlignment = .Left
         introText.font = UIFont.systemFontOfSize(14)
         introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         introText.numberOfLines = 0
         introText.font = UIFont.systemFontOfSize(14)
-        introText.text = "个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内简介内容..."
-
+        
+        introText.text = "个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内简介内容人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介....."
+        introText.sizeToFit()
+        
+        introText.snp_makeConstraints { (make) in
+            make.top.equalTo(introLine.snp_bottom).offset(15)
+            make.left.equalTo(introView).offset(30)
+            make.right.equalTo(introView).offset(-30)
+            make.height.equalTo(54)
+        }
         
         //能力标签
         scrollView.addSubview(powerView)
@@ -510,6 +512,13 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            
+            let nsString = introText.text! as NSString
+            let titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(titleSizes.height)
+            })
+            
             introView.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(175)
             })
@@ -524,7 +533,10 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
-            introText.textAlignment = .Left
+            
+            introText.snp_updateConstraints(closure: { (make) in
+                make.height.equalTo(54)
+            })
             introView.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(115)
                 })
