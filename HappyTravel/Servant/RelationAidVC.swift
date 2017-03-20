@@ -439,6 +439,7 @@ class RelationAidVC: UIViewController {
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
         let moneyPlay = money * 100
+        userTextField.resignFirstResponder()
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
                                               "to_uid_": to_uid,   //to_uid
@@ -450,7 +451,6 @@ class RelationAidVC: UIViewController {
                 if let model = response as? PayOrderStatusModel{
                     self!.payStatus = model
                     if model.result_ == 0 {
-                        
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
                                                              "uid_to_": self!.to_uid]  //to_uid
@@ -560,7 +560,9 @@ extension RelationAidVC : UIScrollViewDelegate,UITextFieldDelegate{
         vImage?.frame = vFrame!
     }
     
-    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     
     
