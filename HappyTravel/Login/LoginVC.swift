@@ -49,6 +49,7 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
     }
     func didBack() {
+        view.endEditing(true)
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
