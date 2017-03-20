@@ -87,6 +87,10 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
     }
     func didBack() {
+        usernameField.resignFirstResponder()
+        passwdField.resignFirstResponder()
+        reInPasswdField.resignFirstResponder()
+        verifyCodeField.resignFirstResponder()
         if isForget {
             navigationController?.popViewControllerAnimated(true)
         }

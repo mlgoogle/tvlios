@@ -49,8 +49,14 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
     }
     func didBack() {
+        usernameField.resignFirstResponder()
+        passwdField.resignFirstResponder()
         self.dismissViewControllerAnimated(true, completion: nil)
         
+    }
+ 
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        view.endEditing(true)
     }
     
     override func viewWillAppear(animated: Bool) {
