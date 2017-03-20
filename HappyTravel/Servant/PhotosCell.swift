@@ -79,7 +79,7 @@ public class PhotosCell : UITableViewCell {
         
     }
     
-    func setInfo(photos: List<PhotoModel>?, setSpread spd: Bool) {
+    func setInfo(photos: List<PhModel>?, setSpread spd: Bool) {
         guard photos != nil else {return}
         let view = contentView.viewWithTag(101)
         let nonePhotosLabel = view!.viewWithTag(1003) as? UILabel

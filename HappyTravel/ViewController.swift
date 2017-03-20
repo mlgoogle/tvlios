@@ -63,7 +63,6 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         } else {
             initMainInterface()
         }
-        
     }
     
     override func viewWillAppear(animated: Bool) {

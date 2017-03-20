@@ -70,7 +70,7 @@ class PhotoWallRequestModel: Object {
     dynamic var num_ = 0
 }
 
-class PhotoModel: Object {
+class PhModel: Object {
     dynamic var photo_url_: String?
     dynamic var thumbnail_url_: String?
     dynamic var upload_time_: String?
@@ -78,6 +78,6 @@ class PhotoModel: Object {
 }
 
 class PhotoWallModel: Object {
-    let photo_list_:List<PhotoModel> = List<PhotoModel>()
+    let photo_list_:List<PhModel> = List<PhModel>()
     
 }

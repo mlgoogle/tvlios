@@ -33,4 +33,5 @@
 #import <UMMobClick/MobClick.h>
 
 #import <Realm/RLMSchema.h>
+#import "PhotoBroswerVC.h"
 #endif /* Bridging_Header_h */

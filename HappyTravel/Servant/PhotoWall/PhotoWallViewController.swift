@@ -128,7 +128,7 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
         date.removeAll()
         
         if curModel != nil && curModel?.photo_list_.count > 0 {
-            var subArray:[PhotoModel] = []
+            var subArray:[PhModel] = []
             var day = ""
             for photo in curModel!.photo_list_ {
                 let time = photo.upload_time_!
@@ -239,7 +239,7 @@ class PhotoWallViewController: UITableViewController, PhotoWallCellDelegate {
     }
 
     //MARK: - PhotoWallCellDelegate
-    func touchedPhotoItem(photoInfo: PhotoModel) {
+    func touchedPhotoItem(photoInfo: PhModel) {
         PhotoPreviewView.showOnline(photoInfo)
     }
     
