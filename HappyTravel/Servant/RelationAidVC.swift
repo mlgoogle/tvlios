@@ -77,6 +77,7 @@ class RelationAidVC: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        //助理显示的费用金额
         let getDict: [String : AnyObject] = ["order_id_": 0,
                                              "uid_form_": userInfo.uid_,
                                              "uid_to_": userInfo.uid_]
@@ -95,6 +96,21 @@ class RelationAidVC: UIViewController {
             }, error: { (error) in
                 
         })
+        
+        let perDict: [String : AnyObject] = ["uid_": userInfo.uid_,
+                                             "introduce_": "",
+                                             "type_": 2]
+        let perModel = PersonIntroRequestModel(value: perDict)
+        //获取个人简介
+        APIHelper.consumeAPI().personIntro(perModel, complete: { [weak self](response) in
+            if let model = response as? PersonIntroStatusModel{
+                self!.introText.text = model.result
+            }
+            
+            }) { (error) in
+                
+        }
+        
 
     }
     
@@ -245,7 +261,7 @@ class RelationAidVC: UIViewController {
         unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
         
 
-        introText.textAlignment = .Left
+        introText.textAlignment = .Center
         introText.font = UIFont.systemFontOfSize(14)
         introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
         introText.numberOfLines = 0
