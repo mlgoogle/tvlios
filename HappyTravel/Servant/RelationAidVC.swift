@@ -451,6 +451,7 @@ class RelationAidVC: UIViewController {
     
     //点击阴影
     func shadowDidClick() {
+        self.userTextField.resignFirstResponder()
         wenXinView.hidden = true
         shadow.removeFromSuperview()
     }
@@ -589,7 +590,9 @@ extension RelationAidVC : UIScrollViewDelegate,UITextFieldDelegate{
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
         view.endEditing(true)
+        
     }
     
     
