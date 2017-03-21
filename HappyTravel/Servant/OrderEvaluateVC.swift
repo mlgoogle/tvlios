@@ -125,7 +125,7 @@ class OrderEvaluateVC: UIViewController {
         textView.layer.borderColor = UIColor(colorLiteralRed: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1).CGColor
         textView.layer.borderWidth = 1.0
         textView.font = UIFont.systemFontOfSize(14)
-        
+    
         placeholderLabel.snp_makeConstraints { (make) in
             make.left.equalTo(textView).offset(5)
             make.top.equalTo(textView).offset(5)
@@ -301,7 +301,8 @@ extension OrderEvaluateVC: UITextViewDelegate{
     }
     
     func textViewDidEndEditing(textView: UITextView) {
-        if placeholderLabel.text?.characters.count == 0 {
+        let str = textView.text! as NSString
+        if str.length == 0 {
             placeholderLabel.text = "写下您对此次服务的评价..."
         }
         else{
@@ -320,6 +321,9 @@ extension OrderEvaluateVC: UITextViewDelegate{
     }
     
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     
 }

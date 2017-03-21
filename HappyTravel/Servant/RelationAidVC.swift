@@ -16,6 +16,8 @@ class RelationAidVC: UIViewController {
     
     var imageV : UIImageView?
     var vImage : UIImageView?
+    
+    var money = 0
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height-120)
@@ -72,6 +74,31 @@ class RelationAidVC: UIViewController {
         let viewHidden = tabBarController?.view.viewWithTag(10)
         viewHidden?.hidden = true
     }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let getDict: [String : AnyObject] = ["order_id_": 0,
+                                             "uid_form_": userInfo.uid_,
+                                             "uid_to_": userInfo.uid_]
+        let getModel = GetRelationRequestModel(value: getDict)
+        
+        APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
+            
+            if let model = response as? GetRelationStatusModel{
+                if model.result_ == 4{
+                self!.moneyLabel.text = "¥" + String(model.service_price_)
+                self!.money = model.service_price_
+                }
+               
+                
+            }
+            }, error: { (error) in
+                
+        })
+
+    }
+    
+    
     
     //头像视图view
     func setupUI() {
@@ -87,7 +114,7 @@ class RelationAidVC: UIViewController {
         imageV?.layer.cornerRadius = 77 / 2
         imageV?.layer.masksToBounds = true
         imageV?.layer.borderWidth = 1
-        imageV?.layer.borderColor = UIColor.init(red: 183/255.0, green: 39/255.0, blue: 43/255.0, alpha: 1).CGColor
+        imageV?.layer.borderColor = UIColor.clearColor().CGColor
         imageV!.userInteractionEnabled = true
         imageV!.backgroundColor = UIColor.clearColor()
         imageV?.center = CGPointMake(titleV.center.x, 0)
@@ -167,7 +194,6 @@ class RelationAidVC: UIViewController {
             make.height.equalTo(19)
         }
         moneyLabel.textAlignment = .Center
-        moneyLabel.text = "¥ 188.0"
         moneyLabel.font = UIFont.systemFontOfSize(25)
         moneyLabel.textColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
         //个人简介
@@ -202,19 +228,9 @@ class RelationAidVC: UIViewController {
         }
         introLine.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
         
-        introText.snp_makeConstraints { (make) in
-            make.top.equalTo(introLine.snp_bottom).offset(15)
-            make.left.equalTo(introView).offset(30)
-            make.right.equalTo(introView).offset(-30)
-            make.height.equalTo(54)
-        }
-        introText.textAlignment = .Left
-        introText.font = UIFont.systemFontOfSize(14)
-        introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
-        introText.numberOfLines = 0
-        introText.text = "中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文中文"
+        
         unfoldButton.snp_makeConstraints { (make) in
-            make.top.equalTo(introText.snp_bottom).offset(10)
+            make.bottom.equalTo(introView)
             make.centerX.equalTo(introLabel)
             make.height.equalTo(12)
         }
@@ -227,6 +243,23 @@ class RelationAidVC: UIViewController {
         let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
         unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
         unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+        
+
+        introText.textAlignment = .Left
+        introText.font = UIFont.systemFontOfSize(14)
+        introText.textColor = UIColor.init(red: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1)
+        introText.numberOfLines = 0
+        introText.font = UIFont.systemFontOfSize(14)
+        
+        introText.text = "个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内简介内容人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介....."
+        introText.sizeToFit()
+        
+        introText.snp_makeConstraints { (make) in
+            make.top.equalTo(introLine.snp_bottom).offset(15)
+            make.left.equalTo(introView).offset(30)
+            make.right.equalTo(introView).offset(-30)
+            make.height.equalTo(54)
+        }
         
         //能力标签
         scrollView.addSubview(powerView)
@@ -407,11 +440,12 @@ class RelationAidVC: UIViewController {
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
-
+        let moneyPlay = money * 100
+        userTextField.resignFirstResponder()
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
                                               "to_uid_": to_uid,   //to_uid
-                                              "service_prince_": 188,
+                                              "service_prince_": moneyPlay,
                                               "wx_id_": userTextField.text ?? ""]
             
             let model = PayOrderRequestModel(value: dict)
@@ -419,7 +453,6 @@ class RelationAidVC: UIViewController {
                 if let model = response as? PayOrderStatusModel{
                     self!.payStatus = model
                     if model.result_ == 0 {
-                        
                         let getDict: [String : AnyObject] = ["order_id_": model.order_id_,
                                                              "uid_form_": CurrentUser.uid_,
                                                              "uid_to_": self!.to_uid]  //to_uid
@@ -428,31 +461,7 @@ class RelationAidVC: UIViewController {
                         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
                             
                             if let model = response as? GetRelationStatusModel{
-                                //支付完成的时候请求订单数据,显示小红点
-                                var count = 0
-                                let req = OrderListRequestModel()
-                                req.uid_ = CurrentUser.uid_
-                                APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
-                                    if let models = response as? [OrderListCellModel]{
-                                        for model in models{
-                                            if model.is_evaluate_ == 0{
-                                                count = count + 1
-                                            }
-                                            else{
-                                                continue
-                                            }
-                                        }
-                                        if count == 0 {
-                                            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                                        }
-                                        else{
-                                            
-                                            NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
-                                        }
-                                    }
-                                    },error:{ [weak self](error) in
-                                    })
-
+                                
                                 SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: {
                                     self!.shadowDidClick()
                                     
@@ -503,9 +512,13 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            
+            let nsString = introText.text! as NSString
+            let titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
             introText.snp_updateConstraints(closure: { (make) in
-                make.height.equalTo(114)
+                make.height.equalTo(titleSizes.height)
             })
+            
             introView.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(175)
             })
@@ -520,6 +533,7 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
+            
             introText.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(54)
             })
@@ -558,7 +572,9 @@ extension RelationAidVC : UIScrollViewDelegate,UITextFieldDelegate{
         vImage?.frame = vFrame!
     }
     
-    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        view.endEditing(true)
+    }
     
     
     
