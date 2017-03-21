@@ -133,6 +133,8 @@ class OrderListCellModel: UserModel{
 class OrderListModel: Object{
     let order_msg_list_ = List<OrderListCellModel>()
 }
-
-
+//个人简介
+class PersonIntroStatusModel: Object{
+    dynamic var result: String = "111"
+}
 
