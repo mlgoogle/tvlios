@@ -128,6 +128,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     let port:UInt16 = 10011
 //                    let ip:String = "192.168.8.111"
 //                    let port:UInt16 = 10001
+//                     let port:UInt16 = 10011
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10002
