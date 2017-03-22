@@ -12,7 +12,7 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
+public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
     var personalInfo:UserInfoModel?
@@ -131,12 +131,14 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         navigationController?.popViewControllerAnimated(true)
     }
     
+    // 右上角举报
     func reportAction() {
-        print("-----右上角举报实现~")
+        
+        let actionSheet = UIActionSheet.init(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles:"举报")
+        actionSheet.showInView(self.view)
     }
     
     // MARK: - UITableViewDelegate
-    
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return dataArray.count
@@ -249,8 +251,18 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
     }
-    // MARK: 数据
     
+    // MARK: UIActionSheetDelegate
+    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            // 进入举报页面
+            let reportView:ServantReportViewController = ServantReportViewController.init()
+            navigationController?.pushViewController(reportView, animated: true)
+        }
+    }
+    
+    
+    // MARK: 数据
     // 刷新数据
     func headerRefresh() {
         
@@ -262,8 +274,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         servantInfo.page_count_ = 10
         
         APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
-            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1",
-                                                                                    "insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
+            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1","insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
             if let models = response as? [servantDynamicModel] {
                 self?.dataArray = models
