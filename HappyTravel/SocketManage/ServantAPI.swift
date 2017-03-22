@@ -79,4 +79,14 @@ class ServantAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModels(servantDynamicModel.classForCoder(), listKey: "dynamic_list_"))
             }, error: error)
     }
+    /**
+     举报
+     
+     */
+    func servantReport(model:ServantReportModel,complete:CompleteBlock?,error:ErrorBlock?){
+        let packet = SocketDataPacket(opcode:.Report,model: model)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(ServantReportResultModel.classForCoder()))
+            }, error: error)
+    }
 }

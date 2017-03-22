@@ -69,6 +69,8 @@ enum SockOpcode: Int16 {
     case ThumbUp = 1137
     // 动态列表
     case DynamicList = 1139
+    // 举报
+    case Report = 1147
     
     //MARK: - 2000+
     // 请求评价订单
@@ -130,7 +132,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
                     let port:UInt16 = 10011
 //                    let ip:String = "192.168.8.111"
 //                    let port:UInt16 = 10001
-//                     let port:UInt16 = 10011
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10002

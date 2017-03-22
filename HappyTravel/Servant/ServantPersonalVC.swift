@@ -88,10 +88,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.registerClass(ServantPicAndLabelCell.self, forCellReuseIdentifier: "ServantPicAndLabelCell")
         view.addSubview(tableView!)
         
-        tableView?.snp_makeConstraints(closure: { (make) in
-            make.left.right.top.bottom.equalTo(view)
-        })
-        
         header.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.headerRefresh))
         footer.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.footerRefresh))
         tableView?.mj_header = header
@@ -131,12 +127,13 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         navigationController?.popViewControllerAnimated(true)
     }
     
+    // 右上角举报
     func reportAction() {
-        print("-----右上角举报实现~")
+        
+        servantReport(0)
     }
     
     // MARK: - UITableViewDelegate
-    
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return dataArray.count
@@ -249,8 +246,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
     }
-    // MARK: 数据
     
+    // MARK: 数据
     // 刷新数据
     func headerRefresh() {
         
@@ -262,8 +259,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         servantInfo.page_count_ = 10
         
         APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
-            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1",
-                                                                                    "insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
+            YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1","insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
             if let models = response as? [servantDynamicModel] {
                 self?.dataArray = models
@@ -470,5 +466,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         }
     }
     
-    
+    // 举报动态
+    func servantReport(dynamicId: Int) {
+        
+        let alert:UIAlertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let cancle:UIAlertAction = UIAlertAction.init(title: "取消", style: .Cancel) { (action) in
+        }
+        let certain:UIAlertAction = UIAlertAction.init(title: "举报", style: .Default) { [weak self](action) in
+            
+            // 进入举报页面
+            let reportView:ServantReportViewController = ServantReportViewController.init()
+            reportView.reportUId = self!.personalInfo?.uid_
+            reportView.dynamicId = dynamicId
+            self!.navigationController?.pushViewController(reportView, animated: true)
+        }
+        
+        alert.addAction(cancle)
+        alert.addAction(certain)
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 }

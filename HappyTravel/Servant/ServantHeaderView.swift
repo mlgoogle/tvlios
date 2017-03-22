@@ -76,6 +76,19 @@ class ServantHeaderView: UIView {
         headerView!.layer.cornerRadius = 30
         middleView.addSubview(headerView!)
         
+        let vipImage:UIImageView = UIImageView()
+        vipImage.image = UIImage.init(named: "attentionList_certified")
+        vipImage.contentMode = .ScaleAspectFill
+        vipImage.backgroundColor = colorWithHexString("#fca311")
+        vipImage.layer.masksToBounds = true
+        vipImage.layer.cornerRadius = 6
+        headerView?.addSubview(vipImage)
+        vipImage.snp_makeConstraints { (make) in
+            make.bottom.equalTo((headerView?.snp_bottom)!).offset(-6)
+            make.right.equalTo((headerView?.snp_right)!).offset(-6)
+            make.width.height.equalTo(12)
+        }
+        
         attenBtn = UIButton.init(type: .Custom)
         middleView.addSubview(attenBtn!)
         attenBtn!.snp_makeConstraints { (make) in
