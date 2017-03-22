@@ -204,9 +204,9 @@ class ServantOnePicCell: ServantPersonalCell {
     func updateImage(model:servantDynamicModel) {
         
         personModel = model
-//        // 计算时间
-//        let time = self.dealTimeWithString(model.dynamic_time_!)
-//        timeLabel?.text = time
+        // 计算时间
+        let time = self.dealTimeWithString(model.dynamic_time_!)
+        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_
@@ -252,9 +252,9 @@ class ServantOneLabelCell: ServantPersonalCell {
     func updateLabelText(model:servantDynamicModel) {
         
         personModel = model
-//        // 计算时间
-//        let time = self.dealTimeWithString(model.dynamic_time_!)
-//        timeLabel?.text = time
+        // 计算时间
+        let time = self.dealTimeWithString(model.dynamic_time_!)
+        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_
@@ -320,9 +320,9 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         
         personModel = model
         
-//        // 计算时间
-//        let time = self.dealTimeWithString(model.dynamic_time_!)
-//        timeLabel?.text = time
+        // 计算时间
+        let time = self.dealTimeWithString(model.dynamic_time_!)
+        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_

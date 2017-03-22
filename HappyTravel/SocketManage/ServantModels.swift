@@ -70,6 +70,7 @@ class ServantReportModel:Object {
     dynamic var from_id_ = CurrentUser.uid_
     dynamic var report_id_ = 0
     dynamic var report_text_:String?
+    dynamic var dynamic_id_ = 0
 }
 class ServantReportResultModel: Object {
 }

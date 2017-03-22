@@ -16,6 +16,8 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     var cellIndex:NSInteger? // 选中cell的index 和 种类id (0~5)
     var reportUId:Int?
     var dynamicId:Int?
+    var footerView:ServantReportFooterView?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,8 +113,8 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        let footer:ServantReportFooterView = ServantReportFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 208))
-        return footer
+        footerView = ServantReportFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 208))
+        return footerView
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -146,7 +148,8 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         report.uid_ = reportUId!
         report.from_id_ = CurrentUser.uid_
         report.report_id_ = cellIndex!
-        report.report_text_ = "测试数据"
+        report.report_text_ = footerView?.textView?.text
+        report.dynamic_id_ = dynamicId!
         APIHelper.servantAPI().servantReport(report, complete: { (response) in
             
             SVProgressHUD.showSuccessMessage(SuccessMessage: "举报成功！", ForDuration: 1.5, completion: {
