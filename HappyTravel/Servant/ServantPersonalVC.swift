@@ -12,7 +12,7 @@ import MJRefresh
 import SVProgressHUD
 
 
-public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
+public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
     var personalInfo:UserInfoModel?
@@ -88,10 +88,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         tableView?.registerClass(ServantPicAndLabelCell.self, forCellReuseIdentifier: "ServantPicAndLabelCell")
         view.addSubview(tableView!)
         
-        tableView?.snp_makeConstraints(closure: { (make) in
-            make.left.right.top.bottom.equalTo(view)
-        })
-        
         header.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.headerRefresh))
         footer.setRefreshingTarget(self, refreshingAction: #selector(ServantPersonalVC.footerRefresh))
         tableView?.mj_header = header
@@ -134,8 +130,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // 右上角举报
     func reportAction() {
         
-        let actionSheet = UIActionSheet.init(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitles:"举报")
-        actionSheet.showInView(self.view)
+        servantReport(0)
     }
     
     // MARK: - UITableViewDelegate
@@ -251,16 +246,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
         }
     }
-    
-    // MARK: UIActionSheetDelegate
-    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            // 进入举报页面
-            let reportView:ServantReportViewController = ServantReportViewController.init()
-            navigationController?.pushViewController(reportView, animated: true)
-        }
-    }
-    
     
     // MARK: 数据
     // 刷新数据
@@ -481,5 +466,23 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         }
     }
     
-    
+    // 举报动态
+    func servantReport(dynamicId: Int) {
+        
+        let alert:UIAlertController = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let cancle:UIAlertAction = UIAlertAction.init(title: "取消", style: .Cancel) { (action) in
+        }
+        let certain:UIAlertAction = UIAlertAction.init(title: "举报", style: .Default) { [weak self](action) in
+            
+            // 进入举报页面
+            let reportView:ServantReportViewController = ServantReportViewController.init()
+            reportView.reportUId = self!.personalInfo?.uid_
+            reportView.dynamicId = dynamicId
+            self!.navigationController?.pushViewController(reportView, animated: true)
+        }
+        
+        alert.addAction(cancle)
+        alert.addAction(certain)
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
 }

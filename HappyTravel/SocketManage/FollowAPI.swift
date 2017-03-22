@@ -34,8 +34,6 @@ class FollowAPI: SocketAPI {
             }, error: error)
     }
     
-    
-    
     func servantThumbup(model:ServantThumbUpModel,complete:CompleteBlock?,error:ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .ThumbUp, model: model)
         startRequest(packet, complete: { (response) in

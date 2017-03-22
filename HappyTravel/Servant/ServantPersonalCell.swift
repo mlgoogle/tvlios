@@ -12,6 +12,7 @@ protocol ServantPersonalCellDelegate {
     
     func servantIsLikedAction(sender:UIButton,model:servantDynamicModel)
     func servantImageDidClicked(model:servantDynamicModel, index:Int)
+    func servantReport(dynamicId:Int)
 }
 
 class ServantPersonalCell: UITableViewCell {
@@ -21,7 +22,8 @@ class ServantPersonalCell: UITableViewCell {
     var thumbUpBtn:UIButton?
     var delegate:ServantPersonalCellDelegate?
     var personModel:servantDynamicModel?
-    
+    var timeLabel:UILabel?
+    var reportBtn:UIButton?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -35,7 +37,7 @@ class ServantPersonalCell: UITableViewCell {
     
     func addViews() {
         
-        headerView = UIImageView.init()
+        headerView = UIImageView()
         headerView?.layer.masksToBounds = true
         headerView?.layer.cornerRadius = 21.0
         self.addSubview(headerView!)
@@ -45,6 +47,19 @@ class ServantPersonalCell: UITableViewCell {
             make.top.equalTo(20)
             make.width.height.equalTo(42)
         })
+        
+        let vipImage:UIImageView = UIImageView()
+        vipImage.image = UIImage.init(named: "attentionList_certified")
+        vipImage.contentMode = .ScaleAspectFill
+        vipImage.backgroundColor = colorWithHexString("#fca311")
+        vipImage.layer.masksToBounds = true
+        vipImage.layer.cornerRadius = 5
+        headerView?.addSubview(vipImage)
+        vipImage.snp_makeConstraints { (make) in
+            make.bottom.equalTo((headerView?.snp_bottom)!).offset(-3)
+            make.right.equalTo((headerView?.snp_right)!).offset(-5)
+            make.width.height.equalTo(10)
+        }
         
         nameLabel = UILabel.init()
         nameLabel?.numberOfLines = 1
@@ -60,6 +75,19 @@ class ServantPersonalCell: UITableViewCell {
             make.height.equalTo(21)
         })
         
+        reportBtn = UIButton.init(type: .Custom)
+        reportBtn?.backgroundColor = UIColor.clearColor()
+        reportBtn?.setTitleColor(UIColor.init(decR: 153, decG: 153, decB: 153, a: 1), forState: .Normal)
+        reportBtn?.setImage(UIImage.init(named: "dynamicReport"), forState: .Normal)
+        reportBtn?.addTarget(self, action: #selector(self.reportAction), forControlEvents: .TouchUpInside)
+        self.addSubview(reportBtn!)
+        reportBtn?.snp_makeConstraints(closure: { (make) in
+            make.right.equalTo(-15)
+            make.bottom.equalTo(-15)
+            make.width.equalTo(40)
+            make.height.equalTo(18)
+        })
+        
         thumbUpBtn = UIButton.init(type: .Custom)
         thumbUpBtn?.backgroundColor = UIColor.clearColor()
         thumbUpBtn?.setTitleColor(UIColor.init(decR: 153, decG: 153, decB: 153, a: 1), forState: .Normal)
@@ -71,10 +99,23 @@ class ServantPersonalCell: UITableViewCell {
         self.addSubview(thumbUpBtn!)
         
         thumbUpBtn?.snp_makeConstraints(closure: { (make) in
-            make.right.equalTo(-15)
+            make.right.equalTo((reportBtn?.snp_left)!)
             make.bottom.equalTo(-15)
             make.width.equalTo(40)
             make.height.equalTo(18)
+        })
+        
+        timeLabel = UILabel.init()
+        timeLabel?.font = UIFont.systemFontOfSize(11)
+        timeLabel?.textColor = UIColor.init(decR: 153, decG: 153, decB: 153, a: 1)
+        timeLabel?.backgroundColor = UIColor.whiteColor()
+        timeLabel?.textAlignment = .Right
+        self.addSubview(timeLabel!)
+        timeLabel?.snp_makeConstraints(closure: { (make) in
+            make.top.equalTo((nameLabel?.snp_top)!)
+            make.height.equalTo((nameLabel?.snp_height)!)
+            make.width.equalTo(100)
+            make.right.equalTo(self).offset(-25)
         })
         
         let lineView:UIView = UIView.init()
@@ -90,6 +131,40 @@ class ServantPersonalCell: UITableViewCell {
     
     func islikeAction(sender:UIButton) {
         delegate?.servantIsLikedAction(sender, model: personModel!)
+    }
+    
+    func reportAction() {
+        delegate?.servantReport((personModel?.dynamic_id_)!)
+    }
+    
+    func dealTimeWithString(timeString:String) -> String {
+        
+        let formatter:NSDateFormatter = NSDateFormatter.init()
+        formatter.dateStyle = .MediumStyle
+        formatter.timeStyle = .ShortStyle
+        formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
+        let zone:NSTimeZone = NSTimeZone.init(name: "Asia/Shanghai")!
+        formatter.timeZone = zone
+        
+        let date:NSDate = formatter.dateFromString(timeString)!
+        
+        let time = abs(date.timeIntervalSinceNow)
+        
+        var timeLabelString:String = ""
+        if time < 60 {
+            timeLabelString = "1分钟内"
+        }else if time >= 60 && time < 3600 {
+            let min:Int = (Int(time) / 60)
+            timeLabelString = String(min) + "分钟"
+        }else if time >= 3600 && time < 86400 {
+            let day:Int64 = Int64(time) / 3600
+            timeLabelString = String(day) + "小时"
+        }else if time >= 86400 && time < 604800 {
+            let day:Int64 = Int64(time) / 86400
+            timeLabelString = String(day) + "天"
+        }
+        
+        return timeLabelString
     }
 }
 
@@ -129,6 +204,9 @@ class ServantOnePicCell: ServantPersonalCell {
     func updateImage(model:servantDynamicModel) {
         
         personModel = model
+//        // 计算时间
+//        let time = self.dealTimeWithString(model.dynamic_time_!)
+//        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_
@@ -139,8 +217,6 @@ class ServantOnePicCell: ServantPersonalCell {
             thumbUpBtn?.selected = true
             thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
         }
-        
-        
         
         let imageUrls = model.dynamic_url_
         imgView?.kf_setImageWithURL(NSURL.init(string: imageUrls!))
@@ -176,6 +252,9 @@ class ServantOneLabelCell: ServantPersonalCell {
     func updateLabelText(model:servantDynamicModel) {
         
         personModel = model
+//        // 计算时间
+//        let time = self.dealTimeWithString(model.dynamic_time_!)
+//        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_
@@ -240,6 +319,10 @@ class ServantPicAndLabelCell: ServantPersonalCell {
     func updateUI(model:servantDynamicModel) {
         
         personModel = model
+        
+//        // 计算时间
+//        let time = self.dealTimeWithString(model.dynamic_time_!)
+//        timeLabel?.text = time
         
         let isliked = model.is_liked_
         let likeCount = model.dynamic_like_count_

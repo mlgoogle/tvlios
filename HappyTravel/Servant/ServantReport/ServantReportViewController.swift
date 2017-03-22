@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ServantReportViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
     
     var tableView:UITableView?
     var dataArray:NSArray?
-    var cellIndex:NSInteger? // 选中cell的index
-    
-    
+    var cellIndex:NSInteger? // 选中cell的index 和 种类id (0~5)
+    var reportUId:Int?
+    var dynamicId:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,8 +140,22 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     // 确定实现发布
     func certainAction() {
-        
         print("~~~~~~ 确定举报~")
+        
+        let report:ServantReportModel = ServantReportModel()
+        report.uid_ = reportUId!
+        report.from_id_ = CurrentUser.uid_
+        report.report_id_ = cellIndex!
+        report.report_text_ = "测试数据"
+        APIHelper.servantAPI().servantReport(report, complete: { (response) in
+            
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "举报成功！", ForDuration: 1.5, completion: {
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            }) { (error) in
+                SVProgressHUD.showErrorMessage(ErrorMessage: "举报失败，请稍后再试~", ForDuration: 1.5, completion: {
+                })
+        }
     }
     
     override func didReceiveMemoryWarning() {

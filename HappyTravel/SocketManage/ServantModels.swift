@@ -42,6 +42,7 @@ class servantDynamicModel: Object {
     dynamic var dynamic_id_ = 0
     dynamic var dynamic_text_:String?
     dynamic var dynamic_url_:String?
+    dynamic var dynamic_time_:String?
     dynamic var dynamic_like_count_ = 0
     dynamic var is_liked_ = 0
     
@@ -61,6 +62,16 @@ class ServantThumbUpResultModel: Object {
     
     dynamic var result_ = -1
     dynamic var dynamic_like_count_ = 0
+}
+
+// 举报
+class ServantReportModel:Object {
+    dynamic var uid_ = 0 // 被举报人的id 
+    dynamic var from_id_ = CurrentUser.uid_
+    dynamic var report_id_ = 0
+    dynamic var report_text_:String?
+}
+class ServantReportResultModel: Object {
 }
 
 //照片墙
