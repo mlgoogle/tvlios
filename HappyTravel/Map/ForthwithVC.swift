@@ -319,8 +319,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         notificationCenter.addObserver(self, selector: #selector(jumpToFeedBackVC), name: NotifyDefine.FeedBackNoticeReply, object: nil)
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
     }
     
     func loginFailed(notification: NSNotification) {
@@ -456,13 +456,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     }
     
     func orderListEvaluate(notification: NSNotification?) {
-        redBool = true
-        redDotImage.image = nil
+        redBool = false
+        redDotImage.image = UIImage.init(named:"redDot")
     }
     
     func orderListNotEvaluate(notification: NSNotification?) {
-        redBool = false
-        redDotImage.image = UIImage.init(named:"redDot")
+        redBool = true
+        redDotImage.image = nil
     }
     
     func postPushMessageNotify(data: AnyObject?) {
