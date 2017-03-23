@@ -87,6 +87,8 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 if model.return_code_ == 3 {
                     MobClick.event(CommonDefine.BuriedPoint.paySuccess)
                     CurrentUser.user_cash_ = model.user_cash_
+                    //发送通知更新我的钱包页面余额
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.UpdateMoney, object: nil, userInfo: nil)
                     let alert = UIAlertController.init(title: "支付结果", message: "支付成功!", preferredStyle: .Alert)
                     
                     let ok = UIAlertAction.init(title: "好的", style: .Default, handler: { (action) in
