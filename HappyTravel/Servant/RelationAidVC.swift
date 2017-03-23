@@ -458,6 +458,8 @@ class RelationAidVC: UIViewController {
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
         let moneyPlay = money * 100
+//        let moneyPlay = 1
+        
         userTextField.resignFirstResponder()
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,

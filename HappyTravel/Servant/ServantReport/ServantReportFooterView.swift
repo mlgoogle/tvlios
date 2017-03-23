@@ -38,6 +38,7 @@ class ServantReportFooterView: UIView,UITextViewDelegate {
         textView?.textColor = UIColor.init(decR: 51, decG: 51, decB: 51, a: 1)
         textView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         textView?.delegate = self
+        textView?.returnKeyType = .Done
         self.addSubview(textView!)
         
         placeholder = UILabel.init()
@@ -76,6 +77,15 @@ class ServantReportFooterView: UIView,UITextViewDelegate {
         }else {
             placeholder?.removeFromSuperview()
         }
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
     
 }
