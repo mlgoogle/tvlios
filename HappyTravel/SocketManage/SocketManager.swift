@@ -83,6 +83,8 @@ enum SockOpcode: Int16 {
     case GetRelation = 1133
     //订单消息列表
     case OrderList = 1141
+    //个人简介
+    case PersonIntro = 1145
     
     
 }

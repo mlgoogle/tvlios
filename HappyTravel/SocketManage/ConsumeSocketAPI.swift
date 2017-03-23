@@ -72,5 +72,14 @@ class ConsumeSocketAPI: SocketAPI{
             
             }, error: error)
     }
+    //个人简介
+    func personIntro(model: PersonIntroRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
+        let packet = SocketDataPacket(opcode: .PersonIntro, model: model, type: .User)
+        startRequest(packet, complete: { (response) in
+            complete?((response as? SocketJsonResponse)?.responseModel(PersonIntroStatusModel.classForCoder()))
+            }, error: error)
+    }
+    
+    
     
 }

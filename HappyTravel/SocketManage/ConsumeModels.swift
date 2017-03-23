@@ -42,6 +42,12 @@ class OrderListRequestModel: Object {
     dynamic var page_num_ = 0
     dynamic var page_count_ = 10
 }
+//个人简介
+class PersonIntroRequestModel: Object{
+    dynamic var uid_ = 0
+    dynamic var introduce_: String?
+    dynamic var type_ = 2
+}
 
 //邀约、预约付款
 class PayForInvitationRequestModel: UserBaseModel {
