@@ -493,6 +493,9 @@ class RelationAidVC: UIViewController {
                                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
                                 })
                             }
+                            if model.result_ == 1 {
+                                 SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
+                            }
                            
                             
                             }, error: { (error) in
