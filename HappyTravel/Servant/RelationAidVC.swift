@@ -451,9 +451,14 @@ class RelationAidVC: UIViewController {
     
     //点击阴影
     func shadowDidClick() {
-        self.userTextField.resignFirstResponder()
-        wenXinView.hidden = true
-        shadow.removeFromSuperview()
+        //判断键盘是否弹出
+        if self.userTextField.resignFirstResponder() {
+            
+        }
+        else{
+            wenXinView.hidden = true
+            shadow.removeFromSuperview()
+        }
     }
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
@@ -493,16 +498,14 @@ class RelationAidVC: UIViewController {
                                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
                                 })
                             }
-                            if model.result_ == 1 {
-                                 SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
-                            }
-                           
-                            
                             }, error: { (error) in
                                 SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
                         })
-                        
                     }
+                    if model.result_ == 1 {
+                        SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
+                    }
+                    
                 }
                 
             }) { (error) in
