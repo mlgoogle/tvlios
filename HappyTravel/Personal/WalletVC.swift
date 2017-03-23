@@ -45,8 +45,16 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         //隐藏红点
         let viewHidden = tabBarController?.view.viewWithTag(10)
         viewHidden?.hidden = true
+        
+        //接收通知
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateMoney), name: NotifyDefine.UpdateMoney, object: nil)
 
     }
+    //通知执行 更新界面
+    func updateMoney() {
+        walletTable?.reloadData()
+    }
+    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
