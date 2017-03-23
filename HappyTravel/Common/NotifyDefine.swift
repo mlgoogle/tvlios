@@ -34,6 +34,6 @@ class NotifyDefine: NSObject {
     
     static let OrderList = "OrderList"
     static let OrderListNo = "OrderListNo"
-    
+    static let UpdateMoney = "UpdateMoney"
     
 }
