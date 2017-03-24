@@ -24,6 +24,9 @@ class ServantReportFooterView: UIView,UITextViewDelegate {
         
         addViews()
     }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        textView?.resignFirstResponder()
+    }
     
     func addViews() {
         
@@ -59,7 +62,7 @@ class ServantReportFooterView: UIView,UITextViewDelegate {
         textView?.snp_makeConstraints(closure: { (make) in
             make.left.equalTo(self).offset(16)
             make.top.equalTo(titleLabel.snp_bottom)
-            make.right.equalTo(self).offset(15)
+            make.right.equalTo(self).offset(-15)
             make.bottom.equalTo(self).offset(-6)
         })
         
