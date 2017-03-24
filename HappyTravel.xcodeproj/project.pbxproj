@@ -391,6 +391,7 @@
 		E95ED36C1E7B891100EB515B /* FlashGuideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95ED3691E7B891100EB515B /* FlashGuideCell.swift */; };
 		E95ED36D1E7B891100EB515B /* FlashGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95ED36A1E7B891100EB515B /* FlashGuideView.swift */; };
 		E95ED36E1E7B891100EB515B /* FlashGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95ED36B1E7B891100EB515B /* FlashGuideViewController.swift */; };
+		E97D550D1E851E35000EEEF6 /* image_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = E97D550C1E851E35000EEEF6 /* image_placeholder.png */; };
 		E98797C31E8220FE0072F868 /* ServantReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98797C11E8220FE0072F868 /* ServantReportCell.swift */; };
 		E98797C41E8220FE0072F868 /* ServantReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98797C21E8220FE0072F868 /* ServantReportViewController.swift */; };
 		E98797C61E82214B0072F868 /* ServantReportFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98797C51E82214B0072F868 /* ServantReportFooterView.swift */; };
@@ -861,6 +862,7 @@
 		E95ED3691E7B891100EB515B /* FlashGuideCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashGuideCell.swift; sourceTree = "<group>"; };
 		E95ED36A1E7B891100EB515B /* FlashGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashGuideView.swift; sourceTree = "<group>"; };
 		E95ED36B1E7B891100EB515B /* FlashGuideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashGuideViewController.swift; sourceTree = "<group>"; };
+		E97D550C1E851E35000EEEF6 /* image_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_placeholder.png; sourceTree = "<group>"; };
 		E98797C11E8220FE0072F868 /* ServantReportCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServantReportCell.swift; sourceTree = "<group>"; };
 		E98797C21E8220FE0072F868 /* ServantReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServantReportViewController.swift; sourceTree = "<group>"; };
 		E98797C51E82214B0072F868 /* ServantReportFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServantReportFooterView.swift; sourceTree = "<group>"; };
@@ -1190,6 +1192,7 @@
 		BF6E9C451DE2FD4500F32CCE /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E97D550C1E851E35000EEEF6 /* image_placeholder.png */,
 				E9AA26091E7B7ED800345277 /* GuidePage */,
 				D079A9CF1E6FF359008BA1C2 /* EnterRegister */,
 				D0D003CD1E67EAC000D8ED04 /* Aid */,
@@ -2100,6 +2103,7 @@
 				D0D003D71E67EAFC00D8ED04 /* iconV@3x.png in Resources */,
 				BF6E9D561DE2FD4500F32CCE /* guide-zhima-auth@3x.png in Resources */,
 				BF6E9D721DE2FD4500F32CCE /* pay-selected@2x.png in Resources */,
+				E97D550D1E851E35000EEEF6 /* image_placeholder.png in Resources */,
 				D079A9E21E6FF388008BA1C2 /* password@2x.png in Resources */,
 				BF6E9CFC1DE2FD4500F32CCE /* address-selector-normal@2x.png in Resources */,
 				E955222D1E7FC9CA00E156FA /* PhotoItemView.xib in Resources */,
