@@ -463,6 +463,8 @@ class RelationAidVC: UIViewController {
     //填写完微信号后确定按钮点击
     func confireBtnClick() {
         let moneyPlay = money * 100
+//        let moneyPlay = 1
+        
         userTextField.resignFirstResponder()
         if userTextField.text?.characters.count != 0 {
             let dict: [String : AnyObject] = ["from_uid_": CurrentUser.uid_,
@@ -505,7 +507,6 @@ class RelationAidVC: UIViewController {
                     if model.result_ == 1 {
                         SVProgressHUD.showErrorWithStatus("支付失败,请查看余额是否不足")
                     }
-                    
                 }
                 
             }) { (error) in

@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class ServantReportViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource{
+class ServantReportViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate{
     
     var tableView:UITableView?
     var dataArray:NSArray?
@@ -114,6 +114,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         footerView = ServantReportFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 208))
+        footerView?.textView?.delegate = self
         return footerView
     }
     
@@ -139,7 +140,6 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         cellIndex = indexPath.row
     }
     
-    
     // 确定实现发布
     func certainAction() {
         print("~~~~~~ 确定举报~")
@@ -159,6 +159,42 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
                 SVProgressHUD.showErrorMessage(ErrorMessage: "举报失败，请稍后再试~", ForDuration: 1.5, completion: {
                 })
         }
+    }
+    
+    //MARK:UITextViewDelegate
+    func textViewDidChange(textView: UITextView) {
+        
+        if textView.text.characters.count == 0 {
+//            textView.addSubview(placeholder!)
+            textView.text = "请输入~~"
+        }else {
+//            placeholder?.removeFromSuperview()
+        }
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        
+        UIView.animateWithDuration(0.3) {
+            self.tableView?.frame = CGRectMake((self.tableView?.frame.origin.x)!, (self.tableView?.frame.origin.y)! - 150 , ScreenWidth, (self.tableView?.frame.size.height)!)
+        }
+        return true
+    }
+    
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        
+        UIView.animateWithDuration(0.3) {
+            self.tableView?.frame = CGRectMake((self.tableView?.frame.origin.x)!, (self.tableView?.frame.origin.y)! + 150 , ScreenWidth, (self.tableView?.frame.size.height)!)
+        }
+        return true
     }
     
     override func didReceiveMemoryWarning() {
