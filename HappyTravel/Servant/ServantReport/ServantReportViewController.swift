@@ -18,6 +18,14 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     var dynamicId:Int?
     var footerView:ServantReportFooterView?
     
+    lazy var placeholder:UILabel = {
+        let placeholder = UILabel.init(frame: CGRectMake(6, 7, 150, 16))
+        placeholder.textColor = UIColor.init(decR: 153, decG: 153, decB: 153, a: 1)
+        placeholder.font = UIFont.systemFontOfSize(16)
+        placeholder.backgroundColor = UIColor.clearColor()
+        placeholder.text = "请输入问题补充"
+        return placeholder
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +122,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         footerView = ServantReportFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 208))
+        footerView?.textView?.addSubview(placeholder)
         footerView?.textView?.delegate = self
         return footerView
     }
@@ -166,10 +175,9 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     func textViewDidChange(textView: UITextView) {
         
         if textView.text.characters.count == 0 {
-//            textView.addSubview(placeholder!)
-            textView.text = "请输入~~"
+            textView.addSubview(placeholder)
         }else {
-//            placeholder?.removeFromSuperview()
+            placeholder.removeFromSuperview()
         }
     }
     

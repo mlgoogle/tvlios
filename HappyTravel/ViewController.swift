@@ -65,11 +65,6 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
     func startSockThread() {
         SocketManager.shareInstance
     }
