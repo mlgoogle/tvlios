@@ -87,7 +87,7 @@ class SocketRequestManage: NSObject {
         for (key,reqeust) in socketRequests {
             if reqeust.isReqeustTimeout() {
                 socketRequests.removeValueForKey(key)
-                reqeust.onError(-11011)
+//                reqeust.onError(-11011)
                 break
             }
         }
