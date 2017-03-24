@@ -64,6 +64,9 @@ class RelationAidVC: UIViewController {
     let shadow: UIButton = UIButton()
     let grayLine: UIView = UIView()
     
+    
+    var titleSizes:CGSize = CGSize()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
@@ -105,6 +108,18 @@ class RelationAidVC: UIViewController {
         APIHelper.consumeAPI().personIntro(perModel, complete: { [weak self](response) in
             if let model = response as? PersonIntroStatusModel{
                 self!.introText.text = model.result
+                let nsString = model.result as NSString
+                 self!.titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
+                if self!.titleSizes.height > 54 {
+                    self!.introText.snp_updateConstraints(closure: { (make) in
+                        make.height.equalTo(54)
+                    })
+                }else{
+                    self!.introText.snp_updateConstraints(closure: { (make) in
+                        make.height.equalTo(self!.titleSizes.height)
+                    })
+                }
+
             }
             
             }) { (error) in
@@ -268,13 +283,20 @@ class RelationAidVC: UIViewController {
         introText.font = UIFont.systemFontOfSize(14)
         
         introText.text = "个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内简介内容人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介....."
-        introText.sizeToFit()
-        
-        introText.snp_makeConstraints { (make) in
-            make.top.equalTo(introLine.snp_bottom).offset(15)
-            make.left.equalTo(introView).offset(30)
-            make.right.equalTo(introView).offset(-30)
-            make.height.equalTo(54)
+        if titleSizes.height > 54 {
+            introText.snp_makeConstraints { (make) in
+                make.top.equalTo(introLine.snp_bottom).offset(15)
+                make.left.equalTo(introView).offset(30)
+                make.right.equalTo(introView).offset(-30)
+                make.height.equalTo(54)
+            }
+        }else{
+            introText.snp_makeConstraints { (make) in
+                make.top.equalTo(introLine.snp_bottom).offset(15)
+                make.left.equalTo(introView).offset(30)
+                make.right.equalTo(introView).offset(-30)
+                make.height.equalTo(titleSizes.height)
+            }
         }
         
         //能力标签
@@ -526,8 +548,8 @@ class RelationAidVC: UIViewController {
     let selectorBtn: UIButton = UIButton()
     //展开按钮的点击
     func unfoldBtnDidClick(sender: UIButton) {
-        unfoldButton.selected = selectorBtn.selected
-        selectorBtn.selected = !sender.selected
+        unfoldButton.selected = !selectorBtn.selected
+        selectorBtn.selected = sender.selected
         if unfoldButton.selected {
             unfoldButton.setImage(UIImage(named: "packUp"), forState: UIControlState.Selected)
             unfoldButton.setTitle("收起", forState: UIControlState.Selected)
@@ -536,8 +558,6 @@ class RelationAidVC: UIViewController {
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
             
-            let nsString = introText.text! as NSString
-            let titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
             introText.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(titleSizes.height)
             })
@@ -556,10 +576,16 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
-            
-            introText.snp_updateConstraints(closure: { (make) in
-                make.height.equalTo(54)
-            })
+            if titleSizes.height > 54 {
+                introText.snp_updateConstraints(closure: { (make) in
+                    make.height.equalTo(54)
+                })
+            }else{
+                introText.snp_updateConstraints(closure: { (make) in
+                    make.height.equalTo(titleSizes.height)
+                })
+            }
+           
             introView.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(115)
                 })
