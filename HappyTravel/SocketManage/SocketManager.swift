@@ -128,7 +128,7 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             if !socket!.isConnected {
 
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "61.147.114.78"
+                    let ip:String = "192.168.199.131"
                     let port:UInt16 = 10011
 //                    let ip:String = "192.168.8.111"
 //                    let port:UInt16 = 10001
@@ -252,7 +252,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             })
         }
         SocketManager.isLogout = false
-
     }
     
     func sendHeart() {
@@ -260,7 +259,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.sendData(.Heart, data: ["uid_": CurrentUser.uid_])
         }
         performSelector(#selector(sendHeart), withObject: nil, afterDelay: 15)
-
     }
     
     func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
@@ -272,7 +270,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             SocketManager.showDisConnectErrorInfo()
         }
         self.performSelector(#selector(SocketManager.connectSock), withObject: nil, afterDelay: 5.0)
-
     }
     
     static func showDisConnectErrorInfo() {
