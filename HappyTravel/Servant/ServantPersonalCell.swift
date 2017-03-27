@@ -221,7 +221,7 @@ class ServantOnePicCell: ServantPersonalCell {
         }
         
         let imageUrls = model.dynamic_url_! + "?imageMogr2/gravity/Center/crop/1000x1000"
-        imgView?.kf_setImageWithURL(NSURL.init(string: imageUrls!),placeholderImage: UIImage.init(named: "image_placeholder"))
+        imgView?.kf_setImageWithURL(NSURL.init(string: imageUrls),placeholderImage: UIImage.init(named: "image_placeholder"))
     }
 }
 

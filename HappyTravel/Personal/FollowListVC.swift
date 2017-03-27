@@ -189,7 +189,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             if let model = response as? FollowCountModel {
                 self?.followedCount = model.follow_count_
             }
-            }, error: nil)
+        }, error: nil)
     }
     
     deinit {
