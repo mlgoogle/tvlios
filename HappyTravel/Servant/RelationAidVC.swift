@@ -20,7 +20,6 @@ class RelationAidVC: UIViewController {
     var money = 0
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height-120)
         scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 600)
         scrollView.scrollEnabled = true
         scrollView.userInteractionEnabled = true
@@ -61,9 +60,8 @@ class RelationAidVC: UIViewController {
     let wenXinView: UIView = UIView()
     let userTextField: UITextField = UITextField()
     let confireBtn: UIButton = UIButton()
-    let shadow: UIButton = UIButton()
     let grayLine: UIView = UIView()
-    
+    let shadow: UIButton = UIButton()
     
     var titleSizes:CGSize = CGSize()
     
@@ -150,14 +148,18 @@ class RelationAidVC: UIViewController {
         imageV!.backgroundColor = UIColor.clearColor()
         imageV?.center = CGPointMake(titleV.center.x, 0)
         titleV.addSubview(imageV!)
-//        vImage?.image = UIImage.init(named: "iconV")
-//        vImage?.center = CGPointMake(59, 59)
-//        titleV.addSubview(vImage!)
-        
         
         setupUIPay()
         setupUIMessage()
         setupUITextFiled()
+        
+        //滑动视图的约束
+        scrollView.snp_makeConstraints { (make) in
+            make.top.left.right.equalTo(view)
+            make.bottom.equalTo(payView.snp_top)
+        }
+        
+        
     }
     //确定支付view
     func setupUIPay() {
