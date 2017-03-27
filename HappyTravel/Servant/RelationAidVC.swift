@@ -60,9 +60,8 @@ class RelationAidVC: UIViewController {
     let wenXinView: UIView = UIView()
     let userTextField: UITextField = UITextField()
     let confireBtn: UIButton = UIButton()
-    let shadow: UIButton = UIButton()
     let grayLine: UIView = UIView()
-    
+    let shadow: UIButton = UIButton()
     
     var titleSizes:CGSize = CGSize()
     
