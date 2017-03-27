@@ -151,7 +151,8 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     // 确定实现发布
     func certainAction() {
-        print("~~~~~~ 确定举报~")
+       
+        footerView?.textView?.resignFirstResponder()
         
         let report:ServantReportModel = ServantReportModel()
         report.uid_ = reportUId!

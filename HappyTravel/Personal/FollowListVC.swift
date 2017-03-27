@@ -162,11 +162,17 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         let req = UserInfoIDStrRequestModel()
         req.uid_str_ = "\(follows[indexPath.row].uid_)"
         APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
+            
             if let models = response as? [UserInfoModel] {
+                
                 DataManager.insertDatas(models)
                 let servant = UserBaseModel()
                 servant.uid_ = self!.follows[indexPath.row].uid_
+                
+                
+                
                 APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
+                    
                     if let model = response as? ServantDetailModel {
                         DataManager.insertData(model)
                         let servantPersonalVC = ServantPersonalVC()
