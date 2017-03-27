@@ -441,7 +441,6 @@
 		2F9684241D77D2FD0028E3F2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		2F9684261D791CCB0028E3F2 /* RechargeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RechargeVC.swift; path = Personal/RechargeVC.swift; sourceTree = "<group>"; };
 		2F9684381D7D06220028E3F2 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataManager.swift; path = Data/DataManager.swift; sourceTree = "<group>"; };
-		2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		2F9B049D1E667E3400751D2E /* FollowModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowModels.swift; path = SocketManage/FollowModels.swift; sourceTree = "<group>"; };
 		2F9B049F1E667EBC00751D2E /* FollowAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowAPI.swift; path = SocketManage/FollowAPI.swift; sourceTree = "<group>"; };
 		2F9B04A21E66B08500751D2E /* FollowListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FollowListVC.swift; path = Personal/FollowListVC.swift; sourceTree = "<group>"; };
@@ -1019,7 +1018,6 @@
 		2FA75CE91D5081CB00609C8E = {
 			isa = PBXGroup;
 			children = (
-				2F96843A1D7D09C00028E3F2 /* MyPlayground.playground */,
 				2FA75CF41D5081CB00609C8E /* HappyTravel */,
 				BF6E9C451DE2FD4500F32CCE /* Resource */,
 				2FA75D291D50DE7100609C8E /* Bridge */,
