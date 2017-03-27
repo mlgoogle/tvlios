@@ -100,32 +100,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
-        //防止数据库清空
-        var count = 0
-        let req = OrderListRequestModel()
-        req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { (response) in
-            if let models = response as? [OrderListCellModel]{
-                for model in models{
-                    if model.is_evaluate_ == 0{
-                        count = count + 1
-                    }
-                    else{
-                        continue
-                    }
-                }
-                if count == 0 {
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                }
-                else{
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
-                }
-            }
-            },error:{ (error) in
-        })
-
         //红点
         if redBool {
             redDotImage.removeFromSuperview()
