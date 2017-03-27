@@ -474,9 +474,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     }
                 }
             }
-            
         }
-        
     }
     
     public func mapView(mapView: MAMapView!, mapDidMoveByUser wasUserAction: Bool) {
@@ -539,7 +537,9 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
                 }
             }, error: nil)
+            
         }
+                
     }
     
     func cashCheck() -> Bool {
@@ -582,14 +582,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         default:
             break
         }
-        
-        
     }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
 }
 
 
