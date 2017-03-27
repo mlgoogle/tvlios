@@ -178,7 +178,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     req.longitude_ = Float.init(location[0])!
                     req.latitude_ = Float.init(location[1])!
                     APIHelper.userAPI().modifyUserInfo(req, complete: { [weak self](response) in
-                        SVProgressHUD.dismiss()
+                        SVProgressHUD.showSuccessWithStatus("设置成功")
                         self?.navigationController?.popViewControllerAnimated(true)
                         CurrentUser.head_url_ = self?.headerUrl
                         CurrentUser.nickname_ = self?.nickname
