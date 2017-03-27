@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class BaseNavigationController: UINavigationController,UINavigationControllerDelegate ,UIGestureRecognizerDelegate {
 
@@ -42,6 +43,7 @@ class BaseNavigationController: UINavigationController,UINavigationControllerDel
         interactivePopGestureRecognizer?.delegate = self
     }
     func popself(){
+        SVProgressHUD.dismiss()
         if viewControllers.count > 1 {
             self.popViewControllerAnimated(true)
         }else{
