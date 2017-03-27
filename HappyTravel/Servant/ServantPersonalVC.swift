@@ -53,6 +53,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(personalInfo)
+        
         // 查询关注状态并更新UI
         updateFollowStatus()
         // 查询粉丝数
@@ -161,7 +164,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 
                 return cell
                 
-            }else if detailText.characters.count  == 0 && urlArray.count == 1 {
+            } else if detailText.characters.count  == 0 && urlArray.count == 1 {
                 // 只有一张图片的cell
                 let cell = tableView.dequeueReusableCellWithIdentifier("ServantOnePicCell", forIndexPath: indexPath) as! ServantOnePicCell
                 cell.delegate = self
@@ -173,7 +176,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.updateImage(model)
                 return cell
                 
-            }else {
+            } else {
                 // 复合cell
                 let cell = tableView.dequeueReusableCellWithIdentifier("ServantPicAndLabelCell", forIndexPath: indexPath) as! ServantPicAndLabelCell
                 cell.delegate = self
@@ -236,7 +239,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             topTitle?.text = ""
             leftBtn?.setImage(UIImage.init(named: "nav-back"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb"), forState: .Normal)
-        }else {
+        } else {
             let alpha:CGFloat = 1 - ((64 - offsetY) / 64)
             topView?.backgroundColor = color.colorWithAlphaComponent(alpha)
             
@@ -378,6 +381,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             }, error: nil)
     }
+    
     // 取关
     func dismissAttention() {
         
@@ -392,10 +396,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             }
             self!.headerView!.uploadAttentionStatus(self!.follow)
             self?.updateFollowCount()
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "取消关注成功", ForDuration: 1.5, completion: {
-            })
-            
-            }, error: nil)
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "取消关注成功", ForDuration: 1.5, completion: nil)
+        }, error: nil)
     }
     
     // 查询粉丝数量

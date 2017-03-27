@@ -57,10 +57,4 @@ class CommonAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(ClienWXPayStatusModel.classForCoder()))
             }, error: error)
     }
-    
-    
-    
-    
-
-    
 }

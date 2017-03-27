@@ -59,8 +59,6 @@ class UserInfoModel: UserModel {
     dynamic var follow_count_ = 0
 }
 
-
-
 class UploadContactModel: Object {    
     dynamic var uid = 0
     var contacts_list:List<ContactModel> = List<ContactModel>()

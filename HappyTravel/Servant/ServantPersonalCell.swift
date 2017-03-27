@@ -331,7 +331,7 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         if isliked == 0 {
             thumbUpBtn?.selected = false
             thumbUpBtn?.setTitle(String(likeCount), forState: .Normal)
-        }else {
+        } else {
             thumbUpBtn?.selected = true
             thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
         }

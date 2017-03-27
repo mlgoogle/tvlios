@@ -539,9 +539,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
                 }
             }, error: nil)
-            
         }
-                
     }
     
     func cashCheck() -> Bool {

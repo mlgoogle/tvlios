@@ -72,6 +72,7 @@ class ConsumeSocketAPI: SocketAPI{
             
             }, error: error)
     }
+    
     //个人简介
     func personIntro(model: PersonIntroRequestModel,complete: CompleteBlock?, error: ErrorBlock?){
         let packet = SocketDataPacket(opcode: .PersonIntro, model: model, type: .User)

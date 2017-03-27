@@ -9,7 +9,6 @@
 import Foundation
 import RealmSwift
 
-
 class ServantDetailModel: Object {
  
     dynamic var uid_ = -1
@@ -19,6 +18,14 @@ class ServantDetailModel: Object {
     dynamic var heag_bg_url_:String?
     
     dynamic var traval_tag_:String?
+    
+    dynamic var uname_:String?
+    
+    dynamic var service_score_:String?
+    
+    dynamic var follow_count_ = 0
+    
+    dynamic var is_follow_ = 0
     
     var tags:[String] {
         if let arrTags = traval_tag_?.componentsSeparatedByString(",") {
