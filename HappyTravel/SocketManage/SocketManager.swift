@@ -252,7 +252,6 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             })
         }
         SocketManager.isLogout = false
-
     }
     
     func sendHeart() {
