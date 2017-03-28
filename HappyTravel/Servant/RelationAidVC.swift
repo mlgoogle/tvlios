@@ -155,10 +155,10 @@ class RelationAidVC: UIViewController {
         setupUIMessage()
         setupUITextFiled()
         
-        //滑动视图的约束
+        //scrollView滑动视图的约束
         scrollView.snp_makeConstraints { (make) in
             make.top.left.right.equalTo(view)
-            make.bottom.equalTo(payView.snp_top)
+            make.bottom.equalTo(payView.snp_top).offset(-8)
         }
         
         
