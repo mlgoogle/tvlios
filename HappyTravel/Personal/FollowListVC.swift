@@ -164,23 +164,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
             
             if let models = response as? [UserInfoModel] {
-                
                 DataManager.insertDatas(models)
-                let servant = UserBaseModel()
-                servant.uid_ = self!.follows[indexPath.row].uid_
-                
-                
-                
-                APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
-                    
-                    if let model = response as? ServantDetailModel {
-                        DataManager.insertData(model)
-                        let servantPersonalVC = ServantPersonalVC()
-                        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-                        self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
-                    }
-                    }, error: nil
-                
                 let servantPersonalVC = ServantPersonalVC()
                 servantPersonalVC.servantInfo = models.first
                 self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
