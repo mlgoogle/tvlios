@@ -158,6 +158,7 @@ class AidWenXinVC: UIViewController{
             evaluateBtn.enabled = true
         }
     }
+    
     //点击评价按钮
     func evaluateDidClick() {
         let orderEvaluate = OrderEvaluateVC()

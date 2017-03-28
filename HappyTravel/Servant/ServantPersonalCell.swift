@@ -155,15 +155,15 @@ class ServantPersonalCell: UITableViewCell {
         var timeLabelString:String = ""
         if time < 60 {
             timeLabelString = "1分钟内"
-        }else if time >= 60 && time < 3600 {
+        } else if time >= 60 && time < 3600 {
             let min:Int = (Int(time) / 60)
             timeLabelString = String(min) + "分钟"
-        }else if time >= 3600 && time < 86400 {
+        } else if time >= 3600 && time < 86400 {
             let day:Int64 = Int64(time) / 3600
             timeLabelString = String(day) + "小时"
-        }else if time >= 86400 && time < 604800 {
+        } else if time >= 86400 {
             let day:Int64 = Int64(time) / 86400
-            timeLabelString = String(day) + "天"
+            timeLabelString = String(day) + "天前"
         }
         
         return timeLabelString

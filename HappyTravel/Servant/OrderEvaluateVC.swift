@@ -260,15 +260,14 @@ class OrderEvaluateVC: UIViewController {
                             for model in models{
                                 if model.is_evaluate_ == 0{
                                     count = count + 1
-                                }
-                                else{
+                                } else{
                                     continue
                                 }
                             }
+                            
                             if count == 0 {
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                            }
-                            else{
+                            } else {
                                 
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                             }
