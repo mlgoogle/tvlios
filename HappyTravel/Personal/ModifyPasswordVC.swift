@@ -161,9 +161,10 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         sureBtn = cell?.contentView.viewWithTag(2001) as? UIButton
         if sureBtn == nil {
             sureBtn = UIButton()
-            sureBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
+            sureBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            sureBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
             sureBtn?.tag = 2001
-            sureBtn?.layer.cornerRadius = 5
+            sureBtn?.layer.cornerRadius = 35 / 2
             sureBtn?.layer.masksToBounds = true
             sureBtn?.setTitle(tableOption?[indexPath.section][indexPath.row][0], forState: .Normal)
             sureBtn?.addTarget(self, action: #selector(ModifyPasswordVC.modifyPwd(_:)), forControlEvents: .TouchUpInside)
@@ -259,12 +260,18 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         switch textField.tag {
         case 1002:
             oldPasswd = ""
+            sureBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            sureBtn?.enabled = false
             break
         case 1003:
             newPasswd = ""
+            sureBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            sureBtn?.enabled = false
             break
         case 1004:
             verifyPasswd = ""
+            sureBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            sureBtn?.enabled = false
             break
         default:
             break
@@ -278,7 +285,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
         
         sureBtn?.enabled = false
-        sureBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
+        sureBtn?.backgroundColor = UIColor.init(decR: 224, decG: 224, decB: 224, a: 1)
         if textField.tag == 1002 {
             oldPasswd = textField.text! + string
         } else if textField.tag == 1003 {
@@ -298,7 +305,7 @@ class ModifyPasswordVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         if verifyPasswd! != newPasswd! {
                             sureBtn?.setTitle("新密码不一致", forState: .Disabled)
                         } else {
-                            sureBtn?.backgroundColor = UIColor.init(decR: 10, decG: 20, decB: 40, a: 1)
+                            sureBtn?.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
                             sureBtn?.enabled = true
                         }
                     } else {
