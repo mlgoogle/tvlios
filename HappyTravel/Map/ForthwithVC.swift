@@ -337,14 +337,18 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                         continue
                     }
                 }
-                if count == 0 {
+                if count == 0{
                     self.first = false
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
                 } else {
                     self.first = true
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                 }
+            } else {
+                self.first = false
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
             }
+            
             },error:{ (error) in
         })
 
