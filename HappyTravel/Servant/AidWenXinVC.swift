@@ -32,7 +32,6 @@ class AidWenXinVC: UIViewController{
         view.backgroundColor = UIColor.whiteColor()
         title = "助理微信"
         setupUI()
-
         
         let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
         leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
@@ -54,17 +53,16 @@ class AidWenXinVC: UIViewController{
                     self!.isEvaluate = true
                     self!.isEvaluate(self!.isEvaluate)
                 }
-                
             }
             }, error: { (error) in
-                
         })
-
     }
+    
     func didBack() {
         isRefresh!()
         navigationController?.popViewControllerAnimated(true)
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         //隐藏小红点
@@ -172,6 +170,7 @@ class AidWenXinVC: UIViewController{
         }
         navigationController?.pushViewController(orderEvaluate, animated: true)
     }
+    
     //点击复制助理微信号按钮
     func copyBtnDidClick() {
         let pasteboard = UIPasteboard.generalPasteboard()

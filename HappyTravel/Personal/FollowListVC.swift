@@ -67,7 +67,6 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         table.mj_header = header
         footer.setRefreshingTarget(self, refreshingAction: #selector(footerRefresh))
         table.mj_footer = footer
-        
     }
     
     func headerRefresh() {
@@ -172,7 +171,6 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }, error: { (err) in
         
         })
-        
     }
     
     deinit {
