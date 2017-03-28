@@ -39,9 +39,9 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     func addViews() {
         
-        tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 85), style: .Grouped)
+        tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight - 68), style: .Grouped)
         tableView?.separatorStyle = .SingleLine
-        tableView?.backgroundColor = UIColor.redColor()
+        tableView?.backgroundColor = UIColor.whiteColor()
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.rowHeight = 45
@@ -49,7 +49,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         tableView?.registerClass(ServantReportCell.self, forCellReuseIdentifier: "ServantReportCell")
         tableView?.snp_makeConstraints(closure: { (make) in
             make.left.right.top.equalTo(self.view)
-            make.height.equalTo(ScreenHeight - 64 - 85)
+            make.height.equalTo(ScreenHeight - 68)
         })
         
         let bottomView:UIView = UIView.init()
@@ -57,7 +57,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         view.addSubview(bottomView)
         bottomView.snp_makeConstraints { (make) in
             make.left.right.bottom.equalTo(self.view)
-            make.height.equalTo(76)
+            make.height.equalTo(66)
         }
         
         let certainBtn:UIButton = UIButton.init(type: .Custom)
@@ -69,7 +69,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         certainBtn.layer.masksToBounds = true
         certainBtn.layer.cornerRadius = 23
         certainBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(bottomView).offset(15)
+            make.top.equalTo(bottomView).offset(10)
             make.left.equalTo(bottomView).offset(16)
             make.right.equalTo(bottomView).offset(-16)
             make.height.equalTo(46)
