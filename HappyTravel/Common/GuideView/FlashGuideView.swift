@@ -32,6 +32,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.alwaysBounceVertical = false
         collectionView.alwaysBounceHorizontal = false
         collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
         return collectionView
     }()
@@ -53,7 +54,7 @@ class FlashGuideView: UIView, UICollectionViewDelegate, UICollectionViewDataSour
         isImage = false
         collectionView.contentSize = CGSizeMake((UIScreen.mainScreen().bounds.size.width * CGFloat(imagesUrl!.count - 1)), 0)
         collectionView.delegate = self
-        
+
         collectionView.dataSource = self
         collectionView.registerClass(FlashGuideCell.self, forCellWithReuseIdentifier: "FlashGuideCell")
         collectionView.reloadData()

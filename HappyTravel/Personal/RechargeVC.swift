@@ -339,7 +339,7 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
                 payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
                 payBtn?.setTitle("确认充值", forState: .Normal)
-                payBtn?.layer.cornerRadius = 5
+                payBtn?.layer.cornerRadius = 40 / 2
                 payBtn?.layer.masksToBounds = true
                 payBtn?.addTarget(self, action: #selector(RechargeVC.payAction(_:)), forControlEvents: .TouchUpInside)
                 cell?.contentView.addSubview(payBtn!)
