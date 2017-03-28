@@ -36,7 +36,6 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateFollowCount()
         header.performSelector(#selector(MJRefreshHeader.beginRefreshing), withObject: nil, afterDelay: 0.5)
     }
     
@@ -79,6 +78,7 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         APIHelper.followAPI().followList(req, complete: { [weak self](response) in
             if let models = response as? [FollowListCellModel] {
                 self?.follows = models
+                self?.followedCount = models.count
                 self?.endRefresh()
             }
             if self?.follows.count < 10 {
@@ -164,32 +164,15 @@ class FollowListVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         APIHelper.servantAPI().getUserInfoByString(req, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
                 DataManager.insertDatas(models)
-                let servant = UserBaseModel()
-                servant.uid_ = self!.follows[indexPath.row].uid_
-                APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
-                    if let model = response as? ServantDetailModel {
-                        DataManager.insertData(model)
-                        let servantPersonalVC = ServantPersonalVC()
-                        servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-                        self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
-                    }
-                    }, error: nil)
+                
+                let servantPersonalVC = ServantPersonalVC()
+                servantPersonalVC.servantInfo = models.first
+                self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
             }
         }, error: { (err) in
         
         })
         
-    }
-    
-    func updateFollowCount() {
-        let req = FollowCountRequestModel()
-        req.uid_ = CurrentUser.uid_
-        req.type_ = 1
-        APIHelper.followAPI().followCount(req, complete: { [weak self](response) in
-            if let model = response as? FollowCountModel {
-                self?.followedCount = model.follow_count_
-            }
-        }, error: nil)
     }
     
     deinit {

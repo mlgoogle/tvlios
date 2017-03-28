@@ -19,14 +19,6 @@ class ServantDetailModel: Object {
     
     dynamic var traval_tag_:String?
     
-    dynamic var uname_:String?
-    
-    dynamic var service_score_:String?
-    
-    dynamic var follow_count_ = 0
-    
-    dynamic var is_follow_ = 0
-    
     var tags:[String] {
         if let arrTags = traval_tag_?.componentsSeparatedByString(",") {
             return arrTags

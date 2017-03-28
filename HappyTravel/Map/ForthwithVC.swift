@@ -526,20 +526,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
             
-            let servant = UserBaseModel()
-            servant.uid_ = (view as! GuideTagCell).userInfo!.uid_
-            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
-                if let model = response as? ServantDetailModel {
-                    DataManager.insertData(model)
-                    let servantPersonalVC = ServantPersonalVC()
-                    servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-//                    self!.redDotImage.image = nil
-                    self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
-                }
-            }, error: nil)
-            
+            let servantPersonalVC = ServantPersonalVC()
+            servantPersonalVC.servantInfo = (view as! GuideTagCell).userInfo
+            self.navigationController?.pushViewController(servantPersonalVC, animated: true)
         }
-                
     }
     
     func cashCheck() -> Bool {
