@@ -81,6 +81,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func initView() {
+        view.addSubview(UIView.init(frame: CGRectZero))
         table = UITableView(frame: CGRectZero, style: .Plain)
         table?.delegate = self
         table?.dataSource = self
@@ -90,6 +91,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         table?.separatorStyle = .None
         table?.backgroundColor = UIColor.init(decR: 241, decG: 242, decB: 243, a: 1)
         view.addSubview(table!)
+        table?.tableFooterView = UIView.init(frame: CGRectZero)
         table?.snp_makeConstraints(closure: { (make) in
             make.edges.equalTo(view)
         })
@@ -100,6 +102,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             indexBtn.backgroundColor = UIColor.clearColor()
             indexBtn.setTitle(i != keys!.count - 1 ? keys![i] as? String : "#", forState: .Normal)
             indexBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
+            indexBtn.titleLabel?.font = UIFont.systemFontOfSize(S12)
             indexBtn.addTarget(self, action: #selector(AddressSelVC.indexAction(_:)), forControlEvents: .TouchUpInside)
             view.addSubview(indexBtn)
             indexBtn.snp_makeConstraints(closure: { (make) in
@@ -128,11 +131,7 @@ class AddressSelVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.001
+        return 30
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

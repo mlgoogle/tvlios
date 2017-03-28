@@ -20,7 +20,6 @@ class RelationAidVC: UIViewController {
     var money = 0
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, UIScreen.mainScreen().bounds.height-120)
         scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 600)
         scrollView.scrollEnabled = true
         scrollView.userInteractionEnabled = true
@@ -61,8 +60,10 @@ class RelationAidVC: UIViewController {
     let wenXinView: UIView = UIView()
     let userTextField: UITextField = UITextField()
     let confireBtn: UIButton = UIButton()
-    let shadow: UIButton = UIButton()
     let grayLine: UIView = UIView()
+    let shadow: UIButton = UIButton()
+    
+    var titleSizes:CGSize = CGSize()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +106,18 @@ class RelationAidVC: UIViewController {
         APIHelper.consumeAPI().personIntro(perModel, complete: { [weak self](response) in
             if let model = response as? PersonIntroStatusModel{
                 self!.introText.text = model.result
+                let nsString = model.result as NSString
+                 self!.titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
+                if self!.titleSizes.height > 54 {
+                    self!.introText.snp_updateConstraints(closure: { (make) in
+                        make.height.equalTo(54)
+                    })
+                }else{
+                    self!.introText.snp_updateConstraints(closure: { (make) in
+                        make.height.equalTo(self!.titleSizes.height)
+                    })
+                }
+
             }
             
             }) { (error) in
@@ -135,14 +148,18 @@ class RelationAidVC: UIViewController {
         imageV!.backgroundColor = UIColor.clearColor()
         imageV?.center = CGPointMake(titleV.center.x, 0)
         titleV.addSubview(imageV!)
-//        vImage?.image = UIImage.init(named: "iconV")
-//        vImage?.center = CGPointMake(59, 59)
-//        titleV.addSubview(vImage!)
-        
         
         setupUIPay()
         setupUIMessage()
         setupUITextFiled()
+        
+        //滑动视图的约束
+        scrollView.snp_makeConstraints { (make) in
+            make.top.left.right.equalTo(view)
+            make.bottom.equalTo(payView.snp_top)
+        }
+        
+        
     }
     //确定支付view
     func setupUIPay() {
@@ -268,13 +285,20 @@ class RelationAidVC: UIViewController {
         introText.font = UIFont.systemFontOfSize(14)
         
         introText.text = "个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内容，个人简介内容简介内简介内容人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介人简介内容简介....."
-        introText.sizeToFit()
-        
-        introText.snp_makeConstraints { (make) in
-            make.top.equalTo(introLine.snp_bottom).offset(15)
-            make.left.equalTo(introView).offset(30)
-            make.right.equalTo(introView).offset(-30)
-            make.height.equalTo(54)
+        if titleSizes.height > 54 {
+            introText.snp_makeConstraints { (make) in
+                make.top.equalTo(introLine.snp_bottom).offset(15)
+                make.left.equalTo(introView).offset(30)
+                make.right.equalTo(introView).offset(-30)
+                make.height.equalTo(54)
+            }
+        }else{
+            introText.snp_makeConstraints { (make) in
+                make.top.equalTo(introLine.snp_bottom).offset(15)
+                make.left.equalTo(introView).offset(30)
+                make.right.equalTo(introView).offset(-30)
+                make.height.equalTo(titleSizes.height)
+            }
         }
         
         //能力标签
@@ -527,8 +551,8 @@ class RelationAidVC: UIViewController {
     let selectorBtn: UIButton = UIButton()
     //展开按钮的点击
     func unfoldBtnDidClick(sender: UIButton) {
-        unfoldButton.selected = selectorBtn.selected
-        selectorBtn.selected = !sender.selected
+        unfoldButton.selected = !selectorBtn.selected
+        selectorBtn.selected = sender.selected
         if unfoldButton.selected {
             unfoldButton.setImage(UIImage(named: "packUp"), forState: UIControlState.Selected)
             unfoldButton.setTitle("收起", forState: UIControlState.Selected)
@@ -537,8 +561,6 @@ class RelationAidVC: UIViewController {
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
             
-            let nsString = introText.text! as NSString
-            let titleSizes = nsString.boundingRectWithSize(CGSizeMake(UIScreen.mainScreen().bounds.size.width - 60, CGFloat(MAXFLOAT)), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14)], context: nil).size
             introText.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(titleSizes.height)
             })
@@ -557,10 +579,16 @@ class RelationAidVC: UIViewController {
             let titleSize:CGSize = unfoldButton.titleLabel!.frame.size
             unfoldButton.titleEdgeInsets = UIEdgeInsets(top: 0, left:-imageSize.width * 2, bottom: 0, right: 0)
             unfoldButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width * 2 - 5.0)
-            
-            introText.snp_updateConstraints(closure: { (make) in
-                make.height.equalTo(54)
-            })
+            if titleSizes.height > 54 {
+                introText.snp_updateConstraints(closure: { (make) in
+                    make.height.equalTo(54)
+                })
+            }else{
+                introText.snp_updateConstraints(closure: { (make) in
+                    make.height.equalTo(titleSizes.height)
+                })
+            }
+           
             introView.snp_updateConstraints(closure: { (make) in
                 make.height.equalTo(115)
                 })

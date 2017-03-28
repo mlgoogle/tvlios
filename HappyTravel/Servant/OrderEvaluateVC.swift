@@ -255,7 +255,7 @@ class OrderEvaluateVC: UIViewController {
                     var count = 0
                     let req = OrderListRequestModel()
                     req.uid_ = CurrentUser.uid_
-                    APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+                    APIHelper.consumeAPI().orderList(req, complete: { (response) in
                         if let models = response as? [OrderListCellModel]{
                             for model in models{
                                 if model.is_evaluate_ == 0{
@@ -273,7 +273,7 @@ class OrderEvaluateVC: UIViewController {
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                             }
                         }
-                        },error:{ [weak self](error) in
+                        },error:{ (error) in
                         })
 
                     SVProgressHUD.dismiss()
@@ -282,16 +282,12 @@ class OrderEvaluateVC: UIViewController {
                 })
             }) { (error) in
             }
-        }
-        else{
+        } else {
             SVProgressHUD.showErrorMessage(ErrorMessage: "只能输入255个字,你输入的字数超过限制", ForDuration: 1.0, completion: { 
                 SVProgressHUD.dismiss()
             })
         }
-  
-        
     }
-
 }
 
 extension OrderEvaluateVC: UITextViewDelegate{

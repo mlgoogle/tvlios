@@ -37,6 +37,7 @@ class ServantAPI: SocketAPI {
             complete?((response as? SocketJsonResponse)?.responseModel(ServantDetailModel.classForCoder()))
             }, error: error)
     }
+    
     /**
      根据uid字符串获取获取用户信息
      
@@ -49,8 +50,8 @@ class ServantAPI: SocketAPI {
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModels(UserInfoModel.classForCoder(), listKey: "userinfo_list_"))
             }, error: error)
-        
     }
+    
     /**
      请求照片墙
      

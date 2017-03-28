@@ -9,7 +9,6 @@
 import Foundation
 import RealmSwift
 
-
 class ServantDetailModel: Object {
  
     dynamic var uid_ = -1

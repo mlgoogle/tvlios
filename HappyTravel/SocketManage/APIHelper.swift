@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class APIHelper {
     
     private static var _userAPI = UserAPI()

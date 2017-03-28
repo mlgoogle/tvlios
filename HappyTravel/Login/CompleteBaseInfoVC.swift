@@ -178,7 +178,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     req.longitude_ = Float.init(location[0])!
                     req.latitude_ = Float.init(location[1])!
                     APIHelper.userAPI().modifyUserInfo(req, complete: { [weak self](response) in
-                        SVProgressHUD.dismiss()
+                        SVProgressHUD.showSuccessWithStatus("设置成功")
                         self?.navigationController?.popViewControllerAnimated(true)
                         CurrentUser.head_url_ = self?.headerUrl
                         CurrentUser.nickname_ = self?.nickname
@@ -440,7 +440,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             self.imagePicker?.sourceType = .Camera
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
         }
-        let labAction:UIAlertAction! = UIAlertAction.init(title: "相册", style: .Default) { action in
+        let labAction:UIAlertAction! = UIAlertAction.init(title: "从系统相册中选择", style: .Default) { action in
             self.imagePicker?.sourceType = .PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
         }

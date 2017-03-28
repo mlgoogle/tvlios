@@ -336,9 +336,10 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             if payBtn == nil {
                 payBtn = UIButton()
                 payBtn?.tag = tags["payBtn"]!
-                payBtn?.backgroundColor = UIColor.init(decR: 170, decG: 170, decB: 170, a: 1)
+                payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+                payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
                 payBtn?.setTitle("确认充值", forState: .Normal)
-                payBtn?.layer.cornerRadius = 5
+                payBtn?.layer.cornerRadius = 40 / 2
                 payBtn?.layer.masksToBounds = true
                 payBtn?.addTarget(self, action: #selector(RechargeVC.payAction(_:)), forControlEvents: .TouchUpInside)
                 cell?.contentView.addSubview(payBtn!)
@@ -354,10 +355,12 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             }
             
             if chargeNumber != nil {
-                payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+                payBtn?.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+                payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
                 payBtn?.enabled = true
             }else{
-                payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+                payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+                payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
                 payBtn?.enabled = false
             }
             
@@ -397,7 +400,8 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func textFieldShouldClear(textField: UITextField) -> Bool {
         amount = ""
-        payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+        payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+        payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
         payBtn?.enabled = false
         return true
     }
@@ -405,10 +409,12 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         
         if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > 0 {
-            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+            payBtn?.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+            payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
             payBtn?.enabled = true
         } else {
-            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+            payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
             payBtn?.enabled = false
         }
         return true
@@ -420,10 +426,12 @@ class RechargeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
         if textField.text?.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) == 1 &&
         string == "" {
-            payBtn?.backgroundColor = UIColor.init(red: 170/255.0, green: 170/255.0, blue: 170/255.0, alpha: 1)
+            payBtn?.backgroundColor = UIColor.init(red: 224/255.0, green: 224/255.0, blue: 224/255.0, alpha: 1)
+            payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
             payBtn?.enabled = false
         } else {
-            payBtn?.backgroundColor = UIColor.init(red: 32/255.0, green: 43/255.0, blue: 80/255.0, alpha: 1)
+            payBtn?.backgroundColor = UIColor.init(red: 252/255.0, green: 163/255.0, blue: 17/255.0, alpha: 1)
+            payBtn?.setTitleColor(UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1), forState: UIControlState.Normal)
             payBtn?.enabled = true
         }
         return true

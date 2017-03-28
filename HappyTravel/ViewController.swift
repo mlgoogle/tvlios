@@ -29,6 +29,32 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         forthwithVC.modalTransitionStyle = .CrossDissolve
         forthwithVC.view.backgroundColor = UIColor.whiteColor()
         let forthwithNC = BaseNavigationController(rootViewController: forthwithVC)
+        
+        //防止数据库清空.及新用户第一次登录,隐藏小红点
+        var count = 0
+        let req = OrderListRequestModel()
+        req.uid_ = CurrentUser.uid_
+        APIHelper.consumeAPI().orderList(req, complete: { (response) in
+            if let models = response as? [OrderListCellModel]{
+                for model in models{
+                    if model.is_evaluate_ == 0{
+                        count = count + 1
+                    }
+                    else{
+                        continue
+                    }
+                }
+                if count == 0 {
+                    
+                    forthwithVC.redBool = true
+                }
+                else{
+                    
+                    forthwithVC.redBool = false
+                }
+            }
+            },error:{ (error) in
+        })
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [forthwithNC]

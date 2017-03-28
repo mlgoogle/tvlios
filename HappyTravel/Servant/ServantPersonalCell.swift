@@ -96,7 +96,9 @@ class ServantPersonalCell: UITableViewCell {
         thumbUpBtn?.setImage(UIImage.init(named: "thumbUp-normal"), forState: .Normal)
         thumbUpBtn?.setImage(UIImage.init(named: "thumbUp-selected"), forState: .Selected)
         thumbUpBtn?.addTarget(self, action: #selector(ServantPersonalCell.islikeAction(_:)), forControlEvents: .TouchUpInside)
+        thumbUpBtn?.titleEdgeInsets = UIEdgeInsets(top: 0, left:8, bottom: 0, right: 0)
         self.addSubview(thumbUpBtn!)
+        
         
         thumbUpBtn?.snp_makeConstraints(closure: { (make) in
             make.right.equalTo((reportBtn?.snp_left)!)
@@ -329,7 +331,7 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         if isliked == 0 {
             thumbUpBtn?.selected = false
             thumbUpBtn?.setTitle(String(likeCount), forState: .Normal)
-        }else {
+        } else {
             thumbUpBtn?.selected = true
             thumbUpBtn?.setTitle(String(likeCount), forState: .Selected)
         }

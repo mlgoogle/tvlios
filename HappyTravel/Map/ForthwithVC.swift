@@ -100,32 +100,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
-        //防止数据库清空
-        var count = 0
-        let req = OrderListRequestModel()
-        req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { (response) in
-            if let models = response as? [OrderListCellModel]{
-                for model in models{
-                    if model.is_evaluate_ == 0{
-                        count = count + 1
-                    }
-                    else{
-                        continue
-                    }
-                }
-                if count == 0 {
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                }
-                else{
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
-                }
-            }
-            },error:{ (error) in
-        })
-
         //红点
         if redBool {
             redDotImage.removeFromSuperview()
@@ -500,9 +474,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     }
                 }
             }
-            
         }
-        
     }
     
     public func mapView(mapView: MAMapView!, mapDidMoveByUser wasUserAction: Bool) {
@@ -554,20 +526,10 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         if view.isKindOfClass(GuideTagCell) {
             mapView.deselectAnnotation(view.annotation, animated: false)
             
-            let servant = UserBaseModel()
-            servant.uid_ = (view as! GuideTagCell).userInfo!.uid_
-            APIHelper.servantAPI().servantDetail(servant, complete: { [weak self](response) in
-                if let model = response as? ServantDetailModel {
-                    DataManager.insertData(model)
-                    let servantPersonalVC = ServantPersonalVC()
-                    servantPersonalVC.personalInfo = DataManager.getData(UserInfoModel.self, filter: "uid_ = \(servant.uid_)")?.first
-//                    self!.redDotImage.image = nil
-                    self?.navigationController?.pushViewController(servantPersonalVC, animated: true)
-                }
-            }, error: nil)
-            
+            let servantPersonalVC = ServantPersonalVC()
+            servantPersonalVC.servantInfo = (view as! GuideTagCell).userInfo
+            self.navigationController?.pushViewController(servantPersonalVC, animated: true)
         }
-                
     }
     
     func cashCheck() -> Bool {
@@ -610,14 +572,11 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         default:
             break
         }
-        
-        
     }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
 }
 
 
