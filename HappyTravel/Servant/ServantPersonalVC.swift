@@ -36,7 +36,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     
     
     var pageNum:Int = 0
-    var dataArray = [servantDynamicModel]()
+    var dataArray = [ServantDynamicModel]()
     var timer:NSTimer? // 刷新用
     
     // MARK: - 函数方法
@@ -146,7 +146,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         if indexPath.row < dataArray.count {
             
-            let model:servantDynamicModel = dataArray[indexPath.row]
+            let model:ServantDynamicModel = dataArray[indexPath.row]
             let detailText:String = model.dynamic_text_!
             let urlStr = model.dynamic_url_
             let urlArray = urlStr!.componentsSeparatedByString(",")
@@ -264,7 +264,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         APIHelper.servantAPI().requestDynamicList(detailInfo, complete: { [weak self](response) in
             YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1","insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
-            if let models = response as? [servantDynamicModel] {
+            if let models = response as? [ServantDynamicModel] {
                 self?.dataArray = models
                 self?.endRefresh()
             }
@@ -291,7 +291,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         APIHelper.servantAPI().requestDynamicList(detailInfo, complete: { [weak self](response) in
             
-            if let models = response as? [servantDynamicModel] {
+            if let models = response as? [ServantDynamicModel] {
                 self?.dataArray += models
                 self?.endRefresh()
             } else {
@@ -419,7 +419,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     // 点赞
-    func servantIsLikedAction(sender: UIButton, model: servantDynamicModel) {
+    func servantIsLikedAction(sender: UIButton, model: ServantDynamicModel) {
         
         let req = ServantThumbUpModel()
         req.dynamic_id_ = model.dynamic_id_
@@ -445,7 +445,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     // 图片点击放大
-    func servantImageDidClicked(model: servantDynamicModel, index: Int) {
+    func servantImageDidClicked(model: ServantDynamicModel, index: Int) {
         // 解析图片链接
         let urlString:String = model.dynamic_url_!
         let imageUrls:NSArray = urlString.componentsSeparatedByString(",")
