@@ -343,23 +343,17 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         let urlArray = imgUrlString!.componentsSeparatedByString(",")
         
         let count = urlArray.count
-        print(count)
-        
-        let imageWidth = (self.Width - (headerView?.Right)! - 30) / 3.0
         
         // 移除子视图，防止cell复用
         for subView in (imageContianer?.subviews)! {
             subView.removeFromSuperview()
         }
         
+        
+        var tempView:UIView = UIView()
         for i in 0..<count {
             
             let imageUrl = urlArray[i]
-            let row = i / 3 // 行
-            let col = i % 3 // 列
-            
-            print(row, col)
-            
             let imgV:UIImageView = UIImageView.init()
             imageContianer?.addSubview(imgV)
             imgV.tag = 30000 + i
@@ -372,49 +366,65 @@ class ServantPicAndLabelCell: ServantPersonalCell {
             imgV.addGestureRecognizer(tap)
             
             // 加约束
-            imgV.snp_makeConstraints(closure: { (make) in
-                make.width.height.equalTo(imageWidth)
-                
-                switch row {
-                    case 0:
-                        make.top.equalTo((imageContianer?.snp_top)!)
-                        break
-                    
-                    case 1:
-                        make.top.equalTo((imageContianer?.snp_top)!).offset(imageWidth + 5)
-                        break
-                        
-                    case 2:
-                        make.top.equalTo((imageContianer?.snp_top)!).offset(2*imageWidth + 10)
-                        break
-                    
-                    default:
-                        break
+            let row = i / 3 // 行
+            let col = i % 3 // 列
+            
+            if row == 0 {
+                if col == 0 {
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.width.height.equalTo((imageContianer?.snp_width)!).dividedBy(3.0)
+                        make.left.equalTo(imageContianer!)
+                        make.top.equalTo(imageContianer!)
+                    })
+                }else {
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.left.equalTo(tempView.snp_right).offset(5)
+                        make.top.width.height.equalTo(tempView)
+                    })
                 }
                 
-                switch col {
-                    case 0:
-                        make.left.equalTo((imageContianer?.snp_left)!)
-                        break
-                    
-                    case 1:
-                        make.left.equalTo((imageContianer?.snp_left)!).offset(imageWidth + 5)
-                        break
-                    
-                    case 2:
-                        make.left.equalTo((imageContianer?.snp_left)!).offset(2*imageWidth + 10)
-                        make.right.equalTo((imageContianer?.snp_right)!)
-                        break
-                    
-                    default:
-                        break
-                }
+                tempView = imgV
                 
-                if i == count - 1 {
-                    make.bottom.equalTo((imageContianer?.snp_bottom)!).offset(-5)
+            }else if row == 1 {
+                if col == 0 {
+                    tempView = self.viewWithTag(30000)!
+                    
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.width.height.equalTo((imageContianer?.snp_width)!).dividedBy(3.0)
+                        make.left.equalTo(imageContianer!)
+                        make.top.equalTo(tempView.snp_bottom).offset(5)
+                    })
+                }else {
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.left.equalTo(tempView.snp_right).offset(5)
+                        make.top.width.height.equalTo(tempView)
+                    })
                 }
-                
-            })
+            }else if row == 2 {
+                if col == 0 {
+                    
+                    tempView = self.viewWithTag(30003)!
+                    
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.width.height.equalTo((imageContianer?.snp_width)!).dividedBy(3.0)
+                        make.left.equalTo(imageContianer!)
+                        make.top.equalTo(tempView.snp_bottom).offset(5)
+                    })
+                }else {
+                    imgV.snp_makeConstraints(closure: { (make) in
+                        make.left.equalTo(tempView.snp_right).offset(5)
+                        make.top.width.height.equalTo(tempView)
+                    })
+                }
+            }
+            
+            tempView = imgV
+            
+            if i == count - 1 {
+                imgV.snp_makeConstraints(closure: { (make) in
+                    make.bottom.equalTo(imageContianer!)
+                })
+            }
         }
     }
     
