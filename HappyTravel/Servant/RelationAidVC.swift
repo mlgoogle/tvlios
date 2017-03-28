@@ -20,7 +20,7 @@ class RelationAidVC: UIViewController {
     var money = 0
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 600)
+        scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 500)
         scrollView.scrollEnabled = true
         scrollView.userInteractionEnabled = true
         scrollView.delegate = self

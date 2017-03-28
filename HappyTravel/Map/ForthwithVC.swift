@@ -340,8 +340,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                 if count == 0 {
                     self.first = false
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                }
-                else{
+                } else {
                     self.first = true
                     NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                 }
@@ -437,17 +436,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         if first{
            viewWillAppear(true)
         }
-        
-       
     }
     
     func orderListNotEvaluate(notification: NSNotification?) {
         redBool = true
         redDotImage.image = nil
-        if first{
-          
-        } else {
-           viewWillAppear(true)
+        if !first {
+            viewWillAppear(true)
         }
     }
     
