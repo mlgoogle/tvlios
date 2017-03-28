@@ -103,9 +103,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     
     func loginSuccessed(notification: NSNotification?) {
         DataManager.setDefaultRealmForUID(CurrentUser.uid_)
-        
         initPersonalView()
-        
         APIHelper.userAPI().cash({ (response) in
             if let dict = response as? [String: AnyObject] {
                 if let cash = dict["user_cash_"] as? Int {
@@ -192,12 +190,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.height.equalTo(16)
             }
         }
-
-
         nameLabel?.setTitle(CurrentUser.nickname_ ?? "未登录", forState: .Normal)
         nickName = CurrentUser.nickname_
-        
-        
     }
     
     func initImportantNav() {
@@ -220,17 +214,8 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             itemBtn.contentHorizontalAlignment = .Left
             if itemBtn.tag == 10001 {
                 consumeBtn = itemBtn
-                switch UIScreen.mainScreen().bounds.width {
-                case 320.0:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/4 - 12, bottom: 0, right: 0) //5s
-                case 375.0:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 5, bottom: 0, right: 0) // 6/6s
-                default:
-                    itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: UIScreen.mainScreen().bounds.width/5 - 14, bottom: 0, right: 0) // 6sp
-                }
-                itemBtn.setImage(nil, forState: UIControlState.Normal)
+                itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: 70, bottom: 0, right: 0) // 6/6s
             }
-            
             view.addSubview(itemBtn)
             view.addSubview(iconView)
             
@@ -243,7 +228,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.height.equalTo(18)
                 make.width.equalTo(18)
                 make.top.equalTo((nameLabel?.snp_bottom)!).offset(56 + 47 * index)
-                
             })
             itemBtn.snp_makeConstraints(closure: { (make) in
                 make.left.equalTo(iconView.snp_right).offset(10)
@@ -252,10 +236,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 //                make.top.equalTo(nameLabel!.snp_bottom).offset(60 + 54 * index)
                 make.height.equalTo(16)
             })
-           
-
-            
-
         }
         
         let feedbackBtn = UIButton()
@@ -271,7 +251,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         feedbackBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left:57, bottom: 0, right: 0)
         feedbackBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 0)
-
         
         view.addSubview(feedbackBtn)
         feedbackBtn.snp_makeConstraints(closure: { (make) in

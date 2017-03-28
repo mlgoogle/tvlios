@@ -323,7 +323,6 @@ class ServantPicAndLabelCell: ServantPersonalCell {
     }
     
     func updateUI(model:ServantDynamicModel) {
-        
         personModel = model
         
         // 计算时间
