@@ -32,9 +32,7 @@ class AidWenXinVC: UIViewController{
         view.backgroundColor = UIColor.whiteColor()
         title = "助理微信"
         setupUI()
-        //隐藏小红点
-        let viewHidden = tabBarController?.view.viewWithTag(10)
-        viewHidden?.hidden = true
+
         
         let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 12, height: 20))
         leftBtn.setImage(UIImage.init(named: "return"), forState: UIControlState.Normal)
@@ -69,31 +67,9 @@ class AidWenXinVC: UIViewController{
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        //支付完成的时候请求订单数据,显示小红点
-        var count = 0
-        let req = OrderListRequestModel()
-        req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
-            if let models = response as? [OrderListCellModel]{
-                for model in models{
-                    if model.is_evaluate_ == 0{
-                        count = count + 1
-                    }
-                    else{
-                        continue
-                    }
-                }
-                if count == 0 {
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                }
-                else{
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
-                }
-            }
-            },error:{ [weak self](error) in
-            })
-        
+        //隐藏小红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
     }
     
     func setupUI(){

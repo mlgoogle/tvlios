@@ -513,6 +513,31 @@ class RelationAidVC: UIViewController {
                                 SVProgressHUD.showSuccessMessage(SuccessMessage: "支付成功", ForDuration: 1.0, completion: {
                                     self!.shadowDidClick()
                                     
+                                    //支付完成的时候请求订单数据,显示小红点
+                                    var count = 0
+                                    let req = OrderListRequestModel()
+                                    req.uid_ = CurrentUser.uid_
+                                    APIHelper.consumeAPI().orderList(req, complete: { [weak self](response) in
+                                        if let models = response as? [OrderListCellModel]{
+                                            for model in models{
+                                                if model.is_evaluate_ == 0{
+                                                    count = count + 1
+                                                }
+                                                else{
+                                                    continue
+                                                }
+                                            }
+                                            if count == 0 {
+                                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
+                                            }
+                                            else{
+                                                
+                                                NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
+                                            }
+                                        }
+                                        },error:{ [weak self](error) in
+                                        })
+                                    
                                     let aidWeiXin = AidWenXinVC()
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!

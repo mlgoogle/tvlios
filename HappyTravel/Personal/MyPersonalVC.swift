@@ -59,6 +59,10 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         
         initPersonalView()
     }
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        consumeBtn.setImage(nil, forState: UIControlState.Normal)
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +86,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListNotEvaluate(_:)), name: NotifyDefine.OrderList, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orderListEvaluate(_:)), name: NotifyDefine.OrderListNo, object: nil)
     }
+    //通知实现
     func orderListEvaluate(notification: NSNotification?) {
         consumeBtn.setImage(nil, forState: UIControlState.Normal)
     }
