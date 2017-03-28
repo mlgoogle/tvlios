@@ -112,10 +112,12 @@ class RelationAidVC: UIViewController {
                     self!.introText.snp_updateConstraints(closure: { (make) in
                         make.height.equalTo(54)
                     })
+                    self!.unfoldButton.hidden = false
                 }else{
                     self!.introText.snp_updateConstraints(closure: { (make) in
                         make.height.equalTo(self!.titleSizes.height)
                     })
+                    self!.unfoldButton.hidden = true
                 }
 
             }
