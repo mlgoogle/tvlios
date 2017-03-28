@@ -86,6 +86,7 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
         leftBtn.addTarget(self, action: #selector(didBack), forControlEvents: UIControlEvents.TouchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBtn)
     }
+    
     func didBack() {
         usernameField.resignFirstResponder()
         passwdField.resignFirstResponder()
@@ -561,6 +562,13 @@ class LoginWithMSGVC: UIViewController, UITextFieldDelegate {
 //        resetPasswdVC?.username = username
 //        resetPasswdVC?.verifyCode = Int(verifyCode!)!
 //        presentViewController(resetPasswdVC!, animated: false, completion: nil)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        usernameField.resignFirstResponder()
+        passwdField.resignFirstResponder()
+        verifyCodeField.resignFirstResponder()
+        reInPasswdField.resignFirstResponder()
     }
     
     //MARK: - UITextField

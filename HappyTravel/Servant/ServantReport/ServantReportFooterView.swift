@@ -24,6 +24,7 @@ class ServantReportFooterView: UIView {
         
         addViews()
     }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         textView?.resignFirstResponder()
     }

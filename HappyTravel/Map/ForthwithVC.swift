@@ -369,26 +369,27 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
                     point.coordinate = CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
                     point.title = "\(servant.uid_)"
                     
-                    let type = servant.servicetype_
-                    //根据serviceType筛选
-                    switch self!.filterType {
-                    case .All:
-                        break
-                    case .Bussiness:
-                        if type == 1 {
-                            continue
-                        }
-                    case .Leisure:
-                        if type == 0 {
-                            continue
-                        }
-                    case .Score:
-                        
-                        break
-                    case .Follow:
-                        
-                        break
-                    }
+//                    TODO: 根据不同类型的servicetype_区分商务服务者或者休闲服务者
+//                    let type = servant.servicetype_
+//                    //根据serviceType筛选
+//                    switch self!.filterType {
+//                    case .All:
+//                        break
+//                    case .Bussiness:
+//                        if type == 1 {
+//                            continue
+//                        }
+//                    case .Leisure:
+//                        if type == 0 {
+//                            continue
+//                        }
+//                    case .Score:
+//                        
+//                        break
+//                    case .Follow:
+//                        
+//                        break
+//                    }
                     
                     self?.annotations.append(point)
                 }
