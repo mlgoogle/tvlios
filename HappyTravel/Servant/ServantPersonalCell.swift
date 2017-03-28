@@ -10,8 +10,8 @@ import UIKit
 
 protocol ServantPersonalCellDelegate {
     
-    func servantIsLikedAction(sender:UIButton,model:servantDynamicModel)
-    func servantImageDidClicked(model:servantDynamicModel, index:Int)
+    func servantIsLikedAction(sender:UIButton,model:ServantDynamicModel)
+    func servantImageDidClicked(model:ServantDynamicModel, index:Int)
     func servantReport(dynamicId:Int)
 }
 
@@ -21,7 +21,7 @@ class ServantPersonalCell: UITableViewCell {
     var nameLabel:UILabel?
     var thumbUpBtn:UIButton?
     var delegate:ServantPersonalCellDelegate?
-    var personModel:servantDynamicModel?
+    var personModel:ServantDynamicModel?
     var timeLabel:UILabel?
     var reportBtn:UIButton?
     
@@ -203,7 +203,7 @@ class ServantOnePicCell: ServantPersonalCell {
         delegate?.servantImageDidClicked(personModel!, index: 0)
     }
     
-    func updateImage(model:servantDynamicModel) {
+    func updateImage(model:ServantDynamicModel) {
         
         personModel = model
         // 计算时间
@@ -253,7 +253,7 @@ class ServantOneLabelCell: ServantPersonalCell {
         })
     }
     
-    func updateLabelText(model:servantDynamicModel) {
+    func updateLabelText(model:ServantDynamicModel) {
         
         personModel = model
         // 计算时间
@@ -322,7 +322,7 @@ class ServantPicAndLabelCell: ServantPersonalCell {
         
     }
     
-    func updateUI(model:servantDynamicModel) {
+    func updateUI(model:ServantDynamicModel) {
         
         personModel = model
         

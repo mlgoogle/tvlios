@@ -37,18 +37,17 @@ class ServantInfoModel:Object {
     dynamic var page_count_ = 15
 }
 
-class servantDynamicModel: Object {
+class ServantDynamicModel: Object {
     dynamic var dynamic_id_ = 0
     dynamic var dynamic_text_:String?
     dynamic var dynamic_url_:String?
     dynamic var dynamic_time_:String?
     dynamic var dynamic_like_count_ = 0
     dynamic var is_liked_ = 0
-    
 }
 
 class ServantDynamicListModel: Object {
-    let dynamic_list_ = List<servantDynamicModel>()
+    let dynamic_list_ = List<ServantDynamicModel>()
 }
 
 // 点赞model
