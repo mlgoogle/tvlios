@@ -351,9 +351,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             
             },error:{ (error) in
         })
-
-        
-        
     }
 
     func getServantNearby(lat: Double, lon:Double) {

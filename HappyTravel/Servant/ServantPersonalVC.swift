@@ -157,7 +157,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!), placeholderImage: UIImage.init(named: "map-head-female"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
+                
                 cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateLabelText(model)
@@ -170,7 +171,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!), placeholderImage: UIImage.init(named: "map-head-female"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
                 cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateImage(model)
@@ -182,7 +183,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!), placeholderImage: UIImage.init(named: "map-head-female"), optionsInfo: nil, progressBlock: nil, completionHandler: nil)
                 cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateUI(model)

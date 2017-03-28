@@ -258,9 +258,9 @@ class OrderEvaluateVC: UIViewController {
                     APIHelper.consumeAPI().orderList(req, complete: { (response) in
                         if let models = response as? [OrderListCellModel]{
                             for model in models{
-                                if model.is_evaluate_ == 0{
+                                if model.is_evaluate_ == 0 {
                                     count = count + 1
-                                } else{
+                                } else {
                                     continue
                                 }
                             }
@@ -268,7 +268,6 @@ class OrderEvaluateVC: UIViewController {
                             if count == 0 {
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
                             } else {
-                                
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
                             }
                         }
