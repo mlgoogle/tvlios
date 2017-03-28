@@ -43,9 +43,8 @@ class AidWenXinVC: UIViewController{
         let getModel = GetRelationRequestModel(value: getDict)
         
         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
-            
-            if let model = response as? GetRelationStatusModel{
-                if model.result_ == 0{
+            if let model = response as? GetRelationStatusModel {
+                if model.result_ == 0 {
                     self!.isEvaluate = false
                     self!.isEvaluate(self!.isEvaluate)
                 }
