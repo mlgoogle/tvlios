@@ -21,7 +21,6 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
         
         super.init(coder: aDecoder)
-        
     }
  
     // 初始化主界面

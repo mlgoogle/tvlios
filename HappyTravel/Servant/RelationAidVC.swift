@@ -412,20 +412,20 @@ class RelationAidVC: UIViewController {
         wenXinView.hidden = true
         wenXinView.snp_makeConstraints { (make) in
             make.center.equalTo(window!)
-            make.height.equalTo(161)
-            make.left.equalTo(30)
-            make.right.equalTo(-30)
+            make.height.equalTo(160)
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
         }
         wenXinView.backgroundColor = UIColor.init(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1)
         
         userTextField.snp_makeConstraints { (make) in
             make.top.equalTo(wenXinView).offset(20)
-            make.left.equalTo(wenXinView).offset(15)
-            make.right.equalTo(wenXinView).offset(-15)
-            make.height.equalTo(61)
+            make.left.equalTo(wenXinView).offset(10)
+            make.right.equalTo(wenXinView).offset(-10)
+            make.height.equalTo(60)
             
         }
-        userTextField.placeholder = "输入您的微信号，方便助理通过您的微信验证"
+        userTextField.placeholder = "输入您的微信号，方便助理通过您的验证"
         userTextField.backgroundColor = UIColor.init(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1)
         var attributes: [String : AnyObject] = [String : AnyObject]()
         attributes[NSForegroundColorAttributeName] = UIColor.init(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1)

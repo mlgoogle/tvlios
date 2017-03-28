@@ -227,12 +227,12 @@ class ServantHeaderView: UIView {
     }
     
     // 更新UI数据
-    func didAddNewUI(detailInfo:UserInfoModel) {
-        headerView?.kf_setImageWithURL(NSURL.init(string: detailInfo.head_url_!))
-        nameLabel?.text = detailInfo.nickname_
-        attentionNum?.text = String(detailInfo.follow_count_)
+    func didAddNewUI(servantInfo:UserInfoModel) {
+        headerView?.kf_setImageWithURL(NSURL.init(string: servantInfo.head_url_!))
+        nameLabel?.text = servantInfo.nickname_
+        attentionNum?.text = String(servantInfo.follow_count_)
         
-        let count:Int = Int(detailInfo.service_score_)
+        let count:Int = Int(servantInfo.service_score_)
         
         for i in 0..<count {
 
@@ -248,7 +248,7 @@ class ServantHeaderView: UIView {
         }
         
         // 根据状态调整按钮标题
-        if detailInfo.register_status_ == 0 {
+        if servantInfo.register_status_ == 0 {
             attenBtn?.selected = false
             attenBtn?.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
         }else {

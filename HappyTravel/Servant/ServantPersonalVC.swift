@@ -15,7 +15,7 @@ import SVProgressHUD
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
-    var personalInfo:UserInfoModel?
+    var servantInfo:UserInfoModel?
     var detailInfo:ServantDetailModel?
     
     // 自定义导航条、左右按钮和title
@@ -54,7 +54,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        print(personalInfo)
+        print(servantInfo)
         
         // 查询关注状态并更新UI
         updateFollowStatus()
@@ -157,8 +157,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
-                cell.nameLabel?.text = personalInfo?.nickname_
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateLabelText(model)
                 
@@ -170,8 +170,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
-                cell.nameLabel?.text = personalInfo?.nickname_
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateImage(model)
                 return cell
@@ -182,8 +182,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 cell.delegate = self
                 cell.selectionStyle = .None
                 
-                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (personalInfo?.head_url_)!))
-                cell.nameLabel?.text = personalInfo?.nickname_
+                cell.headerView?.kf_setImageWithURL(NSURL.init(string: (servantInfo?.head_url_)!))
+                cell.nameLabel?.text = servantInfo?.nickname_
                 
                 cell.updateUI(model)
                 
@@ -199,7 +199,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         headerView!.headerDelegate = self
-        headerView!.didAddNewUI(personalInfo!)
+        headerView!.didAddNewUI(servantInfo!)
         headerView?.updateFansCount(self.fansCount)
         headerView?.uploadAttentionStatus(self.follow)
         return headerView
@@ -243,7 +243,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             let alpha:CGFloat = 1 - ((64 - offsetY) / 64)
             topView?.backgroundColor = color.colorWithAlphaComponent(alpha)
             
-            let titleString = personalInfo?.nickname_
+            let titleString = servantInfo?.nickname_
             topTitle?.text = titleString
             leftBtn?.setImage(UIImage.init(named: "nav-back-select"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb-select"), forState: .Normal)
@@ -256,12 +256,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         
         footer.state = .Idle
         pageNum = 0
-        let servantInfo:ServantInfoModel = ServantInfoModel()
-        servantInfo.uid_ = (personalInfo?.uid_)!
-        servantInfo.page_num_ = pageNum
-        servantInfo.page_count_ = 10
+        let detailInfo:ServantInfoModel = ServantInfoModel()
+        detailInfo.uid_ = servantInfo!.uid_
+        detailInfo.page_num_ = pageNum
+        detailInfo.page_count_ = 10
         
-        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+        APIHelper.servantAPI().requestDynamicList(detailInfo, complete: { [weak self](response) in
             YD_NewPersonGuideManager.startGuide("servant-guide", mainGuideInfos: [["image" :"guide-servant-1","insets": UIEdgeInsetsMake(379-54, 25, 8888, -25)]], secGuideInfos: nil)
             
             if let models = response as? [servantDynamicModel] {
@@ -284,12 +284,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func footerRefresh() {
         
         pageNum += 1
-        let servantInfo:ServantInfoModel = ServantInfoModel()
-        servantInfo.uid_ = (personalInfo?.uid_)!
-        servantInfo.page_num_ = pageNum
-        servantInfo.page_count_ = 10
+        let detailInfo:ServantInfoModel = ServantInfoModel()
+        detailInfo.uid_ = servantInfo!.uid_
+        detailInfo.page_num_ = pageNum
+        detailInfo.page_count_ = 10
         
-        APIHelper.servantAPI().requestDynamicList(servantInfo, complete: { [weak self](response) in
+        APIHelper.servantAPI().requestDynamicList(detailInfo, complete: { [weak self](response) in
             
             if let models = response as? [servantDynamicModel] {
                 self?.dataArray += models
@@ -340,9 +340,9 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func addMyWechatAccount() {
         // 加微信
         let relationAid = RelationAidVC()
-        relationAid.userInfo  = personalInfo!
+        relationAid.userInfo  = servantInfo!
         //detailInfo为nil 暂时注销
-        relationAid.to_uid = (personalInfo?.uid_)!
+        relationAid.to_uid = (servantInfo?.uid_)!
         navigationController?.pushViewController(relationAid, animated: true)
     }
     
@@ -350,7 +350,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func updateFollowStatus() {
         
         let req = FollowModel()
-        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_to_ = (servantInfo?.uid_)!
         req.follow_type_ = 3
         APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
             
@@ -366,7 +366,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // 加关注
     func addAttention() {
         let req = FollowModel()
-        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_to_ = (servantInfo?.uid_)!
         req.follow_type_ = 1
         APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
             
@@ -386,7 +386,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func dismissAttention() {
         
         let req = FollowModel()
-        req.follow_to_ = (personalInfo?.uid_)!
+        req.follow_to_ = (servantInfo?.uid_)!
         req.follow_type_ = 2
         APIHelper.followAPI().followStatus(req, complete: { [weak self](response) in
             
@@ -403,7 +403,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // 查询粉丝数量
     func updateFollowCount() {
         let req = FollowCountRequestModel()
-        req.uid_ = personalInfo!.uid_
+        req.uid_ = servantInfo!.uid_
         req.type_ = 2
         APIHelper.followAPI().followCount(req, complete: {(response) in
             
@@ -433,7 +433,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 sender.selected = true
                 sender.setTitle(String(likecount), forState: .Selected)
                 model.is_liked_ = 1
-            }else if result.result_ == 1 {
+            } else if result.result_ == 1 {
                 sender.selected = false
                 sender.setTitle(String(likecount), forState: .Normal)
                 model.is_liked_ = 0
@@ -478,7 +478,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
             
             // 进入举报页面
             let reportView:ServantReportViewController = ServantReportViewController.init()
-            reportView.reportUId = self!.personalInfo?.uid_
+            reportView.reportUId = self!.servantInfo?.uid_
             reportView.dynamicId = dynamicId
             self!.navigationController?.pushViewController(reportView, animated: true)
         }
