@@ -65,7 +65,8 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         }
         return imageView
     }()
-    var redBool : Bool = false
+    var redBool : Bool = true
+    var first: Bool = false
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -81,15 +82,13 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         initView()
 //        YD_ContactManager.checkIfUploadContact()  // 暂时取消
         registerNotify()
-        //红点
         
     }
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyDefine.LoginFailed, object: nil)
-        
+        first = false
     }
     
     func followListAction(sender: UIButton) {
@@ -100,17 +99,16 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
         //红点
         if redBool {
             redDotImage.removeFromSuperview()
-        }
-        else{
+        } else {
             redDotImage.hidden = false
             tabBarController!.view.addSubview(redDotImage)
         }
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loginFailed(_:)), name: NotifyDefine.LoginFailed, object: nil)
-
+        
         if CurrentUser.login_ == false {
             if APIHelper.userAPI().autoLogin() {
                 banGesture(true)
@@ -303,31 +301,6 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     }
     
     func loginSuccessed(notification: NSNotification) {
-        //登录的时候请求订单数据,红点
-        var count = 0
-        let req = OrderListRequestModel()
-        req.uid_ = CurrentUser.uid_
-        APIHelper.consumeAPI().orderList(req, complete: { (response) in
-            if let models = response as? [OrderListCellModel]{
-                for model in models{
-                    if model.is_evaluate_ == 0{
-                        count = count + 1
-                    }
-                    else{
-                        continue
-                    }
-                }
-                if count == 0 {
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
-                }
-                else{
- 
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
-                }
-            }
-            },error:{ (error) in
-            })
 
         banGesture(false)
         
@@ -349,6 +322,33 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         let lat = DataManager.curLocation?.coordinate.latitude ?? CurrentUser.latitude_
         let lon = DataManager.curLocation?.coordinate.longitude ?? CurrentUser.longitude_
         getServantNearby(lat, lon: lon)
+        
+        //登录的时候请求订单数据,红点
+        var count = 0
+        let req = OrderListRequestModel()
+        req.uid_ = CurrentUser.uid_
+        APIHelper.consumeAPI().orderList(req, complete: { (response) in
+            if let models = response as? [OrderListCellModel]{
+                for model in models{
+                    if model.is_evaluate_ == 0{
+                        count = count + 1
+                    }
+                    else{
+                        continue
+                    }
+                }
+                if count == 0 {
+                    self.first = false
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
+                } else {
+                    self.first = true
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
+                }
+            }
+            },error:{ (error) in
+        })
+
+        
         
     }
 
@@ -433,11 +433,17 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
     func orderListEvaluate(notification: NSNotification?) {
         redBool = false
         redDotImage.image = UIImage.init(named:"redDot")
+        if first{
+           viewWillAppear(true)
+        }
     }
     
     func orderListNotEvaluate(notification: NSNotification?) {
         redBool = true
         redDotImage.image = nil
+        if !first {
+            viewWillAppear(true)
+        }
     }
     
     func postPushMessageNotify(data: AnyObject?) {
