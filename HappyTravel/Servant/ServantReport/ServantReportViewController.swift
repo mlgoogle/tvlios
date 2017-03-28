@@ -41,6 +41,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         
         tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight - 64 - 85), style: .Grouped)
         tableView?.separatorStyle = .SingleLine
+        tableView?.backgroundColor = UIColor.redColor()
         tableView?.delegate = self
         tableView?.dataSource = self
         tableView?.rowHeight = 45
@@ -56,7 +57,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         view.addSubview(bottomView)
         bottomView.snp_makeConstraints { (make) in
             make.left.right.bottom.equalTo(self.view)
-            make.height.equalTo(85)
+            make.height.equalTo(76)
         }
         
         let certainBtn:UIButton = UIButton.init(type: .Custom)
@@ -68,7 +69,7 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         certainBtn.layer.masksToBounds = true
         certainBtn.layer.cornerRadius = 23
         certainBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(bottomView).offset(10)
+            make.top.equalTo(bottomView).offset(15)
             make.left.equalTo(bottomView).offset(16)
             make.right.equalTo(bottomView).offset(-16)
             make.height.equalTo(46)
