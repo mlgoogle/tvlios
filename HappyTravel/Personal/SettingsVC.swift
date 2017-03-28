@@ -200,8 +200,17 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 })
                 break
             case .LogoutUser:
-                SocketManager.logoutCurrentAccount()
-                navigationController?.popViewControllerAnimated(false)
+                let sheetController = UIAlertController.init(title: "确定要退出?", message: nil, preferredStyle: .Alert)
+                let cancelAction:UIAlertAction = UIAlertAction.init(title: "取消", style: .Cancel, handler: nil)
+                let confirmAction:UIAlertAction! = UIAlertAction.init(title: "确定", style: .Default) { action in
+                    UIView.animateWithDuration(1.5, animations: {
+                        SocketManager.logoutCurrentAccount()
+                        self.navigationController?.popViewControllerAnimated(false)
+                    })
+                }
+                sheetController.addAction(cancelAction)
+                sheetController.addAction(confirmAction)
+                presentViewController(sheetController, animated: true, completion: nil)
                 break
             case .AboutUs:
                 let webVc = CommonWebVC.init(title: "关于我们", url: "http://www.yundiantrip.com")
