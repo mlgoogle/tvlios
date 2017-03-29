@@ -102,7 +102,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         table?.mj_footer = footer
     }
     
-    //上拉刷新
+    //下拉刷新
     func headerRefresh() {
         footer.state = .Idle
         pageCount = 0
@@ -150,7 +150,7 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         footer.state = .NoMoreData
         footer.setTitle("没有更多信息", forState: .NoMoreData)
     }
-    //下拉刷新
+    //上拉刷新
     func footerRefresh() {
         pageCount += 1
         let req = OrderListRequestModel()
@@ -185,7 +185,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
         cell.accessoryType = .DisclosureIndicator
         let array = allDataDict[dateArray[indexPath.section]]
@@ -207,7 +206,6 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 dateFormatter.dateFormat = "MM"
                 dateString = dateFormatter.stringFromDate(date!)
             }
-           
             /*
              - 判断 model 对应的分组 是否已经有当天数据信息
              - 如果已经有信息则直接将model 插入当天信息array
@@ -227,13 +225,12 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        let tempIndexPath = indexPath
         let array = allDataDict[dateArray[indexPath.section]]
         let getDict: [String : AnyObject] = ["order_id_": array![indexPath.row].order_id_,
                                              "uid_form_": CurrentUser.uid_,
                                              "uid_to_": array![indexPath.row].to_uid_]
         let getModel = GetRelationRequestModel(value: getDict)
-        
         APIHelper.consumeAPI().getRelation(getModel, complete: { [weak self](response) in
             
             if let model = response as? GetRelationStatusModel{
@@ -245,8 +242,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                     aidWeiXin.isEvaluate = array![indexPath.row].is_evaluate_ == 0 ? false : true
                     aidWeiXin.bool = false
                     aidWeiXin.toUidUrl =  array![indexPath.row].to_uid_url_
-                    aidWeiXin.isRefresh = { ()->() in
+                    aidWeiXin.isRefresh = { (bool)->() in
                         self!.isRefresh = true
+                        if bool == true {
+                            let array = self!.allDataDict[self!.dateArray[tempIndexPath.section]]
+                            array![tempIndexPath.row].is_evaluate_ = 1
+                            self?.table?.reloadRowsAtIndexPaths([NSIndexPath(forRow: tempIndexPath.row, inSection: tempIndexPath.section)], withRowAnimation: UITableViewRowAnimation.None)
+                        }
                     }
                     self!.navigationController?.pushViewController(aidWeiXin, animated: true)
             }

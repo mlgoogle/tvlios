@@ -12,20 +12,24 @@ class MessageCell: UITableViewCell {
     
     var userInfo:UserInfoModel?
     
-    var showDetailInfo:UIImageView = {
+    var redDotImage:UIImageView = {
        let imageView = UIImageView()
-        imageView.image = UIImage(named: "appointment-detail")
         return imageView
     }()
     let titleLabel:UILabel = UILabel()
     func updeat(info: OrderListCellModel){
         //时间戳的转换
+        redDotImage.image = nil
         let dateFormatter = NSDateFormatter()
          dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let date = dateFormatter.dateFromString(info.order_time_!)
         dateFormatter.dateFormat = "yyyy/MM/dd"
         let dateString = dateFormatter.stringFromDate(date!)
         titleLabel.text = dateString + "成功购买" + " ''" + info.to_uid_nickename_! + "'' " + "的商务信息"
+        if info.is_evaluate_ == 0 {
+           redDotImage.image = UIImage(named: "redDot")
+        }
+        
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,10 +45,16 @@ class MessageCell: UITableViewCell {
             make.height.equalTo(16)
             make.top.equalTo(contentView).offset(14)
         }
-//        titleLabel.text = "2017/02/27成功购买“淘梦优然”的商务123131231231"
         titleLabel.font = UIFont.systemFontOfSize(16)
         titleLabel.textAlignment = .Left
         
+        contentView.addSubview(redDotImage)
+        redDotImage.snp_makeConstraints { (make) in
+            make.right.equalTo(contentView).offset(-5)
+            make.height.equalTo(5)
+            make.width.equalTo(5)
+            make.centerY.equalTo(titleLabel)
+        }
         
         
 //        var view = contentView.viewWithTag(101)
