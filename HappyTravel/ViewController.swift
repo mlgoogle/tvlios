@@ -42,7 +42,6 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         startSockThread()
     }
     
-    
     func loadGuide() {
         
         let guide = FlashGuideViewController()
@@ -56,7 +55,7 @@ class ViewController: SideMenuController,FlashGuideViewControllerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        if userDefaults.floatForKey("guideVersion") < 1.2 {
+        if userDefaults.floatForKey("guideVersion") < ((NSBundle.mainBundle().infoDictionary! ["CFBundleShortVersionString"])?.floatValue) {
             loadGuide()
         } else {
             initMainInterface()
