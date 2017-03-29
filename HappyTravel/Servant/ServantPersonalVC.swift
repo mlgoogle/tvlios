@@ -11,7 +11,6 @@ import UIKit
 import MJRefresh
 import SVProgressHUD
 
-
 public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableViewDataSource, ServantHeaderViewDelegate, ServantPersonalCellDelegate{
     
     // MARK: - 属性
@@ -34,21 +33,36 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     var follow = false
     var fansCount = 0
     
-    
     var pageNum:Int = 0
     var dataArray = [ServantDynamicModel]()
     var timer:NSTimer? // 刷新用
+    var offsetY:CGFloat = 0.0
     
     // MARK: - 函数方法
-    
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override public func viewWillDisappear(animated: Bool) {
+    public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
         navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if offsetY < 0 {
+            UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        }
+    }
+    
+    public override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: false)
     }
     
     override public func viewDidLoad() {
@@ -71,8 +85,8 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     // 加载页面
-    func initViews(){
-        tableView = UITableView.init(frame: CGRectMake(0, 0, ScreenWidth, ScreenHeight), style: .Grouped)
+    func initViews() {
+        tableView = UITableView.init(frame: CGRectMake(0, -20, ScreenWidth, ScreenHeight + 20 + 44), style: .Grouped)
         tableView?.backgroundColor = UIColor.init(decR: 242, decG: 242, decB: 242, a: 1)
         tableView?.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
         tableView?.delegate = self
@@ -100,10 +114,6 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         topView = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 64))
         topView?.backgroundColor = UIColor.clearColor()
         view.addSubview(topView!)
-        // 挡住 header
-        let topbar = UIView.init(frame: CGRectMake(0, 0, ScreenWidth, 20))
-        topbar.backgroundColor = UIColor.whiteColor()
-        topView?.addSubview(topbar)
         
         leftBtn = UIButton.init(frame: CGRectMake(15, 27, 30, 30))
         leftBtn!.layer.masksToBounds = true
@@ -190,14 +200,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
                 
                 return cell
             }
-            
         }
         
         return UITableViewCell.init()
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         headerView = ServantHeaderView.init(frame: CGRectMake(0, 0, ScreenWidth, 379))
         headerView!.headerDelegate = self
         headerView!.didAddNewUI(servantInfo!)
@@ -207,40 +215,26 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
         return 379
     }
     
-    public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        var footer:ServantFooterView?
-        
-        if dataArray.count == 0 {
-            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "Ta很神秘，还未发布任何动态")
-        }else {
-            footer = ServantFooterView.init(frame:CGRectMake(0, 0, ScreenWidth, 55),detail: "暂无更多动态")
-        }
-        
-        return footer
-    }
-    
-    
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 55
+        return 0.1
     }
     
     // 滑动的时候改变顶部 topView
     public func scrollViewDidScroll(scrollView: UIScrollView) {
-        
         let color:UIColor = UIColor.whiteColor()
-        let offsetY:CGFloat = scrollView.contentOffset.y
+        offsetY = scrollView.contentOffset.y
         
-        if offsetY < 1 {
+        if offsetY < 0 {
+            UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
             topView?.backgroundColor = color.colorWithAlphaComponent(0)
             topTitle?.text = ""
             leftBtn?.setImage(UIImage.init(named: "nav-back"), forState:.Normal)
             rightBtn?.setImage(UIImage.init(named: "nav-jb"), forState: .Normal)
         } else {
+            UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
             let alpha:CGFloat = 1 - ((64 - offsetY) / 64)
             topView?.backgroundColor = color.colorWithAlphaComponent(alpha)
             
@@ -323,7 +317,11 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     func noMoreData() {
         endRefresh()
         footer.state = .NoMoreData
-        footer.setTitle("", forState: .NoMoreData)
+        if dataArray.count == 0 {
+            footer.setTitle("您还未发布任何动态，快去发布吧", forState: .NoMoreData)
+        } else {
+            footer.setTitle("暂无更多动态", forState: .NoMoreData)
+        }
     }
     
     // MARK: - 加微信和关注按钮
