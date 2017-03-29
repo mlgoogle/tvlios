@@ -544,7 +544,7 @@ class RelationAidVC: UIViewController {
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
 //                                    aidWeiXin.detailInfo = (self?.detailInfo)!
-                                    aidWeiXin.isRefresh = {()->() in
+                                    aidWeiXin.isRefresh = {(bool)->() in
                                         
                                     }
                                     aidWeiXin.bool = true
