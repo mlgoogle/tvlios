@@ -70,6 +70,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
             sureBtn.setTitle("完成", forState: .Normal)
+            sureBtn.titleLabel?.font = UIFont.systemFontOfSize(S18)
             sureBtn.setTitleColor(UIColor(red: 38/255.0, green: 38/255.0, blue: 38/255.0, alpha: 1), forState: .Normal)
             sureBtn.backgroundColor = UIColor.whiteColor()
             sureBtn.addTarget(self, action: #selector(sureAction(_:)), forControlEvents: .TouchUpInside)

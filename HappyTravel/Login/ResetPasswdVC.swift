@@ -139,6 +139,7 @@ class ResetPasswdVC: UIViewController, UITextFieldDelegate {
         sureBtn.tag = tags["sureBtn"]!
         sureBtn.backgroundColor = UIColor.init(red: 182/255.0, green: 39/255.0, blue: 42/255.0, alpha: 1)
         sureBtn.setTitle("确认", forState: .Normal)
+        sureBtn.titleLabel?.font = UIFont.systemFontOfSize(S18)
         sureBtn.setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.8), forState: .Normal)
         sureBtn.layer.cornerRadius = 45 / 2.0
         sureBtn.layer.masksToBounds = true
