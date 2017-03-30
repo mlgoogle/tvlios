@@ -232,14 +232,14 @@ class ServantHeaderView: UIView {
         nameLabel?.text = servantInfo.nickname_
         attentionNum?.text = String(servantInfo.follow_count_)
         
-        let count:Int = Int(servantInfo.service_score_)
-        
+        let count:Int = servantInfo.service_score_ > 0 ? Int(servantInfo.service_score_) : 0
         for i in 0..<count {
 
             let starImage:UIImageView = UIImageView.init(frame: CGRectMake( CGFloat(Float(i)) * 30.0, 0, 20, 20))
             starsView!.addSubview(starImage)
             starImage.image = UIImage.init(named: "star-select")
         }
+        
         // 空心的星星
         for i in count ..< 5 {
             let starImage:UIImageView = UIImageView.init(frame: CGRectMake( CGFloat(Float(i)) * 30.0, 0, 20, 20))
@@ -251,7 +251,7 @@ class ServantHeaderView: UIView {
         if servantInfo.register_status_ == 0 {
             attenBtn?.selected = false
             attenBtn?.layer.borderColor = UIColor.init(decR: 235, decG: 235, decB: 235, a: 1).CGColor
-        }else {
+        } else {
             attenBtn?.selected = true
             attenBtn?.layer.borderColor = UIColor.init(decR: 252, decG: 163, decB: 17, a: 1).CGColor
         }

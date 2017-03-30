@@ -37,7 +37,7 @@ extension SVProgressHUD{
 
     public class func initStyle(){
         SVProgressHUD.setDefaultStyle(.Dark)
-        SVProgressHUD.setDefaultMaskType(.None)
+        SVProgressHUD.setDefaultMaskType(.Clear)
     }
     
     public class func dismissWithDuration(Duration duration: Double,completion: (() -> Void)?){

@@ -75,7 +75,6 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
             make.height.equalTo(46)
         }
         certainBtn.addTarget(self, action: #selector(self.certainAction), forControlEvents: .TouchUpInside)
-        
     }
     
     //MARK: UITableViewDelegate
@@ -152,7 +151,6 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     // 确定实现发布
     func certainAction() {
-       
         footerView?.textView?.resignFirstResponder()
         
         let report:ServantReportModel = ServantReportModel()
@@ -161,24 +159,23 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
         report.report_id_ = cellIndex!
         report.report_text_ = footerView?.textView?.text
         report.dynamic_id_ = dynamicId!
+        
         APIHelper.servantAPI().servantReport(report, complete: { (response) in
-            
             SVProgressHUD.showSuccessMessage(SuccessMessage: "举报成功！", ForDuration: 1.5, completion: {
                 self.navigationController?.popViewControllerAnimated(true)
             })
             }) { (error) in
-                SVProgressHUD.showErrorMessage(ErrorMessage: "举报失败，请稍后再试~", ForDuration: 1.5, completion: {
-                })
+                SVProgressHUD.dismiss()
+                SVProgressHUD.showErrorMessage(ErrorMessage: "举报失败，请稍后再试~", ForDuration: 1.5, completion: nil)
         }
     }
-    
     
     //MARK:UITextViewDelegate
     func textViewDidChange(textView: UITextView) {
         
         if textView.text.characters.count == 0 {
             textView.addSubview(placeholder)
-        }else {
+        } else {
             placeholder.removeFromSuperview()
         }
     }
