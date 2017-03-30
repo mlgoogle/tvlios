@@ -23,6 +23,7 @@ class RelationAidVC: UIViewController {
         scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: 500)
         scrollView.scrollEnabled = true
         scrollView.userInteractionEnabled = true
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.delegate = self
         scrollView.autoresizesSubviews = false
         
