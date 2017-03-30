@@ -82,12 +82,16 @@ class ServantAPI: SocketAPI {
     }
     /**
      举报
-     
      */
     func servantReport(model:ServantReportModel,complete: CompleteBlock?, error: ErrorBlock?) {
         let packet = SocketDataPacket(opcode: .Report,model: model)
         startRequest(packet, complete: { (response) in
             complete?((response as? SocketJsonResponse)?.responseModel(ServantReportResultModel.classForCoder()))
             }, error: error)
+//        startRequest(packet, complete: { (response) in
+//            complete?((response as? SocketJsonResponse)?.responseModel(ServantReportResultModel.classForCoder()))
+//            }) { (error) in
+//                print(error)
+//        }
     }
 }

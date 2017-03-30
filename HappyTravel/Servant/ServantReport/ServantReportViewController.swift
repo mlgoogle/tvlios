@@ -151,8 +151,8 @@ class ServantReportViewController: UIViewController ,UITableViewDelegate,UITable
     
     // 确定实现发布
     func certainAction() {
+        SVProgressHUD.show()
         footerView?.textView?.resignFirstResponder()
-        
         let report:ServantReportModel = ServantReportModel()
         report.uid_ = reportUId!
         report.from_id_ = CurrentUser.uid_
