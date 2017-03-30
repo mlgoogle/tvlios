@@ -25,7 +25,7 @@ class AidWenXinVC: UIViewController{
     var copyBtn: UIButton = UIButton()
     var evaluateBtn: UIButton = UIButton()
     
-    var isRefresh: (()->())?
+    var isRefresh: ((Bool)->())?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,7 @@ class AidWenXinVC: UIViewController{
     }
     
     func didBack() {
-        isRefresh!()
+        isRefresh!(isEvaluate)
         navigationController?.popViewControllerAnimated(true)
     }
     

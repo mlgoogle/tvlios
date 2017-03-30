@@ -68,16 +68,14 @@ class RelationAidVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
-        
         view.addSubview(scrollView)
         setupUI()
-        
+        //隐藏小红点
         let viewHidden = tabBarController?.view.viewWithTag(10)
         viewHidden?.hidden = true
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         //助理显示的费用金额
         let getDict: [String : AnyObject] = ["order_id_": 0,
                                              "uid_form_": userInfo.uid_,
@@ -544,7 +542,7 @@ class RelationAidVC: UIViewController {
                                     aidWeiXin.getRelation = model
                                     aidWeiXin.userInfo = (self?.userInfo)!
 //                                    aidWeiXin.detailInfo = (self?.detailInfo)!
-                                    aidWeiXin.isRefresh = {()->() in
+                                    aidWeiXin.isRefresh = {(bool)->() in
                                         
                                     }
                                     aidWeiXin.bool = true
