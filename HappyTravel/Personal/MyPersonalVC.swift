@@ -23,7 +23,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
     var nameLabel:UIButton?
     
-    var serviceTel = "0571-87611687"
+    var serviceTel = "yundian2016"
     
     var imagePicker:UIImagePickerController? = nil
     
@@ -282,9 +282,16 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func callSrevant() {
-        let alert = UIAlertController.init(title: "呼叫", message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "确定", style: .Default, handler: { (action: UIAlertAction) in
-            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+        let alert = UIAlertController.init(title: serviceTel, message: serviceTel, preferredStyle: .Alert)
+        let ensure = UIAlertAction.init(title: "复制微信号", style: .Default, handler: { [weak self](action: UIAlertAction) in
+//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
+            let pasteboard = UIPasteboard.generalPasteboard()
+            if self!.serviceTel != "" {
+                pasteboard.string = self!.serviceTel
+                SVProgressHUD.showSuccessMessage(SuccessMessage: "复制成功", ForDuration: 1.0, completion: {
+                    SVProgressHUD.dismiss()
+                })
+            }
         })
         let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
             
