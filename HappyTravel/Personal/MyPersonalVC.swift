@@ -23,8 +23,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
 
     var nameLabel:UIButton?
     
-    var serviceTel = "yundian2016"
-    
     var imagePicker:UIImagePickerController? = nil
     
     var headImagePath:String? = CurrentUser.head_url_
@@ -130,29 +128,18 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func initPersonalView() {
-        var personalView = view.viewWithTag(1001)
-        if personalView == nil {
-
-        }
-        
-//        var starView = view!.viewWithTag(10003)
         if starView == nil {
             starView = UIImageView()
             starView!.tag = 10003
             starView?.image = UIImage.init(named: "side-headBase")
             view.addSubview(starView!)
             starView!.snp_makeConstraints { (make) in
-//                make.left.equalTo(view)
-//                make.right.equalTo(view)
-//                make.height.equalTo(1)
-//                make.top.equalTo(view).offset(130)
                 make.centerX.equalTo(view)
                 make.top.equalTo(view).offset(74)
                 make.height.equalTo(77)
                 make.width.equalTo(77)
             }
         }
-
         
         if headImageView == nil {
             headImageView = UIButton()
@@ -160,13 +147,10 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             headImageView!.backgroundColor = .clearColor()
             headImageView!.layer.masksToBounds = true
             headImageView!.layer.cornerRadius = 67 / 2
-//            headImageView!.layer.borderColor = UIColor.clearColor().CGColor
-//            headImageView!.layer.borderWidth = 1
             headImageView?.addTarget(self, action: #selector(MyPersonalVC.setHeadImage), forControlEvents: .TouchUpInside)
             view.addSubview(headImageView!)
             headImageView!.snp_makeConstraints { (make) in
                 make.center.equalTo(starView!)
-//                make.top.equalTo(view.snp_top).offset(74)
                 make.height.equalTo(67)
                 make.width.equalTo(67)
             }
@@ -220,10 +204,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             view.addSubview(iconView)
             
             iconView.snp_makeConstraints(closure: { (make) in
-//                make.top.equalTo(itemBtn.snp_bottom).offset(5)
-//                make.height.equalTo(2)
-//                make.width.equalTo(51)
-//                make.centerX.equalTo(view)
                 make.left.equalTo(view).offset(30)
                 make.height.equalTo(18)
                 make.width.equalTo(18)
@@ -233,7 +213,6 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
                 make.left.equalTo(iconView.snp_right).offset(10)
                 make.right.equalTo(view.snp_right)
                 make.centerY.equalTo(iconView)
-//                make.top.equalTo(nameLabel!.snp_bottom).offset(60 + 54 * index)
                 make.height.equalTo(16)
             })
         }
@@ -282,24 +261,22 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func callSrevant() {
-        let alert = UIAlertController.init(title: serviceTel, message: serviceTel, preferredStyle: .Alert)
-        let ensure = UIAlertAction.init(title: "复制微信号", style: .Default, handler: { [weak self](action: UIAlertAction) in
-//            UIApplication.sharedApplication().openURL(NSURL(string: "tel://\(self.serviceTel)")!)
-            let pasteboard = UIPasteboard.generalPasteboard()
-            if self!.serviceTel != "" {
-                pasteboard.string = self!.serviceTel
-                SVProgressHUD.showSuccessMessage(SuccessMessage: "复制成功", ForDuration: 1.0, completion: {
-                    SVProgressHUD.dismiss()
-                })
-            }
+        let serviceWeChat = "yundian2016"
+        let alert = UIAlertController.init(title: "优悦出行客服微信号", message: serviceWeChat, preferredStyle: .Alert)
+        
+        let ensure = UIAlertAction.init(title: "复制微信号", style: .Cancel, handler: { (action: UIAlertAction) in
+            UIPasteboard.generalPasteboard().string = serviceWeChat
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "复制成功", ForDuration: 0, completion: {
+                SVProgressHUD.dismiss()
+            })
         })
-        let cancel = UIAlertAction.init(title: "取消", style: .Cancel, handler: { (action: UIAlertAction) in
+        let cancel = UIAlertAction.init(title: "取消", style: .Default, handler: { (action: UIAlertAction) in
             
         })
-        alert.addAction(ensure)
-        alert.addAction(cancel)
-        presentViewController(alert, animated: true, completion: nil)
         
+        alert.addAction(cancel)
+        alert.addAction(ensure)
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func feedbackAction(sender: UIButton?) {
@@ -312,4 +289,3 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 }
-
