@@ -41,13 +41,12 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     // MARK: - 函数方法
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
