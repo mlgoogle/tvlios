@@ -42,7 +42,8 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                 "separateLine": 1004,
                 "headBG": 1005,
                 "headView": 1006,
-                "selectedRetLab": 1007]
+                "selectedRetLab": 1007,
+                "iconBtn": 1008]
     
     var imagePicker:UIImagePickerController? = nil
     
@@ -115,11 +116,9 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         guard address?.characters.count > 0 else {
-            
             SVProgressHUD.showWainningMessage(WainningMessage: "您还没有选择常住地哦", ForDuration: 1.5, completion: nil)
             return
         }
-        
         
         guard headImagePath != nil else {
             updateBaseInfo((userInfoModel?.head_url_)!)
@@ -278,7 +277,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
                     make.height.equalTo(UIScreen.mainScreen().bounds.size.width / 2.0)
                 })
             }
-            
+        
             var headView = cell?.contentView.viewWithTag(tags["headView"]!) as? UIImageView
             if headView == nil {
                 headView = UIImageView()
@@ -296,6 +295,19 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             }
             self.headView = headView
             cells[indexPath.row] = cell!
+            
+            var iconBtn = cell?.contentView.viewWithTag(tags["iconBtn"]!) as? UIButton
+            if iconBtn == nil {
+                iconBtn = UIButton()
+                iconBtn?.tag = tags["iconBtn"]!
+                cell?.contentView.addSubview(iconBtn!)
+                iconBtn?.snp_makeConstraints(closure: { (make) in
+                    make.center.equalTo(headView!)
+                    make.width.equalTo(headView!)
+                    make.height.equalTo(headView!)
+                })
+                iconBtn?.addTarget(self, action: #selector(iconBtnDidClick), forControlEvents: UIControlEvents.TouchUpInside)
+            }
             
             guard headImageName == nil else {
                 return cell!
@@ -429,6 +441,11 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         }
 
     }
+    //头像按钮点击弹出相册
+    func iconBtnDidClick() {
+        view.endEditing(true)
+        setHeadImage()
+    }
     
     func setHeadImage() {
         initImagePick()
@@ -453,7 +470,7 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
-            setHeadImage()
+            view.endEditing(true)
         } else if indexPath.row == 2 {
             XCGLogger.debug("性别选择")
             let alertCtrl = UIAlertController.init(title: nil, message: nil, preferredStyle: .ActionSheet)

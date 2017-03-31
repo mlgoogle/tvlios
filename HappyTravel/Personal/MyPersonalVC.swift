@@ -267,7 +267,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
         })
         let cancel = UIAlertAction.init(title: "复制微信号", style: .Default, handler: { (action: UIAlertAction) in
             UIPasteboard.generalPasteboard().string = serviceWeChat
-            SVProgressHUD.showSuccessMessage(SuccessMessage: "复制成功", ForDuration: 0, completion: {
+            SVProgressHUD.showSuccessMessage(SuccessMessage: "复制成功", ForDuration: 1.0   , completion: {
                 SVProgressHUD.dismiss()
             })
         })
