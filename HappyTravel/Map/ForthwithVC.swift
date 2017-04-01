@@ -357,6 +357,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
         let servantNearbyModel = ServantNearbyModel()
         servantNearbyModel.latitude_ = lat
         servantNearbyModel.longitude_ = lon
+        servantNearbyModel.distance_ = 10000000000000000
         
         APIHelper.servantAPI().servantNearby(servantNearbyModel, complete: { [weak self](response) in
             if let models = response as? [UserInfoModel] {
