@@ -36,14 +36,13 @@ class PushMessageVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         navigationItem.title = "消息中心"
         initView()
-        //隐藏红点
-        let viewHidden = tabBarController?.view.viewWithTag(10)
-        viewHidden?.hidden = true
-    
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         registerNotify()
         if isRefresh {
             
