@@ -126,10 +126,10 @@ class SocketManager: NSObject, GCDAsyncSocketDelegate {
             if !socket!.isConnected {
 
                 #if true  // true: 测试环境    false: 正式环境
-                    let ip:String = "192.168.199.131"
-                    let port:UInt16 = 10001
-//                    let ip:String = "192.168.8.111"
+//                    let ip:String = "192.168.199.131"
 //                    let port:UInt16 = 10001
+                    let ip:String = "139.224.34.22"
+                    let port:UInt16 = 10001
                 #else
                     let ip:String = "103.40.192.101"
                     let port:UInt16 = 10002
