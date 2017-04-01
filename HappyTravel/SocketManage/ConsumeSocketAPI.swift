@@ -80,7 +80,4 @@ class ConsumeSocketAPI: SocketAPI{
             complete?((response as? SocketJsonResponse)?.responseModel(PersonIntroStatusModel.classForCoder()))
             }, error: error)
     }
-    
-    
-    
 }
