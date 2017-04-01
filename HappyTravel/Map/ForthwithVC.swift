@@ -362,6 +362,7 @@ public class ForthwithVC: UIViewController, MAMapViewDelegate {
             if let models = response as? [UserInfoModel] {
                 self?.annotations.removeAll()
                 for servant in models {
+                    print(servant)
                     self?.servantsInfo[servant.uid_] = servant
                     DataManager.insertData(servant)
                     let latitude = servant.latitude_
