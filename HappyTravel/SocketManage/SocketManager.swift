@@ -85,8 +85,6 @@ enum SockOpcode: Int16 {
     case OrderList = 1141
     //个人简介
     case PersonIntro = 1145
-    
-    
 }
 
 class SocketManager: NSObject, GCDAsyncSocketDelegate {
