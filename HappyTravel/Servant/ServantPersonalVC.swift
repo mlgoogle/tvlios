@@ -67,7 +67,7 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        print(servantInfo)
+//        print(servantInfo)
         
         // 查询关注状态并更新UI
         updateFollowStatus()
@@ -114,14 +114,14 @@ public class ServantPersonalVC : UIViewController, UITableViewDelegate,UITableVi
         topView?.backgroundColor = UIColor.clearColor()
         view.addSubview(topView!)
         
-        leftBtn = UIButton.init(frame: CGRectMake(15, 27, 30, 30))
+        leftBtn = UIButton.init(frame: CGRectMake(15, 18, 45, 45))
         leftBtn!.layer.masksToBounds = true
         leftBtn!.layer.cornerRadius = 15.0
         leftBtn!.setImage(UIImage.init(named: "nav-back"), forState: .Normal)
         topView?.addSubview(leftBtn!)
         leftBtn!.addTarget(self, action: #selector(ServantPersonalVC.backAction), forControlEvents: .TouchUpInside)
         
-        rightBtn = UIButton.init(frame: CGRectMake(ScreenWidth - 45, 27, 30, 30))
+        rightBtn = UIButton.init(frame: CGRectMake(ScreenWidth - 45, 18, 45, 45))
         rightBtn!.layer.masksToBounds = true
         rightBtn!.layer.cornerRadius = 15.0
         rightBtn!.setImage(UIImage.init(named: "nav-jb"), forState: .Normal)
