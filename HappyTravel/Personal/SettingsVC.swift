@@ -125,13 +125,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         navigationItem.title = "设置"
         initData()
         initView()
-        //隐藏红点
-        let viewHidden = tabBarController?.view.viewWithTag(10)
-        viewHidden?.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         authUserCardCode = CurrentUser.auth_status_
         initData()
         settingsTable?.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)

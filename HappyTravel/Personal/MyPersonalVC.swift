@@ -199,6 +199,7 @@ public class MyPersonalVC : UIViewController, UIImagePickerControllerDelegate, U
             if itemBtn.tag == 10001 {
                 consumeBtn = itemBtn
                 itemBtn.imageEdgeInsets = UIEdgeInsets(top: -12, left: 70, bottom: 0, right: 0) // 6/6s
+                itemBtn.setImage(UIImage.init(named: "redDot"), forState: UIControlState.Normal)
             }
             view.addSubview(itemBtn)
             view.addSubview(iconView)

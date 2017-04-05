@@ -58,16 +58,15 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         navigationItem.title = "完善基本资料"
         userInfoModel = CurrentUser
         initView()
-        //隐藏红点
-        let viewHidden = tabBarController?.view.viewWithTag(10)
-        viewHidden?.hidden = true
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
+        //注册通知
         registerNotify()
-        
         if navigationItem.rightBarButtonItem == nil {
             let sureBtn = UIButton.init(frame: CGRectMake(0, 0, 40, 30))
             sureBtn.setTitle("完成", forState: .Normal)
@@ -457,10 +456,12 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
         let cameraAction:UIAlertAction! = UIAlertAction.init(title: "相机", style: .Default) { action in
             self.imagePicker?.sourceType = .Camera
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            self.updateRedHot()
         }
         let labAction:UIAlertAction! = UIAlertAction.init(title: "从系统相册中选择", style: .Default) { action in
             self.imagePicker?.sourceType = .PhotoLibrary
             self.presentViewController(self.imagePicker!, animated: true, completion: nil)
+            self.updateRedHot()
         }
         sheetController.addAction(cancelAction)
         sheetController.addAction(cameraAction)
@@ -547,7 +548,33 @@ class CompleteBaseInfoVC: UIViewController, UITableViewDelegate, UITableViewData
             imagePicker?.delegate = self
             imagePicker?.allowsEditing = true
         }
-        
+    }
+    
+    //模态跳转之后我的消费小红点的消失Bug处理
+    func updateRedHot() {
+        //评价完的时候请求订单数据,更新个人中心我的消费红点显示
+        var count = 0
+        let req = OrderListRequestModel()
+        req.uid_ = CurrentUser.uid_
+        APIHelper.consumeAPI().orderList(req, complete: { (response) in
+            if let models = response as? [OrderListCellModel]{
+                for model in models{
+                    if model.is_evaluate_ == 0 {
+                        count = count + 1
+                    } else {
+                        continue
+                    }
+                }
+                
+                if count == 0 {
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderListNo, object: nil, userInfo: nil)
+                } else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.OrderList, object: nil, userInfo: nil)
+                }
+            }
+            },error:{ (error) in
+        })
+
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
