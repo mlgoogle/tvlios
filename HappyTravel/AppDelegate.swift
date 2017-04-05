@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
             Fabric.with([Crashlytics.self])
             
         })
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () in
             var key = "62f33d0af1098f28ceed54c86ea21890"
             if let id = NSBundle.mainBundle().bundleIdentifier {
@@ -65,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         
         registerUMAnalytics()
     }
+    
     func registerUMAnalytics() {
         MobClick.setCrashReportEnabled(false)
         UMAnalyticsConfig.sharedInstance().appKey = "584e18ca1c5dd07e7d001a19"
@@ -75,39 +77,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         MobClick.setAppVersion(version)
         //日志加密设置
         MobClick.setEncryptEnabled(true)
-   
     }
     
     func commonViewSet() {
         let bar = UINavigationBar.appearance()
-//        bar.setBackgroundImage(UIImage.init(named: "head-bg"), forBarMetrics: .Default)
         bar.tintColor = UIColor.blackColor()
-//        bar.backgroundColor = UIColor.whiteColor()
         bar.barTintColor = UIColor.whiteColor()
         
         let attr:Dictionary = [NSForegroundColorAttributeName: UIColor.blackColor()]
         bar.titleTextAttributes = attr
         bar.translucent = false
-//        bar.shadowImage = UIImage()
-//        bar.layer.masksToBounds = true
-        
         UITabBar.appearance().hidden = true
-        
-//        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.Default
-        
-//        let tabbar = UITabBar.appearance()
-//        tabbar.barTintColor = UIColor.init(red: 33/255.0, green: 59/255.0, blue: 76/255.0, alpha: 1)
-//        tabbar.hidden = true
-        
-//        var attrTabbarItem = [NSFontAttributeName: UIFont.systemFontOfSize(20),
-//                              NSForegroundColorAttributeName: UIColor.init(red: 33/255.0, green: 235/255.0, blue: 233/255.0, alpha: 1)]
-//        let tabbarItem = UITabBarItem.appearance()
-//        tabbarItem.titlePositionAdjustment = UIOffsetMake(CGFloat(-10),CGFloat(-10))
-//        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Selected)
-//        attrTabbarItem[NSForegroundColorAttributeName] = UIColor.grayColor()
-//        tabbarItem.setTitleTextAttributes(attrTabbarItem, forState: UIControlState.Normal)
-//        
-//        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60) ,forBarMetrics: .Default)
     }
     
     func pushMessageRegister() {
@@ -122,14 +102,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
                     appkey = "LBW2Ex5cT79VIHunoC6Zg6"
                     appSecret = "hYTWpJOK8L6ge1etzQnlV2"
                 }
-                
             }
             
             GeTuiSdk.startSdkWithAppId(appid, appKey: appkey, appSecret: appSecret, delegate: self)
             let notifySettings = UIUserNotificationSettings.init(forTypes: [.Alert, .Badge, .Sound], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(notifySettings)
             UIApplication.sharedApplication().registerForRemoteNotifications()
-
         })
     }
 
@@ -253,10 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GeTuiSdkDelegate, WXApiDe
         if resp.isKindOfClass(SendMessageToWXResp) {
             let message = resp.errCode == 0 ? "分享成功":"分享失败"
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyDefine.WeChatShareResult, object: ["result":message])
-            
         }
-        
     }
-    
 }
 
