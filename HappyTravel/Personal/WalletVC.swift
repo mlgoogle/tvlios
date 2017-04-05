@@ -19,6 +19,9 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        //隐藏红点
+        let viewHidden = tabBarController?.view.viewWithTag(10)
+        viewHidden?.hidden = true
         walletTable?.reloadData()
         
         APIHelper.userAPI().cash({ [weak self](response) in
@@ -38,14 +41,8 @@ class WalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = "钱包"
-        
         initView()
-        //隐藏红点
-        let viewHidden = tabBarController?.view.viewWithTag(10)
-        viewHidden?.hidden = true
-        
         //接收通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateMoney), name: NotifyDefine.UpdateMoney, object: nil)
 
